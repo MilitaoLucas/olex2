@@ -2,6 +2,7 @@ import sys
 import os
 import string
 import platform
+import subprocess
 import time
 
 AddOption('--olx_debug',
@@ -73,33 +74,42 @@ if env['TOOL'] == 'vc8':
   #Tool('msvc')(env)
 elif env['TOOL'] == 'vc9':
   env = Environment(ENV = os.environ, variables = variables, TARGET_ARCH=env_arch, MSVC_VERSION='9.0')
-  #env['MSVS'] = {'VERSION': "9.0"} 
+  #env['MSVS'] = {'VERSION': "9.0"}
   #env['MSVS_VERSION'] = '9.0'
   #Tool('msvc')(env)
 elif env['TOOL'] == 'vc10':
   env = Environment(ENV = os.environ, variables = variables, TARGET_ARCH=env_arch, MSVC_VERSION='10.0')
-  #env['MSVS'] = {'VERSION': "10.0"} 
+  #env['MSVS'] = {'VERSION': "10.0"}
   #env['MSVS_VERSION'] = '10.0'
   #Tool('msvc')(env)
 elif env['TOOL'] == 'gnu':
     Tool('g++')(env)
+elif env['TOOL'] == 'clang':
+    Tool('clang')(env)
 elif env['TOOL'] == 'vc11':
   env = Environment(ENV = os.environ, variables = variables, TARGET_ARCH=env_arch, MSVC_VERSION='11.0')
 elif env['TOOL'] == 'vc14.2':
   env = Environment(ENV = os.environ, variables = variables, TARGET_ARCH=env_arch, MSVC_VERSION='14.2')
 elif env['TOOL'] == 'intel':
     Tool('intelc')(env)
+
+python_include = ("-I/run/media/lucas/2tb/miniforge3/envs/olex/include/python3.8 -I/run/media/lucas/2tb/miniforge3/"
+                    "envs/olex/include/python3.8").split()
+python_libs = subprocess.check_output(['python3-config', '--ldflags']).decode().strip().replace("-L","").split()
 env.Append(CCFLAGS = ['-D_UNICODE', '-DUNICODE'])
-env.Append(CPPPATH = ['sdl', 'glib', 'gxlib', 
-                      'repository', 'xlib'])
-out_dir = 'build/scons/' 
+env.Append(CPPPATH = ['sdl', 'glib', 'gxlib',
+                      'repository', 'xlib', python_include])
+env.Append(LINKFLAGS=['-lstdc++'])
+env.Append(CCFLAGS=['-Wall', '-Wextra', '-std=c++17'])
+env['CXX'] = 'clang++'
+out_dir = 'build/scons/'
 if sys.platform[:3] == 'win':
   out_dir += 'msvc-' + env['MSVS_VERSION'] + '/'
 else:
   out_dir += env['TOOL'] + '/'
 if profiling:
   out_dir += 'profiling'
-  
+
 if debug:
   out_dir += 'debug'
 else:
@@ -108,6 +118,8 @@ out_dir += '-' + architecture
 out_dir += '/py' + sys.version[:3]
 if sse:
   out_dir += '-' + sse
+# if env['TOOL']=="clang":
+out_dir += "-clang"
 out_dir += '/'
 print('Building location: ' + out_dir)
 ################################################################################################
@@ -171,7 +183,7 @@ np_repository = Split("""./repository/filesystem.cpp   ./repository/shellutil.cp
                          ./repository/hkl_util.cpp
                          """)
 py_repository = Split("""./repository/pyext.cpp
-                         ./repository/py_core.cpp ./repository/updateapi.cpp 
+                         ./repository/py_core.cpp ./repository/updateapi.cpp
                          ./repository/patchapi.cpp ./repository/hkl_py.cpp""")
 
 olex2c_win = Split("""./repository/unzip.cpp ./repository/winzipfs.cpp""")
@@ -188,7 +200,7 @@ def fileListToStringList(src_dir, file_list):
   for file in file_list:
     str_list.append(src_dir + '/' + file.name)
   return str_list
-    
+
 item_index=0
 for file in gxlib:
   if 'wglscene.cpp' in file.name:
@@ -247,13 +259,13 @@ if sys.platform[:3] == 'win':
     cc_flags = ['/EHsc', '/O2', '/Ob2', '/Oi', '/MD', '/bigobj', '/fp:fast', '/GF']
     if sse:
       cc_flags.append( '/arch:'+sse)
-    env.Append(CCFLAGS = cc_flags) 
+    env.Append(CCFLAGS = cc_flags)
     #env.Append(LINKFLAGS=['/LTCG'])
   else:
     cc_flags = ['/EHsc', '/RTC1', '-D_DUBUG', '/Od', '/MDd', '/bigobj', '/fp:fast']
     if architecture == '64bit':  cc_flags.append('/Zi')
     else:  cc_flags.append('/ZI')
-    env.Append(CCFLAGS = cc_flags) 
+    env.Append(CCFLAGS = cc_flags)
     env.Append(LINKFLAGS=['/DEBUG', '/ASSEMBLYDEBUG', '/NODEFAULTLIB:msvcrt'])
   env.Append(CPPPATH=[pyFolder+'include'])
   env.Append(CCFLAGS = ['-D_PYTHON'])
@@ -265,21 +277,21 @@ if sys.platform[:3] == 'win':
     env.Append(LINKFLAGS=['/MACHINE:X86'])
     env['TARGET_ARCH'] = 'x86'
   # generic libs
-  env.Append(LIBS = Split(""" mapi32 glu32 user32 opengl32 gdi32 ole32 
+  env.Append(LIBS = Split(""" mapi32 glu32 user32 opengl32 gdi32 ole32
                              advapi32 comdlg32 comctl32 shell32 rpcrt4 oleaut32
-                             kernel32 wsock32 Iphlpapi winspool"""))
-  env.Append(LIBPATH = [pyFolder+'libs'])
+                             kernel32 wsock32 Iphlpapi winspool fontconfig dl"""))
+  env.Append(LIBPATH = [pyFolder+'libs', "/usr/include", "/usr/include/fontconfig"])
 else:
   if env['TOOL'] != 'intel':
-    env.Append(CCFLAGS = ['-exceptions']) 
+    env.Append(CCFLAGS = ['-fexceptions'])
   if debug:
-    env.Append(CCFLAGS = ['-g']) 
+    env.Append(CCFLAGS = ['-g'])
   else:
-    env.Append(CCFLAGS = ['-O3']) 
+    env.Append(CCFLAGS = ['-O3'])
   if profiling:
-    env.Append(CCFLAGS = ['-pg']) 
+    env.Append(CCFLAGS = ['-pg'])
     env.Append(LINKFLAGS=['-pg'])
-  try: 
+  try:
     if sys.platform[:6] == 'darwin':
       env.Append(CCFLAGS = '-D__MAC__')
       env.ParseConfig("wx-config --cxxflags --libs std gl")
@@ -287,29 +299,33 @@ else:
       env.Append(LINKFLAGS=['-mmacosx-version-min=10.5'])
       env.Append(FRAMEWORKS=['OpenGL', 'AGL'])
     else:
-      env.ParseConfig("wx-config --cxxflags --libs std gl")
+      env.ParseConfig("wx-config --version=3.0 --cxxflags --libs std gl")
       env.Append(LIBS=['libGL', 'libGLU'])
-#!!!
+
+
+
     tests_env = env.Clone()
     env.Append(CCFLAGS = ['-D__WXWIDGETS__'])
     unirun_env = env.Clone()
     env.Append(CCFLAGS = ['-D_PYTHON'])
-    env.ParseConfig("python-config --includes")
-    env.ParseConfig("python-config --libs")
+    env.ParseConfig("python3-config --includes")
+    env.ParseConfig("python3-config --libs")
+    env.ParseConfig("python3-config --ldflags --embed")
   except:
     print('Please make sure that wxWidgets and Python config scripts are available')
     Exit(1)
-    
+
 #sdl
 sdl_files = fileListToStringList('sdl', sdl) + fileListToStringList('sdl/smart', sdl_smart) +\
   fileListToStringList('sdl/exparse', sdl_exp) + fileListToStringList('sdl/math', sdl_math)
 sdl_files = processFileNameList(sdl_files, env, out_dir + 'sdl')
 env.StaticLibrary(out_dir + 'lib/sdl', sdl_files)
-             
+
 generic_files_list = fileListToStringList('xlib', xlib) + \
                 fileListToStringList('xlib/macro', xlib_macro) + \
                 fileListToStringList('xlib/henke', xlib_henke) + \
                 fileListToStringList('xlib/absorpc', xlib_absorpc)
+generic_files_list.append('./repository/refinement_listener.cpp')
 generic_files = processFileNameList(generic_files_list, env, out_dir+'generic')
 
 if sys.platform[:3] == 'win':
@@ -322,15 +338,15 @@ if sys.platform[:3] == 'win':
     wx_env.Append(LIBPATH = [wxFolder+'lib/vc_lib'])
   wx_env.Append(CCFLAGS = ['-D__WXWIDGETS__'])
   if not debug:
-    wx_libs = """wxexpat wxjpeg wxpng wxtiff wxzlib 
-                 wxbase$$u wxbase$$u_net wxmsw$$u_gl   
-                 wxmsw$$u_html wxmsw$$u_core 
+    wx_libs = """wxexpat wxjpeg wxpng wxtiff wxzlib
+                 wxbase$$u wxbase$$u_net wxmsw$$u_gl
+                 wxmsw$$u_html wxmsw$$u_core
                  wxmsw$$u_adv wxregexu"""
     wx_env.Append(CPPPATH=[wxFolder+'include', wxFolder+'lib/vc_lib/mswu'])
   else:
-    wx_libs = """wxexpat wxjpeg wxpng wxtiff wxzlib 
-                 wxbase$$ud wxbase$$ud_net wxmsw$$ud_gl   
-                 wxmsw$$ud_richtext wxmsw$$ud_html wxmsw$$ud_core 
+    wx_libs = """wxexpat wxjpeg wxpng wxtiff wxzlib
+                 wxbase$$ud wxbase$$ud_net wxmsw$$ud_gl
+                 wxmsw$$ud_richtext wxmsw$$ud_html wxmsw$$ud_core
                  wxmsw$$ud_adv wxregexud"""
     wx_env.Append(CPPPATH=[wxFolder+'include', wxFolder+'lib/vc_lib/mswud'])
   wx_env.Append(LIBS = Split(wx_libs.replace('$$', wxVersion)))
@@ -347,7 +363,8 @@ olex2_files = fileListToStringList('glib', glib) + \
               fileListToStringList('olex/ctrls', olex2_ctrls) + \
               fileListToStringList('olex/nui', olex2_nui) + \
               np_repository + py_repository
-olex2_files = processFileNameList(olex2_files, olex2_env, out_dir+'olex')  
+
+olex2_files = processFileNameList(olex2_files, olex2_env, out_dir+'olex')
 #link in the res file...
 if sys.platform[:3] == 'win':
   res_file = out_dir + 'olex/app.res'
@@ -377,7 +394,7 @@ if sys.platform[:3] == 'win':
   tests_env.Append(LINKFLAGS=['/MANIFEST', '/PDB:' + out_dir + 'exe/tests.pdb'])
 tests_files = processFileNameList(tests_files, tests_env, out_dir+'tests')
 tests_env.Program(out_dir+'exe/tests', tests_files)
-
+env.Append(LINKFLAGS=['-lfontconfig', "-lfreetype"])
 try:
   import _imaging
 except:

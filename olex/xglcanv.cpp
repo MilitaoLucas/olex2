@@ -42,10 +42,11 @@ TGlCanvas::TGlCanvas(TMainForm *parent, int* gl_attr, wxWindowID id,
   Bind(wxEVT_MOUSE_CAPTURE_CHANGED, &TGlCanvas::OnMouseCaptureChange, this);
   Bind(wxEVT_MOUSEWHEEL, &TGlCanvas::OnMouseWheel, this);
   Bind(wxEVT_LEFT_DCLICK, &TGlCanvas::OnMouseDblClick, this);
-
+//  Bind(wxEVT_SHOW, &TGlCanvas::IsShownOnScreen, this);
   Bind(wxEVT_KEY_UP, &TGlCanvas::OnKeyUp, this);
   Bind(wxEVT_CHAR, &TGlCanvas::OnChar, this);
   Bind(wxEVT_KEY_DOWN, &TGlCanvas::OnKeyDown, this);
+  //Bind(wxEVT_SWAP_BUFFERS, &TGlCanvas::SwapBuffers, this);
   }
 //..............................................................................
 TGlCanvas::~TGlCanvas() {
@@ -91,6 +92,9 @@ void TGlCanvas::Render() {
   Context->SetCurrent(*this);
 #endif
   FXApp->Draw();
+}
+bool TGlCanvas::IsShownOnScreen(){
+    return true;
 }
 //..............................................................................
 void TGlCanvas::OnPaint(wxPaintEvent& event)  {

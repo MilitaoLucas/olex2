@@ -27,10 +27,10 @@ private:
   void OnKeyDown(wxKeyEvent& event);
   void OnChar(wxKeyEvent& event);
 
-  int FMX, FMY; // mouse coordinates to process clicks
+  int FMX{}, FMY{}; // mouse coordinates to process clicks
   short MouseButton;
   class TMainForm *FParent;
-  wxGLContext* Context;
+  wxGLContext* Context{};
   short EncodeEvent(const wxMouseState &evt, bool update_button=true);
 public:
   TGlCanvas(TMainForm *parent, int* gl_attr, const wxWindowID id = -1,
@@ -46,6 +46,11 @@ public:
   TGXApp *GetXApp() { return FXApp; }
 
   void Render();
+
+  bool IsShownOnScreen();
+
+  // static bool SwapBuffers();
+
   /* If default is true - NULL is returned,
   else if stereo is true - Olex2 will try to initialise stereo buffers
   */
