@@ -4,9 +4,7 @@
 
 namespace olex2 {
 
-  RefinementListener::RefinementListener()
-    : valid(false)
-  {
+  RefinementListener::RefinementListener() {
     IOlex2Processor* ip = IOlex2Processor::GetInstance();
     if (ip == 0) {
       return;
@@ -19,9 +17,7 @@ namespace olex2 {
       cmd = "StrDir()\nFileName()";
       if (ip->processFunction(cmd, EmptyString(), true)) {
         TStrList x(cmd, '\n');
-        fin_fn = TEFile::AddPathDelimeterI(x[0])
-          << TEFile::TEFile::AddPathDelimeter("temp")
-          << x[1].Replace(' ', EmptyString()) << ".fin";
+        fin_fn = TEFile::JoinPath(x) << ".fin";
       }
     }
   }
@@ -32,14 +28,25 @@ namespace olex2 {
   }
 
   bool RefinementListener::OnProgress(size_t max, size_t pos) {
-    if ((pos % 100) == 0) {
+    /* this block is only called form the thread in which the refinement has
+    been started    */
+    if (max == ~0 && pos == ~0) {
+      volatile olx_scope_cs cs(get_critical_section());
       RefinementListener*& i = GetInstance();
       if (i == 0) {
         i = new RefinementListener();
       }
+      // TEFile::Exists creates a copy of a string it is not thread-safe!
       if (!i->fin_fn.IsEmpty() && TEFile::Exists(i->fin_fn)) {
         DoBreak();
+        TEFile::DelFile(i->fin_fn);
       }
+      TBasicApp::GetInstance().Update();
+      //IOlex2Processor* ip = IOlex2Processor::GetInstance();
+      //if (ip != 0) {
+        //OLX_DISABLE_LOGGING();
+        //ip->processMacro("refresh");
+      //}
     }
     return Continue();
   }

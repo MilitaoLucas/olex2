@@ -610,12 +610,11 @@ void TXApp::FindRings(const olxstr& Condition, TTypeList<TSAtomPList>& rings) {
   else {
     RingContentFromStr(Condition, ring);
   }
-  if (rings.IsEmpty()) {
-    for (size_t i = 0; i < XFile().GetLattice().FragmentCount(); i++) {
-      XFile().GetLattice().GetFragment(i).FindRings(ring, rings);
-    }
-  }
 
+  for (size_t i = 0; i < XFile().GetLattice().FragmentCount(); i++) {
+    XFile().GetLattice().GetFragment(i).FindRings(ring, rings);
+  }
+  
   for (size_t i = 0; i < rings.Count(); i++) {
     if (rings.IsNull(i)) {
       continue;
@@ -996,8 +995,9 @@ void TXApp::SetAtomUiso(TSAtom& sa, double val) {
         sa.CAtom().SetUisoScale(olx_abs(val));
         sa.CAtom().SetUiso(olx_abs(val) * sa.Node(ni).CAtom().GetUiso());
       }
-      else
+      else {
         throw TInvalidArgumentException(__OlxSourceInfo, "U owner");
+      }
     }
     else {
       if (val > 1 && size_t(val / 10) >= rm.Vars.VarCount()) {
