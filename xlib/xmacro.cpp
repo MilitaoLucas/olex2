@@ -199,7 +199,8 @@ void XLibMacros::Export(TLibrary& lib)  {
   xlib_InitMacro(CifExtract,
     "i-a custom CIF with items to extract, like 'Basedir()/etc/CIF/extract.cif'"
     "; by default [metacif] the 'Basedir()/etc/CIF/customisation.xld'#"
-    "cif_customisation#export_metacif item is used as the extract template",
+    "cif_customisation#export_metacif item is used as the extract template&;"
+    "-force-force to overwrite existing files [false]",
     fpNone|fpOne|fpTwo|psFileLoaded,
     "Extract a list of items from one cif to another. If no argument is given "
     "the command creates, if does not exist, 'StrDir()/FileName().metacif' "
@@ -406,7 +407,8 @@ void XLibMacros::Export(TLibrary& lib)  {
   xlib_InitMacro(CalcMass, EmptyString(), fpNone|fpOne,
     "Calculates Mass spectrum of current structure or for provided formula");
   xlib_InitMacro(Omit,
-    "u-puts the omitted reflection back (only for OMIT lines)",
+    "u-puts the omitted reflection back (only for OMIT lines)&;"
+    "a-in conjunction removes OMIT for all equivalent reflections",
     fpOne|fpTwo|fpThree|psCheckFileTypeIns,
     "Removes any particular reflection from the refinement list. If a single "
     "number is provided, all reflections with delta(F^2)/esd greater than "
@@ -810,6 +812,10 @@ void XLibMacros::Export(TLibrary& lib)  {
     EmptyString(),
     fpNone | psFileLoaded,
     "Prints various ADP information");
+  xlib_InitMacro(Wigl,
+    EmptyString(),
+    fpNone | fpOne | fpTwo | psFileLoaded,
+    "'Shakes' the structure as desribed in ShelXl manual");
   //_____________________________________________________________________________
 
   xlib_InitFunc(FileName, fpNone|fpOne,
@@ -4088,15 +4094,17 @@ void XLibMacros::funFileExt(const TStrObjList &Params, TMacroData &E)  {
   }
 }
 //.............................................................................
-void XLibMacros::funFilePath(const TStrObjList &Params, TMacroData &E)  {
+void XLibMacros::funFilePath(const TStrObjList& Params, TMacroData& E) {
   olxstr Tmp;
-  if( !Params.IsEmpty() )
+  if (!Params.IsEmpty())
     Tmp = TEFile::ExtractFilePath(Params[0]);
-  else  {
-    if( TXApp::GetInstance().XFile().HasLastLoader() )
+  else {
+    if (TXApp::GetInstance().XFile().HasLastLoader()) {
       Tmp = TEFile::ExtractFilePath(TXApp::GetInstance().XFile().GetFileName());
-    else
+    }
+    else {
       Tmp = NoneString();
+    }
   }
   // see notes in funBaseDir
   TEFile::TrimPathDelimeterI(Tmp);
@@ -5139,6 +5147,21 @@ void CifMerge_UpdateAtomLoop(TCif &Cif) {
   }
 }
 
+//thanks to Berthold Stoger for sharing
+int32_t ShelXl_checksum(const olxstr &text) {
+  int32_t sum = 0;
+  for (size_t i = 0; i < text.Length(); i++) {
+    if (text.CharAt(i) > ' ') {
+      sum += text.CharAt(i);
+    }
+  }
+  sum %= 714025;
+  sum = sum * 1366 + 150889;
+  sum %= 714025;
+  sum %= 100000;
+  return sum;
+}
+
 void CifMerge_EmbeddData(TCif &Cif, bool insert_res, bool insert_hkl,
   bool insert_fab, bool hkl_fcf_format)
 {
@@ -5620,13 +5643,21 @@ void XLibMacros::macCifMerge(TStrObjList &Cmds, const TParamList &Options,
       Cif->RenameCurrentBlock(new_dn);
       //file_name = TEFile::ExtractFilePath(file_name) + new_dn + ".cif";
       ICifEntry *res_e = Cif->FindEntry("_shelx_res_file");
+      bool update_checksum = false;
       if (res_e == 0) {
         res_e = Cif->FindEntry("_iucr_refine_instructions_details");
+      }
+      else {
+        update_checksum = true;
       }
       if (res_e != 0) {
         cetStringList* res = dynamic_cast<cetStringList*>(res_e);
         if (res != 0) {
           UpdateHklSrc(res->lines, new_dn);
+        }
+        if (update_checksum) {
+          int32_t cs = ShelXl_checksum(res->lines.Text(EmptyString()));
+          Cif->SetParam("_shelx_res_checksum", olxstr(cs), false);
         }
       }
     }
@@ -5638,11 +5669,19 @@ void XLibMacros::macCifExtract(TStrObjList &Cmds, const TParamList &Options,
   TMacroData &E)
 {
   TXApp& xapp = TXApp::GetInstance();
-  bool use_items = Options.Contains('i');
+  bool use_items = Options.Contains('i'),
+    force = Options.GetBoolOption("force");
   olxstr items_file = (use_items ? Options.FindValue("i") : EmptyString());
   olx_object_ptr<TCif> external_cif;
   TCif *cif = 0;
-  bool export_metacif = (!use_items || items_file.Equalsi("metacif"));
+  bool export_metacif = false, export_ed = false;
+  if (use_items) {
+    export_metacif = items_file.Equalsi("metacif");
+    export_ed = items_file.Equalsi("ed");
+  }
+  else {
+    export_metacif = true;
+  }
   if (Cmds.IsEmpty()) {
     if (!xapp.CheckFileType<TCif>()) {
       E.ProcessingError(__OlxSrcInfo, "invalid loaded file type");
@@ -5650,7 +5689,6 @@ void XLibMacros::macCifExtract(TStrObjList &Cmds, const TParamList &Options,
     }
     else {
       cif = &xapp.XFile().GetLastLoader<TCif>();
-      export_metacif = true;
     }
   }
   else {
@@ -5668,25 +5706,43 @@ void XLibMacros::macCifExtract(TStrObjList &Cmds, const TParamList &Options,
     dest = Cmds[1];
   }
   else {
-    dest = (xapp.XFile().GetStructureDataFolder() +
-      cif->GetDataName()) << ".metacif";
+    if (export_metacif) {
+      dest = (xapp.XFile().GetStructureDataFolder() +
+        cif->GetDataName()) << ".metacif";
+    }
+    else {
+      dest = TEFile::JoinPath(TStrList()
+        << TEFile::ExtractFilePath(xapp.XFile().GetFileName())
+        << cif->GetDataName() +".cif_od");
+    }
   }
-  
-  if (export_metacif) {
-    olxstr CifCustomisationFN = xapp.GetCifTemplatesDir() +
-      "customisation.xlt";
+  if (TEFile::Exists(dest)) {
+    if (!force) {
+      TBasicApp::NewLogEntry(logInfo) << "CifExtract: skipping extraction of "
+        "the existing file " << (olxstr().quote() << dest);
+      return;
+    }
+    else {
+      TBasicApp::NewLogEntry(logWarning) << "CifExtract: overwriting "
+        << (olxstr().quote() << dest);
+    }
+  }
+
+  if (export_metacif || export_ed) {
     TTypeList<Wildcard> to_extract, to_skip;
+      olxstr CifCustomisationFN = xapp.GetCifTemplatesDir() +
+        (export_metacif ? "customisation.xlt" : "cif_od.xlt");
     if (TEFile::Exists(CifCustomisationFN)) {
       try {
         TDataFile df;
         if (!df.LoadFromXLFile(CifCustomisationFN)) {
-          E.ProcessingError(__OlxSrcInfo,
-            "falied to load CIF customisation file");
+          E.ProcessingError(__OlxSrcInfo, "falied to load ") << CifCustomisationFN;
           return;
         }
-        df.Include(NULL);
-        TDataItem* di = df.Root().GetItemByName(
-          "cif_customisation").FindItem("export_metacif");
+        df.Include(0);
+        TDataItem* di = export_metacif ? df.Root().GetItemByName(
+          "cif_customisation").FindItem("export_metacif")
+          :  &df.Root().GetItemByName("cif_od");
         if (di == 0) {
           E.ProcessingError(__OlxSrcInfo, "the metacif definition is missing");
         }
@@ -5709,7 +5765,7 @@ void XLibMacros::macCifExtract(TStrObjList &Cmds, const TParamList &Options,
     }
     try {
       TCif mcf;
-      mcf.SetCurrentBlock(cif->GetDataName(), true);
+      mcf.SetCurrentBlock(export_ed ? olxstr("xcalibur") : cif->GetDataName(), true);
       const CifBlock &cb = cif->GetBlock(cif->GetBlockIndex());
       for (size_t i = 0; i < cb.params.Count(); i++) {
         bool skip = false;
@@ -5772,8 +5828,9 @@ void XLibMacros::macCifExtract(TStrObjList &Cmds, const TParamList &Options,
     for (size_t i = 0; i < items.ParamCount(); i++) {
       ICifEntry* CifData =
         cif->FindParam<cif_dp::ICifEntry>(items.ParamName(i));
-      if (CifData != NULL)
+      if (CifData != 0) {
         out.Add(CifData->Replicate());
+      }
     }
     TStrList content;
     TUtf8File::WriteLines(Cmds[Cmds.Count() == 1 ? 0 : 1],
@@ -7144,7 +7201,7 @@ void XLibMacros::macOmit(TStrObjList &Cmds, const TParamList &Options,
   if (!processed) {
     if (Options.GetBoolOption('u')) {
       if (Cmds.Count() == 3) {
-        rm.DelOMIT(Cmds);
+        rm.DelOMIT(Cmds, Options.GetBoolOption('a'));
       }
       else {
         Error.ProcessingError(__OlxSrcInfo, "3 integers are expected");
@@ -9939,6 +9996,10 @@ void XLibMacros::macExport(TStrObjList& Cmds, const TParamList& Options,
   cif_dp::cetTable* hklLoop = C.FindLoop("_diffrn_refln");
   if (hklLoop == 0) {
     hklLoop = C.FindLoop("_refln");
+    // check if not the ED loop!
+    if (hklLoop != 0 && hklLoop->ColIndex("_refln_diffraction_start_angle") != -1) {
+      hklLoop = 0;
+    }
   }
   if (hklLoop == 0) {
     cif_dp::cetStringList* ci = dynamic_cast<cif_dp::cetStringList*>(
@@ -10023,10 +10084,10 @@ void XLibMacros::macExport(TStrObjList& Cmds, const TParamList& Options,
   }
   // extract SQUEEZE info, if any
   {
-    cif_dp::cetTable *sqf = C.FindLoop("_smtbx_masks_void");
+    cif_dp::cetTable* sqf = C.FindLoop("_smtbx_masks_void");
     TPtrList<cif_dp::ICifEntry> details;
     if (sqf != 0) {
-      cif_dp::ICifEntry *e = C.FindEntry("_smtbx_masks_special_details");
+      cif_dp::ICifEntry* e = C.FindEntry("_smtbx_masks_special_details");
       if (e != 0) {
         details.Add(e);
       }
@@ -10034,7 +10095,7 @@ void XLibMacros::macExport(TStrObjList& Cmds, const TParamList& Options,
     else {
       sqf = C.FindLoop("_platon_squeeze_void");
       if (sqf != 0) {
-        cif_dp::ICifEntry *e = C.FindEntry("_platon_squeeze_details");
+        cif_dp::ICifEntry* e = C.FindEntry("_platon_squeeze_details");
         if (e != 0) {
           details.Add(e);
         }
@@ -10052,6 +10113,19 @@ void XLibMacros::macExport(TStrObjList& Cmds, const TParamList& Options,
         cf.SetParam(*details[i]);
       }
       cf.SaveToFile(TEFile::ChangeFileExt(hkl_name, "sqf"));
+    }
+  }
+  // deal with ED data  
+  {
+    cif_dp::cetTable* dyn_f = C.FindLoop("_diffrn_frame");
+    if (dyn_f != 0) {
+      cif_dp::cetTable* dyn_r = C.FindLoop("_refln");
+      if (dyn_r != 0 && dyn_r->ColIndex("_refln_diffraction_start_angle") != -1) {
+        olex2::IOlex2Processor* op = olex2::IOlex2Processor::GetInstance();
+        if (op != 0) {
+          op->processMacro("CifExtract -i=ed");
+        }
+      }
     }
   }
   // check if the res file is there
@@ -10087,7 +10161,7 @@ void XLibMacros::macExport(TStrObjList& Cmds, const TParamList& Options,
       }
       olex2::IOlex2Processor *op = olex2::IOlex2Processor::GetInstance();
       if (op != 0) {
-        op->processMacro("CifExtract");
+        op->processMacro("CifExtract -i=metacif");
       }
     }
   }
@@ -12586,5 +12660,42 @@ void XLibMacros::macADPInfo(TStrObjList& Cmds, const TParamList& Options,
     app.NewLogEntry() << "Rotation matrix:";
     app.NewLogEntry() << strof(rm);
   }
+}
+//..............................................................................
+void XLibMacros::macWigl(TStrObjList& Cmds, const TParamList& Options,
+  TMacroData& E)
+{
+  double del = 0.2, dU = 0.2;
+  if (Cmds.Count() > 0) {
+    del = Cmds[0].ToDouble();
+  }
+  if (Cmds.Count() > 1) {
+    dU = Cmds[1].ToDouble();
+  }
+  srand(TETime::msNow());
+  TXApp& app = TXApp::GetInstance();
+  TAsymmUnit& au = app.XFile().GetAsymmUnit();
+  for (size_t i = 0; i < au.AtomCount(); i++) {
+    TCAtom& a = au.GetAtom(i);
+    if (a.GetDegeneracy() != 1 || a.GetAfix() > 0) {
+      continue;
+    }
+    vec3d cc = au.Orthogonalise(a.ccrd());
+    for (int ci = 0; ci < 3; ci++) {
+      double shift =  (double)rand() * del / (RAND_MAX) - del;
+      cc[ci] += shift;
+    }
+    a.ccrd() = au.Fractionalise(cc);
+    if (a.GetEllipsoid() != 0) {
+      TEllipsoid& r = *a.GetEllipsoid();
+      evecd q = r.GetQuad();
+      for (int qi = 0; qi < 3; qi++) {
+        double shift = 0.5 + (double)rand() * dU / (2*RAND_MAX);
+        int idx = TEllipsoid::linear_to_shelx(qi);
+        r.SetQuad(idx, r.GetQuad(idx) * shift);
+      }
+    }
+  }
+  app.XFile().EndUpdate();
 }
 //..............................................................................

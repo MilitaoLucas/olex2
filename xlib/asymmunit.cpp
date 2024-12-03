@@ -929,6 +929,16 @@ void TAsymmUnit::TLabelChecker::SetLabel(TCAtom &a, const olxstr& label,
   labels.Add(label.ToLowerCase(), a.GetId(), true);
 }
 //..............................................................................
+bool TAsymmUnit::TLabelChecker::Exists(const olxstr& label) const {
+  olxstr lcl = label.ToLowerCase();
+  for (size_t i = 0; i < r_labels.Count(); i++) {
+    if (r_labels.GetValue(i).HasKey(lcl)) {
+      return true;
+    }
+  }
+  return false;
+}
+//..............................................................................
 //..............................................................................
 //..............................................................................
 double TAsymmUnit::CountElementOccupancy(const olxstr& Symbol) const {
@@ -1734,9 +1744,9 @@ void TAsymmUnit::LibNewAtom(const TStrObjList& Params, TMacroData& E) {
   else {
     ca.SetLabel(Params[0]);
   }
-  ca.SetOccu(1. / Lattice->GetUnitCell().GetPositionMultiplicity(crd));
-  GetRefMod()->Vars.SetParam(ca, catom_var_name_Sof,
-    1. / Lattice->GetUnitCell().GetPositionMultiplicity(crd));
+  double occu = 1. / Lattice->GetUnitCell().GetPositionMultiplicity(crd);
+  ca.SetOccu(occu);
+  GetRefMod()->Vars.SetParam(ca, catom_var_name_Sof, occu);
   GetRefMod()->Vars.FixParam(ca, catom_var_name_Sof);
   GetRefMod()->Vars.SetParam(ca, catom_var_name_Uiso, 0.5);
   for (short i = 0; i < 3; i++) {

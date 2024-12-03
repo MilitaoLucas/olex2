@@ -521,6 +521,9 @@ public:
   void SetXGrowLinesVisible(bool v);
   bool GetXGrowLinesVisible() const { return FXGrowLinesVisible; }
   void LabelGrowBonds();
+  const TTypeListExt<TXGrowLine, AGDrawObject>& GetGrowLines() const {
+    return XGrowLines;
+  }
   short GetGrowMode() const { return FGrowMode; }
   void SetGrowMode(short v, const IStrList& atoms);
   //
@@ -565,7 +568,7 @@ public:
   void CopySelection() const;
   void PasteSelection();
   TUndoData* Name(const olxstr& From, const olxstr& To,
-    bool ClearSelection, bool NameResi = false);
+    bool ClearSelection, bool NameResi = false, bool DoNotSteal=false);
   TUndoData* Name(TXAtom& Atom, const olxstr& Name);
   TUndoData* ChangeSuffix(const TXAtomPList& xatoms, const olxstr& To);
   // makes sure that residues have the same labels as the reference atoms

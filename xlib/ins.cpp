@@ -222,7 +222,7 @@ void TIns::LoadFromStrings(const TStrList& FileContent) {
       }
       else if (Toks[0].Equalsi("END")) { //reset RESI to default
         // this will help with recognising ins after end which to be ignored
-        Ins.Add(Toks[0]);
+        Ins.Add(Toks[0].ToUpperCase());
         cx.End = true;
         cx.Resi = &GetAsymmUnit().GetResidue(0);
         cx.AfixGroups.Clear();
@@ -354,6 +354,9 @@ void TIns::ParseRestraints(RefinementModel& rm,
   bool preserve = DoPreserveInvalid();
   size_t rp = 0;
   for (size_t i = 0; i < SL.Count(); i++) {
+    if (SL[i].Equals("END")) {
+      break;
+    }
     TStrList Toks(SL[i], ' ');
     try {
       TSimpleRestraint* sr = 0;
@@ -604,7 +607,9 @@ void TIns::_ProcessSame(ParseContext& cx, const TIndexList *index)  {
       }
     }
   }
-  sgl.Analyse();
+  if (!TXApp::DoUseExplicitSAME() && !TXApp::DoUseExternalExplicitSAME()) {
+    sgl.Analyse();
+  }
   sgl.Sort();
 }
 //..............................................................................
@@ -1229,17 +1234,27 @@ bool TIns::ParseIns(const TStrList& ins, const TStrList& Toks,
   else if (Toks[0].Equalsi("REM")) {
     if (Toks.Count() > 1) {
       if (Toks[1].Equalsi("R1") && Toks.Count() > 4 && Toks[3].IsNumber()) {
-        if (cx.ins != NULL) {
+        if (cx.ins != 0) {
           cx.ins->R1 = Toks[3].ToDouble();
         }
       }
       else if (Toks[1].Equalsi("olex2.stop_parsing")) {
         while (i < ins.Count()) {
-          if (cx.ins != NULL) {
+          if (cx.ins != 0) {
             cx.ins->Skipped.Add(ins[i]);
           }
           if (ins[i].StartsFromi("REM") &&
             ins[i].IndexOf("olex2.resume_parsing") != InvalidIndex)
+          {
+            break;
+          }
+          i++;
+        }
+      }
+      else if (Toks[1].Equalsi("olex2.generated_start")) {
+        while (i < ins.Count()) {
+          if (ins[i].StartsFromi("REM") &&
+            ins[i].IndexOf("olex2.generated_end") != InvalidIndex)
           {
             break;
           }
@@ -1770,8 +1785,10 @@ void TIns::_SaveAtom(RefinementModel& rm, TCAtom& a, int& part, int& afix,
               SaveSAMEReferences(sl, sg);
               saved_headers.Add(sg.GetId());
             }
-            SaveSAMEReferences(sl, *sgs[0]);
-            saved_headers.Add(sgs[0]->GetId());
+            for (size_t sgi = 0; sgi < sgs.Count(); sgi++) {
+              SaveSAMEReferences(sl, *sgs[sgi]);
+              saved_headers.Add(sgs[sgi]->GetId());
+            }
           }
           else {
             SaveSAMEReferences(sl, sg);
@@ -1919,11 +1936,8 @@ void TIns::SaveToStrings(TStrList& SL) {
     }
   }
   ValidateRestraintsAtomNames(GetRM());
-  GetRM().rSAME.BeginAUSort();
-  GetRM().rSAME.PrepareSave();
-  GetRM().rSAME.EndAUSort();
   UpdateParams();
-  bool check_same = !TXApp::DoUseExternalExplicitSAME();
+  bool check_same = !(TXApp::DoUseExternalExplicitSAME() || TXApp::DoUseExplicitSAME());
   TStrList sfac = SaveHeader(SL, false);
   SaveExtras(SL, 0, 0, GetRM());
   SL.Add(EmptyString());
@@ -1966,14 +1980,29 @@ void TIns::SaveToStrings(TStrList& SL) {
   if (afix != 0) {
     SL.Add("AFIX 0");
   }
+  if (TXApp::DoUseExplicitSAME() && GetRM().rSAME.Count() > 0) {
+    TStrList same = GetRM().rSAME.GenerateList();
+    if (!same.IsEmpty()) {
+      SL.Add();
+      SL.Add("REM olex2.generated_start AUTO-GENERATED - DO NOT MODIFY");
+      for (size_t li = 0; li < same.Count(); li++) {
+        HyphenateIns(same[li], SL);
+      }
+      SL.Add("REM olex2.generated_end");
+      SL.Add();
+    }
+  }
+
   SL.Add("HKLF ") << RefMod.GetHKLFStr();
   SL.Add(EmptyString());
   SL.AddAll(GetFooter().obj());
   SL.Add("END");
   for (size_t i = 0; i < peaks.Count(); i++) {
     TCAtom& p = *peaks[i];
-    SL.Add(p.GetLabel()).stream(' ') << "1" <<
-      p.ccrd()[0] << p.ccrd()[1] << p.ccrd()[2] << "11" << "0.05" << p.GetQPeak();
+    SL.Add(p.GetLabel()).stream(' ') << "1"
+      << p.ccrd()[0] << p.ccrd()[1] << p.ccrd()[2]
+      <<  GetRM().Vars.GetParam(p, catom_var_name_Sof)
+      << "0.05" << p.GetQPeak();
   }
 }
 //..............................................................................
@@ -2034,13 +2063,21 @@ void TIns::_DrySaveAtom(TCAtom& a, TSizeList& indices, bool checkSame,
   }
 }
 //..............................................................................
-TSizeList::const_list_type TIns::DrySave(const TAsymmUnit& au) {
+TSizeList::const_list_type TIns::DrySave(const TAsymmUnit& au,
+  bool expandSAME)
+{
+  if (!TXApp::DoUseExplicitSAME() && !TXApp::DoUseExternalExplicitSAME()) {
+    if (expandSAME) {
+      au.GetRefMod()->rSAME.BeginAUSort();
+    }
+    au.GetRefMod()->rSAME.PrepareSave();
+    if (expandSAME) {
+      au.GetRefMod()->rSAME.EndAUSort();
+    }
+  }
   TSizeList rv(olx_reserve(au.AtomCount()));
-  au.GetRefMod()->rSAME.BeginAUSort();
-  au.GetRefMod()->rSAME.PrepareSave();
-  au.GetRefMod()->rSAME.EndAUSort();
   TEBitArray saved_flag(au.AtomCount());
-  bool check_same = !TXApp::DoUseExternalExplicitSAME();
+  bool check_same = !(TXApp::DoUseExternalExplicitSAME() || TXApp::DoUseExplicitSAME());
   for (size_t i = 0; i < au.AtomCount(); i++) {
     if (au.GetAtom(i).IsSaved()) {
       saved_flag.SetTrue(i);
@@ -2213,7 +2250,7 @@ bool TIns::SaveAtomsToStrings(RefinementModel& rm, const TCAtomPList& CAtoms,
   }
   int part = 0, afix = 0;
   double spec = 0;
-  bool check_same = !TXApp::DoUseExternalExplicitSAME();
+  bool check_same = !(TXApp::DoUseExternalExplicitSAME() || TXApp::DoUseExplicitSAME());
   SaveRestraints(SL, &CAtoms, processed, rm);
   _SaveFVar(rm, SL);
   for (size_t i = 0; i < CAtoms.Count(); i++) {
@@ -2705,19 +2742,22 @@ void TIns::SaveRestraints(TStrList& SL, const TCAtomPList* atoms,
     //if( processed != NULL )
     //  processed->equations.Add( &rm.Vars.GetEquation(i) );
   }
-  for (size_t i = 0; i < rm.rSAME.Count(); i++) {
-    rm.rSAME[i].GetAtoms().UpdateResi();
-    if (!rm.rSAME[i].GetAtoms().IsExplicit()) {
-      olxstr &l = SL.Add("SAME");
-      if (!rm.rSAME[i].GetAtoms().GetResi().IsEmpty()) {
-        l << '_' << rm.rSAME[i].GetAtoms().GetResi();
-      }
-      if (rm.DoShowRestraintDefaults() || !rm.IsDefaultRestraint(rm.rSAME[i])) {
-        l << ' ' << rm.rSAME[i].Esd12 << ' ' << rm.rSAME[i].Esd13;
-      }
-      l << ' ' << rm.rSAME[i].GetAtoms().GetExpression();
-      if (processed != 0) {
-        processed->sameList.Add(rm.rSAME[i]);
+  // save implicit SAME only if no using explicit SADI notation
+  if (!TXApp::DoUseExplicitSAME()) {
+    for (size_t i = 0; i < rm.rSAME.Count(); i++) {
+      rm.rSAME[i].GetAtoms().UpdateResi();
+      if (!rm.rSAME[i].GetAtoms().IsExplicit()) {
+        olxstr& l = SL.Add("SAME");
+        if (!rm.rSAME[i].GetAtoms().GetResi().IsEmpty()) {
+          l << '_' << rm.rSAME[i].GetAtoms().GetResi();
+        }
+        if (rm.DoShowRestraintDefaults() || !rm.IsDefaultRestraint(rm.rSAME[i])) {
+          l << ' ' << rm.rSAME[i].Esd12 << ' ' << rm.rSAME[i].Esd13;
+        }
+        l << ' ' << rm.rSAME[i].GetAtoms().GetExpression();
+        if (processed != 0) {
+          processed->sameList.Add(rm.rSAME[i]);
+        }
       }
     }
   }
@@ -2749,13 +2789,19 @@ void TIns::SaveRestraints(TStrList& SL, const TCAtomPList* atoms,
 }
 //..............................................................................
 void TIns::SaveExtras(TStrList& SL, const TCAtomPList* atoms,
-  RefinementModel::ReleasedItems* processed, RefinementModel& rm)
+  RefinementModel::ReleasedItems* processed, RefinementModel& rm,
+  bool hyphenate)
 {
   TStrList extras(rm.WriteInsExtras(atoms, false), NewLineSequence());
   if (!extras.IsEmpty()) {
     SL.Add("REM <olex2.extras>");
     for (size_t i = 0; i < extras.Count(); i++) {
-      HyphenateIns("REM ", extras[i], SL);
+      if (hyphenate) {
+        HyphenateIns("REM ", extras[i], SL);
+      }
+      else {
+        SL.Add("REM ") << extras[i];
+      }
     }
     SL.Add("REM </olex2.extras>");
   }

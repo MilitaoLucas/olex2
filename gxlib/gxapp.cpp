@@ -1202,7 +1202,7 @@ olxstr TGXApp::GetObjectInfoAt(int x, int y) const {
           TEValueD(occu, ca.GetOccuEsd()).ToString() << ')';
       }
 
-      if (ca.GetVarRef(catom_var_name_Sof) != NULL) {
+      if (ca.GetVarRef(catom_var_name_Sof) != 0) {
         if (ca.GetVarRef(catom_var_name_Sof)->relation_type == relation_None) {
           rv << ", fixed";
         }
@@ -1223,21 +1223,24 @@ olxstr TGXApp::GetObjectInfoAt(int x, int y) const {
         rv << ", free";
     }
     {
-      if (ca.GetEllipsoid() == NULL) {
+      if (ca.GetEllipsoid() == 0) {
         rv << "\nUiso: ";
-        if (ca.GetVarRef(catom_var_name_Uiso) != NULL &&
+        if (ca.GetVarRef(catom_var_name_Uiso) != 0 &&
           ca.GetVarRef(catom_var_name_Uiso)->relation_type == relation_None &&
-          ca.GetUisoOwner() == NULL)
+          ca.GetUisoOwner() == 0)
         {
           rv << olxstr::FormatFloat(3, ca.GetUiso()) << ", fixed";
         }
-        else if (ca.GetUisoOwner() != NULL)
+        else if (ca.GetUisoOwner() != 0) {
           rv << olxstr::FormatFloat(3, ca.GetUiso()) << ", riding";
-        else
+        }
+        else {
           rv << TEValueD(ca.GetUiso(), ca.GetUisoEsd()).ToString() << ", free";
+        }
       }
-      else
+      else {
         rv << "\nUeq: " << olxstr::FormatFloat(3, ca.GetEllipsoid()->GetUeq());
+      }
     }
     if (ca.GetAfix() != 0) {
       rv << "\nAFIX: " << ca.GetAfix();
@@ -1283,10 +1286,7 @@ olxstr TGXApp::GetObjectInfoAt(int x, int y) const {
     rv = olxstr::FormatFloat(3, ((TXLine*)G)->GetLength());
   }
   else if (G->Is<TXGrowLine>()) {
-    rv = ((TXGrowLine*)G)->XAtom().GetLabel();
-    rv << '-' << ((TXGrowLine*)G)->CAtom().GetLabel() << ": "
-      << olxstr::FormatFloat(3, ((TXGrowLine*)G)->Length()) << '('
-      << TSymmParser::MatrixToSymmEx(((TXGrowLine*)G)->GetTransform()) << ')';
+    rv = ((TXGrowLine*)G)->ToString();
   }
   else if (G->Is<TXGrowPoint>()) {
     rv = TSymmParser::MatrixToSymmEx(((TXGrowPoint*)G)->GetTransform());
@@ -2313,7 +2313,7 @@ TUndoData* TGXApp::Name(TXAtom& XA, const olxstr& _Name) {
 }
 //..............................................................................
 TUndoData* TGXApp::Name(const olxstr &From, const olxstr &To,
-  bool ClearSelection, bool NameResi)
+  bool ClearSelection, bool NameResi, bool DoNotSteal)
 {
   TXAtomPList Atoms;
   olx_object_ptr<TNameUndo> undo;
@@ -2332,6 +2332,11 @@ TUndoData* TGXApp::Name(const olxstr &From, const olxstr &To,
       const olxstr Tmp = XA->GetLabel();
       olxstr NL = XA->GetType().symbol;
       NL << j++;
+      if (DoNotSteal && lc.Exists(NL)) {
+        TBasicApp::NewLogEntry(logWarning)
+          << "Existing label encountered: " << NL;
+        return undo.release();
+      }
       const olxstr oldL = XA->GetLabel();
       lc.SetLabel(XA->CAtom(), NL);
       undo->AddAtom(XA->CAtom(), oldL);
@@ -2348,6 +2353,11 @@ TUndoData* TGXApp::Name(const olxstr &From, const olxstr &To,
       Atoms << XA;
       if (ClearSelection) {
         SelectAll(false);
+      }
+      if (DoNotSteal && lc.Exists(To)) {
+        TBasicApp::NewLogEntry(logWarning)
+          << "Existing label encountered: " << To;
+        return 0;
       }
       undo = dynamic_cast<TNameUndo *>(Name(*XA, To));
     }
@@ -2367,6 +2377,11 @@ TUndoData* TGXApp::Name(const olxstr &From, const olxstr &To,
           const olxstr Tmp = XA->GetLabel();
           olxstr NL = XA->GetType().symbol;
           NL << j++;
+          if (DoNotSteal && lc.Exists(NL)) {
+            TBasicApp::NewLogEntry(logWarning)
+              << "Existing label encountered: " << NL;
+            return 0;
+          }
           const olxstr oldL = XA->GetLabel();
           lc.SetLabel(XA->CAtom(), NL);
           undo->AddAtom(XA->CAtom(), oldL);
@@ -2386,6 +2401,11 @@ TUndoData* TGXApp::Name(const olxstr &From, const olxstr &To,
             const olxstr Tmp = XA->GetLabel();
             olxstr NL = elm->symbol;
             NL << Tmp.SubStringFrom(From.Length()-1);
+            if (DoNotSteal && lc.Exists(NL)) {
+              TBasicApp::NewLogEntry(logWarning)
+                << "Existing label encountered: " << NL;
+              return 0;
+            }
             bool recreate = XA->GetType() != *elm;
             const olxstr oldL = XA->GetLabel();
             lc.SetLabel(XA->CAtom(), NL);
@@ -2408,6 +2428,11 @@ TUndoData* TGXApp::Name(const olxstr &From, const olxstr &To,
             const olxstr Tmp = XA->GetLabel();
             olxstr NL = XA->GetType().symbol;
             NL << j++;
+            if (DoNotSteal && lc.Exists(NL)) {
+              TBasicApp::NewLogEntry(logWarning)
+                << "Existing label encountered: " << NL;
+              return 0;
+            }
             const olxstr oldL = XA->GetLabel();
             lc.SetLabel(XA->CAtom(), NL);
             undo->AddAtom(XA->CAtom(), oldL);
@@ -2453,6 +2478,11 @@ TUndoData* TGXApp::Name(const olxstr &From, const olxstr &To,
                 }
               }
             }
+          }
+          if (DoNotSteal && lc.Exists(NL)) {
+            TBasicApp::NewLogEntry(logWarning)
+              << "Existing label encountered: " << NL;
+            return 0;
           }
           const olxstr oldL = XA->GetLabel();
           lc.SetLabel(XA->CAtom(), NL, false);
