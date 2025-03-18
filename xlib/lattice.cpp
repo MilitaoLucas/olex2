@@ -1860,6 +1860,12 @@ size_t TLattice::_AnalyseAtomHAdd(AConstraintGenerator& cg, TSAtom& atom,
         AE.GetBase().CAtom().GetPart())
       {
         if (parts.IndexOf(AE.GetCAtom(i).GetPart()) == InvalidIndex) {
+          // check if fixed at 1
+          double a_occu = rm->Vars.GetParam(AE.GetCAtom(i), catom_var_name_Sof);
+          int vi = (int)olx_abs(a_occu / 10);
+          if (vi == 1 && olx_abs(a_occu - 10) == 1) {
+            continue;
+          }
           parts.Add(AE.GetCAtom(i).GetPart());
           occu.Add(rm->Vars.GetParam(AE.GetCAtom(i), catom_var_name_Sof));
         }
@@ -1880,24 +1886,27 @@ size_t TLattice::_AnalyseAtomHAdd(AConstraintGenerator& cg, TSAtom& atom,
         }
       }
       else if (parts[0] > 0) { // special case with just a single part
-        count += _AnalyseAtomHAdd(cg, atom, ProcessingAtoms, dry_run, 0,
-          &gen_atoms.AddNew());
-        TCAtomPList& gen = gen_atoms.GetLast();
         /* if occu is fixed, it is > 5, then we 'invert' the variable like
         21 -> -21, otherwise, just set a value of 1-occu
         */
         int vi = (int)olx_abs(occu[0] / 10);
-        double soccu;;
+        double soccu;
         if (vi < 2) {
           soccu = (vi == 0 ? 1 : 11) - olx_abs(occu[0] - vi * 10);
         }
         else {
           soccu = -occu[0];
         }
-        int spart = (parts[0] == 2 ? 1 : olx_abs(parts[0]) + 1);
-        for (size_t j = 0; j < gen.Count(); j++) {
-          gen[j]->SetPart(spart);
-          rm->Vars.SetParam(*gen[j], catom_var_name_Sof, soccu);
+        // do not generate 0-occupancy atoms
+        if (soccu != 0 && soccu != 10) {
+          count += _AnalyseAtomHAdd(cg, atom, ProcessingAtoms, dry_run, 0,
+            &gen_atoms.AddNew());
+          TCAtomPList& gen = gen_atoms.GetLast();
+          int spart = (parts[0] == 2 ? 1 : olx_abs(parts[0]) + 1);
+          for (size_t j = 0; j < gen.Count(); j++) {
+            gen[j]->SetPart(spart);
+            rm->Vars.SetParam(*gen[j], catom_var_name_Sof, soccu);
+          }
         }
       }
       cg.AnalyseMultipart(AE, gen_atoms);
@@ -2912,9 +2921,7 @@ void TLattice::LoadPlanes_(const TDataItem& item, bool rebuild_defs) {
 }
 //..............................................................................
 void TLattice::SetGrowInfo(GrowInfo* grow_info) {
-  if (_GrowInfo != 0) {
-    delete _GrowInfo;
-  }
+  olx_del_obj(_GrowInfo);
   _GrowInfo = grow_info;
 }
 //..............................................................................
@@ -2940,6 +2947,7 @@ TLattice::GrowInfo* TLattice::GetGrowInfo() const {
 //..............................................................................
 bool TLattice::ApplyGrowInfo() {
   const TUnitCell& uc = GetUnitCell();
+  TAsymmUnit& au = GetAsymmUnit();
   if (_GrowInfo == 0 || !Objects.atoms.IsEmpty() || !Matrices.IsEmpty() ||
     uc.MatrixCount() != _GrowInfo->unc_matrix_count)
   {
@@ -2949,9 +2957,8 @@ bool TLattice::ApplyGrowInfo() {
     }
     return false;
   }
-  TAsymmUnit& au = GetAsymmUnit();
   ClearMatrices();
-  olx_pdict< uint32_t, size_t> mmap;
+  olx_pdict<uint32_t, size_t> mmap;
   size_t cnt = olx_sum(_GrowInfo->info,
     FunctionAccessor::MakeConst(
       (size_t (TUIntList::*)() const) &TUIntList::Count)); // GCC!!!
@@ -2962,16 +2969,25 @@ bool TLattice::ApplyGrowInfo() {
     if (ca.IsDeleted()) {
       continue;
     }
-    const TArrayList<uint32_t>& mi = _GrowInfo->info[i];
-    for (size_t j = 0; j < mi.Count(); j++) {
-      smatd m = smatd::FromId(mi[j], uc.GetMatrix(smatd::GetContainerId(mi[j])));
-      size_t idx = mmap.Find(mi[j], InvalidIndex);
-      if (idx == InvalidIndex) {
-        Matrices.Add(new smatd(m));
-        idx = Matrices.Count() - 1;
-        mmap.Add(mi[j], idx);
+    // number of Q-peaks might grow - use the last matrices to grow new peaks
+    const TArrayList<uint32_t>& mi = _GrowInfo->info[
+      i >= _GrowInfo->info.Count() ? (_GrowInfo->info.Count()-1) : i];
+    if (mi.IsEmpty()) { // new atom? generate in the AU
+      if (!Matrices.IsEmpty()) {
+        GenerateAtom(ca, *Matrices[0]);
       }
-      GenerateAtom(ca, *Matrices[idx]);
+    }
+    else {
+      for (size_t j = 0; j < mi.Count(); j++) {
+        smatd m = smatd::FromId(mi[j], uc.GetMatrix(smatd::GetContainerId(mi[j])));
+        size_t idx = mmap.Find(mi[j], InvalidIndex);
+        if (idx == InvalidIndex) {
+          Matrices.Add(new smatd(m));
+          idx = Matrices.Count() - 1;
+          mmap.Add(mi[j], idx);
+        }
+        GenerateAtom(ca, *Matrices[idx]);
+      }
     }
   }
   delete _GrowInfo;

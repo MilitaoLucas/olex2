@@ -638,6 +638,44 @@ void TIns::__ProcessConn(ParseContext& cx) {
   Ins.Pack();
 }
 //..............................................................................
+TStrList::const_list_type TIns::ReadExtras(const TStrList& l,
+  size_t* start, size_t* count)
+{
+  TStrList extras;
+  for (size_t i = 0; i < l.Count(); i++) {
+    if (l[i].TrimWhiteChars(false, true).Equals("REM <olex2.extras>")) {
+      size_t j = i;
+      while (++j < l.Count() && l[j].StartsFrom("REM") &&
+        !l[j].TrimWhiteChars(false, true).Equals("REM </olex2.extras>"))
+      {}
+      if (j == l.Count()) {
+        return extras;
+      }
+      size_t inc = 0;
+      if (j < l.Count() && l[j].StartsFrom("REM")) {
+        inc++;
+      }
+      l.SubList(i + 1, j - i - inc, extras);
+      if (start != 0) {
+        *start = i;
+      }
+      if (count != 0) {
+        *count = j - i + inc;
+      }
+      break;
+    }
+  }
+  for (size_t i = 0; i < extras.Count(); i++) {
+    if (extras[i].Length() > 4) {
+      extras[i] = extras[i].SubStringFrom(4);
+    }
+    else {
+      extras[i].SetLength(0);
+    }
+  }
+  return extras;
+}
+//..............................................................................
 void TIns::_ReadExtras(TStrList &l, ParseContext &cx) {
   cx.Extras.Clear();
   for (size_t i = 0; i < l.Count(); i++) {
@@ -750,7 +788,17 @@ void TIns::_FinishParsing(ParseContext& cx, bool header_only) {
   }
   cx.rm.ReadInsExtras(cx.Extras);
   for (size_t i = 0; i < cx.Sump.Count(); i++) {
-    cx.rm.Vars.AddSUMP(cx.Sump[i]);
+    try {
+      cx.rm.Vars.AddSUMP(cx.Sump[i]);
+    }
+    catch (const TExceptionBase& e) {
+      TBasicApp::NewLogEntry(logWarning) << "Failed to add SUMP: "
+        << e.GetException()->GetFullMessage();
+      TBasicApp::NewLogEntry(logWarning) << "The instruction has been commented out";
+      TInsList& params = *(new TInsList());
+      params << "SUMP" << cx.Sump[i];
+      Ins.Add("REM", &params);
+    }
   }
   cx.rm.Vars.Validate(header_only);
   cx.rm.ProcessFrags();

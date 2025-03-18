@@ -954,20 +954,31 @@ olxstr TGXApp::GetSelectionInfo(bool list) const {
       }
       else if (olx_list_and(Sel, &IOlxObject::Is<TXBond>)) {
         TXBond& A = (TXBond&)Sel[0], &B = (TXBond&)Sel[1];
-        Tmp = "Angle (";
-        Tmp << macSel_GetName4a(A.A(), A.B(), B.A(), B.B()) <<
-          "): ";
-        v = olx_angle(A.A().crd(), A.B().crd(), B.A().crd(), B.B().crd());
-        Tmp << olxstr::FormatFloat(3, v) << " (" << olxstr::FormatFloat(3, 180 - v) << ')' <<
-          "\nAngle (" <<
-          macSel_GetName4a(A.A(), A.B(), B.B(), B.A()) <<
-          "): ";
-        v = olx_angle(A.A().crd(), A.B().crd(), B.A().crd(), B.B().crd());
-        Tmp << olxstr::FormatFloat(3, v) << " (" << olxstr::FormatFloat(3, 180 - v) << ')';
-        // check for adjacent bonds
-        if (!(&A.A() == &B.A() || &A.A() == &B.B() ||
-          &A.B() == &B.A() || &A.B() == &B.B()))
-        {
+        TSAtomPList sa;
+        if (&A.A() == &B.A()) {
+          sa << A.B() << B.A() << B.B();
+        }
+        else if (&A.A() == &B.B()) {
+          sa << A.B() << A.A() << B.A();
+        }
+        else if (&A.B() == &B.A()) {
+          sa << A.A() << B.A() << B.B();
+        }
+        else if (&A.B() == &B.B()) {
+          sa << A.A() << A.B() << B.A();
+        }
+        if (sa.IsEmpty()) {
+          Tmp = "Angle (";
+          Tmp << macSel_GetName4a(A.A(), A.B(), B.A(), B.B()) <<
+            "): ";
+          v = olx_angle(A.A().crd(), A.B().crd(), B.A().crd(), B.B().crd());
+          Tmp << olxstr::FormatFloat(3, v) << " (" << olxstr::FormatFloat(3, 180 - v) << ')' <<
+            "\nAngle (" <<
+            macSel_GetName4a(A.A(), A.B(), B.B(), B.A()) <<
+            "): ";
+          v = olx_angle(A.A().crd(), A.B().crd(), B.B().crd(), B.A().crd());
+          Tmp << olxstr::FormatFloat(3, v) << " (" << olxstr::FormatFloat(3, 180 - v) << ')';
+
           Tmp << "\nTorsion angle (" <<
             macSel_GetName4(A.A(), A.B(), B.B(), B.A()) <<
             "): ";
@@ -978,6 +989,15 @@ olxstr TGXApp::GetSelectionInfo(bool list) const {
             "): ";
           v = olx_dihedral_angle_signed(A.A().crd(), A.B().crd(), B.A().crd(), B.B().crd());
           Tmp << olxstr::FormatFloat(3, v) << " (" << olxstr::FormatFloat(3, 180 - v) << ')';
+        }
+        else {
+          Tmp = "Angle (";
+          Tmp << macSel_GetName3(*sa[0], *sa[1], *sa[2]) << "): ";
+          ACifValue* cv = NULL;
+          if (CheckFileType<TCif>()) {
+            cv = XFile().GetLastLoader<TCif>().GetDataManager().Match(*sa[0], *sa[1], *sa[2]);
+          }
+          Tmp << macSel_FormatValue(olx_angle(sa[0]->crd(), sa[1]->crd(), sa[2]->crd()), cv);
         }
       }
       else if (olx_list_and(Sel, &IOlxObject::Is<TXLine>)) {
@@ -6060,15 +6080,28 @@ void TGXApp::_UpdateGroupIds()  {
   }
 }
 //..............................................................................
-void TGXApp::SelectAll(bool Select)  {
-  if( !Select )  {
-    if( !SelectionCopy[0].IsEmpty() )  {
+void TGXApp::SelectAll(bool Select) {
+  if (!Select) {
+    if (!SelectionCopy[0].IsEmpty()) {
       SelectionCopy[1] = SelectionCopy[0];
       SelectionCopy[0].Clear();
     }
-    else  {
+    else {
       SelectionCopy[1].Clear();
       StoreGroup(GetSelection(), SelectionCopy[1]);
+    }
+  }
+  // if nothing selected, select an atom as otherwise labels might get selected
+  if (Select) {
+    if (GetRenderer().GetSelection().IsEmpty()) {
+      AtomIterator ai(*this);
+      while (ai.HasNext()) {
+        TXAtom& xa = ai.Next();
+        if (xa.IsVisible()) {
+          GetRenderer().Select(xa);
+          break;
+        }
+      }
     }
   }
   GetRenderer().SelectAll(Select);
