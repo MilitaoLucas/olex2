@@ -1,4 +1,6 @@
 # Olex2: Crystallography at your fingertip!
+**Unofficial fork with some specific changes so it can be compiled in my machine. Use it at your own risk. I provide no guarantees it will work! I am not affiliated with Olexsys.**
+---
 This reposityory contains the source code for the Olex2 software by Olexsys. Please refer to the 
 [documentation](https://www.olexsys.org/olex2/docs/) for 
 instructions on how to use it. It is mainly divided in 2 repositories. This repository contains the core utils necessary
