@@ -45,8 +45,8 @@ SET(all_SRCS
         ${xlibmacro_SRCS}
         ${glib_SRCS}
         ${gxlib_SRCS}
-        ${repo_SRCS})
-        ${olex2_html_SRCS})
+        ${repo_SRCS}
+        ${olex2_html_SRCS}
         ${olex2_ctrls_SRCS})
 
 INCLUDE_DIRECTORIES("${src}/alglib")

@@ -9,7 +9,7 @@
 
 #ifndef __olx_xlib_xmacro_H
 #define __olx_xlib_xmacro_H
-#include "library.h"
+#include "../sdl/library.h"
 #include "xapp.h"
 #include "symmlib.h"
 #include <stdarg.h>

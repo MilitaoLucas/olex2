@@ -1,6 +1,6 @@
 #pragma once
-#include "bapp.h"
-#include "olxth.h"
+#include "../sdl/bapp.h"
+#include "../sdl/olxth.h"
 
 namespace olex2 {
   struct RefinementListener {
@@ -13,15 +13,15 @@ namespace olex2 {
     static bool OnProgress(size_t max, size_t pos);
     static void ResetInstance() {
       RefinementListener*& i = GetInstance();
-      if (i != 0) {
+      if (i != nullptr) {
         delete i;
-        i = 0;
+        i = nullptr;
       }
     }
   private:
     RefinementListener();
     static RefinementListener*& GetInstance() {
-      static RefinementListener* i = 0;
+      static RefinementListener* i = nullptr;
       return i;
     }
     olxstr fin_fn;

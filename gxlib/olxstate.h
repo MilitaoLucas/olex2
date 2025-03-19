@@ -9,9 +9,9 @@
 
 #ifndef __olx_gxlib_states_H
 #define __olx_gxlib_states_H
-#include "estlist.h"
-#include "eset.h"
-#include "integration.h"
+#include "../sdl/estlist.h"
+#include "../sdl/eset.h"
+#include "../sdl/integration.h"
 #include "gxapp.h"
 #undef Status
 
@@ -230,7 +230,7 @@ protected:
   virtual bool OnObject_(AGDrawObject &obj) = 0;
   virtual bool OnKey_(int keyId, short shiftState)  { return false; }
   virtual bool OnDblClick_() { return false; }
-  DefPropBIsSet(Initialised)
+  DefPropBIsSet(Initialised);
 public:
   AMode(size_t id);
   virtual ~AMode();

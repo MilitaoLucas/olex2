@@ -2493,7 +2493,7 @@ public:
 #endif
     TTStrBuffer<TC, TTSString<T, TC> > rv;
     for (size_t i = start; i < end; i++) {
-      rv << sep << TTSString(accessor(olx_ref::get(l[i])));
+      rv << sep << TTSString(olx_ref::get(l[i]));
     }
     return TTSString(rv).SubStringFrom(sep.Length());
   }
@@ -2507,7 +2507,7 @@ public:
 
   template <class list_t>
   TTSString Join(const list_t &l) const {
-    return Join(l, *this);
+    return Join(l, *this, EmptyString());
   }
 
   template <class list_t, typename accessor_t>

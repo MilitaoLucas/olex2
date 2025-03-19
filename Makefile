@@ -16,7 +16,7 @@ OWNER = $(shell USER)
 GROUP = $(shell GROUP)
 #######################################
 # Files and path settings
-SVN_SERVER = 
+SVN_SERVER =
 USER_SETTINGS = usettings.dat
 START_FILE = startup
 CWD :=  $(shell pwd)
@@ -58,8 +58,8 @@ OBJ_OLEX_NUI := $(addprefix $(OBJ_DIR)olex/,$(notdir $(wildcard olex/nui/*.cpp))
 CC := gcc
 CFLAGS := -O3 -fpermissive -fexcess-precision=fast
 #-combine
-OPTS =`wx-config --cxxflags --unicode --toolkit=gtk2` `python-config --includes` -I$(SRC_DIR)sdl -I$(SRC_DIR)xlib -I$(SRC_DIR)glib -I$(SRC_DIR)gxlib -I$(SRC_DIR)repository -I$(SRC_DIR)olex -S -D__WXWIDGETS__ -D_UNICODE -DUNICODE -D_PYTHON
-LDFLAGS += `wx-config --libs gl,core,html,net,aui,adv --unicode --toolkit=gtk2` `python-config --libs --ldflags` -L$(OBJ_DIR) -rdynamic -O3 -fpermissive -ldl -lrt -lGLU -lGL -lstdc++
+OPTS =`wx-config --cxxflags --unicode --toolkit=gtk3` `python3-config --includes --ldflags` -I$(SRC_DIR)sdl -I$(SRC_DIR)xlib -I$(SRC_DIR)glib -I$(SRC_DIR)gxlib -I$(SRC_DIR)repository -I$(SRC_DIR)olex -S -D__WXWIDGETS__ -D_UNICODE -DUNICODE -D_PYTHON
+LDFLAGS += `wx-config --libs gl,core,html,net,aui,adv --unicode --toolkit=gtk3` `python3-config --libs --ldflags` -L$(OBJ_DIR) -rdynamic -O3 -fpermissive -ldl -lrt -lGLU -lGL -lstdc++ -lfontconfig -lpython3.8
 CCFLAGS += $(CFLAGS)
 ###############################################################################
 
@@ -69,7 +69,7 @@ CCFLAGS += $(CFLAGS)
 #obj: $(obj_src_files:.cpp=.s)
 #$(obj_src_files:.cpp=.s): $(OBJ_DIR)
 #	cd $(OBJ_DIR); $(CC) $(SRC_DIR)$(@:.s=.cpp) $(OPTS) $(CFLAGS)
-	
+
 # obj will create the obj directory and compile the objects
 .PHONY : all
 all :
@@ -95,13 +95,13 @@ obj_sdl: obj $(obj_sdl_files:.cpp=.s)
 
 $(obj_sdl_files:.cpp=.s):
 	$(CC) $(SRC_DIR)sdl/$(@F:.s=.cpp) -o $(OBJ_DIR)$(@F) $(OPTS) $(CFLAGS)
-	 
+
 .PHONY : obj_sdl_smart
 obj_sdl_smart: obj $(obj_sdl_smart_files:.cpp=.s)
 
 $(obj_sdl_smart_files:.cpp=.s):
 	$(CC) $(SRC_DIR)sdl/smart/$(@F:.s=.cpp) -o $(OBJ_DIR)$(@F) $(OPTS) $(CFLAGS)
-		 
+
 .PHONY : obj_sdl_exparse
 obj_sdl_exparse: obj $(obj_sdl_exparse_files:.cpp=.s)
 
@@ -143,20 +143,20 @@ obj_glib: obj $(obj_glib_files:.cpp=.s)
 
 $(obj_glib_files:.cpp=.s):
 	$(CC) $(SRC_DIR)glib/$(@F:.s=.cpp) -o $(OBJ_DIR)$(@F) $(OPTS) $(CFLAGS)
-	
+
 .PHONY : obj_gxlib
 obj_gxlib: obj $(obj_gxlib_files:.cpp=.s)
 
 $(obj_gxlib_files:.cpp=.s):
 	$(CC) $(SRC_DIR)gxlib/$(@F:.s=.cpp) -o $(OBJ_DIR)$(@F) $(OPTS) $(CFLAGS)
-	
+
 .PHONY : obj_repository
 obj_repository: obj $(OBJ_REPO:.cpp=.s)
 
 $(OBJ_REPO:.cpp=.s):
 	$(CC) $(SRC_DIR)repository/$(@F:.s=.cpp) -o $(OBJ_DIR)$(@F) $(OPTS) $(CFLAGS)
 
-.PHONY : bins 
+.PHONY : bins
 bins : objs olex
 #unirun
 
@@ -164,7 +164,7 @@ unirun_obj_dir: obj
 	@if test ! -d $(OBJ_DIR)unirun; then mkdir $(OBJ_DIR)unirun; else echo "obj/unirun already present"; fi;
 olex_obj_dir: obj
 	@if test ! -d $(OBJ_DIR)olex; then mkdir $(OBJ_DIR)olex; else echo "obj/olex already present"; fi;
-bin:	
+bin:
 	@if test ! -d $(EXE_DIR); then mkdir $(EXE_DIR); else "unirun binary already present"; fi;
 
 .PHONY : unirun
@@ -177,7 +177,7 @@ obj_unirun: unirun_obj_dir $(OBJ_UNIRUN:.cpp=.s)
 
 $(OBJ_UNIRUN:.cpp=.s):
 	$(CC) $(SRC_DIR)unirun/$(@F:.s=.cpp) -o $(OBJ_DIR)unirun/$(@F) -O3 -fpermissive `wx-config --cxxflags --unicode --toolkit=gtk2` -I$(SRC_DIR)sdl -I$(SRC_DIR)xlib -I$(SRC_DIR)glib -I$(SRC_DIR)gxlib -I$(SRC_DIR)repository -S -D__WXWIDGETS__ -D_UNICODE -DUNICODE
-	$(addprefix $(SRC_DIR)repository/,$(NPY_CPP_REPO)) 
+	$(addprefix $(SRC_DIR)repository/,$(NPY_CPP_REPO))
 
 $(EXE_DIR)unirun : bin $(OBJ_UNIRUN:.cpp=.s) $(obj_sdl_files:.cpp=.s) $(obj_sdl_smart_files:.cpp=.s) $(obj_sdl_exparse_files:.cpp=.s) $(OBJ_REPO:.cpp=.s)
 	$(CC) $(obj_sdl_files:.cpp=.s) $(obj_sdl_smart_files:.cpp=.s) $(obj_sdl_exparse_files:.cpp=.s) $(addprefix $(OBJ_DIR),$(NPY_CPP_REPO:.cpp=.s)) $(OBJ_UNIRUN:.cpp=.s) -o $(EXE_DIR)unirun $(LDFLAGS)
@@ -262,11 +262,11 @@ test:
 # install installs into the users home directory ~/olex this should be
 # altered to install into the path provided by configure or the user at the top
 # of this file
-# 
+#
 # NOTE: 05/10/08 This needs modifying to bring it up2date with the new source code
 # options. It still will work but it does not utilise some of the new olex2 features
-install: 
-	@echo "Installing to local directory: " $(HOME) 
+install:
+	@echo "Installing to local directory: " $(HOME)
 	@mkdir $(OLEX_BIN);
 	@cp -r $(EXE_DIR)* $(OLEX_INS)/;
 	@cp $(SRC_DIR)scripts/usettings.dat $(OLEX_INS)/;
@@ -298,7 +298,7 @@ install:
 # Update
 # This function just updates the binaries of an existing olex2 install.
 .PHONY : update
-update: 
+update:
 	@echo "Checking SVN for latest version"
 #	svn info | grep Rev
 	@svn update
@@ -306,7 +306,7 @@ update:
 	@echo "Cleaning Old Build"
 	+make clean
 	@echo "Building Binaries"
-	+make 
+	+make
 	@echo "Updating binaries to local install directory: " $(OLEX_INS)
 	@cp -r $(EXE_DIR)* $(OLEX_INS)/;
 
@@ -353,4 +353,3 @@ help:
 
 # DONE!
 # DO NOT DELETE
-

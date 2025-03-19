@@ -8,16 +8,19 @@
 ******************************************************************************/
 
 #include "xglcanv.h"
+#include "wx/wx.h"
+#include "wx/glcanvas.h"
 #include "mainform.h"
-#include "glgroup.h"
-#include "wxglscene.h"
+#include "../glib/glgroup.h"
+#include "../gxlib/wxglscene.h"
 
-IMPLEMENT_CLASS(TGlCanvas, wxGLCanvas)
+
+IMPLEMENT_CLASS(TGlCanvas, wxGLCanvas);
 //..............................................................................
 TGlCanvas::TGlCanvas(TMainForm *parent, int* gl_attr, wxWindowID id,
     const wxPoint& pos, const wxSize& size, long style, const wxString& name):
 #if wxCHECK_VERSION(2,9,0) || !(defined(__WXX11__) || defined(__MAC__))
-  wxGLCanvas(parent, id, gl_attr, pos, size, style, name )  {
+  TGlCanvas::wxGLCanvas(parent, id, gl_attr, pos, size, style, name )  {
   Context = new wxGLContext(this, NULL);
   
 // on GTK the context initialisation is delayed
@@ -76,6 +79,9 @@ void TGlCanvas::XApp(TGXApp *XA) {
   wgls->SetContext(GetContext());
 #endif
 }
+
+
+
 //..............................................................................
 void TGlCanvas::Render() {
 #if !defined(__WXMOTIF__) && !defined(__WIN32__) && !defined(__WXGTK__) && !wxCHECK_VERSION(3,1,0)
@@ -256,6 +262,9 @@ void TGlCanvas::OnKeyUp(wxKeyEvent& m)  {
 void TGlCanvas::OnChar(wxKeyEvent& m)  {
   FParent->OnChar(m);
 }
+
+
+
 //..............................................................................
 olx_array_ptr<int> TGlCanvas::GetGlAttributes(bool _default, bool stereo,
   bool multisampling, short depth_bits)

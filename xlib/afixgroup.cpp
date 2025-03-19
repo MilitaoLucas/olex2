@@ -9,7 +9,7 @@
 
 #include "afixgroup.h"
 #include "refmodel.h"
-#include "index_range.h"
+#include "../sdl/index_range.h"
 
 const olxstr TAfixGroup::m_names[] = {
   EmptyString(),

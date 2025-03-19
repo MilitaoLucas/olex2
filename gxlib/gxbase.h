@@ -19,23 +19,23 @@
 #define GxlObject(obj)     gxlib::obj
 
 BeginGxlNamespace()
+    static const olxstr PLabelsCollectionName() {
+        static olxstr v = "PLabels";
+        return v;
+    }
 
-static const olxstr PLabelsCollectionName() {
-  static olxstr v = "PLabels";
-  return v;
-}
-const int
-  qaHigh    = 1,  // drawing quality
-  qaMedium  = 2,
-  qaLow     = 3,
-  qaPict    = 4;
+    const int
+            qaHigh = 1, // drawing quality
+            qaMedium = 2,
+            qaLow = 3,
+            qaPict = 4;
 
-const int
-  ddsDef       = 0, // default drawing style for primitives
-  ddsDefAtomA  = 1,
-  ddsDefAtomB  = 2,
-  ddsDefRim    = 3,
-  ddsDefSphere = 4;
+    const int
+            ddsDef = 0, // default drawing style for primitives
+            ddsDefAtomA = 1,
+            ddsDefAtomB = 2,
+            ddsDefRim = 3,
+            ddsDefSphere = 4;
 
 EndGxlNamespace()
 #endif

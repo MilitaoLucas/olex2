@@ -76,10 +76,19 @@ protected:
     void p_functor(const type_t& v) const {
       str.setTypeValue(printFormat(v), v);
     }
-    template <class type_t>
-    void c_functor(const type_t& v) const {
+  template <class type_t>
+  void c_functor(const type_t& v) const {
+    // Check if type_t is convertible to IOlxObject before calling setObjValue
+    if constexpr (std::is_convertible_v<type_t, IOlxObject>) {
       str.setObjValue(v);
     }
+    else {
+      // For non-IOlxObject types, convert to string using an appropriate method
+      // depending on what interface type_t implements
+      str.assignTypeValue(L"%s", v.toString().u_str());
+    }
+  }
+
   };
 #endif
   //..............................................................................

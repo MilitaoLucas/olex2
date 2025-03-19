@@ -62,7 +62,7 @@ else:
 variables = Variables()
 variables.AddVariables(
     EnumVariable('TOOL', 'The tool to use', def_tool, allowed_values=\
-     ('vc8', 'vc9', 'vc10', 'vc11', 'vc14.2', 'gnu', 'intel'))
+     ('vc8', 'vc9', 'vc10', 'vc11', 'vc14.2', 'gnu', 'clang', 'intel'))
     )
 env = Environment(ENV = os.environ, variables = variables, TARGET_ARCH=env_arch)
 Help(variables.GenerateHelpText(env))
@@ -84,8 +84,10 @@ elif env['TOOL'] == 'vc10':
   #Tool('msvc')(env)
 elif env['TOOL'] == 'gnu':
     Tool('g++')(env)
+    env['CXX'] = 'g++'
 elif env['TOOL'] == 'clang':
     Tool('clang')(env)
+    env['CXX'] = 'clang++'
 elif env['TOOL'] == 'vc11':
   env = Environment(ENV = os.environ, variables = variables, TARGET_ARCH=env_arch, MSVC_VERSION='11.0')
 elif env['TOOL'] == 'vc14.2':
@@ -101,7 +103,6 @@ env.Append(CPPPATH = ['sdl', 'glib', 'gxlib',
                       'repository', 'xlib', python_include])
 env.Append(LINKFLAGS=['-lstdc++'])
 env.Append(CCFLAGS=['-Wall', '-Wextra', '-std=c++17'])
-env['CXX'] = 'clang++'
 out_dir = 'build/scons/'
 if sys.platform[:3] == 'win':
   out_dir += 'msvc-' + env['MSVS_VERSION'] + '/'
@@ -383,6 +384,14 @@ unirun_files = processFileNameList(unirun_files, unirun_env, out_dir+'unirun')
 if sys.platform[:3] == 'win':
   unirun_env.Append(LINKFLAGS=['/MANIFEST', '/MANIFESTUAC:"level=\'asInvoker\'"',
     '/PDB:' + out_dir + 'exe/unirun.pdb'])
+else:
+  unirun_env.Append(LIBS=['m'])
+  env.Append(LIBS=['tiff', 'jpeg'])
+  olex2_env.Append(LIBS=['tiff', 'jpeg'])
+  unirun_env.Append(LIBS=['tiff', 'jpeg'])
+  env.Append(LIBPATH=['/usr/lib64'])
+  olex2_env.Append(LIBPATH=['/usr/lib64'])
+  unirun_env.Append(LIBPATH=['/usr/lib64'])
 unirun_env.Program(out_dir+'exe/unirun', unirun_files)
 
 tests_files = generic_files_list + fileListToStringList('tests/tests', tests)

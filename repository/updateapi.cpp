@@ -470,18 +470,18 @@ olx_object_ptr<AFileSystem> UpdateAPI::FSFromString(const olxstr& _repo,
 #ifdef __WIN32__
         TWinHttpFileSystem* _fs = new TWinHttpFileSystem(url);
 #else
-        TSSLHttpFileSystem* _fs = new TSSLHttpFileSystem(url);
+        // TSSLHttpFileSystem* _fs = new TSSLHttpFileSystem(url);
 #endif
-        _fs->SetExtraHeaders(httpHeaderPlatform);
-        olxstr tfn = TBasicApp::GetSharedDir() + "app.token";
-        if (TEFile::Exists(tfn)) {
-          TCStrList sl = TEFile::ReadCLines(tfn);
-          if (sl.Count() == 1) {
-            THttpFileSystem::SetSessionInfo(sl[0]);
-            _fs->SetExtraHeaders(httpHeaderPlatform | httpHeaderESession);
-          }
-        }
-        FS = _fs;
+    //     _fs->SetExtraHeaders(httpHeaderPlatform);
+    //     olxstr tfn = TBasicApp::GetSharedDir() + "app.token";
+    //     if (TEFile::Exists(tfn)) {
+    //       TCStrList sl = TEFile::ReadCLines(tfn);
+    //       if (sl.Count() == 1) {
+    //         THttpFileSystem::SetSessionInfo(sl[0]);
+    //         _fs->SetExtraHeaders(httpHeaderPlatform | httpHeaderESession);
+    //       }
+    //     }
+    //     FS = _fs;
     }
 #ifdef __WXWIDGETS__
       else if (url.GetProtocol() == "ftp") {
