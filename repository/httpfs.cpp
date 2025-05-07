@@ -737,7 +737,7 @@ olx_object_ptr<AFileSystem> HttpFSFromURL(const TUrl& url) {
 #ifdef __WIN32__
     return new TWinHttpFileSystem(url);
 #else
-    return new TSSLHttpFileSystem(url);
+    return new THttpFileSystem(url);
 #endif
   }
   return 0;

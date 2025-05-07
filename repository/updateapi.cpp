@@ -470,7 +470,7 @@ olx_object_ptr<AFileSystem> UpdateAPI::FSFromString(const olxstr& _repo,
 #ifdef __WIN32__
         TWinHttpFileSystem* _fs = new TWinHttpFileSystem(url);
 #else
-        TSSLHttpFileSystem* _fs = new TSSLHttpFileSystem(url);
+        THttpFileSystem* _fs = new THttpFileSystem(url);
 #endif
         _fs->SetExtraHeaders(httpHeaderPlatform);
         olxstr tfn = TBasicApp::GetSharedDir() + "app.token";
