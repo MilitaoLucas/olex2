@@ -1,0 +1,251 @@
+\doxysection{samegroup.\+h}
+\hypertarget{samegroup_8h_source}{}\label{samegroup_8h_source}\index{xlib/samegroup.h@{xlib/samegroup.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_same\_group\_h}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_same\_group\_h}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}catomlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}releasable.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ BeginXlibNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ \mbox{\hyperlink{classTSameGroupList}{TSameGroupList}};}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ class\ TSameGroup\ :\ public\ ACollectionItem,\ public\ AReleasable\ \{}
+\DoxyCodeLine{00020\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TSameGroup>}}\ Dependent;\ \ \textcolor{comment}{//\ pointers\ borrowed\ from\ Parent}}
+\DoxyCodeLine{00021\ \ \ \mbox{\hyperlink{classAtomRefList}{AtomRefList}}\ Atoms;}
+\DoxyCodeLine{00022\ \ \ TSameGroup*\ ParentGroup;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00024\ \ \ \textcolor{comment}{//\ it\ does\ not\ clear\ the\ ParentGroup,\ to\ make\ Restore\ work...}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{bool}\ RemoveDependent(TSameGroup\&\ sg)\ \{\ \textcolor{keywordflow}{return}\ Dependent.Remove(sg);\ \}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ SetAtomIds(\textcolor{keywordtype}{size\_t});}
+\DoxyCodeLine{00027\ \ \ \textcolor{comment}{//\ on\ release}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{void}\ ClearAtomIds()\ \{\ SetAtomIds(\string~0);\ \}}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//\ re-\/orders\ this\ groups\ and\ dependent\ groups\ atoms\ according\ to\ tags}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{void}\ Reorder();}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ initialises\ atom\_map\_N}}
+\DoxyCodeLine{00032\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<DistanceGenerator>}}\ get\_generator()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ TSameGroup(TSameGroupList\&\ parent,\ \textcolor{keywordtype}{bool}\ tmp=\textcolor{keyword}{false});}
+\DoxyCodeLine{00035\ \ \ \string~TSameGroup();}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ TSameGroupList\&\ GetParent()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ TSameGroup*\ GetParentGroup()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ParentGroup;\ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TSameGroup\&\ sg);}
+\DoxyCodeLine{00041\ \ \ \textcolor{comment}{//\ this\ is\ called\ internally\ by\ the\ RM}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{void}\ OnAUUpdate();}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ BeginAUSort();}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ EndAUSort();}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ TStrList::const\_list\_type\ Analyse(\textcolor{keywordtype}{bool}\ log,}
+\DoxyCodeLine{00047\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<const\ TSameGroup>}}\ *offending=0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ SetAtomIds(\string~0);}
+\DoxyCodeLine{00051\ \ \ \ \ Atoms.Clear();}
+\DoxyCodeLine{00052\ \ \ \ \ Dependent.Clear();}
+\DoxyCodeLine{00053\ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ does\ not\ reset\ the\ Atom's\ SameId}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ OnReleasedDelete()\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ Atoms.Clear();}
+\DoxyCodeLine{00057\ \ \ \ \ Dependent.Clear();}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{bool}\ IsReference()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !Dependent.IsEmpty();\ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{size\_t}\ GetId()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ this-\/>GetReleasableId();\ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \textcolor{comment}{//\ will\ invalidate\ previously\ assigned\ group}}
+\DoxyCodeLine{00064\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ Add(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca);}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{void}\ AddDependent(TSameGroup\&\ sg)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ Dependent.Add(sg);}
+\DoxyCodeLine{00068\ \ \ \ \ sg.ParentGroup\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//\ compares\ pointer\ addresses\ only!}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TSameGroup\&\ sr)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this}\ ==\ \&sr;\ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ TSameGroup\&\ g)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classAtomRefList}{AtomRefList}}\ \&GetAtoms()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Atoms;\ \}}
+\DoxyCodeLine{00077\ \ \ \mbox{\hyperlink{classAtomRefList}{AtomRefList}}\ \&GetAtoms()\ \{\ \textcolor{keywordflow}{return}\ Atoms;\ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{size\_t}\ DependentCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Dependent.Count();\ \}}
+\DoxyCodeLine{00080\ \ \ TSameGroup\&\ GetDependent(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ *Dependent[i];\ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{const}\ TSameGroup\&\ GetDependent(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Dependent[i];\ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{void}\ PackDependent(index\_t\ tag)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ Dependent.Pack(ACollectionItem::TagAnalyser(tag));}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{bool}\ IsValidForSave()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00086\ \ \ \textcolor{comment}{//\ returns\ true\ if\ contains\ only\ unique\ atoms}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{bool}\ AreAllAtomsUnique()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{bool}\ DoOverlap(\textcolor{keyword}{const}\ TSameGroup\ \&g)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \textcolor{comment}{//\ returns\ OVERLAP\_\ bit\ mask}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordtype}{int}\ DoOverlapEx(\textcolor{keyword}{const}\ TSameGroup\&\ g)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{bool}\ IsSubgroupOf(\textcolor{keyword}{const}\ TSameGroup\&\ g)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{bool}\ IsSupergroupOf(\textcolor{keyword}{const}\ TSameGroup\&\ g)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{return}\ g.IsSubgroupOf(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//\ could\ return\ null,\ the\ returned\ value\ owned\ by\ the\ parent}}
+\DoxyCodeLine{00101\ \ \ TSameGroup*\ ToExplicit(\mbox{\hyperlink{classTTypeList}{TTypeList<TSameGroup>}}\ *dest=0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//\ generates\ SADI\ list}}
+\DoxyCodeLine{00104\ \ \ TStrList::const\_list\_type\ GenerateList()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//\ a\ list\ of\ restrained\ distances\ for\ atom\ indices\ in\ the\ AU}}
+\DoxyCodeLine{00107\ \ \ DistanceGenerator::pair\_list\_t::const\_list\_type\ GetRestrainedDistances()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00108\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<DistanceGenerator::pair\_list\_t>}}\ rv1;}
+\DoxyCodeLine{00109\ \ \ \ \ GetRestrainedDistances(rv1,\ rv1);}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{comment}{//\ GCC\ cannot\ deduce\ return\ type???\ cannot\ use\ FunctionAccessor::MakeConst\ directly}}
+\DoxyCodeLine{00111\ \ \ \ \ size\_t\ (DistanceGenerator::pair\_list\_t::\ *\ f)()\ \textcolor{keyword}{const}\ =\ \&DistanceGenerator::pair\_list\_t::Count;}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ sz\ =\ olx\_sum(rv1,\ FunctionAccessor::MakeConst(f));}
+\DoxyCodeLine{00113\ \ \ \ \ DistanceGenerator::pair\_list\_t\ rv(olx\_reserve(sz));}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ rv1.Count();\ i++)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ rv.AddCopyAll(rv1[i]);}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordtype}{void}\ GetRestrainedDistances(\mbox{\hyperlink{classTTypeList}{TTypeList<DistanceGenerator::pair\_list\_t>}}\ \&d12,}
+\DoxyCodeLine{00121\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<DistanceGenerator::pair\_list\_t>}}\&\ d13)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{void}\ GetRestrainedDistances(}
+\DoxyCodeLine{00124\ \ \ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict}}<\textcolor{keywordtype}{double},\ \mbox{\hyperlink{classTTypeList}{TTypeList<DistanceGenerator::pair\_list\_t>}}\ >\&\ ds)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//\ expands\ SAME\ into\ SADI\ lists\ of\ the\ parent\ RefinementModel}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordtype}{void}\ Expand(TStrList*\ log=0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{double}\ Esd12,\ Esd13;}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00132\ \ \ \textcolor{keywordtype}{void}\ ToDataItem\_HRF(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00134\ \ \ PyObject*\ PyExport(PyObject*\ main,\ \mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ allGroups,}
+\DoxyCodeLine{00135\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms,\ \mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ equiv);}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{void}\ FromDataItem\_HRF(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00139\ \ \ \textcolor{comment}{//\ for\ releasing/restoring\ items\ SetId\ must\ be\ called}}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TSameGroupList;}
+\DoxyCodeLine{00141\ \};}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{keyword}{class\ }TSameGroupList\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer}}<TSameGroup>\ \{}
+\DoxyCodeLine{00144\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{void}\ OnRestore(\mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&\ item);}
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{void}\ OnRelease(\mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&\ item);}
+\DoxyCodeLine{00147\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ RM;}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ TSameGroupList(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ parent)}
+\DoxyCodeLine{00151\ \ \ \ \ :\ RM(parent)}
+\DoxyCodeLine{00152\ \ \ \{\}}
+\DoxyCodeLine{00153\ \ \ \textcolor{comment}{//\ if\ the\ dest\ is\ not\ specified\ -\/\ this\ objects\ keeps\ ownership}}
+\DoxyCodeLine{00154\ \ \ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&\ New(\mbox{\hyperlink{classTSameGroup}{TSameGroup}}*\ ref\ =\ 0,\ \mbox{\hyperlink{classTTypeList}{TTypeList<TSameGroup>}}*\ dest\ =\ 0);}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&\ Build(\textcolor{keyword}{const}\ olxstr\ \&exp,\ \textcolor{keyword}{const}\ olxstr\ \&resi=EmptyString());}
+\DoxyCodeLine{00157\ \ \ \textcolor{keywordtype}{void}\ FixIds();}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00160\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ i,\ 0,\ items.Count());}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&)items[i];}
+\DoxyCodeLine{00163\ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00166\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ i,\ 0,\ items.Count());}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&)items[i];}
+\DoxyCodeLine{00169\ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&\ GetItem(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00172\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ i,\ 0,\ items.Count());}
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&)items[i];}
+\DoxyCodeLine{00175\ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&\ GetItem(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00178\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ i,\ 0,\ items.Count());}
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&)items[i];}
+\DoxyCodeLine{00181\ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ items.Count();\ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ items.IsEmpty();\ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{comment}{//\ searches\ a\ group\ by\ the\ content}}
+\DoxyCodeLine{00185\ \ \ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\ *Find(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\ \&g)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{\ AReleasableContainer::Clear();\ \}}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TSameGroupList\&\ sl);}
+\DoxyCodeLine{00188\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keyword}{const}\ TPtrList\ <TSameGroup>\ \&groups);}
+\DoxyCodeLine{00189\ \ \ \textcolor{keywordtype}{void}\ Delete(\mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&\ g)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ Delete(\mbox{\hyperlink{classTPtrList}{TPtrList<TSameGroup>}}()\ <<\ g);}
+\DoxyCodeLine{00191\ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \textcolor{keywordtype}{void}\ Sort();}
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordtype}{void}\ Analyse();}
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordtype}{void}\ FixOverlapping();}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordtype}{void}\ PrepareSave();}
+\DoxyCodeLine{00196\ \ \ \textcolor{comment}{//\ works\ on\ Reference\ groups\ only}}
+\DoxyCodeLine{00197\ \ \ TPtrList<TSameGroup>::const\_list\_type}
+\DoxyCodeLine{00198\ \ \ \ \ FindSupergroups(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSameGroup}{TSameGroup}}\&\ sg,}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classolxdict}{olxdict<const\ TSameGroup*,\ TAtomRefList,\ TPointerComparator>}}*\ sg\_atoms=0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00200\ \ \ \textcolor{comment}{//\ this\ is\ called\ internally\ by\ the\ RM}}
+\DoxyCodeLine{00201\ \ \ \textcolor{keywordtype}{void}\ OnAUUpdate();}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{void}\ BeginAUSort();}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordtype}{void}\ SortGroupContent();}
+\DoxyCodeLine{00204\ \ \ \textcolor{keywordtype}{void}\ EndAUSort();}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ TStrList::const\_list\_type\ GenerateList()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00207\ \ \ \textcolor{comment}{//\ expands\ all\ SAME\ into\ SADI\ lists}}
+\DoxyCodeLine{00208\ \ \ \textcolor{keywordtype}{void}\ Expand(TStrList\ *log=0);}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00211\ \ \ \textcolor{comment}{//\ fo\ INS\ header\ -\/\ easy\ to\ read\ and\ update}}
+\DoxyCodeLine{00212\ \ \ \textcolor{keywordtype}{void}\ ToDataItem\_HRF(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00213\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00214\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms,\ \mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ equiv);}
+\DoxyCodeLine{00215\ \ \ TPtrList<PyObject>::const\_list\_type\ PyExportAsSADI(}
+\DoxyCodeLine{00216\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms,\ \mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ equiv);}
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//\ auto\ selects\ which\ format\ to\ use\ based\ on\ 'n'\ field}}
+\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00220\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00221\ \ \ \textcolor{keywordtype}{void}\ FromDataItem\_HRF(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{void}\ FromDataItem\_(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \textcolor{keywordtype}{size\_t}\ n);}
+\DoxyCodeLine{00223\ \ \ \textcolor{comment}{//\ supergroups\ first}}
+\DoxyCodeLine{00224\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortSupergroups(\mbox{\hyperlink{classTPtrList}{TPtrList<TSameGroup>}}\&\ groups,}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classolxdict}{olxdict<const\ TSameGroup*,\ TAtomRefList,\ TPointerComparator>}}\&\ sg\_atoms);}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \textcolor{comment}{//\ used\ when\ extra\ groups\ are\ generated\ by\ ToExplicit}}
+\DoxyCodeLine{00228\ \ \ \textcolor{keyword}{struct\ }GroupTrimmer\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSameGroup>}}\ \&groups;}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ sz;}
+\DoxyCodeLine{00231\ \ \ \ \ GroupTrimmer(\mbox{\hyperlink{classTTypeList}{TTypeList<TSameGroup>}}\&\ groups)}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ :\ groups(groups),}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ sz(groups.Count())}
+\DoxyCodeLine{00234\ \ \ \ \ \{\}}
+\DoxyCodeLine{00235\ \ \ \ \ \string~GroupTrimmer()\ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (groups.Count()\ >\ sz)\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ groups.GetLast().OnReleasedDelete();}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ groups.Delete(groups.Count()\ -\/\ 1);}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \};}
+\DoxyCodeLine{00242\ \};}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ EndXlibNamespace()}
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

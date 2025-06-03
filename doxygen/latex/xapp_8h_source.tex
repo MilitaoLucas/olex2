@@ -1,0 +1,258 @@
+\doxysection{xapp.\+h}
+\hypertarget{xapp_8h_source}{}\label{xapp_8h_source}\index{xlib/xapp.h@{xlib/xapp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_xappH}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_xappH}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}xfiles.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}reflection.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}ecomplex.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}undo.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}atomref.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}etable.h"{}}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ BeginXlibNamespace()}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ program\ state\ and\ some\ other\ special\ checks\ for\ functions}}
+\DoxyCodeLine{00024\ const\ uint32\_t}
+\DoxyCodeLine{00025\ \ \ psFileLoaded\ \ \ \ \ \ \ =\ 0x00010000,}
+\DoxyCodeLine{00026\ \ \ psCheckFileTypeIns\ =\ 0x00020000,}
+\DoxyCodeLine{00027\ \ \ psCheckFileTypeCif\ =\ 0x00040000,}
+\DoxyCodeLine{00028\ \ \ psCheckFileTypeP4P\ =\ 0x00080000,}
+\DoxyCodeLine{00029\ \ \ psCheckFileTypeCRS\ =\ 0x00100000;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ class\ TNameUndo\ :\ public\ TUndoData\ \{}
+\DoxyCodeLine{00032\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{struct\ }NameRef\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ catom\_id;}
+\DoxyCodeLine{00035\ \ \ \ \ olxstr\ name;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ elm;}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{double}\ peak\_height;}
+\DoxyCodeLine{00038\ \ \ \ \ NameRef(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ \_elm,\ \textcolor{keywordtype}{double}\ \_peak\_height,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ n)}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ :\ catom\_id(\textcolor{keywordtype}{id}),\ name(n),\ elm(\_elm),\ peak\_height(\_peak\_height)}
+\DoxyCodeLine{00041\ \ \ \ \ \{\}}
+\DoxyCodeLine{00042\ \ \ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ TNameUndo(\mbox{\hyperlink{classIUndoAction}{IUndoAction}}*\ action)\ :\ TUndoData(action)\ \ \{\}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<NameRef>}}\ Data;}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{void}\ AddAtom(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ A,\ \textcolor{keyword}{const}\ olxstr\&\ oldName)\ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ Data.Add(\textcolor{keyword}{new}\ NameRef(A.GetId(),\ \&A.GetType(),\ A.GetQPeak(),\ oldName));}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{size\_t}\ AtomCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Data.Count();\ \ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{size\_t}\ GetCAtomId(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \ Data[i].catom\_id;\ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetLabel(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \ Data[i].name;\ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{double}\ GetPeakHeight(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Data[i].peak\_height;\ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ GetElement(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Data[i].elm;\ \ \}}
+\DoxyCodeLine{00056\ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTSObject}{TSObject<TNetwork>}}\ SObject;}
+\DoxyCodeLine{00059\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<SObject>}}\ SObjectPtrList;}
+\DoxyCodeLine{00060\ \textcolor{keyword}{class\ }TXApp\ :\ \textcolor{keyword}{public}\ TBasicApp,\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classALibraryContainer}{ALibraryContainer}}\ \ \{}
+\DoxyCodeLine{00061\ \ \ \mbox{\hyperlink{classTUndoStack}{TUndoStack}}\ UndoStack;}
+\DoxyCodeLine{00062\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00063\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TXFile>}}\ Files;}
+\DoxyCodeLine{00064\ \ \ \mbox{\hyperlink{classTLibrary}{TLibrary}}\ Library;}
+\DoxyCodeLine{00065\ \ \ olxstr\ CifTemplatesDir;\ \ \textcolor{comment}{//\ the\ folder\ with\ CIF\ templates/data}}
+\DoxyCodeLine{00066\ \ \ ASelectionOwner*\ SelectionOwner;}
+\DoxyCodeLine{00067\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<double>}}\ min\_hbond\_angle,}
+\DoxyCodeLine{00068\ \ \ \ \ exyz\_separation;}
+\DoxyCodeLine{00069\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<bool>}}}
+\DoxyCodeLine{00070\ \ \ \ \ preserve\_fvars,}
+\DoxyCodeLine{00071\ \ \ \ \ safe\_afix,}
+\DoxyCodeLine{00072\ \ \ \ \ rename\_parts,}
+\DoxyCodeLine{00073\ \ \ \ \ stack\_restraints,}
+\DoxyCodeLine{00074\ \ \ \ \ external\_explicit\_same,}
+\DoxyCodeLine{00075\ \ \ \ \ explicit\_same;}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{size\_t}\ max\_label\_length;}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{bool}\ interactions\_i;}
+\DoxyCodeLine{00078\ \ \ \mbox{\hyperlink{classSortedObjectList}{SortedObjectList<int,\ TPrimitiveComparator>}}\ interactions\_from,}
+\DoxyCodeLine{00079\ \ \ \ \ interactions\_to;}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ InitInteractions();}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ CheckProgramState(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ specialCheck);}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{void}\ ProcessRingAfix(TSAtomPList\&\ ring,\ \textcolor{keywordtype}{int}\ afix,\ \textcolor{keywordtype}{bool}\ pivot\_last);}
+\DoxyCodeLine{00083\ \ \ TXApp(\textcolor{keyword}{const}\ olxstr\ \&basedir,\ \textcolor{keywordtype}{bool}\ dummy);}
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordtype}{void}\ Init(\mbox{\hyperlink{structASObjectProvider}{ASObjectProvider}}*\ objectProvider=NULL,}
+\DoxyCodeLine{00085\ \ \ \ \ ASelectionOwner*\ selOwner=NULL);}
+\DoxyCodeLine{00086\ \ \ olxstr\ LastSGResult;}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetPlatformString\_(\textcolor{keywordtype}{bool}\ full)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00088\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00089\ \ \ TXApp(\textcolor{keyword}{const}\ olxstr\ \&basedir,\ \mbox{\hyperlink{structASObjectProvider}{ASObjectProvider}}*\ objectProvider=NULL,}
+\DoxyCodeLine{00090\ \ \ \ \ ASelectionOwner*\ selOwner=NULL);}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{virtual}\ \string~TXApp();}
+\DoxyCodeLine{00092\ \ \ \mbox{\hyperlink{classTXFile}{TXFile}}\&\ XFile()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Files[0];\ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TXFile>}}\ \&XFiles()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Files;\ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ DefPropC(olxstr,\ CifTemplatesDir)}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLibrary}{TLibrary}}\&\ \ GetLibrary()\ \ \{\ \ \textcolor{keywordflow}{return}\ Library;\ \ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \mbox{\hyperlink{classTUndoStack}{TUndoStack}}\ \&GetUndo()\ \{\ \textcolor{keywordflow}{return}\ UndoStack;\ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//\ fills\ the\ list\ with\ the\ matrices\ of\ the\ UnitCell}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ GetSymm(smatd\_list\&\ ml)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ FT>}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{bool}\ CheckFileType()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!XFile().HasLastLoader())\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ XFile().LastLoader()-\/>Is<FT>();}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{static}\ TXApp\&\ GetInstance()\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ TBasicApp\&\ bai\ =\ TBasicApp::GetInstance();}
+\DoxyCodeLine{00114\ \ \ \ \ TXApp*\ xai\ =\ \textcolor{keyword}{dynamic\_cast<}TXApp*\textcolor{keyword}{>}(\&bai);}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{if}\ (xai\ ==\ 0)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}unsuitable\ application\ instance"{}});}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{return}\ *xai;}
+\DoxyCodeLine{00120\ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \textcolor{comment}{/*\ calculates\ structure\ factors\ for\ current\ structure,\ F.Count\ must\ be}}
+\DoxyCodeLine{00122\ \textcolor{comment}{\ \ greater\ or\ equal\ to\ the\ ref.Count.\ This\ function\ uses\ direct\ approach\ and\ is}}
+\DoxyCodeLine{00123\ \textcolor{comment}{\ \ to\ be\ used\ for\ testing\ mainly}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00125\ \ \ \textcolor{keywordtype}{void}\ CalcSF(\textcolor{keyword}{const}\ TRefList\ \&refs,\ \mbox{\hyperlink{classTArrayList}{TArrayList}}<TEComplex<double>\ >\ \&F)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{void}\ CalcSFEx(\textcolor{keyword}{const}\ TRefList\ \&refs,\ \mbox{\hyperlink{classTArrayList}{TArrayList}}<TEComplex<double>\ >\ \&F,}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomPList\ \&atoms,\ \textcolor{keyword}{const}\ smatd\_list\ \&ml,\ \textcolor{keywordtype}{int}\ sg\_order)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{/*\ calculates\ Fsq\ and\ fills\ the\ reflection\ list.\ spacial\ handling\ of\ twinned}}
+\DoxyCodeLine{00129\ \textcolor{comment}{\ \ data\ is\ used\ -\/\ the\ resulting\ Fsq\ are\ 'twinned'.\ It\ uses\ SFUtil\ functions\ to}}
+\DoxyCodeLine{00130\ \textcolor{comment}{\ \ calculate\ Fc.\ if\ scale\ is\ true,\ the\ refs\ i\ and\ S\ are\ scaled\ using\ the\ OSF}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ \ If\ extinction\ correction\ is\ used,\ it\ will\ be\ applied\ to\ the\ Fsq}}
+\DoxyCodeLine{00132\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00133\ \ \ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{RefinementModel::HklStat}}\ CalcFsq(TRefList\ \&refs,\ evecd\ \&Fsq,}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{bool}\ scale)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00135\ \ \ \textcolor{comment}{/*\ function\ undoes\ renaming\ atoms\ */}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keywordtype}{void}\ undoName(\mbox{\hyperlink{classTUndoData}{TUndoData}}\ *data);}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{void}\ NameHydrogens(\mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a,\ \mbox{\hyperlink{structTAsymmUnit_1_1TLabelChecker}{TAsymmUnit::TLabelChecker}}\ \&lc,\ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ ud);}
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{//\ fixes\ hydrogen\ atom\ labels}}
+\DoxyCodeLine{00139\ \ \ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ FixHL();}
+\DoxyCodeLine{00140\ \ \ \textcolor{comment}{/*\ rearranges\ atoms\ to\ follow\ a\ ring\ and\ returns\ true\ if\ a\ ring\ sequence\ is\ }}
+\DoxyCodeLine{00141\ \textcolor{comment}{\ \ found;\ modifies\ tags\ of\ the\ given\ atoms\ and\ their\ immediate\ environment}}
+\DoxyCodeLine{00142\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ GetRingSequence(TSAtomPList\&\ atoms);}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ RingContentFromStr(\textcolor{keyword}{const}\ olxstr\&\ textDescr,}
+\DoxyCodeLine{00145\ \ \ \ \ ElementPList\&\ ringDesc);}
+\DoxyCodeLine{00146\ \ \ \textcolor{comment}{/*\ Condition\ could\ be\ a\ ring\ template\ like\ C2N2C2,\ or\ 'sel'\ to\ apply\ to\ the}}
+\DoxyCodeLine{00147\ \textcolor{comment}{\ \ selected\ ring\ or\ 'selt'\ -\/\ to\ use\ the\ selected\ ring\ as\ a\ template}}
+\DoxyCodeLine{00148\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keywordtype}{void}\ FindRings(\textcolor{keyword}{const}\ olxstr\&\ Condition,\ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtomPList>}}\&\ rings);}
+\DoxyCodeLine{00150\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00151\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TSAtomPList>}}\ FindSAtomsWhere(\textcolor{keyword}{const}\ olxstr\&\ Where);}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{virtual}\ TSAtomPList::const\_list\_type\ FindSAtoms(}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keyword}{const}\ IStrList\&\ names,\ \textcolor{keywordtype}{bool}\ ReturnAll\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ ClearSelection\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00154\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<SObject>}}\ GetSelected(\textcolor{keywordtype}{bool}\ unselect=\textcolor{keyword}{true})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00155\ \ \ ASelectionOwner\ *GetSelectionOwner()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SelectionOwner;\ \}}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//\ finds\ Cp,\ Ph,\ Naph\ and\ Cp*\ rings\ and\ adds\ corresponding\ afixes}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keywordtype}{void}\ AutoAfixRings(\textcolor{keywordtype}{int}\ afix,\ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ sa\ =\ NULL,\ \textcolor{keywordtype}{bool}\ TryPyridine\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordtype}{void}\ SetAtomUiso(\mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa,\ \textcolor{keywordtype}{double}\ val);}
+\DoxyCodeLine{00159\ \ \ \textcolor{comment}{/*\ initialises\ the\ vcov\ matrix\ from\ shelx\ or\ smtbx,\ might\ throw\ an\ exception..}}
+\DoxyCodeLine{00160\ \textcolor{comment}{\ \ returns\ the\ source\ of\ the\ matrix\ like:\ shelxl\ or\ smtbx}}
+\DoxyCodeLine{00161\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00162\ \ \ olxstr\ InitVcoV(\textcolor{keyword}{class}\ \mbox{\hyperlink{classVcoVContainer}{VcoVContainer}}\&\ vcov)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00163\ \ \ olxstr\ GetLastSGResult()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ LastSGResult;\ \}}
+\DoxyCodeLine{00164\ \ \ \textcolor{comment}{//\ for\ the\ internal\ use}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keywordtype}{void}\ SetLastSGResult\_(\textcolor{keyword}{const}\ olxstr\ \&r)\ \{\ LastSGResult\ =\ r;\ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{comment}{/*\ loads\ specified\ radii\ from\ an\ element-\/radius\ a\ line\ file\ or\ from\ structured}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ \ xld\ file}}
+\DoxyCodeLine{00168\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00169\ \ \ \textcolor{keywordtype}{void}\ UpdateRadii(\textcolor{keyword}{const}\ olxstr\ \&fn,\ \textcolor{keyword}{const}\ olxstr\ \&rtype=EmptyString(),}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordtype}{bool}\ log=\textcolor{keyword}{false});}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{/*\ reads\ a\ simple\ 'element\ radius'\ a\ line\ text\ file}}
+\DoxyCodeLine{00172\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{static}\ ElementRadii::const\_dict\_type\ ReadRadii(\textcolor{keyword}{const}\ olxstr\&\ fn);}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{/*\ which\ =\ 0\ -\/\ r\_bonding,\ 1\ -\/\ r\_pers,\ 2\ -\/\ r\_cov,\ 3\ -\/\ r\_sfil,\ 4\ -\/\ r\_vdw,}}
+\DoxyCodeLine{00175\ \textcolor{comment}{\ \ 5\ -\/\ r\_custom}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ PrintRadii(\textcolor{keywordtype}{int}\ which,\ \textcolor{keyword}{const}\ ElementRadii\&\ radii,}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keyword}{const}\ ContentList\&\ au\_cont);}
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ PrintVdWRadii(\textcolor{keyword}{const}\ ElementRadii\&\ radii,}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keyword}{const}\ ContentList\&\ au\_cont)}
+\DoxyCodeLine{00181\ \ \ \{}
+\DoxyCodeLine{00182\ \ \ \ \ PrintRadii(4,\ radii,\ au\_cont);}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ PrintCustomRadii(\textcolor{keyword}{const}\ ElementRadii\&\ radii,}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keyword}{const}\ ContentList\&\ au\_cont)}
+\DoxyCodeLine{00186\ \ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ PrintRadii(5,\ radii,\ au\_cont);}
+\DoxyCodeLine{00188\ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AtomType>\ \ \textcolor{comment}{//\ could\ be\ either\ TCAtom\ or\ TSAtom}}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ GetVdWRadius(\textcolor{keyword}{const}\ AtomType\&\ a,\ \textcolor{keyword}{const}\ ElementRadii*\ radii)\ \ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ei\ =\ (radii\ ==\ NULL\ ?\ InvalidIndex}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ :\ radii-\/>IndexOf(\&a.GetType()));}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{return}\ (ei\ ==\ InvalidIndex\ ?\ a.GetType().r\_vdw\ :\ radii-\/>GetValue(ei));}
+\DoxyCodeLine{00194\ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{/*\ returns\ size\ of\ the\ box\ using\ radii\ in\ A\ and\ using\ r\_sfil\ -\/\ in\ B.\ If\ the}}
+\DoxyCodeLine{00196\ \textcolor{comment}{\ radii\ is\ NULL,\ the\ values\ will\ be\ identical.\ If\ the\ radii\ is\ not\ null,\ the}}
+\DoxyCodeLine{00197\ \textcolor{comment}{\ number\ of\ radii\ must\ equal\ the\ number\ of\ atoms}}
+\DoxyCodeLine{00198\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structWBoxInfo}{WBoxInfo}}\ CalcWBox(\textcolor{keyword}{const}\ TSAtomPList\&\ atoms,\ \textcolor{keyword}{const}\ TDoubleList*\ radii,}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordtype}{double}\ (*weight\_calculator)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&));}
+\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{struct\ }CalcVolumeInfo\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordtype}{double}\ total,\ overlapping;}
+\DoxyCodeLine{00203\ \ \ \ \ CalcVolumeInfo(\textcolor{keywordtype}{double}\ \_total,\ \textcolor{keywordtype}{double}\ \_overlapping)}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ :\ total(\_total),}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ overlapping(\_overlapping)}
+\DoxyCodeLine{00206\ \ \ \ \ \{\}}
+\DoxyCodeLine{00207\ \ \ \};}
+\DoxyCodeLine{00208\ \ \ \mbox{\hyperlink{structTXApp_1_1CalcVolumeInfo}{CalcVolumeInfo}}\ CalcVolume(\textcolor{keyword}{const}\ ElementRadii*\ radii);}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ atom\_list>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UnifyPAtomList(atom\_list\&\ alist)\ \{}
+\DoxyCodeLine{00211\ \ \ \ \ ACollectionItem::Unify(alist);}
+\DoxyCodeLine{00212\ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \textcolor{comment}{//\ the\ returned\ value\ (in\ degrees)\ must\ be\ cached\ if\ used\ in\ loops\ etc}}
+\DoxyCodeLine{00214\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ GetMinHBondAngle();}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//\ possibly\ should\ go\ to\ TGXApp...}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ GetEXYZSeparation();}
+\DoxyCodeLine{00217\ \ \ \textcolor{comment}{//\ preserve\ free\ vaiable\ if\ referenced\ once\ only}}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DoPreserveFVARs();}
+\DoxyCodeLine{00219\ \ \ \textcolor{comment}{//\ if\ true\ -\/\ AFIX\ are\ validated\ adter\ naming,\ deleting\ and\ HADD}}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DoUseSafeAfix();}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ GetMaxLabelLength();}
+\DoxyCodeLine{00222\ \ \ \textcolor{comment}{//\ if\ true\ -\/\ parts\ cannot\ have\ identical\ labels}}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DoRenameParts();}
+\DoxyCodeLine{00224\ \ \ \textcolor{comment}{//\ used\ in\ the\ analysis\ of\ what\ short\ interactions\ to\ display}}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classSortedObjectList}{SortedObjectList<int,\ TPrimitiveComparator>}}\&\ GetInteractionsFrom();}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classSortedObjectList}{SortedObjectList<int,\ TPrimitiveComparator>}}\&\ GetInteractionsTo();}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DoStackRestraints();}
+\DoxyCodeLine{00228\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DoUseExternalExplicitSAME();}
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DoUseExplicitSAME();}
+\DoxyCodeLine{00230\ \ \ \textcolor{keywordtype}{void}\ ResetOptions();}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{static}\ const\_strlist\ BangList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&A);}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ BangTable(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ A,\ TTTable<TStrList>\&\ Table);}
+\DoxyCodeLine{00234\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ Tang(\mbox{\hyperlink{classTSBond}{TSBond}}\ *B1,\ \mbox{\hyperlink{classTSBond}{TSBond}}\ *B2,\ \mbox{\hyperlink{classTSBond}{TSBond}}\ *Middle,}
+\DoxyCodeLine{00235\ \ \ \ \ olxstr\ *Sequence=NULL);}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{static}\ const\_strlist\ TangList(\mbox{\hyperlink{classTSBond}{TSBond}}\ *Middle);}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \textcolor{comment}{//\ finds\ an\ atom\ through\ global\ Id}}
+\DoxyCodeLine{00239\ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ GetSAtom(\textcolor{keywordtype}{size\_t}\ ind)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//\ finds\ a\ bond\ through\ global\ Id}}
+\DoxyCodeLine{00241\ \ \ \mbox{\hyperlink{classTSBond}{TSBond}}\&\ GetSBond(\textcolor{keywordtype}{size\_t}\ ind)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{//\ global\ search\ through\ loaded\ Files}}
+\DoxyCodeLine{00243\ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ GetSAtom(\textcolor{keyword}{const}\ \mbox{\hyperlink{structTSAtom_1_1Ref}{TSAtom::Ref}}\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00244\ \ \ \textcolor{comment}{//\ global\ search\ through\ loaded\ Files}}
+\DoxyCodeLine{00245\ \ \ \mbox{\hyperlink{classTSBond}{TSBond}}\&\ GetSBond(\textcolor{keyword}{const}\ \mbox{\hyperlink{structTSBond_1_1Ref}{TSBond::Ref}}\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00248\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00249\ \};}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ EndXlibNamespace()}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,173 @@
+\doxysection{cifdata.\+h}
+\hypertarget{cifdata_8h_source}{}\label{cifdata_8h_source}\index{xlib/cifdata.h@{xlib/cifdata.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_xifdata\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_xifdata\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}evalue.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}satom.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ BeginXlibNamespace()}
+\DoxyCodeLine{00017\ class\ ACifValue\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00018\ \ \ TEValueD\ Value;}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ ACifValue(\textcolor{keyword}{const}\ TEValueD\&\ v)\ :\ Value(v)\ \{\}}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{const}\ TEValueD\&\ GetValue()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Value;\ \}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }CifBond\ :\ \textcolor{keyword}{public}\ ACifValue\ \{}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&base,\ \&to;}
+\DoxyCodeLine{00028\ \ \ smatd\ mat;}
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ CifBond(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_base,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_to,\ \textcolor{keyword}{const}\ smatd\&\ \_m,}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{const}\ TEValueD\&\ \_d)}
+\DoxyCodeLine{00032\ \ \ \ \ :\ ACifValue(\_d),}
+\DoxyCodeLine{00033\ \ \ \ \ base(\_base),}
+\DoxyCodeLine{00034\ \ \ \ \ to(\_to),}
+\DoxyCodeLine{00035\ \ \ \ \ mat(\_m)}
+\DoxyCodeLine{00036\ \ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ mat.SetId(1);}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ CifBond(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_base,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_to,\ \textcolor{keyword}{const}\ TEValueD\&\ \_d)}
+\DoxyCodeLine{00040\ \ \ \ \ :\ ACifValue(\_d),}
+\DoxyCodeLine{00041\ \ \ \ \ base(\_base),}
+\DoxyCodeLine{00042\ \ \ \ \ to(\_to)}
+\DoxyCodeLine{00043\ \ \ \{}
+\DoxyCodeLine{00044\ \ \ \ \ mat.I();}
+\DoxyCodeLine{00045\ \ \ \ \ mat.SetId(0);}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ b)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 2;\ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms.Count()\ !=\ 2)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ DoesMatch(*atoms[0],\ *atoms[1])\ ||\ DoesMatch(*atoms[1],\ *atoms[0]);}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ GetA()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ base;\ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ GetB()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ to;\ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{const}\ smatd\ \&GetMatrix()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ mat;\ \}}
+\DoxyCodeLine{00059\ \};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{keyword}{class\ }CifHBond\ :\ \textcolor{keyword}{public}\ CifBond\ \{}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&h;}
+\DoxyCodeLine{00063\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00064\ \ \ CifHBond(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_base,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&\_h,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_to,}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ \_m,\ \textcolor{keyword}{const}\ TEValueD\&\ \_d)}
+\DoxyCodeLine{00066\ \ \ \ \ :\ CifBond(\_base,\ \_to,\ \_m,\ \_d),}
+\DoxyCodeLine{00067\ \ \ \ \ h(\_h)}
+\DoxyCodeLine{00068\ \ \ \{\}}
+\DoxyCodeLine{00069\ \ \ CifHBond(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_base,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_h,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_to,}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{const}\ TEValueD\&\ \_d)}
+\DoxyCodeLine{00071\ \ \ \ \ :\ CifBond(\_base,\ \_to,\ \_d),}
+\DoxyCodeLine{00072\ \ \ \ \ h(\_h)}
+\DoxyCodeLine{00073\ \ \ \{\}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ GetH()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ h;\ \}}
+\DoxyCodeLine{00076\ \};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{class\ }CifAngle\ :\ \textcolor{keyword}{public}\ ACifValue\ \{}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&left,\ \&middle,\ \&right;}
+\DoxyCodeLine{00080\ \ \ smatd\ mat\_l,\ mat\_r;}
+\DoxyCodeLine{00081\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00082\ \ \ CifAngle(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_l,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_m,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_r,}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ \_lm,\ \textcolor{keyword}{const}\ smatd\&\ \_rm,\ \textcolor{keyword}{const}\ TEValueD\&\ \_d)}
+\DoxyCodeLine{00084\ \ \ \ \ :\ ACifValue(\_d),}
+\DoxyCodeLine{00085\ \ \ \ \ left(\_l),}
+\DoxyCodeLine{00086\ \ \ \ \ middle(\_m),}
+\DoxyCodeLine{00087\ \ \ \ \ right(\_r),}
+\DoxyCodeLine{00088\ \ \ \ \ mat\_l(\_lm),}
+\DoxyCodeLine{00089\ \ \ \ \ mat\_r(\_rm)}
+\DoxyCodeLine{00090\ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ mat\_l.SetId(1);}
+\DoxyCodeLine{00092\ \ \ \ \ mat\_r.SetId(1);}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ \ \ CifAngle(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_l,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_m,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_r,\ \textcolor{keyword}{const}\ TEValueD\&\ \_d)}
+\DoxyCodeLine{00095\ \ \ \ \ :\ ACifValue(\_d),}
+\DoxyCodeLine{00096\ \ \ \ \ left(\_l),}
+\DoxyCodeLine{00097\ \ \ \ \ middle(\_m),}
+\DoxyCodeLine{00098\ \ \ \ \ right(\_r)}
+\DoxyCodeLine{00099\ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ mat\_l.I();}
+\DoxyCodeLine{00101\ \ \ \ \ mat\_l.SetId(0);}
+\DoxyCodeLine{00102\ \ \ \ \ mat\_r.I();}
+\DoxyCodeLine{00103\ \ \ \ \ mat\_r.SetId(0);}
+\DoxyCodeLine{00104\ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ l,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ m,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ 3;\ \ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms.Count()\ !=\ 3)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{return}\ DoesMatch(*atoms[0],\ *atoms[1],\ *atoms[2])\ ||}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ DoesMatch(*atoms[2],\ *atoms[1],\ *atoms[0]);}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ \};}
+\DoxyCodeLine{00115\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00118\ \textcolor{keyword}{class\ }TCifDataManager\ \{}
+\DoxyCodeLine{00119\ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<size\_t,\ TPtrList<ACifValue>}}\ >\ Data;}
+\DoxyCodeLine{00120\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00121\ \ \ TCifDataManager()\ \{\}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{virtual}\ \string~TCifDataManager()\ \{\ Clear();\ \}}
+\DoxyCodeLine{00123\ \ \ ACifValue\&\ AddValue(ACifValue*\ v)\ \{\ \textcolor{keywordflow}{return}\ *Data.Add(v-\/>Count()).Add(v);\ \}}
+\DoxyCodeLine{00124\ \ \ ACifValue*\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ a\_[]\ =\ \{\ \&a,\ \&b\ \};}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{return}\ Match(TSAtomCPList(2,\ a\_));}
+\DoxyCodeLine{00127\ \ \ \}}
+\DoxyCodeLine{00128\ \ \ ACifValue*\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ b,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ c)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ a\_[]\ =\ \{\ \&a,\ \&b,\ \&c\ \};}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{return}\ Match(TSAtomCPList(3,\ a\_));}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \ \ ACifValue*\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ b,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ c,}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ d)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00134\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ a\_[]\ =\ \{\ \&a,\ \&b,\ \&c,\ \&d\ \};}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{return}\ Match(TSAtomCPList(4,\ a\_));}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{//\ finds\ a\ cif\ value\ for\ a\ list\ of\ TSATOMS(!)}}
+\DoxyCodeLine{00139\ \ \ ACifValue*\ Match(\textcolor{keyword}{const}\ TSAtomCPList\&\ Atoms)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ci\ =\ Data.IndexOf(Atoms.Count());}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{if}\ (ci\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<ACifValue>}}\&\ items\ =\ Data.GetValue(ci);}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ items.Count();\ i++)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (items[i]-\/>Match(Atoms))\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ items[i];}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00151\ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<ACifValue>}}*\ FindValues(\textcolor{keywordtype}{size\_t}\ number\_of\_atoms)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ci\ =\ Data.IndexOf(number\_of\_atoms);}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{if}\ (ci\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{return}\ \&Data.GetValue(ci);}
+\DoxyCodeLine{00158\ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Data.Count();\ i++)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ Data.GetValue(i).DeleteItems(\textcolor{keyword}{false});}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ Data.Clear();}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ \};}
+\DoxyCodeLine{00166\ EndXlibNamespace()}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

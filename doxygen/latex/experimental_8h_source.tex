@@ -1,0 +1,86 @@
+\doxysection{experimental.\+h}
+\hypertarget{experimental_8h_source}{}\label{experimental_8h_source}\index{xlib/experimental.h@{xlib/experimental.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_olx\_experimantal\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_olx\_experimantal\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}chemdata.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}macroerror.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}evalue.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\ \ \#include\ "{}pyext.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ BeginXlibNamespace()}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ class\ ExperimentalDetails\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{double}\ Radiation,\ RadiationEnergy;}
+\DoxyCodeLine{00027\ \ \ TEValueD\ TempValue;\ \ \textcolor{comment}{//\ always\ in\ C}}
+\DoxyCodeLine{00028\ \ \ vec3d\ CrystalSize;}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{bool}\ SetSize(\textcolor{keyword}{const}\ olxstr\&\ t);}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{bool}\ SetWL(\textcolor{keyword}{const}\ olxstr\&\ t);}
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ ExperimentalDetails()\ :\ TempValue(-\/1000)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ SetRadiation(0.71073);}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ \ \ ExperimentalDetails(\textcolor{keyword}{const}\ ExperimentalDetails\&\ ed)\ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ *\textcolor{keyword}{this}\ =\ ed;}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ \ \ ExperimentalDetails\&\ operator\ =\ (\textcolor{keyword}{const}\ ExperimentalDetails\&\ ed)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ SetRadiation(ed.Radiation);}
+\DoxyCodeLine{00040\ \ \ \ \ TempValue\ =\ ed.TempValue;}
+\DoxyCodeLine{00041\ \ \ \ \ CrystalSize\ =\ ed.CrystalSize;}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{double}\ GetRadiation()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Radiation;\ \ \}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ SetRadiation(\textcolor{keywordtype}{double}\ lambda)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ Radiation\ =\ lambda;}
+\DoxyCodeLine{00047\ \ \ \ \ RadiationEnergy\ =\ XElementLib::Wavelength2eV(Radiation);}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{double}\ GetRadiationEnergy()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ RadiationEnergy;\ \ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{bool}\ IsTemperatureSet()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TempValue.GetV()\ >=\ -\/273.15;\ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{comment}{//\ checks\ for\ scale\ type\ \{F,C,K\}}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{bool}\ SetTemp(\textcolor{keyword}{const}\ olxstr\&\ t);}
+\DoxyCodeLine{00053\ \ \ DefPropC(TEValueD,\ TempValue)}
+\DoxyCodeLine{00054\ \ \ DefPropC(vec3d,\ CrystalSize)}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ SetCrystalSize(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ z)\ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ CrystalSize\ =\ vec3d(x,y,z);}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ SetRadiation(0.71073);}
+\DoxyCodeLine{00060\ \ \ \ \ CrystalSize.Null();}
+\DoxyCodeLine{00061\ \ \ \ \ TempValue\ =\ -\/1000;}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\textcolor{keyword}{class}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00065\ \ \ PyObject*\ PyExport();}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{void}\ LibTemperature(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ LibRadiation(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{void}\ LibSize(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name=EmptyString());}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{struct\ }VPtr\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structolx__virtual__ptr}{olx\_virtual\_ptr}}<ExperimentalDetails>\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{virtual}\ IOlxObject\ *get\_ptr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00076\ \ \ \};}
+\DoxyCodeLine{00077\ \};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ EndXlibNamespace()}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

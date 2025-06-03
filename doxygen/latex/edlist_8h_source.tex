@@ -1,0 +1,302 @@
+\doxysection{edlist.\+h}
+\hypertarget{edlist_8h_source}{}\label{edlist_8h_source}\index{sdl/edlist.h@{sdl/edlist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_edlist\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_edlist\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}etbuffer.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ template\ <typename\ T>}
+\DoxyCodeLine{00016\ class\ TDirectionalListEntry\ \{}
+\DoxyCodeLine{00017\ \ \ \mbox{\hyperlink{classTTBuffer}{TTBuffer<T>}}*\ Data;}
+\DoxyCodeLine{00018\ \ \ TDirectionalListEntry<T>*\ NextEntry;}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ TDirectionalListEntry(\textcolor{keyword}{const}\ TDirectionalListEntry\&\ entry)\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ NextEntry\ =\ NULL;}
+\DoxyCodeLine{00022\ \ \ \ \ Data\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTTBuffer}{TTBuffer<T>}}(*entry.Data);}
+\DoxyCodeLine{00023\ \ \ \}}
+\DoxyCodeLine{00024\ \ \ TDirectionalListEntry(\textcolor{keywordtype}{size\_t}\ size\ =\ DefBufferSize)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ NextEntry\ =\ NULL;}
+\DoxyCodeLine{00026\ \ \ \ \ Data\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTTBuffer}{TTBuffer<T>}}(size);}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \ \ TDirectionalListEntry(T*\ memoryBlockToOwn,\ \textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ NextEntry\ =\ NULL;}
+\DoxyCodeLine{00030\ \ \ \ \ Data\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTTBuffer}{TTBuffer<T>}}(memoryBlockToOwn,\ size);}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ \string~TDirectionalListEntry()\ \ \{\ \ \textcolor{keyword}{delete}\ Data;\ \ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//\ returns\ the\ number\ of\ written\ elements}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ T*\ data,\ \textcolor{keywordtype}{size\_t}\ count)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{return}\ Data-\/>Write(data,\ count);}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ returns\ the\ number\ of\ written\ elements}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ T*\ data,\ \textcolor{keywordtype}{size\_t}\ offset,\ \textcolor{keywordtype}{size\_t}\ count)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ Data-\/>Write(data,\ offset,\ count);}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{comment}{//\ returns\ the\ number\ of\ read\ elements}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{size\_t}\ Read(T*\ data,\ \textcolor{keywordtype}{size\_t}\ offset,\ \textcolor{keywordtype}{size\_t}\ count)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ Data-\/>Read(data,\ offset,\ count);}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{comment}{//\ returns\ 1\ if\ written\ and\ 0\ otherwise}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ T\&\ entity)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{return}\ Data-\/>Write(entity);}
+\DoxyCodeLine{00053\ \ \ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ TDirectionalListEntry*\ AddEntry(\textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{if}\ (NextEntry\ !=\ NULL)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}already\ initialised"{}});}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ TDirectionalListEntry<T>*\ e\ =\ \textcolor{keyword}{new}\ TDirectionalListEntry<T>(size);}
+\DoxyCodeLine{00060\ \ \ \ \ NextEntry\ =\ e;}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ TDirectionalListEntry*\ AddEntry(T*\ memoryBlockToOwn,\ \textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{if}\ (NextEntry\ !=\ NULL)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}already\ initialised"{}});}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{return}\ (NextEntry\ =\ \textcolor{keyword}{new}\ TDirectionalListEntry<T>(memoryBlockToOwn,\ size));}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ TDirectionalListEntry*\ AddEntry(\textcolor{keyword}{const}\ TDirectionalListEntry\&\ entry)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{return}\ (NextEntry\ =\ \textcolor{keyword}{new}\ TDirectionalListEntry<T>(entry));}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ Reset()\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ NextEntry\ =\ NULL;}
+\DoxyCodeLine{00077\ \ \ \ \ Data-\/>SetSize(0);}
+\DoxyCodeLine{00078\ \ \ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ TDirectionalListEntry*\ GetNext()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ NextEntry;\ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{const}\ T\&\ Get(\textcolor{keywordtype}{size\_t}\ ind\ )\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Data-\/>Get(ind);\ \ \}}
+\DoxyCodeLine{00082\ \ \ T\&\ Item(\textcolor{keywordtype}{size\_t}\ ind\ )\ \ \{\ \ \textcolor{keywordflow}{return}\ Data-\/>Item(ind);\ \ \}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{size\_t}\ ind,\ T\&\ val\ )\ \ \{\ \ Data-\/>Set(ind,\ val);\ \ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{const}\ T*\ GetData()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Data-\/>GetData();\ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{size\_t}\ GetSize()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Data-\/>GetSize();\ \ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{size\_t}\ RawLen()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Data-\/>RawLen();\ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{size\_t}\ GetCapacity()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Data-\/>GetCapacity();\ \ \}}
+\DoxyCodeLine{00088\ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{class\ }TDirectionalList\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ TDirectionalListEntry<T>*\ Head,\ *Tail;}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Length;}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ SegmentSize;}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ GetSegmentSize()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ SegmentSize;\ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{comment}{//\ updates\ the\ tail\ and\ the\ length\ of\ this\ object}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateLength()\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ TDirectionalListEntry<T>*\ entry\ =\ Head;}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ Length\ =\ 0;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (entry\ !=\ NULL)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ Length\ +=\ entry-\/>GetSize();}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entry-\/>GetNext()\ ==\ NULL)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ Tail\ =\ entry;}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ entry\ =\ entry-\/>GetNext();}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00113\ \ \ TDirectionalList(\textcolor{keywordtype}{size\_t}\ segmentSize=DefBufferSize)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ SegmentSize\ =\ olx\_max(1,\ segmentSize);}
+\DoxyCodeLine{00115\ \ \ \ \ Length\ =\ 0;}
+\DoxyCodeLine{00116\ \ \ \ \ Tail\ =\ Head\ =\ \textcolor{keyword}{new}\ TDirectionalListEntry<T>(SegmentSize);}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ TDirectionalList(\textcolor{keyword}{const}\ TDirectionalList\&\ list)\ \ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ TDirectionalListEntry<T>*\ entry\ =\ list.GetHead();}
+\DoxyCodeLine{00121\ \ \ \ \ \ Tail\ =\ Head\ =\ \textcolor{keyword}{new}\ TDirectionalListEntry<T>(*entry);}
+\DoxyCodeLine{00122\ \ \ \ \ \ SegmentSize\ =\ list.GetSegmentSize();}
+\DoxyCodeLine{00123\ \ \ \ \ \ \textcolor{keywordflow}{while}\ (entry\ !=\ NULL)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ Tail-\/>AddEntry(*entry);}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ entry\ =\ entry-\/>GetNext();}
+\DoxyCodeLine{00126\ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \ Length\ =\ list.Length;}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{virtual}\ \string~TDirectionalList()\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ Clear();}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{delete}\ Head;}
+\DoxyCodeLine{00133\ \ \ \}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ TDirectionalListEntry<T>*\ entry\ =\ Head-\/>GetNext();}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{while}\ (entry\ !=\ NULL)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ TDirectionalListEntry<T>*\ en\ =\ entry-\/>GetNext();}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ entry;}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ entry\ =\ en;}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ Tail\ =\ Head;}
+\DoxyCodeLine{00143\ \ \ \ \ Head-\/>Reset();}
+\DoxyCodeLine{00144\ \ \ \ \ Length\ =\ 0;}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ TDirectionalListEntry<T>*\ GetHead()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Head;\ \ \}}
+\DoxyCodeLine{00148\ \ \ TDirectionalListEntry<T>*\ GetTail()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Tail;\ \ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{comment}{/*\ returns\ the\ entry\ at\ specified\ position\ and\ updates\ position\ to\ in\ the\ found\ entry}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ \ \ \ \ so\ that\ a\ caller\ can\ use\ this\ position\ to\ read\ directly\ from\ the\ entry\ */}}
+\DoxyCodeLine{00151\ \ \ TDirectionalListEntry<T>*\ GetEntryAtPosition(\textcolor{keywordtype}{size\_t}\&\ pos)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00152\ \ \ \ \ TDirectionalListEntry<T>\ *entry\ =\ Head;}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{while}\ (pos\ >\ entry-\/>GetSize())\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ pos\ -\/=\ entry-\/>GetSize();}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ entry\ =\ entry-\/>GetNext();}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{return}\ entry;}
+\DoxyCodeLine{00158\ \ \ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \textcolor{keywordtype}{size\_t}\ GetLength()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Length;\ \ \}}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (Length\ ==\ 0);\ \ \}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ T\&\ Get(\textcolor{keywordtype}{size\_t}\ index)\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ >=\ Length)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ index,\ 0,\ Length\ +\ 1);}
+\DoxyCodeLine{00167\ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \ \ TDirectionalListEntry<T>*\ entry\ =\ Head;}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ 0;}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordflow}{while}\ ((ind\ +\ entry-\/>GetSize())\ <=\ index)\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ ind\ +=\ entry-\/>GetSize();}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ entry\ =\ entry-\/>GetNext();}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entry\ ==\ NULL)\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTIndexOutOfRangeException}{TIndexOutOfRangeException}}(\_\_OlxSourceInfo,\ index,\ 0,\ Length\ -\/\ 1);}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{return}\ entry-\/>Item(\ index-\/ind\ );}
+\DoxyCodeLine{00178\ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{//\ writes\ at\ the\ end\ od\ the\ list}}
+\DoxyCodeLine{00180\ \ \ TDirectionalList\&\ Write(\textcolor{keyword}{const}\ T*\ Data,\ \textcolor{keywordtype}{size\_t}\ length)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ written=0;}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{while}\ (written\ <\ length)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ written\ +=\ Tail-\/>Write(\&Data[written],\ length-\/written);}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (written\ <\ length)\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ Tail\ =\ Tail-\/>AddEntry(SegmentSize);}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \ \ \}}
+\DoxyCodeLine{00188\ \ \ \ \ Length\ +=\ length;}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00190\ \ \ \}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \textcolor{comment}{//\ writes\ starting\ from\ offset\ overwriting\ existing\ data}}
+\DoxyCodeLine{00193\ \ \ TDirectionalList\&\ Write(\textcolor{keyword}{const}\ T*\ Data,\ \textcolor{keywordtype}{size\_t}\ offset,\ \textcolor{keywordtype}{size\_t}\ length)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordflow}{if}\ (offset\ >=\ Length)\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ offset,}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ 0,\ Length\ +\ 1);}
+\DoxyCodeLine{00197\ \ \ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ firstOffset\ =\ offset;}
+\DoxyCodeLine{00199\ \ \ \ \ TDirectionalListEntry<T>\ *entry\ =\ GetEntryAtPosition(firstOffset);}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordflow}{if}\ (offset\ +\ length\ >\ Length)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ Length\ =\ offset\ +\ length;}
+\DoxyCodeLine{00202\ \ \ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ written\ =\ entry-\/>Write(Data,\ firstOffset,\ length);}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keywordflow}{while}\ (written\ <\ length)\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (entry-\/>GetNext()\ ==\ NULL)\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ allocate\ one\ big\ chunk\ of\ memory}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ entry\ =\ entry-\/>AddEntry(olx\_max(length-\/written,\ SegmentSize));}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ Tail\ =\ entry;}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ entry\ =\ entry-\/>GetNext();}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ written\ +=\ entry-\/>Write(\&Data[written],\ 0,\ length-\/written);}
+\DoxyCodeLine{00214\ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00216\ \ \ \}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{const}\ TDirectionalList\&\ Read(T*\ Data,\ \textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ length)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00219\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00220\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ from,\ 0,\ Length+1);}
+\DoxyCodeLine{00221\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ from+length,\ 0,\ Length+1);}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ firstOffset\ =\ from;}
+\DoxyCodeLine{00224\ \ \ \ \ TDirectionalListEntry<T>\ *entry\ =\ GetEntryAtPosition(firstOffset);}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ read\ =\ entry-\/>Read(Data,\ firstOffset,\ length);}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordflow}{while}\ (read\ <\ length)\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ entry\ =\ entry-\/>GetNext();}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ read\ +=\ entry-\/>Read(\&Data[read],\ 0,\ length-\/read);}
+\DoxyCodeLine{00229\ \ \ \ \ \}}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00231\ \ \ \}}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ TDirectionalList\&\ Write(\textcolor{keyword}{const}\ T\&\ entity)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordflow}{while}\ (Tail-\/>Write(entity)\ ==\ 0)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ Tail\ =\ Tail-\/>AddEntry(SegmentSize);}
+\DoxyCodeLine{00236\ \ \ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \ \ Length\ +=\ 1;}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{virtual}\ TIString\ ToString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00242\ \ \ \ \ olxstr\ s(EmptyString(),\ Length);}
+\DoxyCodeLine{00243\ \ \ \ \ ToString(s);}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{00245\ \ \ \}}
+\DoxyCodeLine{00246\ \ \ olxcstr\&\ ToString(olxcstr\&\ cstr,\ \textcolor{keywordtype}{size\_t}\ pos=0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\ >=\ Length)\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cstr;}
+\DoxyCodeLine{00249\ \ \ \ \ \}}
+\DoxyCodeLine{00250\ \ \ \ \ cstr.SetCapacity(cstr.Length()\ +\ Length\ -\/\ pos);}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ p\ =\ pos;}
+\DoxyCodeLine{00252\ \ \ \ \ TDirectionalListEntry<T>*\ en\ =\ GetEntryAtPosition(p);}
+\DoxyCodeLine{00253\ \ \ \ \ cstr.Append(\&en-\/>GetData()[p],\ en-\/>GetSize()\ -\/\ p);}
+\DoxyCodeLine{00254\ \ \ \ \ en\ =\ en-\/>GetNext();}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordflow}{while}\ (en\ !=\ NULL)\ \{}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ cstr.Append(en-\/>GetData(),\ en-\/>GetSize());}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ en\ =\ en-\/>GetNext();}
+\DoxyCodeLine{00258\ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{return}\ cstr;}
+\DoxyCodeLine{00260\ \ \ \}}
+\DoxyCodeLine{00261\ \ \ olxwstr\&\ ToString(olxwstr\&\ wstr,\ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\ >=\ Length)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ wstr;}
+\DoxyCodeLine{00264\ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \ \ wstr.SetCapacity(wstr.Length()\ +\ Length-\/pos);}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ p\ =\ pos;}
+\DoxyCodeLine{00267\ \ \ \ \ TDirectionalListEntry<T>*\ en\ =\ GetEntryAtPosition(p);}
+\DoxyCodeLine{00268\ \ \ \ \ wstr.Append(\&en-\/>GetData()[p],\ en-\/>GetSize()-\/p);}
+\DoxyCodeLine{00269\ \ \ \ \ en\ =\ en-\/>GetNext();}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordflow}{while}\ (en\ !=\ NULL)\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ wstr.Append(en-\/>GetData(),\ en-\/>GetSize());}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ en\ =\ en-\/>GetNext();}
+\DoxyCodeLine{00273\ \ \ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordflow}{return}\ wstr;}
+\DoxyCodeLine{00275\ \ \ \}}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \ \ \mbox{\hyperlink{classIOutputStream}{IOutputStream}}\ \&ToStream(\mbox{\hyperlink{classIOutputStream}{IOutputStream}}\ \&out,\ \textcolor{keywordtype}{size\_t}\ pos\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\ >=\ Length)\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{00280\ \ \ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ p\ =\ pos;}
+\DoxyCodeLine{00282\ \ \ \ \ TDirectionalListEntry<T>*\ en\ =\ GetEntryAtPosition(p);}
+\DoxyCodeLine{00283\ \ \ \ \ out.Write((\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*)\&en-\/>GetData()[p],\ (en-\/>GetSize()\ -\/\ p)*\textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{00284\ \ \ \ \ en\ =\ en-\/>GetNext();}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keywordflow}{while}\ (en\ !=\ NULL)\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ out.Write((\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)en-\/>GetData(),\ en-\/>GetSize()*\textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ en\ =\ en-\/>GetNext();}
+\DoxyCodeLine{00288\ \ \ \ \ \}}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{00290\ \ \ \}}
+\DoxyCodeLine{00291\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00292\ \ \ \textcolor{keyword}{typedef}\ T\ list\_item\_type;}
+\DoxyCodeLine{00293\ \};}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ EndEsdlNamespace()}
+\DoxyCodeLine{00296\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

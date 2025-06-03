@@ -1,0 +1,120 @@
+\doxysection{os\+\_\+util.\+h}
+\hypertarget{os__util_8h_source}{}\label{os__util_8h_source}\index{sdl/os\_util.h@{sdl/os\_util.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_os\_util\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_os\_util\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#ifdef\ \_\_BORLANDC\_\_\ \ }\textcolor{comment}{//\ time\_t\ definition...}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\ \ \#include\ <time.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ includes...}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#\ \ include\ <process.h>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#\ \ include\ <pthread.h>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#\ \ include\ <time.h>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#\ \ include\ <errno.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#\ \ include\ <unistd.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ BeginEsdlNamespace()}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ simple\ OS\ utilities...}}
+\DoxyCodeLine{00029\ bool\ olx\_setenv(const\ olxstr\&\ name,\ const\ olxstr\&\ val);}
+\DoxyCodeLine{00030\ olxstr\ olx\_getenv(const\ olxstr\&\ name);}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ a\ convenience\ function,\ takin\ key=val\ string}}
+\DoxyCodeLine{00032\ \textcolor{keywordtype}{bool}\ olx\_setenv(const\ olxstr\&\ v);}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ olx\_env\_sep()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{charliteral}{';'};\ \}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{bool}\ IsWow64();}
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{/*\ this\ to\ work\ around\ the\ DLL\ handle.\ A\ DLL\ should\ set\ the\ handle\ in\ the}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ \ DLLMain\ function,\ otherwise,\ module\ handle\ dependent\ functions\ will\ use\ the}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ module\ of\ the\ executable\ which\ has\ loaded\ the\ DLL}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{struct\ }Module\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{static}\ HANDLE\ handle;}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00043\ \ \ \ \ Module()\ \{\}}
+\DoxyCodeLine{00044\ \ \ \ \ HANDLE\ GetHandle()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00045\ \ \ \ \ HANDLE\ SetHandle(HANDLE\ h);}
+\DoxyCodeLine{00046\ \ \ \};}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ olx\_env\_sep()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{charliteral}{':'};\ \}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ http://en.wikipedia.org/wiki/Critical\_section}}
+\DoxyCodeLine{00051\ \textcolor{keyword}{struct\ }olx\_critical\_section\ \ \{}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00053\ \ \ CRITICAL\_SECTION\ cs;}
+\DoxyCodeLine{00054\ \ \ olx\_critical\_section()\ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ InitializeCriticalSection(\&cs);}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \string~olx\_critical\_section()\ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ DeleteCriticalSection(\&cs);}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ tryEnter()\ \ \{\ \ \textcolor{keywordflow}{return}\ TryEnterCriticalSection(\&cs)\ !=\ 0;\ \ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ enter()\ \{\ \ EnterCriticalSection(\&cs);\ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ leave()\ \{\ \ LeaveCriticalSection(\&cs);\ \ \}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00064\ \ \ pthread\_mutex\_t\ cs;}
+\DoxyCodeLine{00065\ \ \ pthread\_mutexattr\_t\ csa;}
+\DoxyCodeLine{00066\ \ \ olx\_critical\_section()\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ pthread\_mutexattr\_init(\&csa);}
+\DoxyCodeLine{00068\ \ \ \ \ pthread\_mutexattr\_settype(\&csa,\ PTHREAD\_MUTEX\_RECURSIVE);}
+\DoxyCodeLine{00069\ \ \ \ \ pthread\_mutex\_init(\&cs,\ \&csa);}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \string~olx\_critical\_section()\ \ \{}
+\DoxyCodeLine{00073\ \ \ \ \ pthread\_mutex\_destroy(\&cs);}
+\DoxyCodeLine{00074\ \ \ \ \ pthread\_mutexattr\_destroy(\&csa);}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{bool}\ tryEnter()\ \ \{\ \ \textcolor{keywordflow}{return}\ (pthread\_mutex\_trylock(\&cs)\ !=\ EBUSY);\ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ enter()\ \{\ \ pthread\_mutex\_lock(\&cs);\ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{void}\ leave()\ \{\ \ pthread\_mutex\_unlock(\&cs);\ \ \}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00080\ \};}
+\DoxyCodeLine{00081\ \textcolor{comment}{/*\ 'scope\ critical\ section'\ to\ be\ used\ for\ automatic\ management\ of\ small}}
+\DoxyCodeLine{00082\ \textcolor{comment}{portions\ of\ code.\ Use\ it\ like:}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ \ \{}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ \ \ \ //\ make\ sure\ that\ optimiser\ does\ not\ delete\ it\ at\ once...}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ \ \ volatile\ olx\_scope\_cs\ \_cs(TBasicApp::GetCriticalSection());}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ \ \ \ \{\ code..\ \}}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ \ \}}}
+\DoxyCodeLine{00088\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00089\ \textcolor{keyword}{struct\ }olx\_scope\_cs\ \ \{}
+\DoxyCodeLine{00090\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00091\ \ \ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}*\ cs;}
+\DoxyCodeLine{00092\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00093\ \ \ olx\_scope\_cs(\mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}*\ \_cs)\ :\ cs(\_cs)\ \ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{if}\ (cs\ !=\ NULL)\ cs-\/>enter();}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \ \ olx\_scope\_cs(\mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\&\ \_cs)\ :\ cs(\&\_cs)\ \ \{\ \ cs-\/>enter();\ \ \}}
+\DoxyCodeLine{00097\ \ \ \string~olx\_scope\_cs()\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{if}\ (cs\ !=\ NULL)\ cs-\/>leave();}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ \};}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ olx\_sleep(time\_t\ msec)\ \ \{}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00104\ \ \ SleepEx((DWORD)msec,\ TRUE);}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00106\ \ \ timespec\ tm;}
+\DoxyCodeLine{00107\ \ \ tm.tv\_sec\ =\ msec/1000;}
+\DoxyCodeLine{00108\ \ \ tm.tv\_nsec\ =\ (msec\%1000)*1000*1000;}
+\DoxyCodeLine{00109\ \ \ nanosleep(\&tm,\ NULL);}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00111\ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ EndEsdlNamespace()}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

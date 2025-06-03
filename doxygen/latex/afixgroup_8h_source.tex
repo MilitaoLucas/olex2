@@ -1,0 +1,243 @@
+\doxysection{afixgroup.\+h}
+\hypertarget{afixgroup_8h_source}{}\label{afixgroup_8h_source}\index{xlib/afixgroup.h@{xlib/afixgroup.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olxs\_afix\_group\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olxs\_afix\_group\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}catom.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BeginXlibNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ class\ TAfixGroup\ :\ public\ \mbox{\hyperlink{classACollectionItem}{ACollectionItem}}\ \{}
+\DoxyCodeLine{00017\ \ \ \mbox{\hyperlink{classTAfixGroups}{TAfixGroups}}\&\ Parent;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{size\_t}\ Id;}
+\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ Pivot;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{double}\ D,\ Sof,\ U;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{int}\ Afix;}
+\DoxyCodeLine{00022\ \ \ TCAtomPList\ Dependent;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ n\_names[],\ m\_names[];}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ TAfixGroup(\mbox{\hyperlink{classTAfixGroups}{TAfixGroups}}\&\ parent)}
+\DoxyCodeLine{00026\ \ \ \ \ :\ Parent(parent),\ D(0),\ Sof(0),\ U(0)}
+\DoxyCodeLine{00027\ \ \ \{\}}
+\DoxyCodeLine{00028\ \ \ TAfixGroup(\mbox{\hyperlink{classTAfixGroups}{TAfixGroups}}\&\ parent,\ \textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id},\ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ pivot,}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{int}\ afix,\ \textcolor{keywordtype}{double}\ d\ =\ 0,\ \textcolor{keywordtype}{double}\ sof\ =\ 0,\ \textcolor{keywordtype}{double}\ u\ =\ 0)}
+\DoxyCodeLine{00030\ \ \ \ \ :\ Parent(parent),\ Id(id),\ Pivot(pivot),\ D(d),\ Sof(sof),\ U(u),\ Afix(afix)}
+\DoxyCodeLine{00031\ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{if}\ (pivot\ !=\ 0)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (HasExcplicitPivot()\ ||\ IsUnbound())\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ pivot-\/>SetDependentAfixGroup(\textcolor{keyword}{this});}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ pivot-\/>AddDependentHfixGroup(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ TAfixGroup(\mbox{\hyperlink{classTAfixGroups}{TAfixGroups}}\&\ parent,\ \textcolor{keyword}{const}\ TAfixGroup\&\ ag)}
+\DoxyCodeLine{00042\ \ \ \ \ :\ Parent(parent)}
+\DoxyCodeLine{00043\ \ \ \{}
+\DoxyCodeLine{00044\ \ \ \ \ Assign(ag);}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{comment}{//\ note\ that\ Clear\ just\ removes\ the\ item\ from\ the\ parent\ list,\ calling\ this}}
+\DoxyCodeLine{00047\ \ \ \string~TAfixGroup();}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAfixGroups}{TAfixGroups}}\ \&GetParent()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Parent;\ \}}
+\DoxyCodeLine{00049\ \ \ \mbox{\hyperlink{classTAfixGroups}{TAfixGroups}}\ \&GetParent()\ \{\ \textcolor{keywordflow}{return}\ Parent;\ \}}
+\DoxyCodeLine{00050\ \ \ DefPropP(\textcolor{keywordtype}{double},\ D)}
+\DoxyCodeLine{00051\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Sof)}
+\DoxyCodeLine{00052\ \ \ DefPropP(\textcolor{keywordtype}{double},\ U)}
+\DoxyCodeLine{00053\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ Id)}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TAfixGroup\&\ ag);}
+\DoxyCodeLine{00055\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ GetPivot()\ \{\ \ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{if}\ (Pivot\ ==\ 0)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}null\ pivot"{}});}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{return}\ *Pivot;}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ SetPivot(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca)\ \ \{}
+\DoxyCodeLine{00062\ \ \ \ \ Pivot\ =\ \&ca;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{if}\ (HasExcplicitPivot()\ ||\ IsUnbound())\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ Pivot-\/>SetDependentAfixGroup(\textcolor{keyword}{this});}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ Pivot-\/>AddDependentHfixGroup(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ GetPivot()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{if}\ (Pivot\ ==\ 0)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}null\ pivot"{}});}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ *Pivot;}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{int}\ GetM()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GetM(Afix);\ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{int}\ GetN()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GetN(Afix);\ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{bool}\ IsSizable()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ IsSizable(Afix);\ \ \}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{bool}\ IsRotating()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ IsRotating(Afix);\ \ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{bool}\ IsRefinable()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ IsRefinable(Afix);\ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{bool}\ IsUnbound()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ IsUnbound(Afix);\ \ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{bool}\ HasExcplicitPivot()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ HasExcplicitPivot(Afix);\ \ \}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{bool}\ HasImplicitPivot()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ HasImplicitPivot(Afix);\ \ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordtype}{bool}\ IsFixedGroup()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ IsFixedGroup(Afix);\ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{bool}\ IsFittedRing()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ IsFittedRing(Afix);\ \ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{bool}\ IsFittedGroup()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ IsFittedGroup(Afix);\ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{bool}\ IsRiding()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ IsRiding(Afix);\ \ \}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ GetM(\textcolor{keywordtype}{int}\ afix)\ \{\ \ \textcolor{keywordflow}{return}\ afix/10;\ \ \}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ GetN(\textcolor{keywordtype}{int}\ afix)\ \{\ \ \textcolor{keywordflow}{return}\ afix\%10;\ \ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsFixedGroup(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ m\ =\ GetM(afix);}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{return}\ !(m\ ==\ 0\ ||\ m\ >\ 16);}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsFittedRing(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ m\ =\ GetM(afix);}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ (m\ ==\ 5\ ||\ m\ ==\ 6\ ||\ m\ ==\ 7\ ||\ m\ ==\ 10\ ||\ m\ ==\ 11);}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ExpectedAtomCount(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ m\ =\ GetM(afix);}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{switch}\ (m)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{case}\ 5:\ \textcolor{keywordflow}{case}\ 6:\ \textcolor{keywordflow}{case}\ 10:\ \textcolor{keywordflow}{return}\ m;}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{case}\ 7:\ \textcolor{keywordflow}{return}\ 6;}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{case}\ 11:\ \textcolor{keywordflow}{return}\ 10;}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidSize;}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsFittedGroup(\textcolor{keywordtype}{int}\ afix)\ \ \{\ \textcolor{keywordflow}{return}\ GetM(afix)\ >\ 16;\ \}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HasExcplicitPivot(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\ =\ GetN(afix);}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ (n\ ==\ 6\ ||\ n\ ==\ 9);}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//\ these\ require\ an\ implicit\ pivot\ (outside\ the\ group)}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HasImplicitPivot(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\ =\ GetN(afix);}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ (n\ ==\ 3\ ||\ n\ ==\ 4\ ||\ n\ ==\ 7\ ||\ n\ ==\ 8\ ||\ afix\ ==\ -\/1);}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{//\ these\ are\ just\ 'service'\ AFIX...}}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HasPivot(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\ =\ GetN(afix);}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{return}\ !(n\ ==\ 1\ ||\ n\ ==\ 2);}
+\DoxyCodeLine{00127\ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsRiding(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ (HasImplicitPivot(afix)\ ||\ IsDependent(afix));}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \textcolor{comment}{//bond\ lengths/size\ can\ are\ uniformly\ sizeable}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsSizable(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\ =\ GetN(afix);}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ (n\ ==\ 4\ ||\ n\ ==\ 8\ ||\ n\ ==\ 9);}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{//free\ rotating\ or\ pivoted\ rotating}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsRotating(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\ =\ GetN(afix);}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ (n\ ==\ 6\ ||\ n\ ==\ 7\ ||\ n\ ==\ 8\ ||\ n\ ==\ 9);}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{comment}{//\ if\ the\ group\ has\ a\ refineable\ parameter\ (size,\ angle\ etc)}}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsRefinable(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\ =\ GetN(afix);}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{return}\ (n\ ==\ 4\ ||\ n\ ==6\ ||\ n\ ==\ 7\ ||\ n\ ==\ 8\ ||\ n\ ==\ 9);}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \textcolor{comment}{//\ these\ require\ no\ pivot\ atom}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsUnbound(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{return}\ (afix\ ==\ 1\ ||\ afix\ ==\ 2);}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsDependent(\textcolor{keywordtype}{int}\ afix)\ \ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ GetN(afix)\ ==\ 5;}
+\DoxyCodeLine{00152\ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ AddDependent(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ Dependent.Add(\&a);}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{if}\ (a.GetParentAfixGroup()\ !=\ 0)}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ a.GetParentAfixGroup()-\/>RemoveDependent(a);}
+\DoxyCodeLine{00157\ \ \ \ \ a.SetParentAfixGroup(\textcolor{keyword}{this});}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{return}\ a;}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ RemoveDependent(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\ \ \{}
+\DoxyCodeLine{00161\ \ \ \ \ Dependent.Remove(\&a);}
+\DoxyCodeLine{00162\ \ \ \ \ a.SetParentAfixGroup(0);}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ a;}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keywordtype}{int}\ GetAfix()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Afix;\ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordtype}{void}\ SetAfix(\textcolor{keywordtype}{int}\ a)\ \ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{if}\ (a\ ==\ 0)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ Clear();}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \ \ Afix\ =\ a;}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00173\ \ \ \textcolor{keywordtype}{void}\ Sort();}
+\DoxyCodeLine{00174\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//\ checks\ if\ this\ can\ be\ used\ in\ the\ refinement\ -\/\ e.g.\ not\ al\ atoms\ are\ fixed}}
+\DoxyCodeLine{00176\ \ \ \textcolor{keywordtype}{bool}\ IsUsable()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Dependent.Count();\ \ \}}
+\DoxyCodeLine{00178\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Dependent[i];\ \ \}}
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{//\ describes\ current\ group\ (just\ the\ AFIX)}}
+\DoxyCodeLine{00180\ \ \ olxstr\ Describe()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00181\ \ \ \textcolor{comment}{//\ returns\ string\ describing\ the\ group\ content}}
+\DoxyCodeLine{00182\ \ \ TIString\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00186\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms);}
+\DoxyCodeLine{00187\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00188\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00189\ \};}
+\DoxyCodeLine{00190\ \textcolor{comment}{//....................................................................................}}
+\DoxyCodeLine{00191\ \textcolor{keyword}{class\ }TAfixGroups\ \{}
+\DoxyCodeLine{00192\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TAfixGroup>}}\ Groups;}
+\DoxyCodeLine{00193\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ RM;}
+\DoxyCodeLine{00195\ \ \ TAfixGroups(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ parent)\ :\ RM(parent)\ \{\}}
+\DoxyCodeLine{00196\ \ \ TAfixGroup\&\ New(\mbox{\hyperlink{classTCAtom}{TCAtom}}*\ pivot,\ \textcolor{keywordtype}{int}\ Afix,\ \textcolor{keywordtype}{double}\ d=0,\ \textcolor{keywordtype}{double}\ sof=0,}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordtype}{double}\ u\ =\ 0)}
+\DoxyCodeLine{00198\ \ \ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keywordflow}{return}\ Groups.Add(}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \textcolor{keyword}{new}\ TAfixGroup(*\textcolor{keyword}{this},\ Groups.Count(),\ pivot,\ Afix,\ d,\ sof,\ u));}
+\DoxyCodeLine{00201\ \ \ \}}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Groups.Count();\ \ \}}
+\DoxyCodeLine{00203\ \ \ TAfixGroup\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \ \textcolor{keywordflow}{return}\ Groups[i];\ \ \}}
+\DoxyCodeLine{00204\ \ \ \textcolor{keyword}{const}\ TAfixGroup\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Groups[i];\ \ \}}
+\DoxyCodeLine{00205\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{\ \ Groups.Clear();\ \ \}}
+\DoxyCodeLine{00206\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ i)\ \ \{}
+\DoxyCodeLine{00207\ \ \ \ \ Groups.Delete(i);}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i;\ j\ <\ Groups.Count();\ j++)\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ Groups[j].SetId(j);}
+\DoxyCodeLine{00210\ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TAfixGroups\&\ ags)\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ Clear();}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ ags.Count();\ i++\ )\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!ags[i].IsEmpty())\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ Groups.Add(\textcolor{keyword}{new}\ TAfixGroup(*\textcolor{keyword}{this},\ ags[i]));}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ Groups.GetLast().SetId(Groups.Count()\ -\/\ 1);}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \ \ \}}
+\DoxyCodeLine{00220\ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keywordtype}{void}\ ValidateAll()\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Groups.Count();\ i++)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Groups[i].IsEmpty())\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ Groups.NullItem(i);}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \ \ Groups.Pack();}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Groups.Count();\ i++)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ Groups[i].SetId(i);}
+\DoxyCodeLine{00230\ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keywordtype}{void}\ SortGroupContent();}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{void}\ Release(TAfixGroup\ \&ag);}
+\DoxyCodeLine{00234\ \ \ \textcolor{keywordtype}{void}\ Restore(TAfixGroup\ \&ag);}
+\DoxyCodeLine{00235\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00237\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms);}
+\DoxyCodeLine{00238\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00240\ \};}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ EndXlibNamespace()}
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

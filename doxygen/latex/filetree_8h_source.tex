@@ -1,0 +1,310 @@
+\doxysection{filetree.\+h}
+\hypertarget{filetree_8h_source}{}\label{filetree_8h_source}\index{sdl/filetree.h@{sdl/filetree.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_file\_tree\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_file\_tree\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}efile.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}utf8file.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#undef\ CopyFile}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginEsdlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ class\ TFileTree\ \ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \textcolor{comment}{//\ expansion\ flags}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00023\ \ \ \ \ efNone\ \ \ =\ 0x0000,\ \textcolor{comment}{//\ exceptions\ will\ be\ re-\/thrown}}
+\DoxyCodeLine{00024\ \ \ \ \ efSafe\ \ \ =\ 0x0001,\ \textcolor{comment}{//\ exceptions\ will\ be\ trapped}}
+\DoxyCodeLine{00025\ \ \ \ \ efReport\ =\ 0x0002;\ \textcolor{comment}{//\ exceptions\ will\ be\ reported}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<const\ TFileListItem>}}\ TFilePtrList;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ FT>\ \textcolor{keyword}{struct\ }TDiffFolder\ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{const}\ FT\ *Src,\ *Dest;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{comment}{//\ the\ size\ is\ the\ same\ but\ some\ items\ might\ be\ missing}}
+\DoxyCodeLine{00031\ \ \ \ \ TFilePtrList\ SrcFiles,\ DestFiles;}
+\DoxyCodeLine{00032\ \ \ \ \ TTypeList<\ TDiffFolder<FT>\ >\ Folders;}
+\DoxyCodeLine{00033\ \ \ \ \ TDiffFolder(\textcolor{keyword}{const}\ FT*\ src=NULL,\ \textcolor{keyword}{const}\ FT*\ dest=NULL)\ :\ Src(src),\ Dest(dest)\ \ \{\ \ \}}
+\DoxyCodeLine{00034\ \ \ \};}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{class\ }Folder\ :\ \textcolor{keyword}{public}\ TFileListItem\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ TFileList\ Files;}
+\DoxyCodeLine{00038\ \ \ \ \ TFileTree\&\ FileTree;}
+\DoxyCodeLine{00039\ \ \ \ \ TTypeList<Folder>\ Folders;}
+\DoxyCodeLine{00040\ \ \ \ \ Folder*\ Parent;}
+\DoxyCodeLine{00041\ \ \ \ \ olxstr\ FullPath;}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{typedef}\ TDiffFolder<Folder>\ DiffFolder;}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ CompareFiles(\textcolor{keyword}{const}\ TFileListItem\ \&i1,\ \textcolor{keyword}{const}\ TFileListItem\ \&i2)}
+\DoxyCodeLine{00045\ \ \ \ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i1.GetName().Comparei(i2.GetName());}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ CompareFolders(\textcolor{keyword}{const}\ Folder\ \&i1,\ \textcolor{keyword}{const}\ Folder\ \&i2)\ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i1.Name.Comparei(i2.Name);}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ FindSortedIndexOf(\textcolor{keyword}{const}\ T\&list,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ entity)}
+\DoxyCodeLine{00053\ \ \ \ \ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list.Count()\ ==\ 0\ )\ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list.Count()\ ==\ 1\ )}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (list[0].GetName().Comparei(entity)\ ==\ 0)\ ?\ 0\ :\ InvalidIndex;}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ to\ =\ list.Count()-\/1;}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[from].GetName().Comparei(entity)\ ==\ 0\ \ )\ \ \textcolor{keywordflow}{return}\ from;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[from].GetName().Comparei(entity)\ >\ 0\ )\ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[to].GetName().Comparei(entity)\ ==\ 0\ )\ \ \textcolor{keywordflow}{return}\ to;}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[to].GetName().Comparei(entity)\ <\ 0\ \ )\ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ \textcolor{keyword}{true}\ )\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index\ =\ (to+from)/2;}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ index\ ==\ from\ ||\ index\ ==\ to)}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[index].GetName().Comparei(entity)\ <\ 0\ )\ \ from\ =\ index;}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[index].GetName().Comparei(entity)\ >\ 0\ )\ \ to\ \ =\ index;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[index].GetName().Comparei(entity)\ ==\ 0\ )\ \ \textcolor{keywordflow}{return}\ index;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ CompareFiles(\textcolor{keyword}{const}\ TFileListItem\ \&i1,\ \textcolor{keyword}{const}\ TFileListItem\ \&i2)}
+\DoxyCodeLine{00076\ \ \ \ \ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i1.GetName().Compare(i2.GetName());}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ CompareFolders(\textcolor{keyword}{const}\ Folder\ \&i1,\ \textcolor{keyword}{const}\ Folder\ \&i2)\ \ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i1.Name.Compare(i2.Name);}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ FindSortedIndexOf(\textcolor{keyword}{const}\ T\&list,}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ entity)}
+\DoxyCodeLine{00084\ \ \ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list.Count()\ ==\ 0\ )\ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list.Count()\ ==\ 1\ )}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (list[0].GetName()\ ==\ entity)\ ?\ 0\ :\ InvalidIndex;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ to\ =\ list.Count()-\/1;}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[from].GetName()\ ==\ entity\ )\ \ \textcolor{keywordflow}{return}\ from;}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[from].GetName().Compare(entity)\ >\ 0\ )\ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[to].GetName()\ ==\ entity\ )\ \ \textcolor{keywordflow}{return}\ to;}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[to].GetName().Compare(entity)\ <\ 0\ \ )\ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ \textcolor{keyword}{true}\ )\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index\ =\ (to+from)/2;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ index\ ==\ from\ ||\ index\ ==\ to)}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[index].GetName().Compare(entity)\ <\ 0\ )\ \ from\ =\ index;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[index].GetName().Compare(entity)\ >\ 0\ )\ \ to\ \ =\ index;}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ list[index].GetName()\ ==\ entity\ )\ \ \textcolor{keywordflow}{return}\ index;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{void}\ \_ExpandNewFolder(DiffFolder\&\ df,\ \textcolor{keywordtype}{bool}\ is\_src)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00108\ \ \ \ \ Folder(TFileTree\&\ fileTree,\ \textcolor{keyword}{const}\ TFileListItem\&\ info,}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ fullPath,\ Folder*\ parent\ =\ NULL)}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ :\ TFileListItem(info),\ FileTree(fileTree),\ Parent(parent)}
+\DoxyCodeLine{00111\ \ \ \ \ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ FullPath\ =\ TEFile::OSPath(fullPath);}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ TEFile::AddPathDelimeterI(FullPath);}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetFullPath()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FullPath;\ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ FileCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Files.Count();\ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keyword}{const}\ TFileListItem\&\ GetFile(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Files[i];\ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ FolderCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Folders.Count();\ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{const}\ Folder\&\ GetFolder(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Folders[i];\ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{void}\ NullFileEntry(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ Files.NullItem(i);\ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Files.IsEmpty()\ \&\&\ Folders.IsEmpty();\ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{//\ calculates\ total\ size\ of\ the\ tree}}
+\DoxyCodeLine{00123\ \ \ \ \ uint64\_t\ CalcSize()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ returns\ total\ number\ of\ files\ in\ folders}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ CalcItemCount()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{comment}{//\ reads\ the\ folder\ structure,\ flags\ determine\ how\ exceptions\ is\ handled}}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{void}\ Expand(TOnProgress\&\ pg,\ \textcolor{keywordtype}{short}\ flags);}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{comment}{/*\ recursive\ deletion\ of\ the\ folder,\ must\ be\ expanded\ beforehand!\ Returns}}
+\DoxyCodeLine{00129\ \textcolor{comment}{\ \ \ \ true\ if\ the\ deletion\ was\ successful,\ otherwise\ use,\ ListContent\ to\ get\ the}}
+\DoxyCodeLine{00130\ \textcolor{comment}{\ \ \ \ list\ of\ remained\ items}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{bool}\ Delete(TOnProgress\&\ pg,\ \textcolor{keywordtype}{bool}\ ContentOnly=\textcolor{keyword}{false});}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{comment}{//\ compares\ folders\ and\ returns\ the\ difference\ size}}
+\DoxyCodeLine{00134\ \ \ \ \ uint64\_t\ Compare(\textcolor{keyword}{const}\ Folder\&\ f,\ TOnProgress\&\ pg)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{comment}{//\ calculates\ the\ difference\ tree\ between\ the\ folders}}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordtype}{void}\ CalcMergedTree(\textcolor{keyword}{const}\ Folder\&\ f,\ DiffFolder\&\ df)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{comment}{//\ merges\ the\ difference\ tree,\ possibly\ into\ a\ different\ location}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{void}\ Merge(\textcolor{keyword}{const}\ DiffFolder\&\ df,\ TOnProgress\&\ onSync,}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ \_dest\_n=EmptyString())\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{comment}{//\ copies\ and\ overwrites\ existing\ files\ and\ timestamp}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordtype}{bool}\ CopyTo(\textcolor{keyword}{const}\ olxstr\&\ \_dest,}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TOnProgress\&\ OnSync,}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ do\_throw,}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ (*AfterCopy)(\textcolor{keyword}{const}\ olxstr\&\ src,\ \textcolor{keyword}{const}\ olxstr\&\ dest)=NULL}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ )\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{comment}{/*\ synchronises\ two\ folders\ -\/\ only\ updates\ files,\ does\ not\ delete\ anything}}
+\DoxyCodeLine{00147\ \textcolor{comment}{\ \ \ \ (yet)\ */}}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordtype}{void}\ Synchronise(Folder\&\ f,\ TOnProgress\&\ onSync);}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{comment}{//\ exports\ the\ folder\ index\ to\ a\ file}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordtype}{void}\ ExportIndex(\textcolor{keyword}{const}\ olxstr\&\ fileName,\ TStrList*\ list=NULL,}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ level=0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{comment}{//\ the\ function\ fills\ the\ list\ with\ full\ file\ names\ (recursively)}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordtype}{void}\ ListFilesEx(TStrList\&\ out,}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TTypeList<TEFile::TFileNameMask>*\ \_mask=NULL)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordtype}{void}\ ListFiles(TStrList\&\ out,\ \textcolor{keyword}{const}\ olxstr\&\ \_mask)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ CountFilesEx(}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TTypeList<TEFile::TFileNameMask>*\ \_mask=NULL)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ CountFiles(\textcolor{keyword}{const}\ olxstr\&\ \_mask)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{comment}{/*\ creates\ a\ list\ like}}
+\DoxyCodeLine{00160\ \textcolor{comment}{\ \ \ \ file:\ aaa.txt}}
+\DoxyCodeLine{00161\ \textcolor{comment}{\ \ \ \ folder\ ccc}}
+\DoxyCodeLine{00162\ \textcolor{comment}{\ \ \ \ if\ annotate\ is\ false,\ the\ file\ and\ folder\ annotations\ are\ not\ added}}
+\DoxyCodeLine{00163\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00164\ \ \ \ \ TStrList\&\ ListContent(TStrList\&\ out,\ \textcolor{keywordtype}{bool}\ annotate=\textcolor{keyword}{true})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00165\ \ \ \ \ const\_strlist\ ListContent(\textcolor{keywordtype}{bool}\ annotate=\textcolor{keyword}{true})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ TStrList\ l;}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ListContent(l,\ annotate);}
+\DoxyCodeLine{00168\ \ \ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \};}
+\DoxyCodeLine{00171\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{typedef}\ TFileTree::TDiffFolder<TFileTree::Folder>\ DiffFolder;}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{class\ }TFileTreeException\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTIOException}{TIOException}}\ \{}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00175\ \ \ \ \ TFileTreeException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\ \&msg)}
+\DoxyCodeLine{00176\ \ \ \ \ :\ TIOException(location,\ msg)}
+\DoxyCodeLine{00177\ \ \ \ \ \{\}}
+\DoxyCodeLine{00178\ \ \ \ \ TFileTreeException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\ \&msg,}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TStrList\ \&content)}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ :\ TIOException(location,\ msg),}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ items(content)}
+\DoxyCodeLine{00182\ \ \ \ \ \{\}}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}File\ tree\ exception"{}};\ \}}
+\DoxyCodeLine{00184\ \ \ \ \ IOlxObject*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TFileTreeException(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00185\ \ \ \ \ olxstr\ GetFullMessage()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00186\ \ \ \ \ TStrList\ items;}
+\DoxyCodeLine{00187\ \ \ \};}
+\DoxyCodeLine{00188\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00189\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00190\ \ \ Folder\ Root;}
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ Break;}
+\DoxyCodeLine{00192\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ \&OnExpand,\ \textcolor{comment}{//\ called\ when\ the\ OS\ folder\ structure\ is\ traversed}}
+\DoxyCodeLine{00195\ \ \ \ \ \&OnSynchronise,\ \textcolor{comment}{//\ called\ when\ fodlers\ are\ merged}}
+\DoxyCodeLine{00196\ \ \ \ \ \&OnFileCopy,\ \ \ \textcolor{comment}{//\ called\ in\ file\ copy\ process}}
+\DoxyCodeLine{00197\ \ \ \ \ \&OnFileCompare,\ \textcolor{comment}{//\ called\ in\ the\ comparison\ process}}
+\DoxyCodeLine{00198\ \ \ \ \ \&OnCompare,\ \textcolor{comment}{//\ called\ when\ files\ are\ being\ compared}}
+\DoxyCodeLine{00199\ \ \ \ \ \&OnDelete;\ \ \textcolor{comment}{//\ called\ when\ recursive\ folder\ deletion\ is\ executed}}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ TFileTree(\textcolor{keyword}{const}\ olxstr\&\ root)}
+\DoxyCodeLine{00202\ \ \ \ \ :\ Root(*this,\ TFileListItem(),\ root),}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ Break(false),}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ OnExpand(Actions.New(\textcolor{stringliteral}{"{}ON\_EXPAND"{}})),}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ OnSynchronise(Actions.New(\textcolor{stringliteral}{"{}ON\_SYNC"{}})),}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ OnFileCopy(Actions.New(\textcolor{stringliteral}{"{}ON\_FCOPY"{}})),}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ OnFileCompare(Actions.New(\textcolor{stringliteral}{"{}ON\_FCCOMPARE"{}})),}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ OnCompare(Actions.New(\textcolor{stringliteral}{"{}ON\_COMPARE"{}})),}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ OnDelete(Actions.New(\textcolor{stringliteral}{"{}ON\_DELETE"{}}))}
+\DoxyCodeLine{00210\ \ \ \{\}}
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{const}\ Folder\&\ GetRoot()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Root;\ \ \}}
+\DoxyCodeLine{00212\ \ \ \textcolor{keywordtype}{void}\ DoBreak()\ \{\ \ Break\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00213\ \ \ \textcolor{comment}{//\ copies\ files\ (platform\ dependent,\ uses\ win\ API\ to\ handle\ huge\ files)}}
+\DoxyCodeLine{00214\ \ \ \textcolor{keywordtype}{bool}\ CopyFile(\textcolor{keyword}{const}\ olxstr\&\ from,\ \textcolor{keyword}{const}\ olxstr\&\ to)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//\ compares\ two\ files\ (platform\ independent,\ may\ fail\ on\ huge\ files)}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keywordtype}{bool}\ CompareFiles(\textcolor{keyword}{const}\ olxstr\&\ from,\ \textcolor{keyword}{const}\ olxstr\&\ to)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00217\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//\ calculates\ the\ number\ of\ bytes\ to\ be\ transfered\ when\ merging}}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{static}\ uint64\_t\ CalcMergeSize(\textcolor{keyword}{const}\ DiffFolder\&\ df);}
+\DoxyCodeLine{00220\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keywordtype}{void}\ Merge(\textcolor{keyword}{const}\ DiffFolder\&\ df,\ \textcolor{keyword}{const}\ olxstr\&\ dest=EmptyString()\ )\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00222\ \ \ \ \ \mbox{\hyperlink{classTOnProgress}{TOnProgress}}\ onSync;}
+\DoxyCodeLine{00223\ \ \ \ \ onSync.SetMax(CalcMergeSize(df));}
+\DoxyCodeLine{00224\ \ \ \ \ OnSynchronise.Enter(NULL,\ \&onSync);}
+\DoxyCodeLine{00225\ \ \ \ \ Root.Merge(df,\ onSync,\ dest);}
+\DoxyCodeLine{00226\ \ \ \ \ onSync.SetPos(onSync.GetMax());}
+\DoxyCodeLine{00227\ \ \ \ \ OnSynchronise.Exit(NULL,\ \&onSync);}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00230\ \ \ \textcolor{comment}{/*\ if\ do\_throw\ is\ true,\ the\ processes\ will\ be\ terminated\ on\ the\ first\ error}}
+\DoxyCodeLine{00231\ \textcolor{comment}{\ \ else\ all\ what\ is\ possible\ will\ be\ copied\ */}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keywordtype}{bool}\ CopyTo(\textcolor{keyword}{const}\ olxstr\&\ \_dest,}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordtype}{void}\ (*AfterCopy)(\textcolor{keyword}{const}\ olxstr\&\ src,\ \textcolor{keyword}{const}\ olxstr\&\ dest)=NULL,}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordtype}{bool}\ do\_throw=\textcolor{keyword}{true})}
+\DoxyCodeLine{00235\ \ \ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \mbox{\hyperlink{classTOnProgress}{TOnProgress}}\ OnSync;}
+\DoxyCodeLine{00237\ \ \ \ \ OnSync.SetMax(Root.CalcSize());}
+\DoxyCodeLine{00238\ \ \ \ \ OnSynchronise.Enter(NULL,\ \&OnSync);}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordtype}{bool}\ res\ =\ Root.CopyTo(\_dest,\ OnSync,\ do\_throw,\ AfterCopy);}
+\DoxyCodeLine{00240\ \ \ \ \ OnSync.SetMax(OnSync.GetMax());}
+\DoxyCodeLine{00241\ \ \ \ \ OnSynchronise.Exit(NULL,\ \&OnSync);}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00245\ \ \ \textcolor{comment}{//\ if\ do\_throw\ is\ false\ no\ exceptions\ will\ be\ throws,\ also\ see\ above}}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Copy(\textcolor{keyword}{const}\ olxstr\&\ src,\ \textcolor{keyword}{const}\ olxstr\&\ dest,\ \textcolor{keywordtype}{bool}\ do\_throw)\ \ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{try}\ \ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ TFileTree\ ft(src);}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ ft.Expand();}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ft.CopyTo(dest,\ NULL,\ do\_throw);}
+\DoxyCodeLine{00251\ \ \ \ \ \}}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{catch}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\&)\ \ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00254\ \ \ \ \ \}}
+\DoxyCodeLine{00255\ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00257\ \ \ \textcolor{keywordtype}{void}\ Expand(\textcolor{keywordtype}{short}\ flags=efNone)\ \ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \mbox{\hyperlink{classTOnProgress}{TOnProgress}}\ onExp;}
+\DoxyCodeLine{00259\ \ \ \ \ OnExpand.Enter(NULL,\ \&onExp);}
+\DoxyCodeLine{00260\ \ \ \ \ Root.Expand(onExp,\ flags);}
+\DoxyCodeLine{00261\ \ \ \ \ OnSynchronise.Exit(NULL,\ \&onExp);}
+\DoxyCodeLine{00262\ \ \ \}}
+\DoxyCodeLine{00263\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00264\ \ \ \textcolor{comment}{//\ if\ ContentOnly\ is\ true,\ the\ top\ folder\ is\ not\ deleted}}
+\DoxyCodeLine{00265\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{bool}\ ContentOnly=\textcolor{keyword}{false})\ \ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \mbox{\hyperlink{classTOnProgress}{TOnProgress}}\ onDel;}
+\DoxyCodeLine{00267\ \ \ \ \ onDel.SetMax(Root.CalcItemCount());}
+\DoxyCodeLine{00268\ \ \ \ \ OnDelete.Enter(NULL,\ \&onDel);}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{if}\ (!Root.Delete(onDel,\ ContentOnly))\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFileTreeException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Deleteion\ failed"{}},}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ Root.ListContent());}
+\DoxyCodeLine{00272\ \ \ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \ \ onDel.SetPos(onDel.GetMax());}
+\DoxyCodeLine{00274\ \ \ \ \ OnDelete.Exit(NULL,\ \&onDel);}
+\DoxyCodeLine{00275\ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Delete(\textcolor{keyword}{const}\ olxstr\&\ fn,\ \textcolor{keywordtype}{bool}\ ContentOnly=\textcolor{keyword}{false})\ \ \{}
+\DoxyCodeLine{00278\ \ \ \ \ TFileTree\ ft(fn);}
+\DoxyCodeLine{00279\ \ \ \ \ ft.Expand();}
+\DoxyCodeLine{00280\ \ \ \ \ ft.Delete(ContentOnly);}
+\DoxyCodeLine{00281\ \ \ \}}
+\DoxyCodeLine{00282\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00283\ \ \ uint64\_t\ Compare(\textcolor{keyword}{const}\ TFileTree\&\ ft)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00284\ \ \ \ \ \mbox{\hyperlink{classTOnProgress}{TOnProgress}}\ onCmp;}
+\DoxyCodeLine{00285\ \ \ \ \ OnCompare.Enter(NULL,\ \&onCmp);}
+\DoxyCodeLine{00286\ \ \ \ \ uint64\_t\ sz\ =\ Root.Compare(ft.Root,\ onCmp);}
+\DoxyCodeLine{00287\ \ \ \ \ OnCompare.Exit(NULL,\ \&onCmp);}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{return}\ sz;}
+\DoxyCodeLine{00289\ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00291\ \ \ \textcolor{keywordtype}{void}\ CalcMergedTree(\textcolor{keyword}{const}\ TFileTree\&\ ft,\ DiffFolder\&\ df)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00292\ \ \ \ \ Root.CalcMergedTree(ft.Root,\ df);}
+\DoxyCodeLine{00293\ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00295\ \ \ \textcolor{keywordtype}{void}\ Synchronise(TFileTree\&\ ft)\ \ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \mbox{\hyperlink{classTOnProgress}{TOnProgress}}\ onSync;}
+\DoxyCodeLine{00297\ \ \ \ \ OnSynchronise.Enter(NULL,\ \&onSync);}
+\DoxyCodeLine{00298\ \ \ \ \ Root.Synchronise(ft.Root,\ onSync);}
+\DoxyCodeLine{00299\ \ \ \ \ OnSynchronise.Exit(NULL,\ \&onSync);}
+\DoxyCodeLine{00300\ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00302\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TFileTree::Folder;}
+\DoxyCodeLine{00303\ \};}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00305\ EndEsdlNamespace()}
+\DoxyCodeLine{00306\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

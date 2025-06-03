@@ -1,0 +1,114 @@
+\doxysection{defs.\+h}
+\hypertarget{defs_8h_source}{}\label{defs_8h_source}\index{sdl/defs.h@{sdl/defs.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_defs\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_defs\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#ifndef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\ \ \#ifdef\ \_\_WINDOWS\_\_}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \ \ \#define\ \_\_WIN32\_\_\ 1}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#ifndef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\ \ \#ifdef\ \_WINDOWS}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\ \ \ \ \#define\ \_\_WIN32\_\_\ 2}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#ifndef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\ \ \#ifdef\ \_WIN32}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\ \ \ \ \#define\ \_\_WIN32\_\_\ 3}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#ifndef\ \_\_FUNC\_\_}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\ \ \#define\ \_\_FUNC\_\_\ \_\_FUNCTION\_\_}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ mingw\ gcc}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#if\ defined(\_\_WIN32\_\_)\ \&\&\ defined(\_\_GNUC\_\_)}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#ifdef\ \_\_GNUC\_\_}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\ \ \#define\ \ \_\_OlxSourceInfo\ (olxstr(EmptyString(),\ 384)\ <<\ "{}["{}\ \_\_FILE\_\_\ <<\(\backslash\)}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\ \ \ \ '('\ <<\ \_\_FUNC\_\_\ <<\ "{}):"{}\ <<\ \_\_LINE\_\_\ <<\ ']')}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\ \ \#define\ \ \_\_OlxSourceInfo\ (olxstr(EmptyString(),\ 384)\ <<\(\backslash\)}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\ \ \ \ "{}["{}\ <<\ \_\_FILE\_\_\ <<\ "{}("{}\ <<\ \_\_FUNC\_\_\ <<\ "{}):"{}\ <<\ \_\_LINE\_\_\ <<\ ']')}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#define\ \ \_\_POlxSourceInfo\ \_\_FILE\_\_,\_\_FUNC\_\_,\_\_LINE\_\_}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\#define\ \ \_\_OlxSourceInfo\ \_\_FILE\_\_"{}\ in\ "{}\_\_FUNC\_\_}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#define\ \ \_\_OlxSrcInfo\ \_\_FUNC\_\_}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#ifdef\ \_\_GNUC\_\_}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\ \ \#include\ <stdint.h>}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_\ }}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#\ if\ (defined(\_MSC\_VER)\ \&\&\ (\_MSC\_VER\ >=\ 1600))\ ||\ defined(\_\_GNUC\_\_)}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\ \ \ \ \#include\ <stdint.h>}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#\ else}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_int8\ \ int8\_t;}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_int16\ int16\_t;}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_int32\ int32\_t;}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{typedef}\ \_\_int64\ int64\_t;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \_\_int8\ \ uint8\_t;}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \_\_int16\ uint16\_t;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \_\_int32\ uint32\_t;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \_\_int64\ uint64\_t;}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#\ endif}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#\ ifdef\ \_WIN64}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{typedef}\ int64\_t\ index\_t;}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#\ else}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{typedef}\ int32\_t\ index\_t;}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#\ endif}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#else\ }\textcolor{comment}{//\ non\ Windows}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{typedef}\ int32\_t\ index\_t;}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#ifdef\ \_UNICODE}}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{wchar\_t}\ olxch;}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ olxT(a)\ (L\#\#a)}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{char}\ olxch;}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\ \ \#define\ olxT(a)\ (a)}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#ifdef\ \_MSC\_VER}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ member\ function\ does\ not\ override\ any\ base\ class\ virtual\ member\ function}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\#\ \ pragma\ warning(3:4263)}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\ secure\ functions\ alternative\ warning}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#\ \ pragma\ warning(disable:4996)}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#ifndef\ NULL}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#define\ NULL\ \ \ \ 0}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#define\ NULL\ \ \ \ ((void\ *)0)}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#ifndef\ M\_PI}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ M\_PI\ 3.14159265358979323846}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#ifndef\ olx\_min}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ olx\_min(a,\ b)\ \ (((a)\ <\ (b))\ ?\ (a)\ :\ (b))}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#ifndef\ olx\_max}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ olx\_max(a,\ b)\ \ (((a)\ >\ (b))\ ?\ (a)\ :\ (b))}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

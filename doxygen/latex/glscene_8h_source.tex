@@ -1,0 +1,162 @@
+\doxysection{glscene.\+h}
+\hypertarget{glscene_8h_source}{}\label{glscene_8h_source}\index{glib/glscene.h@{glib/glscene.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_scene\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_scene\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}glfont.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#undef\ CreateFont}}
+\DoxyCodeLine{00018\ BeginGlNamespace()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ class\ \mbox{\hyperlink{classTGlFont}{TGlFont}};}
+\DoxyCodeLine{00021\ \textcolor{comment}{/*\ abstarct\ class\ */}}
+\DoxyCodeLine{00022\ class\ AGlScene:\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00024\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TGlFont*>}}\ FontsDict;}
+\DoxyCodeLine{00025\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TGlFont>}}\ Fonts,\ SmallFonts;}
+\DoxyCodeLine{00026\ \ \ \mbox{\hyperlink{classolxdict}{olxdict<std::type\_info\ const*,\ size\_t,\ TPointerComparator>}}\ FontRegistry;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{bool}\ Enabled;}
+\DoxyCodeLine{00028\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\ *FParent;}
+\DoxyCodeLine{00030\ \ \ \textcolor{comment}{/*\ The\ function\ creates\ or\ replaces\ a\ font\ (if\ exists\ under\ the\ same\ name)}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ DoCreateFont(\mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ glf,\ \textcolor{keywordtype}{bool}\ half\_size)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ AGlScene()\ :\ FParent(NULL),\ Enabled(\textcolor{keyword}{false})}
+\DoxyCodeLine{00035\ \ \ \{\}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{virtual}\ \string~AGlScene();}
+\DoxyCodeLine{00037\ \ \ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\ *Parent()\ \{\ \textcolor{keywordflow}{return}\ FParent;\ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{comment}{/*\ must\ be\ called\ by\ TGlRender\ */}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ Parent(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\ *P)\ \{\ FParent\ =\ P;\}}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{/*\ The\ function\ creates\ or\ replaces\ a\ font\ (if\ exists\ under\ the\ same\ name)}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00042\ \ \ \mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ CreateFont(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ olxstr\&\ fntDescription);}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//\ used\ to\ scale\ font\ when\ drawing\ on\ a\ scaled\ surface}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ScaleFonts(\textcolor{keywordtype}{double}\ scale)\ =\ 0;}
+\DoxyCodeLine{00045\ \ \ \textcolor{comment}{//\ restores\ the\ font\ sizes\ after\ a\ call\ to\ the\ ScaleFonts}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ RestoreFontScale()\ =\ 0;}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Destroy()\ \ \{\}}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{/*\ if\ the\ font\ is\ provided,\ it\ is\ replaced\ upon\ successful\ dialog.showmodal,}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ otherwise\ it\ works\ as\ font\ chooser\ (default\ font-\/fontDescription).\ Returned}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ string\ is\ the\ font\ Id\ string,\ or\ empty\ string\ if\ the\ dialog\ is\ canceled}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ olxstr\ ShowFontDialog(\mbox{\hyperlink{classTGlFont}{TGlFont}}*\ glf\ =\ NULL,}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ fontDescription=EmptyString())\ =\ 0;}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ StartSelect(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ GLuint\ *Bf);}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{//\ returns\ number\ of\ selection\ hits}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ EndSelect();}
+\DoxyCodeLine{00057\ \ \ \textcolor{comment}{//\ returns\ true\ if\ successful}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ MakeCurrent()\ =\ 0;}
+\DoxyCodeLine{00059\ \ \ \textcolor{comment}{//\ if\ the\ Scene\ is\ disabled,\ MakeCurrent\ should\ not\ do\ anything}}
+\DoxyCodeLine{00060\ \ \ DefPropBIsSet(Enabled)}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ StartDraw();}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ EndDraw();}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{size\_t}\ FontCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Fonts.Count();\ \}}
+\DoxyCodeLine{00065\ \ \ \mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ GetSmallFont(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ >=\ SmallFonts.Count()\ )\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}invalid\ small\ font\ index:\ "{}})\ <<\ i);}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{if}(\ !SmallFonts[i]-\/>IsCreated()\ )}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ DoCreateFont(*SmallFonts[i],\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{return}\ *SmallFonts[i];}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//\ the\ fonts\ is\ created\ if\ uninitialised}}
+\DoxyCodeLine{00075\ \ \ \mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ GetFont(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{bool}\ use\_default)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \mbox{\hyperlink{classTGlFont}{TGlFont}}*\ rv\ =\ NULL;}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ >=\ Fonts.Count()\ )\ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ use\_default\ )}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ rv\ =\ \&GetDefaultFont();}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ rv\ =\ Fonts[i];}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{if}(\ rv\ ==\ NULL\ )\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}invalid\ font\ index:\ "{}})\ <<\ i);}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{if}(\ !rv-\/>IsCreated()\ )}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ DoCreateFont(*rv,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{return}\ *rv;}
+\DoxyCodeLine{00090\ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ GetDefaultFont()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{if}(\ Fonts.IsEmpty()\ )}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}no\ fonts\ available"{}});}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ GetFont(0,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{comment}{/*\ this\ is\ motly\ for\ internal\ infrastructure\ calls\ -\/\ returned\ font\ might\ be}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ not\ initialised}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00099\ \ \ \mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ \_GetFont(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Fonts[i];\ \}}
+\DoxyCodeLine{00100\ \ \ \mbox{\hyperlink{classTGlFont}{TGlFont}}*\ FindFont(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{return}\ FontsDict.Find(name,\ NULL);}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ RegisterFontForType(\mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ fnt)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ FontRegistry.Add(\&\textcolor{keyword}{typeid}(T),\ fnt.GetId());}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ fnt;}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keywordtype}{size\_t}\ FindFontIndexForType(\textcolor{keywordtype}{size\_t}\ def\_ind=\string~0)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{return}\ FontRegistry.Find(\&\textcolor{keyword}{typeid}(T),\ def\_ind);}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{class\ }MetaFont\ \{}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{short}\ Size;}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{bool}\ Bold,\ Italic,\ Fixed,\ Underlined;}
+\DoxyCodeLine{00115\ \ \ \ \ olxstr\ OriginalId,\ FileName;}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00117\ \ \ \ \ MetaFont()}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ :\ Size(0),\ Bold(\textcolor{keyword}{false}),\ Italic(\textcolor{keyword}{false}),\ Fixed(\textcolor{keyword}{false}),\ Underlined(\textcolor{keyword}{false})}
+\DoxyCodeLine{00119\ \ \ \ \ \{\}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetIdString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00121\ \ \ \ \ olxstr\ GetFileIdString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{/*\ this\ function\ returns\ true\ if\ the\ ID\ is\ known\ and\ handler\ and\ false}}
+\DoxyCodeLine{00123\ \textcolor{comment}{\ \ \ \ otherwise}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ SetIdString(\textcolor{keyword}{const}\ olxstr\&\ idstr);}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsOlexFont(\textcolor{keyword}{const}\ olxstr\&\ fntId)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ fntId.IsEmpty()?\ false\ :\ fntId.CharAt(0)\ ==\ \textcolor{charliteral}{'\#'};}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsVectorFont(\textcolor{keyword}{const}\ olxstr\&\ fntId)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ fntId.IsEmpty()?\ false\ :\ fntId.CharAt(0)\ ==\ \textcolor{charliteral}{'@'};}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ BuildOlexFontId(\textcolor{keyword}{const}\ olxstr\&\ fileName,\ \textcolor{keywordtype}{short}\ size,}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ fixed,\ \textcolor{keywordtype}{bool}\ bold,\ \textcolor{keywordtype}{bool}\ italic);}
+\DoxyCodeLine{00134\ \ \ \ \ DefPropC(olxstr,\ FileName)}
+\DoxyCodeLine{00135\ \ \ \ \ DefPropBIsSet(Bold)}
+\DoxyCodeLine{00136\ \ \ \ \ DefPropBIsSet(Fixed)}
+\DoxyCodeLine{00137\ \ \ \ \ DefPropBIsSet(Italic)}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsUnderlined()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Underlined;\ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ DefPropP(\textcolor{keywordtype}{short},\ Size)}
+\DoxyCodeLine{00140\ \ \ \};}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{/*\ named\ set\ of\ user\ defined\ materials.}}
+\DoxyCodeLine{00143\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00144\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TGlMaterial\ *>}}\ materials;}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di);}
+\DoxyCodeLine{00148\ \ \ }
+\DoxyCodeLine{00149\ \ \ const\_strlist\ ToPov()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00150\ \ \ \textcolor{keywordtype}{void}\ LibMakeCurrent(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options,}
+\DoxyCodeLine{00151\ \ \ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00152\ \ \ \mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name=EmptyString());}
+\DoxyCodeLine{00153\ \};}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ EndGlNamespace()}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

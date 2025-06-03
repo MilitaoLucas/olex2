@@ -1,0 +1,50 @@
+\doxysection{mol.\+h}
+\hypertarget{mol_8h_source}{}\label{mol_8h_source}\index{xlib/mol.h@{xlib/mol.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_mol\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_mol\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xfiles.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BeginXlibNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ struct\ TMolBond\ \ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{size\_t}\ AtomA,\ AtomB,\ BondType;}
+\DoxyCodeLine{00018\ \};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }TMol:\ \textcolor{keyword}{public}\ TBasicCFile\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00023\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TMolBond>}}\ Bonds;}
+\DoxyCodeLine{00024\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ olxstr\ MOLAtom(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA);}
+\DoxyCodeLine{00026\ \ \ olxstr\ MOLBond(TMolBond\&\ B);}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&padding()\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ p=\ \textcolor{stringliteral}{"{}\ \ 0"{}};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{return}\ p;}
+\DoxyCodeLine{00030\ \ \ \}}
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ TMol();}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ \string~TMol();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ BondCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Bonds.Count();\ \ \}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{inline}\ TMolBond\&\ Bond(\textcolor{keywordtype}{size\_t}\ index)\ \{\ \ \textcolor{keywordflow}{return}\ Bonds[index];\ \ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SaveToStrings(TStrList\&\ Strings);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromStrings(\textcolor{keyword}{const}\ TStrList\&\ Strings);}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Adopt(\mbox{\hyperlink{classTXFile}{TXFile}}\ \&,\ \textcolor{keywordtype}{int});}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ \ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TMol;\ \ \}}
+\DoxyCodeLine{00041\ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ EndXlibNamespace()}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

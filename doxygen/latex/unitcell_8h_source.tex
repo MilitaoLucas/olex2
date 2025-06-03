@@ -1,0 +1,584 @@
+\doxysection{unitcell.\+h}
+\hypertarget{unitcell_8h_source}{}\label{unitcell_8h_source}\index{xlib/unitcell.h@{xlib/unitcell.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_unitcell\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_unitcell\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}symmat.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}envilist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}ellipsoid.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}estrbuffer.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}lattice.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}asymmunit.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}symmlib.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}olxmps.h"{}}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#ifdef\ QLength\ \ }\textcolor{comment}{//\ on\ Linux\ it\ is\ defined\ as\ something...}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\ \ \#undef\ QLength}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ BeginXlibNamespace()}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ using\ namespace\ olx\_array;}
+\DoxyCodeLine{00030\ class\ TUnitCell\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00031\ \ \ \mbox{\hyperlink{classTNetwork}{TNetwork}}*\ \ Network;\ \ \textcolor{comment}{//\ for\ internal\ use\ only}}
+\DoxyCodeLine{00032\ \ \ smatd\_list\ Matrices;\ \ \textcolor{comment}{//\ list\ of\ unique\ matrices;\ FMatrices\ +\ centering}}
+\DoxyCodeLine{00033\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<TEllpPList>}}\ Ellipsoids;\ \ \textcolor{comment}{//\ i\ -\/\ atoms\ index,\ j\ -\/\ matrix\ index}}
+\DoxyCodeLine{00034\ \ \ \textcolor{comment}{//\ index\ of\ r\ from\ a\ product\ of\ two\ matrices}}
+\DoxyCodeLine{00035\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TArrayList<uint8\_t>}}\ >\ MulDest;}
+\DoxyCodeLine{00036\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<uint8\_t>}}\ InvDest;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLattice}{TLattice}}*\ \ Lattice;\ \ \ \ \textcolor{comment}{//\ parent\ lattice}}
+\DoxyCodeLine{00038\ \ \ \textcolor{comment}{/*\ a\ macro\ FindInRange,\ if\ the\ atom\ list\ is\ NULL,\ atoms\ are\ taken\ from\ the}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ \ asymmetric\ unit,\ atoms\ are\ excluded\ only\ if\ deleted,\ availability\ is\ not}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ \ considered.}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ Condition:\ d\ <\ mixR\ and\ d\ >=\ minR}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ \_FindInRange(\textcolor{keyword}{const}\ vec3d\&\ center,\ \textcolor{keywordtype}{double}\ minR,\ \textcolor{keywordtype}{double}\ maxR,}
+\DoxyCodeLine{00044\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structAnAssociation3}{AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ >\&\ res,}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ find\_deleted\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList*\ atoms\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00047\ \ \ \textcolor{comment}{/*\ macro\ FindBinding,\ if\ the\ atoms\ is\ NULL,\ atoms\ of\ the\ asymmetric\ unit\ are}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ \ taken\ and\ atoms\ are\ excluded\ only\ if\ deleted,\ availability\ is\ not\ counted}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ \_FindBinding(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ center,\ \textcolor{keyword}{const}\ smatd\&\ center\_tm,\ \textcolor{keywordtype}{double}\ delta,}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structAnAssociation3}{AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ >\&\ res,}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList*\ atoms\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00053\ \ \ \textcolor{comment}{//\ explicit\ use\ of\ the\ I\ matrix}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ \_FindBinding(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ center,\ \textcolor{keywordtype}{double}\ delta,}
+\DoxyCodeLine{00055\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structAnAssociation3}{AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ >\&\ res,}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList*\ atoms\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00058\ \ \ \ \ \_FindBinding(center,\ smatd().I(),\ delta,\ res,\ atoms);}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{comment}{//\ taking\ the\ transformation\ from\ the\ position\ generator}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ \_FindBinding(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ center,\ \textcolor{keywordtype}{double}\ delta,}
+\DoxyCodeLine{00062\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structAnAssociation3}{AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ >\&\ res,}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList*\ atoms\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00064\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00065\ \ \ \ \ \_FindBinding(center.CAtom(),\ center.GetMatrix(),\ delta,\ res,\ atoms);}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ \_AtomSorter(\textcolor{keyword}{const}\ \mbox{\hyperlink{structAnAssociation3}{AnAssociation3<vec3d,\ TCAtom*,\ double>}}\&\ a1,}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structAnAssociation3}{AnAssociation3<vec3d,\ TCAtom*,\ double>}}\&\ a2)}
+\DoxyCodeLine{00070\ \ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a1.GetA().QLength(),\ a2.GetA().QLength());}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{/*\ makes\ sure\ that\ only\ a\ single\ instance\ of\ an\ equivalent\ position\ is}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ \ present\ in\ the\ list}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UnifyAMCList(\mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structAnAssociation3}{AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ >\&);}
+\DoxyCodeLine{00077\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00078\ \ \ TUnitCell(\mbox{\hyperlink{classTLattice}{TLattice}}*\ L);}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{virtual}\ \string~TUnitCell();}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ CalcVolume(\textcolor{keyword}{const}\ vec3d\&\ sides,\ \textcolor{keyword}{const}\ vec3d\&\ angles);}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ CalcVolume(\textcolor{keyword}{const}\ vec\_t\ v)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{return}\ CalcVolume(vec3d(v[0],\ v[1],\ v[2]),\ vec3d(v[3],\ v[4],\ v[5]));}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{double}\ CalcVolume()\ \ \textcolor{keyword}{const};}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTEValue}{TEValue<double>}}\ CalcVolumeEx(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au);}
+\DoxyCodeLine{00088\ \ \ \mbox{\hyperlink{classTEValue}{TEValue<double>}}\ CalcVolumeEx()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ GetLattice()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Lattice;\ \}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ MatrixCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Matrices.Count();\ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ the\ identity\ matrix\ is\ always\ the\ first}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ smatd\&\ GetMatrix(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Matrices[i];\ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{const}\ smatd\_list\&\ GetMatrices()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{return}\ Matrices;}
+\DoxyCodeLine{00097\ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \textcolor{comment}{/*\ initialises\ the\ matrix\ container\ id,\ throws\ an\ excpetion\ if\ matrix\ is\ not}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ \ found}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00101\ \ \ smatd\&\ InitMatrixId(smatd\&\ m)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{return}\ InitMatrixId(Matrices,\ m);}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{static}\ smatd\&\ InitMatrixId(\textcolor{keyword}{const}\ smatd\_list\&\ Matrices,\ smatd\&\ m);}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{/*\ if\ there\ is\ a\ list\ of\ transforms\ calculated\ in\ the\ asymmetric\ unit\ and\ a}}
+\DoxyCodeLine{00106\ \textcolor{comment}{\ \ symmetry\ operator\ needs\ to\ be\ applied\ to\ it,\ this\ is\ the\ function.\ Note\ that}}
+\DoxyCodeLine{00107\ \textcolor{comment}{\ \ the\ list\ of\ input\ matrices\ and\ the\ transformation\ matrix\ should\ have\ valid}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ \ Id's.\ The\ return\ value\ is\ a\ new\ list\ of\ matrices\ with\ new\ Id's}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00110\ \ \ smatd\_list\ MulMatrices(\textcolor{keyword}{const}\ smatd\_list\&\ in,\ \textcolor{keyword}{const}\ smatd\&\ transform)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00111\ \ \ \textcolor{comment}{/*\ returns\ just\ the\ id\ of\ the\ product,\ saving\ on\ the\ rotation\ part}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ \ multiplication}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00114\ \ \ uint32\_t\ MulMatrixId(\textcolor{keyword}{const}\ smatd\&\ m,\ \textcolor{keyword}{const}\ smatd\&\ tr)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ index\ =\ MulDest[tr.GetContainerId()][m.GetContainerId()];}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ smatd::GenerateId(index,\ (tr.MulT(m)\ -\/\ Matrices[index].t).Round<\textcolor{keywordtype}{int}>());}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{/*\ full\ product\ */}}
+\DoxyCodeLine{00119\ \ \ smatd\ MulMatrix(\textcolor{keyword}{const}\ smatd\&\ m,\ \textcolor{keyword}{const}\ smatd\&\ tr)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ index\ =\ MulDest[tr.GetContainerId()][m.GetContainerId()];}
+\DoxyCodeLine{00121\ \ \ \ \ smatd\ rv(Matrices[index].r,\ tr.MulT(m));}
+\DoxyCodeLine{00122\ \ \ \ \ rv.SetId(index,\ (rv.t\ -\/\ Matrices[index].t).Round<\textcolor{keywordtype}{int}>());}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00124\ \ \ \}}
+\DoxyCodeLine{00125\ \ \ smatd\ InvMatrix(\textcolor{keyword}{const}\ smatd\&\ m)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00126\ \ \ \ \ smatd\ rv\ =\ m.Inverse();}
+\DoxyCodeLine{00127\ \ \ \ \ uint8\_t\ c\_id\ =\ m.GetContainerId();}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{if}\ (c\_id\ >=\ Matrices.Count())\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}matrix\ ID:\ "{}}).quote()\ <<\ c\_id);}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ index\ =\ InvDest[m.GetContainerId()];}
+\DoxyCodeLine{00133\ \ \ \ \ rv.SetId(index,\ (rv.t\ -\/\ Matrices[index].t).Round<\textcolor{keywordtype}{int}>());}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keywordtype}{size\_t}\ EllpCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Ellipsoids.Count()*Matrices.Count();\ \}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTEllipsoid}{TEllipsoid}}*\ GetEllp(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{return}\ Ellipsoids[i\ /\ Matrices.Count()][i\%Matrices.Count()];}
+\DoxyCodeLine{00139\ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \mbox{\hyperlink{classTEllipsoid}{TEllipsoid}}*\ GetEllp(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ Ellipsoids[i\ /\ Matrices.Count()][i\%Matrices.Count()];}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{/*\ gets\ an\ ellipsoid\ for\ an\ atom\ by\ asymmetric\ unit\ Id\ and\ a\ matrix}}
+\DoxyCodeLine{00144\ \textcolor{comment}{\ \ associated\ with\ it}}
+\DoxyCodeLine{00145\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTEllipsoid}{TEllipsoid}}\&\ GetEllipsoid(\textcolor{keywordtype}{size\_t}\ MatrixId,\ \textcolor{keywordtype}{size\_t}\ AUId)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{return}\ *Ellipsoids[AUId][MatrixId];}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \mbox{\hyperlink{classTEllipsoid}{TEllipsoid}}\&\ GetEllipsoid(\textcolor{keywordtype}{size\_t}\ MatrixId,\ \textcolor{keywordtype}{size\_t}\ AUId)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{return}\ *Ellipsoids[AUId][MatrixId];}
+\DoxyCodeLine{00151\ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{comment}{//\ adds\ a\ new\ row\ to\ ellipsoids,\ intialised\ with\ NULLs}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keywordtype}{void}\ AddEllipsoid(\textcolor{keywordtype}{size\_t}\ n\ =\ 1);}
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordtype}{void}\ ClearEllipsoids();}
+\DoxyCodeLine{00155\ \ \ \textcolor{comment}{//\ (re)caches\ the\ ellipsoids\ from\ the\ aunit}}
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordtype}{void}\ UpdateEllipsoids();}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{/*\ expands\ the\ lattice\ centering\ and\ '-\/1'\ and\ caches\ ellipsoids\ for\ all}}
+\DoxyCodeLine{00158\ \textcolor{comment}{\ \ symmetry\ operators}}
+\DoxyCodeLine{00159\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00160\ \ \ \textcolor{keywordtype}{void}\ InitMatrices();}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{/*\ Removes\ symm\ eqivs\ and\ initialises\ symmetry\ induced\ connectivity\ */}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keywordtype}{void}\ FindSymmEq()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \textcolor{comment}{/*\ the\ funciton\ searches\ a\ matrix\ which\ moves\ "{}atom"{}\ to\ "{}to"{}\ so\ that\ the}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ \ \ distance\ between\ them\ is\ shortest\ and\ return\ the\ matrix,\ which\ if\ not\ NULL}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ \ \ has\ to\ be\ deleted\ with\ delete}}
+\DoxyCodeLine{00168\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00169\ \ \ smatd*\ GetClosest(\textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ to,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ atom,}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordtype}{bool}\ ConsiderOriginal,\ \textcolor{keywordtype}{double}*\ dist\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{return}\ GetClosest(to.ccrd(),\ atom.ccrd(),\ ConsiderOriginal,\ dist);}
+\DoxyCodeLine{00172\ \ \ \}}
+\DoxyCodeLine{00173\ \ \ smatd*\ GetClosest(\textcolor{keyword}{const}\ vec3d\&\ to,\ \textcolor{keyword}{const}\ vec3d\&\ from,\ \textcolor{keywordtype}{bool}\ ConsiderOriginal,}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordtype}{double}*\ dist\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{/*\ Finds\ a\ closest\ 'real'\ atom\ to\ the\ coordinate}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00177\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ FindClosest(\textcolor{keyword}{const}\ vec3d\&\ from,\ \textcolor{keywordtype}{double}\&\ dist)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00178\ \ \ \textcolor{comment}{/*\ Finds\ a\ symmetry\ matrix\ linking\ two\ symmetry\ dependent\ positions.}}
+\DoxyCodeLine{00179\ \textcolor{comment}{\ \ Throws\ an\ exception\ if\ the\ relation\ cannot\ be\ found.}}
+\DoxyCodeLine{00180\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00181\ \ \ smatd\ GetRelation(\textcolor{keyword}{const}\ vec3d\&\ to,\ \textcolor{keyword}{const}\ vec3d\&\ from)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00182\ \ \ \textcolor{comment}{/*\ Finds\ matrices\ UNIQ\ to\ the\ unit\ cell\ (besides\ the\ I\ matrix,\ see\ below)}}
+\DoxyCodeLine{00183\ \textcolor{comment}{\ \ which\ move\ point\ 'from'\ to\ 'to'\ within\ R.\ Always\ returns\ a\ valid\ object\ to\ be}}
+\DoxyCodeLine{00184\ \textcolor{comment}{\ \ deleted\ with\ delete.\ For\ the\ identity\ matrix\ additionally\ checks\ the}}
+\DoxyCodeLine{00185\ \textcolor{comment}{\ \ translational\ symmetry\ (in\ some\ cases\ the\ atom\ within\ the\ aunit\ is\ closer}}
+\DoxyCodeLine{00186\ \textcolor{comment}{\ \ than\ the\ translational\ symmetry\ generated\ one),\ so\ there\ might\ be\ a\ two\ I}}
+\DoxyCodeLine{00187\ \textcolor{comment}{\ \ matrices\ with\ different\ translations.}}
+\DoxyCodeLine{00188\ \textcolor{comment}{\ \ Condition:\ d\ <\ mixR\ and\ d\ >=\ minR}}
+\DoxyCodeLine{00189\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00190\ \ \ \mbox{\hyperlink{classConstTypeList}{ConstTypeList<smatd>}}\ GetInRange(\textcolor{keyword}{const}\ vec3d\&\ to,\ \textcolor{keyword}{const}\ vec3d\&\ from,}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordtype}{double}\ minR,\ \textcolor{keywordtype}{double}\ maxR,\ \textcolor{keywordtype}{bool}\ IncludeI)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \textcolor{comment}{/*\ The\ function\ finds\ all\ atoms\ and\ symmetry\ operators\ generating\ them\ within}}
+\DoxyCodeLine{00194\ \textcolor{comment}{\ \ the\ sphere\ of\ radius\ R.\ Note\ that\ only\ matrices\ unique\ to\ the\ unit\ cell\ are}}
+\DoxyCodeLine{00195\ \textcolor{comment}{\ \ used\ (besides\ that\ the\ I\ matrics\ is\ checked\ within\ [-\/1..+1]\ range\ in\ all}}
+\DoxyCodeLine{00196\ \textcolor{comment}{\ \ directions),\ so\ only\ limited\ R\ values\ are\ supported.\ Expects\ a\ list\ of}}
+\DoxyCodeLine{00197\ \textcolor{comment}{\ \ Assiciation2+<TCAtom\ const*,\ smatd,...>}}
+\DoxyCodeLine{00198\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ res\_t>\ \textcolor{keywordtype}{void}\ FindInRangeAM(\textcolor{keyword}{const}\ vec3d\&\ center,}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordtype}{double}\ minR,\ \textcolor{keywordtype}{double}\ maxR,}
+\DoxyCodeLine{00201\ \ \ \ \ res\_t\&\ out,\ \textcolor{keyword}{const}\ TCAtomPList*\ atoms\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00202\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00203\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ >\ res;}
+\DoxyCodeLine{00204\ \ \ \ \ \_FindInRange(center,\ minR,\ maxR,res,\ \textcolor{keyword}{false},\ atoms);}
+\DoxyCodeLine{00205\ \ \ \ \ out.SetCount(res.Count());}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ res.Count();\ i++)\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ out[i].a\ =\ res[i].a;}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ out[i].b\ =\ res[i].GetB();}
+\DoxyCodeLine{00209\ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \textcolor{comment}{/*\ As\ above,\ but\ expects\ a\ list\ of}}
+\DoxyCodeLine{00212\ \textcolor{comment}{\ \ Assiciation3+<TCAtom\ const*,\ smatd,\ vec3d,\ ...>,\ note\ that\ the\ resulting}}
+\DoxyCodeLine{00213\ \textcolor{comment}{\ \ coordinate\ is\ the\ Cartesian\ coordinate\ (the\ input\ is\ in\ fractional)}}
+\DoxyCodeLine{00214\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00215\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ res\_t>\ \textcolor{keywordtype}{void}\ FindInRangeAMC(\textcolor{keyword}{const}\ vec3d\&\ center,}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordtype}{double}\ minR,\ \textcolor{keywordtype}{double}\ maxR,}
+\DoxyCodeLine{00217\ \ \ \ \ res\_t\&\ out,\ \textcolor{keyword}{const}\ TCAtomPList*\ atoms\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00218\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00219\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ >\ res;}
+\DoxyCodeLine{00220\ \ \ \ \ \_FindInRange(center,\ minR,\ maxR,\ res,\ \textcolor{keyword}{false},\ atoms);}
+\DoxyCodeLine{00221\ \ \ \ \ out.SetCount(res.Count());}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ res.Count();\ i++)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ out[i].a\ =\ res[i].a;}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ out[i].b\ =\ res[i].GetB();}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ out[i].c\ =\ res[i].GetC();}
+\DoxyCodeLine{00226\ \ \ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \}}
+\DoxyCodeLine{00228\ \ \ \textcolor{comment}{/*\ finds\ only\ bound\ atoms\ defined\ by\ delta,\ can\ take\ both\ TCAtom\ and\ TSAtom.}}
+\DoxyCodeLine{00229\ \textcolor{comment}{\ \ In\ first\ case\ the\ result\ will\ be\ located\ at\ the\ origin\ of\ the\ atom\ in\ the}}
+\DoxyCodeLine{00230\ \textcolor{comment}{\ \ asymmetric\ unit,\ in\ the\ second\ -\/\ to\ the\ center\ of\ the\ TSAtom}}
+\DoxyCodeLine{00231\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ atom\_t,\ \textcolor{keyword}{class}\ res\_t>\ \textcolor{keywordtype}{void}\ FindBindingAM(\textcolor{keyword}{const}\ atom\_t\&\ center,}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordtype}{double}\ delta,\ res\_t\&\ out,}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList*\ atoms\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00235\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00236\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ >\ res;}
+\DoxyCodeLine{00237\ \ \ \ \ \_FindBinding(center,\ delta,\ res,\ atoms);}
+\DoxyCodeLine{00238\ \ \ \ \ out.SetCount(res.Count());}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ res.Count();\ i++)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ out[i].a\ =\ res[i].a;}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ out[i].b\ =\ res[i].GetB();}
+\DoxyCodeLine{00242\ \ \ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \textcolor{comment}{/*\ As\ above\ but\ provides\ an\ association\ of\ atoms\ with\ the\ cartesian}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ \ coordinates\ instead\ of\ the\ matrices.\ Expects\ a\ list\ of}}
+\DoxyCodeLine{00246\ \textcolor{comment}{\ \ Assiciation2+<TCAtom\ const*,\ vec3d,...>}}
+\DoxyCodeLine{00247\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ res\_t>\ \textcolor{keywordtype}{void}\ FindInRangeAC(\textcolor{keyword}{const}\ vec3d\&\ center,}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordtype}{double}\ minR,\ \textcolor{keywordtype}{double}\ maxR,}
+\DoxyCodeLine{00250\ \ \ \ \ res\_t\&\ out,\ \textcolor{keyword}{const}\ TCAtomPList*\ atoms\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00251\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00252\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ >\ res;}
+\DoxyCodeLine{00253\ \ \ \ \ \_FindInRange(center,\ minR,\ maxR,\ res,\ \textcolor{keyword}{false},\ atoms);}
+\DoxyCodeLine{00254\ \ \ \ \ out.SetCount(res.Count());}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ res.Count();\ i++)\ \{}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ out[i].a\ =\ res[i].a;}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ out[i].b\ =\ res[i].GetC();}
+\DoxyCodeLine{00258\ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \}}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \textcolor{comment}{/*\ returns\ a\ list\ of\ all\ matrices\ which\ lead\ to\ covalent/hydrogen\ bonds}}
+\DoxyCodeLine{00262\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00263\ \ \ \mbox{\hyperlink{classConstTypeList}{ConstTypeList<smatd>}}\ GetBinding(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ toA,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ fromA,}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ to,\ \textcolor{keyword}{const}\ vec3d\&\ from,\ \textcolor{keywordtype}{bool}\ IncludeI,}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordtype}{bool}\ IncludeHBonds)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classMatrixListAdaptor}{MatrixListAdaptor<TUnitCell>}}\ MatrixList;}
+\DoxyCodeLine{00268\ \ \ \textcolor{keyword}{typedef}\ TSymmSpace<TUnitCell::MatrixList>\ SymmSpace;}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ MatrixList\ GetMatrixList()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MatrixList(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00271\ }
+\DoxyCodeLine{00272\ \ \ SymmSpace\ GetSymmSpace()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au\ =\ GetLattice().GetAsymmUnit();}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordflow}{return}\ SymmSpace(MatrixList(*\textcolor{keyword}{this}),}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ au.GetCartesianToCell(),\ au.GetCellToCartesian(),\ au.GetHklToCartesian(),}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ au.GetLatt()\ >\ 0);}
+\DoxyCodeLine{00277\ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \textcolor{comment}{/*\ returns\ the\ closest\ distance\ between\ two\ atoms\ considering\ the\ unit\ cell}}
+\DoxyCodeLine{00279\ \textcolor{comment}{\ \ symmetry}}
+\DoxyCodeLine{00280\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00281\ \ \ \textcolor{keywordtype}{double}\ FindClosestDistance(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ to,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ from)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordflow}{return}\ FindClosestDistance(GetLattice().GetAsymmUnit(),\ MatrixList(*\textcolor{keyword}{this}),}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ to.ccrd(),\ from.ccrd());}
+\DoxyCodeLine{00284\ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \textcolor{keywordtype}{double}\ FindClosestDistance(\textcolor{keyword}{const}\ vec3d\&\ to,\ \textcolor{keyword}{const}\ vec3d\&\ from)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{return}\ FindClosestDistance(GetLattice().GetAsymmUnit(),\ MatrixList(*\textcolor{keyword}{this}),}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ to,\ from);}
+\DoxyCodeLine{00288\ \ \ \}}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ FindClosestDistance(}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au,\ \textcolor{keyword}{const}\ MatList\&\ ml,}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ to,\ \textcolor{keyword}{const}\ vec3d\&\ from)}
+\DoxyCodeLine{00293\ \ \ \{}
+\DoxyCodeLine{00294\ \ \ \ \ vec3d\ v\ =\ au.Orthogonalise(from\ -\/\ to);}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keywordtype}{double}\ minD\ =\ v.QLength();}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ml.Count();\ i++)\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ v\ =\ ml[i]\ *\ from\ -\/\ to;}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ D\ =\ au.Orthogonalise(v\ -\/=\ v.Round<\textcolor{keywordtype}{int}>()).QLength();}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (D\ <\ minD)\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ minD\ =\ D;}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \ \ \}}
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keywordflow}{return}\ sqrt(minD);}
+\DoxyCodeLine{00304\ \ \ \}}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \textcolor{comment}{/*\ finds\ all\ atoms\ (+symm\ attached)\ and\ Q-\/peaks,\ if\ specfied;\ if\ part\ is\ not}}
+\DoxyCodeLine{00307\ \textcolor{comment}{\ \ -\/1,\ part\ 0\ and\ the\ specified\ part\ are\ only\ placed.\ If\ remove\_redundant\ is\ set}}
+\DoxyCodeLine{00308\ \textcolor{comment}{\ \ to\ true\ -\/\ then\ the\ symmetry\ generated\ atoms\ that\ share\ symmetry\ equivalent}}
+\DoxyCodeLine{00309\ \textcolor{comment}{\ \ with\ the\ central\ atoms\ are\ omitted}}
+\DoxyCodeLine{00310\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00311\ \ \ \mbox{\hyperlink{classTAtomEnvi}{TAtomEnvi}}\ GetAtomEnviList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ atom,\ \textcolor{keywordtype}{bool}\ IncludeQ\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keywordtype}{int}\ part\ =\ DefNoPart,\ \textcolor{keywordtype}{bool}\ remove\_redundant\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \textcolor{comment}{//\ finds\ only\ q-\/peaks\ in\ the\ environment\ of\ specified\ atom}}
+\DoxyCodeLine{00315\ \ \ \mbox{\hyperlink{classTAtomEnvi}{TAtomEnvi}}\ GetAtomQEnviList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ atom);}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \textcolor{comment}{/*\ finds\ "{}pivoting"{}\ atoms\ for\ possible\ h-\/bonds,\ considering\ O,\ N\ and\ Cl\ only}}
+\DoxyCodeLine{00318\ \textcolor{comment}{\ \ with\ distances\ within\ 2.9A\ and\ angles\ 90-\/150\ deg}}
+\DoxyCodeLine{00319\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00320\ \ \ \mbox{\hyperlink{classTAtomEnvi}{TAtomEnvi}}\ GetAtomPossibleHBonds(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAtomEnvi}{TAtomEnvi}}\&\ atom);}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \ \ \textcolor{comment}{/*\ any\ of\ the\ atoms\ in\ envi\ having\ H\ atoms\ pointing\ in\ the\ atom\ direction,}}
+\DoxyCodeLine{00323\ \textcolor{comment}{\ \ are\ moved\ from\ envi\ into\ atom\ envi\ (if\ move\ is\ true)\ or\ simply\ deleted}}
+\DoxyCodeLine{00324\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00325\ \ \ \textcolor{keywordtype}{void}\ FilterHBonds(\mbox{\hyperlink{classTAtomEnvi}{TAtomEnvi}}\&\ atom,\ \mbox{\hyperlink{classTAtomEnvi}{TAtomEnvi}}\&\ envi,\ \textcolor{keywordtype}{bool}\ move);}
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00327\ \ \ \textcolor{comment}{/*\ This\ function\ creates\ a\ map\ of\ the\ unit\ cell\ with\ provided\ partioning.}}
+\DoxyCodeLine{00328\ \textcolor{comment}{\ \ It\ uses\ Van-\/der-\/Waals\ atomic\ radii\ by\ defualt\ and\ adds\ delta\ to\ it.\ The\ grid}}
+\DoxyCodeLine{00329\ \textcolor{comment}{\ \ points\ belonging\ to\ atoms\ have\ value\ 'value',\ the\ others\ -\/\ '0'.\ Returns\ the}}
+\DoxyCodeLine{00330\ \textcolor{comment}{\ \ number\ of\ grid\ points\ occupied\ by\ the\ structure\ to\ structurePoinst\ if\ not}}
+\DoxyCodeLine{00331\ \textcolor{comment}{\ \ NULL.\ If\ \_template\ is\ provided\ -\/\ only\ these\ atoms\ are\ used\ int\ the}}
+\DoxyCodeLine{00332\ \textcolor{comment}{\ \ calculation}}
+\DoxyCodeLine{00333\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00334\ \ \ \textcolor{keywordtype}{void}\ BuildStructureMap\_Direct(TArray3D<short>\&\ map,\ \textcolor{keywordtype}{double}\ delta,}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{keywordtype}{short}\ value,\ ElementRadii*\ radii,\ \textcolor{keyword}{const}\ TCAtomPList*\ \_template\ =\ 0);}
+\DoxyCodeLine{00336\ \ \ \textcolor{comment}{/*\ builds\ boolean\ mask\ for\ atoms\ types,\ mdim\ -\/\ the\ dimensions\ of\ the\ grid\ to}}
+\DoxyCodeLine{00337\ \textcolor{comment}{\ \ which\ the\ masks\ will\ be\ applied,\ delta\ -\/\ extra\ added\ value\ for\ Rs}}
+\DoxyCodeLine{00338\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00339\ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<short,\ TArray3D<bool>}}*>::const\_dict\_type}
+\DoxyCodeLine{00340\ \ \ \ \ BuildAtomMasks(\textcolor{keyword}{const}\ vec3s\&\ dim,\ ElementRadii*\ radii,}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ delta\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00342\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TArray3D<bool>}}\ >\ BuildAtomMask(\textcolor{keyword}{const}\ vec3s\&\ dim,}
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keywordtype}{double}\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00344\ \ \ \textcolor{comment}{//\ much\ faster,\ but\ less\ 'precise'\ version}}
+\DoxyCodeLine{00345\ \ \ \textcolor{keywordtype}{void}\ BuildStructureMap\_Masks(TArray3D<short>\&\ map,\ \textcolor{keywordtype}{double}\ delta,\ \textcolor{keywordtype}{short}\ value,}
+\DoxyCodeLine{00346\ \ \ \ \ ElementRadii*\ radii,\ \textcolor{keyword}{const}\ TCAtomPList*\ \_template\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00347\ \ \ \textcolor{comment}{/**/}}
+\DoxyCodeLine{00348\ \ \ \textcolor{keywordtype}{void}\ BuildDistanceMap\_Direct(TArray3D<short>\&\ map,\ \textcolor{keywordtype}{double}\ delta,\ \textcolor{keywordtype}{short}\ value,}
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keyword}{const}\ ElementRadii*\ radii,\ \textcolor{keyword}{const}\ TCAtomPList*\ \_template\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00350\ \ \ \textcolor{comment}{//\ much\ faster,\ but\ less\ 'precise'\ version}}
+\DoxyCodeLine{00351\ \ \ \textcolor{keywordtype}{void}\ BuildDistanceMap\_Masks(TArray3D<short>\&\ map,\ \textcolor{keywordtype}{double}\ delta,\ \textcolor{keywordtype}{short}\ value,}
+\DoxyCodeLine{00352\ \ \ \ \ \textcolor{keyword}{const}\ ElementRadii*\ radii,\ \textcolor{keyword}{const}\ TCAtomPList*\ \_template\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00353\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00354\ \ \ \textcolor{comment}{//\ helper\ function,\ association\ should\ be\ olx\_pair\_t+<vec3d,TCAtom*,+>}}
+\DoxyCodeLine{00355\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Association>}
+\DoxyCodeLine{00356\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ AtomsSortByDistance(\textcolor{keyword}{const}\ \mbox{\hyperlink{structAssociation}{Association}}\ \&A1,}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structAssociation}{Association}}\ \&A2)}
+\DoxyCodeLine{00358\ \ \ \{}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(A1.GetA().QLength(),\ A2.GetA().QLength());}
+\DoxyCodeLine{00360\ \ \ \}}
+\DoxyCodeLine{00361\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00362\ \ \ \textcolor{comment}{//\ creates\ an\ array\ of\ matrices\ for\ a\ given\ aunit\ and\ lattice\ type}}
+\DoxyCodeLine{00363\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ GenerateMatrices(smatd\_list\&\ out,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au,}
+\DoxyCodeLine{00364\ \ \ \ \ \textcolor{keywordtype}{short}\ latt)}
+\DoxyCodeLine{00365\ \ \ \{}
+\DoxyCodeLine{00366\ \ \ \ \ TSymmLib::GetInstance().ExpandLatt(out,}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \mbox{\hyperlink{classMatrixListAdaptor}{MatrixListAdaptor<TAsymmUnit>}}(au),\ latt);}
+\DoxyCodeLine{00368\ \ \ \}}
+\DoxyCodeLine{00369\ \ \ \textcolor{comment}{/*\ association\ should\ be\ olx\_pair\_t+<vec3d,TCAtom*,+>,\ generates\ all}}
+\DoxyCodeLine{00370\ \textcolor{comment}{\ \ atoms\ of\ the\ aunit}}
+\DoxyCodeLine{00371\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00372\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Association>\ \textcolor{keywordtype}{void}\ GenereteAtomCoordinates(}
+\DoxyCodeLine{00373\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<Association>}}\&\ list,\ \textcolor{keywordtype}{bool}\ IncludeH,}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList*\ \_template\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00375\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00376\ \ \ \ \ TCAtomPList\&\ atoms\ =\ (\_template\ ==\ 0\ ?\ *(\textcolor{keyword}{new}\ TCAtomPList)}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ :\ *\textcolor{keyword}{const\_cast<}TCAtomPList*\textcolor{keyword}{>}(\_template));}
+\DoxyCodeLine{00378\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_template\ ==\ 0)\ \{}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ list.SetCapacity(Lattice-\/>GetAsymmUnit().AtomCount()*Matrices.Count());}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Lattice-\/>GetAsymmUnit().AtomCount();\ i++)\ \{}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca\ =\ Lattice-\/>GetAsymmUnit().GetAtom(i);}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ca.GetType()\ ==\ iQPeakZ\ ||\ ca.IsDeleted())\ \{}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!IncludeH\ \&\&\ ca.GetType()\ ==\ iHydrogenZ)\ \{}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ atoms.Add(\&ca);}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00390\ \ \ \ \ \}}
+\DoxyCodeLine{00391\ \ \ \ \ list.SetCapacity(atoms.Count()*Matrices.Count());}
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ atom\_cnt\ =\ atoms.Count();}
+\DoxyCodeLine{00393\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atom\_cnt;\ i++)\ \{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ ca\ =\ atoms[i];}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ca-\/>GetType()\ ==\ iQPeakZ\ ||\ ca-\/>IsDeleted())\ \{}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ Matrices.Count();\ j++)\ \{}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ vec3d\ center\ =\ Matrices[j]\ *\ ca-\/>ccrd();}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ \{}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (center[k]\ <\ 0)\ \{}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \ \ \ \ center[k]\ +=\ 1;}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (center[k]\ >\ 1)\ \{}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \ \ center[k]\ -\/=\ 1;}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ list.AddNew(center,\ ca);}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00410\ \ \ \ \ \}}
+\DoxyCodeLine{00411\ \ \ \ \ \textcolor{comment}{//\ create\ a\ list\ of\ unique\ atoms}}
+\DoxyCodeLine{00412\ \ \ \ \ \textcolor{keywordtype}{float}*\ distances\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{float}[list.Count()\ +\ 1];}
+\DoxyCodeLine{00413\ \ \ \ \ QuickSorter::SortSF(list,\ \&AtomsSortByDistance<Association>);}
+\DoxyCodeLine{00414\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ lc\ =\ list.Count();}
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ lc;\ i++)\ \{}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ distances[i]\ =\ (float)list[i].GetA().QLength();}
+\DoxyCodeLine{00417\ \ \ \ \ \}}
+\DoxyCodeLine{00418\ }
+\DoxyCodeLine{00419\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ lc;\ i++)\ \{}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list.IsNull(i))\ \{}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ 1;\ j\ <\ lc;\ j++)\ \{}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list.IsNull(j))\ \{}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((distances[j]\ -\/\ distances[i])\ >\ 0.1)\ \{}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ d\ =\ list[i].GetA().QDistanceTo(list[j].GetA());}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ <\ 0.00001)\ \{}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \ \ list.NullItem(j);}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00436\ \ \ \ \ \}}
+\DoxyCodeLine{00437\ \ \ \ \ \textcolor{keyword}{delete}[]\ distances;}
+\DoxyCodeLine{00438\ \ \ \ \ list.Pack();}
+\DoxyCodeLine{00439\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_template\ ==\ 0)\ \{}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \&atoms;}
+\DoxyCodeLine{00441\ \ \ \ \ \}}
+\DoxyCodeLine{00442\ \ \ \}}
+\DoxyCodeLine{00443\ \ \ \textcolor{comment}{/*\ expands\ atom\ coordinates\ with\ +/-\/1\ if\ one\ of\ the\ fractional\ coordinates}}
+\DoxyCodeLine{00444\ \textcolor{comment}{\ \ is\ less\ the\ lim\ or\ greater\ than\ 1-\/lim.\ This\ function\ is\ used\ in\ the}}
+\DoxyCodeLine{00445\ \textcolor{comment}{\ \ BuildStructure\ map\ function\ to\ take\ into\ account\ atoms\ which\ are\ near\ the}}
+\DoxyCodeLine{00446\ \textcolor{comment}{\ \ cell\ sides}}
+\DoxyCodeLine{00447\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00448\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Association>\ \textcolor{keywordtype}{void}\ ExpandAtomCoordinates(}
+\DoxyCodeLine{00449\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<Association>}}\&\ list,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ lim)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00450\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00451\ \ \ \ \ list.SetCapacity(list.Count()\ *\ 7);}
+\DoxyCodeLine{00452\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ c\_min\ =\ lim,\ c\_max\ =\ 1.0\ -\/\ lim;}
+\DoxyCodeLine{00453\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ all\_ac\ =\ list.Count();}
+\DoxyCodeLine{00454\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ all\_ac;\ i++)\ \{}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ v\ =\ list[i].GetA();}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ xi\ =\ v[0]\ <\ c\_min\ ?\ 1\ :\ (v[0]\ >\ c\_max\ ?\ -\/1\ :\ 0);}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ yi\ =\ v[1]\ <\ c\_min\ ?\ 1\ :\ (v[1]\ >\ c\_max\ ?\ -\/1\ :\ 0);}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ zi\ =\ v[2]\ <\ c\_min\ ?\ 1\ :\ (v[2]\ >\ c\_max\ ?\ -\/1\ :\ 0);}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (xi\ !=\ 0)\ \{}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ list.AddNew(vec3d(v[0]\ +\ xi,\ v[1],\ v[2]),\ list[i].b);}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (yi\ !=\ 0)\ \{}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ list.AddNew(vec3d(v[0]\ +\ xi,\ v[1]\ +\ yi,\ v[2]),\ list[i].b);}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (zi\ !=\ 0)\ \{}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ list.AddNew(vec3d(v[0]\ +\ xi,\ v[1]\ +\ yi,\ v[2]\ +\ zi),\ list[i].b);}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (zi\ !=\ 0)\ \{}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ \ \ list.AddNew(vec3d(v[0]\ +\ xi,\ v[1],\ v[2]\ +\ zi),\ list[i].b);}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (yi\ !=\ 0)\ \{}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ list.AddNew(vec3d(v[0],\ v[1]\ +\ yi,\ v[2]),\ list[i].b);}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (zi\ !=\ 0)\ \{}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \ \ list.AddNew(vec3d(v[0],\ v[1]\ +\ yi,\ v[2]\ +\ zi),\ list[i].b);}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (zi\ !=\ 0)\ \{}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ list.AddNew(vec3d(v[0],\ v[1],\ v[2]\ +\ zi),\ list[i].b);}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00480\ \ \ \ \ \}}
+\DoxyCodeLine{00481\ \ \ \}}
+\DoxyCodeLine{00482\ \ \ \textcolor{comment}{//\ finds\ an\ atom\ at\ given\ position}}
+\DoxyCodeLine{00483\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ FindCAtom(\textcolor{keyword}{const}\ vec3d\&\ center)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00484\ \ \ \textcolor{comment}{/*\ finds\ an\ atom\ within\ delta\ of\ the\ given\ position\ */}}
+\DoxyCodeLine{00485\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ FindOverlappingAtom(\textcolor{keyword}{const}\ vec3d\&\ position,\ \textcolor{keywordtype}{bool}\ find\_deleted,}
+\DoxyCodeLine{00486\ \ \ \ \ \textcolor{keywordtype}{double}\ delta)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00487\ \ \ \textcolor{keywordtype}{size\_t}\ GetPositionMultiplicity(\textcolor{keyword}{const}\ vec3d\&\ p)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00488\ \ \ \ \ \textcolor{keywordflow}{return}\ GetPositionMultiplicity(MatrixList(*\textcolor{keyword}{this}),\ p);}
+\DoxyCodeLine{00489\ \ \ \}}
+\DoxyCodeLine{00490\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList>}
+\DoxyCodeLine{00491\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ GetPositionMultiplicity(\textcolor{keyword}{const}\ MatList\&\ ml,\ \textcolor{keyword}{const}\ vec3d\&\ p)\ \{}
+\DoxyCodeLine{00492\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ m\ =\ 1;\ \ \textcolor{comment}{//\ identity}}
+\DoxyCodeLine{00493\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ ml.Count();\ i++)\ \{}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ vec3d\ v\ =\ p\ -\/\ ml[i]\ *\ p;}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ v\ -\/=\ v.Round<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v.IsNull(1e-\/3))\ \{}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ m++;}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00499\ \ \ \ \ \}}
+\DoxyCodeLine{00500\ \ \ \ \ \textcolor{keywordflow}{return}\ m;}
+\DoxyCodeLine{00501\ \ \ \}}
+\DoxyCodeLine{00502\ \ \ \textcolor{comment}{//\ sorts\ result\ of\ FindInRangeAC\ by\ distance\ from\ given\ center}}
+\DoxyCodeLine{00503\ \ \ \textcolor{keyword}{struct\ }AC\_Sort\ \{}
+\DoxyCodeLine{00504\ \ \ \ \ vec3d\ center;}
+\DoxyCodeLine{00505\ \ \ \ \ AC\_Sort(\textcolor{keyword}{const}\ vec3d\ \&\_center)\ :\ center(\_center)\ \{\}}
+\DoxyCodeLine{00506\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<const\ TCAtom\ *,\ vec3d>}}\ \&a1,}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<const\ TCAtom\ *,\ vec3d>}}\ \&a2)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00509\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ center.QDistanceTo(a1.GetB()),}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ center.QDistanceTo(a2.GetB()));}
+\DoxyCodeLine{00513\ \ \ \ \ \}}
+\DoxyCodeLine{00514\ \ \ \};}
+\DoxyCodeLine{00515\ }
+\DoxyCodeLine{00516\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTUnitCell_1_1IAtomAnalyser}{IAtomAnalyser}}\ :\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00517\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00518\ \ \ \ \ \textcolor{comment}{//\ the\ atom\ and\ the\ square\ of\ the\ respective\ distance}}
+\DoxyCodeLine{00519\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Matches(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&\ a,\ \textcolor{keywordtype}{double}\ qd)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00520\ \ \ \};}
+\DoxyCodeLine{00521\ }
+\DoxyCodeLine{00522\ \ \ \textcolor{comment}{/*\ Returns\ true\ if\ finds\ a\ first\ occurrence\ of\ the\ matching\ atom\ within\ the}}
+\DoxyCodeLine{00523\ \textcolor{comment}{\ \ given\ range.\ v\ is\ in\ fractional\ coordinates}}
+\DoxyCodeLine{00524\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00525\ \ \ \textcolor{keywordtype}{bool}\ HasInRange(\textcolor{keyword}{const}\ vec3d\ \&v,\ \textcolor{keywordtype}{double}\ r,}
+\DoxyCodeLine{00526\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTUnitCell_1_1IAtomAnalyser}{IAtomAnalyser}}\ \&analyser)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00527\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00528\ \ \ \textcolor{keyword}{class\ }TSearchSymmEqTask\ :\ \textcolor{keyword}{public}\ TaskBase\ \{}
+\DoxyCodeLine{00529\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TCAtom>}}\&\ Atoms;}
+\DoxyCodeLine{00530\ \ \ \ \ \textcolor{keyword}{const}\ smatd\_list\&\ Matrices;}
+\DoxyCodeLine{00531\ \ \ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}*\ AU;}
+\DoxyCodeLine{00532\ \ \ \ \ \mbox{\hyperlink{classTLattice}{TLattice}}*\ Latt;}
+\DoxyCodeLine{00533\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00534\ \ \ \ \ TSearchSymmEqTask(\mbox{\hyperlink{classTPtrList}{TPtrList<TCAtom>}}\&\ atoms,\ \textcolor{keyword}{const}\ smatd\_list\&\ matrices);}
+\DoxyCodeLine{00535\ \ \ \ \ \textcolor{keywordtype}{void}\ Run(\textcolor{keywordtype}{size\_t}\ ind)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00536\ \ \ \ \ \textcolor{keywordtype}{void}\ InitEquiv()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00537\ \ \ \ \ TSearchSymmEqTask*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TSearchSymmEqTask(Atoms,\ Matrices);}
+\DoxyCodeLine{00539\ \ \ \ \ \}}
+\DoxyCodeLine{00540\ \ \ \};}
+\DoxyCodeLine{00541\ \ \ \textcolor{keyword}{class\ }TBuildDistanceMapTask\ :\ \textcolor{keyword}{public}\ TaskBase\ \{}
+\DoxyCodeLine{00542\ \ \ \ \ array\_3d<float>\ \&map;}
+\DoxyCodeLine{00543\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AnAssociation3<vec3f,\ TCAtom*,\ float>}}\ >\&\ atoms;}
+\DoxyCodeLine{00544\ \ \ \ \ \textcolor{keyword}{const}\ vec3s\ dims;}
+\DoxyCodeLine{00545\ \ \ \ \ \textcolor{keyword}{const}\ mat3f\&\ tm;}
+\DoxyCodeLine{00546\ \ \ \ \ \textcolor{keywordtype}{float}**\ loop\_data;}
+\DoxyCodeLine{00547\ \ \ \ \ \textcolor{keywordtype}{bool}\ owns\_data;}
+\DoxyCodeLine{00548\ \ \ \ \ TBuildDistanceMapTask(TBuildDistanceMapTask\&\ parent)}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ :\ map(parent.map),\ atoms(parent.atoms),\ dims(parent.dims),\ tm(parent.tm),}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ loop\_data(parent.loop\_data),\ owns\_data(\textcolor{keyword}{false})\ \{\}}
+\DoxyCodeLine{00551\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00552\ \ \ \ \ TBuildDistanceMapTask(\textcolor{keyword}{const}\ mat3f\&\ \_tm,\ array\_3d<float>\ \&\_map,}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structAnAssociation3}{AnAssociation3<vec3f,\ TCAtom*,\ float>}}\ >\&\ \_atoms)}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ :\ map(\_map),\ atoms(\_atoms),\ dims(\_map.dim()),\ tm(\_tm),\ owns\_data(\textcolor{keyword}{true})}
+\DoxyCodeLine{00555\ \ \ \ \ \{}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ init\_loop\_data();}
+\DoxyCodeLine{00557\ \ \ \ \ \}}
+\DoxyCodeLine{00558\ \ \ \ \ \textcolor{keywordtype}{void}\ init\_loop\_data();}
+\DoxyCodeLine{00559\ \ \ \ \ \textcolor{keywordtype}{void}\ clear\_loop\_data();}
+\DoxyCodeLine{00560\ \ \ \ \ \textcolor{keywordtype}{void}\ Run(\textcolor{keywordtype}{size\_t}\ ind)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00561\ \ \ \ \ TBuildDistanceMapTask*\ Replicate()\ \{}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TBuildDistanceMapTask(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00563\ \ \ \ \ \}}
+\DoxyCodeLine{00564\ \ \ \};}
+\DoxyCodeLine{00565\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00566\ \ \ \textcolor{keywordtype}{void}\ LibVolume(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00567\ \ \ \textcolor{keywordtype}{void}\ LibVolumeEx(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00568\ \ \ \textcolor{keywordtype}{void}\ LibCellEx(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00569\ \ \ \textcolor{keywordtype}{void}\ LibMatrixCount(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00570\ \ \ \textcolor{keywordtype}{void}\ LibClosest(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00571\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLibrary}{TLibrary}}*\ \ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name\ =\ EmptyString());}
+\DoxyCodeLine{00572\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTUnitCell_1_1VPtr}{VPtr}}\ :\ \textcolor{keyword}{public}\ olx\_virtual\_ptr<TUnitCell>\ \{}
+\DoxyCodeLine{00573\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *get\_ptr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00574\ \ \ \};}
+\DoxyCodeLine{00575\ \};}
+\DoxyCodeLine{00576\ }
+\DoxyCodeLine{00577\ EndXlibNamespace()}
+\DoxyCodeLine{00578\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

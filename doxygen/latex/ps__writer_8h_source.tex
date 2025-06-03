@@ -1,0 +1,486 @@
+\doxysection{ps\+\_\+writer.\+h}
+\hypertarget{ps__writer_8h_source}{}\label{ps__writer_8h_source}\index{repository/ps\_writer.h@{repository/ps\_writer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_olx\_ps\_writerH}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_olx\_ps\_writerH}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}efile.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ mind\ to\ change\ the\ length\ of\ the\ buffer\ if\ changes!!!}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifdef\ \_MSC\_VER}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#\ \ define\ psw\_sprintf(bf,\ format,\ ...)\ \ sprintf\_s(bf,\ 80,\ format,\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#\ \ define\ psw\_sprintf\ sprintf}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{comment}{/*\ A\ simple\ postscript\ file\ interface}}
+\DoxyCodeLine{00023\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }PSWriter\ \ \{}
+\DoxyCodeLine{00025\ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ out;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{char}\ bf[80];}
+\DoxyCodeLine{00027\ \ \ uint32\_t\ CurrentColor;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{float}\ CurrentLineWidth;}
+\DoxyCodeLine{00029\ \ \ uint64\_t\ bounding\_box\_pos;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{typedef}\ void\ (PSWriter::*RenderFunc)();}
+\DoxyCodeLine{00032\ \ \ PSWriter(\textcolor{keyword}{const}\ olxstr\&\ fileName,\ \textcolor{keywordtype}{bool}\ write\_bounding\_box)}
+\DoxyCodeLine{00033\ \ \ \ \ :\ bounding\_box\_pos(InvalidIndex)}
+\DoxyCodeLine{00034\ \ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ CurrentColor\ =\ 0;}
+\DoxyCodeLine{00036\ \ \ \ \ CurrentLineWidth\ =\ 1;}
+\DoxyCodeLine{00037\ \ \ \ \ out.Open(fileName,\ \textcolor{stringliteral}{"{}w+b"{}});}
+\DoxyCodeLine{00038\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\%!PS-\/Adobe-\/2.0\ EPSF-\/1.2"{}});}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{if}(\ write\_bounding\_box\ )\ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ bounding\_box\_pos\ =\ out.GetPosition();}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ olxcstr\ bb(\textcolor{stringliteral}{"{}\%\%BoundingBox:\ "{}});}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ bounding\_box\_pos\ +=\ bb.Length();}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ bb\ <<\ olxcstr::CharStr(\textcolor{charliteral}{'\ '},\ 4*12);}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ out.Writeln(bb);}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\%\%Title:\ Olex2\ 2D\ diagram"{}});}
+\DoxyCodeLine{00047\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\%\%Pages:\ 1"{}});}
+\DoxyCodeLine{00048\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\%\%Page:\ 1\ 1"{}});}
+\DoxyCodeLine{00049\ \ \ \ \ out.Writeln(olxcstr(\textcolor{stringliteral}{"{}\%\%CreationDate:\ "{}})\ <<}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ TETime::FormatDateTime(TETime::Now()));}
+\DoxyCodeLine{00051\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\%\%Orientation:\ Portrait"{}});}
+\DoxyCodeLine{00052\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\%\%DocumentPaperSizes:\ A4"{}});}
+\DoxyCodeLine{00053\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\%\%EndComments"{}});}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ color(uint32\_t\ rgb)\ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{if}(\ CurrentColor\ ==\ rgb\ )\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ CurrentColor\ =\ rgb;}
+\DoxyCodeLine{00059\ \ \ \ \ out.Writeln(color\_str(rgb));}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ color\_str(uint32\_t\ rgb)\ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ \%f\ setrgbcolor"{}},\ (\textcolor{keywordtype}{float})OLX\_GetRValue(rgb)/255,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})OLX\_GetGValue(rgb)/255,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})OLX\_GetBValue(rgb)/255}
+\DoxyCodeLine{00066\ \ \ \ \ );}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ bf;}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{void}\ translate(\textcolor{keyword}{const}\ vec\_t\&\ origin)\ \ \{}
+\DoxyCodeLine{00072\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ translate"{}},\ (\textcolor{keywordtype}{float})origin[0],\ (\textcolor{keywordtype}{float})origin[1]);}
+\DoxyCodeLine{00073\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00074\ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ translate(\textcolor{keyword}{const}\ float\_t\&\ x,\ \textcolor{keyword}{const}\ float\_t\&\ y)\ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ translate"{}},\ (\textcolor{keywordtype}{float})x,\ (\textcolor{keywordtype}{float})y);}
+\DoxyCodeLine{00079\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ lineWidth(\textcolor{keyword}{const}\ float\_t\&\ lw)\ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{if}(\ olx\_abs(lw-\/CurrentLineWidth)\ <\ 1e-\/6\ )\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00085\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ setlinewidth"{}},\ (\textcolor{keywordtype}{float})lw);}
+\DoxyCodeLine{00086\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00087\ \ \ \ \ CurrentLineWidth\ =\ (float)lw;}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordtype}{void}\ scale(\textcolor{keyword}{const}\ vec\_t\&\ origin)\ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ scale"{}},\ (\textcolor{keywordtype}{float})origin[0],\ (\textcolor{keywordtype}{float})origin[1]);}
+\DoxyCodeLine{00093\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{void}\ scale(\textcolor{keyword}{const}\ float\_t\&\ x\_scale,\ \textcolor{keyword}{const}\ float\_t\&\ y\_scale)\ \ \{}
+\DoxyCodeLine{00098\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ scale"{}},\ (\textcolor{keywordtype}{float})x\_scale,\ (\textcolor{keywordtype}{float})y\_scale);}
+\DoxyCodeLine{00099\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ custom(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ cmd)\ \ \{\ \ out.Writeln(cmd);\ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ custom(\textcolor{keyword}{const}\ olxstr\&\ cmd)\ \ \{\ \ out.Writeln(cmd.c\_str());\ \ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ \textcolor{keywordtype}{void}\ custom(\textcolor{keyword}{const}\ List\&\ cmds)\ \ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ cmds.Count();\ i++\ )}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ out.Writeln(cmds[i].c\_str());}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordtype}{void}\ newPath()\ \ \{\ \ out.Writeln(\textcolor{stringliteral}{"{}newpath"{}});\ \ \}}
+\DoxyCodeLine{00112\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordtype}{void}\ closePath()\ \ \{\ \ out.Writeln(\textcolor{stringliteral}{"{}closepath"{}});\ \ \}}
+\DoxyCodeLine{00114\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00115\ \ \ \textcolor{keywordtype}{void}\ stroke()\ \ \{\ \ out.Writeln(\textcolor{stringliteral}{"{}stroke"{}});\ \ \}}
+\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{void}\ fill()\ \ \{\ \ out.Writeln(\textcolor{stringliteral}{"{}fill"{}});\ \ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{void}\ gsave()\ \ \{\ \ out.Writeln(\textcolor{stringliteral}{"{}gsave"{}});\ \ \}}
+\DoxyCodeLine{00120\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keywordtype}{void}\ grestore()\ \ \{\ \ out.Writeln(\textcolor{stringliteral}{"{}grestore"{}});\ \ \}}
+\DoxyCodeLine{00122\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{void}\ gsaveAndFill()\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ gsave();}
+\DoxyCodeLine{00125\ \ \ \ \ fill();}
+\DoxyCodeLine{00126\ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{void}\ gsaveAndStroke()\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ gsave();}
+\DoxyCodeLine{00130\ \ \ \ \ stroke();}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00133\ \ \ \textcolor{comment}{//\ default\ scale,\ A4}}
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordtype}{int}\ GetWidth()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ 596;\ \ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{//\ default\ scale\ A4}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{int}\ GetHeight()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ 842;\ \ \}}
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordtype}{void}\ line(\textcolor{keyword}{const}\ vec\_t\&\ from,\ \textcolor{keyword}{const}\ vec\_t\&\ to)\ \ \{}
+\DoxyCodeLine{00141\ \ \ \ \ moveto(from);}
+\DoxyCodeLine{00142\ \ \ \ \ lineto(to);}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{void}\ moveto(\textcolor{keyword}{const}\ vec\_t\&\ to)\ \ \{}
+\DoxyCodeLine{00147\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ moveto"{}},\ (\textcolor{keywordtype}{float})to[0],\ (\textcolor{keywordtype}{float})to[1]);}
+\DoxyCodeLine{00148\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordtype}{void}\ moveto(\textcolor{keyword}{const}\ float\_t\&\ x,\ \textcolor{keyword}{const}\ float\_t\&\ y)\ \ \{}
+\DoxyCodeLine{00152\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ moveto"{}},\ (\textcolor{keywordtype}{float})x,\ (\textcolor{keywordtype}{float})y);}
+\DoxyCodeLine{00153\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00154\ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00157\ \ \ \textcolor{keywordtype}{void}\ lineto(\textcolor{keyword}{const}\ vec\_t\&\ to)\ \ \{}
+\DoxyCodeLine{00158\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ lineto"{}},\ (\textcolor{keywordtype}{float})to[0],\ (\textcolor{keywordtype}{float})to[1]);}
+\DoxyCodeLine{00159\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00160\ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00162\ \ \ \textcolor{keywordtype}{void}\ lineto(\textcolor{keyword}{const}\ float\_t\&\ x,\ \textcolor{keyword}{const}\ float\_t\&\ y)\ \ \{}
+\DoxyCodeLine{00163\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ lineto"{}},\ (\textcolor{keywordtype}{float})x,\ (\textcolor{keywordtype}{float})y);}
+\DoxyCodeLine{00164\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00168\ \ \ \textcolor{keywordtype}{void}\ drawLine(\textcolor{keyword}{const}\ vec\_t\&\ from,\ \textcolor{keyword}{const}\ vec\_t\&\ to)\ \ \{}
+\DoxyCodeLine{00169\ \ \ \ \ newPath();}
+\DoxyCodeLine{00170\ \ \ \ \ line(from,\ to);}
+\DoxyCodeLine{00171\ \ \ \ \ stroke();}
+\DoxyCodeLine{00172\ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ list\_t>}
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordtype}{void}\ lines(\textcolor{keyword}{const}\ list\_t\&\ list,\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ InvalidSize,}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordtype}{bool}\ close\_path=\textcolor{keyword}{false})}
+\DoxyCodeLine{00177\ \ \ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{if}(\ cnt\ ==\ InvalidSize\ )\ \ cnt\ =\ list.Count();}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{if}(\ cnt\ <\ 2\ )\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00180\ \ \ \ \ moveto(list[0]);}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=1;\ i\ <\ cnt;\ i++\ )}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ lineto(list[i]);}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{if}(\ close\_path\ )}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ lineto(list[0]);}
+\DoxyCodeLine{00185\ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ list\_t>}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{void}\ drawLines(\textcolor{keyword}{const}\ list\_t\&\ list,\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ InvalidSize,\ \textcolor{keywordtype}{bool}\ join=\textcolor{keyword}{false},}
+\DoxyCodeLine{00188\ \ \ \ \ RenderFunc\ rf\ =\ \&PSWriter::stroke)}
+\DoxyCodeLine{00189\ \ \ \{}
+\DoxyCodeLine{00190\ \ \ \ \ newPath();}
+\DoxyCodeLine{00191\ \ \ \ \ lines(list,\ cnt,\ join);}
+\DoxyCodeLine{00192\ \ \ \ \ (this-\/>*rf)();}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ list\_t>}
+\DoxyCodeLine{00196\ \ \ \textcolor{keywordtype}{void}\ lines\_vp(\textcolor{keyword}{const}\ list\_t\&\ list,\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ InvalidSize,}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordtype}{bool}\ close\_path=\textcolor{keyword}{false})}
+\DoxyCodeLine{00198\ \ \ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keywordflow}{if}(\ cnt\ ==\ InvalidSize\ )\ \ cnt\ =\ list.Count();}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordflow}{if}(\ cnt\ <\ 2\ )\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00201\ \ \ \ \ moveto(*list[0]);}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=1;\ i\ <\ cnt;\ i++\ )}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ lineto(*list[i]);}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keywordflow}{if}(\ close\_path\ )}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ lineto(*list[0]);}
+\DoxyCodeLine{00206\ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ list\_t>}
+\DoxyCodeLine{00208\ \ \ \textcolor{keywordtype}{void}\ drawLines\_vp(\textcolor{keyword}{const}\ list\_t\&\ list,\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ InvalidSize,}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordtype}{bool}\ join=\textcolor{keyword}{false},\ RenderFunc\ rf\ =\ \&PSWriter::stroke)}
+\DoxyCodeLine{00210\ \ \ \{}
+\DoxyCodeLine{00211\ \ \ \ \ newPath();}
+\DoxyCodeLine{00212\ \ \ \ \ lines\_vp(list,\ cnt,\ join);}
+\DoxyCodeLine{00213\ \ \ \ \ (this-\/>*rf)();}
+\DoxyCodeLine{00214\ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t,\ \textcolor{keyword}{typename}\ mat\_t>}
+\DoxyCodeLine{00217\ \ \ \textcolor{keywordtype}{void}\ ellipse(\textcolor{keyword}{const}\ vec\_t\&\ center,\ \textcolor{keyword}{const}\ mat\_t\&\ basis)\ \ \{}
+\DoxyCodeLine{00218\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}matrix\ currentmatrix"{}});}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{comment}{//a\ b\ 0}}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{comment}{//c\ d\ 0}}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{comment}{//tx\ ty\ 1}}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{comment}{//[a\ b\ c\ d\ tx\ ty]}}
+\DoxyCodeLine{00223\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}[\%f\ \%f\ \%f\ \%f\ \%f\ \%f]\ concat"{}},\ (\textcolor{keywordtype}{float})basis[0][0],}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})basis[0][1],}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})basis[1][0],}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})basis[1][1],}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})center[0],}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})center[1]}
+\DoxyCodeLine{00229\ \ \ \ \ );}
+\DoxyCodeLine{00230\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00231\ \ \ \ \ out.Writeln(\ \textcolor{stringliteral}{"{}0\ 0\ 1\ 0\ 360\ arc"{}});}
+\DoxyCodeLine{00232\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}setmatrix"{}});}
+\DoxyCodeLine{00233\ \ \ \}}
+\DoxyCodeLine{00234\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t,\ \textcolor{keyword}{typename}\ mat\_t>}
+\DoxyCodeLine{00235\ \ \ \textcolor{keywordtype}{void}\ drawEllipse(\textcolor{keyword}{const}\ vec\_t\&\ center,\ \textcolor{keyword}{const}\ mat\_t\&\ basis,}
+\DoxyCodeLine{00236\ \ \ \ \ RenderFunc\ rf\ =\ \&PSWriter::stroke)}
+\DoxyCodeLine{00237\ \ \ \{}
+\DoxyCodeLine{00238\ \ \ \ \ newPath();}
+\DoxyCodeLine{00239\ \ \ \ \ ellipse(center,\ basis);}
+\DoxyCodeLine{00240\ \ \ \ \ (this-\/>*rf)();}
+\DoxyCodeLine{00241\ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t,\ \textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00244\ \ \ \textcolor{keywordtype}{void}\ circle(\textcolor{keyword}{const}\ vec\_t\&\ center,\ \textcolor{keyword}{const}\ float\_t\&\ rad)\ \ \{}
+\DoxyCodeLine{00245\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ \%f\ 0\ 360\ arc"{}},\ (\textcolor{keywordtype}{float})center[0],}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})center[1],}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})rad}
+\DoxyCodeLine{00248\ \ \ \ \ );}
+\DoxyCodeLine{00249\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t,\ \textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00252\ \ \ \textcolor{keywordtype}{void}\ drawCircle(\textcolor{keyword}{const}\ vec\_t\&\ center,\ \textcolor{keyword}{const}\ float\_t\&\ rad,}
+\DoxyCodeLine{00253\ \ \ \ \ RenderFunc\ rf=\&PSWriter::stroke)}
+\DoxyCodeLine{00254\ \ \ \{}
+\DoxyCodeLine{00255\ \ \ \ \ newPath();}
+\DoxyCodeLine{00256\ \ \ \ \ circle(center,\ rad);}
+\DoxyCodeLine{00257\ \ \ \ \ (this-\/>*rf)();}
+\DoxyCodeLine{00258\ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec\_t>}
+\DoxyCodeLine{00261\ \ \ \textcolor{keywordtype}{void}\ drawText(\textcolor{keyword}{const}\ olxstr\&\ text,\ \textcolor{keyword}{const}\ vec\_t\&\ pos)\ \ \{}
+\DoxyCodeLine{00262\ \ \ \ \ moveto(pos);}
+\DoxyCodeLine{00263\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}(\%s)\ show"{}},\ text.c\_str());}
+\DoxyCodeLine{00264\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00265\ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00267\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec\_t>}
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordtype}{void}\ quad(\textcolor{keyword}{const}\ vec\_t\&\ p1,\ \textcolor{keyword}{const}\ vec\_t\&\ p2,\ \textcolor{keyword}{const}\ vec\_t\&\ p3,}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keyword}{const}\ vec\_t\&\ p4)}
+\DoxyCodeLine{00270\ \ \ \{}
+\DoxyCodeLine{00271\ \ \ \ \ moveto(p1);}
+\DoxyCodeLine{00272\ \ \ \ \ lineto(p2);}
+\DoxyCodeLine{00273\ \ \ \ \ lineto(p3);}
+\DoxyCodeLine{00274\ \ \ \ \ lineto(p4);}
+\DoxyCodeLine{00275\ \ \ \ \ lineto(p1);}
+\DoxyCodeLine{00276\ \ \ \}}
+\DoxyCodeLine{00277\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00278\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec\_t>}
+\DoxyCodeLine{00279\ \ \ \textcolor{keywordtype}{void}\ stippledQuad(\textcolor{keyword}{const}\ vec\_t\&\ p1,\ \textcolor{keyword}{const}\ vec\_t\&\ p2,}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keyword}{const}\ vec\_t\&\ p3,\ \textcolor{keyword}{const}\ vec\_t\&\ p4,\ \textcolor{keywordtype}{size\_t}\ div,\ RenderFunc\ func)}
+\DoxyCodeLine{00281\ \ \ \{}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ x\_inc1\ =\ (p2[0]-\/p1[0])/div;}
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ x\_inc2\ =\ (p3[0]-\/p4[0])/div;}
+\DoxyCodeLine{00284\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ y\_inc1\ =\ (p2[1]-\/p1[1])/div;}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ y\_inc2\ =\ (p3[1]-\/p4[1])/div;}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordtype}{float}\ fx1\ =\ p1[0],\ fy1\ =\ p1[1],\ fx2\ =\ p4[0],\ fy2\ =\ p4[1];}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keywordtype}{float}\ tx1\ =\ p1[0]+x\_inc1,\ ty1\ =\ p1[1]+y\_inc1,}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ tx2\ =\ p4[0]+x\_inc2,\ ty2\ =\ p4[1]+y\_inc2;}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ div;\ i+=2\ )\ \ \{}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ newPath();}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ moveto(fx1,\ fy1);}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ lineto(tx1,\ ty1);}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ lineto(tx2,\ ty2);}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ lineto(fx2,\ fy2);}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ lineto(fx1,\ fy1);}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ fx1\ =\ tx1+x\_inc1;\ \ fy1\ =\ ty1+y\_inc1;}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ fx2\ =\ tx2+x\_inc2;\ \ fy2\ =\ ty2+y\_inc2;}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ tx1\ +=\ 2*x\_inc1;\ \ ty1\ +=\ 2*y\_inc1;}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ tx2\ +=\ 2*x\_inc2;\ \ ty2\ +=\ 2*y\_inc2;}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ (this-\/>*func)();}
+\DoxyCodeLine{00301\ \ \ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \}}
+\DoxyCodeLine{00303\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00304\ \ \ \textcolor{comment}{/*draws\ a\ cone\ using\ sidea\ and\ sideb\ points\ and\ calling\ func\ after\ every}}
+\DoxyCodeLine{00305\ \textcolor{comment}{\ \ quadraterial}}
+\DoxyCodeLine{00306\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00307\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec\_lt>}
+\DoxyCodeLine{00308\ \ \ \textcolor{keywordtype}{void}\ drawQuads(\textcolor{keyword}{const}\ vec\_lt\&\ sidea,\ \textcolor{keyword}{const}\ vec\_lt\&\ sideb,\ RenderFunc\ func,}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ divs=0)}
+\DoxyCodeLine{00310\ \ \ \{}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keywordflow}{if}\ (sidea.Count()\ !=\ sideb.Count())}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}lists\ mismatch"{}});}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{if}\ (sidea.Count()\ <\ 2)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{if}\ (divs\ ==\ 0)\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 1;\ j\ <\ sidea.Count();\ j++)\ \{}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ newPath();}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ quad(sidea[j\ -\/\ 1],\ sideb[j\ -\/\ 1],\ sideb[j],\ sidea[j]);}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ (this-\/>*func)();}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ newPath();}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ quad(sidea.GetLast(),\ sideb.GetLast(),\ sideb[0],\ sidea[0]);}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ (this-\/>*func)();}
+\DoxyCodeLine{00323\ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 1;\ j\ <\ sidea.Count();\ j++)\ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ stippledQuad(sidea[j\ -\/\ 1],\ sideb[j\ -\/\ 1],\ sideb[j],\ sidea[j],\ divs,}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ func);}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ stippledQuad(sidea.GetLast(),\ sideb.GetLast(),\ sideb[0],\ sidea[0],\ divs,}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ func);}
+\DoxyCodeLine{00331\ \ \ \ \ \}}
+\DoxyCodeLine{00332\ \ \ \}}
+\DoxyCodeLine{00333\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00334\ \ \ \textcolor{comment}{/*draws\ a\ cone\ using\ sidea\ and\ sideb\ points\ and\ calling\ func\ after\ every}}
+\DoxyCodeLine{00335\ \textcolor{comment}{\ \ quadraterial}}
+\DoxyCodeLine{00336\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00337\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec\_lt>}
+\DoxyCodeLine{00338\ \ \ \textcolor{keywordtype}{void}\ drawOuterQuads(\textcolor{keyword}{const}\ vec\_lt\&\ sidea,\ \textcolor{keyword}{const}\ vec\_lt\&\ sideb,\ RenderFunc\ func,}
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keywordtype}{bool}\ render\_middle=\textcolor{keyword}{false},\ \textcolor{keywordtype}{float}\ width=0,\ \textcolor{keywordtype}{size\_t}\ divs=0)}
+\DoxyCodeLine{00340\ \ \ \{}
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{keywordflow}{if}\ (sidea.Count()\ !=\ sideb.Count())}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}lists\ mismatch"{}});}
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keywordflow}{if}\ (sidea.Count()\ <\ 2)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00344\ \ \ \ \ vec3f\ ca,\ cb;}
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ sidea.Count();\ j++)\ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ ca\ +=\ sidea[j];}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ cb\ +=\ sideb[j];}
+\DoxyCodeLine{00348\ \ \ \ \ \}}
+\DoxyCodeLine{00349\ \ \ \ \ ca\ /=\ sidea.Count();}
+\DoxyCodeLine{00350\ \ \ \ \ cb\ /=\ sidea.Count();}
+\DoxyCodeLine{00351\ \ \ \ \ vec3f\ n\ =\ (cb\ -\/\ ca).XProdVec(vec3f(0,\ 0,\ 1));}
+\DoxyCodeLine{00352\ \ \ \ \ \textcolor{keywordtype}{float}\ nl\ =\ n.Length();}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keywordflow}{if}\ (nl\ >\ 0)\ \{}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ n\ *=\ 1.0f\ /\ nl;}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ tl\ =\ 0,\ tr\ =\ 0,\ bl\ =\ 0,\ br\ =\ 0;}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ mtl\ =\ 0,\ mtr\ =\ 0,\ mbl\ =\ 0,\ mbr\ =\ 0;}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ sidea.Count();\ j++)\ \{}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ v\ =\ sidea[j].DotProd(n);}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ <\ 0)\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (-\/v\ >\ mtl)\ \{}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ \ \ \ tl\ =\ j;}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ mtl\ =\ -\/v;}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ >\ mtr)\ \{}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ tr\ =\ j;}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ mtr\ =\ v;}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ v\ =\ sideb[j].DotProd(n);}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ <\ 0)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (-\/v\ >\ mbl)\ \{}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \ \ \ \ bl\ =\ j;}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \ \ \ \ mbl\ =\ -\/v;}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ >\ mbr)\ \{}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ \ \ br\ =\ j;}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \ \ \ \ mbr\ =\ v;}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ vec\_lt::list\_item\_type\ vec\_t;}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ vec\_t\ tt,\ bt;}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (width\ <=\ 0)\ \{}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ w\ =\ render\_middle\ ?\ 5.0f\ :\ 4.0f;}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ tt\ =\ (sidea[tr]\ -\/\ sidea[tl])\ /\ w;}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ bt\ =\ (sideb[br]\ -\/\ sideb[bl])\ /\ w;}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ tt\ =\ (sidea[tr]\ -\/\ sidea[tl]).NormaliseTo(width);}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ bt\ =\ (sideb[br]\ -\/\ sideb[bl]).NormaliseTo(width);}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (divs\ ==\ 0)\ \{}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ newPath();}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ quad(sidea[tl],\ sidea[tl]\ +\ tt,\ sideb[bl]\ +\ bt,\ sideb[bl]);}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ (this-\/>*func)();}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ newPath();}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ quad(sidea[tr]\ -\/\ tt,\ sidea[tr],\ sideb[br],\ sideb[br]\ -\/\ bt);}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ (this-\/>*func)();}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (render\_middle)\ \{}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ vec\_t\ v1\ =\ (sidea[tr]\ +\ sidea[tl]\ -\/\ tt)\ /\ 2;}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ vec\_t\ v2\ =\ (sideb[br]\ +\ sideb[bl]\ -\/\ bt)\ /\ 2;}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ \ \ newPath();}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \ \ quad(v1,\ v1\ +\ tt,\ v2\ +\ bt,\ v2);}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ \ \ (this-\/>*func)();}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ stippledQuad(sidea[tl],\ sideb[bl],\ sideb[bl]\ +\ bt,\ sidea[tl]\ +\ tt,}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ divs,\ func);}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ stippledQuad(sidea[tr]\ -\/\ tt,\ sideb[br]\ -\/\ bt,\ sideb[br],\ sidea[tr],}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \ \ divs,\ func);}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (render\_middle)\ \{}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \ \ vec\_t\ v1\ =\ (sidea[tr]\ +\ sidea[tl]\ -\/\ tt)\ /\ 2;}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ vec\_t\ v2\ =\ (sideb[br]\ +\ sideb[bl]\ -\/\ bt)\ /\ 2;}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \ \ stippledQuad(v1,\ v2,\ v2\ +\ bt,\ v1\ +\ tt,\ divs,\ func);}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00422\ \ \ \ \ \}}
+\DoxyCodeLine{00423\ \ \ \}}
+\DoxyCodeLine{00424\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00425\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec\_lt>}
+\DoxyCodeLine{00426\ \ \ \textcolor{keywordtype}{void}\ drawQuadsBiColored(\textcolor{keyword}{const}\ vec\_lt\&\ sidea,\ \textcolor{keyword}{const}\ vec\_lt\&\ sideb,}
+\DoxyCodeLine{00427\ \ \ \ \ RenderFunc\ func,\ uint32\_t\ cl1,\ uint32\_t\ cl2)}
+\DoxyCodeLine{00428\ \ \ \{}
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{keywordflow}{if}(\ sidea.Count()\ !=\ sideb.Count()\ )}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}lists\ mismatch"{}});}
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{keywordflow}{if}(\ sidea.Count()\ <\ 2\ )\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00432\ \ \ \ \ color(cl1);}
+\DoxyCodeLine{00433\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=1;\ j\ <\ sidea.Count();\ j++\ )\ \ \{}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ newPath();}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ quad(sidea[j-\/1],\ (sideb[j-\/1]+sidea[j-\/1])/2,\ (sideb[j]+sidea[j])/2,}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ sidea[j]);}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ (this-\/>*func)();}
+\DoxyCodeLine{00438\ \ \ \ \ \}}
+\DoxyCodeLine{00439\ \ \ \ \ newPath();}
+\DoxyCodeLine{00440\ \ \ \ \ quad(sidea.GetLast(),\ (sideb.GetLast()+sidea.GetLast())/2,}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ (sideb[0]+sidea[0])/2,\ sidea[0]);}
+\DoxyCodeLine{00442\ \ \ \ \ (this-\/>*func)();}
+\DoxyCodeLine{00443\ \ \ \ \ color(cl2);}
+\DoxyCodeLine{00444\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=1;\ j\ <\ sidea.Count();\ j++\ )\ \ \{}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ newPath();}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ quad((sidea[j-\/1]+sideb[j-\/1])/2,\ sideb[j-\/1],\ sideb[j],}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ (sidea[j]+sideb[j])/2);}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ (this-\/>*func)();}
+\DoxyCodeLine{00449\ \ \ \ \ \}}
+\DoxyCodeLine{00450\ \ \ \ \ newPath();}
+\DoxyCodeLine{00451\ \ \ \ \ quad((sidea.GetLast()+sideb.GetLast())/2,\ sideb.GetLast(),\ sideb[0],}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ (sidea[0]+sideb[0])/2);}
+\DoxyCodeLine{00453\ \ \ \ \ (this-\/>*func)();}
+\DoxyCodeLine{00454\ \ \ \}}
+\DoxyCodeLine{00455\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00456\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t,\ \textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00457\ \ \ \textcolor{keywordtype}{void}\ arc(\textcolor{keyword}{const}\ vec\_t\&\ center,\ \textcolor{keyword}{const}\ float\_t\&\ rad,\ \textcolor{keyword}{const}\ float\_t\ startAngle,}
+\DoxyCodeLine{00458\ \ \ \ \ \textcolor{keyword}{const}\ float\_t\&\ endAngle)}
+\DoxyCodeLine{00459\ \ \ \{}
+\DoxyCodeLine{00460\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%f\ \%f\ \%f\ \%f\ \%f\ arc"{}},\ (\textcolor{keywordtype}{float})center[0],\ (\textcolor{keywordtype}{float})center[1],}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})rad,\ (\textcolor{keywordtype}{float})startAngle,\ (\textcolor{keywordtype}{float})endAngle);}
+\DoxyCodeLine{00462\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00463\ \ \ \}}
+\DoxyCodeLine{00464\ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00465\ \ \ \textcolor{keywordtype}{void}\ writeBoundingBox(\textcolor{keyword}{const}\ evecf\ \&b)\ \ \{}
+\DoxyCodeLine{00466\ \ \ \ \ \textcolor{keywordflow}{if}\ (!olx\_is\_valid\_index(bounding\_box\_pos))\ \{}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}bounding\ box\ space\ must\ be\ reserved"{}});}
+\DoxyCodeLine{00469\ \ \ \ \ \}}
+\DoxyCodeLine{00470\ \ \ \ \ out.SetPosition(bounding\_box\_pos);}
+\DoxyCodeLine{00471\ \ \ \ \ psw\_sprintf(bf,\ \textcolor{stringliteral}{"{}\%ld\ \%ld\ \%ld\ \%ld"{}},}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ olx\_round(b[0]),}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ olx\_round(b[1]),}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ olx\_round(b[2]),}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ olx\_round(b[3]));}
+\DoxyCodeLine{00476\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00477\ \ \ \}}
+\DoxyCodeLine{00478\ \};}
+\DoxyCodeLine{00479\ }
+\DoxyCodeLine{00480\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

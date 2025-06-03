@@ -1,0 +1,117 @@
+\doxysection{con\+\_\+in.\+h}
+\hypertarget{con__in_8h_source}{}\label{con__in_8h_source}\index{repository/con\_in.h@{repository/con\_in.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_console\_interface\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_console\_interface\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estack.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00016\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}}
+\DoxyCodeLine{00017\ \ \ fgcReset\ \ =\ 0,}
+\DoxyCodeLine{00018\ \ \ fgcRed\ \ \ =\ FOREGROUND\_RED,}
+\DoxyCodeLine{00019\ \ \ fgcGreen\ =\ FOREGROUND\_GREEN,}
+\DoxyCodeLine{00020\ \ \ fgcBlue\ \ =\ FOREGROUND\_BLUE,}
+\DoxyCodeLine{00021\ \ \ fgcIntensity\ =\ FOREGROUND\_INTENSITY;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}}
+\DoxyCodeLine{00023\ \ \ bgcRed\ \ \ =\ BACKGROUND\_RED,}
+\DoxyCodeLine{00024\ \ \ bgcGreen\ =\ BACKGROUND\_GREEN,}
+\DoxyCodeLine{00025\ \ \ bgcBlue\ \ =\ BACKGROUND\_BLUE,}
+\DoxyCodeLine{00026\ \ \ bgcIntensity\ =\ BACKGROUND\_INTENSITY;}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}}
+\DoxyCodeLine{00029\ \ \ fgcReset\ =\ 0,}
+\DoxyCodeLine{00030\ \ \ fgcRed\ \ \ =\ 31,}
+\DoxyCodeLine{00031\ \ \ fgcGreen\ =\ 32,}
+\DoxyCodeLine{00032\ \ \ fgcBlue\ \ =\ 34,}
+\DoxyCodeLine{00033\ \ \ fgcIntensity\ =\ 1;}
+\DoxyCodeLine{00034\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}}
+\DoxyCodeLine{00035\ \ \ bgcRed\ \ \ =\ 41,}
+\DoxyCodeLine{00036\ \ \ bgcGreen\ =\ 42,}
+\DoxyCodeLine{00037\ \ \ bgcBlue\ \ =\ 44,}
+\DoxyCodeLine{00038\ \ \ bgcIntensity\ =\ 1;}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00042\ \textcolor{comment}{class\ IConsoleInterface\ \ \{}}
+\DoxyCodeLine{00043\ \textcolor{comment}{public:}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ \ virtual\ \string~IConsoleInterface()\ \{\ \ \}}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ virtual\ void\ SetTextBackground(const\ int,\ bool\ intensity=false)\ =\ 0;}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ \ virtual\ void\ SetTextForeground(const\ int,\ bool\ intensity=false)\ =\ 0;}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\};}}
+\DoxyCodeLine{00048\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00050\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classConsoleInterface}{ConsoleInterface}}\ \ \{\ \textcolor{comment}{//\ :\ public\ IConsoleInterface\ \{}}
+\DoxyCodeLine{00051\ \ \ HANDLE\ conin,\ conout;}
+\DoxyCodeLine{00052\ \ \ TStack<CONSOLE\_SCREEN\_BUFFER\_INFO>\ TextAttrib;}
+\DoxyCodeLine{00053\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00054\ \ \ ConsoleInterface()\ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ conin\ =\ CreateFile(olxT(\textcolor{stringliteral}{"{}CONIN\$"{}}),\ GENERIC\_READ|GENERIC\_WRITE,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ FILE\_SHARE\_READ|FILE\_SHARE\_WRITE,\ NULL,\ OPEN\_ALWAYS,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ FILE\_ATTRIBUTE\_NORMAL,\ NULL);}
+\DoxyCodeLine{00058\ \ \ \ \ conout\ \ =\ CreateFile(olxT(\textcolor{stringliteral}{"{}CONOUT\$"{}}),\ GENERIC\_READ|GENERIC\_WRITE,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ FILE\_SHARE\_READ|FILE\_SHARE\_WRITE,\ NULL,\ OPEN\_ALWAYS,}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ FILE\_ATTRIBUTE\_NORMAL,\ NULL);}
+\DoxyCodeLine{00061\ \ \ \ \ CONSOLE\_SCREEN\_BUFFER\_INFO\ pi;}
+\DoxyCodeLine{00062\ \ \ \ \ GetConsoleScreenBufferInfo(conout,\ \&pi);}
+\DoxyCodeLine{00063\ \ \ \ \ TextAttrib.Push(pi);}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \string~ConsoleInterface()\ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ CloseHandle(conin);}
+\DoxyCodeLine{00067\ \ \ \ \ CloseHandle(conout);}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{void}\ Push()\ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ CONSOLE\_SCREEN\_BUFFER\_INFO\ pi;}
+\DoxyCodeLine{00071\ \ \ \ \ GetConsoleScreenBufferInfo(conout,\ \&pi);}
+\DoxyCodeLine{00072\ \ \ \ \ TextAttrib.Push(pi);}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{void}\ Pop()\ \ \{}
+\DoxyCodeLine{00075\ \ \ \ \ SetConsoleTextAttribute(conout,\ TextAttrib.Pop().wAttributes);}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ SetTextBackground(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ cl,\ \textcolor{keywordtype}{bool}\ intensity=\textcolor{keyword}{false})\ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{if}(\ intensity\ )}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ SetConsoleTextAttribute(conout,\ cl|FOREGROUND\_INTENSITY);}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ SetConsoleTextAttribute(conout,\ cl|FOREGROUND\_INTENSITY);}
+\DoxyCodeLine{00082\ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ SetTextForeground(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ cl,\ \textcolor{keywordtype}{bool}\ intensity=\textcolor{keyword}{false})\ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ SetTextBackground(cl,\ intensity);}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ \};}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00088\ \textcolor{keyword}{class\ }ConsoleInterface\ \{\ \textcolor{comment}{//\ :\ public\ IConsoleInterface\ \{}}
+\DoxyCodeLine{00089\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00090\ \ \ ConsoleInterface()\ \{}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \string~ConsoleInterface()\ \{}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{void}\ Push()\ \{}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{void}\ Pop()\ \{\ \textcolor{comment}{//\ just\ reset\ the\ values\ to\ default}}
+\DoxyCodeLine{00098\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)033[0"{}};}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ SetTextBackground(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ cl,\ \textcolor{keywordtype}{bool}\ intensity=\textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)033["{}}\ <<\ cl;}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{if}\ (intensity)}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{};1"{}};}
+\DoxyCodeLine{00104\ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}m"{}};}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{void}\ SetTextForeground(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ cl,\ \textcolor{keywordtype}{bool}\ intensity=\textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ SetTextBackground(cl,\ intensity);}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \};}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

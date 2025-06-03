@@ -1,0 +1,216 @@
+\doxysection{gdrawobject.\+h}
+\hypertarget{gdrawobject_8h_source}{}\label{gdrawobject_8h_source}\index{glib/gdrawobject.h@{glib/gdrawobject.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_gdrawobject\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_gdrawobject\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}evector.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}macroerror.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}gpcollection.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}glmaterial.h"{}}}
+\DoxyCodeLine{00019\ BeginGlNamespace()}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ const\ uint16\_t}
+\DoxyCodeLine{00022\ \ \ sgdoHidden\ \ \ \ \ =\ 0x0100,}
+\DoxyCodeLine{00023\ \ \ sgdoSelected\ \ \ =\ 0x0200,}
+\DoxyCodeLine{00024\ \ \ sgdoGroupable\ \ =\ 0x0400,}
+\DoxyCodeLine{00025\ \ \ sgdoGroup\ \ \ \ \ \ =\ 0x0800,}
+\DoxyCodeLine{00026\ \ \ sgdoGrouped\ \ \ \ =\ 0x1000,}
+\DoxyCodeLine{00027\ \ \ sgdoSelectable\ =\ 0x2000,}
+\DoxyCodeLine{00028\ \ \ sgdoCreated\ \ \ \ =\ 0x4000,}
+\DoxyCodeLine{00029\ \ \ sgdoPrintable\ \ =\ 0x8000;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{comment}{/*\ \ defines\ basic\ functionality\ of\ a\ graphic\ object\ */}}
+\DoxyCodeLine{00032\ class\ AGDrawObject}
+\DoxyCodeLine{00033\ \ \ :\ public\ virtual\ ACollectionItem,\ public\ APerishable}
+\DoxyCodeLine{00034\ \{}
+\DoxyCodeLine{00035\ \ \ uint16\_t\ sgdo\_Flags;}
+\DoxyCodeLine{00036\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGlGroup}{TGlGroup}}\ *ParentGroup;\ \ \textcolor{comment}{//\ parent\ collection}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Parent;}
+\DoxyCodeLine{00039\ \ \ \mbox{\hyperlink{classTGPCollection}{TGPCollection}}\ *Primitives;}
+\DoxyCodeLine{00040\ \ \ evecd\ FParams;}
+\DoxyCodeLine{00041\ \ \ olxstr\ CollectionName;}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{void}\ SetCollectionName(\textcolor{keyword}{const}\ olxstr\&\ nn)\ \{\ CollectionName\ =\ nn;\ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ SetTypeGroup()\ \{\ sgdo\_Flags\ |=\ sgdoGroup;\ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ SelfDraw(\textcolor{keywordtype}{bool}\ \textcolor{comment}{/*SelectPrimitives*/},}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ \textcolor{comment}{/*SelectObjects*/})}
+\DoxyCodeLine{00046\ \ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00050\ \ \ AGDrawObject(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ parent,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName);}
+\DoxyCodeLine{00051\ \ \ \textcolor{comment}{//\ create\ object\ within\ the\ specified\ collection,\ using\ provided\ parameters}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ newCollectionName\ =\ EmptyString())\ \{\}}
+\DoxyCodeLine{00053\ \ \ \textcolor{comment}{//\ this\ should\ return\ object\ created\ with\ new\ in\ order\ to\ recreate\ the\ objecs\ as\ it\ was}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{virtual}\ \string~AGDrawObject()\ \{\}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetPrimitiveMaskName()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ mn(\textcolor{stringliteral}{"{}PMask"{}});}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ mn;}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ SetPrimitives(\mbox{\hyperlink{classTGPCollection}{TGPCollection}}\&\ GPC)\ \{\ Primitives\ =\ \&GPC;\ \}}
+\DoxyCodeLine{00062\ \ \ \mbox{\hyperlink{classTGPCollection}{TGPCollection}}\&\ GetPrimitives()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Primitives;\ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{bool}\ HasPrimitives()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Primitives\ !=\ 0;\ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetCollectionName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CollectionName;\ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{void}\ ResetCollectionName()\ \{\ CollectionName\ =\ EmptyString();\ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ evecd\&\ Params()\ \{\ \textcolor{keywordflow}{return}\ FParams;\ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{const}\ evecd\&\ Params()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FParams;\ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ GetParent()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Parent;\ \ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Orient(\textcolor{keyword}{class}\ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P)\ =\ 0;}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ \ virtual\ void\ OrientAfterDraw(TGlPrimitive\ *P)\{\ \ return;\ \};}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&\ Max,\ vec3d\&\ Min)\ =\ 0;}
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ mouse\ handlers,\ any\ object\ receives\ mouse\ down/up\ events;\ write\ appropriate}}
+\DoxyCodeLine{00076\ \ \ \textcolor{comment}{//handlers\ to\ handle\ mouse;\ if\ the\ object\ returns\ true\ OnMouseDown,\ it\ receives}}
+\DoxyCodeLine{00077\ \ \ \textcolor{comment}{//OnMouseMove\ as\ well;\ Objects\ must\ not\ change\ values\ of\ the\ Data!}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnMouseDown(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnMouseMove(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnDblClick(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnZoom(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&)\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//\ need\ a\ virtual\ setters\ for\ these}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetVisible(\textcolor{keywordtype}{bool}\ v)\ \{\ olx\_set\_bit(!v,\ sgdo\_Flags,\ sgdoHidden);\ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{bool}\ IsVisible()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ((sgdo\_Flags\&sgdoHidden)\ ==\ 0);\ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetSelected(\textcolor{keywordtype}{bool}\ v)\ \{\ olx\_set\_bit(v,\ sgdo\_Flags,\ sgdoSelected);\ \}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{bool}\ IsSelected()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ((sgdo\_Flags\&sgdoSelected)\ !=\ 0);\ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{/*\ returns\ true\ if\ the\ object\ is\ to\ end\ up\ in\ the\ picture\ output\ */}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetPrintable(\textcolor{keywordtype}{bool}\ v)\ \{\ olx\_set\_bit(v,\ sgdo\_Flags,\ sgdoPrintable);\ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{bool}\ IsPrintable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ((sgdo\_Flags\&sgdoPrintable)\ !=\ 0);\ \}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{virtual}\ vec3d\ CalcCenter()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ vec3d(0);\ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{comment}{//\ by\ default\ projects\ the\ CalcCenter()\ and\ returns\ Z}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ CalcZ()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//\ cannot\ be\ const\ because\ some\ objects\ get\ update\ in\ the\ process}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ DoDraw(\textcolor{keywordtype}{bool}\ SelectPrimitives,\ \textcolor{keywordtype}{bool}\ SelectObjects);}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ DefPropBFIsSet(Groupable,\ sgdo\_Flags,\ sgdoGroupable)}
+\DoxyCodeLine{00110\ \ \ DefPropBFIsSet(Grouped,\ sgdo\_Flags,\ sgdoGrouped)}
+\DoxyCodeLine{00111\ \ \ DefPropBFIsSet(Selectable,\ sgdo\_Flags,\ sgdoSelectable)}
+\DoxyCodeLine{00112\ \ \ \textcolor{comment}{//\ for\ internal\ use,\ may\ not\ reflect\ the\ real\ state\ of\ the\ object}}
+\DoxyCodeLine{00113\ \ \ DefPropBFIsSet(Created,\ sgdo\_Flags,\ sgdoCreated)}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \textcolor{keywordtype}{bool}\ IsGroup()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (sgdo\_Flags\&sgdoGroup)\ ==\ sgdoGroup;\ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{short}\ MaskFlags(\textcolor{keywordtype}{short}\ mask)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (sgdo\_Flags\&mask);\ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ GetParentGroup()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ParentGroup;\ \}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetParentGroup(\mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ P)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ SetGrouped((ParentGroup\ =\ P)\ !=\ 0);}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{if}\ (P\ ==\ 0)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ SetSelected(\textcolor{keyword}{false});}
+\DoxyCodeLine{00124\ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ListDrawingStyles(TStrList\&)\ \{\}}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ UpdaterimitiveParams(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}*)\ \{\}}
+\DoxyCodeLine{00129\ \ \ \textcolor{comment}{/*\ a\ generic\ Update\ function,\ called\ when\ the\ model\ (like\ control\ points)\ has\ changed}}
+\DoxyCodeLine{00130\ \textcolor{comment}{\ \ should\ be\ implemented\ by\ objects\ depending\ on\ coordinates\ of\ others\ in\ an\ indirect\ way}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Update()\ \{\}}
+\DoxyCodeLine{00133\ \ \ \textcolor{comment}{//\ should\ be\ implemented\ to\ update\ labels\ when\ font\ is\ changed}}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ UpdateLabel()\ \{\}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{/*\ is\ used\ to\ compile\ new\ created\ primitives\ without\ rebuilding\ entire\ model;}}
+\DoxyCodeLine{00137\ \textcolor{comment}{\ \ use\ it\ when\ some\ object\ is\ added\ to\ existing\ scene\ */}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Compile();}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{comment}{//\ for\ parameters\ of\ a\ specific\ primitive}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ListParams(TStrList\&,\ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}*)\ \{\}}
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{//\ for\ internal\ object\ parameters}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ListParams(TStrList\&)\ \{\}}
+\DoxyCodeLine{00144\ \ \ \textcolor{comment}{//\ fills\ the\ list\ with\ primitives\ from\ which\ the\ object\ can\ be\ constructed}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ListPrimitives(TStrList\&)\textcolor{keyword}{\ const\ }\{\}}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ UpdatePrimitives(int32\_t\ Mask);}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnPrimitivesCleared()\ \{\}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnStyleChange()\ \{\}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \textcolor{keywordtype}{void}\ LibVisible(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordtype}{void}\ LibIsGrouped(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00152\ \ \ \textcolor{keywordtype}{void}\ LibIsSelected(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00153\ \ \ \textcolor{keywordtype}{void}\ LibGetName(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordtype}{void}\ ExportLibrary(\mbox{\hyperlink{classTLibrary}{TLibrary}}\&\ lib);}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Individualize()\ \{\}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Collectivize()\ \{\}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{struct\ }FlagsAnalyser\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ ref\_flags;}
+\DoxyCodeLine{00161\ \ \ \ \ FlagsAnalyser(\textcolor{keywordtype}{short}\ \_ref\_flags)}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ :\ ref\_flags(\_ref\_flags)}
+\DoxyCodeLine{00163\ \ \ \ \ \{\}}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ item\_t\&\ o,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(o).MaskFlags(ref\_flags)\ !=\ 0;}
+\DoxyCodeLine{00167\ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \};}
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Actor>\ \textcolor{keyword}{struct\ }FlagsAnalyserEx\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ ref\_flags;}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keyword}{const}\ Actor\ actor;}
+\DoxyCodeLine{00172\ \ \ \ \ FlagsAnalyserEx(\textcolor{keywordtype}{short}\ \_ref\_flags,\ \textcolor{keyword}{const}\ Actor\&\ \_actor)}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ :\ ref\_flags(\_ref\_flags),\ actor(\_actor)}
+\DoxyCodeLine{00174\ \ \ \ \ \{\}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnItem(item\_t\&\ o\_,\ \textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ AGDrawObject\ \&o\ =\ olx\_ref::get(o\_);}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (o.MaskFlags(ref\_flags)\ !=\ 0)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ actor.OnItem(o,\ i);}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00182\ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \};}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }FlagSetter\_\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ ref\_flags;}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordtype}{bool}\ set;}
+\DoxyCodeLine{00189\ \ \ \ \ FlagSetter\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_,\ \textcolor{keywordtype}{short}\ ref\_flags\_,\ \textcolor{keywordtype}{bool}\ set\_)}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ :\ accessor(accessor\_),\ ref\_flags(ref\_flags\_),\ set(set\_)}
+\DoxyCodeLine{00191\ \ \ \ \ \{\}}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordtype}{void}\ OnItem(Item\&\ o,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_set\_bit(set,\ olx\_ref::get(accessor(o)).sgdo\_Flags,\ ref\_flags);}
+\DoxyCodeLine{00195\ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \};}
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc\_t>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structAGDrawObject_1_1FlagSetter__}{FlagSetter\_<acc\_t>}}}
+\DoxyCodeLine{00198\ \ \ \ \ FlagSetter(\textcolor{keyword}{const}\ acc\_t\ \&acc,\ \textcolor{keywordtype}{short}\ ref\_flags,\ \textcolor{keywordtype}{bool}\ set)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structAGDrawObject_1_1FlagSetter__}{FlagSetter\_<acc\_t>}}(acc,\ ref\_flags,\ set);}
+\DoxyCodeLine{00200\ \ \ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{static}\ FlagSetter\_<DummyAccessor>}
+\DoxyCodeLine{00202\ \ \ \ \ FlagSetter(\textcolor{keywordtype}{short}\ ref\_flags,\ \textcolor{keywordtype}{bool}\ set)\ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordflow}{return}\ FlagSetter\_<DummyAccessor>(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}(),\ ref\_flags,\ set);}
+\DoxyCodeLine{00204\ \ \ \}}
+\DoxyCodeLine{00205\ \};}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AGDrawObject>}}\ AGDObjList;}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ EndGlNamespace()}
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

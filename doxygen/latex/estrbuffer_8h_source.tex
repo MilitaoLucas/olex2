@@ -1,0 +1,64 @@
+\doxysection{estrbuffer.\+h}
+\hypertarget{estrbuffer_8h_source}{}\label{estrbuffer_8h_source}\index{sdl/estrbuffer.h@{sdl/estrbuffer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_estrbuffer\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_estrbuffer\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}edlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}egc.h"{}}}
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ class\ TEStrBuffer\ :\ public\ \mbox{\hyperlink{classTDirectionalList}{TDirectionalList}}<olxch>\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ TEStrBuffer(\textcolor{keywordtype}{size\_t}\ segmentSize=DefBufferSize)\ :\ \mbox{\hyperlink{classTDirectionalList}{TDirectionalList}}<olxch>(segmentSize)\ \{\}}
+\DoxyCodeLine{00019\ \ \ TEStrBuffer(\textcolor{keyword}{const}\ TEStrBuffer\&\ bf)\ :\ \mbox{\hyperlink{classTDirectionalList}{TDirectionalList}}<olxch>(bf)\ \{\}}
+\DoxyCodeLine{00020\ \ \ TEStrBuffer(\textcolor{keyword}{const}\ olxstr\&\ str)\ \ \{}
+\DoxyCodeLine{00021\ \ \ \ \ Write(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00022\ \ \ \}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ TEStrBuffer(\textcolor{keyword}{const}\ olxch*\ str)\ \ \{\ \ Write(str,\ olxstr::o\_strlen(str));\ \ \}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{virtual}\ \string~TEStrBuffer()\ \ \{\}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{inline}\ TEStrBuffer\&\ operator\ <<\ (\textcolor{keyword}{const}\ olxch*\ str)\ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ Write(str,\ olxstr::o\_strlen(str));}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{inline}\ TEStrBuffer\&\ operator\ <<\ (\textcolor{keyword}{const}\ olxstr\&\ str)\ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ Write(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{inline}\ TEStrBuffer\&\ operator\ <<\ (olxch\ entity)\ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ Write(entity);}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \mbox{\hyperlink{classIOutputStream}{IOutputStream}}\&\ operator\ >>\ (\mbox{\hyperlink{classIOutputStream}{IOutputStream}}\&\ os)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00044\ \ \ \ \ TDirectionalListEntry<olxch>*\ en\ =\ GetHead();}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{if}(\ en\ ==\ NULL\ )}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}no\ entry\ at\ specified\ position"{}});}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{while}(\ en\ !=\ NULL\ )\ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ os.Write(en-\/>GetData(),\ en-\/>RawLen());}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ en\ =\ en-\/>GetNext();}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ os;}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Length()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GetLength();\ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{inline}\ olxch\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00055\ \};}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ EndEsdlNamespace()}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

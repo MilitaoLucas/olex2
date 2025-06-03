@@ -1,0 +1,122 @@
+\doxysection{label\+\_\+utils.\+h}
+\hypertarget{label__utils_8h_source}{}\label{label__utils_8h_source}\index{xlib/label\_utils.h@{xlib/label\_utils.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2019\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_label\_utils\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_label\_utils\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}asymmunit.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}residue.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}talist.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ BeginXlibNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ struct\ AtomLabelInfo\ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ no\_part\ =\ -\/10000}
+\DoxyCodeLine{00021\ \ \ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ olxstr\ label;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{int}\ part;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{int}\ resi\_number;}
+\DoxyCodeLine{00026\ \ \ olxch\ chain\_id;}
+\DoxyCodeLine{00027\ \ \ olxstr\ resi\_class;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ AtomLabelInfo(\textcolor{keyword}{const}\ olxstr\ \&Label)}
+\DoxyCodeLine{00030\ \ \ \ \ :\ part(no\_part),}
+\DoxyCodeLine{00031\ \ \ \ \ resi\_number(TResidue::NoResidue),}
+\DoxyCodeLine{00032\ \ \ \ \ chain\_id(TResidue::NoChainId())}
+\DoxyCodeLine{00033\ \ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ label\ =\ Label;}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ p\_idx\ =\ Label.IndexOf(\textcolor{charliteral}{'\string^'});}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{if}\ (p\_idx\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ olxstr\ sfx\ =\ Label.SubStringFrom(p\_idx\ +\ 1);}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sfx.Length()\ ==\ 1)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ part\ =\ olxstr::o\_tolower(sfx.CharAt(0))\ -\/\ \textcolor{charliteral}{'a'}\ +\ 1;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ label\ =\ Label.SubStringTo(p\_idx);}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ us\_ind\ =\ label.IndexOf(\textcolor{charliteral}{'\_'});}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{if}\ (us\_ind\ !=\ InvalidIndex\ \&\&\ ++us\_ind\ <\ label.Length())\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ olxstr\ sfx\ =\ label.SubStringFrom(us\_ind);}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ size\_t\ c\_idx\ =\ sfx.IndexOf(\textcolor{stringliteral}{':'});}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ if\ (c\_idx\ <=\ 1)\ \{\ \ \textcolor{comment}{//\ residue\ number?}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ if\ (c\_idx\ ==\ 1)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ chain\_id\ =\ sfx.CharAt(0);}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ sfx\ =\ sfx.SubStringFrom(c\_idx\ +\ 1);}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ if\ (sfx.IsNumber())\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ resi\_number\ =\ sfx.ToInt();}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ else\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ resi\_class\ =\ sfx;}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{comment}{//\ some\ old\ shelxl\ compatibility}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ if\ (part\ ==\ no\_part\ \&\&}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ sfx.Length()\ ==\ 1\ \&\&\ olxstr::o\_isalpha(sfx.CharAt(0)))}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ part\ =\ olxstr::o\_tolower(label.CharAt(us\_ind))\ -\/\ \textcolor{stringliteral}{'a'}\ +\ 1;}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ if\ (sfx.IsNumber())\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ resi\_number\ =\ sfx.ToInt();}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ resi\_class\ =\ sfx;}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ label\ =\ label.SubStringTo(us\_ind\ -\/\ 1);}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a,\ \textcolor{keywordtype}{bool}\ match\_label)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{if}\ (match\_label\ \&\&\ !a.GetLabel().Equalsi(label))\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{if}\ (part\ !=\ no\_part)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (part\ !=\ olx\_abs(a.GetPart()))\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{if}\ (resi\_number\ !=\ TResidue::NoResidue)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TResidue\&\ r\ =\ a.GetParent()-\/>GetResidue(a.GetResiId());}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (resi\_number\ ==\ r.GetNumber())\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (chain\_id\ ==\ TResidue::NoChainId()\ ||\ chain\_id\ ==\ r.GetChainId())\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!resi\_class.IsEmpty())\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TResidue\&\ r\ =\ a.GetParent()-\/>GetResidue(a.GetResiId());}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (chain\_id\ !=\ TResidue::NoChainId()\ \&\&\ chain\_id\ ==\ r.GetChainId())\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (resi\_class\ ==\ \textcolor{charliteral}{'*'}\ ||\ r.GetClassName().Equalsi(resi\_class))\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (r.GetClassName().Equalsi(resi\_class))\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ \};}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ EndXlibNamespace()}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00116\ }
+
+\end{DoxyCode}

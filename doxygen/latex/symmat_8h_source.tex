@@ -1,0 +1,245 @@
+\doxysection{symmat.\+h}
+\hypertarget{symmat_8h_source}{}\label{symmat_8h_source}\index{xlib/symmat.h@{xlib/symmat.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_symmat\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_symmat\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}testsuit.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MC,\ \textcolor{keyword}{class}\ VC>\ \textcolor{keyword}{class\ }TSymmMat\ \{}
+\DoxyCodeLine{00016\ \ \ uint32\_t\ Id;}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \mbox{\hyperlink{classTMatrix33}{TMatrix33<MC>}}\ r;}
+\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{classTVector3}{TVector3<VC>}}\ t;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ TSymmMat()\ :\ Id(\string~0)\ \{\}}
+\DoxyCodeLine{00022\ \ \ \textcolor{comment}{//\ copy\ constructor}}
+\DoxyCodeLine{00023\ \ \ TSymmMat(\textcolor{keyword}{const}\ TSymmMat\&\ v)\ :}
+\DoxyCodeLine{00024\ \ \ \ \ Id(v.Id),}
+\DoxyCodeLine{00025\ \ \ \ \ r(v.r),}
+\DoxyCodeLine{00026\ \ \ \ \ t(v.t)}
+\DoxyCodeLine{00027\ \ \ \{\}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ AMC,\ \textcolor{keyword}{typename}\ AVC>}
+\DoxyCodeLine{00029\ \ \ TSymmMat(\textcolor{keyword}{const}\ TSymmMat<AMC,AVC>\&\ v)\ :}
+\DoxyCodeLine{00030\ \ \ \ \ Id(v.GetId()),}
+\DoxyCodeLine{00031\ \ \ \ \ r(v.r),}
+\DoxyCodeLine{00032\ \ \ \ \ t(v.t)}
+\DoxyCodeLine{00033\ \ \ \{\}}
+\DoxyCodeLine{00034\ \ \ \textcolor{comment}{//\ composing\ constructor}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ AMC,\ \textcolor{keyword}{typename}\ AVC>}
+\DoxyCodeLine{00036\ \ \ TSymmMat(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<AMC>}}\&\ m,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<AVC>}}\&\ v)}
+\DoxyCodeLine{00037\ \ \ \ \ :\ Id(\string~0),\ r(m),\ t(v)\ \{\}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ AMC>}
+\DoxyCodeLine{00040\ \ \ TSymmMat(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<AMC>}}\&\ m)}
+\DoxyCodeLine{00041\ \ \ \ \ :\ Id(\string~0),\ r(m)}
+\DoxyCodeLine{00042\ \ \ \{\}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00045\ \ \ \mbox{\hyperlink{classTVector3}{TVector3<VC>}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<AT>}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTVector3}{TVector3<VC>}}(r*a).operator\ +=(t);}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \mbox{\hyperlink{classTVector3}{TVector3<VC>}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<VC>}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTVector3}{TVector3<VC>}}(r*a).operator\ +=(t);}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ TSymmMat\ operator\ *\ (\textcolor{keyword}{const}\ TSymmMat\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{return}\ TSymmMat(r*v.r,\ r*v.t+t);}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ TSymmMat\&\ operator\ *=\ (\textcolor{keyword}{const}\ TSymmMat\&\ v)\ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ r\ *=\ v.r;}
+\DoxyCodeLine{00059\ \ \ \ \ t\ =\ r*v.t+t;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \textcolor{comment}{//returns\ the\ transltion\ part\ of\ the\ multiplication}}
+\DoxyCodeLine{00064\ \ \ \mbox{\hyperlink{classTVector3}{TVector3<VC>}}\ MulT(\textcolor{keyword}{const}\ TSymmMat\&\ v)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ r*v.t+t;\ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TSymmMat\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ (r\ ==\ v.r\ \&\&\ t\ ==\ v.t);}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ TSymmMat\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{return}\ !this-\/>operator\ ==\ (v);}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{comment}{/*\ compares\ rotational\ part\ directly,\ but\ does\ distance\ comparison\ for}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ \ translation\ to\ prevent\ rounding\ errors\ influence}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{bool}\ Equals(\textcolor{keyword}{const}\ TSymmMat\&\ v,\ VC\ eps=1e-\/3)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{return}\ (r\ ==\ v.r\ \&\&\ t.Equals(v.t,\ eps));}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ TSymmMat\&\ operator\ =\ (\textcolor{keyword}{const}\ TSymmMat\&\ sm)\ \ \{}
+\DoxyCodeLine{00080\ \ \ \ \ t\ =\ sm.t;}
+\DoxyCodeLine{00081\ \ \ \ \ r\ =\ sm.r;}
+\DoxyCodeLine{00082\ \ \ \ \ Id\ =\ sm.Id;}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AMC,\ \textcolor{keyword}{class}\ AVC>}
+\DoxyCodeLine{00087\ \ \ TSymmMat\&\ operator\ =\ (\textcolor{keyword}{const}\ TSymmMat<AMC,AVC>\&\ sm)\ \ \{}
+\DoxyCodeLine{00088\ \ \ \ \ t\ =\ sm.t;}
+\DoxyCodeLine{00089\ \ \ \ \ r\ =\ sm.r;}
+\DoxyCodeLine{00090\ \ \ \ \ Id\ =\ sm.GetId();}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TSymmMat\&\ operator\ *=\ (AT\ v)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ r\ *=\ v;}
+\DoxyCodeLine{00096\ \ \ \ \ t\ *=\ v;}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ TSymmMat\ Negate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{return}\ TSymmMat(*\textcolor{keyword}{this})\ *=\ -\/1;}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ TSymmMat\&\ I()\ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ r.I();}
+\DoxyCodeLine{00106\ \ \ \ \ t.Null();}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordtype}{bool}\ IsI()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ (r.IsI()\ \&\&\ t.QLength()\ <\ 1e-\/6);}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{static}\ TSymmMat\ Identity()\ \ \{\ \textcolor{keywordflow}{return}\ \ TSymmMat(TMatrix33<MC>::Idenity());\ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ TSymmMat\&\ Null()\ \ \{}
+\DoxyCodeLine{00115\ \ \ \ \ r.Null();}
+\DoxyCodeLine{00116\ \ \ \ \ t.Null();}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ TSymmMat\ Inverse()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00121\ \ \ \ \ TSymmMat\ rv(r.Inverse(),\ t*-\/1);}
+\DoxyCodeLine{00122\ \ \ \ \ rv.t\ =\ rv.r\ *\ rv.t;}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00124\ \ \ \}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{static}\ TSymmMat\&\ Inverse(TSymmMat\&\ m)\ \ \{}
+\DoxyCodeLine{00127\ \ \ \ \ m.r\ =\ m.r.Inverse();}
+\DoxyCodeLine{00128\ \ \ \ \ m.t\ =\ ((m.r*m.t)\ *=\ -\/1);}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ m;}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ uint32\_t\ GetId()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Id;\ \ \}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{void}\ SetId(uint8\_t\ \textcolor{keywordtype}{id})\ \ \{\ \ Id\ =\ ((uint32\_t)\textcolor{keywordtype}{id}\ <<\ 24)|(0x00808080);\ \ \}}
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordtype}{void}\ SetRawId(uint32\_t\ \textcolor{keywordtype}{id})\ \ \{\ \ Id\ =\ id;\ \ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keywordtype}{void}\ SetId(uint8\_t\ \textcolor{keywordtype}{id},\ int8\_t\ ta,\ int8\_t\ tb,\ int8\_t\ tc)\ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ Id\ =\ ((uint32\_t)\textcolor{keywordtype}{id}\ <<\ 24)|}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ ((uint32\_t)(0x80-\/ta)\ <<\ 16)|}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ ((uint32\_t)(0x80-\/tb)\ <<\ 8)|}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ (uint32\_t)(0x80-\/tc);}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordtype}{void}\ SetId(uint8\_t\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ vec3i\&\ t)\ \ \{\ \ Id\ =\ GenerateId(\textcolor{keywordtype}{id},\ t);\ \ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordtype}{bool}\ IsFirst()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ IsFirst(Id);\ \ \}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsFirst(uint32\_t\ \textcolor{keywordtype}{id})\ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{id}\ ==\ 0x00808080;\ \ \}}
+\DoxyCodeLine{00145\ \ \ uint8\_t\ GetContainerId()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (uint8\_t)(Id\ >>\ 24);\ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{static}\ uint8\_t\ GetContainerId(uint32\_t\ \textcolor{keywordtype}{id})\ \{\ \ \textcolor{keywordflow}{return}\ (uint8\_t)(\textcolor{keywordtype}{id}\ >>\ 24);\ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static}\ int8\_t\ GetTx(uint32\_t\ \textcolor{keywordtype}{id})\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ (int8\_t)(128-\/(int8\_t)((\textcolor{keywordtype}{id}\&0x00FF0000)\ >>\ 16));}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{static}\ int8\_t\ GetTy(uint32\_t\ \textcolor{keywordtype}{id})\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ (int8\_t)(128-\/(int8\_t)((\textcolor{keywordtype}{id}\&0x0000FF00)\ >>\ 8));}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{static}\ int8\_t\ GetTz(uint32\_t\ \textcolor{keywordtype}{id})\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{return}\ (int8\_t)(128-\/(int8\_t)(\textcolor{keywordtype}{id}\&0x000000FF));}
+\DoxyCodeLine{00156\ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ vec3i\ GetT(uint32\_t\ \textcolor{keywordtype}{id})\ \ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{return}\ vec3i(GetTx(\textcolor{keywordtype}{id}),\ GetTy(\textcolor{keywordtype}{id}),\ GetTz(\textcolor{keywordtype}{id}));}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{static}\ TSymmMat\ FromId(uint32\_t\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ TSymmMat\&\ ref)\ \ \{}
+\DoxyCodeLine{00161\ \ \ \ \ TSymmMat\ rv(ref);}
+\DoxyCodeLine{00162\ \ \ \ \ rv.t[0]\ +=\ GetTx(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00163\ \ \ \ \ rv.t[1]\ +=\ GetTy(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00164\ \ \ \ \ rv.t[2]\ +=\ GetTz(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00165\ \ \ \ \ rv.Id\ =\ id;}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00167\ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{static}\ uint32\_t\ GenerateId(uint8\_t\ \textcolor{keywordtype}{id},\ int8\_t\ ta,\ int8\_t\ tb,\ int8\_t\ tc)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{return}\ ((uint32\_t)\textcolor{keywordtype}{id}<<24)|((uint32\_t)(0x80-\/ta)<<16)|}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ ((uint32\_t)(0x80-\/tb)<<8)|(uint32\_t)(0x80-\/tc);}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{static}\ uint32\_t\ GenerateId(uint8\_t\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ vec3i\&\ t)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ ((uint32\_t)\textcolor{keywordtype}{id}<<24)|((uint32\_t)(0x80-\/t[0])<<16)|}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ ((uint32\_t)(0x80-\/t[1])<<8)|(uint32\_t)(0x80-\/t[2]);}
+\DoxyCodeLine{00175\ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{static}\ uint32\_t\ GenerateId(uint8\_t\ container\_id,\ \textcolor{keyword}{const}\ TSymmMat\&\ m,}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{const}\ TSymmMat\&\ ref)}
+\DoxyCodeLine{00178\ \ \ \{}
+\DoxyCodeLine{00179\ \ \ \ \ vec3i\ t(ref.t\ -\/\ m.t);}
+\DoxyCodeLine{00180\ \ \ \ \ uint32\_t\ rv\ =\ ((uint32\_t)container\_id\ <<\ 24);}
+\DoxyCodeLine{00181\ \ \ \ \ rv\ |=\ ((uint32\_t)(0x80-\/t[0])\ <<\ 16);}
+\DoxyCodeLine{00182\ \ \ \ \ rv\ |=\ ((uint32\_t)(0x80-\/t[1])\ <<\ 8);}
+\DoxyCodeLine{00183\ \ \ \ \ rv\ |=\ (uint32\_t)(0x80-\/t[2]);}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00185\ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \textcolor{comment}{//\ normalises\ a\ fractional\ coordinate/translation}}
+\DoxyCodeLine{00187\ \ \ \textcolor{keyword}{static}\ vec3d\ NormaliseFractional(\textcolor{keyword}{const}\ vec3d\ \&t\_)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ vec3d\ t\ =\ t\_;}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j=0;\ j\ <\ 3;\ j++)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ t[j]\ -\/=\ olx\_floor(t[j]);}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (t[j]\ <\ 1e-\/3\ ||\ t[j]\ >\ 0.999)\ t[j]\ =\ 0;}
+\DoxyCodeLine{00192\ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{return}\ t;}
+\DoxyCodeLine{00194\ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{/*\ returns\ a\ vector\ with\ smaller\ or\ equal\ values\ */}}
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{static}\ vec3d\ StandardiseFractional(\textcolor{keyword}{const}\ vec3d\ \&x,\ \textcolor{keyword}{const}\ list\_t\&\ ml,}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keyword}{const}\ accessor\_t\ \&acc)}
+\DoxyCodeLine{00199\ \ \ \{}
+\DoxyCodeLine{00200\ \ \ \ \ vec3d\ v\ =\ NormaliseFractional(x);}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ ml.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ vec3d\ tmp\ =\ NormaliseFractional(acc(ml[i])*x);}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (tmp[0]\ <\ v[0])\ ||\ \ \textcolor{comment}{//\ standardise\ then\ ...}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ (olx\_abs(tmp[0]-\/v[0])\ <\ 1e-\/3\ \&\&\ (tmp[1]\ <\ v[1]))\ ||}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ (olx\_abs(tmp[0]-\/v[0])\ <\ 1e-\/3\ \&\&}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ olx\_abs(tmp[1]-\/v[1])\ <\ 1e-\/3\ \&\&\ (tmp[2]\ <\ v[2]))\ )}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ v\ =\ tmp;}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00212\ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00214\ \ \ \textcolor{keyword}{static}\ vec3d\ StandardiseFractional(\textcolor{keyword}{const}\ vec3d\ \&x,\ \textcolor{keyword}{const}\ list\_t\&\ ml)\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordflow}{return}\ StandardiseFractional(x,\ ml,\ ListAccessor(ml));}
+\DoxyCodeLine{00216\ \ \ \}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTSymmMat_1_1IdComparator}{IdComparator}}\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ TSymmMat\&\ a,\ \textcolor{keyword}{const}\ TSymmMat\&\ b)\ \ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a.GetId(),\ b.GetId());}
+\DoxyCodeLine{00221\ \ \ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ TSymmMat*\ a,\ \textcolor{keyword}{const}\ TSymmMat*\ b)\ \ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a-\/>GetId(),\ b-\/>GetId());}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \};}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTSymmMat_1_1ContainerIdComparator}{ContainerIdComparator}}\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ TSymmMat\&\ a,\ \textcolor{keyword}{const}\ TSymmMat\&\ b)\ \ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a.GetContainerId(),\ b.GetContainerId());}
+\DoxyCodeLine{00229\ \ \ \ \ \}}
+\DoxyCodeLine{00230\ \ \ \};}
+\DoxyCodeLine{00231\ \};}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTSymmMat}{TSymmMat<int,double>}}\ \ \ smatd;}
+\DoxyCodeLine{00234\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<smatd>}}\ \ \ \ smatd\_plist;}
+\DoxyCodeLine{00235\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<smatd>}}\ \ \ smatd\_list;}
+\DoxyCodeLine{00236\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTSymmMat}{TSymmMat<int,double>}}\ \ \ smatid;}
+\DoxyCodeLine{00237\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTSymmMat}{TSymmMat<double,double>}}\ \ \ smatdd;}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

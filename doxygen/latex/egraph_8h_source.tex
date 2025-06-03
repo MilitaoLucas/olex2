@@ -1,0 +1,389 @@
+\doxysection{egraph.\+h}
+\hypertarget{egraph_8h_source}{}\label{egraph_8h_source}\index{sdl/egraph.h@{sdl/egraph.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_egraph\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_egraph\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}talist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}etraverse.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ IC,\ \textcolor{keyword}{class}\ AssociatedOC>}
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }TEGraphNode\ :\ \textcolor{keyword}{public}\ ACollectionItem\ \{}
+\DoxyCodeLine{00020\ \ \ IC\ Data;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{typedef}\ TEGraphNode<IC,\ AssociatedOC>\ NodeType;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TSizeList,TSizeList>}}\ ConnInfo;}
+\DoxyCodeLine{00023\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<NodeType>}}\ Nodes;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{bool}\ RingNode,\ Root;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{size\_t}\ GroupIndex;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{bool}\ Passed,\ Mutable;}
+\DoxyCodeLine{00027\ \ \ AssociatedOC\ Object;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{classolxdict}{olxdict<NodeType*,\ TTypeList<ConnInfo>}},\ \mbox{\hyperlink{classTPointerComparator}{TPointerComparator}}>\ Connectivity;}
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSizeList>}}\ *Permutations;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsPassed()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Passed;\ \ \}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetPassed(\textcolor{keywordtype}{bool}\ v)\ \ \{\ \ Passed\ =\ v;\ \ \}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{void}\ SetPassedR(\textcolor{keywordtype}{bool}\ v)\ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ Passed\ =\ v;}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Nodes.Count();\ i++\ )}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ Nodes[i]-\/>SetPassedR(v);}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{size\_t}\ CountR()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ rv\ =\ Nodes.Count();}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Nodes.Count();\ i++\ )}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ rv\ +=\ Nodes[i]-\/>CountR();}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ \_SortNodesByTag(\textcolor{keyword}{const}\ NodeType*\ n1,\ \textcolor{keyword}{const}\ NodeType*\ n2)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{return}\ n1-\/>GetTag()\ -\/\ n2-\/>GetTag();}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<ConnInfo>}}\&\ GetConnInfo(NodeType\&\ node)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<ConnInfo>}}\&\ conn\ =\ Connectivity.Add(\&node);}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{if}\ (!conn.IsEmpty())\ \textcolor{keywordflow}{return}\ conn;}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ node\_cnt\ =\ Count();}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ node\_cnt;\ i++)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ node\_cnt;\ j++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Nodes[i]-\/>GroupIndex\ ==\ node[j].GroupIndex\ \&\&}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ Nodes[i]-\/>GroupIndex\ !=\ InvalidIndex)}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Nodes[i]-\/>ShallowEquals(node[j]))\ \{\ \textcolor{comment}{//\ sanity\ check}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}due\ to\ graph\ connectivity"{}});}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ found\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k=0;\ k\ <\ conn.Count();\ k++)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (conn[k].GetB().Contains(i))\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!conn[k].GetA().Contains(j))}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ conn[k].a.Add(j);}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ found\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (conn[k].GetA().Contains(j))\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!conn[k].GetB().Contains(i))}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ conn[k].b.Add(i);}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ found\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!found)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ ConnInfo\&\ ci\ =\ conn.AddNew();}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ ci.a.Add(j);}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ ci.b.Add(i);}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{return}\ conn;}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ GeneratePermutations(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<ConnInfo>}}\&\ conn,}
+\DoxyCodeLine{00089\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSizeList>}}\&\ res)}
+\DoxyCodeLine{00090\ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ TSizeList\ permutation;}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ total\_perm\ =\ 1,}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ total\_perm\_size\ =\ 0,}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ perm\_size\ =\ 0,}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ group\_size\ =\ 1;}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ conn.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ total\_perm\ *=\ olx\_factorial\_t<size\_t,\ size\_t>(conn[i].GetA().Count());}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ total\_perm\_size\ +=\ conn[i].GetA().Count();}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{comment}{//\ precreate\ the\ lists}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ total\_perm;\ i++\ )}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ res.AddNew(total\_perm\_size);}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ conn.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keyword}{const}\ ConnInfo\&\ ci\ =\ conn[i];}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ perm\_cnt\ =\ olx\_factorial\_t<size\_t,\ size\_t>(ci.GetA().Count());}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=1;\ j\ <\ perm\_cnt;\ j++\ )}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ k=0;\ k\ <\ group\_size;\ k++\ )}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ l=0;\ l\ <\ perm\_size;\ l++\ )}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ res[k+j*group\_size][l]\ =\ res[k][l];}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ perm\_cnt;\ j++\ )\ \ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ permutation\ =\ ci.GetA();}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ GeneratePermutation(permutation,\ j);}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ k=0;\ k\ <\ group\_size;\ k++\ )}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ l=0;\ l\ <\ permutation.Count();\ l++\ )}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ res[j*group\_size+k][perm\_size+l]\ =\ permutation[l];}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ group\_size\ *=\ perm\_cnt;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ perm\_size\ +=\ ci.GetA().Count();}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \}}
+\DoxyCodeLine{00121\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00122\ \ \ TEGraphNode(\textcolor{keyword}{const}\ IC\&\ data,\ \textcolor{keyword}{const}\ AssociatedOC\&\ \textcolor{keywordtype}{object})}
+\DoxyCodeLine{00123\ \ \ \ \ :\ GroupIndex(InvalidIndex)}
+\DoxyCodeLine{00124\ \ \ \{}
+\DoxyCodeLine{00125\ \ \ \ \ Data\ =\ data;}
+\DoxyCodeLine{00126\ \ \ \ \ Mutable\ =\ Root\ =\ Passed\ =\ RingNode\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00127\ \ \ \ \ Object\ =\ object;}
+\DoxyCodeLine{00128\ \ \ \ \ Permutations\ =\ NULL;}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \ \ TEGraphNode(\textcolor{keyword}{const}\ TEGraphNode\ \&n)\ :\ Data(n.Data),}
+\DoxyCodeLine{00131\ \ \ \ \ RingNode(n.RingNode),\ Root(n.Root),\ GroupIndex(n.GroupIndex),}
+\DoxyCodeLine{00132\ \ \ \ \ Passed(n.Passed),\ Mutable(n.Mutable),\ Object(n.Object),}
+\DoxyCodeLine{00133\ \ \ \ \ Connectivity(n.Connectivity),}
+\DoxyCodeLine{00134\ \ \ \ \ Permutations(n.Permutations\ ==\ 0\ ?\ 0\ :\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TSizeList>}}(*n.Permutations))}
+\DoxyCodeLine{00135\ \ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ n.Count();\ i++)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ Nodes.Add(\textcolor{keyword}{new}\ TEGraphNode(n[i]));}
+\DoxyCodeLine{00138\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \string~TEGraphNode()\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ Nodes.DeleteItems(\textcolor{keyword}{false});}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{if}\ (Permutations\ !=\ NULL)}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Permutations;}
+\DoxyCodeLine{00144\ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{const}\ IC\ \&\ GetData()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Data;\ \}}
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{void}\ SetData(\textcolor{keyword}{const}\ IC\ \&d)\ \{\ Data\ =\ d;\ \}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{bool}\ IsRingNode()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ RingNode;\ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keywordtype}{bool}\ IsMutable()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Mutable;\ \ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keywordtype}{size\_t}\ GetGroupIndex()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GroupIndex;\ \ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keywordtype}{void}\ SetRingNode()\ \ \{\ \ RingNode\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ TEGraphNode\&\ NewNode(\textcolor{keyword}{const}\ IC\&\ Data,\ \textcolor{keyword}{const}\ AssociatedOC\&\ obj)\ \ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{return}\ *Nodes.Add(\textcolor{keyword}{new}\ TEGraphNode(Data,\ obj));}
+\DoxyCodeLine{00154\ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordtype}{void}\ SortNodesByTag()\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ Nodes.BubleSorter.SortSF(Nodes,\ \&TEGraphNode::\_SortNodesByTag);}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<NodeType>}}\&\ GetNodes()\ \{\ \ \textcolor{keywordflow}{return}\ Nodes;\ \ \}}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ AssociatedOC\&\ GetObject()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Object;\ \ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Nodes.Count();\ \ \}}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//\ this\ is\ for\ the\ traverser}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{inline}\ TEGraphNode\&\ Item(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \ *Nodes[i];\ \ \}}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{inline}\ TEGraphNode\&\ operator\ [](\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \ *Nodes[i];\ \ \}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keywordtype}{void}\ SwapItems(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ !=\ j\ )}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ Nodes.Swap(i,j);}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \textcolor{keywordtype}{bool}\ ShallowEquals(\textcolor{keyword}{const}\ TEGraphNode\&\ node)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordflow}{if}(\ node.GetData()\ !=\ GetData()\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{if}(\ node.Count()\ !=\ Count()\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00173\ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{/*\ Checks\ if\ a\ graph\ node\ matches\ the\ other,\ on\ the\ way\ it\ rearranges\ nodes}}
+\DoxyCodeLine{00175\ \textcolor{comment}{\ \ so\ that\ nodes\ match\ by\ index\ like\ this[i]\ ==\ that[i]}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordtype}{bool}\ DoMatch(TEGraphNode\&\ node)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{if}\ (!ShallowEquals(node))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ node.Count();\ i++\ )}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ node[i].SetPassed(\textcolor{keyword}{false});}
+\DoxyCodeLine{00181\ \ \ \ \ TSizeList\ indices(Count());}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Matched\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ Count();\ j++\ )\ \ \{\ \ \textcolor{comment}{//\ Count\ equals\ for\ both\ nodes}}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ node[j].IsPassed()\ )\ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ Nodes[i]-\/>DoMatch(node[j])\ )\ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ node[j].SetPassed(\textcolor{keyword}{true});}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ indices[i]\ =\ j;\ \ \textcolor{comment}{//\ sorting\ the\ nodes\ to\ match}}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ Matched\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !Matched\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ node.Nodes.Rearrange(indices);}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00197\ \ \ \}}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \textcolor{comment}{/*\ Compares\ graphs\ to\ establish\ their\ equality\ */}}
+\DoxyCodeLine{00200\ \ \ \textcolor{keywordtype}{bool}\ DryMatch(TEGraphNode\&\ node)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordflow}{if}\ (!ShallowEquals(node))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ node.Count();\ i++\ )}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ node[i].SetPassed(\textcolor{keyword}{false});}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Matched\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ Count();\ j++\ )\ \ \{\ \ \textcolor{comment}{//\ Count\ equals\ for\ both\ nodes}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ node[j].IsPassed()\ )\ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ Nodes[i]-\/>DoMatch(node[j])\ )\ \ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ node[j].SetPassed(\textcolor{keyword}{true});}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ Matched\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !Matched\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00217\ \ \ \}}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Analyser>\ \textcolor{keywordtype}{bool}\ FullMatch(TEGraphNode\&\ node,}
+\DoxyCodeLine{00220\ \ \ \ \ Analyser\&\ analyser)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00221\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{if}(\ node.GetData()\ !=\ GetData()\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordflow}{if}(\ node.Count()\ !=\ Count()\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ mc=0;}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ Count();\ j++\ )\ \ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ we\ cannot\ do\ node\ swapping\ here,\ since\ it\ will\ invalidate\ the}}
+\DoxyCodeLine{00228\ \textcolor{comment}{\ \ \ \ \ \ \ \ matching\ indexes}}
+\DoxyCodeLine{00229\ \textcolor{comment}{\ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ Nodes[i]-\/>FullMatch(node[j],\ analyser)\ )\ \ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ analyser.OnMatch(*\textcolor{keyword}{this},\ node,\ i,\ j);}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ mc++;}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ mc\ ==\ 0\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00236\ \ \ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00238\ \ \ \}}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \ \ \textcolor{keywordtype}{bool}\ AnalyseMutability(TEGraphNode\&\ node,\ \textcolor{keywordtype}{double}\&\ permutations)\ \ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keywordflow}{if}\ (node.GetData()\ !=\ GetData())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{if}\ (node.Count()\ !=\ Count())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00243\ \ \ \ \ Mutable\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Count();\ i++)\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ mc\ =\ 0;}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ Count();\ j++)\ \{\ \ \textcolor{comment}{//\ Count\ equals\ for\ both\ nodes}}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ j\ >\ i\ )\ \ \textcolor{comment}{//\ do\ consistent\ node\ ordering\ for\ all\ non-\/unique}}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ Nodes[i]-\/>DoMatch(*Nodes[j]);}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Nodes[i]-\/>DoMatch(node[j])\ \&\&}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ Nodes[i]-\/>AnalyseMutability(node[j],\ permutations))}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (node[j].GroupIndex\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ mc++;}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Nodes[i]-\/>GroupIndex\ ==\ InvalidIndex)}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Nodes[i]-\/>GroupIndex\ =\ node[j].GroupIndex\ =\ i;}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ node[j].GroupIndex\ =\ Nodes[i]-\/>GroupIndex;}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Nodes[i]-\/>GroupIndex\ !=\ InvalidIndex\ \&\&}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Nodes[i]-\/>GroupIndex\ !=\ node[j].GroupIndex)}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ Nodes[i]-\/>GroupIndex\ =\ node[j].GroupIndex;}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mc\ >\ 1)\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ Mutable\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ permutations\ *=\ olx\_factorial\_t<double,size\_t>(mc);}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00275\ \ \ \}}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Analyser>\ \textcolor{keywordtype}{bool}\ FullMatchEx(TEGraphNode\&\ node,}
+\DoxyCodeLine{00278\ \ \ \ \ Analyser\&\ analyser,\ \textcolor{keywordtype}{bool}\ analyse=\textcolor{keyword}{false})}
+\DoxyCodeLine{00279\ \ \ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keywordflow}{if}(\ IsRoot()\ )\ \ \{}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ permutations\ =\ 1;}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ this-\/>AnalyseMutability(node,\ permutations);}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ analyser.OnStart(permutations);}
+\DoxyCodeLine{00284\ \ \ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keywordflow}{if}\ (!ShallowEquals(node))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ node\_cnt\ =\ Count();}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keywordflow}{if}(\ node\_cnt\ ==\ 0\ \ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00288\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<ConnInfo>}}\&\ conn\ =\ GetConnInfo(node);}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ dest\_ind\ =\ 0;}
+\DoxyCodeLine{00290\ \ \ \ \ TSizeList\ dest(node\_cnt);}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ conn.Count();\ i++)\ \{}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \textcolor{keyword}{const}\ ConnInfo\&\ ci\ =\ conn[i];}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ ci.GetB().Count();\ j++)}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ dest[dest\_ind++]\ =\ ci.GetB()[j];}
+\DoxyCodeLine{00295\ \ \ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keywordflow}{if}(\ dest\_ind\ !=\ node\_cnt\ )}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00298\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TEGraphNode>}}\ ond(node.Nodes);}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordflow}{if}\ (Permutations\ ==\ NULL)\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ Permutations\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TSizeList>}}();}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ GeneratePermutations(conn,\ *Permutations);}
+\DoxyCodeLine{00302\ \ \ \ \ \}}
+\DoxyCodeLine{00303\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSizeList>}}\ \&permutations\ =\ *Permutations;}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ perm\_cnt\ =\ permutations.Count();}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ best\_perm\ =\ 0;}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordtype}{double}\ minRms\ =\ -\/1;}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ permutations.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TSizeList\&\ permutation\ =\ permutations[i];}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ node\_cnt;\ j++\ )}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ node.Nodes[dest[j]]\ =\ ond[permutation[j]];}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ node\_cnt;\ j++\ )}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ Nodes[j]-\/>FullMatchEx(node[j],\ analyser,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ rms\ =\ analyser.CalcRMS(*\textcolor{keyword}{this},\ node);}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ rms\ <\ 0\ )}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ rms\ <\ 1e-\/5\ )\ \ \{\textcolor{comment}{//\ must\ be\ there}}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ best\_perm\ =\ InvalidIndex;\ \textcolor{comment}{//\ specify\ that\ we\ stopped\ at\ the\ best\ one}}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ minRms\ <\ 0\ ||\ rms\ <\ minRms\ )\ \ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ minRms\ =\ rms;}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ best\_perm\ =\ i;}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00325\ \ \ \ \ \}}
+\DoxyCodeLine{00326\ \ \ \ \ \textcolor{keywordflow}{if}(\ best\_perm\ !=\ InvalidIndex\ \&\&\ best\_perm\ !=\ perm\_cnt-\/1\ )\ \ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TSizeList\&\ permutation\ =\ permutations[best\_perm];}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ node\_cnt;\ j++\ )}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ node.Nodes[dest[j]]\ =\ ond[permutation[j]];}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ node\_cnt;\ j++\ )}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ Nodes[j]-\/>FullMatchEx(node[j],\ analyser,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00332\ \ \ \ \ \}}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keywordflow}{if}(\ IsRoot()\ )}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ analyser.OnFinish();}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00336\ \ \ \}}
+\DoxyCodeLine{00337\ }
+\DoxyCodeLine{00338\ \ \ \textcolor{keywordtype}{bool}\ IsSubgraphOf(TEGraphNode\&\ node)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keywordflow}{if}(\ node.GetData()\ !=\ GetData()\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keywordflow}{if}(\ node.Count()\ <\ Count()\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ node.Count();\ i++\ )}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ node[i].SetPassed(\textcolor{keyword}{false});}
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Matched\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ node.Count();\ j++\ )\ \ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ Nodes[i]-\/>IsSubgraphOf(node[j])\ )\ \ \{}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ node[j].SetPassed(\textcolor{keyword}{true});}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ !=\ j\ )\ \ node.SwapItems(i,\ j);\ \ \textcolor{comment}{//\ sorting\ the\ nodes\ to\ match}}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ Matched\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !Matched\ )}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00355\ \ \ \ \ \}}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00357\ \ \ \}}
+\DoxyCodeLine{00358\ \ \ DefPropBIsSet(Root)}
+\DoxyCodeLine{00359\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTGraphTraverser}{TGraphTraverser<\ TEGraphNode<IC,\ AssociatedOC>}}\ >\ Traverser;}
+\DoxyCodeLine{00360\ \};}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \textcolor{preprocessor}{\#ifndef\ \_\_BORLANDC\_\_}}
+\DoxyCodeLine{00363\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ IC,\ \textcolor{keyword}{typename}\ AssociatedOC>}
+\DoxyCodeLine{00364\ \mbox{\hyperlink{classTGraphTraverser}{TGraphTraverser<\ TEGraphNode<IC,AssociatedOC>}}\ >}
+\DoxyCodeLine{00365\ \ \ TEGraphNode<IC,AssociatedOC>::Traverser;}
+\DoxyCodeLine{00366\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ IC,\ \textcolor{keyword}{class}\ AssociatedOC>}
+\DoxyCodeLine{00369\ \textcolor{keyword}{class\ }TEGraph\ \{}
+\DoxyCodeLine{00370\ \ \ \mbox{\hyperlink{classTEGraphNode}{TEGraphNode<IC,\ AssociatedOC>}}\ Root;}
+\DoxyCodeLine{00371\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00372\ \ \ TEGraph(\ \textcolor{keyword}{const}\ IC\&\ Data,\ \textcolor{keyword}{const}\ AssociatedOC\&\ obj)\ :\ Root(Data,\ obj)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ Root.SetRoot(\textcolor{keyword}{true});}
+\DoxyCodeLine{00374\ \ \ \}}
+\DoxyCodeLine{00375\ \ \ \mbox{\hyperlink{classTEGraphNode}{TEGraphNode<IC,\ AssociatedOC>}}\&\ GetRoot()\ \ \{\ \ \textcolor{keywordflow}{return}\ Root;\ \ \}}
+\DoxyCodeLine{00376\ }
+\DoxyCodeLine{00377\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ 1;\ \ \}}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTEGraphNode}{TEGraphNode<IC,\ AssociatedOC>}}\&\ Item(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00380\ \ \ \ \ \textcolor{keywordflow}{return}\ Root;}
+\DoxyCodeLine{00381\ \ \ \}}
+\DoxyCodeLine{00382\ \};}
+\DoxyCodeLine{00383\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

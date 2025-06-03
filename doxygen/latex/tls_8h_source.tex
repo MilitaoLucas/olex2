@@ -1,0 +1,96 @@
+\doxysection{tls.\+h}
+\hypertarget{tls_8h_source}{}\label{tls_8h_source}\index{xlib/tls.h@{xlib/tls.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ TLS\ procedure,\ (c)\ J\ Haestier,\ 2007}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_tls\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_tls\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}ematrix.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}satom.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}ellipsoid.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}evalue.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}math/mmath.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ BeginXlibNamespace()}
+\DoxyCodeLine{00020\ \textcolor{comment}{/*\ References:}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ \ V.\ Schomaker\ \&\ K.\ N.\ Trueblood,\ Acta\ Cryst\ 1968,\ B24,\ 63}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ B54,\ 507-\/514}}
+\DoxyCodeLine{00023\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00024\ class\ TLS\ \{}
+\DoxyCodeLine{00025\ \ \ TSAtomPList\ atoms;}
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ TLS(\textcolor{keyword}{const}\ TSAtomPList\ \&atoms);}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//accessors}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetT()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Tmat;\ \}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetL()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Lmat;\ \}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetS()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Smat;\ \}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetOrigin()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ origin;\ \}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetFoM()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FoM;\ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ RotateElps(\textcolor{keyword}{const}\ mat3d\ \&basis)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ mat3d\ basis\_t\ =\ basis.GetT();}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ newElps.Count();\ i++)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ ShelxQuad(basis*TEllipsoid::ExpandShelxQuad(newElps[i])*basis\_t,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ newElps[i]);}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{const}\ evecd\_list\&\ GetElpList()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ newElps;\ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetRtoLaxes()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RtoLaxes;\ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{const}\ ematd\&\ GetVcV()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TLS\_VcV;\ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ printTLS(\textcolor{keyword}{const}\ olxstr\ \&title=\textcolor{stringliteral}{"{}TLS\ matrices"{}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ printDiff(\textcolor{keyword}{const}\ olxstr\ \&title=\textcolor{stringliteral}{"{}Uobs\ vs\ Utls"{}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ printFOM()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \mbox{\hyperlink{classConstTypeList}{ConstTypeList<evecd>}}\ calcUijEllipse(\textcolor{keyword}{const}\ TSAtomPList\ \&atoms);}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{bool}\ calcTLS(\textcolor{keyword}{const}\ ematd\&\ designM,\ \textcolor{keyword}{const}\ evecd\&\ UijC,\ \textcolor{keyword}{const}\ ematd\ \&weigts);}
+\DoxyCodeLine{00050\ \ \ \textcolor{comment}{//returns\ t}}
+\DoxyCodeLine{00051\ \ \ TEValueD\ BondCorrect(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&atom1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&anAtom2);}
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{//\ Extapolate\ TLS\ motion\ to\ an\ atom}}
+\DoxyCodeLine{00053\ \ \ evecd\ extrapolate(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&atom);}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ evecd\ \&ShelxQuad(\textcolor{keyword}{const}\ mat3d\ \&m,\ evecd\ \&dest);}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ evecd\ ShelxQuad(\textcolor{keyword}{const}\ mat3d\ \&m)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ evecd\ v(6);}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{return}\ ShelxQuad(m,\ v);}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \ \ vec3d\ origin;}
+\DoxyCodeLine{00062\ \ \ \textcolor{comment}{/*\ Rotation\ matrix,\ transforms\ TLS\ to\ L-\/principle\ axes.\ Nb.}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ \ Inverse\ =\ Transpose\ since\ orthog}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00065\ \ \ mat3d\ RtoLaxes;}
+\DoxyCodeLine{00066\ \ \ \textcolor{comment}{//TLS\ wrt\ current\ frame:\ Updated\ through\ analysis}}
+\DoxyCodeLine{00067\ \ \ mat3d\ Tmat,\ Lmat,\ Smat;}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ evecd\_list\ newElps;\ \ \textcolor{comment}{//Ellipsoids\ calculated\ from\ TLS}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ TLSfreeParameters;\ \textcolor{comment}{//\ 21,\ To\ be\ reduced\ by\ 1\ per\ constraint}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//(unless\ enforced\ with\ Lagrange\ multipliers?).}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ vec3d\ FoM;\ \ \ \ \textcolor{comment}{//\ \{R1,R2'\}}}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//\ (6T,\ 6L,\ 9S)\ x\ (6T,\ 6L,\ 9S)}}
+\DoxyCodeLine{00075\ \ \ ematd\ TLS\_VcV;}
+\DoxyCodeLine{00076\ \ \ \textcolor{comment}{//\ NOTE:\ To\ be\ replace\ when\ VcV\ matrix\ is\ available}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ UijErrors(ematd\ \&weights);}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{void}\ createDM(ematd\ \&designM,\ evecd\ \&UijC);}
+\DoxyCodeLine{00079\ \ \ mat3d\ calcUijCart\ (\textcolor{keyword}{const}\ vec3d\ \&atomPosition);}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ RotateLaxes();}
+\DoxyCodeLine{00081\ \ \ vec3d\ FigOfMerit(\textcolor{keyword}{const}\ evecd\_list\ \&Elps,\ \textcolor{keyword}{const}\ ematd\ \&weights);}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{void}\ symS();\ \textcolor{comment}{//\ Shifts\ origin\ -\/\ makes\ S\ symmetric}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ diagS(mat3d\ \&split,\ mat3d\ \&Tmatrix,\ mat3d\ \&Smatrix);\ \textcolor{comment}{//Splits\ L\ axes\ to\ make\ S\ diagonal}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \textcolor{comment}{//helper\ mathods:}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{int}\ epsil(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keywordtype}{size\_t}\ k)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ EndXlibNamespace()}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

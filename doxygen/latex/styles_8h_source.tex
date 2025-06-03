@@ -1,0 +1,383 @@
+\doxysection{styles.\+h}
+\hypertarget{styles_8h_source}{}\label{styles_8h_source}\index{glib/styles.h@{glib/styles.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_styles\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_styles\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glmaterial.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}estlist.h"{}}}
+\DoxyCodeLine{00015\ BeginGlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ \mbox{\hyperlink{classTGraphicsStyles}{TGraphicsStyles}};}
+\DoxyCodeLine{00018\ class\ \mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ class\ TPrimitiveStyle\ :\ public\ AGroupObject\ \{}
+\DoxyCodeLine{00021\ \ \ \mbox{\hyperlink{classTGraphicsStyles}{TGraphicsStyles}}\&\ Parent;}
+\DoxyCodeLine{00022\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}*\ NewProperties()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}};}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ TPrimitiveStyle(\textcolor{keyword}{const}\ olxstr\&\ name,\ TObjectGroup\&\ GroupParent,}
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{classTGraphicsStyles}{TGraphicsStyles}}\&\ parent)}
+\DoxyCodeLine{00030\ \ \ \ \ :\ AGroupObject(GroupParent),\ Parent(parent),\ Name(name)\ \{\}}
+\DoxyCodeLine{00031\ \ \ \string~TPrimitiveStyle()\ \{\ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Name;\ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ ReadName(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ Item.FindField(\textcolor{stringliteral}{"{}PName"{}});}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ SetProperties(\textcolor{keyword}{const}\ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}\&\ C)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\textcolor{keyword}{>}(AGroupObject::SetProperties(C));}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ GetProperties()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&)AGroupObject::GetProperties();}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TPrimitiveStyle\&\ S)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{if}\ (Name\ !=\ S.GetName()\ ||\ !(GetProperties()\ ==\ S.GetProperties()))\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{bool}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item);}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TGraphicsStyle;}
+\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{keyword}{struct\ }TGSParam\ \{}
+\DoxyCodeLine{00057\ \ \ olxstr\ val;}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{bool}\ saveable;}
+\DoxyCodeLine{00059\ \ \ TGSParam()\ :\ saveable(\textcolor{keyword}{false})\ \{\}}
+\DoxyCodeLine{00060\ \ \ TGSParam(\textcolor{keyword}{const}\ olxstr\&\ \_val,\ \textcolor{keywordtype}{bool}\ \_saveable=\textcolor{keyword}{false})\ :\ val(\_val),\ saveable(\_saveable)\ \{\}}
+\DoxyCodeLine{00061\ \ \ TGSParam(\textcolor{keyword}{const}\ TGSParam\&\ gsp)\ :\ val(gsp.val),\ saveable(gsp.saveable)\ \{\}}
+\DoxyCodeLine{00062\ \ \ TGSParam\&\ operator\ =\ (\textcolor{keyword}{const}\ TGSParam\&\ gsp)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ val\ =\ gsp.val;}
+\DoxyCodeLine{00064\ \ \ \ \ saveable\ =\ gsp.saveable;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{class\ }TGraphicsStyle\ :\ \textcolor{keyword}{public}\ ACollectionItem\ \{}
+\DoxyCodeLine{00070\ \ \ TGraphicsStyles\&\ Parent;}
+\DoxyCodeLine{00071\ \ \ TGraphicsStyle*\ ParentStyle;}
+\DoxyCodeLine{00072\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00073\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TPrimitiveStyle>}}\ PStyles;}
+\DoxyCodeLine{00074\ \ \ \mbox{\hyperlink{classsorted_1_1StringAssociation}{sorted::StringAssociation<TGraphicsStyle*,\ true>}}\ Styles;\ \ \textcolor{comment}{//\ a\ sublist\ of\ the\ tree}}
+\DoxyCodeLine{00075\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TGSParam,\ true>}}\ Params;\ \ \textcolor{comment}{//\ a\ list\ of\ parameters}}
+\DoxyCodeLine{00076\ \ \ uint16\_t\ Level;}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{bool}\ Saveable;\ \textcolor{comment}{//\ if\ the\ style\ is\ saveable\ to\ dataitems}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{bool}\ Persistent;\ \textcolor{comment}{//\ specifies\ if\ RemovesStylesByTag\ can\ delete\ it}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{bool}\ New;\ \textcolor{comment}{//\ style\ is\ created\ with\ defaults}}
+\DoxyCodeLine{00080\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{//\ does\ not\ delete\ the\ styles}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{void}\ ReleaseStyles()\ \{\ Styles.Clear();\ \}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ AddStyle(TGraphicsStyle*\ style)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ Styles.Add(style-\/>GetName(),\ style);}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ \ \ TGraphicsStyle*\ FindLocalStyle(\textcolor{keyword}{const}\ olxstr\&\ name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{return}\ Styles.Find(name,\ 0);}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00090\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}*\ FindInheritedMaterial(\textcolor{keyword}{const}\ T\&\ PName,\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}*\ def\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00091\ \ \ \ \ TGraphicsStyle*\ gs\ =\ ParentStyle;}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{while}\ (gs\ !=\ 0)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ gs-\/>PStyles.Count();\ i++)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (gs-\/>PStyles[i]-\/>GetName()\ ==\ PName)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&gs-\/>PStyles[i]-\/>GetProperties();}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ gs\ =\ gs-\/>ParentStyle;}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{return}\ def;}
+\DoxyCodeLine{00101\ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00103\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}*\ FindLocalMaterial(\textcolor{keyword}{const}\ T\&\ PName,\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}*\ def\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ PrimitiveStyleCount();\ i++)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (PStyles[i]-\/>GetName()\ ==\ PName)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&PStyles[i]-\/>GetProperties();}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ def;}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ CreatePrimitiveMaterial(\textcolor{keyword}{const}\ olxstr\&\ pname,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ glm);}
+\DoxyCodeLine{00112\ \ \ \textcolor{comment}{//\ used\ in\ import\ of\ old\ styles\ v\ <\ 2}}
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordtype}{void}\ \_TrimFloats();}
+\DoxyCodeLine{00114\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00115\ \ \ TGraphicsStyle(TGraphicsStyles\&\ parent,\ TGraphicsStyle*\ parent\_style,}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ name)}
+\DoxyCodeLine{00117\ \ \ \ \ :\ Parent(parent),}
+\DoxyCodeLine{00118\ \ \ \ \ ParentStyle(parent\_style),}
+\DoxyCodeLine{00119\ \ \ \ \ Name(name),}
+\DoxyCodeLine{00120\ \ \ \ \ Level(parent\_style\ ==\ 0\ ?\ 0\ :\ parent\_style-\/>Level\ +\ 1),}
+\DoxyCodeLine{00121\ \ \ \ \ Saveable(\textcolor{keyword}{true}),}
+\DoxyCodeLine{00122\ \ \ \ \ Persistent(\textcolor{keyword}{false}),}
+\DoxyCodeLine{00123\ \ \ \ \ New(\textcolor{keyword}{true})}
+\DoxyCodeLine{00124\ \ \ \{\}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \string~TGraphicsStyle()\ \{\ Clear();\ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Name;\ \}}
+\DoxyCodeLine{00131\ \ \ \textcolor{comment}{/*\ searches\ this\ and\ parent\ styles\ for\ specified\ primitive\ material,\ if\ the\ material}}
+\DoxyCodeLine{00132\ \textcolor{comment}{\ \ is\ not\ found\ a\ new\ entry\ is\ created\ and\ assigned\ the\ def\ */}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00134\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ GetMaterial(\textcolor{keyword}{const}\ T\&\ PName,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ def)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}*\ glm\ =\ FindLocalMaterial(PName);}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{if}\ (glm\ !=\ 0)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *glm;}
+\DoxyCodeLine{00138\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ glm\ =\ FindInheritedMaterial(PName);}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{return}\ CreatePrimitiveMaterial(PName,\ glm\ ==\ 0\ ?\ def\ :\ *glm);}
+\DoxyCodeLine{00141\ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{//\ finds\ primitive\ material\ index\ (in\ local\ primitive\ styles)}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keywordtype}{size\_t}\ IndexOfMaterial(\textcolor{keyword}{const}\ T\&\ PName)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ PStyles.Count();\ i++)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (PStyles[i]-\/>GetName()\ ==\ PName)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00152\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ SetMaterial(\textcolor{keyword}{const}\ T\&\ PName,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ mat)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ PStyles.Count();\ i++)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (PStyles[i]-\/>GetName()\ ==\ PName)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&)PStyles[i]-\/>SetProperties(mat);}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{return}\ CreatePrimitiveMaterial(PName,\ mat);}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{/*\ tries\ to\ find\ primitive\ material\ in\ this\ or\ parent\ styles\ */}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00164\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}*\ FindMaterial(\textcolor{keyword}{const}\ T\&\ PName,\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}*\ def\ =\ 0)\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}*\ glm\ =\ FindLocalMaterial(PName);}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordflow}{return}\ glm\ !=\ 0\ ?\ glm\ :\ FindInheritedMaterial(PName,\ def);}
+\DoxyCodeLine{00167\ \ \ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ PrimitiveStyleCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ PStyles.Count();\ \}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classTPrimitiveStyle}{TPrimitiveStyle}}\&\ GetPrimitiveStyle(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{return}\ *PStyles[i];}
+\DoxyCodeLine{00172\ \ \ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ StyleCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Styles.Count();\ \}}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{inline}\ TGraphicsStyle\&\ GetStyle(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{return}\ *Styles.GetValue(i);}
+\DoxyCodeLine{00177\ \ \ \}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{/*\ sets\ a\ parameter,\ if\ the\ parameters\ is\ creates,\ saveable\ is\ used,}}
+\DoxyCodeLine{00180\ \textcolor{comment}{\ \ otherwise\ it\ stays\ as\ defined\ when\ the\ parameter\ was\ firstly\ created}}
+\DoxyCodeLine{00181\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ VT>}
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{void}\ SetParam(\textcolor{keyword}{const}\ T\&\ name,\ \textcolor{keyword}{const}\ VT\&\ val,\ \textcolor{keywordtype}{bool}\ saveable\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ Params.IndexOf(name);}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ Params.GetValue(ind).val\ =\ val;}
+\DoxyCodeLine{00187\ \ \ \ \ \}}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ Params.Add(name,\ \mbox{\hyperlink{structTGSParam}{TGSParam}}(val,\ saveable));}
+\DoxyCodeLine{00190\ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \textcolor{comment}{/*\ returns\ value\ of\ specified\ parameter,\ if\ the\ parameter\ does\ not\ exist,\ a}}
+\DoxyCodeLine{00193\ \textcolor{comment}{\ \ new\ one\ is\ created\ using\ the\ default\ value\ and\ the\ saveable\ flag.}}
+\DoxyCodeLine{00194\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ T1>}
+\DoxyCodeLine{00196\ \ \ olxstr\&\ GetParam(\textcolor{keyword}{const}\ T\&\ name,\ \textcolor{keyword}{const}\ T1\&\ defval,\ \textcolor{keywordtype}{bool}\ saveable\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index\ =\ Params.IndexOf(name);}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ olxstr\ dv(defval);}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ TGraphicsStyle*\ gs\ =\ ParentStyle;}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (gs\ !=\ 0)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ index\ =\ gs-\/>Params.IndexOf(name);}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ dv\ =\ gs-\/>Params.GetValue(index).val;}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ gs\ =\ gs-\/>ParentStyle;}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Params.Add(name,\ \mbox{\hyperlink{structTGSParam}{TGSParam}}(defval,\ saveable)).val;}
+\DoxyCodeLine{00210\ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ Params.GetValue(index).saveable\ =\ saveable;}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{return}\ Params.GetValue(index).val;}
+\DoxyCodeLine{00213\ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \textcolor{comment}{/*\ convenience\ method,\ defval\ defines\ the\ type\ for\ the\ conversion,}}
+\DoxyCodeLine{00215\ \textcolor{comment}{\ \ be\ careful\ with\ floats\ 0.0\ to\ int\ will\ throw\ an\ exception\ */}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ T1>}
+\DoxyCodeLine{00217\ \ \ T1\ GetNumParam(\textcolor{keyword}{const}\ T\&\ name,\ \textcolor{keyword}{const}\ T1\&\ defval,\ \textcolor{keywordtype}{bool}\ saveable\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_str\_to\_num<T1>()(GetParam(name,\ defval,\ saveable));}
+\DoxyCodeLine{00220\ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordflow}{catch}\ (...)\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ defval;}
+\DoxyCodeLine{00223\ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \textcolor{comment}{/*\ returns\ value\ of\ specified\ parameter\ or\ default\ value.}}
+\DoxyCodeLine{00227\ \textcolor{comment}{\ \ Does\ not\ store\ the\ value\ in\ the\ style}}
+\DoxyCodeLine{00228\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ T1>}
+\DoxyCodeLine{00230\ \ \ olxstr\ FindParam(\textcolor{keyword}{const}\ T\&\ name,\ \textcolor{keyword}{const}\ T1\&\ defval)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index\ =\ Params.IndexOf(name);}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ defval;}
+\DoxyCodeLine{00234\ \ \ \ \ \}}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordflow}{return}\ Params.GetValue(index).val;}
+\DoxyCodeLine{00236\ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{/*\ convenience\ method\ */}}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ T1>}
+\DoxyCodeLine{00239\ \ \ T1\ FindNumParam(\textcolor{keyword}{const}\ T\&\ name,\ \textcolor{keyword}{const}\ T1\&\ defval)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_str\_to\_num<T1>()(FindParam(name,\ defval));}
+\DoxyCodeLine{00242\ \ \ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordflow}{catch}\ (...)\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ defval;}
+\DoxyCodeLine{00245\ \ \ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \}}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TGraphicsStyle\&\ GS)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \ \ TGraphicsStyle*\ FindStyle(\textcolor{keyword}{const}\ olxstr\&\ CollectionName);}
+\DoxyCodeLine{00251\ \ \ \textcolor{comment}{//\ searches\ based\ on\ the\ comparison\ of\ the\ styles,\ not\ the\ pointers}}
+\DoxyCodeLine{00252\ \ \ TGraphicsStyle*\ FindStyle(TGraphicsStyle*\ Style);}
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ deletes\ by\ the\ pointer}}
+\DoxyCodeLine{00254\ \ \ \textcolor{keywordtype}{void}\ DeleteStyle(TGraphicsStyle\&\ Style)\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ index\ =\ Styles.IndexOfValue(\&Style);}
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Styles.GetValue(index);}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ Styles.Delete(index);}
+\DoxyCodeLine{00259\ \ \ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \}}
+\DoxyCodeLine{00261\ \ \ \textcolor{comment}{//removes\ a\ style\ by\ name}}
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keywordtype}{bool}\ RemoveStyle(\textcolor{keyword}{const}\ T\&\ name)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ index\ =\ Styles.IndexOf(name);}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Styles.GetValue(index);}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ Styles.Delete(index);}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00268\ \ \ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00270\ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keywordtype}{bool}\ RemoveMaterial(\textcolor{keyword}{const}\ T\&\ name)\ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ index\ =\ IndexOfMaterial(name);}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ PStyles.Delete(index);\ \textcolor{comment}{//\ managed\ by\ Parent}}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00276\ \ \ \ \ \}}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00278\ \ \ \}}
+\DoxyCodeLine{00279\ \ \ \textcolor{comment}{//\ if\ force\ =\ true,\ then\ whole\ path\ "{}a.b.c"{}\ will\ be\ created}}
+\DoxyCodeLine{00280\ \ \ TGraphicsStyle\&\ NewStyle(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keywordtype}{bool}\ Force\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00281\ \ \ \textcolor{keyword}{inline}\ uint16\_t\ GetLevel()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Level;\ \}}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \ \ \textcolor{keyword}{inline}\ TGraphicsStyle*\ GetParentStyle()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ParentStyle;\ \}}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \ \ DefPropBIsSet(Saveable);}
+\DoxyCodeLine{00286\ \ \ DefPropBIsSet(Persistent);}
+\DoxyCodeLine{00287\ \ \ DefPropBIsSet(New);}
+\DoxyCodeLine{00288\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordflow}{return}\ Params.IsEmpty()\ \&\&\ Styles.IsEmpty()\ \&\&\ PStyles.IsEmpty();}
+\DoxyCodeLine{00290\ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item,\ \textcolor{keywordtype}{bool}\ saveAll\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00292\ \ \ \textcolor{keywordtype}{bool}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item);}
+\DoxyCodeLine{00293\ \ \ \textcolor{comment}{//\ sets\ ICollectionItem::Tag\ of\ styles\ to\ Tag}}
+\DoxyCodeLine{00294\ \ \ \textcolor{keywordtype}{void}\ SetStylesTag(index\_t\ Tag);}
+\DoxyCodeLine{00295\ \ \ \textcolor{comment}{//\ removes\ Styles\ with\ Style::Tag\ ==\ Tag}}
+\DoxyCodeLine{00296\ \ \ \textcolor{keywordtype}{void}\ RemoveStylesByTag(index\_t\ Tag);}
+\DoxyCodeLine{00297\ \ \ \textcolor{comment}{//\ removes\ non-\/persistens\ styles}}
+\DoxyCodeLine{00298\ \ \ \textcolor{keywordtype}{void}\ RemoveNonPersistent();}
+\DoxyCodeLine{00299\ \ \ \textcolor{comment}{//\ removes\ non-\/saveable\ styles}}
+\DoxyCodeLine{00300\ \ \ \textcolor{keywordtype}{void}\ RemoveNonSaveable();}
+\DoxyCodeLine{00301\ \ \ \textcolor{comment}{//removes\ styles\ by\ name}}
+\DoxyCodeLine{00302\ \ \ \textcolor{keywordtype}{void}\ RemoveNamedStyles(\textcolor{keyword}{const}\ TStrList\&\ toks);}
+\DoxyCodeLine{00303\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TGraphicsStyles;}
+\DoxyCodeLine{00304\ \};}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \textcolor{keyword}{class\ }TGraphicsStyles\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00307\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00308\ \ \ olxstr\ LinkFile;}
+\DoxyCodeLine{00309\ \ \ \textcolor{keywordtype}{short}\ Version;}
+\DoxyCodeLine{00310\ \ \ \mbox{\hyperlink{classObjectGroup}{ObjectGroup<TGlMaterial,\ TPrimitiveStyle>}}\ PStyles;}
+\DoxyCodeLine{00311\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TDataItem>}}\ DataItems;}
+\DoxyCodeLine{00312\ \ \ \mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}*\ Root;}
+\DoxyCodeLine{00313\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00314\ \ \ TGraphicsStyles();}
+\DoxyCodeLine{00315\ \ \ \textcolor{keyword}{virtual}\ \string~TGraphicsStyles();}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00318\ \ \ \textcolor{keywordtype}{bool}\ LoadFromFile(\textcolor{keyword}{const}\ olxstr\&\ FN,\ \textcolor{keywordtype}{bool}\ merge);}
+\DoxyCodeLine{00319\ \ \ \textcolor{keywordtype}{void}\ SaveToFile(\textcolor{keyword}{const}\ olxstr\&\ FN);}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \ \ \textcolor{keywordtype}{void}\ Update();}
+\DoxyCodeLine{00322\ \ \ \textcolor{keywordtype}{void}\ Apply();}
+\DoxyCodeLine{00323\ \ \ \textcolor{comment}{//\ for\ external\ use}}
+\DoxyCodeLine{00324\ \ \ \mbox{\hyperlink{classTPrimitiveStyle}{TPrimitiveStyle}}*\ NewPrimitiveStyle(\textcolor{keyword}{const}\ olxstr\&\ PName);}
+\DoxyCodeLine{00325\ \ \ \textcolor{comment}{//\ creates\ but\ does\ not\ store\ in\ this\ object\ -\/\ can\ be\ safely\ deleted}}
+\DoxyCodeLine{00326\ \ \ \mbox{\hyperlink{classTPrimitiveStyle}{TPrimitiveStyle}}*\ NewPrimitiveStyle\_(\textcolor{keyword}{const}\ olxstr\&\ PName);}
+\DoxyCodeLine{00327\ \ \ \mbox{\hyperlink{classTPrimitiveStyle}{TPrimitiveStyle}}*\ AddPrimitiveStyle(\mbox{\hyperlink{classTPrimitiveStyle}{TPrimitiveStyle}}*);}
+\DoxyCodeLine{00328\ \ \ \mbox{\hyperlink{classTDataItem}{TDataItem}}*\ GetDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPrimitiveStyle}{TPrimitiveStyle}}*\ Style)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00329\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}*\ GetMaterial(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ I)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00330\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00331\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}*\ FindStyle(\textcolor{keyword}{const}\ olxstr\&\ collName)\ \{}
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keywordflow}{return}\ Root-\/>FindStyle(collName);}
+\DoxyCodeLine{00333\ \ \ \}}
+\DoxyCodeLine{00334\ \ \ \mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}*\ FindStyle(\mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}*\ Style)\ \{\ \textcolor{keywordflow}{return}\ Root-\/>FindStyle(Style);\ \}}
+\DoxyCodeLine{00335\ \ \ \mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}\&\ NewStyle(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keywordtype}{bool}\ Force\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{keywordflow}{return}\ Root-\/>NewStyle(Name,\ Force);}
+\DoxyCodeLine{00337\ \ \ \}}
+\DoxyCodeLine{00338\ \ \ \textcolor{keywordtype}{void}\ SetDefaultMaterial(\textcolor{keyword}{const}\ olxstr\&\ object\_name,\ \textcolor{keyword}{const}\ olxstr\&\ p\_name,}
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ m);}
+\DoxyCodeLine{00340\ \ \ \textcolor{keywordtype}{void}\ DeleteStyle(\mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}*\ Style);}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00342\ \ \ \textcolor{keywordtype}{void}\ CopyStyle(\textcolor{keyword}{const}\ olxstr\&\ COllectionFrom,\ \textcolor{keyword}{const}\ olxstr\&\ COllectionTo);}
+\DoxyCodeLine{00343\ \ \ DefPropC(olxstr,\ Name);}
+\DoxyCodeLine{00344\ \ \ DefPropC(olxstr,\ LinkFile);}
+\DoxyCodeLine{00345\ }
+\DoxyCodeLine{00346\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00347\ \ \ \textcolor{keywordtype}{bool}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item,\ \textcolor{keywordtype}{bool}\ merge);}
+\DoxyCodeLine{00348\ \ \ \textcolor{comment}{//\ saves\ only\ provided\ styles}}
+\DoxyCodeLine{00349\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TGraphicsStyle>}}\&\ styles);}
+\DoxyCodeLine{00350\ }
+\DoxyCodeLine{00351\ \ \ \textcolor{comment}{//\ sets\ ICollectionItem::Tag\ of\ styles\ to\ Tag}}
+\DoxyCodeLine{00352\ \ \ \textcolor{keywordtype}{void}\ SetStylesTag(index\_t\ Tag)\ \{\ Root-\/>SetStylesTag(Tag);\ \}}
+\DoxyCodeLine{00353\ \ \ \textcolor{comment}{//\ removes\ Styles\ with\ Style::Tag\ ==\ Tag}}
+\DoxyCodeLine{00354\ \ \ \textcolor{keywordtype}{void}\ RemoveStylesByTag(index\_t\ Tag)\ \{}
+\DoxyCodeLine{00355\ \ \ \ \ OnClear.Enter(\textcolor{keyword}{this});}
+\DoxyCodeLine{00356\ \ \ \ \ Root-\/>RemoveStylesByTag(Tag);}
+\DoxyCodeLine{00357\ \ \ \ \ OnClear.Exit(\textcolor{keyword}{this});}
+\DoxyCodeLine{00358\ \ \ \}}
+\DoxyCodeLine{00359\ \ \ \textcolor{comment}{//\ removes\ non-\/persisten\ styles}}
+\DoxyCodeLine{00360\ \ \ \textcolor{keywordtype}{void}\ RemoveNonPersistent()\ \{\ Root-\/>RemoveNonPersistent();\ \}}
+\DoxyCodeLine{00361\ \ \ \textcolor{comment}{//\ removes\ non-\/saveable\ styles}}
+\DoxyCodeLine{00362\ \ \ \textcolor{keywordtype}{void}\ RemoveNonSaveable()\ \{\ Root-\/>RemoveNonSaveable();\ \}}
+\DoxyCodeLine{00363\ \ \ \textcolor{comment}{//\ removes\ named\ styles,\ case\ sensitive}}
+\DoxyCodeLine{00364\ \ \ \textcolor{keywordtype}{void}\ RemoveNamedStyles(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{\ Root-\/>RemoveNamedStyles(TStrList(name,\ \textcolor{charliteral}{'.'}));\ \}}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \ \ \textcolor{keywordtype}{short}\ GetVersion()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Version;\ \}}
+\DoxyCodeLine{00367\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnClear;}
+\DoxyCodeLine{00368\ \ \ \textcolor{comment}{//\ reads\ the\ style\ version\ (0\ -\/\ no\ version)\ from\ a\ dataitem}}
+\DoxyCodeLine{00369\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ ReadStyleVersion(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item)\ \{}
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keywordflow}{return}\ Item.FindField(\textcolor{stringliteral}{"{}Version"{}},\ \textcolor{stringliteral}{"{}0"{}}).ToInt();}
+\DoxyCodeLine{00371\ \ \ \}}
+\DoxyCodeLine{00372\ \ \ \textcolor{comment}{//\ this\ is\ the\ current\ version\ of\ the\ styles}}
+\DoxyCodeLine{00373\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ CurrentVersion()\ \{\ \textcolor{keywordflow}{return}\ 2;\ \}}
+\DoxyCodeLine{00374\ \};}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ EndGlNamespace()}
+\DoxyCodeLine{00377\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

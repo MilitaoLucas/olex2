@@ -1,0 +1,70 @@
+\doxysection{file\+\_\+filter.\+h}
+\hypertarget{file__filter_8h_source}{}\label{file__filter_8h_source}\index{sdl/file\_filter.h@{sdl/file\_filter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_file\_filter\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_file\_filter\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}estlist.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }FileFilter\ \{}
+\DoxyCodeLine{00015\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<olxstr>}}\ extensions;}
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ FileFilter()\ \{\}}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{void}\ Add(\textcolor{keyword}{const}\ olxstr\ \&ext,\ \textcolor{keyword}{const}\ olxstr\ \&desc=EmptyString())\ \ \{}
+\DoxyCodeLine{00019\ \ \ \ \ extensions.Add(ext,\ desc);}
+\DoxyCodeLine{00020\ \ \ \}}
+\DoxyCodeLine{00021\ \ \ \textcolor{comment}{//\ use\ ';'\ separated\ list,\ like\ "{}res;ins"{}}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{void}\ AddAll(\textcolor{keyword}{const}\ olxstr\ \&exts)\ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ TStrList\ toks(exts,\ \textcolor{charliteral}{';'});}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ toks.Count();\ i++\ )}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ Add(olxstr(\textcolor{stringliteral}{"{}*."{}})\ <<\ toks[i]);}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{static}\ olxstr\ ProcessExt(\textcolor{keyword}{const}\ olxstr\ \&ext)\ \ \{}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#if\ defined(\_\_WIN32\_\_)\ ||\ defined(\_\_MAC\_\_)}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{return}\ ext;}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ di\ =\ ext.LastIndexOf(\textcolor{charliteral}{'.'});}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{if}(\ di\ ==\ InvalidIndex\ )\ \ \textcolor{keywordflow}{return}\ ext;}
+\DoxyCodeLine{00033\ \ \ \ \ olxstr\ rv(EmptyString(),\ ext.Length()*2+3);}
+\DoxyCodeLine{00034\ \ \ \ \ rv\ <<\ ext.SubStringTo(di);\ \ \textcolor{comment}{//skip\ the\ dot}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=di+1;\ i\ <\ ext.Length();\ i++\ )}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ rv\ <<\ \textcolor{charliteral}{'['}\ <<\ olxstr::o\_tolower(ext.CharAt(i))\ <<}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ olxstr::o\_toupper(ext.CharAt(i))\ <<\ \textcolor{charliteral}{']'};}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ olxstr\ GetString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00042\ \ \ \ \ olxstr\_buf\ out;}
+\DoxyCodeLine{00043\ \ \ \ \ olxstr\ esep\ =\ \textcolor{charliteral}{';'},\ isep\ =\ \textcolor{charliteral}{'|'};}
+\DoxyCodeLine{00044\ \ \ \ \ out\ <<\ \textcolor{stringliteral}{"{}All\ supported\ files|"{}};}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ extensions.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ out\ <<\ ProcessExt(extensions.GetKey(i));}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i+1\ <\ extensions.Count()\ )}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ out\ <<\ esep;}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ extensions.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ out\ <<\ isep;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (extensions.GetValue(i).IsEmpty())\ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ extensions.GetKey(i).StartsFrom(\textcolor{stringliteral}{"{}*."{}})\ )}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ out\ <<\ extensions.GetKey(i).SubStringFrom(2).ToUpperCase();}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ out\ <<\ extensions.GetValue(i);}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ out\ <<\ \textcolor{stringliteral}{"{}\ files\ ("{}}\ <<\ extensions.GetKey(i)\ <<\ \textcolor{charliteral}{')'}\ <<\ isep\ <<}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ ProcessExt(extensions.GetKey(i));}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ \};}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

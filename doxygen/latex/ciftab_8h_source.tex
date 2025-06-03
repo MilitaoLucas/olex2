@@ -1,0 +1,94 @@
+\doxysection{ciftab.\+h}
+\hypertarget{ciftab_8h_source}{}\label{ciftab_8h_source}\index{xlib/ciftab.h@{xlib/ciftab.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_ciftab\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_ciftab\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}etable.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}catom.h"{}}}
+\DoxyCodeLine{00015\ BeginXlibNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ linked\ loop\ sort\ type}}
+\DoxyCodeLine{00018\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00019\ \ \ cCifTabSortLength\ =\ 0x0001,\ \ \textcolor{comment}{//\ sorts\ by\ bond\ length}}
+\DoxyCodeLine{00020\ \ \ cCifTabSortName\ \ \ =\ 0x0002,\ \ \textcolor{comment}{//\ sorts\ by\ atom\ name}}
+\DoxyCodeLine{00021\ \ \ cCifTabSortMw\ \ \ \ \ =\ 0x0004;\ \ \textcolor{comment}{//\ sorts\ by\ atomic\ weight}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ struct\ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}};}
+\DoxyCodeLine{00024\ struct\ \mbox{\hyperlink{structCifTabBond}{CifTabBond}};}
+\DoxyCodeLine{00025\ struct\ \mbox{\hyperlink{structCifTabAngle}{CifTabAngle}};}
+\DoxyCodeLine{00026\ class\ \ TLinkedLoop;}
+\DoxyCodeLine{00027\ class\ TCif;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ struct\ CifTabAtom\ \ \{}
+\DoxyCodeLine{00030\ \ \ olxstr\ Label;}
+\DoxyCodeLine{00031\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<CifTabBond>}}\ Bonds;}
+\DoxyCodeLine{00032\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<CifTabAngle>}}\ Angles;}
+\DoxyCodeLine{00033\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&CA;}
+\DoxyCodeLine{00034\ \ \ CifTabAtom(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca)\ :\ CA(ca)\ \ \{\}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ CifTabAtom\&\ a)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this}\ ==\ \&a;\ \ \}}
+\DoxyCodeLine{00036\ \};}
+\DoxyCodeLine{00037\ \textcolor{keyword}{struct\ }CifTabBond\ \ \{}
+\DoxyCodeLine{00038\ \ \ olxstr\ Value,\ S2;}
+\DoxyCodeLine{00039\ \ \ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\ \&A1,\ \&A2;}
+\DoxyCodeLine{00040\ \ \ CifTabBond(\mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\&\ a1,\ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\&\ a2)\ :\ A1(a1),\ A2(a2)\ \ \{\}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\&\ Another(\mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\&\ A)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ CifTabBond\ \&B)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ \};}
+\DoxyCodeLine{00044\ \textcolor{keyword}{struct\ }CifTabAngle\ \ \{}
+\DoxyCodeLine{00045\ \ \ olxstr\ Value,\ S1,\ S3;}
+\DoxyCodeLine{00046\ \ \ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\ \&A1,\ \&A2,\ \&A3;}
+\DoxyCodeLine{00047\ \ \ CifTabAngle(\mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\&\ a1,\ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\&\ a2,\ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\&\ a3)}
+\DoxyCodeLine{00048\ \ \ \ \ :\ A1(a1),\ A2(a2),\ A3(a3)\ \{\}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{bool}\ Contains(\textcolor{keyword}{const}\ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\&\ A)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{bool}\ FormedBy(\textcolor{keyword}{const}\ \mbox{\hyperlink{structCifTabBond}{CifTabBond}}\&\ B,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCifTabBond}{CifTabBond}}\&\ B1)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00053\ \textcolor{keyword}{class\ }TLLTBondSort\ \ \{}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{int}\ Compare\_(\textcolor{keyword}{const}\ \mbox{\hyperlink{structCifTabBond}{CifTabBond}}\ \&I,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCifTabBond}{CifTabBond}}\ \&I1)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00055\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ \ \ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\ \&Atom;\ \textcolor{comment}{//\ must\ be\ initilaised\ before\ the\ call}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{const}\ TStrList\ \&Symmetry;}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{short}\ SortType;}
+\DoxyCodeLine{00059\ \ \ TLLTBondSort(\mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\&\ atom,\ \textcolor{keyword}{const}\ TStrList\&\ symm,\ \textcolor{keywordtype}{short}\ sort\_type)}
+\DoxyCodeLine{00060\ \ \ \ \ :\ Atom(atom),\ Symmetry(symm),\ SortType(sort\_type)\ \ \{\}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_a\_t,\ \textcolor{keyword}{class}\ item\_b\_t>}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&I,\ \textcolor{keyword}{const}\ item\_b\_t\ \&I1)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ Compare\_(olx\_ref::get(I),\ olx\_ref::get(I1));}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \};}
+\DoxyCodeLine{00066\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00067\ \textcolor{keyword}{class\ }TLinkedLoopTable:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<CifTabAtom>}}\ FAtoms;}
+\DoxyCodeLine{00069\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<CifTabBond>}}\ FBonds;}
+\DoxyCodeLine{00070\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<CifTabAngle>}}\ FAngles;}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{const}\ TCif\&\ FCif;}
+\DoxyCodeLine{00072\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00073\ \ \ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\&\ AtomByName(\textcolor{keyword}{const}\ olxstr\&\ Name);}
+\DoxyCodeLine{00074\ \ \ TTTable<TStrList>\ Table;}
+\DoxyCodeLine{00075\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00076\ \ \ TLinkedLoopTable(\textcolor{keyword}{const}\ TCif\&\ C);}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{virtual}\ \string~TLinkedLoopTable();}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{size\_t}\ AtomCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FAtoms.Count();\ \}}
+\DoxyCodeLine{00080\ \ \ \mbox{\hyperlink{structCifTabAtom}{CifTabAtom}}\ *Atom(\textcolor{keywordtype}{size\_t}\ index)\ \{\ \ \textcolor{keywordflow}{return}\ FAtoms[index];\ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{/*\ Returns\ a\ table\ constructed\ for\ Atom.\ The\ Atom\ should\ represent\ a\ valid}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ atom\ label\ in\ Cif-\/>AsymmUnit.}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00084\ \ \ TTTable<TStrList>*\ MakeTable(\textcolor{keyword}{const}\ olxstr\&\ Atom);}
+\DoxyCodeLine{00085\ \};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ EndXlibNamespace()}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,399 @@
+\doxysection{symmlib.\+h}
+\hypertarget{symmlib_8h_source}{}\label{symmlib_8h_source}\index{xlib/symmlib.h@{xlib/symmlib.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_symmlib\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_symmlib\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}log.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}asymmunit.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}hall.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#undef\ GetObject}}
+\DoxyCodeLine{00017\ BeginXlibNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00020\ \ \ mattTranslation\ =\ 0x0001,}
+\DoxyCodeLine{00021\ \ \ mattCentering\ \ \ =\ 0x0002,}
+\DoxyCodeLine{00022\ \ \ mattInversion\ \ \ =\ 0x0004,}
+\DoxyCodeLine{00023\ \ \ mattIdentity\ \ \ \ =\ 0x0008,}
+\DoxyCodeLine{00024\ \ \ mattAll\ =\ \ 0x0001|0x0002|0x0004|0x0008;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ class\ \mbox{\hyperlink{classTBravaisLattice}{TBravaisLattice}};}
+\DoxyCodeLine{00027\ class\ \mbox{\hyperlink{classTSymmElement}{TSymmElement}};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ class\ TCLattice\ \ \{}
+\DoxyCodeLine{00030\ \ \ vec3d\_list\ Vectors;}
+\DoxyCodeLine{00031\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TBravaisLattice>}}\ BravaisLattices;}
+\DoxyCodeLine{00032\ \ \ olxstr\ Name,\ Symbol;}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{short}\ Latt;}
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ TCLattice(\textcolor{keywordtype}{int}\ Latt);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{virtual}\ \string~TCLattice()\ \ \{\ \ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{const}\ vec3d\_list\ \&GetVectors()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Vectors;\ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classTCLattice_a245b2617a3f791680c3f8f90c665e782}{GetLattMultiplier}}(\textcolor{keywordtype}{short}\ latt)\ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ count\ =\ 0;}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{switch}(\ olx\_abs(latt)\ )\ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 1:\ count\ =\ 1;\ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//\ P}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 2:\ \ \textcolor{comment}{//\ Body\ Centered\ (I)}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 5:\ \ \textcolor{comment}{//\ A\ Centered\ (A)}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 6:\ \ \textcolor{comment}{//\ B\ Centered\ (B)}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 7:\ count\ =\ 2;\ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//\ C\ Centered\ (C);}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 8:\ \ \textcolor{comment}{//\ S\ Centered}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 9:\ \ \textcolor{comment}{//\ T\ Centered}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 10:\ \ \textcolor{comment}{//\ D\ Centered}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 11:\ \ \textcolor{comment}{//\ H\ Centered}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 3:\ count\ =\ 3;\ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//\ R\ Centered}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 4:\ count\ =\ 4;\ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//\ Face\ Centered\ (F)}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTCLattice_1_1TIncorrectLattExc}{TIncorrectLattExc}}(\_\_OlxSourceInfo,\ latt);}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{if}(\ latt\ >\ 0\ )\ \ count\ *=\ 2;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ count;}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{comment}{/*\ returns\ numerical\ representation\ of\ lattice\ symbol\ */}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{short}\ LattForSymbol(olxch\ latt)\ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{switch}(\ olxstr::o\_toupper(latt)\ )\ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'P'}:\ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'I'}:\ \textcolor{keywordflow}{return}\ 2;}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'A'}:\ \textcolor{keywordflow}{return}\ 5;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'B'}:\ \textcolor{keywordflow}{return}\ 6;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'C'}:\ \textcolor{keywordflow}{return}\ 7;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'S'}:\ \textcolor{keywordflow}{return}\ 8;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'T'}:\ \textcolor{keywordflow}{return}\ 9;}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'D'}:\ \textcolor{keywordflow}{return}\ 10;}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'H'}:\ \textcolor{keywordflow}{return}\ 11;}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'R'}:\ \textcolor{keywordflow}{return}\ 3;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'F'}:\ \textcolor{keywordflow}{return}\ 4;}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TIncorrectLattExc(\_\_OlxSourceInfo,\ latt);}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{/*\ returns\ symbolic\ representation\ of\ lattice\ centering\ */}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{char}\ SymbolForLatt(\textcolor{keywordtype}{short}\ latt)\ \ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ rv[12]\ =\ \textcolor{stringliteral}{"{}PIRFABCSTDH"{}};\ \textcolor{comment}{//\ +\(\backslash\)0}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{if}\ (latt\ >\ 0\ \&\&\ latt\ <\ 12)}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv[latt-\/1];}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{throw}\ TIncorrectLattExc(\_\_OlxSourceInfo,\ latt);}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Name;\ \}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetSymbol()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Symbol;\ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{short}\ GetLatt()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Latt;\ \ \}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \mbox{\hyperlink{classTCLattice}{TCLattice}}\&\ AddBravaiseLattice(\mbox{\hyperlink{classTBravaisLattice}{TBravaisLattice}}*\ bl)\ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ BravaisLattices.Add(bl);}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{size\_t}\ BravaisLatticeCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ BravaisLattices.Count();\ \ \}}
+\DoxyCodeLine{00097\ \ \ \mbox{\hyperlink{classTBravaisLattice}{TBravaisLattice}}\&\ GetBravaisLattice(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ *BravaisLattices[i];}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//\ returns\ a\ transformation\ to\ this\ lattice\ from\ primitive\ lattice}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ mat3d\ FromPrimitive(\textcolor{keywordtype}{int}\ latt);}
+\DoxyCodeLine{00102\ \ \ mat3d\ FromPrimitive()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FromPrimitive(Latt);\ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{class\ }TIncorrectLattExc:\ \textcolor{keyword}{public}\ TBasicException\ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordtype}{short}\ Latt;}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ TIncorrectLattExc(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keywordtype}{int}\ latt)\ :}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ TBasicException(location,}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Incorrect\ Latt\ instruction:\ "{}})\ <<\ latt)}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ Latt\ =\ latt;}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keywordtype}{short}\ GetLatt()\textcolor{keyword}{\ const\ \ }\{\ \ \textcolor{keywordflow}{return}\ Latt;\ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TIncorrectLattExc(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \};}
+\DoxyCodeLine{00117\ \};}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{keyword}{class\ }TSpaceGroup\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00120\ \ \ smatd\_list\ Matrices;}
+\DoxyCodeLine{00121\ \ \ olxstr\ Name,\ FullName,\ Axis,\ HallSymbol;}
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordtype}{int}\ Number;}
+\DoxyCodeLine{00123\ \ \ \mbox{\hyperlink{classTCLattice}{TCLattice}}\&\ Latt;}
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordtype}{bool}\ CentroSymmetric,\ Translations;}
+\DoxyCodeLine{00125\ \ \ \mbox{\hyperlink{classTBravaisLattice}{TBravaisLattice}}*\ BravaisLattice;}
+\DoxyCodeLine{00126\ \ \ TSpaceGroup*\ LaueClass,\ *PointGroup;}
+\DoxyCodeLine{00127\ \ \ \textcolor{comment}{//\ initialised\ by\ the\ SymLib}}
+\DoxyCodeLine{00128\ \ \ vec3d\ InversionCenter;}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \_checkTDS(\textcolor{keyword}{const}\ vec3d\&\ t1,\ \textcolor{keyword}{const}\ vec3d\&\ t2);}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \_checkTD(\textcolor{keyword}{const}\ vec3d\&\ t1,\ \textcolor{keyword}{const}\ vec3d\&\ t2);}
+\DoxyCodeLine{00131\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00132\ \ \ TSpaceGroup(\textcolor{keyword}{const}\ smatd\_list\ \&matrices,}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keyword}{const}\ olxstr\&\ FullName,}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ Axis,\ \textcolor{keywordtype}{int}\ Number,\ \mbox{\hyperlink{classTCLattice}{TCLattice}}\&\ L,}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordtype}{bool}\ Centrosymmetric,\ \textcolor{keyword}{const}\ olxstr\ hall\_symbol=EmptyString());}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{virtual}\ \string~TSpaceGroup()\ \ \{\}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{void}\ SetBravaisLattice(\mbox{\hyperlink{classTBravaisLattice}{TBravaisLattice}}\&\ bl)\ \ \{\ \ BravaisLattice\ =\ \&bl;\ \ \}}
+\DoxyCodeLine{00139\ \ \ \mbox{\hyperlink{classTBravaisLattice}{TBravaisLattice}}\&\ GetBravaisLattice()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *BravaisLattice;\ \ \}}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordtype}{bool}\ HasBravaisLattice()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ BravaisLattice\ !=\ 0;\ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordtype}{void}\ SetLaueClass(TSpaceGroup\&\ lc)\ \ \{\ \ LaueClass\ =\ \&lc;\ \ \}}
+\DoxyCodeLine{00142\ \ \ TSpaceGroup\&\ GetLaueClass()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *LaueClass;\ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordtype}{bool}\ HasLaueClass()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ LaueClass\ !=\ 0;\ \}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordtype}{void}\ SetPointGroup(TSpaceGroup\&\ lc)\ \ \{\ \ PointGroup\ =\ \&lc;\ \ \}}
+\DoxyCodeLine{00145\ \ \ TSpaceGroup\&\ GetPointGroup()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *PointGroup;\ \ \}}
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{bool}\ HasPointGroup()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ PointGroup\ !=\ 0;\ \}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \mbox{\hyperlink{structSymmSpace_1_1Info}{SymmSpace::Info}}\ GetInfo()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00149\ \ \ \textcolor{comment}{/*\ compares\ m.R\ and\ translations\ for\ positive\ rotation\ matrix}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ \ elements.\ If\ the\ origin\ shift\ is\ identified\ -\/\ it\ is\ returned}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00152\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<vec3d>}}\ Compare(\textcolor{keyword}{const}\ smatd\_list\&\ matrices)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00153\ \ \ \textcolor{keywordtype}{bool}\ EqualsWithoutTranslation(\textcolor{keyword}{const}\ TSpaceGroup\&\ sg)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordtype}{bool}\ IsSubElement(TSpaceGroup*\ symme\ )\ \ \textcolor{keyword}{const};}
+\DoxyCodeLine{00155\ \ \ \textcolor{comment}{//\ decomoses\ space\ group\ into\ symmetry\ elements\ using\ reference\ as\ the\ basis}}
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordtype}{void}\ SplitIntoElements(\mbox{\hyperlink{classTPtrList}{TPtrList<TSymmElement>}}\&\ reference,}
+\DoxyCodeLine{00157\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TSymmElement>}}\&\ res);}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SplitIntoElements(smatd\_list\&\ matrices,}
+\DoxyCodeLine{00159\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TSymmElement>}}\&\ reference,\ \mbox{\hyperlink{classTPtrList}{TPtrList<TSymmElement>}}\&\ res);}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \textcolor{keywordtype}{size\_t}\ MatrixCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Matrices.Count();\ \ \};}
+\DoxyCodeLine{00162\ \ \ smatd\&\ GetMatrix(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Matrices[i];\ \ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keywordtype}{int}\ GetNumber()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Number;\ \ \}}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Name;\ \ \}}
+\DoxyCodeLine{00165\ \ \ olxstr\ GetBareName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Name.SubStringFrom(1);\ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetFullName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FullName;\ \ \}}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetAxis()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Axis;\ \ \}}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetHallSymbol()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ HallSymbol;\ \ \}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCLattice}{TCLattice}}\&\ GetLattice()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Latt;\ \ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keywordtype}{bool}\ IsCentrosymmetric()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ CentroSymmetric;\ \ \}}
+\DoxyCodeLine{00172\ \ \ \textcolor{comment}{//\ retruns\ true\ if\ any\ matrix\ of\ the\ SG\ has\ a\ nonzero\ translation}}
+\DoxyCodeLine{00173\ \ \ \textcolor{keywordtype}{bool}\ HasTranslations()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Translations;\ \ \}}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{/*\ it\ is\ NOT\ (0,0,0)\ for\ Fdd2,\ I41,\ I4122,\ I4132,\ I41md,\ I41cd,\ I-\/42d!}}
+\DoxyCodeLine{00175\ \textcolor{comment}{\ \ http://xrayweb.chem.ou.edu/notes/symmetry.html}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetInversionCenter()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ InversionCenter;\ \ \}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{const}\ smatd\_list\&\ GetMatrices()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{return}\ Matrices;}
+\DoxyCodeLine{00181\ \ \ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{void}\ GetMatrices(smatd\_list\&\ matrices,\ \textcolor{keywordtype}{short}\ Flags)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00184\ \ \ smatd\_list::const\_list\_type\ GetMatrices(\textcolor{keywordtype}{short}\ Flags)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00185\ \ \ \ \ smatd\_list\ matrices;}
+\DoxyCodeLine{00186\ \ \ \ \ GetMatrices(matrices,\ Flags);}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{return}\ matrices;}
+\DoxyCodeLine{00188\ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \textcolor{comment}{/*\ fills\ a\ list\ of\ uniq\ transformations\ (3,3)\ without\ translation\ and\ returns}}
+\DoxyCodeLine{00190\ \textcolor{comment}{\ \ \ the\ number\ of\ added\ matrices;\ the\ list\ is\ created\ from\ a\ call\ to}}
+\DoxyCodeLine{00191\ \textcolor{comment}{\ \ \ GetMatrices(list,\ flag)}}
+\DoxyCodeLine{00192\ \textcolor{comment}{\ \ \ */}}
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordtype}{size\_t}\ GetUniqMatrices(smatd\_list\&\ matrices,\ \textcolor{keywordtype}{short}\ Flags)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{//\ this\ function\ finds\ a\ symmetry\ element\ in\ a\ list\ of\ matrices}}
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ContainsElement(\textcolor{keyword}{const}\ smatd\_list\&\ matrices,\ \mbox{\hyperlink{classTSymmElement}{TSymmElement}}*\ symme);}
+\DoxyCodeLine{00197\ \ \ \textcolor{comment}{//\ this\ function\ is\ used\ to\ assign\ point\ groups\ to\ the\ space\ group}}
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{bool}\ ContainsElement(\mbox{\hyperlink{classTSymmElement}{TSymmElement}}*\ symme);}
+\DoxyCodeLine{00199\ \ \ \textcolor{keywordtype}{bool}\ ContainsGroup(TSpaceGroup*\ symme);}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{typedef}\ TSymmSpace<smatd\_list>\ SymmSpace\_;}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ SymmSpace\_\ GetSymSpace(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00204\ \ \ \ \ smatd\_list\ ml;}
+\DoxyCodeLine{00205\ \ \ \ \ GetMatrices(ml,\ mattAll);}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keywordflow}{return}\ SymmSpace\_(ml,}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ au.GetCartesianToCell(),\ au.GetCellToCartesian(),\ au.GetHklToCartesian(),}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ IsCentrosymmetric());}
+\DoxyCodeLine{00209\ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TSymmLib;}
+\DoxyCodeLine{00211\ \};}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \textcolor{keyword}{class\ }TSymmElement\ :\ \textcolor{keyword}{public}\ ACollectionItem\ \{}
+\DoxyCodeLine{00214\ \ \ smatd\_list\ Matrices;}
+\DoxyCodeLine{00215\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00216\ \ \ TSymmElement*\ SuperElement;}
+\DoxyCodeLine{00217\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00218\ \ \ TSymmElement(\textcolor{keyword}{const}\ olxstr\&\ name,\ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}*\ sg);}
+\DoxyCodeLine{00219\ \ \ TSymmElement(\textcolor{keyword}{const}\ olxstr\&\ name)\ :\ Name(name),\ SuperElement(NULL)\ \ \{\}}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{virtual}\ \string~TSymmElement()\ \ \{\}}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ TSymmElement\&\ AddMatrix(\textcolor{keyword}{const}\ smatd\&\ m)\ \ \{}
+\DoxyCodeLine{00223\ \ \ \ \ Matrices.AddCopy(m);}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00225\ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordtype}{size\_t}\ \ MatrixCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Matrices.Count();\ \ \}}
+\DoxyCodeLine{00227\ \ \ smatd\&\ \ GetMatrix(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Matrices[i];\ \ \}}
+\DoxyCodeLine{00228\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Name;\ \ \}}
+\DoxyCodeLine{00229\ \ \ TSymmElement*\ GetSuperElement()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ SuperElement;\ \ \}}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TSymmLib;}
+\DoxyCodeLine{00231\ \};}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \textcolor{keyword}{class\ }TBravaisLattice\ \ \{}
+\DoxyCodeLine{00234\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TSpaceGroup>}}\ Symmetries;}
+\DoxyCodeLine{00235\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TCLattice>}}\ Lattices;}
+\DoxyCodeLine{00236\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00237\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00238\ \ \ TBravaisLattice(\textcolor{keyword}{const}\ olxstr\&\ Name)\ \ \{\ \ this-\/>Name\ =\ Name;\ \ \}}
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{virtual}\ \string~TBravaisLattice()\ \ \{\}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Name;\ \ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ TBravaisLattice\&\ AddLattice(\mbox{\hyperlink{classTCLattice}{TCLattice}}*\ latt)\ \ \{}
+\DoxyCodeLine{00244\ \ \ \ \ Lattices.Add(latt);}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00246\ \ \ \}}
+\DoxyCodeLine{00247\ \ \ \mbox{\hyperlink{classTCLattice}{TCLattice}}\&\ GetLattice(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Lattices[i];\ \ \}}
+\DoxyCodeLine{00248\ \ \ \textcolor{keywordtype}{size\_t}\ LatticeCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Lattices.Count();\ \ \}}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \ \ TBravaisLattice\&\ AddSymmetry(\mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}*\ sg)\ \ \{}
+\DoxyCodeLine{00251\ \ \ \ \ Symmetries.Add(\ sg\ );}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00253\ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ GetSymmetry(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Symmetries[i];\ \ \}}
+\DoxyCodeLine{00255\ \ \ \textcolor{keywordtype}{size\_t}\ SymmetryCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Symmetries.Count();\ \ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \textcolor{comment}{/*\ finds\ all\ space\ groups\ with\ this\ bravais\ lattice\ and\ returns\ the\ number\ of}}
+\DoxyCodeLine{00258\ \textcolor{comment}{\ \ added\ to\ the\ list}}
+\DoxyCodeLine{00259\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00260\ \ \ \textcolor{keywordtype}{size\_t}\ FindSpaceGroups(\mbox{\hyperlink{classTPtrList}{TPtrList<TSpaceGroup>}}\&\ SpaceGroups)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \};}
+\DoxyCodeLine{00263\ \textcolor{comment}{/*\ these\ types\ are\ used\ to\ specify\ found\ bravais\ latteces:\ int\ <\ 0\ -\/\ symmetry}}
+\DoxyCodeLine{00264\ \textcolor{comment}{is\ lower\ and\ int\ >\ 0\ -\/\ symmetry\ is\ higher\ (normally\ never\ returned\ :))}}
+\DoxyCodeLine{00265\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00266\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TBravaisLattice*,int>}}\ TBravaisLatticeRef;}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \textcolor{keyword}{class\ }TSymmLib\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00269\ \ \ \mbox{\hyperlink{classsorted_1_1StringAssociation}{sorted::StringAssociation<TSpaceGroup*,\ true>}}\ SpaceGroups;}
+\DoxyCodeLine{00270\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ TCLattice*>}}\ Lattices;}
+\DoxyCodeLine{00271\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ TBravaisLattice*>}}\ BravaisLattices;}
+\DoxyCodeLine{00272\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TSpaceGroup>}}\ PointGroups;}
+\DoxyCodeLine{00273\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TPtrList<TSpaceGroup>}}\ >\ \_PointGroups;}
+\DoxyCodeLine{00274\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSymmElement>}}\ SymmetryElements;}
+\DoxyCodeLine{00275\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TSpaceGroup*,\ false>}}\ hall\_symbols;}
+\DoxyCodeLine{00276\ \ \ \textcolor{keywordtype}{void}\ InitRelations();}
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{static}\ TSymmLib*\ Instance;}
+\DoxyCodeLine{00278\ \ \ \textcolor{keywordtype}{int}\ extra\_added;}
+\DoxyCodeLine{00279\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ CreateNewFromCompact(\textcolor{keywordtype}{int}\ latt,}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keyword}{const}\ smatd\_list\&\ compact\_matrices,\ \textcolor{keyword}{const}\ olxstr\&\ hall\_sb\ =\ EmptyString());}
+\DoxyCodeLine{00281\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ InitSpaceGroup(\mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ sg);}
+\DoxyCodeLine{00282\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ CreateNew(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1Info}{SymmSpace::Info}}\&\ si\_info,\ \textcolor{keyword}{const}\ olxstr\&\ hall\_sb);}
+\DoxyCodeLine{00283\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00284\ \ \ \textcolor{comment}{//\ 21.06.2008,\ the\ file\ name\ is\ not\ used}}
+\DoxyCodeLine{00285\ \ \ TSymmLib(\textcolor{keyword}{const}\ olxstr\&\ FN\ =\ EmptyString());}
+\DoxyCodeLine{00286\ \ \ \textcolor{keyword}{virtual}\ \string~TSymmLib();}
+\DoxyCodeLine{00287\ \ \ \textcolor{comment}{//\ creates\ a\ dummy\ space\ group\ if\ not\ found}}
+\DoxyCodeLine{00288\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ FindSG(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ AU);}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ CreateNew(\textcolor{keyword}{const}\ olxstr\&\ hall);}
+\DoxyCodeLine{00291\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ CreateNew(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1Info}{SymmSpace::Info}}\&\ si\_info);}
+\DoxyCodeLine{00292\ \ \ \textcolor{comment}{//\ searches\ for\ expanded\ space\ groups\ like\ in\ the\ CIF}}
+\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SymmSpaceT>}
+\DoxyCodeLine{00294\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ FindSymSpace(\textcolor{keyword}{const}\ SymmSpaceT\&\ sp)\ \{}
+\DoxyCodeLine{00295\ \ \ \ \ smatd\_list\ all\_ml(sp);}
+\DoxyCodeLine{00296\ \ \ \ \ \mbox{\hyperlink{structSymmSpace_1_1Info}{SymmSpace::Info}}\ si\ =\ SymmSpace::GetInfo(all\_ml);}
+\DoxyCodeLine{00297\ \ \ \ \ olxstr\ hs\ =\ HallSymbol::Evaluate(si);}
+\DoxyCodeLine{00298\ \ \ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}*\ sg\ =\ hall\_symbols.Find(hs,\ 0);}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordflow}{return}\ sg\ ==\ 0\ ?\ CreateNew(si,\ hs)\ :\ *sg;}
+\DoxyCodeLine{00300\ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \textcolor{keywordtype}{size\_t}\ FindBravaisLattices(\mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ AU,}
+\DoxyCodeLine{00302\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TBravaisLatticeRef>}}\&\ res)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00303\ \ \ \textcolor{comment}{//\ finds\ all\ space\ groups\ of\ specified\ point\ group}}
+\DoxyCodeLine{00304\ \ \ \textcolor{keywordtype}{size\_t}\ FindPointGroupGroups(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ PointGroup,}
+\DoxyCodeLine{00305\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TSpaceGroup>}}\&\ res)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00306\ \ \ \textcolor{comment}{//\ finds\ all\ space\ groups\ of\ specified\ Laue\ class}}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordtype}{size\_t}\ FindLaueClassGroups(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ LaueClass,}
+\DoxyCodeLine{00308\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TSpaceGroup>}}\&\ res)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \ \ \textcolor{keywordtype}{size\_t}\ SGCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SpaceGroups.Count();\ \}}
+\DoxyCodeLine{00311\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ GetGroup(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *SpaceGroups.GetValue(i);\ \}}
+\DoxyCodeLine{00312\ \ \ \textcolor{keywordtype}{void}\ GetGroupByNumber(\textcolor{keywordtype}{int}\ N,\ \mbox{\hyperlink{classTPtrList}{TPtrList<TSpaceGroup>}}\&\ res)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00313\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}*\ FindGroupByName(\textcolor{keyword}{const}\ olxstr\&\ Name,}
+\DoxyCodeLine{00314\ \ \ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}*\ def\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00315\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keywordflow}{return}\ SpaceGroups.Find(Name,\ def);}
+\DoxyCodeLine{00317\ \ \ \}}
+\DoxyCodeLine{00318\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}*\ FindGroupByHallSymbol(\textcolor{keyword}{const}\ olxstr\&\ hs,}
+\DoxyCodeLine{00319\ \ \ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}*\ def\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00320\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordflow}{return}\ hall\_symbols.Find(hs,\ def);}
+\DoxyCodeLine{00322\ \ \ \}}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00324\ \ \ \textcolor{keywordtype}{size\_t}\ SymmElementCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SymmetryElements.Count();\ \}}
+\DoxyCodeLine{00325\ \ \ \mbox{\hyperlink{classTSymmElement}{TSymmElement}}\&\ GetSymmElement(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00326\ \ \ \ \ \textcolor{keywordflow}{return}\ SymmetryElements[i];}
+\DoxyCodeLine{00327\ \ \ \}}
+\DoxyCodeLine{00328\ \ \ \mbox{\hyperlink{classTSymmElement}{TSymmElement}}*\ FindSymmElement(\textcolor{keyword}{const}\ olxstr\&\ name)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \ \ \textcolor{keywordtype}{size\_t}\ LatticeCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Lattices.Count();\ \}}
+\DoxyCodeLine{00331\ \ \ \mbox{\hyperlink{classTCLattice}{TCLattice}}\&\ GetLatticeByIndex(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keywordflow}{return}\ *Lattices.GetObject(i);}
+\DoxyCodeLine{00333\ \ \ \}}
+\DoxyCodeLine{00334\ \ \ \mbox{\hyperlink{classTCLattice}{TCLattice}}\&\ GetLatticeByNumber(\textcolor{keywordtype}{short}\ latt)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ l\ =\ olx\_abs(latt)\ -\/\ 1;}
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ >=\ Lattices.Count())\ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTCLattice_1_1TIncorrectLattExc}{TCLattice::TIncorrectLattExc}}(\_\_OlxSourceInfo,\ latt);}
+\DoxyCodeLine{00338\ \ \ \ \ \}}
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keywordflow}{return}\ *Lattices.GetObject(l);}
+\DoxyCodeLine{00340\ \ \ \}}
+\DoxyCodeLine{00341\ \ \ \mbox{\hyperlink{classTCLattice}{TCLattice}}*\ FindLattice(\textcolor{keyword}{const}\ olxstr\&\ Symbol)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keywordflow}{return}\ Lattices.FindPointeri(Symbol,\ 0);}
+\DoxyCodeLine{00343\ \ \ \}}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00345\ \ \ \textcolor{keywordtype}{size\_t}\ PointGroupCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ PointGroups.Count();\ \}}
+\DoxyCodeLine{00346\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ GetPointGroup(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *PointGroups[i];\ \}}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00348\ \ \ \textcolor{keywordtype}{size\_t}\ BravaisLatticeCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ BravaisLattices.Count();\ \}}
+\DoxyCodeLine{00349\ \ \ \mbox{\hyperlink{classTBravaisLattice}{TBravaisLattice}}\&\ GetBravaisLattice(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00350\ \ \ \ \ \textcolor{keywordflow}{return}\ *BravaisLattices.GetObject(i);}
+\DoxyCodeLine{00351\ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \mbox{\hyperlink{classTBravaisLattice}{TBravaisLattice}}*\ FindBravaisLattice(\textcolor{keyword}{const}\ olxstr\&\ Name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keywordflow}{return}\ BravaisLattices.FindPointeri(Name,\ 0);}
+\DoxyCodeLine{00354\ \ \ \}}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatList>\ \textcolor{keywordtype}{void}\ ExpandLatt(smatd\_list\&\ out,}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{keyword}{const}\ MatList\&\ ml,\ \textcolor{keywordtype}{short}\ \_latt)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00358\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCLattice}{TCLattice}}\&\ latt\ =\ GetLatticeByNumber(\_latt);}
+\DoxyCodeLine{00360\ \ \ \ \ out.SetCapacity(latt.GetVectors().Count()\ *\ ml.Count()\ *\ (\_latt\ >\ 0\ ?\ 2\ :\ 1));}
+\DoxyCodeLine{00361\ \ \ \ \ out.AddNew().r.I();}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ml.Count();\ i++)\ \{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ m\ =\ ml[i];}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!m.r.IsI())\ \{\ \ \textcolor{comment}{//\ skip\ I\ matrix\ -\/\ always\ the\ first\ one}}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ out.AddNew(m);}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00367\ \ \ \ \ \}}
+\DoxyCodeLine{00368\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ mc\ =\ out.Count();}
+\DoxyCodeLine{00369\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ latt.GetVectors().Count();\ i++)\ \{}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ mc;\ j++)\ \{}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ out.AddCopy(out[j]).t\ +=\ latt.GetVectors()[i];}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00373\ \ \ \ \ \}}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_latt\ >\ 0)\ \{}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ mc;\ j++)\ out.AddCopy(out[j].Negate());}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ latt.GetVectors().Count();\ i++)\ \{}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ mc;\ j++)\ \{}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \ \ out.AddCopy(out[j].Negate()).t\ +=\ latt.GetVectors()[i];}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00381\ \ \ \ \ \}}
+\DoxyCodeLine{00382\ \ \ \}}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsInitialised()\ \{\ \textcolor{keywordflow}{return}\ Instance\ !=\ 0;\ \}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \textcolor{keyword}{static}\ TSymmLib\&\ GetInstance()\ \{}
+\DoxyCodeLine{00387\ \ \ \ \ \textcolor{keywordflow}{if}\ (Instance\ ==\ 0)\ \{}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}object\ is\ not\ initialised"{}});}
+\DoxyCodeLine{00390\ \ \ \ \ \}}
+\DoxyCodeLine{00391\ \ \ \ \ \textcolor{keywordflow}{return}\ *Instance;}
+\DoxyCodeLine{00392\ \ \ \}}
+\DoxyCodeLine{00393\ \};}
+\DoxyCodeLine{00394\ }
+\DoxyCodeLine{00395\ EndXlibNamespace()}
+\DoxyCodeLine{00396\ }
+\DoxyCodeLine{00397\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

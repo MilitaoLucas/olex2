@@ -1,0 +1,60 @@
+\doxysection{eaccell.\+h}
+\hypertarget{eaccell_8h_source}{}\label{eaccell_8h_source}\index{repository/eaccell.h@{repository/eaccell.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_eaccell\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_eaccell\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{class\ }TAccellList\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00016\ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<int32\_t,\ T>}}\ Entries;}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00018\ \ \ \ \ int32\_t\ LastId;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \ \ TAccellList()\ \ \{\ \ LastId\ =\ 0;\ \ \}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~TAccellList()\ \ \{\}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Clear()\ \ \{\ \ Entries.Clear();\ \ \}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ T\&\ GetValue(int32\_t\ key)\ \ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ Entries.IndexOf(key);}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ind\ ==\ InvalidIndex\ )}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}key"{}});}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Entries.GetValue(ind);}
+\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{bool}\ ValueExists(int32\_t\ key)\ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Entries.IndexOf(key)\ !=\ InvalidIndex;}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ AddAccell(int32\_t\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ T\&\ value)\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ Entries.IndexOf(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ind\ !=\ InvalidIndex\ )}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ Entries.GetValue(ind)\ =\ value;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ Entries.Add(\textcolor{keywordtype}{id},\ value);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ LastId\ =\ id;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ RemoveAccell(int32\_t\ \textcolor{keywordtype}{id})\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ Entries.IndexOf(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ind\ ==\ InvalidIndex\ )}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}id"{}});}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ Entries.Delete(ind);}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{inline}\ int32\_t\ GetLastId()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ LastId;\ \ \}}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

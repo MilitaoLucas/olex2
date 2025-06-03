@@ -1,0 +1,180 @@
+\doxysection{ebasis.\+h}
+\hypertarget{ebasis_8h_source}{}\label{ebasis_8h_source}\index{sdl/ebasis.h@{sdl/ebasis.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_basis\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_basis\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifdef\ \_\_GNUC\_\_}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \#undef\ QLength}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ BeginEsdlNamespace()}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ class\ TEBasis:\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{float}\ FMData[16],\ FMDataT[16];\ \ \textcolor{comment}{//\ matrix\ to\ call\ OpenGlDirectly}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{double}\ \ \ FRX,\ FRY,\ FRZ,\ \textcolor{comment}{//\ the\ rotaion\ angles}}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ FZoom;\ \ \ \ \ \ \ \textcolor{comment}{//\ zoom}}
+\DoxyCodeLine{00027\ \ \ mat3d\ \ FMatrix;}
+\DoxyCodeLine{00028\ \ \ vec3d\ \ \ FCenter;}
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ TEBasis();}
+\DoxyCodeLine{00031\ \ \ TEBasis(\textcolor{keyword}{const}\ TEBasis\&\ B);}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \string~TEBasis();}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{const}\ TEBasis\&\ operator\ =\ (\textcolor{keyword}{const}\ TEBasis\ \&B);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ \textcolor{keywordtype}{void}\ SetCenter(\textcolor{keyword}{const}\ VC\&\ V)\ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ FCenter[0]\ =\ V[0];\ \ FCenter[1]\ =\ V[1];\ \ FCenter[2]\ =\ V[2];}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetCenter()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FCenter;\ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ NullCenter()\ \ \{\ \ FCenter.Null();\ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{comment}{//\ orientation\ matrix\ in\ 4x4\ opengl\ format}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ GetMData()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00043\ \ \ \ \ FMData[0]\ =\ (float)FMatrix[0][0];\ \ FMData[1]\ =\ (float)FMatrix[0][1];\ \ FMData[2]\ =\ (float)FMatrix[0][2];}
+\DoxyCodeLine{00044\ \ \ \ \ FMData[4]\ =\ (float)FMatrix[1][0];\ \ FMData[5]\ =\ (float)FMatrix[1][1];\ \ FMData[6]\ =\ (float)FMatrix[1][2];}
+\DoxyCodeLine{00045\ \ \ \ \ FMData[8]\ =\ (float)FMatrix[2][0];\ \ FMData[9]\ =\ (float)FMatrix[2][1];\ \ FMData[10]\ =\ (float)FMatrix[2][2];}
+\DoxyCodeLine{00046\ \ \ \ \ FMData[3]\ =\ FMData[7]\ =\ FMData[11]\ =\ 0;}
+\DoxyCodeLine{00047\ \ \ \ \ FMData[12]\ =\ (float)FCenter[0];\ \ FMData[13]\ =\ (float)FCenter[1];\ \ FMData[14]\ =\ (float)FCenter[2];}
+\DoxyCodeLine{00048\ \ \ \ \ FMData[15]\ =\ 1;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{return}\ FMData;}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{comment}{//\ transposed\ orientation\ matrix\ in\ 4x4\ opengl\ format}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ GetMDataT()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00053\ \ \ \ \ FMDataT[0]\ =\ (float)FMatrix[0][0];\ \ FMDataT[1]\ =\ (float)FMatrix[1][0];\ \ FMDataT[2]\ =\ (float)FMatrix[2][0];}
+\DoxyCodeLine{00054\ \ \ \ \ FMDataT[4]\ =\ (float)FMatrix[0][1];\ \ FMDataT[5]\ =\ (float)FMatrix[1][1];\ \ FMDataT[6]\ =\ (float)FMatrix[2][1];}
+\DoxyCodeLine{00055\ \ \ \ \ FMDataT[8]\ =\ (float)FMatrix[0][2];\ \ FMDataT[9]\ =\ (float)FMatrix[1][2];\ \ FMDataT[10]\ =\ (float)FMatrix[2][2];}
+\DoxyCodeLine{00056\ \ \ \ \ FMDataT[3]\ =\ FMDataT[7]\ =\ FMDataT[11]\ =\ 0;}
+\DoxyCodeLine{00057\ \ \ \ \ FMDataT[12]\ =\ (float)FCenter[0];\ \ FMDataT[13]\ =\ (float)FCenter[1];\ \ FMDataT[14]\ =\ (float)FCenter[2];}
+\DoxyCodeLine{00058\ \ \ \ \ FMDataT[15]\ =\ 1;}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{return}\ FMDataT;}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ mat3d\&\ GetMatrix()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FMatrix;\ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ GetZoom()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FZoom;\ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ SetZoom(\textcolor{keywordtype}{double}\ v);}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MC>\ \textcolor{keywordtype}{void}\ SetMatrix(\textcolor{keyword}{const}\ MC\&\ M)\ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 3;\ i++\ )}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ j=0;\ j\ <\ 3;\ j++\ )}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ FMatrix[i][j]\ =\ M[i][j];}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ \ void\ \ Rotate(\ double\ A,\ double\ B,\ double\ C);}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{void}\ \ RotateX(\textcolor{keywordtype}{double}\ A);}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ GetRX()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FRX;\ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{void}\ \ RotateY(\textcolor{keywordtype}{double}\ A);}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ GetRY()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FRY;\ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{void}\ \ RotateZ(\textcolor{keywordtype}{double}\ A);}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ GetRZ()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FRZ;\ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{comment}{//\ rotation\ using\ a\ matrix}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keywordtype}{void}\ Rotate(\textcolor{keyword}{const}\ T\&\ M)\ \ \{\ \ FMatrix\ *=\ M;\ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{//\ rotation\ around\ an\ arbitrary\ vector,\ New\ =\ Current*m}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ \textcolor{keywordtype}{void}\ Rotate(\textcolor{keyword}{const}\ VC\&\ V,\ \textcolor{keywordtype}{double}\ angle)\ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ mat3d\ m;}
+\DoxyCodeLine{00084\ \ \ \ \ olx\_create\_rotation\_matrix(m,\ V,\ cos(angle),\ sin(angle)\ );}
+\DoxyCodeLine{00085\ \ \ \ \ FMatrix\ *=\ m;}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//\ rotation\ around\ an\ arbitrary\ vector\ New\ =\ m*Current}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ \textcolor{keywordtype}{void}\ RotateT(\textcolor{keyword}{const}\ VC\&\ V,\ \textcolor{keywordtype}{double}\ angle)\ \ \{}
+\DoxyCodeLine{00090\ \ \ \ \ mat3d\ m;}
+\DoxyCodeLine{00091\ \ \ \ \ olx\_create\_rotation\_matrix(m,\ V,\ cos(angle),\ sin(angle));}
+\DoxyCodeLine{00092\ \ \ \ \ FMatrix\ =\ m\ *\ FMatrix;}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ \textcolor{keywordtype}{void}\ Translate(\textcolor{keyword}{const}\ VC\&\ V)\ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ FCenter[0]\ +=\ V[0];\ \ FCenter[1]\ +=\ V[1];\ \ FCenter[2]\ +=\ V[2];}
+\DoxyCodeLine{00097\ \ \ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{void}\ TranslateX(\textcolor{keywordtype}{double}\ x);}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ TranslateY(\textcolor{keywordtype}{double}\ y);}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{void}\ TranslateZ(\textcolor{keywordtype}{double}\ z);}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ Reset();}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{void}\ ResetAngles()\ \ \{\ \ FRX\ =\ FRY\ =\ FRZ\ =\ 0;\ \ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ \textcolor{keywordtype}{void}\ OrientNormal(\textcolor{keyword}{const}\ VC\&\ normal)\ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ SetMatrix(CalcBasis<VC,\ mat3d>(normal).Transpose());}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{comment}{//\ give\ a\ normal\ calculates\ two\ other\ vectors\ to\ form\ orthogonal\ basis...}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ VecType,\ \textcolor{keyword}{typename}\ MatType>\ \textcolor{keyword}{static}\ MatType\ CalcBasis(\textcolor{keyword}{const}\ VecType\&\ normal)\ \ \{}
+\DoxyCodeLine{00109\ \ \ \ \ MatType\ m;}
+\DoxyCodeLine{00110\ \ \ \ \ m[2]\ =\ normal;}
+\DoxyCodeLine{00111\ \ \ \ \ m[0][0]\ =\ m[2][1];}
+\DoxyCodeLine{00112\ \ \ \ \ m[0][1]\ =\ -\/m[2][0];}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{if}(\ m[0].QLength()\ <\ 1e-\/10\ )\ \ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ m[0][0]\ =\ 0;}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ m[0][1]\ =\ m[2][2];}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ m[0][2]\ =\ -\/m[2][1];}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ m[0].QLength()\ <\ 1e-\/10\ )\ \ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ m[0][0]\ =\ m[2][2];}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ m[0][1]\ =\ 0;}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ m[0][2]\ =\ -\/m[2][0];}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ m[0].QLength()\ <\ 1e-\/10\ )}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}cannot\ evaluate\ basis"{}});}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ m[1][0]\ =\ m[2][1]*m[0][2]\ -\/\ m[2][2]*m[0][1];}
+\DoxyCodeLine{00126\ \ \ \ \ m[1][1]\ =\ m[2][2]*m[0][0]\ -\/\ m[2][0]*m[0][2];}
+\DoxyCodeLine{00127\ \ \ \ \ m[1][2]\ =\ m[2][0]*m[0][1]\ -\/\ m[2][1]*m[0][0];}
+\DoxyCodeLine{00128\ \ \ \ \ m[0].Normalise();}
+\DoxyCodeLine{00129\ \ \ \ \ m[1].Normalise();}
+\DoxyCodeLine{00130\ \ \ \ \ m[2].Normalise();}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ m;}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \textcolor{comment}{/*\ the\ matrix\ is\ being\ transposed\ by\ default\ to\ emulate\ normal\ rotation\ in\ OpneGl}}
+\DoxyCodeLine{00135\ \textcolor{comment}{\ \ \ if\ it\ is\ not\ transposed,\ the\ rotation\ happens\ around\ current\ X,\ Y\ \&\ Z\ axis}}
+\DoxyCodeLine{00136\ \textcolor{comment}{\ \ \ however\ the\ rotation\ around\ screen\ X,\ Y,\ Z\ is\ prefered}}
+\DoxyCodeLine{00137\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ \textcolor{keywordtype}{void}\ Orient(\textcolor{keyword}{const}\ VC\&\ X,\ \textcolor{keyword}{const}\ VC\&\ Y,\ \textcolor{keyword}{const}\ VC\&\ Z,\ \textcolor{keywordtype}{bool}\ Transpose=\textcolor{keyword}{true})\ \ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{if}(\ Transpose\ )\ \ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ FMatrix[0][0]\ =\ X[0];\ \ FMatrix[0][1]\ =\ Y[0];\ \ FMatrix[0][2]\ =\ Z[0];}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ FMatrix[1][0]\ =\ X[1];\ \ FMatrix[1][1]\ =\ Y[1];\ \ FMatrix[1][2]\ =\ Z[1];}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ FMatrix[2][0]\ =\ X[2];\ \ FMatrix[2][1]\ =\ Y[2];\ \ FMatrix[2][2]\ =\ Z[2];}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ FMatrix[0][0]\ =\ X[0];\ \ FMatrix[0][1]\ =\ X[1];\ \ FMatrix[0][2]\ =\ X[2];}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ FMatrix[1][0]\ =\ Y[0];\ \ FMatrix[1][1]\ =\ Y[1];\ \ FMatrix[1][2]\ =\ Y[2];}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ FMatrix[2][0]\ =\ Z[0];\ \ FMatrix[2][1]\ =\ Z[1];\ \ FMatrix[2][2]\ =\ Z[2];}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MC>\ \textcolor{keywordtype}{void}\ Orient(\textcolor{keyword}{const}\ MC\&\ M,\ \textcolor{keywordtype}{bool}\ Transpose=\textcolor{keyword}{true})\ \ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ zm\ =\ GetZoom();}
+\DoxyCodeLine{00153\ \ \ \ \ Reset();}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{if}(\ Transpose\ )\ \ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 3;\ i++\ )}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ j=0;\ j\ <\ 3;\ j++\ )}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ FMatrix[i][j]\ =\ M[i][j];}
+\DoxyCodeLine{00158\ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 3;\ i++\ )}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ j=0;\ j\ <\ 3;\ j++\ )}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ FMatrix[j][i]\ =\ M[i][j];}
+\DoxyCodeLine{00163\ \ \ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \ \ SetZoom(zm);}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ \textcolor{keywordtype}{double}\ DistanceTo\ (\textcolor{keyword}{const}\ TEBasis\ \&B)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FCenter.DistanceTo(B.FCenter);\ \ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item);}
+\DoxyCodeLine{00171\ \};}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ EndEsdlNamespace()}
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

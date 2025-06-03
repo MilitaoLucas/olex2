@@ -1,0 +1,226 @@
+\doxysection{glutil.\+h}
+\hypertarget{glutil_8h_source}{}\label{glutil_8h_source}\index{glib/glutil.h@{glib/glutil.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_glutil\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_glutil\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glalg.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}sortedlist.h"{}}}
+\DoxyCodeLine{00015\ BeginGlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ template\ <typename\ float\_type,\ class\ FaceProvider>\ class\ \mbox{\hyperlink{classGlSphereEx}{GlSphereEx}}\ :}
+\DoxyCodeLine{00018\ \ \ public\ \mbox{\hyperlink{classOlxSphere}{OlxSphere}}<float\_type,FaceProvider>}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTVector3}{TVector3<float\_type>}}\ vec\_t;}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Render(float\_type\ rad,\ \textcolor{keywordtype}{size\_t}\ ext)\ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<vec\_t>}}\ vecs;}
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<IndexTriangle>}}\ triags;}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<vec\_t>}}\ norms;}
+\DoxyCodeLine{00026\ \ \ \ \ OlxSphere<float\_type,FaceProvider>::Generate(rad,\ ext,\ vecs,\ triags,\ norms);}
+\DoxyCodeLine{00027\ \ \ \ \ Render(vecs,\ triags,\ norms);}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Render(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<vec\_t>}}\&\ vecs,}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<IndexTriangle>}}\&\ triags,}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec\_t>}}\&\ norms)}
+\DoxyCodeLine{00032\ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ tc\ =\ triags.Count();}
+\DoxyCodeLine{00034\ \ \ \ \ olx\_gl::begin(GL\_TRIANGLES);}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ tc;\ i++\ )\ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keyword}{const}\ IndexTriangle\&\ t\ =\ triags[i];}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ 3;\ j++\ )\ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ olx\_gl::normal(norms[t.vertices[j]]);}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ olx\_gl::vertex(vecs[t.vertices[j]]);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ RenderEx(float\_type\ rad,\ \textcolor{keywordtype}{size\_t}\ ext,}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{const}\ vec\_t\&\ f\_mask,\ \textcolor{keyword}{const}\ vec\_t\&\ t\_mask)}
+\DoxyCodeLine{00046\ \ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<vec\_t>}}\ vecs;}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<IndexTriangle>}}\ triags;}
+\DoxyCodeLine{00049\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<vec\_t>}}\ norms;}
+\DoxyCodeLine{00050\ \ \ \ \ OlxSphere<float\_type,FaceProvider>::Generate(rad,\ ext,\ vecs,\ triags,\ norms);}
+\DoxyCodeLine{00051\ \ \ \ \ RenderEx(vecs,\ triags,\ norms,\ f\_mask,\ t\_mask);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ RenderEx(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<vec\_t>}}\&\ vecs,}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<IndexTriangle>}}\&\ triags,}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec\_t>}}\&\ norms,}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ vec\_t\&\ f\_mask,\ \textcolor{keyword}{const}\ vec\_t\&\ t\_mask)}
+\DoxyCodeLine{00057\ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ tc\ =\ triags.Count();}
+\DoxyCodeLine{00059\ \ \ \ \ olx\_gl::begin(GL\_TRIANGLES);}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ tc;\ i++\ )\ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keyword}{const}\ IndexTriangle\&\ t\ =\ triags[i];}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ vec\_t::IsInRangeInc(vecs[t.vertices[0]],\ f\_mask,\ t\_mask)\ \&\&}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ vec\_t::IsInRangeInc(vecs[t.vertices[1]],\ f\_mask,\ t\_mask)\ \&\&}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ vec\_t::IsInRangeInc(vecs[t.vertices[2]],\ f\_mask,\ t\_mask)\ )}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ j=0;\ j\ <\ 3;\ j++\ )\ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ olx\_gl::normal(norms[t.vertices[j]]);}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ olx\_gl::vertex(vecs[t.vertices[j]]);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ RenderDisks(float\_type\ rad,\ \textcolor{keywordtype}{size\_t}\ t,\ float\_type\ disk\_s)\ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ vec\_t\ sf(rad,\ 0,\ 0);}
+\DoxyCodeLine{00075\ \ \ \ \ float\_type\ sa,\ sma,\ ca,\ cma;}
+\DoxyCodeLine{00076\ \ \ \ \ olx\_sincos(2*M\_PI/t,\ \&sa,\ \&ca);}
+\DoxyCodeLine{00077\ \ \ \ \ olx\_sincos(-\/2*M\_PI/t,\ \&sma,\ \&cma);}
+\DoxyCodeLine{00078\ \ \ \ \ olx\_gl::begin(GL\_POLYGON);}
+\DoxyCodeLine{00079\ \ \ \ \ olx\_gl::normal(0,\ 0,\ -\/1);}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <=\ t;\ i++\ )\ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ olx\_gl::vertex(sf[0],\ sf[1],\ -\/disk\_s/2);}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (i+1)\ >\ t\ )\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ float\_type\ x\ =\ sf[0];}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ sf[0]\ =\ (x*ca\ +\ sf[1]*sa);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ sf[1]\ =\ (sf[1]*ca\ -\/\ x*sa);}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00088\ \ \ \ \ sf\ =\ vec\_t(rad,\ 0,\ 0);}
+\DoxyCodeLine{00089\ \ \ \ \ olx\_gl::begin(GL\_POLYGON);}
+\DoxyCodeLine{00090\ \ \ \ \ olx\_gl::normal(0,\ 0,\ 1);}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <=\ t;\ i++\ )\ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ olx\_gl::vertex(sf[0],\ sf[1],\ disk\_s/2);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (i+1)\ >\ t\ )\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ float\_type\ x\ =\ sf[0];}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ sf[0]\ =\ (x*cma\ +\ sf[1]*sma);}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ sf[1]\ =\ (sf[1]*cma\ -\/\ x*sma);}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ sf\ =\ vec\_t(rad,\ 0,\ 0);}
+\DoxyCodeLine{00101\ \ \ \ \ olx\_gl::begin(GL\_POLYGON);}
+\DoxyCodeLine{00102\ \ \ \ \ olx\_gl::normal(0,\ -\/1,\ 0);}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <=\ t;\ i++\ )\ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ olx\_gl::vertex(sf[1],\ -\/disk\_s/2,\ sf[0]);}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (i+1)\ >\ t\ )\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ float\_type\ x\ =\ sf[0];}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ sf[0]\ =\ (x*ca\ +\ sf[1]*sa);}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ sf[1]\ =\ (sf[1]*ca\ -\/\ x*sa);}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00111\ \ \ \ \ sf\ =\ vec\_t(rad,\ 0,\ 0);}
+\DoxyCodeLine{00112\ \ \ \ \ olx\_gl::begin(GL\_POLYGON);}
+\DoxyCodeLine{00113\ \ \ \ \ olx\_gl::normal(0,\ 1,\ 0);}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <=\ t;\ i++\ )\ \ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ olx\_gl::vertex(sf[1],\ disk\_s/2,\ sf[0]);}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (i+1)\ >\ t\ )\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ float\_type\ x\ =\ sf[0];}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ sf[0]\ =\ (x*cma\ +\ sf[1]*sma);}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ sf[1]\ =\ (sf[1]*cma\ -\/\ x*sma);}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ sf\ =\ vec\_t(rad,\ 0,\ 0);}
+\DoxyCodeLine{00124\ \ \ \ \ olx\_gl::begin(GL\_POLYGON);}
+\DoxyCodeLine{00125\ \ \ \ \ olx\_gl::normal(-\/1,\ 0,\ 0);}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <=\ t;\ i++\ )\ \ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ olx\_gl::vertex(-\/disk\_s/2,\ sf[0],\ sf[1]);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ float\_type\ x\ =\ sf[0];}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ sf[0]\ =\ (x*ca\ +\ sf[1]*sa);}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ sf[1]\ =\ (sf[1]*ca\ -\/\ x*sa);}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00133\ \ \ \ \ sf\ =\ vec\_t(rad,\ 0,\ 0);}
+\DoxyCodeLine{00134\ \ \ \ \ olx\_gl::begin(GL\_POLYGON);}
+\DoxyCodeLine{00135\ \ \ \ \ olx\_gl::normal(1,\ 0,\ 0);}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <=\ t;\ i++\ )\ \ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ olx\_gl::vertex(disk\_s/2,\ sf[0],\ sf[1]);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ float\_type\ x\ =\ sf[0];}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ sf[0]\ =\ (x*cma\ +\ sf[1]*sma);}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ sf[1]\ =\ (sf[1]*cma\ -\/\ x*sma);}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordtype}{void}\ RenderRims(float\_type\ rad,\ \textcolor{keywordtype}{size\_t}\ t,\ float\_type\ disk\_s)\ \ \{}
+\DoxyCodeLine{00145\ \ \ \ \ vec\_t\ sf(rad,\ 0,\ 0),\ pv;}
+\DoxyCodeLine{00146\ \ \ \ \ float\_type\ sa,\ ca;}
+\DoxyCodeLine{00147\ \ \ \ \ olx\_sincos(2*M\_PI/t,\ \&sa,\ \&ca);}
+\DoxyCodeLine{00148\ \ \ \ \ olx\_gl::begin(GL\_QUADS);}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <=\ t;\ i++\ )\ \ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ olx\_gl::normal(sf[0],\ sf[1],\ 0.0f);}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ olx\_gl::vertex(sf[0],\ sf[1],\ -\/disk\_s/2);}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ olx\_gl::vertex(sf[0],\ sf[1],\ +disk\_s/2);}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (i+1)\ >\ t\ )\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ float\_type\ x\ =\ sf[0];}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ sf[0]\ =\ (x*ca\ +\ sf[1]*sa);}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ sf[1]\ =\ (sf[1]*ca\ -\/\ x*sa);}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ olx\_gl::normal(sf[0],\ sf[1],\ 0.0f);}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ olx\_gl::vertex(sf[0],\ sf[1],\ +disk\_s/2);}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ olx\_gl::vertex(sf[0],\ sf[1],\ -\/disk\_s/2);}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ sf\ =\ vec\_t(rad,\ 0,\ 0);}
+\DoxyCodeLine{00164\ \ \ \ \ olx\_gl::begin(GL\_QUADS);}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <=\ t;\ i++\ )\ \ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ olx\_gl::normal(sf[1],\ 0.0f,\ sf[0]);}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ olx\_gl::vertex(sf[1],\ -\/disk\_s/2,\ sf[0]);}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ olx\_gl::vertex(sf[1],\ +disk\_s/2,\ sf[0]);}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (i+1)\ >\ t\ )\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ float\_type\ x\ =\ sf[0];}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ sf[0]\ =\ (x*ca\ +\ sf[1]*sa);}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ sf[1]\ =\ (sf[1]*ca\ -\/\ x*sa);}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ olx\_gl::normal(sf[1],\ 0.0f,\ sf[0]);}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ olx\_gl::vertex(sf[1],\ +disk\_s/2,\ sf[0]);}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ olx\_gl::vertex(sf[1],\ -\/disk\_s/2,\ sf[0]);}
+\DoxyCodeLine{00176\ \ \ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \ \ sf\ =\ vec\_t(rad,\ 0,\ 0);}
+\DoxyCodeLine{00180\ \ \ \ \ olx\_gl::begin(GL\_QUADS);}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <=\ t;\ i++\ )\ \ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ olx\_gl::normal(0.0f,\ sf[0],\ sf[1]);}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ olx\_gl::vertex(-\/disk\_s/2,\ sf[0],\ sf[1]);}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ olx\_gl::vertex(+disk\_s/2,\ sf[0],\ sf[1]);}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ float\_type\ x\ =\ sf[0];}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ sf[0]\ =\ (x*ca\ +\ sf[1]*sa);}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ sf[1]\ =\ (sf[1]*ca\ -\/\ x*sa);}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ olx\_gl::normal(0.0f,\ sf[0],\ sf[1]);}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ olx\_gl::vertex(+disk\_s/2,\ sf[0],\ sf[1]);}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ olx\_gl::vertex(-\/disk\_s/2,\ sf[0],\ sf[1]);}
+\DoxyCodeLine{00191\ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ \};}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structGlTorus}{GlTorus}}\ \{}
+\DoxyCodeLine{00197\ \ \ \textcolor{comment}{//reference:\ www.opengl.org/resources/code/samples/redbook/torus.c}}
+\DoxyCodeLine{00198\ \ \ \textcolor{comment}{//\ tr\ -\/\ tube\ radius,\ r\ -\/\ torus\ radius}}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Render(\textcolor{keywordtype}{double}\ tr,\ \textcolor{keywordtype}{double}\ r,\ \textcolor{keywordtype}{size\_t}\ sc,\ \textcolor{keywordtype}{size\_t}\ tsc)\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ tpi\ =\ 2\ *\ M\_PI;}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sc;\ i++)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ olx\_gl::begin(GL\_QUAD\_STRIP);}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <=\ tsc;\ j++)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 1;\ k\ >=\ 0;\ k-\/-\/)\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ s\ =\ (i\ +\ k)\ \%\ sc\ +\ 0.5;}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ t\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(j\ \%\ tsc);}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ a\ =\ cos(s\ *\ tpi\ /\ sc),}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ b\ =\ cos(t\ *\ tpi\ /\ tsc),}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ c\ =\ sin(t\ *\ tpi\ /\ tsc),}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ d\ =\ sin(s\ *\ tpi\ /\ sc);}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ olx\_gl::normal(a\ *\ b,\ a\ *\ c,\ d);}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ olx\_gl::vertex((r\ +\ tr\ *\ a)\ *\ b,\ (r\ +\ tr\ *\ a)\ *\ c,\ tr\ *\ d);}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ olx\_gl::end();}
+\DoxyCodeLine{00216\ \ \ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \}}
+\DoxyCodeLine{00218\ \};}
+\DoxyCodeLine{00219\ EndGlNamespace()}
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,1072 @@
+\doxysection{threex3.\+h}
+\hypertarget{threex3_8h_source}{}\label{threex3_8h_source}\index{sdl/threex3.h@{sdl/threex3.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_3x3}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_3x3}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}talist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#undef\ QLength}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginEsdlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ template\ <typename>\ class\ TVector33;}
+\DoxyCodeLine{00020\ template\ <typename>\ class\ \mbox{\hyperlink{classTMatrix33}{TMatrix33}};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ template\ <class\ FT>\ \ class\ TVector3\ \{}
+\DoxyCodeLine{00023\ \ \ FT\ data[3];}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ TVector3()\ \{\ data[0]\ =\ data[1]\ =\ data[2]\ =\ 0;\ \}}
+\DoxyCodeLine{00026\ \ \ TVector3(FT\ v)\ \{\ data[0]\ =\ v;\ \ data[1]\ =\ v;\ \ data[2]\ =\ v;\ \}}
+\DoxyCodeLine{00027\ \ \ TVector3(FT\ x,\ FT\ y,\ FT\ z)\ \{\ data[0]\ =\ x;\ \ data[1]\ =\ y;\ \ data[2]\ =\ z;\ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ TVector3(\textcolor{keyword}{const}\ TVector3<FT>\&\ v)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ data[0]\ =\ v[0];\ \ data[1]\ =\ v[1];\ \ data[2]\ =\ v[2];}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3(\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ data[0]\ =\ (FT)v[0];\ \ data[1]\ =\ (FT)v[1];\ \ data[2]\ =\ (FT)v[2];}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//\ any\ vector}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AV>\ \textcolor{keyword}{static}\ TVector3\ FromAny(\textcolor{keyword}{const}\ AV\&\ v)\ \{}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{if}\ (v.Count()\ !=\ 3)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}vector"{}});}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3(v(0),\ v(1),\ v(2));}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ FT\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00046\ \ \ FT\ \textcolor{keyword}{const}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00047\ \ \ FT\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00048\ \ \ FT\ \textcolor{keyword}{const}\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{const}\ FT*\ GetData()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \&data[0];\ \}}
+\DoxyCodeLine{00050\ \ \ FT\ QLength()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ (data[0]\ *\ data[0]\ +\ data[1]\ *\ data[1]\ +\ data[2]\ *\ data[2]);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ FT\ Length()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (FT)sqrt(QLength());\ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ Count()\ \{\ \textcolor{keywordflow}{return}\ 3;\ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsEmpty()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Resize(\textcolor{keywordtype}{size\_t}\ s)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{if}\ (s\ !=\ 3)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ FT\ QDistanceTo(\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(olx\_sqr(data[0]\ -\/\ v[0])\ +}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ olx\_sqr(data[1]\ -\/\ v[1])\ +\ olx\_sqr(data[2]\ -\/\ v[2]));}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ FT\ DistanceTo(\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(sqrt(QDistanceTo(v)));}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{comment}{/*\ distance\ between\ this\ point\ and\ a\ line\ segment.\ Returns\ -\/1\ within\ is\ true\ and}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ \ the\ point\ is\ outside\ of\ the\ given\ segment}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ http://paulbourke.net/geometry/pointlineplane/}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00075\ \ \ FT\ DistanceTo(\textcolor{keyword}{const}\ TVector3<AT>\&\ a,\ \textcolor{keyword}{const}\ TVector3<AT>\&\ b,\ \textcolor{keywordtype}{bool}\ within=\textcolor{keyword}{false})\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00076\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00077\ \ \ \ \ TVector3\ v\ =\ b\ -\/\ a;}
+\DoxyCodeLine{00078\ \ \ \ \ FT\ u\ =\ (*\textcolor{keyword}{this}\ -\/\ a).DotProd(v)/v.QLength();}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{if}\ (within\ \&\&\ (u\ <\ 0\ ||\ u\ >\ 1))\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ TVector3\ intersection\ =\ a\ +\ v\ *\ u;}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ this-\/>DistanceTo(intersection);}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ FT\ CAngle(\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00087\ \ \ \ \ FT\ l\ =\ QLength()*v.QLength();}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ ==\ 0)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ l\ =\ DotProd(v)\ /\ sqrt(l);}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{comment}{//\ treat\ possible\ rounding\ errors}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ >\ 1)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ <\ -\/1)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ l;}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ \textcolor{keywordtype}{bool}\ IsParallel(\textcolor{keyword}{const}\ TVector3<AT>\&\ v,}
+\DoxyCodeLine{00102\ \ \ \ \ FT\ eps\ =\ FT(1e-\/8))\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00103\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00104\ \ \ \ \ FT\ l\ =\ QLength()*v.QLength();}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ ==\ 0)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ l\ =\ olx\_abs(DotProd(v)\ /\ sqrt(l));}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_abs(l\ -\/\ 1)\ <\ eps;}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ \textcolor{keywordtype}{bool}\ IsOrthogonal(\textcolor{keyword}{const}\ TVector3<AT>\&\ v,}
+\DoxyCodeLine{00112\ \ \ \ \ FT\ eps\ =\ FT(1e-\/8))\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00113\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_abs(DotProd(v))\ <\ eps;}
+\DoxyCodeLine{00115\ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//\ multiplies\ each\ element\ by\ itself}}
+\DoxyCodeLine{00117\ \ \ TVector3<FT>\&\ Qrt()\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ data[0]\ *=\ data[0];}
+\DoxyCodeLine{00119\ \ \ \ \ data[1]\ *=\ data[1];}
+\DoxyCodeLine{00120\ \ \ \ \ data[2]\ *=\ data[2];}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{//\ takes\ square\ root\ of\ each\ element\ (must\ be\ >=\ 0!)}}
+\DoxyCodeLine{00124\ \ \ TVector3<FT>\&\ Sqrt()\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ data[0]\ =\ sqrt(data[0]);}
+\DoxyCodeLine{00126\ \ \ \ \ data[1]\ =\ sqrt(data[1]);}
+\DoxyCodeLine{00127\ \ \ \ \ data[2]\ =\ sqrt(data[2]);}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{comment}{//\ takes\ square\ root\ of\ each\ element\ (must\ be\ >=\ 0!)}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{static}\ TVector3<FT>\ Sqrt(\textcolor{keyword}{const}\ TVector3<FT>\&\ v)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(v).Sqrt();}
+\DoxyCodeLine{00133\ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \textcolor{comment}{//\ takes\ absolute\ value\ of\ the\ vector\ elements}}
+\DoxyCodeLine{00135\ \ \ TVector3<FT>\&\ Abs()\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ data[0]\ =\ olx\_abs(data[0]);}
+\DoxyCodeLine{00137\ \ \ \ \ data[1]\ =\ olx\_abs(data[1]);}
+\DoxyCodeLine{00138\ \ \ \ \ data[2]\ =\ olx\_abs(data[2]);}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{comment}{//\ returns\ a\ vector\ with\ absolute\ values\ of\ provided\ one}}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{static}\ TVector3<FT>\ Abs(\textcolor{keyword}{const}\ TVector3<FT>\&\ v)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(v).Abs();}
+\DoxyCodeLine{00144\ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \textcolor{comment}{//\ returns\ vector\ with\ 1/\ values}}
+\DoxyCodeLine{00146\ \ \ TVector3<FT>\&\ Inverse()\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ data[0]\ =\ FT(1)\ /\ data[0];}
+\DoxyCodeLine{00148\ \ \ \ \ data[1]\ =\ FT(1)\ /\ data[1];}
+\DoxyCodeLine{00149\ \ \ \ \ data[2]\ =\ FT(1)\ /\ data[2];}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00151\ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{comment}{//\ returns\ vector\ with\ 1/\ values}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{static}\ TVector3<FT>\ Inverse(\textcolor{keyword}{const}\ TVector3<FT>\&\ v)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(v).Inverse();}
+\DoxyCodeLine{00155\ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//\ returns\ sum\ of\ vector\ elements}}
+\DoxyCodeLine{00157\ \ \ FT\ Sum()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[0]\ +\ data[1]\ +\ data[2];\ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{comment}{//\ returns\ product\ of\ vector\ elements}}
+\DoxyCodeLine{00159\ \ \ FT\ Prod()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[0]\ *\ data[1]\ *\ data[2];\ \}}
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{//\ returns\ sum\ of\ absolute\ values\ of\ vector\ elements}}
+\DoxyCodeLine{00161\ \ \ FT\ AbsSum()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_abs(data[0])\ +\ olx\_abs(data[1])\ +\ olx\_abs(data[2]);}
+\DoxyCodeLine{00163\ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \textcolor{comment}{//\ rounds\ the\ vector\ elements}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<AT>\ Round()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<AT>(}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ olx\_round\_t<AT,\ FT>(data[0]),}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ olx\_round\_t<AT,\ FT>(data[1]),}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ olx\_round\_t<AT,\ FT>(data[2]));}
+\DoxyCodeLine{00170\ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ floors\ the\ vector\ elements}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<AT>\ Floor()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<AT>(}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ olx\_floor\_t<AT,\ FT>(data[0]),}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ olx\_floor\_t<AT,\ FT>(data[1]),}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ olx\_floor\_t<AT,\ FT>(data[2]));}
+\DoxyCodeLine{00177\ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ FT\ DotProd(\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{return}\ (FT)(data[0]\ *\ v[0]\ +\ data[1]\ *\ v[1]\ +\ data[2]\ *\ v[2]);}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{comment}{//\ ax(bxc)\ =\ b(a.c)\ -\/\ c(a.b)}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{static}\ TVector3<FT>\ TripleProd(\textcolor{keyword}{const}\ TVector3<FT>\&\ a,}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keyword}{const}\ TVector3<FT>\&\ b,\ \textcolor{keyword}{const}\ TVector3<FT>\&\ c)}
+\DoxyCodeLine{00184\ \ \ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ p1\ =\ a.DotProd(c),\ p2\ =\ a.DotProd(b);}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ b[0]\ *\ p1\ -\/\ c[0]\ *\ p2,}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ b[1]\ *\ p1\ -\/\ c[1]\ *\ p2,}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ b[2]\ *\ p1\ -\/\ c[2]\ *\ p2);}
+\DoxyCodeLine{00190\ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \textcolor{comment}{//\ a*b*sin\ =\ a*b*(1-\/cos\string^2)\ =\ a*b\ -\/\ DotProd\string^2}}
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ FT\ XProdVal(\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keyword}{const}\ FT\ dp\ =\ DotProd(v);}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordflow}{return}\ (FT)sqrt(QLength()*v.QLength()\ -\/\ dp\ *\ dp);}
+\DoxyCodeLine{00195\ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\ XProdVec(\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00197\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ data[1]\ *\ v[2]\ -\/\ data[2]\ *\ v[1],}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ data[2]\ *\ v[0]\ -\/\ data[0]\ *\ v[2],}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ data[0]\ *\ v[1]\ -\/\ data[1]\ *\ v[0]);}
+\DoxyCodeLine{00202\ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \textcolor{comment}{/*\ returns\ a\ normal\ to\ vector\ through\ a\ point\ (vector\ with\ same\ origin\ as}}
+\DoxyCodeLine{00204\ \textcolor{comment}{\ \ this\ vector)\ N\ =\ this*cos(this,point)*point.length/this.length\ =}}
+\DoxyCodeLine{00205\ \textcolor{comment}{\ \ this*DotProd(this,\ point)/this.QLength}}
+\DoxyCodeLine{00206\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\ NormalThrough(}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keyword}{const}\ TVector3<AT>\&\ point)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00209\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00210\ \ \ \ \ FT\ m\ =\ QLength();}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\ ==\ 0)\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00213\ \ \ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \ \ m\ =\ DotProd(point)\ /\ m;}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ point[0]\ -\/\ data[0]\ *\ m,}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ point[1]\ -\/\ data[1]\ *\ m,}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ point[2]\ -\/\ data[2]\ *\ m);}
+\DoxyCodeLine{00219\ \ \ \}}
+\DoxyCodeLine{00220\ \ \ \textcolor{comment}{/*\ intesection\ point\ of\ a\ normal\ through\ this\ point\ to\ a\ vector\ defined}}
+\DoxyCodeLine{00221\ \textcolor{comment}{\ \ by\ a\ and\ b}}
+\DoxyCodeLine{00222\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00224\ \ \ TVector3\ NormalIntersection(\textcolor{keyword}{const}\ TVector3<AT>\&\ a,\ \textcolor{keyword}{const}\ TVector3<AT>\&\ b)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00225\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00226\ \ \ \ \ TVector3\ v\ =\ b\ -\/\ a;}
+\DoxyCodeLine{00227\ \ \ \ \ FT\ m\ =\ v.QLength();}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\ ==\ 0)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00230\ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ FT\ u\ =\ (*\textcolor{keyword}{this}\ -\/\ a).DotProd(v)\ /\ m;}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordflow}{return}\ a\ +\ v\ *\ u;}
+\DoxyCodeLine{00233\ \ \ \}}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \ \textcolor{comment}{//https://gamedev.stackexchange.com/questions/60630/how-\/do-\/i-\/find-\/the-\/circumcenter-\/of-\/a-\/triangle-\/in-\/3d}}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{static}\ TVector3\ Circumcenter(\textcolor{keyword}{const}\ TVector3\&\ a,\ \textcolor{keyword}{const}\ TVector3\&\ b,}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keyword}{const}\ TVector3\&\ c)}
+\DoxyCodeLine{00238\ \ \ \{}
+\DoxyCodeLine{00239\ \ \ \ \ TVector3\ ab\ =\ a\ -\/\ b,\ cb\ =\ c\ -\/\ b;}
+\DoxyCodeLine{00240\ \ \ \ \ TVector3\ normal\ =\ ab.XProdVec(cb);}
+\DoxyCodeLine{00241\ \ \ \ \ TVector3\ cc\ =\ (normal.XProdVec(ab)\ *\ cb.QLength()\ +}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ cb.XProdVec(normal)\ *\ ab.QLength())\ /\ (2\ *\ normal.QLength());}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordflow}{return}\ cc\ +\ b;}
+\DoxyCodeLine{00244\ \ \ \}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \textcolor{comment}{//\ convenience\ method}}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{static}\ TVector3\ Normal(\textcolor{keyword}{const}\ TVector3\ \&a,\ \textcolor{keyword}{const}\ TVector3\ \&b,}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keyword}{const}\ TVector3\ \&c)}
+\DoxyCodeLine{00249\ \ \ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordflow}{return}\ (a\ -\/\ b).XProdVec(c\ -\/\ b).Normalise();}
+\DoxyCodeLine{00251\ \ \ \}}
+\DoxyCodeLine{00252\ \ \ \textcolor{comment}{//\ convenience\ method}}
+\DoxyCodeLine{00253\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ arr\_t>}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{static}\ TVector3\ Normal(\textcolor{keyword}{const}\ arr\_t\ \&ar,\ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keywordtype}{size\_t}\ k)\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordflow}{return}\ (ar[i]\ -\/\ ar[j]).XProdVec(ar[k]\ -\/\ ar[j]).Normalise();}
+\DoxyCodeLine{00256\ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \textcolor{comment}{/*\ projects\ this\ vector\ onto\ a\ plane\ given\ by\ the\ normal\ with\ center\ at}}
+\DoxyCodeLine{00258\ \textcolor{comment}{\ \ the\ origin}}
+\DoxyCodeLine{00259\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00260\ \ \ TVector3\ \&Project(\textcolor{keyword}{const}\ TVector3\ \&normal)\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{return}\ (this-\/>\textcolor{keyword}{operator}\ -\/=\ (normal*DotProd(normal)));}
+\DoxyCodeLine{00262\ \ \ \}}
+\DoxyCodeLine{00263\ \ \ \textcolor{comment}{/*\ projects\ this\ vector\ onto\ a\ plane\ given\ by\ the\ normal\ and\ center\ */}}
+\DoxyCodeLine{00264\ \ \ TVector3\ \&Project(\textcolor{keyword}{const}\ TVector3\ \&center,\ \textcolor{keyword}{const}\ TVector3\ \&normal)\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ this-\/>operator\ -\/=\ (center);}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordflow}{return}\ (this-\/>\textcolor{keyword}{operator}\ -\/=\ (normal*DotProd(normal)));}
+\DoxyCodeLine{00267\ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \textcolor{comment}{/*\ returns\ a\ projection\ of\ a\ point\ to\ a\ plane\ given\ by\ normal\ with\ center}}
+\DoxyCodeLine{00269\ \textcolor{comment}{\ \ at\ origin}}
+\DoxyCodeLine{00270\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00271\ \ \ TVector3\ Projection(\textcolor{keyword}{const}\ TVector3\ \&normal)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3(*this).Project(normal);}
+\DoxyCodeLine{00273\ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \textcolor{comment}{/*\ returns\ a\ projection\ of\ a\ point\ to\ a\ plane\ given\ by\ normal\ and\ center\ */}}
+\DoxyCodeLine{00275\ \ \ TVector3\ Projection(\textcolor{keyword}{const}\ TVector3\ \&center,\ \textcolor{keyword}{const}\ TVector3\ \&normal)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3(*\textcolor{keyword}{this}\ -\/\ center).Project(normal);}
+\DoxyCodeLine{00277\ \ \ \}}
+\DoxyCodeLine{00278\ \ \ TVector3<FT>\ operator\ -\/()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(-\/data[0],\ -\/data[1],\ -\/data[2]);}
+\DoxyCodeLine{00280\ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \textcolor{comment}{//\ returns\ a\ reflection\ of\ this\ vector\ from\ a\ plane\ represented\ by\ normal}}
+\DoxyCodeLine{00282\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\ Reflect(}
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{keyword}{const}\ TVector3<AT>\&\ normal)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00284\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keyword}{const}\ FT\ m\ =\ DotProd(normal)\ *\ 2;}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ data[0]\ -\/\ normal[0]\ *\ m,}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ data[1]\ -\/\ normal[1]\ *\ m,}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ data[2]\ -\/\ normal[2]\ *\ m);}
+\DoxyCodeLine{00290\ \ \ \}}
+\DoxyCodeLine{00291\ \ \ TVector3<FT>\&\ Normalise()\ \{}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keyword}{const}\ FT\ l\ =\ Length();}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ ==\ 0)\ \{}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00295\ \ \ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this}\ /=\ l);}
+\DoxyCodeLine{00297\ \ \ \}}
+\DoxyCodeLine{00298\ \ \ \textcolor{comment}{//\ returns\ previous\ length}}
+\DoxyCodeLine{00299\ \ \ \textcolor{keywordtype}{double}\ NormaliseEx()\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ FT\ l\ =\ Length();}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ ==\ 0)\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00303\ \ \ \ \ \}}
+\DoxyCodeLine{00304\ \ \ \ \ *\textcolor{keyword}{this}\ /=\ l;}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keywordflow}{return}\ l;}
+\DoxyCodeLine{00306\ \ \ \}}
+\DoxyCodeLine{00307\ \ \ TVector3<FT>\&\ NormaliseTo(FT\ val)\ \{}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keyword}{const}\ FT\ l\ =\ Length();}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ ==\ 0)\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00311\ \ \ \ \ \}}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this}\ *=\ (val\ /\ l));}
+\DoxyCodeLine{00313\ \ \ \}}
+\DoxyCodeLine{00314\ \ \ TVector3<FT>\&\ Null()\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ data[0]\ =\ data[1]\ =\ data[2]\ =\ 0;}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00317\ \ \ \}}
+\DoxyCodeLine{00318\ \ \ \textcolor{keywordtype}{bool}\ IsNull()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{keywordflow}{return}\ (data[0]\ ==\ 0\ \&\&\ data[1]\ ==\ 0\ \&\&\ data[2]\ ==\ 0);}
+\DoxyCodeLine{00320\ \ \ \}}
+\DoxyCodeLine{00321\ \ \ \textcolor{keywordtype}{bool}\ IsNull(FT\ eps)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00322\ \ \ \ \ \textcolor{keywordflow}{return}\ (olx\_abs(data[0])\ <\ eps\ \&\&}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ olx\_abs(data[1])\ <\ eps\ \&\&}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ olx\_abs(data[2])\ <\ eps);}
+\DoxyCodeLine{00325\ \ \ \}}
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00327\ \ \ \textcolor{keywordtype}{bool}\ Equals(\textcolor{keyword}{const}\ TVector3<FT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordflow}{return}\ (data[0]\ ==\ v[0]\ \&\&\ data[1]\ ==\ v[1]\ \&\&\ data[2]\ ==\ v[2]);}
+\DoxyCodeLine{00329\ \ \ \}}
+\DoxyCodeLine{00330\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TVector3<FT>\&\ v)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Equals(v);\ \}}
+\DoxyCodeLine{00331\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ TVector3<FT>\&\ v)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !Equals(v);\ \}}
+\DoxyCodeLine{00332\ \ \ \textcolor{comment}{//\ approximately\ equals}}
+\DoxyCodeLine{00333\ \ \ \textcolor{keywordtype}{bool}\ Equals(\textcolor{keyword}{const}\ TVector3<FT>\&\ v,\ FT\ eps)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keywordflow}{return}\ (}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ olx\_abs(data[0]\ -\/\ v[0])\ <\ eps\ \&\&}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ olx\_abs(data[1]\ -\/\ v[1])\ <\ eps\ \&\&}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ olx\_abs(data[2]\ -\/\ v[2])\ <\ eps);}
+\DoxyCodeLine{00338\ \ \ \}}
+\DoxyCodeLine{00339\ \ \ TVector3<FT>\&\ operator\ =\ (\textcolor{keyword}{const}\ TVector3<FT>\&\ v)\ \{}
+\DoxyCodeLine{00340\ \ \ \ \ data[0]\ =\ v[0];\ \ data[1]\ =\ v[1];\ \ data[2]\ =\ v[2];}
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00342\ \ \ \}}
+\DoxyCodeLine{00343\ \ \ \textcolor{comment}{//\ any\ vector}}
+\DoxyCodeLine{00344\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\&\ operator\ =\ (\textcolor{keyword}{const}\ AT\&\ v)\ \{}
+\DoxyCodeLine{00345\ \ \ \ \ data[0]\ =\ (FT)v[0];\ \ data[1]\ =\ (FT)v[1];\ \ data[2]\ =\ (FT)v[2];}
+\DoxyCodeLine{00346\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00347\ \ \ \}}
+\DoxyCodeLine{00348\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00349\ \ \ TVector3<FT>\&\ operator\ +=\ (\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\ \{}
+\DoxyCodeLine{00350\ \ \ \ \ data[0]\ +=\ (FT)v[0];\ \ data[1]\ +=\ (FT)v[1];\ \ data[2]\ +=\ (FT)v[2];}
+\DoxyCodeLine{00351\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00352\ \ \ \}}
+\DoxyCodeLine{00353\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00354\ \ \ TVector3<FT>\&\ operator\ -\/=\ (\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\ \{}
+\DoxyCodeLine{00355\ \ \ \ \ data[0]\ -\/=\ (FT)v[0];\ \ data[1]\ -\/=\ (FT)v[1];\ \ data[2]\ -\/=\ (FT)v[2];}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00357\ \ \ \}}
+\DoxyCodeLine{00358\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00359\ \ \ TVector3<FT>\&\ operator\ *=\ (\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ data[0]\ *=\ (FT)v[0];\ \ data[1]\ *=\ (FT)v[1];\ \ data[2]\ *=\ (FT)v[2];}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00362\ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00364\ \ \ TVector3<FT>\&\ operator\ /=\ (\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\ \{}
+\DoxyCodeLine{00365\ \ \ \ \ data[0]\ /=\ (FT)v[0];\ \ data[1]\ /=\ (FT)v[1];\ \ data[2]\ /=\ (FT)v[2];}
+\DoxyCodeLine{00366\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00367\ \ \ \}}
+\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\&\ operator\ +=\ (AT\ v)\ \{}
+\DoxyCodeLine{00369\ \ \ \ \ data[0]\ +=\ (FT)v;\ \ data[1]\ +=\ (FT)v;\ \ data[2]\ +=\ (FT)v;}
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00371\ \ \ \}}
+\DoxyCodeLine{00372\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\&\ operator\ -\/=\ (AT\ v)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ data[0]\ -\/=\ (FT)v;\ \ data[1]\ -\/=\ (FT)v;\ \ data[2]\ -\/=\ (FT)v;}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00375\ \ \ \}}
+\DoxyCodeLine{00376\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\&\ operator\ *=\ (AT\ v)\ \{}
+\DoxyCodeLine{00377\ \ \ \ \ data[0]\ *=\ (FT)v;\ \ data[1]\ *=\ (FT)v;\ \ data[2]\ *=\ (FT)v;}
+\DoxyCodeLine{00378\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00379\ \ \ \}}
+\DoxyCodeLine{00380\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\&\ operator\ /=\ (AT\ v)\ \{}
+\DoxyCodeLine{00381\ \ \ \ \ data[0]\ /=\ v;\ \ data[1]\ /=\ v;\ \ data[2]\ /=\ v;}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00383\ \ \ \}}
+\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00385\ \ \ TVector3<FT>\ operator\ +\ (\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ +\ v[0]),}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1]\ +\ v[1]),}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2]\ +\ v[2]));}
+\DoxyCodeLine{00390\ \ \ \}}
+\DoxyCodeLine{00391\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00392\ \ \ TVector3<FT>\ operator\ -\/\ (\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00393\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ -\/\ v[0]),}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1]\ -\/\ v[1]),}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2]\ -\/\ v[2]));}
+\DoxyCodeLine{00397\ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00399\ \ \ TVector3<FT>\ operator\ *\ (\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00400\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ *\ v[0]),}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1]\ *\ v[1]),}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2]\ *\ v[2]));}
+\DoxyCodeLine{00404\ \ \ \}}
+\DoxyCodeLine{00405\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00406\ \ \ TVector3<FT>\ operator\ /\ (\textcolor{keyword}{const}\ TVector3<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ /\ v[0]),}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1]\ /\ v[1]),}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2]\ /\ v[2]));}
+\DoxyCodeLine{00411\ \ \ \}}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\ operator\ +\ (AT\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00414\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ +\ v),}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1]\ +\ v),}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2]\ +\ v));}
+\DoxyCodeLine{00418\ \ \ \}}
+\DoxyCodeLine{00419\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\ operator\ -\/\ (AT\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00420\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ -\/\ v),}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1]\ -\/\ v),}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2]\ -\/\ v));}
+\DoxyCodeLine{00424\ \ \ \}}
+\DoxyCodeLine{00425\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\ operator\ *\ (AT\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00426\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ *\ v),}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1]\ *\ v),}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2]\ *\ v));}
+\DoxyCodeLine{00430\ \ \ \}}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00432\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\ operator\ /\ (AT\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00433\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ /\ v),}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1]\ /\ v),}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2]\ /\ v));}
+\DoxyCodeLine{00437\ \ \ \}}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00439\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\ ColMul(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<AT>}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ *\ (a[0][0]\ +\ a[0][1]\ +\ a[0][2])),}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1]\ *\ (a[1][0]\ +\ a[1][1]\ +\ a[1][2])),}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2]\ *\ (a[2][0]\ +\ a[2][1]\ +\ a[2][2])));}
+\DoxyCodeLine{00444\ \ \ \}}
+\DoxyCodeLine{00445\ }
+\DoxyCodeLine{00446\ \ \ \textcolor{comment}{/*\ beware\ -\/\ row\ vector\ (or\ Mt\ is\ used),\ use\ M.v\ for\ column\ vector}}
+\DoxyCodeLine{00447\ \textcolor{comment}{\ \ multiplication}}
+\DoxyCodeLine{00448\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00449\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\ \ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<AT>}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00450\ \ \ \ \ \textcolor{keywordflow}{return}\ TVector3<FT>(}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ *\ a[0][0]\ +\ data[1]\ *\ a[1][0]\ +\ data[2]\ *\ a[2][0]),}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ *\ a[0][1]\ +\ data[1]\ *\ a[1][1]\ +\ data[2]\ *\ a[2][1]),}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0]\ *\ a[0][2]\ +\ data[1]\ *\ a[1][2]\ +\ data[2]\ *\ a[2][2]));}
+\DoxyCodeLine{00454\ \ \ \}}
+\DoxyCodeLine{00455\ \ \ \textcolor{comment}{/*\ beware\ -\/\ row\ vector\ (or\ Mt\ is\ used),\ use\ M.v\ for\ column\ vector}}
+\DoxyCodeLine{00456\ \textcolor{comment}{\ \ multiplication}}
+\DoxyCodeLine{00457\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00458\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TVector3<FT>\&\ operator\ *=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<AT>}}\&\ a)\ \{}
+\DoxyCodeLine{00459\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this}\ =\ (*\textcolor{keyword}{this})*a);}
+\DoxyCodeLine{00460\ \ \ \}}
+\DoxyCodeLine{00461\ \ \ \textcolor{comment}{//\ updates\ Min/Max\ in\ a\ vector/array}}
+\DoxyCodeLine{00462\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Avec,\ \textcolor{keyword}{typename}\ Bvec>}
+\DoxyCodeLine{00463\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UpdateMinMax(\textcolor{keyword}{const}\ TVector3<FT>\&\ src,\ Avec\&\ min,\ Bvec\&\ max)\ \{}
+\DoxyCodeLine{00464\ \ \ \ \ olx\_update\_min\_max(src[0],\ min[0],\ max[0]);}
+\DoxyCodeLine{00465\ \ \ \ \ olx\_update\_min\_max(src[1],\ min[1],\ max[1]);}
+\DoxyCodeLine{00466\ \ \ \ \ olx\_update\_min\_max(src[2],\ min[2],\ max[2]);}
+\DoxyCodeLine{00467\ \ \ \}}
+\DoxyCodeLine{00468\ \ \ \textcolor{comment}{//\ returns\ true\ if\ the\ value\ in\ in\ the\ range\ inclusive\ the\ boundaries}}
+\DoxyCodeLine{00469\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Avec,\ \textcolor{keyword}{typename}\ Bvec>}
+\DoxyCodeLine{00470\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsInRangeExc(\textcolor{keyword}{const}\ TVector3<FT>\&\ src,\ \textcolor{keyword}{const}\ Avec\&\ min,}
+\DoxyCodeLine{00471\ \ \ \ \ \textcolor{keyword}{const}\ Bvec\&\ max)}
+\DoxyCodeLine{00472\ \ \ \{}
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{keywordflow}{if}\ (src[0]\ >=\ max[0]\ ||\ src[0]\ <=\ min[0]\ ||}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ src[1]\ >=\ max[1]\ ||\ src[1]\ <=\ min[1]\ ||}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ src[2]\ >=\ max[2]\ ||\ src[2]\ <=\ min[2])}
+\DoxyCodeLine{00476\ \ \ \ \ \{}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00478\ \ \ \ \ \}}
+\DoxyCodeLine{00479\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00480\ \ \ \}}
+\DoxyCodeLine{00481\ \ \ \textcolor{comment}{//\ returns\ true\ if\ the\ value\ in\ in\ the\ range\ exclusive\ the\ boundaries}}
+\DoxyCodeLine{00482\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Avec,\ \textcolor{keyword}{typename}\ Bvec>}
+\DoxyCodeLine{00483\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsInRangeInc(\textcolor{keyword}{const}\ TVector3<FT>\&\ src,\ \textcolor{keyword}{const}\ Avec\&\ min,}
+\DoxyCodeLine{00484\ \ \ \ \ \textcolor{keyword}{const}\ Bvec\&\ max)}
+\DoxyCodeLine{00485\ \ \ \{}
+\DoxyCodeLine{00486\ \ \ \ \ \textcolor{keywordflow}{if}\ (src[0]\ >\ max[0]\ ||\ src[0]\ <\ min[0]\ ||}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ src[1]\ >\ max[1]\ ||\ src[1]\ <\ min[1]\ ||}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ src[2]\ >\ max[2]\ ||\ src[2]\ <\ min[2])}
+\DoxyCodeLine{00489\ \ \ \ \ \{}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00491\ \ \ \ \ \}}
+\DoxyCodeLine{00492\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00493\ \ \ \}}
+\DoxyCodeLine{00494\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SC>\ SC\ StrRepr()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00495\ \ \ \ \ SC\ rv(data[0],\ 64);}
+\DoxyCodeLine{00496\ \ \ \ \ \textcolor{keywordflow}{return}\ rv\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ data[1]\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ data[2];}
+\DoxyCodeLine{00497\ \ \ \}}
+\DoxyCodeLine{00498\ \ \ TIString\ ToString()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ StrRepr<olxstr>();\ \}}
+\DoxyCodeLine{00499\ \ \ olxcstr\ ToCStr()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ StrRepr<olxcstr>();\ \}}
+\DoxyCodeLine{00500\ \ \ olxwstr\ ToWStr()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ StrRepr<olxwstr>();\ \}}
+\DoxyCodeLine{00501\ }
+\DoxyCodeLine{00502\ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ TVector3\ \&v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00503\ \ \ \ \ \textcolor{keywordtype}{int}\ d\ =\ olx\_cmp(data[0],\ v[0]);}
+\DoxyCodeLine{00504\ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ !=\ 0)\ \{}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ d;}
+\DoxyCodeLine{00506\ \ \ \ \ \}}
+\DoxyCodeLine{00507\ \ \ \ \ d\ =\ olx\_cmp(data[1],\ v[1]);}
+\DoxyCodeLine{00508\ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ !=\ 0)\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ d;}
+\DoxyCodeLine{00510\ \ \ \ \ \}}
+\DoxyCodeLine{00511\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(data[2],\ v[2]);}
+\DoxyCodeLine{00512\ \ \ \}}
+\DoxyCodeLine{00513\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00514\ \ \ \textcolor{keyword}{typedef}\ FT\ list\_item\_type;}
+\DoxyCodeLine{00515\ \ \ \textcolor{keyword}{typedef}\ FT\ number\_type;}
+\DoxyCodeLine{00516\ \};}
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00518\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ FT>\ \textcolor{keyword}{class\ }TMatrix33\ \{}
+\DoxyCodeLine{00519\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00520\ \ \ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ data[3];}
+\DoxyCodeLine{00521\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00522\ \ \ TMatrix33()\ \{\}}
+\DoxyCodeLine{00523\ \ \ TMatrix33(FT\ xx,\ FT\ xy,\ FT\ xz,\ FT\ yx,\ FT\ yy,\ FT\ yz,\ FT\ zx,\ FT\ zy,\ FT\ zz)\ \{}
+\DoxyCodeLine{00524\ \ \ \ \ data[0][0]\ =\ xx;\ \ data[0][1]\ =\ xy;\ \ data[0][2]\ =\ xz;}
+\DoxyCodeLine{00525\ \ \ \ \ data[1][0]\ =\ yx;\ \ data[1][1]\ =\ yy;\ \ data[1][2]\ =\ yz;}
+\DoxyCodeLine{00526\ \ \ \ \ data[2][0]\ =\ zx;\ \ data[2][1]\ =\ zy;\ \ data[2][2]\ =\ zz;}
+\DoxyCodeLine{00527\ \ \ \}}
+\DoxyCodeLine{00528\ \ \ TMatrix33(FT\ xx,\ FT\ xy,\ FT\ xz,\ FT\ yy,\ FT\ yz,\ FT\ zz)\ \{}
+\DoxyCodeLine{00529\ \ \ \ \ data[0][0]\ =\ xx;\ \ data[0][1]\ =\ xy;\ \ data[0][2]\ =\ xz;}
+\DoxyCodeLine{00530\ \ \ \ \ data[1][0]\ =\ xy;\ \ data[1][1]\ =\ yy;\ \ data[1][2]\ =\ yz;}
+\DoxyCodeLine{00531\ \ \ \ \ data[2][0]\ =\ xz;\ \ data[2][1]\ =\ yz;\ \ data[2][2]\ =\ zz;}
+\DoxyCodeLine{00532\ \ \ \}}
+\DoxyCodeLine{00533\ \ \ TMatrix33(FT\ xx,\ FT\ yy,\ FT\ zz)\ \{}
+\DoxyCodeLine{00534\ \ \ \ \ data[0][0]\ =\ xx;\ \ data[1][1]\ =\ yy;\ \ data[2][2]\ =\ zz;}
+\DoxyCodeLine{00535\ \ \ \}}
+\DoxyCodeLine{00536\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vt>\ TMatrix33(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<vt>}}\&\ x,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<vt>}}\&\ y,}
+\DoxyCodeLine{00537\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<vt>}}\&\ z)}
+\DoxyCodeLine{00538\ \ \ \{}
+\DoxyCodeLine{00539\ \ \ \ \ data[0]\ =\ x;\ \ data[1]\ =\ y;\ \ data[2]\ =\ z;}
+\DoxyCodeLine{00540\ \ \ \}}
+\DoxyCodeLine{00541\ \ \ TMatrix33(\textcolor{keyword}{const}\ TMatrix33<FT>\&\ v)\ \{}
+\DoxyCodeLine{00542\ \ \ \ \ data[0][0]\ =\ v[0][0];\ data[0][1]\ =\ v[0][1];\ data[0][2]\ =\ v[0][2];}
+\DoxyCodeLine{00543\ \ \ \ \ data[1][0]\ =\ v[1][0];\ data[1][1]\ =\ v[1][1];\ data[1][2]\ =\ v[1][2];}
+\DoxyCodeLine{00544\ \ \ \ \ data[2][0]\ =\ v[2][0];\ data[2][1]\ =\ v[2][1];\ data[2][2]\ =\ v[2][2];}
+\DoxyCodeLine{00545\ \ \ \}}
+\DoxyCodeLine{00546\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TMatrix33(\textcolor{keyword}{const}\ TMatrix33<AT>\&\ v)\ \{}
+\DoxyCodeLine{00547\ \ \ \ \ data[0][0]\ =\ (FT)v[0][0];\ data[0][1]\ =\ (FT)v[0][1];\ data[0][2]\ =\ (FT)v[0][2];}
+\DoxyCodeLine{00548\ \ \ \ \ data[1][0]\ =\ (FT)v[1][0];\ data[1][1]\ =\ (FT)v[1][1];\ data[1][2]\ =\ (FT)v[1][2];}
+\DoxyCodeLine{00549\ \ \ \ \ data[2][0]\ =\ (FT)v[2][0];\ data[2][1]\ =\ (FT)v[2][1];\ data[2][2]\ =\ (FT)v[2][2];}
+\DoxyCodeLine{00550\ \ \ \}}
+\DoxyCodeLine{00551\ \ \ \textcolor{comment}{//\ any\ matrix}}
+\DoxyCodeLine{00552\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AM>\ \textcolor{keyword}{static}\ TMatrix33\ FromAny(\textcolor{keyword}{const}\ AM\&\ v)\ \{}
+\DoxyCodeLine{00553\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00554\ \ \ \ \ \textcolor{keywordflow}{if}\ (v.ColCount()\ !=\ 3\ ||\ v.RowCount()\ !=\ 3)\ \{}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}matrix"{}});}
+\DoxyCodeLine{00556\ \ \ \ \ \}}
+\DoxyCodeLine{00557\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00558\ \ \ \ \ TMatrix33\ r;}
+\DoxyCodeLine{00559\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ r[i][0]\ =\ v(i,\ 0);}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ r[i][1]\ =\ v(i,\ 1);}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ r[i][2]\ =\ v(i,\ 2);}
+\DoxyCodeLine{00563\ \ \ \ \ \}}
+\DoxyCodeLine{00564\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00565\ \ \ \}}
+\DoxyCodeLine{00566\ }
+\DoxyCodeLine{00567\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00568\ \ \ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00569\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00570\ \ \ \textcolor{keyword}{const}\ FT\&\ Get(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i][j];\ \}}
+\DoxyCodeLine{00571\ \ \ FT\&\ Set(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keyword}{const}\ FT\&\ v)\ \{}
+\DoxyCodeLine{00572\ \ \ \ \ \textcolor{keywordflow}{return}\ (data[i][j]\ =\ v);}
+\DoxyCodeLine{00573\ \ \ \}}
+\DoxyCodeLine{00574\ \ \ FT\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{\ \textcolor{keywordflow}{return}\ data[i][j];\ \}}
+\DoxyCodeLine{00575\ \ \ \textcolor{keyword}{const}\ FT\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00576\ \ \ \ \ \textcolor{keywordflow}{return}\ data[i][j];}
+\DoxyCodeLine{00577\ \ \ \}}
+\DoxyCodeLine{00578\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ColCount()\ \{\ \textcolor{keywordflow}{return}\ 3;\ \}}
+\DoxyCodeLine{00579\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ RowCount()\ \{\ \textcolor{keywordflow}{return}\ 3;\ \}}
+\DoxyCodeLine{00580\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsEmpty()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00581\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Resize(\textcolor{keywordtype}{size\_t}\ w,\ \textcolor{keywordtype}{size\_t}\ h)\ \{}
+\DoxyCodeLine{00582\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00583\ \ \ \ \ \textcolor{keywordflow}{if}\ (w\ !=\ 3\ ||\ h\ !=\ 3)\ \{}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00585\ \ \ \ \ \}}
+\DoxyCodeLine{00586\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00587\ \ \ \}}
+\DoxyCodeLine{00588\ \ \ \textcolor{keywordtype}{void}\ SwapRows(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00589\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ \_i\ =\ 0;\ \_i\ <\ 3;\ \_i++)\ \{}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ olx\_swap(data[i][\_i],\ data[j][\_i]);}
+\DoxyCodeLine{00591\ \ \ \ \ \}}
+\DoxyCodeLine{00592\ \ \ \}}
+\DoxyCodeLine{00593\ \ \ \textcolor{keywordtype}{void}\ SwapCols(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00594\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ \_i\ =\ 0;\ \_i\ <\ 3;\ \_i++)\ \{}
+\DoxyCodeLine{00595\ \ \ \ \ \ \ olx\_swap(data[\_i][i],\ data[\_i][j]);}
+\DoxyCodeLine{00596\ \ \ \ \ \}}
+\DoxyCodeLine{00597\ \ \ \}}
+\DoxyCodeLine{00598\ }
+\DoxyCodeLine{00599\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TMatrix33<FT>\ operator\ *\ (\textcolor{keyword}{const}\ TMatrix33<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00600\ \ \ \ \ \textcolor{keywordflow}{return}\ TMatrix33<FT>(}
+\DoxyCodeLine{00601\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0][0]\ *\ v[0][0]\ +\ data[0][1]\ *\ v[1][0]\ +\ data[0][2]\ *\ v[2][0]),}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0][0]\ *\ v[0][1]\ +\ data[0][1]\ *\ v[1][1]\ +\ data[0][2]\ *\ v[2][1]),}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[0][0]\ *\ v[0][2]\ +\ data[0][1]\ *\ v[1][2]\ +\ data[0][2]\ *\ v[2][2]),}
+\DoxyCodeLine{00604\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1][0]\ *\ v[0][0]\ +\ data[1][1]\ *\ v[1][0]\ +\ data[1][2]\ *\ v[2][0]),}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1][0]\ *\ v[0][1]\ +\ data[1][1]\ *\ v[1][1]\ +\ data[1][2]\ *\ v[2][1]),}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[1][0]\ *\ v[0][2]\ +\ data[1][1]\ *\ v[1][2]\ +\ data[1][2]\ *\ v[2][2]),}
+\DoxyCodeLine{00607\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2][0]\ *\ v[0][0]\ +\ data[2][1]\ *\ v[1][0]\ +\ data[2][2]\ *\ v[2][0]),}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2][0]\ *\ v[0][1]\ +\ data[2][1]\ *\ v[1][1]\ +\ data[2][2]\ *\ v[2][1]),}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(data[2][0]\ *\ v[0][2]\ +\ data[2][1]\ *\ v[1][2]\ +\ data[2][2]\ *\ v[2][2]));}
+\DoxyCodeLine{00610\ \ \ \}}
+\DoxyCodeLine{00611\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TMatrix33<FT>\&\ operator\ *=\ (\textcolor{keyword}{const}\ TMatrix33<AT>\&\ v)\ \{}
+\DoxyCodeLine{00612\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this}\ =\ (*\textcolor{keyword}{this})\ *\ v);}
+\DoxyCodeLine{00613\ \ \ \}}
+\DoxyCodeLine{00614\ }
+\DoxyCodeLine{00615\ \ \ TMatrix33\ operator\ -\/()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00616\ \ \ \ \ \textcolor{keywordflow}{return}\ TMatrix33<FT>(-\/data[0],\ -\/data[1],\ -\/data[2]);}
+\DoxyCodeLine{00617\ \ \ \}}
+\DoxyCodeLine{00618\ }
+\DoxyCodeLine{00619\ \ \ TMatrix33\ GetTranspose()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00620\ \ \ \ \ \textcolor{keywordflow}{return}\ TMatrix33<FT>(}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ data[0][0],\ data[1][0],\ data[2][0],}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ data[0][1],\ data[1][1],\ data[2][1],}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ data[0][2],\ data[1][2],\ data[2][2]);}
+\DoxyCodeLine{00624\ \ \ \}}
+\DoxyCodeLine{00625\ \ \ TMatrix33\ GetT()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00626\ \ \ \ \ \textcolor{keywordflow}{return}\ GetTranspose();}
+\DoxyCodeLine{00627\ \ \ \}}
+\DoxyCodeLine{00628\ }
+\DoxyCodeLine{00629\ \ \ TMatrix33\&\ Transpose()\ \{}
+\DoxyCodeLine{00630\ \ \ \ \ olx\_swap(data[0][1],\ data[1][0]);}
+\DoxyCodeLine{00631\ \ \ \ \ olx\_swap(data[0][2],\ data[2][0]);}
+\DoxyCodeLine{00632\ \ \ \ \ olx\_swap(data[1][2],\ data[2][1]);}
+\DoxyCodeLine{00633\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00634\ \ \ \}}
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00636\ \ \ TMatrix33\&\ T()\ \{}
+\DoxyCodeLine{00637\ \ \ \ \ \textcolor{keywordflow}{return}\ Transpose();}
+\DoxyCodeLine{00638\ \ \ \}}
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00640\ \ \ TMatrix33\&\ I()\ \{}
+\DoxyCodeLine{00641\ \ \ \ \ data[0][0]\ =\ 1;\ \ data[0][1]\ =\ 0;\ \ data[0][2]\ =\ 0;}
+\DoxyCodeLine{00642\ \ \ \ \ data[1][0]\ =\ 0;\ \ data[1][1]\ =\ 1;\ \ data[1][2]\ =\ 0;}
+\DoxyCodeLine{00643\ \ \ \ \ data[2][0]\ =\ 0;\ \ data[2][1]\ =\ 0;\ \ data[2][2]\ =\ 1;}
+\DoxyCodeLine{00644\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00645\ \ \ \}}
+\DoxyCodeLine{00646\ }
+\DoxyCodeLine{00647\ \ \ \textcolor{keyword}{static}\ TMatrix33\ Idenity()\ \{\ \textcolor{keywordflow}{return}\ TMatrix33(1,\ 1,\ 1);\ \}}
+\DoxyCodeLine{00648\ \ \ \textcolor{comment}{//\ normalises\ each\ vector}}
+\DoxyCodeLine{00649\ \ \ TMatrix33<FT>\&\ Normalise()\ \{}
+\DoxyCodeLine{00650\ \ \ \ \ data[0].Normalise();}
+\DoxyCodeLine{00651\ \ \ \ \ data[1].Normalise();}
+\DoxyCodeLine{00652\ \ \ \ \ data[2].Normalise();}
+\DoxyCodeLine{00653\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00654\ \ \ \}}
+\DoxyCodeLine{00655\ \ \ \textcolor{keyword}{static}\ TMatrix33<FT>\ Normalise(\textcolor{keyword}{const}\ TMatrix33<FT>\&\ m)\ \{}
+\DoxyCodeLine{00656\ \ \ \ \ \textcolor{keywordflow}{return}\ TMatrix33<FT>(m).Normalise();}
+\DoxyCodeLine{00657\ \ \ \}}
+\DoxyCodeLine{00658\ \ \ \textcolor{comment}{//\ normalises\ each\ vector\ and\ returns\ the\ vector\ of\ lengths}}
+\DoxyCodeLine{00659\ \ \ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ NormaliseEx()\ \{}
+\DoxyCodeLine{00660\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}(data[0].NormaliseEx(),}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ data[1].NormaliseEx(),}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ data[2].NormaliseEx());}
+\DoxyCodeLine{00663\ \ \ \}}
+\DoxyCodeLine{00664\ \ \ \textcolor{comment}{//\ normalises\ vectors\ to\ the\ given\ values}}
+\DoxyCodeLine{00665\ \ \ TMatrix33<FT>\&\ NormaliseTo(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ \&s)\ \{}
+\DoxyCodeLine{00666\ \ \ \ \ data[0].NormaliseTo(s[0]);}
+\DoxyCodeLine{00667\ \ \ \ \ data[1].NormaliseTo(s[1]);}
+\DoxyCodeLine{00668\ \ \ \ \ data[2].NormaliseTo(s[2]);}
+\DoxyCodeLine{00669\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00670\ \ \ \}}
+\DoxyCodeLine{00671\ \ \ \textcolor{comment}{//\ multiplies\ vectors\ by\ the\ given\ values}}
+\DoxyCodeLine{00672\ \ \ TMatrix33<FT>\&\ Scale(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ \&s)\ \{}
+\DoxyCodeLine{00673\ \ \ \ \ data[0]\ *=\ s[0];}
+\DoxyCodeLine{00674\ \ \ \ \ data[1]\ *=\ s[1];}
+\DoxyCodeLine{00675\ \ \ \ \ data[2]\ *=\ s[2];}
+\DoxyCodeLine{00676\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00677\ \ \ \}}
+\DoxyCodeLine{00678\ \ \ \textcolor{comment}{//\ multiplies\ vectors\ by\ the\ given\ values}}
+\DoxyCodeLine{00679\ \ \ \textcolor{keyword}{static}\ TMatrix33<FT>\ Scale(\textcolor{keyword}{const}\ TMatrix33<FT>\&\ m,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ \&s)\ \{}
+\DoxyCodeLine{00680\ \ \ \ \ \textcolor{keywordflow}{return}\ TMatrix33<FT>(m).Scale(s);}
+\DoxyCodeLine{00681\ \ \ \}}
+\DoxyCodeLine{00682\ \ \ \textcolor{keywordtype}{bool}\ IsI()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00683\ \ \ \ \ \textcolor{keywordflow}{return}\ (data[0][0]\ ==\ 1\ \&\&\ data[1][1]\ ==\ 1\ \&\&\ data[2][2]\ ==\ 1\ \&\&}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ data[0][1]\ ==\ 0\ \&\&\ data[0][2]\ ==\ 0\ \&\&\ data[1][0]\ ==\ 0\ \&\&}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ data[1][2]\ ==\ 0\ \&\&\ data[2][0]\ ==\ 0\ \&\&\ data[2][1]\ ==\ 0);}
+\DoxyCodeLine{00686\ \ \ \}}
+\DoxyCodeLine{00687\ \ \ \textcolor{keywordtype}{bool}\ IsI(FT\ e)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00688\ \ \ \ \ \textcolor{keywordflow}{return}\ (olx\_abs(data[0][0]\ -\/\ 1)\ <\ e\ \&\&}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ olx\_abs(data[1][1]\ -\/\ 1)\ <\ e\ \&\&}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ olx\_abs(data[2][2]\ -\/\ 1)\ <\ e\ \&\&}
+\DoxyCodeLine{00691\ \ \ \ \ \ \ olx\_abs(data[0][1])\ <\ e\ \&\&\ olx\_abs(data[0][2])\ <\ e\ \&\&}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ olx\_abs(data[1][0])\ <\ e\ \&\&\ olx\_abs(data[1][2])\ <\ e\ \&\&}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ olx\_abs(data[2][0])\ <\ e\ \&\&\ olx\_abs(data[2][1])\ <\ e);}
+\DoxyCodeLine{00694\ \ \ \}}
+\DoxyCodeLine{00695\ \ \ TMatrix33<FT>\&\ Null()\ \{}
+\DoxyCodeLine{00696\ \ \ \ \ data[0].Null();\ \ data[1].Null();\ \ data[2].Null();}
+\DoxyCodeLine{00697\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00698\ \ \ \}}
+\DoxyCodeLine{00699\ }
+\DoxyCodeLine{00700\ \ \ \textcolor{keywordtype}{bool}\ Equals(\textcolor{keyword}{const}\ TMatrix33\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00701\ \ \ \ \ \textcolor{keywordflow}{return}\ (data[0].Equals(v[0])\ \&\&\ data[1].Equals(v[1])\ \&\&\ data[2].Equals(v[2]));}
+\DoxyCodeLine{00702\ \ \ \}}
+\DoxyCodeLine{00703\ \ \ \textcolor{keywordtype}{bool}\ Equals(\textcolor{keyword}{const}\ TMatrix33\&\ v,\ FT\ eps)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00704\ \ \ \ \ \textcolor{keywordflow}{return}\ (data[0].Equals(v[0],\ eps)\ \&\&}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ data[1].Equals(v[1],\ eps)\ \&\&}
+\DoxyCodeLine{00706\ \ \ \ \ \ \ data[2].Equals(v[2],\ eps));}
+\DoxyCodeLine{00707\ \ \ \}}
+\DoxyCodeLine{00708\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TMatrix33\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00709\ \ \ \ \ \textcolor{keywordflow}{return}\ Equals(v);}
+\DoxyCodeLine{00710\ \ \ \}}
+\DoxyCodeLine{00711\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ TMatrix33\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00712\ \ \ \ \ \textcolor{keywordflow}{return}\ !(operator\ ==\ (v));}
+\DoxyCodeLine{00713\ \ \ \}}
+\DoxyCodeLine{00714\ }
+\DoxyCodeLine{00715\ \ \ TMatrix33<FT>\&\ operator\ =\ (\textcolor{keyword}{const}\ TMatrix33<FT>\&\ v)\ \{}
+\DoxyCodeLine{00716\ \ \ \ \ data[0]\ =\ v[0];\ \ data[1]\ =\ v[1];\ \ data[2]\ =\ v[2];}
+\DoxyCodeLine{00717\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00718\ \ \ \}}
+\DoxyCodeLine{00719\ }
+\DoxyCodeLine{00720\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00721\ \ \ TMatrix33<FT>\&\ operator\ =\ (\textcolor{keyword}{const}\ TMatrix33<AT>\&\ v)\ \{}
+\DoxyCodeLine{00722\ \ \ \ \ data[0]\ =\ v[0];\ \ data[1]\ =\ v[1];\ \ data[2]\ =\ v[2];}
+\DoxyCodeLine{00723\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00724\ \ \ \}}
+\DoxyCodeLine{00725\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AM>}
+\DoxyCodeLine{00726\ \ \ TMatrix33<FT>\&\ operator\ =\ (\textcolor{keyword}{const}\ AM\&\ v)\ \{}
+\DoxyCodeLine{00727\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00728\ \ \ \ \ \textcolor{keywordflow}{if}\ (v.ColCount()\ !=\ 3\ ||\ v.RowCount()\ !=\ 3)\ \{}
+\DoxyCodeLine{00729\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}matrix"{}});}
+\DoxyCodeLine{00730\ \ \ \ \ \}}
+\DoxyCodeLine{00731\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00732\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ data[i][0]\ =\ v(i,\ 0);}
+\DoxyCodeLine{00734\ \ \ \ \ \ \ data[i][1]\ =\ v(i,\ 1);}
+\DoxyCodeLine{00735\ \ \ \ \ \ \ data[i][2]\ =\ v(i,\ 2);}
+\DoxyCodeLine{00736\ \ \ \ \ \}}
+\DoxyCodeLine{00737\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00738\ \ \ \}}
+\DoxyCodeLine{00739\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00740\ \ \ TMatrix33<FT>\&\ operator\ -\/=\ (\textcolor{keyword}{const}\ TMatrix33<AT>\&\ v)\ \{}
+\DoxyCodeLine{00741\ \ \ \ \ data[0]\ -\/=\ v[0];}
+\DoxyCodeLine{00742\ \ \ \ \ data[1]\ -\/=\ v[1];}
+\DoxyCodeLine{00743\ \ \ \ \ data[2]\ -\/=\ v[2];}
+\DoxyCodeLine{00744\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00745\ \ \ \}}
+\DoxyCodeLine{00746\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00747\ \ \ TMatrix33<FT>\ operator\ -\/\ (\textcolor{keyword}{const}\ TMatrix33<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00748\ \ \ \ \ \textcolor{keywordflow}{return}\ TMatrix33<FT>(}
+\DoxyCodeLine{00749\ \ \ \ \ \ \ data[0][0]\ -\/\ v[0][0],\ data[0][1]\ -\/\ v[0][1],\ data[0][2]\ -\/\ v[0][2],}
+\DoxyCodeLine{00750\ \ \ \ \ \ \ data[1][0]\ -\/\ v[1][0],\ data[1][1]\ -\/\ v[1][1],\ data[1][2]\ -\/\ v[1][2],}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ data[2][0]\ -\/\ v[2][0],\ data[2][1]\ -\/\ v[2][1],\ data[2][2]\ -\/\ v[2][2]);}
+\DoxyCodeLine{00752\ \ \ \}}
+\DoxyCodeLine{00753\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00754\ \ \ TMatrix33<FT>\&\ operator\ +=\ (\textcolor{keyword}{const}\ TMatrix33<AT>\&\ v)\ \{}
+\DoxyCodeLine{00755\ \ \ \ \ data[0]\ +=\ v[0];}
+\DoxyCodeLine{00756\ \ \ \ \ data[1]\ +=\ v[1];}
+\DoxyCodeLine{00757\ \ \ \ \ data[2]\ +=\ v[2];}
+\DoxyCodeLine{00758\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00759\ \ \ \}}
+\DoxyCodeLine{00760\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00761\ \ \ TMatrix33<FT>\ operator\ +\ (\textcolor{keyword}{const}\ TMatrix33<AT>\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00762\ \ \ \ \ \textcolor{keywordflow}{return}\ TMatrix33<FT>(}
+\DoxyCodeLine{00763\ \ \ \ \ \ \ data[0][0]\ +\ v[0][0],\ data[0][1]\ +\ v[0][1],\ data[0][2]\ +\ v[0][2],}
+\DoxyCodeLine{00764\ \ \ \ \ \ \ data[1][0]\ +\ v[1][0],\ data[1][1]\ +\ v[1][1],\ data[1][2]\ +\ v[1][2],}
+\DoxyCodeLine{00765\ \ \ \ \ \ \ data[2][0]\ +\ v[2][0],\ data[2][1]\ +\ v[2][1],\ data[2][2]\ +\ v[2][2]);}
+\DoxyCodeLine{00766\ \ \ \}}
+\DoxyCodeLine{00767\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TMatrix33<FT>\&\ operator\ *=\ (AT\ v)\ \{}
+\DoxyCodeLine{00768\ \ \ \ \ data[0][0]\ *=\ v;\ \ data[0][1]\ *=\ v;\ \ data[0][2]\ *=\ v;}
+\DoxyCodeLine{00769\ \ \ \ \ data[1][0]\ *=\ v;\ \ data[1][1]\ *=\ v;\ \ data[1][2]\ *=\ v;}
+\DoxyCodeLine{00770\ \ \ \ \ data[2][0]\ *=\ v;\ \ data[2][1]\ *=\ v;\ \ data[2][2]\ *=\ v;}
+\DoxyCodeLine{00771\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00772\ \ \ \}}
+\DoxyCodeLine{00773\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TMatrix33<FT>\ operator\ *\ (AT\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00774\ \ \ \ \ \textcolor{keywordflow}{return}\ TMatrix33<FT>(data[0][0]\ *\ v,\ data[0][1]\ *\ v,\ data[0][2]\ *\ v,}
+\DoxyCodeLine{00775\ \ \ \ \ \ \ data[1][0]\ *\ v,\ data[1][1]\ *\ v,\ data[1][2]\ *\ v,}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ data[2][0]\ *\ v,\ data[2][1]\ *\ v,\ data[2][2]\ *\ v);}
+\DoxyCodeLine{00777\ \ \ \}}
+\DoxyCodeLine{00778\ }
+\DoxyCodeLine{00779\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TMatrix33<FT>\&\ operator\ /=\ (AT\ v)\ \{}
+\DoxyCodeLine{00780\ \ \ \ \ data[0][0]\ /=\ v;\ \ data[0][1]\ /=\ v;\ \ data[0][2]\ /=\ v;}
+\DoxyCodeLine{00781\ \ \ \ \ data[1][0]\ /=\ v;\ \ data[1][1]\ /=\ v;\ \ data[1][2]\ /=\ v;}
+\DoxyCodeLine{00782\ \ \ \ \ data[2][0]\ /=\ v;\ \ data[2][1]\ /=\ v;\ \ data[2][2]\ /=\ v;}
+\DoxyCodeLine{00783\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00784\ \ \ \}}
+\DoxyCodeLine{00785\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TMatrix33<FT>\ operator\ /\ (AT\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00786\ \ \ \ \ \textcolor{keywordflow}{return}\ TMatrix33<FT>(data[0][0]\ /\ v,\ data[0][1]\ /\ v,\ data[0][2]\ /\ v,}
+\DoxyCodeLine{00787\ \ \ \ \ \ \ data[1][0]\ /\ v,\ data[1][1]\ /\ v,\ data[1][2]\ /\ v,}
+\DoxyCodeLine{00788\ \ \ \ \ \ \ data[2][0]\ /\ v,\ data[2][1]\ /\ v,\ data[2][2]\ /\ v);}
+\DoxyCodeLine{00789\ \ \ \}}
+\DoxyCodeLine{00790\ \ \ FT\ Trace()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[0][0]\ +\ data[1][1]\ +\ data[2][2];\ \}}
+\DoxyCodeLine{00791\ \ \ FT\ Determinant()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00792\ \ \ \ \ \textcolor{keywordflow}{return}\ data[0][0]\ *\ (data[1][1]\ *\ data[2][2]\ -\/\ data[1][2]\ *\ data[2][1])\ -\/}
+\DoxyCodeLine{00793\ \ \ \ \ \ \ data[0][1]\ *\ (data[1][0]\ *\ data[2][2]\ -\/\ data[1][2]\ *\ data[2][0])\ +}
+\DoxyCodeLine{00794\ \ \ \ \ \ \ data[0][2]\ *\ (data[1][0]\ *\ data[2][1]\ -\/\ data[1][1]\ *\ data[2][0]);}
+\DoxyCodeLine{00795\ \ \ \}}
+\DoxyCodeLine{00796\ \ \ TMatrix33<FT>\ Inverse()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00797\ \ \ \ \ \textcolor{keywordflow}{return}\ TMatrix33<FT>(}
+\DoxyCodeLine{00798\ \ \ \ \ \ \ data[2][2]\ *\ data[1][1]\ -\/\ data[2][1]\ *\ data[1][2],}
+\DoxyCodeLine{00799\ \ \ \ \ \ \ data[2][1]\ *\ data[0][2]\ -\/\ data[2][2]\ *\ data[0][1],}
+\DoxyCodeLine{00800\ \ \ \ \ \ \ data[1][2]\ *\ data[0][1]\ -\/\ data[1][1]\ *\ data[0][2],}
+\DoxyCodeLine{00801\ \ \ \ \ \ \ data[2][0]\ *\ data[1][2]\ -\/\ data[2][2]\ *\ data[1][0],}
+\DoxyCodeLine{00802\ \ \ \ \ \ \ data[2][2]\ *\ data[0][0]\ -\/\ data[2][0]\ *\ data[0][2],}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ data[1][0]\ *\ data[0][2]\ -\/\ data[1][2]\ *\ data[0][0],}
+\DoxyCodeLine{00804\ \ \ \ \ \ \ data[2][1]\ *\ data[1][0]\ -\/\ data[2][0]\ *\ data[1][1],}
+\DoxyCodeLine{00805\ \ \ \ \ \ \ data[2][0]\ *\ data[0][1]\ -\/\ data[2][1]\ *\ data[0][0],}
+\DoxyCodeLine{00806\ \ \ \ \ \ \ data[1][1]\ *\ data[0][0]\ -\/\ data[1][0]\ *\ data[0][1])\ /=\ Determinant();}
+\DoxyCodeLine{00807\ \ \ \}}
+\DoxyCodeLine{00808\ \ \ \textcolor{comment}{/*\ column\ vector\ */}}
+\DoxyCodeLine{00809\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ \mbox{\hyperlink{classTVector3}{TVector3<AT>}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<AT>}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00810\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTVector3}{TVector3<AT>}}(}
+\DoxyCodeLine{00811\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}AT\textcolor{keyword}{>}(a[0]\ *\ data[0][0]\ +\ a[1]\ *\ data[0][1]\ +\ a[2]\ *\ data[0][2]),}
+\DoxyCodeLine{00812\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}AT\textcolor{keyword}{>}(a[0]\ *\ data[1][0]\ +\ a[1]\ *\ data[1][1]\ +\ a[2]\ *\ data[1][2]),}
+\DoxyCodeLine{00813\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}AT\textcolor{keyword}{>}(a[0]\ *\ data[2][0]\ +\ a[1]\ *\ data[2][1]\ +\ a[2]\ *\ data[2][2]));}
+\DoxyCodeLine{00814\ \ \ \}}
+\DoxyCodeLine{00815\ \ \ \textcolor{comment}{//\ for\ real\ symmetric\ matrices\ only}}
+\DoxyCodeLine{00816\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ EigenValues(TMatrix33\&\ A,\ TMatrix33\&\ I)\ \{}
+\DoxyCodeLine{00817\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i,\ j;}
+\DoxyCodeLine{00818\ \ \ \ \ FT\ a\ =\ 2;}
+\DoxyCodeLine{00819\ \ \ \ \ \textcolor{keywordflow}{while}\ (olx\_abs(a)\ >\ 1e-\/15)\ \{}
+\DoxyCodeLine{00820\ \ \ \ \ \ \ MatMaxX(A,\ i,\ j);}
+\DoxyCodeLine{00821\ \ \ \ \ \ \ multMatrix(A,\ I,\ i,\ j);}
+\DoxyCodeLine{00822\ \ \ \ \ \ \ a\ =\ MatMaxX(A,\ i,\ j);}
+\DoxyCodeLine{00823\ \ \ \ \ \}}
+\DoxyCodeLine{00824\ \ \ \}}
+\DoxyCodeLine{00825\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00826\ \ \ \textcolor{comment}{/*\ used\ in\ the\ Jacoby\ eigenvalues\ search\ procedure.\ applicable\ to\ real}}
+\DoxyCodeLine{00827\ \textcolor{comment}{\ \ symmetric\ matices\ only}}
+\DoxyCodeLine{00828\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00829\ \ \ \textcolor{keyword}{static}\ FT\ MatMaxX(\textcolor{keyword}{const}\ TMatrix33\&\ m,\ \textcolor{keywordtype}{size\_t}\ \&i,\ \textcolor{keywordtype}{size\_t}\ \&j)\ \{}
+\DoxyCodeLine{00830\ \ \ \ \ FT\ c\ =\ olx\_abs(m[0][1]);}
+\DoxyCodeLine{00831\ \ \ \ \ i\ =\ 0;\ \ j\ =\ 1;}
+\DoxyCodeLine{00832\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(m[0][2])\ >\ c)\ \{}
+\DoxyCodeLine{00833\ \ \ \ \ \ \ j\ =\ 2;}
+\DoxyCodeLine{00834\ \ \ \ \ \ \ c\ =\ olx\_abs(m[0][2]);}
+\DoxyCodeLine{00835\ \ \ \ \ \}}
+\DoxyCodeLine{00836\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(m[1][2])\ >\ c)\ \{}
+\DoxyCodeLine{00837\ \ \ \ \ \ \ i\ =\ 1;\ \ j\ =\ 2;}
+\DoxyCodeLine{00838\ \ \ \ \ \ \ c\ =\ olx\_abs(m[1][2]);}
+\DoxyCodeLine{00839\ \ \ \ \ \}}
+\DoxyCodeLine{00840\ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
+\DoxyCodeLine{00841\ \ \ \}}
+\DoxyCodeLine{00842\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ multMatrix(TMatrix33\&\ D,\ TMatrix33\&\ E,}
+\DoxyCodeLine{00843\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)}
+\DoxyCodeLine{00844\ \ \ \{}
+\DoxyCodeLine{00845\ \ \ \ \ FT\ cf,\ sf,\ cdf,\ sdf;}
+\DoxyCodeLine{00846\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ FT\ sqr2\ =\ (FT)sqrt(2.0)\ /\ 2;}
+\DoxyCodeLine{00847\ \ \ \ \ \textcolor{keywordflow}{if}\ (D[i][i]\ ==\ D[j][j])\ \{}
+\DoxyCodeLine{00848\ \ \ \ \ \ \ cdf\ =\ 0;}
+\DoxyCodeLine{00849\ \ \ \ \ \ \ cf\ =\ sqr2;}
+\DoxyCodeLine{00850\ \ \ \ \ \ \ sf\ =\ olx\_sign(D[i][j])*sqr2;}
+\DoxyCodeLine{00851\ \ \ \ \ \ \ sdf\ =\ olx\_sign(D[i][j]);}
+\DoxyCodeLine{00852\ \ \ \ \ \}}
+\DoxyCodeLine{00853\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00854\ \ \ \ \ \ \ FT\ tdf\ =\ 2\ *\ D[i][j]\ /\ (D[j][j]\ -\/\ D[i][i]);}
+\DoxyCodeLine{00855\ \ \ \ \ \ \ FT\ r\ =\ tdf\ *\ tdf;}
+\DoxyCodeLine{00856\ \ \ \ \ \ \ cdf\ =\ sqrt(1.0\ /\ (1\ +\ r));}
+\DoxyCodeLine{00857\ \ \ \ \ \ \ cf\ =\ sqrt((1\ +\ cdf)\ /\ 2.0);}
+\DoxyCodeLine{00858\ \ \ \ \ \ \ sdf\ =\ (sqrt(r\ /\ (1\ +\ r))\ *\ olx\_sign(tdf));}
+\DoxyCodeLine{00859\ \ \ \ \ \ \ sf\ =\ (sqrt((1\ -\/\ cdf)\ /\ 2.0)*olx\_sign(tdf));}
+\DoxyCodeLine{00860\ \ \ \ \ \}}
+\DoxyCodeLine{00861\ \ \ \ \ \textcolor{keyword}{const}\ FT\ ij\ =\ D[i][j],\ ii\ =\ D[i][i],\ jj\ =\ D[j][j];}
+\DoxyCodeLine{00862\ \ \ \ \ D[i][j]\ =\ D[j][i]\ =\ 0;}
+\DoxyCodeLine{00863\ \ \ \ \ D[i][i]\ =\ (ii*cf*cf\ +\ jj\ *\ sf*sf\ -\/\ ij\ *\ sdf);}
+\DoxyCodeLine{00864\ \ \ \ \ D[j][j]\ =\ (ii*sf*sf\ +\ jj\ *\ cf*cf\ +\ ij\ *\ sdf);}
+\DoxyCodeLine{00865\ }
+\DoxyCodeLine{00866\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ t\ =\ 0;\ t\ <\ 3;\ t++)\ \{}
+\DoxyCodeLine{00867\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ eit\ =\ E[i][t],\ ejt\ =\ E[j][t];}
+\DoxyCodeLine{00868\ \ \ \ \ \ \ E[i][t]\ =\ eit\ *\ cf\ -\/\ ejt\ *\ sf;\ \ \textcolor{comment}{//i}}
+\DoxyCodeLine{00869\ \ \ \ \ \ \ E[j][t]\ =\ eit\ *\ sf\ +\ ejt\ *\ cf;\ \ \textcolor{comment}{//j}}
+\DoxyCodeLine{00870\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((t\ !=\ i)\ \&\&\ (t\ !=\ j))\ \{}
+\DoxyCodeLine{00871\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ dit\ =\ D[i][t],\ djt\ =\ D[j][t];}
+\DoxyCodeLine{00872\ \ \ \ \ \ \ \ \ D[i][t]\ =\ D[t][i]\ =\ dit\ *\ cf\ -\/\ djt\ *\ sf;}
+\DoxyCodeLine{00873\ \ \ \ \ \ \ \ \ D[j][t]\ =\ D[t][j]\ =\ dit\ *\ sf\ +\ djt\ *\ cf;}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00875\ \ \ \ \ \}}
+\DoxyCodeLine{00876\ \ \ \}}
+\DoxyCodeLine{00877\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00878\ \ \ \textcolor{keyword}{static}\ TMatrix33\ CreateRotationMatrix(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ rv,\ FT\ ca,\ FT\ sa)\ \{}
+\DoxyCodeLine{00879\ \ \ \ \ TMatrix33\ rm;}
+\DoxyCodeLine{00880\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_create\_rotation\_matrix\_(rm,\ rv,\ ca,\ sa);}
+\DoxyCodeLine{00881\ \ \ \}}
+\DoxyCodeLine{00882\ \ \ \textcolor{comment}{//\ for\ cosine\ of\ the\ rotation\ angle}}
+\DoxyCodeLine{00883\ \ \ \textcolor{keyword}{static}\ TMatrix33\ CreateRotationMatrix(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ rv,\ FT\ ca)\ \{}
+\DoxyCodeLine{00884\ \ \ \ \ TMatrix33\ rm;}
+\DoxyCodeLine{00885\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_create\_rotation\_matrix\_(rm,\ rv,\ ca);}
+\DoxyCodeLine{00886\ \ \ \}}
+\DoxyCodeLine{00887\ \ \ \textcolor{comment}{//\ for\ angle\ in\ degrees}}
+\DoxyCodeLine{00888\ \ \ \textcolor{keyword}{static}\ TMatrix33\ GetRotationMatrix(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ rv,\ FT\ angle)\ \{}
+\DoxyCodeLine{00889\ \ \ \ \ TMatrix33\ rm;}
+\DoxyCodeLine{00890\ \ \ \ \ FT\ ra\ =\ (angle\ *\ M\_PI)\ /\ 180;}
+\DoxyCodeLine{00891\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_create\_rotation\_matrix\_(rm,\ rv,\ cos(ra),\ sin(ra));}
+\DoxyCodeLine{00892\ \ \ \}}
+\DoxyCodeLine{00893\ \ \ \textcolor{comment}{/*\ solves\ a\ set\ of\ equations\ by\ the\ Cramer\ rule\ \{equation\ arr.c\ =\ b\ \},}}
+\DoxyCodeLine{00894\ \textcolor{comment}{\ \ returns\ c}}
+\DoxyCodeLine{00895\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00896\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ CramerSolve(\textcolor{keyword}{const}\ TMatrix33<FT>\&\ arr,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ b)\ \{}
+\DoxyCodeLine{00897\ \ \ \ \ FT\ det\ =\ arr.Determinant();}
+\DoxyCodeLine{00898\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(det)\ <\ 1e-\/15)\ \{}
+\DoxyCodeLine{00899\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00900\ \ \ \ \ \}}
+\DoxyCodeLine{00901\ \ \ \ \ \textcolor{comment}{//\ det(\ \{b[0],\ a12,\ a13\},\ \{b[1],\ a22,\ a23\},\ \{b[2],\ a32,\ a33\}\ )/det}}
+\DoxyCodeLine{00902\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}(}
+\DoxyCodeLine{00903\ \ \ \ \ \ \ b[0]\ *\ (arr[1][1]\ *\ arr[2][2]\ -\/\ arr[1][2]\ *\ arr[2][1])\ -\/}
+\DoxyCodeLine{00904\ \ \ \ \ \ \ arr[0][1]\ *\ (b[1]\ *\ arr[2][2]\ -\/\ arr[1][2]\ *\ b[2])\ +}
+\DoxyCodeLine{00905\ \ \ \ \ \ \ arr[0][2]\ *\ (b[1]\ *\ arr[2][1]\ -\/\ arr[1][1]\ *\ b[2]),}
+\DoxyCodeLine{00906\ \ \ \ \ \ \ \textcolor{comment}{//\ det(\ \{a11,\ b[0],\ a13\},\ \{a21,\ b[1],\ a23\},\ \{a31,\ b[2],\ a33\}\ )/det}}
+\DoxyCodeLine{00907\ \ \ \ \ \ \ arr[0][0]\ *\ (b[1]\ *\ arr[2][2]\ -\/\ arr[1][2]\ *\ b[2])\ -\/}
+\DoxyCodeLine{00908\ \ \ \ \ \ \ b[0]\ *\ (arr[1][0]\ *\ arr[2][2]\ -\/\ arr[1][2]\ *\ arr[2][0])\ +}
+\DoxyCodeLine{00909\ \ \ \ \ \ \ arr[0][2]\ *\ (arr[1][0]\ *\ b[2]\ -\/\ b[1]\ *\ arr[2][0]),}
+\DoxyCodeLine{00910\ \ \ \ \ \ \ \textcolor{comment}{//\ det(\ \{a11,\ a12,\ b[0]\},\ \{a21,\ a22,\ b[1]\},\ \{a31,\ a32,\ b[2]\}\ )/det}}
+\DoxyCodeLine{00911\ \ \ \ \ \ \ arr[0][0]\ *\ (arr[1][1]\ *\ b[2]\ -\/\ b[1]\ *\ arr[2][1])\ -\/}
+\DoxyCodeLine{00912\ \ \ \ \ \ \ arr[0][1]\ *\ (arr[1][0]\ *\ b[2]\ -\/\ b[1]\ *\ arr[2][0])\ +}
+\DoxyCodeLine{00913\ \ \ \ \ \ \ b[0]\ *\ (arr[1][0]\ *\ arr[2][1]\ -\/\ arr[1][1]\ *\ arr[2][0]))\ /\ det;}
+\DoxyCodeLine{00914\ \ \ \}}
+\DoxyCodeLine{00915\ \ \ \textcolor{comment}{//\ solves\ a\ set\ of\ equations\ by\ the\ Gauss\ method\ \{equation\ arr.c\ =\ b\ ?c\ \}}}
+\DoxyCodeLine{00916\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ GaussSolve(TMatrix33<FT>\&\ arr,\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ b)\ \{}
+\DoxyCodeLine{00917\ \ \ \ \ MatrixElementsSort(arr,\ b);}
+\DoxyCodeLine{00918\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 1;\ j\ <\ 3;\ j++)}
+\DoxyCodeLine{00919\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ j;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00920\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (arr[i][j\ -\/\ 1]\ ==\ 0)\ \{}
+\DoxyCodeLine{00921\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00922\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00923\ \ \ \ \ \ \ \ \ b[i]\ *=\ -\/(arr[j\ -\/\ 1][j\ -\/\ 1]\ /\ arr[i][j\ -\/\ 1]);}
+\DoxyCodeLine{00924\ \ \ \ \ \ \ \ \ arr[i]\ *=\ -\/(arr[j\ -\/\ 1][j\ -\/\ 1]\ /\ arr[i][j\ -\/\ 1]);}
+\DoxyCodeLine{00925\ \ \ \ \ \ \ \ \ arr[i][0]\ +=\ arr[j\ -\/\ 1][0];}
+\DoxyCodeLine{00926\ \ \ \ \ \ \ \ \ arr[i][1]\ +=\ arr[j\ -\/\ 1][1];}
+\DoxyCodeLine{00927\ \ \ \ \ \ \ \ \ arr[i][2]\ +=\ arr[j\ -\/\ 1][2];}
+\DoxyCodeLine{00928\ \ \ \ \ \ \ \ \ b[i]\ +=\ b[j\ -\/\ 1];}
+\DoxyCodeLine{00929\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00930\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(arr[2][2])\ <\ 1e-\/15)\ \{}
+\DoxyCodeLine{00931\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00932\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}dependent\ set\ of\ equations"{}});}
+\DoxyCodeLine{00933\ \ \ \ \ \}}
+\DoxyCodeLine{00934\ \ \ \ \ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ c;}
+\DoxyCodeLine{00935\ \ \ \ \ c[2]\ =\ b[2]\ /\ arr[2][2];}
+\DoxyCodeLine{00936\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 1;\ j\ !=\ InvalidIndex;\ j-\/-\/)\ \{}
+\DoxyCodeLine{00937\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k1\ =\ 1;\ k1\ <\ 4\ -\/\ j;\ k1++)\ \{}
+\DoxyCodeLine{00938\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k1\ ==\ (3\ -\/\ j))\ \{}
+\DoxyCodeLine{00939\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 2;\ i\ >\ 3\ -\/\ k1;\ i-\/-\/)\ \{}
+\DoxyCodeLine{00940\ \ \ \ \ \ \ \ \ \ \ \ \ b[j]\ -\/=\ arr[j][i]\ *\ c[i];}
+\DoxyCodeLine{00941\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00942\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00943\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00944\ \ \ \ \ \ \ c[j]\ =\ b[j]\ /\ arr[j][j];}
+\DoxyCodeLine{00945\ \ \ \ \ \}}
+\DoxyCodeLine{00946\ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
+\DoxyCodeLine{00947\ \ \ \}}
+\DoxyCodeLine{00948\ }
+\DoxyCodeLine{00949\ \textcolor{keyword}{protected}:\ \ \textcolor{comment}{//\ used\ in\ GaussSolve\ to\ sort\ the\ matrix}}
+\DoxyCodeLine{00950\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ MatrixElementsSort(TMatrix33<FT>\&\ arr,\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ b)\ \{}
+\DoxyCodeLine{00951\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00952\ \ \ \ \ \ \ FT\ bf[3]\ =\ \{\ olx\_abs(arr[0][i]),\ olx\_abs(arr[1][i]),\ olx\_abs(arr[2][i])\ \};}
+\DoxyCodeLine{00953\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ n\ =\ 0;}
+\DoxyCodeLine{00954\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bf[1]\ >\ bf[n])\ \{}
+\DoxyCodeLine{00955\ \ \ \ \ \ \ \ \ n\ =\ 1;}
+\DoxyCodeLine{00956\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00957\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bf[2]\ >\ bf[n])\ \{}
+\DoxyCodeLine{00958\ \ \ \ \ \ \ \ \ n\ =\ 2;}
+\DoxyCodeLine{00959\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00960\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n\ !=\ i)\ \{}
+\DoxyCodeLine{00961\ \ \ \ \ \ \ \ \ olx\_swap(arr[i],\ arr[n]);}
+\DoxyCodeLine{00962\ \ \ \ \ \ \ \ \ olx\_swap(b[i],\ b[n]);}
+\DoxyCodeLine{00963\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00964\ \ \ \ \ \}}
+\DoxyCodeLine{00965\ \ \ \}}
+\DoxyCodeLine{00966\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00967\ \ \ \textcolor{keyword}{typedef}\ FT\ number\_type;}
+\DoxyCodeLine{00968\ \};}
+\DoxyCodeLine{00969\ }
+\DoxyCodeLine{00970\ \textcolor{comment}{//\ multiplies\ each\ element\ by\ itself}}
+\DoxyCodeLine{00971\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{00972\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ olx\_sqr(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ v)\ \{}
+\DoxyCodeLine{00973\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}(v[0]\ *\ v[0],\ v[1]\ *\ v[1],\ v[2]\ *\ v[2]);}
+\DoxyCodeLine{00974\ \}}
+\DoxyCodeLine{00975\ }
+\DoxyCodeLine{00976\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{00977\ olxstr\ vec2str\_ext(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ n,\ \textcolor{keyword}{const}\ olxcstr\ \&fmt)\ \{}
+\DoxyCodeLine{00978\ \ \ \textcolor{keywordflow}{return}\ olx\_print(}
+\DoxyCodeLine{00979\ \ \ \ \ olxcstr(\textcolor{charliteral}{'\{'},\ fmt.Length()*3+5)\ <<\ fmt\ <<\ \textcolor{charliteral}{','}\ <<\ fmt\ <<\ \textcolor{charliteral}{','}\ <<\ fmt\ <<\ \textcolor{charliteral}{'\}'},}
+\DoxyCodeLine{00980\ \ \ \ \ n[0],\ n[1],\ n[2]);}
+\DoxyCodeLine{00981\ \}}
+\DoxyCodeLine{00982\ }
+\DoxyCodeLine{00983\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{00984\ olxcstr\ vec\_element\_fmt(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ n)\ \{}
+\DoxyCodeLine{00985\ \ \ olxcstr\ f;}
+\DoxyCodeLine{00986\ \ \ \textcolor{keywordflow}{if}\ (olx\_is\_float<FT>::is)\ \{}
+\DoxyCodeLine{00987\ \ \ \ \ f\ <<\ \textcolor{stringliteral}{"{}\%6.3"{}}\ <<\ olx\_format\_modifier(n[0])\ <<\ \textcolor{charliteral}{'f'};}
+\DoxyCodeLine{00988\ \ \ \}}
+\DoxyCodeLine{00989\ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00990\ \ \ \ \ f\ <<\ \textcolor{stringliteral}{"{}\%6"{}};}
+\DoxyCodeLine{00991\ \ \ \}}
+\DoxyCodeLine{00992\ \ \ \textcolor{keywordflow}{return}\ f;}
+\DoxyCodeLine{00993\ \}}
+\DoxyCodeLine{00994\ }
+\DoxyCodeLine{00995\ }
+\DoxyCodeLine{00996\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{00997\ olxstr\ mat2str\_ext(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<FT>}}\&\ n,\ \textcolor{keyword}{const}\ olxcstr\ \&fmt)\ \{}
+\DoxyCodeLine{00998\ \ \ olxcstr\ f\ =\ olxcstr(\textcolor{charliteral}{'\{'},\ fmt.Length()\ *\ 3\ +\ 5)\ <<\ fmt\ <<\ \textcolor{charliteral}{','}\ <<\ fmt\ <<\ \textcolor{charliteral}{','}\ <<\ fmt\ <<\ \textcolor{charliteral}{'\}'};}
+\DoxyCodeLine{00999\ \ \ \textcolor{keywordflow}{return}\ olxstr\_buf(olx\_print(f,\ n[0][0],\ n[0][1],\ n[0][2]))}
+\DoxyCodeLine{01000\ \ \ \ \ <<\ \textcolor{charliteral}{'\(\backslash\)n'}\ <<\ olx\_print(f,\ n[1][0],\ n[1][1],\ n[1][2])}
+\DoxyCodeLine{01001\ \ \ \ \ <<\ \textcolor{charliteral}{'\(\backslash\)n'}\ <<\ olx\_print(f,\ n[2][0],\ n[2][1],\ n[2][2]);}
+\DoxyCodeLine{01002\ \}}
+\DoxyCodeLine{01003\ }
+\DoxyCodeLine{01004\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{01005\ olxstr\ vec2str(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ n)\ \{}
+\DoxyCodeLine{01006\ \ \ \textcolor{keywordflow}{return}\ vec2str\_ext(n,\ vec\_element\_fmt(n));}
+\DoxyCodeLine{01007\ \}}
+\DoxyCodeLine{01008\ }
+\DoxyCodeLine{01009\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{01010\ olxstr\ mat2str(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<FT>}}\&\ n)\ \{}
+\DoxyCodeLine{01011\ \ \ \textcolor{keywordflow}{return}\ mat2str\_ext(n,\ vec\_element\_fmt(n[0]));}
+\DoxyCodeLine{01012\ \}}
+\DoxyCodeLine{01013\ }
+\DoxyCodeLine{01014\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{01015\ olxstr\ strof(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ n)\ \{\ \textcolor{keywordflow}{return}\ vec2str(n);\ \}}
+\DoxyCodeLine{01016\ }
+\DoxyCodeLine{01017\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{01018\ olxstr\ strof(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<FT>}}\&\ n)\ \{\ \textcolor{keywordflow}{return}\ mat2str(n);\ \}}
+\DoxyCodeLine{01019\ }
+\DoxyCodeLine{01020\ }
+\DoxyCodeLine{01021\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTVector3}{TVector3<float>}}\ \ vec3f;}
+\DoxyCodeLine{01022\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTVector3}{TVector3<double>}}\ vec3d;}
+\DoxyCodeLine{01023\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTVector3}{TVector3<int>}}\ \ \ \ vec3i;}
+\DoxyCodeLine{01024\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTVector3}{TVector3<size\_t>}}\ vec3s;}
+\DoxyCodeLine{01025\ }
+\DoxyCodeLine{01026\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<vec3i>}}\ vec3i\_list;}
+\DoxyCodeLine{01027\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<vec3f>}}\ vec3f\_list;}
+\DoxyCodeLine{01028\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<vec3d>}}\ vec3d\_list;}
+\DoxyCodeLine{01029\ }
+\DoxyCodeLine{01030\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3i>}}\ vec3i\_alist;}
+\DoxyCodeLine{01031\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}\ vec3f\_alist;}
+\DoxyCodeLine{01032\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3d>}}\ vec3d\_alist;}
+\DoxyCodeLine{01033\ }
+\DoxyCodeLine{01034\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<vec3i>}}\ vec3i\_plist;}
+\DoxyCodeLine{01035\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<vec3f>}}\ vec3f\_plist;}
+\DoxyCodeLine{01036\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<vec3d>}}\ vec3d\_plist;}
+\DoxyCodeLine{01037\ }
+\DoxyCodeLine{01038\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<int>}}\ \ \ \ mat3i;}
+\DoxyCodeLine{01039\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<float>}}\ \ mat3f;}
+\DoxyCodeLine{01040\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<double>}}\ mat3d;}
+\DoxyCodeLine{01041\ }
+\DoxyCodeLine{01042\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<mat3i>}}\ mat3i\_list;}
+\DoxyCodeLine{01043\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<mat3f>}}\ mat3f\_list;}
+\DoxyCodeLine{01044\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<mat3d>}}\ mat3d\_list;}
+\DoxyCodeLine{01045\ }
+\DoxyCodeLine{01046\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<mat3i>}}\ mat3i\_alist;}
+\DoxyCodeLine{01047\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<mat3f>}}\ mat3f\_alist;}
+\DoxyCodeLine{01048\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<mat3d>}}\ mat3d\_alist;}
+\DoxyCodeLine{01049\ }
+\DoxyCodeLine{01050\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<mat3i>}}\ mat3i\_plist;}
+\DoxyCodeLine{01051\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<mat3f>}}\ mat3f\_plist;}
+\DoxyCodeLine{01052\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<mat3d>}}\ mat3d\_plist;}
+\DoxyCodeLine{01053\ }
+\DoxyCodeLine{01054\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ FT>}
+\DoxyCodeLine{01055\ olxstr\ strof(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ >\ \&v)\ \{}
+\DoxyCodeLine{01056\ \ \ \textcolor{keywordflow}{return}\ olxstr(\textcolor{stringliteral}{"{},"{}}).Join(v,\ FunctionAccessor::MakeStatic(\&vec2str<FT>));}
+\DoxyCodeLine{01057\ \}}
+\DoxyCodeLine{01058\ }
+\DoxyCodeLine{01059\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ FT>}
+\DoxyCodeLine{01060\ olxstr\ strof(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList}}<\mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ >\&\ v)\ \{}
+\DoxyCodeLine{01061\ \ \ \textcolor{keywordflow}{return}\ olxstr(\textcolor{stringliteral}{"{},"{}}).Join(v,\ FunctionAccessor::MakeStatic(\&vec2str<FT>));}
+\DoxyCodeLine{01062\ \}}
+\DoxyCodeLine{01063\ }
+\DoxyCodeLine{01064\ }
+\DoxyCodeLine{01065\ EndEsdlNamespace()}
+\DoxyCodeLine{01066\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

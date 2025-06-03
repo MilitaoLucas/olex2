@@ -1,0 +1,64 @@
+\doxysection{atomlegend.\+h}
+\hypertarget{atomlegend_8h_source}{}\label{atomlegend_8h_source}\index{gxlib/atomlegend.h@{gxlib/atomlegend.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2016\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxl\_atomlabel\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxl\_atomlabel\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}gxbase.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}glmousehandler.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}gltexture.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}glrender.h"{}}}
+\DoxyCodeLine{00017\ BeginGxlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ class\ TAtomLegend\ :\ public\ \mbox{\hyperlink{classAGlMouseHandlerImp}{AGlMouseHandlerImp}}\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{int}\ Width,\ Height;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{int}\ Top,\ Left;}
+\DoxyCodeLine{00022\ \ \ \textcolor{comment}{//\ single\ column\ width\ -\/\ up\ to\ 3\ columns\ with\ 2\ char\ element\ symbol}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{int}\ ColWidth,}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{comment}{//\ space\ between\ the\ legend\ and\ the\ text}}
+\DoxyCodeLine{00025\ \ \ \ \ FirstSpacer;}
+\DoxyCodeLine{00026\ \ \ GLuint\ TextureId;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{double}\ Z;}
+\DoxyCodeLine{00028\ \ \ TStrList\ text;}
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<TGlMaterial>}}\ materials;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00031\ \ \ vec3d\ Center;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoTranslate(\textcolor{keyword}{const}\ vec3d\&\ t)\ \{\ Center\ +=\ t;\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoRotate(\textcolor{keyword}{const}\ vec3d\&,\ \textcolor{keywordtype}{double})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoZoom(\textcolor{keywordtype}{double}\ zoom,\ \textcolor{keywordtype}{bool}\ inc)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ \ \ TAtomLegend(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName);}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName\ =\ EmptyString());}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{void}\ Fit();}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{int}\ GetLeft()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Left;\ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{int}\ GetTop()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Top;\ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{int}\ GetWidth()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Width;\ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{int}\ GetHeight()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Height;\ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{const}\ vec3d\ \&GetCenter()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Center;\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{const}\ TStrList\ \&GetLabels()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ text;\ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<TGlMaterial>}}\ \&GetMaterials()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ materials;\ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\ \&,\ vec3d\ \&)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Update();}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ UpdateLabel()\ \{\ Fit();\ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ SetPosition(\textcolor{keywordtype}{int}\ left,\ \textcolor{keywordtype}{int}\ top);}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ ResetPosition(\textcolor{keywordtype}{bool}\ right=\textcolor{keyword}{false},\ \textcolor{keywordtype}{bool}\ bottom=\textcolor{keyword}{false},\ \textcolor{keywordtype}{int}\ margin=0);}
+\DoxyCodeLine{00055\ \};}
+\DoxyCodeLine{00056\ EndGxlNamespace()}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

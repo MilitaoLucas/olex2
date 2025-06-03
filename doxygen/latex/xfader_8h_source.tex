@@ -1,0 +1,58 @@
+\doxysection{xfader.\+h}
+\hypertarget{xfader_8h_source}{}\label{xfader_8h_source}\index{glib/xfader.h@{glib/xfader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_xfader\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_xfader\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}gdrawobject.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00015\ BeginGlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ TXFader:\ public\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{char}\ *Background,\ *Foreground;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{int}\ BGWidth,\ BGHeight;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{int}\ FGWidth,\ FGHeight;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{double}\ Step,\ Position;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ TXFader(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName);}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{virtual}\ \string~TXFader();}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName=EmptyString());}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&,\ vec3d\&)\ \ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}\ InitBG(\textcolor{keywordtype}{bool}\ init=\textcolor{keyword}{true});}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{void}\ InitFG(\textcolor{keywordtype}{bool}\ init=\textcolor{keyword}{true});}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ BG2FG(\textcolor{keywordtype}{bool}\ zeropos=\textcolor{keyword}{true});}
+\DoxyCodeLine{00032\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Step)}
+\DoxyCodeLine{00033\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Position)}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{bool}\ Increment()\ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ Position\ +=\ Step;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{if}(\ Position\ >\ 1\ )\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ Position\ =\ 1;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ LibStep(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ LibPosition(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ LibInitFG(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ LibInitBG(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ LibBG2FG(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLibrary}{TLibrary}}*\ \ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name=\textcolor{stringliteral}{"{}fader"{}});}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ EndGlNamespace()}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

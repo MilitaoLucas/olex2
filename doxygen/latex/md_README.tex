@@ -1,0 +1,32 @@
+\chapter{Olex2\+: Crystallography at your fingertip!}
+\hypertarget{md_README}{}\label{md_README}\index{Olex2: Crystallography at your fingertip"!@{Olex2: Crystallography at your fingertip"!}}
+This is the repository for Olex2. The HTML GUI is kept at a different \href{http://svn.olex2.org/olex2-gui}{\texttt{ Subversion repository}}. There are some binaries in the software that are present in the GUI. It is recommended to download the official \href{https://www.olexsys.org/olex2/docs/getting-started/installing-olex2/}{\texttt{ Olex2 distribution}} and replace the Olex2 and Unirun binaries that this code generates if you want to modify it.\hypertarget{md_README_autotoc_md0}{}\doxysection{\texorpdfstring{Building with CMake\+Lists on Linux}{Building with CMake\+Lists on Linux}}\label{md_README_autotoc_md0}
+Bellow are build instructions on Linux using CMAKE. You will need Python 3.\+8. It is recommended to use a virtual environment, like conda, available at \href{https://github.com/conda-forge/miniforge}{\texttt{ Miniforge3}}.
+
+Remember to replace everything between \texorpdfstring{$<$}{<}\texorpdfstring{$>$}{>} with the equivalent names for your environment and conda location 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{mkdir\ build\ \&\&\ cd\ build}
+\DoxyCodeLine{cmake\ ..\ -\/GNinja\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ -\/DPYTHON\_LIBRARY=<conda\_home>/envs/<python3.8\_environment>/lib/libpython3.8.so.1.0\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ -\/DPYTHON\_INCLUDE\_DIR=<conda\_home>/envs/<python3.8\_environment>/include/python3.8\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ -\/DPYTHON\_ROOT\_DIR=<conda\_home>/envs/<python3.8\_environment>\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ -\/DPython3\_FIND\_STRATEGY="{}LOCATION"{}}
+
+\end{DoxyCode}
+ If everything goes right, you can build it\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ninja\ -\/j}
+
+\end{DoxyCode}
+ If you want to test your modifications with every build, you can use\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake\ ..\ -\/GNinja\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ -\/DPYTHON\_LIBRARY=<conda\_home>/envs/<python3.8\_environment>/lib/libpython3.8.so.1.0\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ -\/DPYTHON\_INCLUDE\_DIR=<conda\_home>/envs/<python3.8\_environment>/include/python3.8\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ -\/DPYTHON\_ROOT\_DIR=<conda\_home>/envs/<python3.8\_environment>\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ -\/DPython3\_FIND\_STRATEGY="{}LOCATION"{}\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ -\/DCOPY\_GUI\_FILES=ON\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ -\/DOLEX2\_GUI\_DIRECTORY=<YOUR\_OLEX2\_GUI\_DIRECTORY>}
+
+\end{DoxyCode}
+ This way, everything will be copied, but the built files will not be overwritten. 

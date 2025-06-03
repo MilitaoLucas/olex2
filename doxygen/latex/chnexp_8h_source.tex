@@ -1,0 +1,50 @@
+\doxysection{chnexp.\+h}
+\hypertarget{chnexp_8h_source}{}\label{chnexp_8h_source}\index{xlib/chnexp.h@{xlib/chnexp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_cl\_chnexp\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_cl\_chnexp\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}chembase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ BeginChemNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ TCHNExp:\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ double>}}\ Exp;\ \textcolor{comment}{//\ Objects\ -\/\ double\ for\ content}}
+\DoxyCodeLine{00020\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TCHNExp>}}\ Dependencies;\ \textcolor{comment}{//\ TCHNExp\ list\ of\ dependencies}}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{double}\ FMult;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ TCHNExp()\ :\ FMult(1)\ \{\ \}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{virtual}\ \string~TCHNExp()\ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{comment}{//\ return\ summ\ formula\ of\ the\ compound\ with\ elements\ seprated\ by\ the\ Separator}}
+\DoxyCodeLine{00028\ \ \ olxstr\ SummFormula(\textcolor{keyword}{const}\ olxstr\&\ Separator);}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{double}\ MolWeight();}
+\DoxyCodeLine{00030\ \ \ olxstr\ Composition();}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ calculates\ C,\ H\ and\ N\ and\ mol\ weight\ contents\ of\ \ compound}}
+\DoxyCodeLine{00032\ \ \ \textcolor{comment}{//\ to\ get\ \%:\ \%(c)\ =\ C*100/Mr}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{void}\ CHN(\textcolor{keywordtype}{double}\&\ C,\ \textcolor{keywordtype}{double}\&\ H,\ \textcolor{keywordtype}{double}\&\ N,\ \textcolor{keywordtype}{double}\&\ Mr)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00034\ \ \ \textcolor{comment}{//\ expects\ a\ distrionary\ with\ keys\ of\ TBasicAtomInfo::GetIndex()}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{double}\ CHN(\mbox{\hyperlink{classolx__pdict}{olx\_pdict<short,\ double>}}\&\ rv)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ LoadFromExpression(\textcolor{keyword}{const}\ olxstr\ \&E);}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ CalcSummFormula(\mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ double>}}\ \&Exp)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{void}\ SetMult(\textcolor{keyword}{const}\ olxstr\&\ S)\ \ \{\ \ FMult\ =\ S.ToDouble();\ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ SetMult(\textcolor{keywordtype}{double}\ v)\ \ \{\ \ FMult\ =\ v;\ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ GetMult()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FMult;\ \ \}}
+\DoxyCodeLine{00041\ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ EndChemNamespace()}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

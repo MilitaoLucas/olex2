@@ -1,0 +1,233 @@
+\doxysection{olxth.\+h}
+\hypertarget{olxth_8h_source}{}\label{olxth_8h_source}\index{sdl/olxth.h@{sdl/olxth.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_thread\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_thread\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}os\_util.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}egc.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#undef\ Yield}}
+\DoxyCodeLine{00017\ BeginEsdlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ converts\ function\ (taking\ no\ arguents)\ to\ a\ thread\ -\/\ ready\ function}}
+\DoxyCodeLine{00020\ template\ <class\ T>\ struct\ ThreadFunctionConverter\ \ \{}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \_stdcall\ Func(\textcolor{keywordtype}{void}*\ data)\ \{}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}*\ Func(\textcolor{keywordtype}{void}*\ data)\ \{}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00026\ \ \ \ \ ((T)(data))();}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{class\ }AOlxThread\ :\ \textcolor{keyword}{public}\ APerishable\ \{}
+\DoxyCodeLine{00032\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{int}\ \textcolor{keyword}{volatile}\ RetVal;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{volatile}\ Terminate,\ Detached,\ Running;}
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{struct\ }HandleRemover\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ HANDLE\ handle;}
+\DoxyCodeLine{00039\ \ \ \ \ HandleRemover(HANDLE\ \_handle)\ :\ handle(\_handle)\ \{\}}
+\DoxyCodeLine{00040\ \ \ \ \ \string~HandleRemover()\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (handle\ !=\ NULL)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ CloseHandle(handle);}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \};}
+\DoxyCodeLine{00045\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00046\ \ \ HANDLE\ Handle;}
+\DoxyCodeLine{00047\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \_stdcall\ \_Run(\textcolor{keywordtype}{void}*\ \_instance)\ \{}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00050\ \ \ pthread\_t\ Handle;}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}*\ \_Run(\textcolor{keywordtype}{void}*\ \_instance)\ \{}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00053\ \ \ \ \ AOlxThread*\ th\ =\ (AOlxThread*)\_instance;}
+\DoxyCodeLine{00054\ \ \ \ \ th-\/>Running\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00055\ \ \ \ \ th-\/>RetVal\ =\ ((AOlxThread*)\_instance)-\/>Run();}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{comment}{//\ running\ prevents\ the\ object\ deletion...}}
+\DoxyCodeLine{00057\ \ \ \ \ th-\/>Running\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{if}\ (th-\/>Detached)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ th;}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00062\ \ \ \ \ ExitThread(0);}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00064\ \ \ \ \ pthread\_exit(NULL);}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \textcolor{keyword}{protected}:\ \ \textcolor{comment}{//\ do\ not\ allow\ to\ create\ externally}}
+\DoxyCodeLine{00069\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00070\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00072\ \ \ AOlxThread()\ :}
+\DoxyCodeLine{00073\ \ \ \ \ RetVal(0),}
+\DoxyCodeLine{00074\ \ \ \ \ Terminate(\textcolor{keyword}{false}),}
+\DoxyCodeLine{00075\ \ \ \ \ Detached(\textcolor{keyword}{true}),}
+\DoxyCodeLine{00076\ \ \ \ \ Running(\textcolor{keyword}{false}),}
+\DoxyCodeLine{00077\ \ \ \ \ Handle(0),}
+\DoxyCodeLine{00078\ \ \ \ \ OnTerminate(Actions.New(\textcolor{stringliteral}{"{}ON\_TERMINATE"{}}))}
+\DoxyCodeLine{00079\ \ \ \{\}}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{/*\ thread\ can\ do\ some\ extras\ here,\ as\ it\ will\ be\ called\ from\ SendTerminate}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ \ before\ the\ Terimate\ flag\ is\ set\ */}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnSendTerminate()\ \{\}}
+\DoxyCodeLine{00084\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00085\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{virtual}\ \string~AOlxThread()\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ OnTerminate.Execute(\textcolor{keyword}{this},\ 0);}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{if}\ (Running)\ \{\ \ \textcolor{comment}{//\ prevent\ deleting}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ Detached\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ Terminate\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{comment}{/*\ in\ some\ situation,s\ when\ the\ DLL\ unloaded,\ the\ threads\ are\ terminated}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ \ \ without\ a\ warning\ (if\ left\ behind\ in\ a\ static\ container/variable\ and\ thus}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ \ \ \ it\ has\ to\ be\ checked\ if\ the\ normal\ termination\ procedure\ was\ bypassed}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#if\ defined(\_\_WIN32\_\_)\ \&\&\ defined(\_DLL)}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{if}\ (Handle\ !=\ 0\ \&\&\ Running)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ ec\ =\ STILL\_ACTIVE,\ rv;}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (ec\ ==\ STILL\_ACTIVE\ \&\&\ (rv\ =\ GetExitCodeThread(Handle,\ \&ec))\ !=\ 0)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (SwitchToThread()\ ==\ 0)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ olx\_sleep(5);}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Running)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ Running\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{while}\ (Running)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ Yield();}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ olx\_sleep(5);}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_\ \ }\textcolor{comment}{//\ costed\ me\ many\ restarts...}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{if}\ (Handle\ !=\ 0)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ CloseHandle(Handle);}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00120\ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00122\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnTerminate;}
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00124\ \ \ \textcolor{comment}{/*\ It\ is\ crutial\ to\ check\ if\ the\ terminate\ flag\ is\ set.\ In\ that\ case\ the}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ \ function\ should\ return\ a\ value,\ or\ a\ deadlock\ situation\ may\ arise.}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ Run()\ =\ 0;}
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{bool}\ Start()\ \{}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ thread\_id;}
+\DoxyCodeLine{00132\ \ \ \ \ Handle\ =\ CreateThread(0,\ 0,\ \_Run,\ \textcolor{keyword}{this},\ 0,\ \&thread\_id);}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{if}\ (Handle\ ==\ 0)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00135\ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{return}\ (pthread\_create(\&Handle,\ NULL,\ \_Run,\ \textcolor{keyword}{this})\ ==\ 0);}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{/*\ returns\ true\ if\ successful,\ the\ process\ calling\ Join\ is\ responsible\ for}}
+\DoxyCodeLine{00143\ \textcolor{comment}{\ \ the\ memory\ deallocation...}}
+\DoxyCodeLine{00144\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{bool}\ Join(\textcolor{keywordtype}{bool}\ send\_terminate\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{if}\ (Handle\ ==\ 0)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}the\ tread\ must\ be\ started\ at\ first"{}});}
+\DoxyCodeLine{00149\ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{if}\ (!Running)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ Detached\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{if}\ (send\_terminate\ \&\&\ !Terminate)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ SendTerminate();}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ ec\ =\ STILL\_ACTIVE,\ rv;}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{while}\ (ec\ ==\ STILL\_ACTIVE\ \&\&\ (rv\ =\ GetExitCodeThread(Handle,\ \&ec))\ !=\ 0)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (SwitchToThread()\ ==\ 0)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ olx\_sleep(5);}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Running)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ rv\ !=\ 0;}
+\DoxyCodeLine{00168\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{if}\ (pthread\_join(Handle,\ 0)\ !=\ 0)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00171\ \ \ \ \ \}}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00176\ \ \ \textcolor{comment}{/*\ this\ only\ has\ effect\ if\ the\ main\ procedure\ of\ the\ thread\ checks\ for\ this}}
+\DoxyCodeLine{00177\ \textcolor{comment}{\ \ flag...}}
+\DoxyCodeLine{00178\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00179\ \ \ \textcolor{keywordtype}{void}\ SendTerminate()\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ OnSendTerminate();}
+\DoxyCodeLine{00181\ \ \ \ \ Terminate\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00182\ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{bool}\ IsRunning()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Running;\ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00185\ \ \ \textcolor{comment}{/*\ executes\ a\ simplest\ function\ thread,\ the\ function\ should\ not\ take\ any}}
+\DoxyCodeLine{00186\ \textcolor{comment}{\ \ arguments\ the\ return\ value\ will\ be\ ignored.\ To\ be\ used\ for\ global\ detached}}
+\DoxyCodeLine{00187\ \textcolor{comment}{\ \ threads\ such\ as\ timers\ etc.\ Simplest\ example:}}
+\DoxyCodeLine{00188\ \textcolor{comment}{\ \ \ \ void\ TestTh()\ \ \{\ \ your\ code\ here...\ \ \}}}
+\DoxyCodeLine{00189\ \textcolor{comment}{\ \ \ \ AOlxThread::RunThread(\&TestTh);}}
+\DoxyCodeLine{00190\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ RunThread(T\ f)\ \{}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ thread\_id;}
+\DoxyCodeLine{00194\ \ \ \ \ HANDLE\ h\ =\ CreateThread(0,\ 0,\ \&ThreadFunctionConverter<T>::Func,\ f,}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ 0,\ \&thread\_id);}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{if}\ (h\ ==\ 0)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00198\ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{comment}{//\ make\ sure\ it\ gets\ deleted\ at\ the\ end!}}
+\DoxyCodeLine{00200\ \ \ \ \ TEGC::AddP(\textcolor{keyword}{new}\ HandleRemover(h));}
+\DoxyCodeLine{00201\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00202\ \ \ \ \ pthread\_t\ thread\_id;}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordflow}{return}\ (pthread\_create(\&thread\_id,\ 0,}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \&ThreadFunctionConverter<T>::Func,\ (\textcolor{keywordtype}{void}*)(f))\ ==\ 0);}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00207\ \ \ \}}
+\DoxyCodeLine{00208\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Yield()\ \{}
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00211\ \ \ \ \ SwitchToThread();}
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00213\ \ \ \ \ sched\_yield();}
+\DoxyCodeLine{00214\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00215\ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ GetCurrentThreadId()\ \{}
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00219\ \ \ \ \ return\ ::GetCurrentThreadId();}
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long})pthread\_self();}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00223\ \ \ \}}
+\DoxyCodeLine{00224\ \};}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ EndEsdlNamespace()}
+\DoxyCodeLine{00227\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

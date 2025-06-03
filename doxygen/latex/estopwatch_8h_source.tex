@@ -1,0 +1,96 @@
+\doxysection{estopwatch.\+h}
+\hypertarget{estopwatch_8h_source}{}\label{estopwatch_8h_source}\index{sdl/estopwatch.h@{sdl/estopwatch.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_stop\_watch\_h}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_stop\_watch\_h}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}etime.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}etable.h"{}}}
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ TStopWatchManager\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{class\ }Record\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00021\ \ \ \ \ TTypeList<Record>\ nodes;}
+\DoxyCodeLine{00022\ \ \ \ \ time\_t\ creation\_time;}
+\DoxyCodeLine{00023\ \ \ \ \ TIntList\ sequence;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ Record\ *parent;}
+\DoxyCodeLine{00026\ \ \ \ \ olxstr\ FunctionName;}
+\DoxyCodeLine{00027\ \ \ \ \ time\_t\ termination\_time;}
+\DoxyCodeLine{00028\ \ \ \ \ TTypeList<AnAssociation3<uint64\_t,olxstr,\ uint64\_t>\ >\ steps;}
+\DoxyCodeLine{00029\ \ \ \ \ Record(Record\ *parent,\ \textcolor{keyword}{const}\ olxstr\ \&functionName)}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ :\ parent(parent),\ FunctionName(functionName)}
+\DoxyCodeLine{00031\ \ \ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ creation\_time\ =\ TETime::msNow();}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ termination\_time\ =\ time\_t(\string~0);}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{const}\ TTypeList<Record>\ \&\ GetNodes()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ nodes;\ \};}
+\DoxyCodeLine{00036\ \ \ \ \ Record\ \&New(\textcolor{keyword}{const}\ olxstr\ \&functionName)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ sequence.Add(-\/\textcolor{keywordtype}{int}(nodes.Count()+1));}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ nodes.Add(\textcolor{keyword}{new}\ Record(\textcolor{keyword}{this},\ functionName));}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ start(\textcolor{keyword}{const}\ olxstr\&\ name)\ \ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!steps.IsEmpty()\ \&\&\ steps.GetLast().GetC()\ ==\ 0)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ steps.GetLast().SetC(TETime::msNow());}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ steps.AddNew(TETime::msNow(),\ name,\ 0);}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ sequence.Add(\textcolor{keywordtype}{int}(steps.Count()));}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{void}\ stop()\ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ steps.GetLast().c\ =\ TETime::msNow();}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ const\_strlist\ prepareList(\textcolor{keywordtype}{size\_t}\ level);}
+\DoxyCodeLine{00050\ \ \ \};}
+\DoxyCodeLine{00051\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\&\ GetCriticalSection()\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ cs;}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{return}\ cs;}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ Record\ *current;}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ print();}
+\DoxyCodeLine{00058\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{static}\ Record\ \&Push(\textcolor{keyword}{const}\ olxstr\ \&functionName);}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Pop();}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{class\ }TStopWatch\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00064\ \ \ TStopWatchManager::Record\ \&record;}
+\DoxyCodeLine{00065\ \ \ \mbox{\hyperlink{classTOnProgress}{TOnProgress}}\ *pg;}
+\DoxyCodeLine{00066\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00067\ \ \ TStopWatch(\textcolor{keyword}{const}\ olxstr\&\ functionName)}
+\DoxyCodeLine{00068\ \ \ \ \ :\ record(TStopWatchManager::Push(functionName)),}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ pg(NULL)}
+\DoxyCodeLine{00070\ \ \ \{\}}
+\DoxyCodeLine{00071\ \ \ \string~TStopWatch()\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ record.termination\_time\ =\ TETime::msNow();}
+\DoxyCodeLine{00073\ \ \ \ \ TStopWatchManager::Pop();}
+\DoxyCodeLine{00074\ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ start(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ record.start(name);}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{if}\ (pg\ !=\ NULL)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pg-\/>GetPos()+1\ >=\ pg-\/>GetMax())}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ pg-\/>SetMax(pg-\/>GetMax()+1);}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ pg-\/>SetPos(pg-\/>GetPos()+1);}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ pg-\/>SetAction(name);}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ TBasicApp::GetInstance().OnProgress.Execute(\textcolor{keyword}{this},\ pg);}
+\DoxyCodeLine{00083\ \ \ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{void}\ stop()\ \{\ record.stop();\ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{void}\ SetProgress(\mbox{\hyperlink{classTOnProgress}{TOnProgress}}\ *pg\_)\ \{\ pg\ =\ pg\_;\ \}}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ EndEsdlNamespace()}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

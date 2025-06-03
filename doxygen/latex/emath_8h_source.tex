@@ -1,0 +1,668 @@
+\doxysection{emath.\+h}
+\hypertarget{emath_8h_source}{}\label{emath_8h_source}\index{sdl/emath.h@{sdl/emath.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_emath\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_emath\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ Linux\ stuff....}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#undef\ QLength}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginEsdlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ returns\ corresponding\ character\ for\ sign}}
+\DoxyCodeLine{00020\ template\ <typename\ T>\ inline\ olxch\ olx\_sign\_char(const\ T\&\ p)\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordflow}{return}\ (p\ <\ 0)\ ?\ olxT(\textcolor{charliteral}{'-\/'})\ :\ olxT(\textcolor{charliteral}{'+'});}
+\DoxyCodeLine{00022\ \}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ determines\ the\ sign\ of\ a\ number}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{inline}\ T\ olx\_sign(\textcolor{keyword}{const}\ T\&\ a)\ \{}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordflow}{return}\ (T)((a\ <\ 0)\ ?\ -\/1\ :\ 1);}
+\DoxyCodeLine{00026\ \}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//copies\ sign\ from\ b\ to\ a:\ returns\ a\ with\ sign\ of\ b}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T1,\ \textcolor{keyword}{typename}\ T2>\ T2\ olx\_copy\_sign(T1\ a,\ T2\ b)\ \{}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordflow}{return}\ (b\ <\ 0)\ ?\ (a\ <\ 0\ ?\ a\ :\ -\/a)\ :\ (a\ <\ 0\ ?\ -\/a\ :\ a);}
+\DoxyCodeLine{00030\ \}}
+\DoxyCodeLine{00031\ \textcolor{comment}{/*\ solves\ an\ equation\ by\ the\ Newton\ method}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ \ f\ -\/\ function,\ df\ -\/\ first\ derivative,\ point\ -\/\ starting\ point\ */}}
+\DoxyCodeLine{00033\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{double}\ olx\_newton\_solve(\textcolor{keywordtype}{double}(*f)(\textcolor{keywordtype}{double}),}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{double}(*df)(\textcolor{keywordtype}{double}),\ \textcolor{keywordtype}{double}\ point);}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ calculates\ factorial\ of\ a\ number}}
+\DoxyCodeLine{00036\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ arg\_t>\ \textcolor{keywordtype}{double}\ olx\_factorial(\textcolor{keyword}{const}\ arg\_t\&\ a)\ \{}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{double}\ b\ =\ 1;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordflow}{for}\ (arg\_t\ i\ =\ 2;\ i\ <=\ a;\ i++)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ b\ *=\ i;}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordflow}{return}\ b;}
+\DoxyCodeLine{00042\ \}}
+\DoxyCodeLine{00043\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ret\_t,\ \textcolor{keyword}{typename}\ arg\_t>}
+\DoxyCodeLine{00044\ ret\_t\ olx\_factorial\_t(\textcolor{keyword}{const}\ arg\_t\&\ a)\ \{}
+\DoxyCodeLine{00045\ \ \ arg\_t\ b\ =\ 1;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordflow}{for}\ (arg\_t\ i\ =\ 2;\ i\ <=\ a;\ i++)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ b\ *=\ i;}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}ret\_t\textcolor{keyword}{>}(b);}
+\DoxyCodeLine{00050\ \}}
+\DoxyCodeLine{00051\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{int}\_t,\ \textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00052\ \textcolor{keyword}{inline}\ int\_t\ olx\_round\_t(\textcolor{keyword}{const}\ float\_t\ a)\ \{}
+\DoxyCodeLine{00053\ \ \ int\_t\ b\ =\ (int\_t)a;\ \ \textcolor{comment}{//\ |b|\ is\ always\ smaller\ than\ a}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordflow}{return}\ ((a\ <\ 0)\ ?\ (((b\ -\/\ a)\ >=\ .5)\ ?\ -\/-\/b\ :\ b)\ :\ (((a\ -\/\ b)\ >=\ .5)\ ?\ ++b\ :\ b));}
+\DoxyCodeLine{00055\ \}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ rounds\ a\ floating\ point\ number}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{long}\ olx\_round(\textcolor{keyword}{const}\ float\_t\ a)\ \{}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordflow}{return}\ olx\_round\_t<long>(a);}
+\DoxyCodeLine{00059\ \}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ rounds\ a\ floating\ point:\ returns\ (float\_t)(round(a*num))/num}}
+\DoxyCodeLine{00061\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00062\ \textcolor{keyword}{inline}\ float\_t\ olx\_round(\textcolor{keyword}{const}\ float\_t\ a,\ \textcolor{keywordtype}{long}\ num)\ \{}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordflow}{return}\ (float\_t)olx\_round(a*num)\ /\ num;}
+\DoxyCodeLine{00064\ \}}
+\DoxyCodeLine{00065\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{int}\_t,\ \textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00066\ \textcolor{keyword}{inline}\ int\_t\ olx\_floor\_t(\textcolor{keyword}{const}\ float\_t\ a)\ \{}
+\DoxyCodeLine{00067\ \ \ int\_t\ b\ =\ (int\_t)a;}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordflow}{return}\ (a\ <\ 0)\ ?\ b\ -\/\ 1\ :\ b;}
+\DoxyCodeLine{00069\ \}}
+\DoxyCodeLine{00070\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{long}\ olx\_floor(\textcolor{keyword}{const}\ float\_t\ a)\ \{}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordflow}{return}\ olx\_floor\_t<long>(a);}
+\DoxyCodeLine{00072\ \}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ returns\ true\ if\ the\ given\ value\ is\ within\ (-\/eps,eps)\ range}}
+\DoxyCodeLine{00074\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ olx\_is\_zero(float\_t\ v,\ float\_t\ eps)\ \{}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordflow}{return}\ v\ <\ 0\ ?\ (v\ >\ -\/eps)\ :\ (v\ <\ eps);}
+\DoxyCodeLine{00076\ \}}
+\DoxyCodeLine{00077\ \textcolor{comment}{/*\ compares\ float\ values\ within\ an\ epsilon\ range,\ suitable\ for\ stable\ sort\ in}}
+\DoxyCodeLine{00078\ \textcolor{comment}{acsending\ order}}
+\DoxyCodeLine{00079\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00080\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00081\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ olx\_cmp\_float(float\_t\ v1,\ float\_t\ v2,\ float\_t\ eps)\ \{}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{const}\ float\_t\ diff\ =\ v1\ -\/\ v2;}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordflow}{return}\ olx\_is\_zero(diff,\ eps)\ ?\ 0\ :\ (diff\ >\ 0\ ?\ 1\ :\ -\/1);}
+\DoxyCodeLine{00084\ \}}
+\DoxyCodeLine{00085\ \textcolor{comment}{/*\ compares\ if\ the\ difference\ between\ two\ float\ point\ values\ is\ within\ the\ eps\ */}}
+\DoxyCodeLine{00086\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00087\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ olx\_feq(float\_t\ v1,\ float\_t\ v2,\ float\_t\ eps\ =\ float\_t(1e-\/3))\ \{}
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordflow}{return}\ olx\_is\_zero(v1\ -\/\ v2,\ eps);}
+\DoxyCodeLine{00089\ \}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ returns\ absolute\ value\ of\ a\ number}}
+\DoxyCodeLine{00091\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ num>\ \textcolor{keyword}{inline}\ num\ olx\_abs(num\ n)\ \{}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordflow}{return}\ n\ <\ 0\ ?\ -\/n\ :\ n;}
+\DoxyCodeLine{00093\ \}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ return\ pow2}}
+\DoxyCodeLine{00095\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ num>\ \textcolor{keyword}{inline}\ num\ olx\_sqr(num\ n)\ \{\ \textcolor{keywordflow}{return}\ n\ *\ n;\ \}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ returns\ integer\ pow\ of\ a\ number}}
+\DoxyCodeLine{00097\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_t>}
+\DoxyCodeLine{00098\ \textcolor{keyword}{inline}\ float\_t\ olx\_ipow(float\_t\ a,\ \textcolor{keywordtype}{size\_t}\ n)\ \{}
+\DoxyCodeLine{00099\ \ \ float\_t\ rv\ =\ 1;}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ n;\ i++)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ rv\ *=\ a;}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00104\ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ A,\ \textcolor{keyword}{typename}\ B>}
+\DoxyCodeLine{00107\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ olx\_set\_bit(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ Set,\ A\ \&V,\ \textcolor{keyword}{const}\ B\ Bit)\ \{}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordflow}{if}\ (Set)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ V\ |=\ Bit;}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ V\ \&=\ \string~Bit;}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ \}}
+\DoxyCodeLine{00115\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ A,\ \textcolor{keyword}{typename}\ B>}
+\DoxyCodeLine{00116\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ olx\_set\_true(A\ \&V,\ \textcolor{keyword}{const}\ B\ Bit)\ \{}
+\DoxyCodeLine{00117\ \ \ V\ |=\ Bit;}
+\DoxyCodeLine{00118\ \}}
+\DoxyCodeLine{00119\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ A,\ \textcolor{keyword}{typename}\ B>}
+\DoxyCodeLine{00120\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ olx\_set\_false(A\ \&V,\ \textcolor{keyword}{const}\ B\ Bit)\ \{}
+\DoxyCodeLine{00121\ \ \ V\ \&=\ \string~Bit;}
+\DoxyCodeLine{00122\ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \textcolor{comment}{//\ throws\ an\ exception}}
+\DoxyCodeLine{00125\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00126\ \textcolor{keywordtype}{double}\ olx\_tetrahedron\_volume(\textcolor{keyword}{const}\ VC\&\ A,\ \textcolor{keyword}{const}\ VC\&\ B,}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{const}\ VC\&\ C,\ \textcolor{keyword}{const}\ VC\&\ D)}
+\DoxyCodeLine{00128\ \{}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{const}\ VC\ a(A\ -\/\ B),\ b(C\ -\/\ B);}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordflow}{if}\ (a.QLength()*b.QLength()\ <\ 1e-\/15)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{double}\ caS\ =\ a.CAngle(b);}
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(caS)\ >\ (1.0\ -\/\ 1e-\/15))\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00136\ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ sa\ =\ sqrt(1\ -\/\ caS\ *\ caS);}
+\DoxyCodeLine{00138\ \ \ caS\ =\ a.Length()\ *\ b.Length()\ *\ sa\ /\ 2;}
+\DoxyCodeLine{00139\ \ \ VC\ n\ =\ a.XProdVec(b);}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordtype}{double}\ d\ =\ n[2]\ *\ A[2]\ +\ n[1]\ *\ A[1]\ +\ n[0]\ *\ A[0];}
+\DoxyCodeLine{00141\ \ \ d\ =\ n[2]\ *\ D[2]\ +\ n[1]\ *\ D[1]\ +\ n[0]\ *\ D[0]\ -\/\ d;}
+\DoxyCodeLine{00142\ \ \ d\ /=\ n.Length();}
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordflow}{return}\ olx\_abs(caS*d\ /\ 3);}
+\DoxyCodeLine{00144\ \}}
+\DoxyCodeLine{00145\ \textcolor{comment}{//\ normalises\ the\ vertices\ before\ the\ calculation}}
+\DoxyCodeLine{00146\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00147\ \textcolor{keywordtype}{double}\ olx\_tetrahedron\_volume\_n(\textcolor{keyword}{const}\ VC\&\ A,\ \textcolor{keyword}{const}\ VC\&\ B,}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{const}\ VC\&\ C,\ \textcolor{keyword}{const}\ VC\&\ D)}
+\DoxyCodeLine{00149\ \{}
+\DoxyCodeLine{00150\ \ \ \textcolor{keywordflow}{return}\ olx\_tetrahedron\_volume(A,}
+\DoxyCodeLine{00151\ \ \ \ \ (B\ -\/\ A).Normalise()\ +\ A,\ (C\ -\/\ A).Normalise()\ +\ A,\ (D\ -\/\ A).Normalise()\ +\ A);}
+\DoxyCodeLine{00152\ \}}
+\DoxyCodeLine{00153\ \textcolor{comment}{//\ dihedral\ angle\ in\ degrees\ [0..180],\ throws\ an\ exception}}
+\DoxyCodeLine{00154\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00155\ \textcolor{keywordtype}{double}\ olx\_dihedral\_angle(\textcolor{keyword}{const}\ VC\&\ v1,\ \textcolor{keyword}{const}\ VC\&\ v2,}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{const}\ VC\&\ v3,\ \textcolor{keyword}{const}\ VC\&\ v4)}
+\DoxyCodeLine{00157\ \{}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{const}\ VC\ a((v1\ -\/\ v2).XProdVec(v3\ -\/\ v2)),}
+\DoxyCodeLine{00159\ \ \ \ \ b((v2\ -\/\ v3).XProdVec(v4\ -\/\ v3));}
+\DoxyCodeLine{00160\ \ \ \textcolor{keywordflow}{if}\ (a.QLength()*b.QLength()\ <\ 1e-\/15)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00162\ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keywordflow}{return}\ acos(a.CAngle(b))\ *\ 180\ /\ M\_PI;}
+\DoxyCodeLine{00164\ \}}
+\DoxyCodeLine{00165\ \textcolor{comment}{/*\ dihedral\ angle\ in\ degrees\ (-\/180..180]}}
+\DoxyCodeLine{00166\ \textcolor{comment}{http://en.wikipedia.org/wiki/Dihedral\_angle}}
+\DoxyCodeLine{00167\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00168\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00169\ \textcolor{keywordtype}{double}\ olx\_dihedral\_angle\_signed(\textcolor{keyword}{const}\ VC\&\ v1,\ \textcolor{keyword}{const}\ VC\&\ v2,}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{const}\ VC\&\ v3,\ \textcolor{keyword}{const}\ VC\&\ v4)}
+\DoxyCodeLine{00171\ \{}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{const}\ VC\ b1(v2\ -\/\ v1),\ b2(v3\ -\/\ v2),\ b3(v4\ -\/\ v3),}
+\DoxyCodeLine{00173\ \ \ \ \ b2xb3(b2.XProdVec(b3));}
+\DoxyCodeLine{00174\ \ \ \textcolor{keywordflow}{return}\ atan2(b2.Length()*b1.DotProd(b2xb3),}
+\DoxyCodeLine{00175\ \ \ \ \ b1.XProdVec(b2).DotProd(b2xb3))\ *\ 180\ /\ M\_PI;}
+\DoxyCodeLine{00176\ \}}
+\DoxyCodeLine{00177\ \textcolor{comment}{//angle\ in\ degrees\ for\ three\ coordinates\ A-\/B\ B-\/C\ angle}}
+\DoxyCodeLine{00178\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00179\ \textcolor{keywordtype}{double}\ olx\_angle(\textcolor{keyword}{const}\ VC\&\ v1,\ \textcolor{keyword}{const}\ VC\&\ v2,\ \textcolor{keyword}{const}\ VC\&\ v3)\ \{}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{const}\ VC\ a(v1\ -\/\ v2),}
+\DoxyCodeLine{00181\ \ \ \ \ b(v3\ -\/\ v2);}
+\DoxyCodeLine{00182\ \ \ \textcolor{keywordflow}{if}\ (a.QLength()*b.QLength()\ <\ 1e-\/15)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00184\ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordflow}{return}\ acos(a.CAngle(b))*180.0\ /\ M\_PI;}
+\DoxyCodeLine{00186\ \}}
+\DoxyCodeLine{00187\ \textcolor{comment}{//angle\ in\ degrees\ for\ four\ coordinates\ A-\/B\ D-\/C\ angle}}
+\DoxyCodeLine{00188\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00189\ \textcolor{keywordtype}{double}\ olx\_angle(\textcolor{keyword}{const}\ VC\&\ v1,\ \textcolor{keyword}{const}\ VC\&\ v2,\ \textcolor{keyword}{const}\ VC\&\ v3,\ \textcolor{keyword}{const}\ VC\&\ v4)\ \{}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{const}\ VC\ a(v1\ -\/\ v2),}
+\DoxyCodeLine{00191\ \ \ \ \ b(v4\ -\/\ v3);}
+\DoxyCodeLine{00192\ \ \ \textcolor{keywordflow}{if}\ (a.QLength()*b.QLength()\ <\ 1e-\/15)\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTDivException}{TDivException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00194\ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordflow}{return}\ acos(a.CAngle(b))*180.0\ /\ M\_PI;}
+\DoxyCodeLine{00196\ \}}
+\DoxyCodeLine{00197\ \textcolor{comment}{//\ projection\ of\ a\ point\ to\ a\ plane}}
+\DoxyCodeLine{00198\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec\_t>}
+\DoxyCodeLine{00199\ vec\_t\ olx\_projection(\textcolor{keyword}{const}\ vec\_t\ \&p\_,\ \textcolor{keyword}{const}\ vec\_t\ \&center,}
+\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{const}\ vec\_t\ \&normal)}
+\DoxyCodeLine{00201\ \{}
+\DoxyCodeLine{00202\ \ \ vec\_t\ p(p\_\ -\/\ center);}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordflow}{return}\ p\ -\/\ normal\ *\ p.DotProd(normal);}
+\DoxyCodeLine{00204\ \}}
+\DoxyCodeLine{00205\ \textcolor{comment}{//\ projection\ of\ a\ point\ to\ a\ plane}}
+\DoxyCodeLine{00206\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec\_t>}
+\DoxyCodeLine{00207\ vec\_t\ olx\_projection(\textcolor{keyword}{const}\ vec\_t\ \&p,\ \textcolor{keyword}{const}\ vec\_t\ \&normal)\ \{}
+\DoxyCodeLine{00208\ \ \ \textcolor{keywordflow}{return}\ p\ -\/\ normal\ *\ p.DotProd(normal);}
+\DoxyCodeLine{00209\ \}}
+\DoxyCodeLine{00210\ \textcolor{comment}{//\ greatest\ common\ denominator}}
+\DoxyCodeLine{00211\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ olx\_gcd(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ u,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ v);}
+\DoxyCodeLine{00212\ \textcolor{comment}{//\ works\ only\ with\ integer\ types}}
+\DoxyCodeLine{00213\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ IntT>}
+\DoxyCodeLine{00214\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ olx\_is\_pow2(IntT\ v)\ \{\ \textcolor{keywordflow}{return}\ v\ <=\ 0\ ?\ false\ :\ (v\&(v\ -\/\ 1))\ ==\ 0;\ \}}
+\DoxyCodeLine{00215\ \textcolor{comment}{//returns\ volume\ of\ a\ sphere\ of\ radius\ r}}
+\DoxyCodeLine{00216\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ olx\_sphere\_volume(\textcolor{keywordtype}{double}\ r)\ \{\ \textcolor{keywordflow}{return}\ 4.*M\_PI\ /\ 3.0*r*r*r;\ \}}
+\DoxyCodeLine{00217\ \textcolor{comment}{//returns\ radius\ of\ a\ sphere\ of\ volume\ v}}
+\DoxyCodeLine{00218\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ olx\_sphere\_radius(\textcolor{keywordtype}{double}\ v)\ \{}
+\DoxyCodeLine{00219\ \ \ \textcolor{keywordflow}{return}\ pow(v*3.0\ /\ (4.0*M\_PI),\ 1.\ /\ 3.);}
+\DoxyCodeLine{00220\ \}}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \textcolor{comment}{//\ creates\ a\ 3D\ rotation\ matrix\ aroung\ rv\ vector,\ provided\ cosine\ of\ the\ rotation\ angle}}
+\DoxyCodeLine{00223\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatType,\ \textcolor{keyword}{typename}\ MC,\ \textcolor{keyword}{typename}\ VC>}
+\DoxyCodeLine{00224\ MC\&\ olx\_create\_rotation\_matrix\_(MC\&\ rm,\ \textcolor{keyword}{const}\ VC\&\ rv,}
+\DoxyCodeLine{00225\ \ \ FloatType\ ca,\ FloatType\ sa)}
+\DoxyCodeLine{00226\ \{}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{const}\ FloatType\ t\ =\ 1\ -\/\ ca;}
+\DoxyCodeLine{00228\ \ \ rm[0][0]\ =\ t\ *\ rv[0]\ *\ rv[0]\ +\ ca;}
+\DoxyCodeLine{00229\ \ \ rm[0][1]\ =\ t\ *\ rv[0]\ *\ rv[1]\ +\ sa\ *\ rv[2];}
+\DoxyCodeLine{00230\ \ \ rm[0][2]\ =\ t\ *\ rv[0]\ *\ rv[2]\ -\/\ sa\ *\ rv[1];}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ rm[1][0]\ =\ t\ *\ rv[0]\ *\ rv[1]\ -\/\ sa\ *\ rv[2];}
+\DoxyCodeLine{00233\ \ \ rm[1][1]\ =\ t\ *\ rv[1]\ *\ rv[1]\ +\ ca;}
+\DoxyCodeLine{00234\ \ \ rm[1][2]\ =\ t\ *\ rv[1]\ *\ rv[2]\ +\ sa\ *\ rv[0];}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ rm[2][0]\ =\ t\ *\ rv[0]\ *\ rv[2]\ +\ sa\ *\ rv[1];}
+\DoxyCodeLine{00237\ \ \ rm[2][1]\ =\ t\ *\ rv[1]\ *\ rv[2]\ -\/\ sa\ *\ rv[0];}
+\DoxyCodeLine{00238\ \ \ rm[2][2]\ =\ t\ *\ rv[2]\ *\ rv[2]\ +\ ca;}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordflow}{return}\ rm;}
+\DoxyCodeLine{00240\ \}}
+\DoxyCodeLine{00241\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatType,\ \textcolor{keyword}{typename}\ MC,\ \textcolor{keyword}{typename}\ VC>}
+\DoxyCodeLine{00242\ MC\&\ olx\_create\_rotation\_matrix\_(MC\&\ rm,\ \textcolor{keyword}{const}\ VC\&\ rv,\ FloatType\ ca)\ \{}
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordflow}{return}\ olx\_create\_rotation\_matrix\_(rm,\ rv,}
+\DoxyCodeLine{00244\ \ \ \ \ ca,\ (FloatType)sqrt((FloatType)1\ -\/\ ca\ *\ ca));}
+\DoxyCodeLine{00245\ \}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MC,\ \textcolor{keyword}{typename}\ VC,\ \textcolor{keyword}{typename}\ FloatType>}
+\DoxyCodeLine{00248\ MC\&\ olx\_create\_rotation\_matrix(MC\&\ rm,\ \textcolor{keyword}{const}\ VC\&\ rv,\ FloatType\ ca)\ \{}
+\DoxyCodeLine{00249\ \ \ \textcolor{keywordflow}{return}\ olx\_create\_rotation\_matrix\_<FloatType,\ MC,\ VC>(rm,\ rv,\ ca);}
+\DoxyCodeLine{00250\ \}}
+\DoxyCodeLine{00251\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MC,\ \textcolor{keyword}{typename}\ VC,\ \textcolor{keyword}{typename}\ FloatType>}
+\DoxyCodeLine{00252\ MC\&\ olx\_create\_rotation\_matrix(MC\&\ rm,\ \textcolor{keyword}{const}\ VC\&\ rv,\ FloatType\ ca,\ FloatType\ sa)\ \{}
+\DoxyCodeLine{00253\ \ \ \textcolor{keywordflow}{return}\ olx\_create\_rotation\_matrix\_<FloatType,\ MC,\ VC>(rm,\ rv,\ ca,\ sa);}
+\DoxyCodeLine{00254\ \}}
+\DoxyCodeLine{00255\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MC,\ \textcolor{keyword}{class}\ VC>\ MC\&\ QuaternionToMatrix(\textcolor{keyword}{const}\ VC\&\ qt,\ MC\&\ matr)\ \{}
+\DoxyCodeLine{00256\ \ \ matr[0][0]\ =\ qt[0]\ *\ qt[0]\ +\ qt[1]\ *\ qt[1]\ -\/\ qt[2]\ *\ qt[2]\ -\/\ qt[3]\ *\ qt[3];}
+\DoxyCodeLine{00257\ \ \ matr[0][1]\ =\ 2\ *\ (qt[1]\ *\ qt[2]\ -\/\ qt[0]\ *\ qt[3]);}
+\DoxyCodeLine{00258\ \ \ matr[0][2]\ =\ 2\ *\ (qt[1]\ *\ qt[3]\ +\ qt[0]\ *\ qt[2]);}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ \ \ matr[1][0]\ =\ 2\ *\ (qt[1]\ *\ qt[2]\ +\ qt[0]\ *\ qt[3]);}
+\DoxyCodeLine{00261\ \ \ matr[1][1]\ =\ qt[0]\ *\ qt[0]\ +\ qt[2]\ *\ qt[2]\ -\/\ qt[1]\ *\ qt[1]\ -\/\ qt[3]\ *\ qt[3];}
+\DoxyCodeLine{00262\ \ \ matr[1][2]\ =\ 2\ *\ (qt[2]\ *\ qt[3]\ -\/\ qt[0]\ *\ qt[1]);}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ matr[2][0]\ =\ 2\ *\ (qt[1]\ *\ qt[3]\ -\/\ qt[0]\ *\ qt[2]);}
+\DoxyCodeLine{00265\ \ \ matr[2][1]\ =\ 2\ *\ (qt[2]\ *\ qt[3]\ +\ qt[0]\ *\ qt[1]);}
+\DoxyCodeLine{00266\ \ \ matr[2][2]\ =\ qt[0]\ *\ qt[0]\ +\ qt[3]\ *\ qt[3]\ -\/\ qt[1]\ *\ qt[1]\ -\/\ qt[2]\ *\ qt[2];}
+\DoxyCodeLine{00267\ \ \ \textcolor{keywordflow}{return}\ matr;}
+\DoxyCodeLine{00268\ \}}
+\DoxyCodeLine{00269\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00270\ \textcolor{comment}{generates\ a\ new\ permutation\ from\ the\ original\ list}}
+\DoxyCodeLine{00271\ \textcolor{comment}{http://en.wikipedia.org/wiki/Permutation}}
+\DoxyCodeLine{00272\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00273\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ \textcolor{keywordtype}{void}\ GeneratePermutation(List\&\ out,\ \textcolor{keywordtype}{size\_t}\ perm)\ \{}
+\DoxyCodeLine{00274\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ out.Count();}
+\DoxyCodeLine{00275\ \ \ \textcolor{keywordtype}{size\_t}\ fc\ =\ olx\_factorial\_t<size\_t,\ size\_t>(cnt\ -\/\ 1);}
+\DoxyCodeLine{00276\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cnt\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ti\ =\ (perm\ /\ fc)\ \%\ (cnt\ -\/\ i);}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ tv\ =\ out[i\ +\ ti];}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ ti;\ j\ >\ i;\ j-\/-\/)\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ out[j]\ =\ out[j\ -\/\ 1];}
+\DoxyCodeLine{00281\ \ \ \ \ \}}
+\DoxyCodeLine{00282\ \ \ \ \ out[i]\ =\ tv;}
+\DoxyCodeLine{00283\ \ \ \ \ fc\ /=\ (cnt\ -\/\ i\ -\/\ 1);}
+\DoxyCodeLine{00284\ \ \ \}}
+\DoxyCodeLine{00285\ \}}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \textcolor{keyword}{namespace\ }olx\_vec\ \{}
+\DoxyCodeLine{00288\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ OutT,\ \textcolor{keyword}{class}\ VecT,\ \textcolor{keyword}{class}\ MatT>}
+\DoxyCodeLine{00289\ \ \ OutT\&\ MulMatrix(\textcolor{keyword}{const}\ VecT\&\ v,\ \textcolor{keyword}{const}\ MatT\&\ m,\ OutT\&\ o)\ \{}
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cc\ =\ m.ColCount(),}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ vc\ =\ v.Count();}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordflow}{if}\ (vc\ !=\ m.RowCount())\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00294\ \ \ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keywordflow}{if}\ (vc\ >=\ 8)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ c1\ =\ (vc\ >>\ 2)\ <<\ 2;;}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cc;\ i++)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ j\ =\ 0;}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (j\ =\ 0;\ j\ <\ c1;\ j\ +=\ 4)\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ o(i)\ +=\ v(j)*m(j,\ i)\ +\ v(j\ +\ 1)*m(j\ +\ 1,\ i)\ +}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \ \ \ \ v(j\ +\ 2)*m(j\ +\ 2,\ i)\ +\ v(j\ +\ 3)*m(j\ +\ 3,\ i);}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ j\ <\ vc;\ j++)\ \{}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \ \ o(i)\ +=\ v(j)*m(j,\ i);}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00307\ \ \ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cc;\ i++)\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ vc;\ j++)\ \{}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ o(i)\ +=\ v(j)*m(j,\ i);}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00314\ \ \ \ \ \}}
+\DoxyCodeLine{00315\ \ \ \ \ \textcolor{keywordflow}{return}\ o;}
+\DoxyCodeLine{00316\ \ \ \}}
+\DoxyCodeLine{00317\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ OutT,\ \textcolor{keyword}{class}\ VecT,\ \textcolor{keyword}{class}\ MatT>}
+\DoxyCodeLine{00318\ \ \ OutT\&\ MulMatrixT(\textcolor{keyword}{const}\ VecT\&\ v,\ \textcolor{keyword}{const}\ MatT\&\ m,\ OutT\&\ o)\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ rc\ =\ m.RowCount(),}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ vc\ =\ v.Count();}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordflow}{if}\ (vc\ !=\ m.ColCount())\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00323\ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keywordflow}{if}\ (vc\ >=\ 8)\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ c1\ =\ (vc\ >>\ 2)\ <<\ 2;}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ rc;\ i++)\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ j\ =\ 0;}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ j\ <\ c1;\ j\ +=\ 4)\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ o(i)\ +=\ v(j)*m(i,\ j)\ +\ v(j\ +\ 1)*m(i,\ j\ +\ 1)\ +}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ v(j\ +\ 2)*m(i,\ j\ +\ 2)\ +\ v(j\ +\ 3)*m(i,\ j\ +\ 3);}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ j\ <\ vc;\ j++)\ \{}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ o(i)\ +=\ v(j)*m(i,\ j);}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00336\ \ \ \ \ \}}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ rc;\ i++)\ \{}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ vc;\ j++)\ \{}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ o(i)\ +=\ v(j)*m(i,\ j);}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00343\ \ \ \ \ \}}
+\DoxyCodeLine{00344\ \ \ \ \ \textcolor{keywordflow}{return}\ o;}
+\DoxyCodeLine{00345\ \ \ \}}
+\DoxyCodeLine{00346\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ OutT,\ \textcolor{keyword}{class}\ VecAT,\ \textcolor{keyword}{class}\ VecBT>}
+\DoxyCodeLine{00347\ \ \ OutT\&\ MulVec(\textcolor{keyword}{const}\ VecAT\&\ v1,\ \textcolor{keyword}{const}\ VecBT\&\ v2,\ OutT\&\ o)\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ c\ =\ v1.Count();}
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keywordflow}{if}\ (c\ !=\ v2.Count())}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00351\ \ \ \ \ \textcolor{keywordflow}{if}\ (c\ >=\ 8)\ \{}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ c1\ =\ (c\ >>\ 2)\ <<\ 2,\ i\ =\ 0;}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ c1;\ i\ +=\ 4)\ \{}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ o(i)\ =\ v1(i)*v2(i);}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ o(i\ +\ 1)\ =\ v1(i\ +\ 1)*v2(i\ +\ 1);}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ o(i\ +\ 2)\ =\ v1(i\ +\ 2)*v2(i\ +\ 2);}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ o(i\ +\ 3)\ =\ v1(i\ +\ 3)*v2(i\ +\ 3);}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ c;\ i++)\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ o(i)\ =\ v1(i)*v2(i);}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ c;\ i++)\ \{}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ o(i)\ =\ v1(i)*v2(i);}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00367\ \ \ \ \ \}}
+\DoxyCodeLine{00368\ \ \ \ \ \textcolor{keywordflow}{return}\ o;}
+\DoxyCodeLine{00369\ \ \ \}}
+\DoxyCodeLine{00370\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VecAT,\ \textcolor{keyword}{class}\ VecBT>}
+\DoxyCodeLine{00371\ \ \ VecAT\&\ MulSelfVec(VecAT\&\ v1,\ \textcolor{keyword}{const}\ VecBT\&\ v2)\ \{}
+\DoxyCodeLine{00372\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ c\ =\ v1.Count();}
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keywordflow}{if}\ (c\ !=\ v2.Count())}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{keywordflow}{if}\ (c\ >=\ 8)\ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ c1\ =\ (c\ >>\ 2)\ <<\ 2,\ i\ =\ 0;}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ c1;\ i\ +=\ 4)\ \{}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ v1(i)\ *=\ v2(i);}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ v1(i\ +\ 1)\ *=\ v2(i\ +\ 1);}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ v1(i\ +\ 2)\ *=\ v2(i\ +\ 2);}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ v1(i\ +\ 3)\ *=\ v2(i\ +\ 3);}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ c;\ i++)\ \{}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ v1(i)\ *=\ v2(i);}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00386\ \ \ \ \ \}}
+\DoxyCodeLine{00387\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ c;\ i++)\ \{}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ v1(i)\ *=\ v2(i);}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00391\ \ \ \ \ \}}
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keywordflow}{return}\ v1;}
+\DoxyCodeLine{00393\ \ \ \}}
+\DoxyCodeLine{00394\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00395\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ VecT::number\_type\ QLength(\textcolor{keyword}{const}\ VecT\ \&v)\ \{}
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ v.Count(),}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ c1\ =\ (cnt\ >>\ 2)\ <<\ 2,\ i\ =\ 0;}
+\DoxyCodeLine{00398\ \ \ \ \ \textcolor{keyword}{typename}\ VecT::number\_type\ l\ =\ 0;}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ c1;\ i\ +=\ 4)\ \{}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ l\ +=\ olx\_sqr(v(i))\ +\ olx\_sqr(v(i\ +\ 1))\ +}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ olx\_sqr(v(i\ +\ 2))\ +\ olx\_sqr(v(i\ +\ 3));}
+\DoxyCodeLine{00402\ \ \ \ \ \}}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ cnt;\ i++)\ \{}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ l\ +=\ olx\_sqr(v(i));}
+\DoxyCodeLine{00405\ \ \ \ \ \}}
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keywordflow}{return}\ l;}
+\DoxyCodeLine{00407\ \ \ \}}
+\DoxyCodeLine{00408\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ VecAT,\ \textcolor{keyword}{typename}\ VecBT>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{keyword}{typename}\ VecAT::number\_type\ DotProd(\textcolor{keyword}{const}\ VecAT\ \&a,\ \textcolor{keyword}{const}\ VecBT\ \&b)\ \{}
+\DoxyCodeLine{00410\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ c2\ =\ b.Count();}
+\DoxyCodeLine{00411\ \ \ \ \ \textcolor{keywordflow}{if}\ (a.Count()\ !=\ c2)\ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}vector\ size"{}});}
+\DoxyCodeLine{00413\ \ \ \ \ \}}
+\DoxyCodeLine{00414\ \ \ \ \ \textcolor{keyword}{typename}\ VecAT::number\_type\ rv\ =\ 0;}
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ c1\ =\ (c2\ >>\ 2)\ <<\ 2,\ i\ =\ 0;}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ c1;\ i\ +=\ 4)\ \{}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ rv\ +=\ (a(i)*b(i)\ +\ a(i\ +\ 1)*b(i\ +\ 1));}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ rv\ +=\ (a(i\ +\ 2)*b(i\ +\ 2)\ +\ a(i\ +\ 3)*b(i\ +\ 3));}
+\DoxyCodeLine{00419\ \ \ \ \ \}}
+\DoxyCodeLine{00420\ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ c2;\ i++)\ \{}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ rv\ +=\ (a(i)*b(i));}
+\DoxyCodeLine{00422\ \ \ \ \ \}}
+\DoxyCodeLine{00423\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00424\ \ \ \}}
+\DoxyCodeLine{00425\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ VecAT,\ \textcolor{keyword}{typename}\ VecBT>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00426\ \ \ \ \ \textcolor{keyword}{typename}\ VecAT::number\_type\ Distance(\textcolor{keyword}{const}\ VecAT\ \&a,\ \textcolor{keyword}{const}\ VecBT\ \&b)}
+\DoxyCodeLine{00427\ \ \ \{}
+\DoxyCodeLine{00428\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ c2\ =\ b.Count();}
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{keywordflow}{if}\ (a.Count()\ !=\ c2)\ \{}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}vector\ size"{}});}
+\DoxyCodeLine{00431\ \ \ \ \ \}}
+\DoxyCodeLine{00432\ \ \ \ \ \textcolor{keyword}{typename}\ VecAT::number\_type\ rv\ =\ 0;}
+\DoxyCodeLine{00433\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ c1\ =\ (c2\ >>\ 2)\ <<\ 2,\ i\ =\ 0;}
+\DoxyCodeLine{00434\ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ c1;\ i\ +=\ 4)\ \{}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ rv\ +=\ (olx\_sqr(a(i)\ -\/\ b(i))\ +\ olx\_sqr(a(i\ +\ 1)\ -\/\ b(i\ +\ 1)));}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ rv\ +=\ (olx\_sqr(a(i\ +\ 2)\ -\/\ b(i\ +\ 2))\ +\ olx\_sqr(a(i\ +\ 3)\ -\/\ b(i\ +\ 3)));}
+\DoxyCodeLine{00437\ \ \ \ \ \}}
+\DoxyCodeLine{00438\ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ c2;\ i++)\ \{}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ rv\ +=\ olx\_sqr(a(i)\ -\/\ b(i));}
+\DoxyCodeLine{00440\ \ \ \ \ \}}
+\DoxyCodeLine{00441\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00442\ \ \ \}}
+\DoxyCodeLine{00443\ \};\ \ \textcolor{comment}{//\ end\ namespace\ olx\_vec}}
+\DoxyCodeLine{00444\ \textcolor{keyword}{namespace\ }olx\_mat\ \{}
+\DoxyCodeLine{00445\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ OutT,\ \textcolor{keyword}{class}\ MatAT,\ \textcolor{keyword}{class}\ MatBT>}
+\DoxyCodeLine{00446\ \ \ OutT\&\ MulMatrix(\textcolor{keyword}{const}\ MatAT\&\ m,\ \textcolor{keyword}{const}\ MatBT\&\ n,\ OutT\&\ o)\ \{}
+\DoxyCodeLine{00447\ \ \ \ \ \textcolor{keywordflow}{if}\ (m.ColCount()\ !=\ n.RowCount())}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00449\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ nc\ =\ n.ColCount(),}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ mr\ =\ m.RowCount(),}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ mc\ =\ m.ColCount();}
+\DoxyCodeLine{00452\ \ \ \ \ \textcolor{keywordflow}{if}\ (nc\ >=\ 8)\ \{}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ c1\ =\ (mc\ >>\ 2)\ <<\ 2;}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ mr;\ i++)\ \{}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ nc;\ j++)\ \{}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ k\ =\ 0;}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ k\ <\ c1;\ k\ +=\ 4)\ \{}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \ \ \ \ o(i,\ j)\ +=\ m(i,\ k)*n(k,\ j)\ +\ m(i,\ k\ +\ 1)*n(k\ +\ 1,\ j)\ +}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m(i,\ k\ +\ 2)*n(k\ +\ 2,\ j)\ +\ m(i,\ k\ +\ 3)*n(k\ +\ 3,\ j);}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ k\ <\ mc;\ k++)\ \{}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ \ \ o(i,\ j)\ +=\ m(i,\ k)*n(k,\ j);}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00466\ \ \ \ \ \}}
+\DoxyCodeLine{00467\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ mr;\ i++)\ \{}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ nc;\ j++)\ \{}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ mc;\ k++)\ \{}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \ \ \ \ o(i,\ j)\ +=\ m(i,\ k)*n(k,\ j);}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00475\ \ \ \ \ \}}
+\DoxyCodeLine{00476\ \ \ \ \ \textcolor{keywordflow}{return}\ o;}
+\DoxyCodeLine{00477\ \ \ \}}
+\DoxyCodeLine{00478\ \ \ \textcolor{comment}{//http://en.wikipedia.org/wiki/Kronecker\_product}}
+\DoxyCodeLine{00479\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InM,\ \textcolor{keyword}{class}\ OutM>}
+\DoxyCodeLine{00480\ \ \ OutM\&\ KroneckerProduct(InM\&\ a,\ InM\&\ b,\ OutM\&\ o)\ \{}
+\DoxyCodeLine{00481\ \ \ \ \ \textcolor{keywordflow}{if}\ (a.ColCount()*b.ColCount()\ >\ o.ColCount()\ ||}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ a.RowCount()*b.RowCount()\ >\ o.RowCount())}
+\DoxyCodeLine{00483\ \ \ \ \ \{}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}output\ size"{}});}
+\DoxyCodeLine{00485\ \ \ \ \ \}}
+\DoxyCodeLine{00486\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ ai\ =\ 0;\ ai\ <\ a.RowCount();\ ai++)\ \{}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ oi\_off\ =\ ai\ *\ b.RowCount();}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ aj\ =\ 0;\ aj\ <\ a.ColCount();\ aj++)\ \{}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ oj\_off\ =\ aj\ *\ b.ColCount();}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ bi\ =\ 0;\ bi\ <\ b.RowCount();\ bi++)\ \{}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ bj\ =\ 0;\ bj\ <\ b.ColCount();\ bj++)\ \{}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \ \ \ \ o(oi\_off\ +\ bi,\ oj\_off\ +\ bj)\ =\ a(ai,\ aj)*b(bi,\ bj);}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00496\ \ \ \ \ \}}
+\DoxyCodeLine{00497\ \ \ \ \ \textcolor{keywordflow}{return}\ o;}
+\DoxyCodeLine{00498\ \ \ \}}
+\DoxyCodeLine{00499\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ InM,\ \textcolor{keyword}{class}\ OutM>\ OutM\ KroneckerProduct(InM\&\ a,\ InM\&\ b)\ \{}
+\DoxyCodeLine{00500\ \ \ \ \ OutM\ o(a.RowCount()*b.RowCount(),\ a.ColCount()*b.ColCount());}
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{keywordflow}{return}\ KroneckerProduct(a,\ b,\ o);}
+\DoxyCodeLine{00502\ \ \ \}}
+\DoxyCodeLine{00503\ \};\ \ \textcolor{comment}{//end\ of\ namespace\ olx\_mat}}
+\DoxyCodeLine{00504\ }
+\DoxyCodeLine{00505\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ olx\_sincos(\textcolor{keywordtype}{double}\ ang,\ \textcolor{keywordtype}{double}\ *sina,\ \textcolor{keywordtype}{double}\ *cosa)\ \{}
+\DoxyCodeLine{00506\ \ \ *sina\ =\ sin(ang);}
+\DoxyCodeLine{00507\ \ \ *cosa\ =\ cos(ang);}
+\DoxyCodeLine{00508\ \}}
+\DoxyCodeLine{00509\ }
+\DoxyCodeLine{00510\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ olx\_sincos(\textcolor{keywordtype}{float}\ ang,\ \textcolor{keywordtype}{float}\ *sina,\ \textcolor{keywordtype}{float}\ *cosa)\ \{}
+\DoxyCodeLine{00511\ \ \ *sina\ =\ sinf(ang);}
+\DoxyCodeLine{00512\ \ \ *cosa\ =\ cosf(ang);}
+\DoxyCodeLine{00513\ \}}
+\DoxyCodeLine{00514\ }
+\DoxyCodeLine{00515\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ src\_t,\ \textcolor{keyword}{typename}\ dest\_t>}
+\DoxyCodeLine{00516\ \textcolor{keywordtype}{void}\ olx\_update\_min\_max(\textcolor{keyword}{const}\ src\_t\&\ src,\ dest\_t\&\ min\_v,\ dest\_t\&\ max\_v)\ \{}
+\DoxyCodeLine{00517\ \ \ \textcolor{keywordflow}{if}\ (src\ <\ min\_v)\ \{}
+\DoxyCodeLine{00518\ \ \ \ \ min\_v\ =\ src;}
+\DoxyCodeLine{00519\ \ \ \}}
+\DoxyCodeLine{00520\ \ \ \textcolor{keywordflow}{if}\ (src\ >\ max\_v)\ \{}
+\DoxyCodeLine{00521\ \ \ \ \ max\_v\ =\ src;}
+\DoxyCodeLine{00522\ \ \ \}}
+\DoxyCodeLine{00523\ \}}
+\DoxyCodeLine{00524\ }
+\DoxyCodeLine{00525\ }
+\DoxyCodeLine{00526\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00527\ \textcolor{keyword}{typename}\ list\_t::list\_item\_type\ olx\_sum(\textcolor{keyword}{const}\ list\_t\ \&l,}
+\DoxyCodeLine{00528\ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ \textcolor{keywordtype}{size\_t}\ to\ =\ InvalidIndex)}
+\DoxyCodeLine{00529\ \{}
+\DoxyCodeLine{00530\ \ \ \textcolor{keyword}{typename}\ list\_t::list\_item\_type\ rv(0);}
+\DoxyCodeLine{00531\ \ \ \textcolor{keywordflow}{if}\ (to\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00532\ \ \ \ \ to\ =\ l.Count();}
+\DoxyCodeLine{00533\ \ \ \}}
+\DoxyCodeLine{00534\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00535\ \ \ \ \ rv\ +=\ l[i];}
+\DoxyCodeLine{00536\ \ \ \}}
+\DoxyCodeLine{00537\ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00538\ \}}
+\DoxyCodeLine{00539\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00540\ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ accessor\_t::return\_type\ olx\_sum(}
+\DoxyCodeLine{00541\ \ \ \textcolor{keyword}{const}\ list\_t\ \&l,\ \textcolor{keyword}{const}\ accessor\_t\ \&accessor,}
+\DoxyCodeLine{00542\ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ \textcolor{keywordtype}{size\_t}\ to\ =\ InvalidIndex)}
+\DoxyCodeLine{00543\ \{}
+\DoxyCodeLine{00544\ \ \ \textcolor{keyword}{typename}\ accessor\_t::return\_type\ rv(0);}
+\DoxyCodeLine{00545\ \ \ \textcolor{keywordflow}{if}\ (to\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00546\ \ \ \ \ to\ =\ l.Count();}
+\DoxyCodeLine{00547\ \ \ \}}
+\DoxyCodeLine{00548\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00549\ \ \ \ \ rv\ +=\ accessor(l[i]);}
+\DoxyCodeLine{00550\ \ \ \}}
+\DoxyCodeLine{00551\ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00552\ \}}
+\DoxyCodeLine{00553\ }
+\DoxyCodeLine{00554\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ analyser\_t>}
+\DoxyCodeLine{00555\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ olx\_count(\textcolor{keyword}{const}\ list\_t\ \&l,\ \textcolor{keyword}{const}\ analyser\_t\ \&anz,}
+\DoxyCodeLine{00556\ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ \textcolor{keywordtype}{size\_t}\ to\ =\ InvalidIndex)}
+\DoxyCodeLine{00557\ \{}
+\DoxyCodeLine{00558\ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00559\ \ \ \textcolor{keywordflow}{if}\ (to\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00560\ \ \ \ \ to\ =\ l.Count();}
+\DoxyCodeLine{00561\ \ \ \}}
+\DoxyCodeLine{00562\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00563\ \ \ \ \ \textcolor{keywordflow}{if}\ (anz.OnItem(l[i],\ i))\ \{}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00565\ \ \ \ \ \}}
+\DoxyCodeLine{00566\ \ \ \}}
+\DoxyCodeLine{00567\ \ \ \textcolor{keywordflow}{return}\ cnt;}
+\DoxyCodeLine{00568\ \}}
+\DoxyCodeLine{00569\ }
+\DoxyCodeLine{00570\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00571\ \textcolor{keyword}{typename}\ list\_t::list\_item\_type\ olx\_mean(\textcolor{keyword}{const}\ list\_t\ \&l,}
+\DoxyCodeLine{00572\ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ \textcolor{keywordtype}{size\_t}\ to\ =\ InvalidIndex)}
+\DoxyCodeLine{00573\ \{}
+\DoxyCodeLine{00574\ \ \ \textcolor{keywordflow}{if}\ (to\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00575\ \ \ \ \ to\ =\ l.Count();}
+\DoxyCodeLine{00576\ \ \ \}}
+\DoxyCodeLine{00577\ \ \ \textcolor{keyword}{typename}\ list\_t::list\_item\_type\ rv\ =\ olx\_sum(l,\ from,\ to);}
+\DoxyCodeLine{00578\ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ to\ -\/\ from;}
+\DoxyCodeLine{00579\ \ \ \textcolor{keywordflow}{return}\ cnt\ ==\ 0\ ?\ rv\ :\ rv\ /\ cnt;}
+\DoxyCodeLine{00580\ \}}
+\DoxyCodeLine{00581\ }
+\DoxyCodeLine{00582\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00583\ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ accessor\_t::return\_type\ olx\_mean(}
+\DoxyCodeLine{00584\ \ \ \textcolor{keyword}{const}\ list\_t\ \&l,\ \textcolor{keyword}{const}\ accessor\_t\ \&accessor,}
+\DoxyCodeLine{00585\ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ \textcolor{keywordtype}{size\_t}\ to\ =\ InvalidIndex)}
+\DoxyCodeLine{00586\ \{}
+\DoxyCodeLine{00587\ \ \ \textcolor{keywordflow}{if}\ (to\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00588\ \ \ \ \ to\ =\ l.Count();}
+\DoxyCodeLine{00589\ \ \ \}}
+\DoxyCodeLine{00590\ \ \ \textcolor{keyword}{typename}\ accessor\_t::return\_type\ rv\ =\ olx\_sum(l,\ accessor,\ from,\ to);}
+\DoxyCodeLine{00591\ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ to\ -\/\ from;}
+\DoxyCodeLine{00592\ \ \ \textcolor{keywordflow}{return}\ cnt\ ==\ 0\ ?\ rv\ :\ rv\ /\ cnt;}
+\DoxyCodeLine{00593\ \}}
+\DoxyCodeLine{00594\ }
+\DoxyCodeLine{00595\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00596\ \textcolor{keywordtype}{size\_t}\ olx\_max\_idx(\textcolor{keyword}{const}\ list\_t\&\ l,}
+\DoxyCodeLine{00597\ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ \textcolor{keywordtype}{size\_t}\ to\ =\ InvalidIndex)}
+\DoxyCodeLine{00598\ \{}
+\DoxyCodeLine{00599\ \ \ \textcolor{keywordflow}{if}\ (to\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00600\ \ \ \ \ to\ =\ l.Count();}
+\DoxyCodeLine{00601\ \ \ \}}
+\DoxyCodeLine{00602\ \ \ \textcolor{keywordtype}{size\_t}\ max\_i\ =\ from;}
+\DoxyCodeLine{00603\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from\ +\ 1;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00604\ \ \ \ \ \textcolor{keywordflow}{if}\ (l[i]\ >\ l[max\_i])\ \{}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ max\_i\ =\ i;}
+\DoxyCodeLine{00606\ \ \ \ \ \}}
+\DoxyCodeLine{00607\ \ \ \}}
+\DoxyCodeLine{00608\ \ \ \textcolor{keywordflow}{return}\ max\_i;}
+\DoxyCodeLine{00609\ \}}
+\DoxyCodeLine{00610\ }
+\DoxyCodeLine{00611\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00612\ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ accessor\_t::return\_type\ olx\_max\_idx(}
+\DoxyCodeLine{00613\ \ \ \textcolor{keyword}{const}\ list\_t\&\ l,\ \textcolor{keyword}{const}\ accessor\_t\&\ accessor,}
+\DoxyCodeLine{00614\ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ \textcolor{keywordtype}{size\_t}\ to\ =\ InvalidIndex)}
+\DoxyCodeLine{00615\ \{}
+\DoxyCodeLine{00616\ \ \ \textcolor{keywordflow}{if}\ (to\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00617\ \ \ \ \ to\ =\ l.Count();}
+\DoxyCodeLine{00618\ \ \ \}}
+\DoxyCodeLine{00619\ \ \ \textcolor{keywordtype}{size\_t}\ max\_i\ =\ from;}
+\DoxyCodeLine{00620\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from\ +\ 1;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00621\ \ \ \ \ \textcolor{keywordflow}{if}\ (accessor(l[i])\ >\ accessor(l[max\_i]))\ \{}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ max\_i\ =\ i;}
+\DoxyCodeLine{00623\ \ \ \ \ \}}
+\DoxyCodeLine{00624\ \ \ \}}
+\DoxyCodeLine{00625\ \ \ \textcolor{keywordflow}{return}\ max\_i;}
+\DoxyCodeLine{00626\ \}}
+\DoxyCodeLine{00627\ }
+\DoxyCodeLine{00628\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00629\ \textcolor{keywordtype}{size\_t}\ olx\_min\_idx(\textcolor{keyword}{const}\ list\_t\&\ l,}
+\DoxyCodeLine{00630\ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ \textcolor{keywordtype}{size\_t}\ to\ =\ InvalidIndex)}
+\DoxyCodeLine{00631\ \{}
+\DoxyCodeLine{00632\ \ \ \textcolor{keywordflow}{if}\ (to\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00633\ \ \ \ \ to\ =\ l.Count();}
+\DoxyCodeLine{00634\ \ \ \}}
+\DoxyCodeLine{00635\ \ \ \textcolor{keywordtype}{size\_t}\ min\_i\ =\ from;}
+\DoxyCodeLine{00636\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from\ +\ 1;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00637\ \ \ \ \ \textcolor{keywordflow}{if}\ (l[i]\ <\ l[min\_i])\ \{}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ min\_i\ =\ i;}
+\DoxyCodeLine{00639\ \ \ \ \ \}}
+\DoxyCodeLine{00640\ \ \ \}}
+\DoxyCodeLine{00641\ \ \ \textcolor{keywordflow}{return}\ min\_i;}
+\DoxyCodeLine{00642\ \}}
+\DoxyCodeLine{00643\ }
+\DoxyCodeLine{00644\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00645\ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ accessor\_t::return\_type\ olx\_min\_idx(}
+\DoxyCodeLine{00646\ \ \ \textcolor{keyword}{const}\ list\_t\&\ l,\ \textcolor{keyword}{const}\ accessor\_t\&\ accessor,}
+\DoxyCodeLine{00647\ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ \textcolor{keywordtype}{size\_t}\ to\ =\ InvalidIndex)}
+\DoxyCodeLine{00648\ \{}
+\DoxyCodeLine{00649\ \ \ \textcolor{keywordflow}{if}\ (to\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00650\ \ \ \ \ to\ =\ l.Count();}
+\DoxyCodeLine{00651\ \ \ \}}
+\DoxyCodeLine{00652\ \ \ \textcolor{keywordtype}{size\_t}\ min\_i\ =\ from;}
+\DoxyCodeLine{00653\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from\ +\ 1;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00654\ \ \ \ \ \textcolor{keywordflow}{if}\ (accessor(l[i])\ <\ accessor(l[min\_i]))\ \{}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ min\_i\ =\ i;}
+\DoxyCodeLine{00656\ \ \ \ \ \}}
+\DoxyCodeLine{00657\ \ \ \}}
+\DoxyCodeLine{00658\ \ \ \textcolor{keywordflow}{return}\ min\_i;}
+\DoxyCodeLine{00659\ \}}
+\DoxyCodeLine{00660\ }
+\DoxyCodeLine{00661\ EndEsdlNamespace()}
+\DoxyCodeLine{00662\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

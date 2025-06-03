@@ -1,0 +1,348 @@
+\doxysection{olxstate.\+h}
+\hypertarget{olxstate_8h_source}{}\label{olxstate_8h_source}\index{gxlib/olxstate.h@{gxlib/olxstate.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxlib\_states\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxlib\_states\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}estlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}eset.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}integration.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}gxapp.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#undef\ Status}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ BeginGxlNamespace()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ class\ TStateChange:\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ State;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ Status;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{const}\ olxstr\ Data;}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ TStateChange(\textcolor{keywordtype}{size\_t}\ state,\ \textcolor{keywordtype}{bool}\ status,\ \textcolor{keyword}{const}\ olxstr\&\ data=EmptyString())}
+\DoxyCodeLine{00026\ \ \ :\ State(state),\ Status(status),\ Data(data)}
+\DoxyCodeLine{00027\ \ \ \{\}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{bool}\ GetStatus()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Status;\ \ \}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{size\_t}\ GetState()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ State;\ \ \}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetData()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Data;\ \ \}}
+\DoxyCodeLine{00031\ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{class\ }TStateRegistry\ \{}
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTStateRegistry_1_1IGetter}{IGetter}}\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structTStateRegistry_1_1IGetter}{\string~IGetter}}()\ \{\}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ ()(\textcolor{keyword}{const}\ olxstr\ \&)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00038\ \ \ \};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{struct\ }TMemberFunctionGetter\_0\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structTStateRegistry_1_1IGetter}{IGetter}}\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base\_t>}}\ instance;}
+\DoxyCodeLine{00043\ \ \ \ \ bool\ (base\_t::*getter)()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00044\ \ \ \ \ TMemberFunctionGetter\_0(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base\_t>}}\ \&instance,}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ (base\_t::*getter)()\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ :\ instance(instance),\ getter(getter)}
+\DoxyCodeLine{00047\ \ \ \ \ \{\}}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ ()(\textcolor{keyword}{const}\ olxstr\ \&data)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!data.IsEmpty())}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}data"{}});}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((*instance).*getter)();}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \};}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{struct\ }TMemberFunctionGetter\_1\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structTStateRegistry_1_1IGetter}{IGetter}}\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base\_t>}}\ instance;}
+\DoxyCodeLine{00057\ \ \ \ \ bool\ (base\_t::*getter)(\textcolor{keyword}{const}\ olxstr\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00058\ \ \ \ \ TMemberFunctionGetter\_1(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base\_t>}}\ \&instance,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ (base\_t::*getter)(\textcolor{keyword}{const}\ olxstr\ \&)\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ :\ instance(instance),\ getter(getter)}
+\DoxyCodeLine{00061\ \ \ \ \ \{\}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ ()(\textcolor{keyword}{const}\ olxstr\ \&data)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((*instance).*getter)(data);}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \};}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{struct\ }TMemberFunctionGetter\_2\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structTStateRegistry_1_1IGetter}{IGetter}}\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base\_t>}}\ instance;}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ state\_id;}
+\DoxyCodeLine{00070\ \ \ \ \ bool\ (base\_t::*getter)(\textcolor{keywordtype}{size\_t}\ id,\ \textcolor{keyword}{const}\ olxstr\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00071\ \ \ \ \ TMemberFunctionGetter\_2(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base\_t>}}\ \&instance,\ \textcolor{keywordtype}{size\_t}\ state\_id,}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ (base\_t::*getter)(\textcolor{keywordtype}{size\_t},\ \textcolor{keyword}{const}\ olxstr\ \&)\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ :\ instance(instance),\ state\_id(state\_id),\ getter(getter)}
+\DoxyCodeLine{00074\ \ \ \ \ \{\}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ ()(\textcolor{keyword}{const}\ olxstr\ \&data)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((*instance).*getter)(state\_id,\ data);}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \};}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTStateRegistry_1_1ISetter}{ISetter}}\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structTStateRegistry_1_1ISetter}{\string~ISetter}}()\ \{\}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ operator\ ()(\textcolor{keywordtype}{bool},\ \textcolor{keyword}{const}\ olxstr\ \&)\ =\ 0;}
+\DoxyCodeLine{00083\ \ \ \};}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{struct\ }TMemberFunctionSetter\_1\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structTStateRegistry_1_1ISetter}{ISetter}}\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base\_t>}}\ instance;}
+\DoxyCodeLine{00087\ \ \ \ \ void\ (base\_t::*setter)(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00088\ \ \ \ \ TMemberFunctionSetter\_1(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base\_t>}}\ \&instance,}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ (base\_t::*setter)(\textcolor{keywordtype}{bool}\ v))}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ :\ instance(instance),\ setter(setter)}
+\DoxyCodeLine{00091\ \ \ \ \ \{\}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ operator\ ()(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keyword}{const}\ olxstr\ \&data)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!data.IsEmpty())}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}data"{}});}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ ((*instance).*setter)(v);}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \};}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{struct\ }TMemberFunctionSetter\_2\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structTStateRegistry_1_1ISetter}{ISetter}}\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base\_t>}}\ instance;}
+\DoxyCodeLine{00101\ \ \ \ \ void\ (base\_t::*setter)(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keyword}{const}\ olxstr\ \&);}
+\DoxyCodeLine{00102\ \ \ \ \ TMemberFunctionSetter\_2(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base\_t>}}\ \&instance,}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ (base\_t::*setter)(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keyword}{const}\ olxstr\ \&))}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ :\ instance(instance),\ setter(setter)}
+\DoxyCodeLine{00105\ \ \ \ \ \{\}}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ operator\ ()(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keyword}{const}\ olxstr\ \&data)\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ ((*instance).*setter)(v,\ data);}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \};}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{struct\ }TMacroSetter\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structTStateRegistry_1_1ISetter}{ISetter}}\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ olxstr\ cmd;}
+\DoxyCodeLine{00112\ \ \ \ \ TMacroSetter(\textcolor{keyword}{const}\ olxstr\ \&cmd)\ :\ cmd(cmd)}
+\DoxyCodeLine{00113\ \ \ \ \ \{\}}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ operator\ ()(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keyword}{const}\ olxstr\ \&data);}
+\DoxyCodeLine{00115\ \ \ \};}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{struct\ }TNoneSetter\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structTStateRegistry_1_1ISetter}{ISetter}}\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ TNoneSetter()\ \{\}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ operator\ ()(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keyword}{const}\ olxstr\ \&data)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \};}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{struct\ }Slot\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \mbox{\hyperlink{structTStateRegistry_1_1IGetter}{IGetter}}\ \&getter;}
+\DoxyCodeLine{00124\ \ \ \ \ \mbox{\hyperlink{structTStateRegistry_1_1ISetter}{ISetter}}\ \&setter;}
+\DoxyCodeLine{00125\ \ \ \ \ olxstr\ name;}
+\DoxyCodeLine{00126\ \ \ \ \ Slot(\mbox{\hyperlink{structTStateRegistry_1_1IGetter}{IGetter}}\ *getter,\ \mbox{\hyperlink{structTStateRegistry_1_1ISetter}{ISetter}}\ *setter)}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ :\ getter(*getter),\ setter(*setter)}
+\DoxyCodeLine{00128\ \ \ \ \ \{\}}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~Slot()\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \&getter;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \&setter;}
+\DoxyCodeLine{00132\ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Get(\textcolor{keyword}{const}\ olxstr\ \&data)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ getter(data);\ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keyword}{const}\ olxstr\ \&\ data)\ \{\ setter(v,\ data);\ \}}
+\DoxyCodeLine{00135\ \ \ \};}
+\DoxyCodeLine{00136\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00137\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<Slot>}}\ slots;}
+\DoxyCodeLine{00138\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<size\_t,\ true>}}\ slots\_d;}
+\DoxyCodeLine{00139\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&StateChangeCB()\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ s(\textcolor{stringliteral}{"{}statechange"{}});}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTStateRegistry}{TStateRegistry}}\ *\&\ Instance()\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTStateRegistry}{TStateRegistry}}\ *i\ =\ 0;}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ olx\_pdict<size\_t,\ olx\_cset<olxstr>\ >\ data\_cache;}
+\DoxyCodeLine{00149\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00150\ \ \ TStateRegistry();}
+\DoxyCodeLine{00151\ \ \ \string~TStateRegistry()\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ slots.DeleteItems(\textcolor{keyword}{false});}
+\DoxyCodeLine{00153\ \ \ \ \ Instance()\ =\ 0;}
+\DoxyCodeLine{00154\ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordtype}{size\_t}\ Register(\textcolor{keyword}{const}\ olxstr\ \&str\_repr,\ \mbox{\hyperlink{structTStateRegistry_1_1Slot}{Slot}}\ *slot)\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ slots.Add(slot)-\/>name\ =\ str\_repr;}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{return}\ slots\_d.Add(str\_repr,\ slots.Count()-\/1);}
+\DoxyCodeLine{00158\ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTStateRegistry_1_1IGetter}{IGetter}}\ *NewGetter(}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keyword}{const}\ olx\_vptr<base\_t>\ \&inst,}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordtype}{bool}\ (base\_t::*getter)()\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00162\ \ \ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTStateRegistry_1_1TMemberFunctionGetter__0}{TMemberFunctionGetter\_0<base\_t>}}(inst,\ getter);}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTStateRegistry_1_1IGetter}{IGetter}}\ *NewGetter(}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keyword}{const}\ olx\_vptr<base\_t>\ \&inst,}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordtype}{bool}\ (base\_t::*getter)(\textcolor{keyword}{const}\ olxstr\ \&)\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00168\ \ \ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTStateRegistry_1_1TMemberFunctionGetter__1}{TMemberFunctionGetter\_1<base\_t>}}(inst,\ getter);}
+\DoxyCodeLine{00170\ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ special\ shortcut\ -\/\ the\ ID\ as\ assumed\ to\ be\ generated\ next\ step}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>\ \mbox{\hyperlink{structTStateRegistry_1_1IGetter}{IGetter}}\ *NewGetter(}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keyword}{const}\ olx\_vptr<base\_t>\ \&inst,}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordtype}{bool}\ (base\_t::*getter)(\textcolor{keywordtype}{size\_t},\ \textcolor{keyword}{const}\ olxstr\ \&)\ \textcolor{keyword}{const})\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00175\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTStateRegistry_1_1TMemberFunctionGetter__2}{TMemberFunctionGetter\_2<base\_t>}}(inst,\ slots.Count(),\ getter);}
+\DoxyCodeLine{00177\ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTStateRegistry_1_1IGetter}{IGetter}}\ *NewGetter(}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keyword}{const}\ olx\_vptr<base\_t>\ \&inst,}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ state\_id,\ \textcolor{keywordtype}{bool}\ (base\_t::*getter)(\textcolor{keywordtype}{size\_t},\ \textcolor{keyword}{const}\ olxstr\ \&)\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00181\ \ \ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTStateRegistry_1_1TMemberFunctionGetter__2}{TMemberFunctionGetter\_2<base\_t>}}(inst,\ state\_id,\ getter);}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTStateRegistry_1_1ISetter}{ISetter}}\ *NewSetter(}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keyword}{const}\ olx\_vptr<base\_t>\ \&inst,}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordtype}{void}\ (base\_t::*setter)(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keyword}{const}\ olxstr\ \&))}
+\DoxyCodeLine{00188\ \ \ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTStateRegistry_1_1TMemberFunctionSetter__2}{TMemberFunctionSetter\_2<base\_t>}}(inst,\ setter);}
+\DoxyCodeLine{00190\ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTStateRegistry_1_1ISetter}{ISetter}}\ *NewSetter(}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keyword}{const}\ olx\_vptr<base\_t>\ \&inst,}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordtype}{void}\ (base\_t::*setter)(\textcolor{keywordtype}{bool}\ v))}
+\DoxyCodeLine{00194\ \ \ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTStateRegistry_1_1TMemberFunctionSetter__1}{TMemberFunctionSetter\_1<base\_t>}}(inst,\ setter);}
+\DoxyCodeLine{00196\ \ \ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{bool}\ CheckState(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ olxstr\ \&data=EmptyString())\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keywordflow}{return}\ slots[id]-\/>Get(data);}
+\DoxyCodeLine{00200\ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \textcolor{keywordtype}{bool}\ CheckState(\textcolor{keyword}{const}\ olxstr\ \&str\_id,\ \textcolor{keyword}{const}\ olxstr\ \&data=EmptyString())\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{return}\ slots[slots\_d.Get(str\_id)]-\/>Get(data);}
+\DoxyCodeLine{00203\ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \textcolor{keywordtype}{void}\ SetState(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id},\ \textcolor{keywordtype}{bool}\ status,\ \textcolor{keyword}{const}\ olxstr\ \&data=EmptyString(),}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keywordtype}{bool}\ internal\_call=\textcolor{keyword}{false});}
+\DoxyCodeLine{00206\ \ \ \textcolor{comment}{/*\ Repeats\ the\ SetState\ calls}}
+\DoxyCodeLine{00207\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00208\ \ \ \textcolor{keywordtype}{void}\ RepeatAll();}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ TActionQueue\ \&OnChange;}
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{static}\ TStateRegistry\ \&GetInstance();}
+\DoxyCodeLine{00212\ \};}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classAMode}{AMode}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00215\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00216\ \ \ \textcolor{keywordtype}{size\_t}\ Id;}
+\DoxyCodeLine{00217\ \ \ \mbox{\hyperlink{classTGXApp}{TGXApp}}\ \&gxapp;}
+\DoxyCodeLine{00218\ \ \ \mbox{\hyperlink{classolex2_1_1IOlex2Processor}{olex2::IOlex2Processor}}\ \&olex2;}
+\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{void}\ SetUserCursor(\textcolor{keyword}{const}\ olxstr\ \&val,\ \textcolor{keyword}{const}\ olxstr\ \&name)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{class\ }ObjectPicker\_\ :\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00222\ \ \ \ \ ObjectPicker\_(\mbox{\hyperlink{classAMode}{AMode}}\ \&mode)\ :\ mode(mode)\ \{\}}
+\DoxyCodeLine{00223\ \ \ \ \ \mbox{\hyperlink{classAMode}{AMode}}\ \&mode;}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00225\ \ \ \}\ ObjectPicker;}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordtype}{bool}\ Initialised;}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\ \&Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options)\ =\ 0;}
+\DoxyCodeLine{00228\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Finalise\_()\ =\ 0;}
+\DoxyCodeLine{00229\ \ \ \textcolor{comment}{//\ an\ action\ to\ be\ exected\ then\ any\ particular\ object\ is\ selected/clicked}}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \&obj)\ =\ 0;}
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnKey\_(\textcolor{keywordtype}{int}\ keyId,\ \textcolor{keywordtype}{short}\ shiftState)\ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnDblClick\_()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00233\ \ \ DefPropBIsSet(Initialised)}
+\DoxyCodeLine{00234\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00235\ \ \ AMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{virtual}\ \string~AMode();}
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{//\ mode\ initialisation}}
+\DoxyCodeLine{00238\ \ \ \textcolor{keywordtype}{bool}\ Initialise(TStrObjList\ \&Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options)\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordflow}{if}\ (IsInitialised())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{if}\ (Initialise\_(Cmds,\ Options))\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ SetInitialised(\textcolor{keyword}{true});}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00243\ \ \ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00245\ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \textcolor{keywordtype}{void}\ Finalise()\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsInitialised())}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}mode\ not\ initialised"{}});}
+\DoxyCodeLine{00249\ \ \ \ \ Finalise\_();}
+\DoxyCodeLine{00250\ \ \ \ \ SetInitialised(\textcolor{keyword}{false});}
+\DoxyCodeLine{00251\ \ \ \}}
+\DoxyCodeLine{00252\ \ \ \textcolor{comment}{//\ an\ action\ to\ be\ exected\ then\ any\ particular\ object\ is\ selected/clicked}}
+\DoxyCodeLine{00253\ \ \ \textcolor{keywordtype}{bool}\ OnObject(AGDrawObject\ \&obj)\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsInitialised())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordflow}{return}\ OnObject\_(obj);}
+\DoxyCodeLine{00256\ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \textcolor{comment}{//\ an\ action\ to\ be\ exected\ doublc\ click\ occurs}}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{bool}\ OnDblClick()\ \{}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsInitialised())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keywordflow}{return}\ OnDblClick\_();}
+\DoxyCodeLine{00261\ \ \ \}}
+\DoxyCodeLine{00262\ \ \ \textcolor{comment}{/*\ if\ the\ mode\ holds\ any\ reference\ to\ graphical\ objects\ -\/\ these\ should\ be}}
+\DoxyCodeLine{00263\ \textcolor{comment}{\ \ cleared}}
+\DoxyCodeLine{00264\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00265\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnGraphicsDestroy()\ \ \{\}}
+\DoxyCodeLine{00266\ \ \ \textcolor{comment}{//if\ the\ mode\ processes\ the\ key\ -\/\ true\ should\ be\ returned\ to\ skip\ the\ event}}
+\DoxyCodeLine{00267\ \ \ \textcolor{keywordtype}{bool}\ OnKey(\textcolor{keywordtype}{int}\ keyId,\ \textcolor{keywordtype}{short}\ shiftState)\ \ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsInitialised())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{return}\ OnKey\_(keyId,\ shiftState);}
+\DoxyCodeLine{00270\ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \textcolor{comment}{//\ if\ the\ function\ supported\ -\/\ returns\ true}}
+\DoxyCodeLine{00272\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ AddAtoms(\textcolor{keyword}{const}\ TPtrList<TXAtom>\&\ atoms)\ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \}}
+\DoxyCodeLine{00273\ \ \ \textcolor{keywordtype}{size\_t}\ GetId()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Id;\ \ \}}
+\DoxyCodeLine{00274\ \};}
+\DoxyCodeLine{00275\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00276\ \textcolor{keyword}{class\ }AModeWithLabels\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAMode}{AMode}}\ \{}
+\DoxyCodeLine{00277\ \ \ \textcolor{keywordtype}{short}\ LabelsMode;}
+\DoxyCodeLine{00278\ \ \ \textcolor{keywordtype}{bool}\ LabelsVisible;}
+\DoxyCodeLine{00279\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00280\ \ \ AModeWithLabels(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00281\ \ \ \string~AModeWithLabels();}
+\DoxyCodeLine{00282\ \};}
+\DoxyCodeLine{00283\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \textcolor{keyword}{class\ }AModeFactory\ \ \{}
+\DoxyCodeLine{00286\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00287\ \ \ \textcolor{keywordtype}{size\_t}\ modeId;}
+\DoxyCodeLine{00288\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00289\ \ \ AModeFactory(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ modeId(\textcolor{keywordtype}{id})\ \ \{\}}
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{virtual}\ \string~AModeFactory()\ \ \{\}}
+\DoxyCodeLine{00291\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAMode}{AMode}}*\ New()\ =\ 0;}
+\DoxyCodeLine{00292\ \ \ \textcolor{keywordtype}{void}\ SetId\_(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ \{\ modeId\ =\ id;\ \}}
+\DoxyCodeLine{00293\ \};}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ModeClass>\ \textcolor{keyword}{class\ }TModeFactory\ :\ \textcolor{keyword}{public}\ AModeFactory\ \{}
+\DoxyCodeLine{00296\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00297\ \ \ TModeFactory(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ AModeFactory(\textcolor{keywordtype}{id})\ \{\}}
+\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAMode}{AMode}}*\ New()\ \ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ ModeClass(modeId);\ \ \}}
+\DoxyCodeLine{00299\ \};}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \textcolor{keyword}{class\ }TModeRegistry\ \ \{}
+\DoxyCodeLine{00302\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<AModeFactory*,\ true>}}\ Modes;}
+\DoxyCodeLine{00303\ \ \ \mbox{\hyperlink{classAMode}{AMode}}\ *CurrentMode;}
+\DoxyCodeLine{00304\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00305\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&ModeChangeCB()\ \{}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ s(\textcolor{stringliteral}{"{}modechange"{}});}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{00308\ \ \ \}}
+\DoxyCodeLine{00309\ \ \ \textcolor{keyword}{static}\ TModeRegistry\ *\&Instance()\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keyword}{static}\ TModeRegistry\ *i\ =\ 0;}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00312\ \ \ \}}
+\DoxyCodeLine{00313\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00314\ \ \ TModeRegistry();}
+\DoxyCodeLine{00315\ \ \ \string~TModeRegistry();}
+\DoxyCodeLine{00316\ \ \ \textcolor{comment}{//\ NULL\ is\ returned\ of\ no\ mode\ found}}
+\DoxyCodeLine{00317\ \ \ \mbox{\hyperlink{classAMode}{AMode}}*\ SetMode(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ olxstr\ \&args);}
+\DoxyCodeLine{00318\ \ \ \textcolor{keywordtype}{void}\ ClearMode(\textcolor{keywordtype}{bool}\ finalise);}
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ DecodeMode(\textcolor{keyword}{const}\ olxstr\&\ mode);}
+\DoxyCodeLine{00320\ \ \ \mbox{\hyperlink{classAMode}{AMode}}*\ GetCurrent()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ CurrentMode;\ \ \}}
+\DoxyCodeLine{00321\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ \&OnChange;}
+\DoxyCodeLine{00322\ \ \ \textcolor{comment}{//\ the\ list\ of\ commands\ to\ be\ exectued\ when\ 'mode\ off'\ is\ called}}
+\DoxyCodeLine{00323\ \ \ TStrList\ OnModeExit;}
+\DoxyCodeLine{00324\ }
+\DoxyCodeLine{00325\ \ \ \textcolor{keyword}{static}\ TModeRegistry\ \&GetInstance();}
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ CheckMode(\textcolor{keywordtype}{size\_t}\ mode);}
+\DoxyCodeLine{00327\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ CheckMode(\textcolor{keyword}{const}\ olxstr\ \&mode);}
+\DoxyCodeLine{00328\ \};}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \textcolor{keyword}{class\ }TModeChange:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00331\ \ \ \textcolor{keywordtype}{bool}\ FStatus;}
+\DoxyCodeLine{00332\ \ \ \textcolor{keywordtype}{size\_t}\ Mode;}
+\DoxyCodeLine{00333\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00334\ \ \ TModeChange(\textcolor{keywordtype}{size\_t}\ mode,\ \textcolor{keywordtype}{bool}\ status)}
+\DoxyCodeLine{00335\ \ \ \ \ :\ FStatus(status),\ Mode(mode)}
+\DoxyCodeLine{00336\ \ \ \{\}}
+\DoxyCodeLine{00337\ \ \ \string~TModeChange()\ \ \{\}}
+\DoxyCodeLine{00338\ \ \ \textcolor{keywordtype}{bool}\ GetStatus()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FStatus;\ \ \}}
+\DoxyCodeLine{00339\ \};}
+\DoxyCodeLine{00340\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00341\ EndGxlNamespace()}
+\DoxyCodeLine{00342\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

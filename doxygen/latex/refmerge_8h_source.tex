@@ -1,0 +1,852 @@
+\doxysection{refmerge.\+h}
+\hypertarget{refmerge_8h_source}{}\label{refmerge_8h_source}\index{xlib/refmerge.h@{xlib/refmerge.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ref\_merge\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ref\_merge\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}reflection.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estopwatch.h"{}}}
+\DoxyCodeLine{00014\ BeginXlibNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ struct\ MergeStats\ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{double}\ Rint,\ Rsigma,\ MeanIOverSigma;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{size\_t}}
+\DoxyCodeLine{00019\ \ \ \ \ SystematicAbsencesRemoved,}
+\DoxyCodeLine{00020\ \ \ \ \ UniqueSystematicAbsencesRemoved,}
+\DoxyCodeLine{00021\ \ \ \ \ InconsistentEquivalents,}
+\DoxyCodeLine{00022\ \ \ \ \ UniqueReflections,}
+\DoxyCodeLine{00023\ \ \ \ \ CentricReflections,}
+\DoxyCodeLine{00024\ \ \ \ \ ReflectionAPotMax,}
+\DoxyCodeLine{00025\ \ \ \ \ GTRefs,\ \textcolor{comment}{//\ I/sig\ >=\ 2}}
+\DoxyCodeLine{00026\ \ \ \ \ OmittedByUser;\ \ \textcolor{comment}{//\ OMIT\ h\ k\ l,\ all\ equivs}}
+\DoxyCodeLine{00027\ \ \ \textcolor{comment}{//\ symmetry\ independent\ reflections\ =\ sum(1/multiplicity)}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{double}\ IndependentReflections;}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{bool}\ FriedelOppositesMerged;}
+\DoxyCodeLine{00030\ \ \ vec3i\ MinIndices,\ MaxIndices;}
+\DoxyCodeLine{00031\ \ \ MergeStats()\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ SetDefaults();}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ \ \ MergeStats(\textcolor{keyword}{const}\ MergeStats\&\ ms)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ this-\/>operator\ =\ (ms);}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ \ \ MergeStats\&\ operator\ =\ (\textcolor{keyword}{const}\ MergeStats\&\ ms)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ Rint\ =\ ms.Rint;}
+\DoxyCodeLine{00039\ \ \ \ \ Rsigma\ =\ ms.Rsigma;}
+\DoxyCodeLine{00040\ \ \ \ \ MeanIOverSigma\ =\ ms.MeanIOverSigma;}
+\DoxyCodeLine{00041\ \ \ \ \ SystematicAbsencesRemoved\ =\ ms.SystematicAbsencesRemoved;}
+\DoxyCodeLine{00042\ \ \ \ \ UniqueSystematicAbsencesRemoved\ =\ ms.UniqueSystematicAbsencesRemoved;}
+\DoxyCodeLine{00043\ \ \ \ \ InconsistentEquivalents\ =\ ms.InconsistentEquivalents;}
+\DoxyCodeLine{00044\ \ \ \ \ UniqueReflections\ =\ ms.UniqueReflections;}
+\DoxyCodeLine{00045\ \ \ \ \ OmittedByUser\ =\ ms.OmittedByUser;}
+\DoxyCodeLine{00046\ \ \ \ \ CentricReflections\ =\ ms.CentricReflections;}
+\DoxyCodeLine{00047\ \ \ \ \ FriedelOppositesMerged\ =\ ms.FriedelOppositesMerged;}
+\DoxyCodeLine{00048\ \ \ \ \ GTRefs\ =\ ms.GTRefs;}
+\DoxyCodeLine{00049\ \ \ \ \ ReflectionAPotMax\ =\ ms.ReflectionAPotMax;}
+\DoxyCodeLine{00050\ \ \ \ \ MinIndices\ =\ ms.MinIndices;}
+\DoxyCodeLine{00051\ \ \ \ \ MaxIndices\ =\ ms.MaxIndices;}
+\DoxyCodeLine{00052\ \ \ \ \ IndependentReflections\ =\ ms.IndependentReflections;}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ SetDefaults()\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ Rint\ =\ Rsigma\ =\ 0;}
+\DoxyCodeLine{00057\ \ \ \ \ MeanIOverSigma\ =\ 0;}
+\DoxyCodeLine{00058\ \ \ \ \ MinIndices[0]\ =\ MinIndices[1]\ =\ MinIndices[2]\ =\ 100;}
+\DoxyCodeLine{00059\ \ \ \ \ MaxIndices[0]\ =\ MaxIndices[1]\ =\ MaxIndices[2]\ =\ -\/100;}
+\DoxyCodeLine{00060\ \ \ \ \ GTRefs\ =\ OmittedByUser\ =\ UniqueReflections\ =\ 0;}
+\DoxyCodeLine{00061\ \ \ \ \ CentricReflections\ =\ SystematicAbsencesRemoved\ =}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ UniqueSystematicAbsencesRemoved\ =\ InconsistentEquivalents\ =\ 0;}
+\DoxyCodeLine{00063\ \ \ \ \ ReflectionAPotMax\ =\ 0;}
+\DoxyCodeLine{00064\ \ \ \ \ FriedelOppositesMerged\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00065\ \ \ \ \ IndependentReflections\ =\ 0;}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \};}
+\DoxyCodeLine{00068\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00069\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRefMerger}{RefMerger}}\ \{}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{static}\ MergeStats\ \_DoMerge(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ info\_ex,\ TRefPList\&\ refs,}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ TRefList\&\ output,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ \textcolor{keywordtype}{double}\ gt\_v)}
+\DoxyCodeLine{00073\ \ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ref\_cnt\ =\ refs.Count();}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{if}\ (ref\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}empty\ reflection\ list"{}});}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ref\_cnt;\ i++)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ refs[i]-\/>Standardise(info\_ex);}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ MergeStats\ stats;}
+\DoxyCodeLine{00083\ \ \ \ \ stats.FriedelOppositesMerged\ =\ info\_ex.centrosymmetric;}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{/*\ standardise\ reflection\ indices\ according\ to\ provided\ list\ of\ symmetry}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ \ \ operators}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00087\ \ \ \ \ QuickSorter::Sort(refs,\ cmp);}
+\DoxyCodeLine{00088\ \ \ \ \ output.SetCapacity(ref\_cnt);}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ merge\ reflections}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{double}\ Sdiff\ =\ 0,\ SI\ =\ 0,\ SS\ =\ 0,\ SI\_tot\ =\ 0;}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ mi\_o\_sig\_cnt\ =\ 0;}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ref\_cnt;)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \mbox{\hyperlink{classTReflection}{TReflection}}*\ ref\ =\ refs[i];}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ from\ =\ i++;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ ((i\ <\ ref\_cnt)\ \&\&\ (cmp.Compare(ref,\ refs[i])\ ==\ 0))\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ merged\_count\ =\ i\ -\/\ from;}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (omits.Contains(ref-\/>GetHkl()))\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ stats.OmittedByUser\ +=\ merged\_count;}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (merged\_count\ >\ stats.ReflectionAPotMax)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ stats.ReflectionAPotMax\ =\ merged\_count;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!ref-\/>IsAbsent())\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ the\ reflection\ is\ replicated\ if\ only\ one\ in\ the\ list}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}\ mo\ =\ RefListMerger::Merge(refs,\ from,\ i);}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (merged\_count\ >\ 1)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ SI\_tot\ +=\ mo.sumI;}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ Sdiff\ +=\ mo.sumDiff;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.sigInt\ >\ mo.ref-\/>GetS())\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.sigInt\ >\ 5\ *\ mo.ref-\/>GetS())\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.InconsistentEquivalents++;}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mo.ref-\/>SetTag(-\/1);\ \ \textcolor{comment}{//\ mark\ as\ unusable}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mo.ref-\/>SetS(mo.sigInt);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ mo.ref-\/>SetBatch(ref-\/>GetBatch());}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ output.Add(mo.ref).Analyse(info\_ex);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.ref-\/>IsCentric())\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ stats.CentricReflections++;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ SS\ +=\ mo.ref-\/>GetS();}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ SI\ +=\ mo.ref-\/>GetI();}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.ref-\/>GetS()\ >\ 0)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ios\ =\ mo.ref-\/>GetI()\ /\ mo.ref-\/>GetS();}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ios\ >=\ gt\_v)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.GTRefs++;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ stats.MeanIOverSigma\ +=\ ios;}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ mi\_o\_sig\_cnt++;}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ vec3i::UpdateMinMax(ref-\/>GetHkl(),\ stats.MinIndices,}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ stats.MaxIndices);}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ stats.IndependentReflections\ +=\ 1.\ /\ mo.ref-\/>GetMultiplicity();}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ stats.SystematicAbsencesRemoved\ +=\ merged\_count;}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ stats.UniqueSystematicAbsencesRemoved++;}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ stats.Rint\ =\ (SI\_tot\ !=\ 0)\ ?\ Sdiff\ /\ SI\_tot\ :\ 0.0;}
+\DoxyCodeLine{00146\ \ \ \ \ stats.Rsigma\ =\ (SI\ !=\ 0)\ ?\ SS\ /\ SI\ :\ 0.0;}
+\DoxyCodeLine{00147\ \ \ \ \ stats.UniqueReflections\ =\ output.Count();}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{if}\ (mi\_o\_sig\_cnt\ >\ 0)\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ stats.MeanIOverSigma\ /=\ mi\_o\_sig\_cnt;}
+\DoxyCodeLine{00150\ \ \ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ stats;}
+\DoxyCodeLine{00152\ \ \ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{static}\ MergeStats\ \_DryMerge(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ info\_ex,}
+\DoxyCodeLine{00156\ \ \ \ \ TRefPList\&\ refs,\ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ \textcolor{keywordtype}{double}\ gt\_v)}
+\DoxyCodeLine{00157\ \ \ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ref\_cnt\ =\ refs.Count();}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{if}\ (ref\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}empty\ reflection\ list"{}});}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ref\_cnt;\ i++)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ refs[i]-\/>Standardise(info\_ex);}
+\DoxyCodeLine{00165\ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ MergeStats\ stats;}
+\DoxyCodeLine{00167\ \ \ \ \ stats.FriedelOppositesMerged\ =\ info\_ex.centrosymmetric;}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{comment}{//\ sort\ the\ list}}
+\DoxyCodeLine{00169\ \ \ \ \ QuickSorter::Sort(refs,\ cmp);}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordtype}{double}\ Sdiff\ =\ 0,\ SI\ =\ 0,\ SS\ =\ 0,\ SI\_tot\ =\ 0;}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ mi\_o\_sig\_cnt\ =\ 0;}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ref\_cnt;)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \mbox{\hyperlink{classTReflection}{TReflection}}*\ ref\ =\ refs[i];}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ i++;}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ ((i\ <\ ref\_cnt)\ \&\&\ (cmp.Compare(ref,\ refs[i])\ ==\ 0))\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ merged\_count\ =\ i\ -\/\ from;}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (omits.Contains(ref-\/>GetHkl()))\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ stats.OmittedByUser\ +=\ merged\_count;}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (merged\_count\ >\ stats.ReflectionAPotMax)\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ stats.ReflectionAPotMax\ =\ merged\_count;}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!ref-\/>IsAbsent())\ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ the\ reflection\ is\ replicated\ if\ only\ one\ in\ the\ list}}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}\ mo\ =\ RefListMerger::DryMerge(refs,\ from,\ i);}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (merged\_count\ >\ 1)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ SI\_tot\ +=\ mo.sumI;}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ Sdiff\ +=\ mo.sumDiff;}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.sigInt\ >\ mo.rSig)\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.sigInt\ >\ 5\ *\ mo.rSig)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.InconsistentEquivalents++;}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mo.rSig\ =\ mo.sigInt;}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ ref-\/>Analyse(info\_ex);}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ref-\/>IsCentric())\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ stats.CentricReflections++;}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ SS\ +=\ mo.rSig;}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ SI\ +=\ mo.rI;}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.rSig\ >\ 0)\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ios\ =\ mo.rI\ /\ mo.rSig;}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ios\ >=\ gt\_v)\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.GTRefs++;}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ stats.MeanIOverSigma\ +=\ ios;}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ mi\_o\_sig\_cnt++;}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ vec3i::UpdateMinMax(ref-\/>GetHkl(),\ stats.MinIndices,}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ stats.MaxIndices);}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ stats.UniqueReflections++;}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ stats.IndependentReflections\ +=\ 1.\ /\ ref-\/>GetMultiplicity();}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ stats.SystematicAbsencesRemoved\ +=\ merged\_count;}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ stats.UniqueSystematicAbsencesRemoved++;}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ stats.Rint\ =\ (SI\_tot\ !=\ 0)\ ?\ Sdiff\ /\ SI\_tot\ :\ 0.0;}
+\DoxyCodeLine{00225\ \ \ \ \ stats.Rsigma\ =\ (SI\ !=\ 0)\ ?\ SS\ /\ SI\ :\ 0.0;}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordflow}{if}\ (mi\_o\_sig\_cnt\ >\ 0)\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ stats.MeanIOverSigma\ /=\ mi\_o\_sig\_cnt;}
+\DoxyCodeLine{00228\ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordflow}{return}\ stats;}
+\DoxyCodeLine{00230\ \ \ \}}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList,\ \textcolor{keyword}{class}\ Comparator,\ \textcolor{keywordtype}{bool}\ UseBatch>}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{static}\ MergeStats\ \_DoDrySGFilter(\textcolor{keyword}{const}\ MatList\&\ ml,\ TRefPList\&\ refs,}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ \textcolor{keywordtype}{double}\ gt\_v)}
+\DoxyCodeLine{00235\ \ \ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ref\_cnt\ =\ refs.Count();}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keywordflow}{if}\ (ref\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}empty\ reflection\ list"{}});}
+\DoxyCodeLine{00240\ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \ \ MergeStats\ stats;}
+\DoxyCodeLine{00242\ \ \ \ \ stats.FriedelOppositesMerged\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{comment}{//\ sort\ the\ list}}
+\DoxyCodeLine{00244\ \ \ \ \ QuickSorter::Sort(refs,\ cmp);}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ mi\_o\_sig\_cnt\ =\ 0;}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ref\_cnt;)\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \mbox{\hyperlink{classTReflection}{TReflection}}*\ ref\ =\ refs[i];}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (UseBatch\ \&\&\ ref-\/>GetBatch()\ <\ 0)\ \{}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ ref-\/>Analyse(ml);}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ i++,\ real\_count\ =\ 1;}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ ((i\ <\ ref\_cnt)\ \&\&\ (cmp.Compare(ref,\ refs[i])\ ==\ 0))\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!UseBatch\ ||\ refs[i]-\/>GetBatch()\ >\ 0)\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ real\_count++;}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (omits.Contains(ref-\/>GetHkl()))\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ stats.OmittedByUser\ +=\ real\_count;}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (real\_count\ >\ stats.ReflectionAPotMax)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ stats.ReflectionAPotMax\ =\ real\_count;}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!ref-\/>IsAbsent())\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ from;\ j\ <\ i;\ j++)\ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ vec3i::UpdateMinMax(refs[j]-\/>GetHkl(),\ stats.MinIndices,}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.MaxIndices);}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!UseBatch\ ||\ refs[j]-\/>GetBatch()\ >\ 0)\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ios\ =\ refs[j]-\/>GetI()\ /\ refs[j]-\/>GetS();}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ios\ >=\ gt\_v)\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.GTRefs++;}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.MeanIOverSigma\ +=\ ios;}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mi\_o\_sig\_cnt++;}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ref-\/>IsCentric())\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ stats.CentricReflections\ +=\ real\_count;}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ stats.UniqueReflections\ +=\ real\_count;}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ stats.IndependentReflections\ +=}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ (double)real\_count\ /\ ref-\/>GetMultiplicity();}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ stats.SystematicAbsencesRemoved\ +=\ real\_count;}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ stats.UniqueSystematicAbsencesRemoved++;}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ \}}
+\DoxyCodeLine{00292\ \ \ \ \ stats.Rint\ =\ -\/1;}
+\DoxyCodeLine{00293\ \ \ \ \ stats.Rsigma\ =\ -\/1;}
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keywordflow}{if}\ (mi\_o\_sig\_cnt\ >\ 0)\ \{}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ stats.MeanIOverSigma\ /=\ mi\_o\_sig\_cnt;}
+\DoxyCodeLine{00296\ \ \ \ \ \}}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordflow}{return}\ stats;}
+\DoxyCodeLine{00298\ \ \ \}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{static}\ MergeStats\ \_DoMergeInP1(\mbox{\hyperlink{classTPtrList}{TPtrList<const\ TReflection>}}\&\ refs,}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ TRefList\&\ output,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ \textcolor{keywordtype}{double}\ gt\_v)}
+\DoxyCodeLine{00303\ \ \ \{}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keywordflow}{if}\ (refs.IsEmpty())\ \{}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}empty\ reflection\ list"{}});}
+\DoxyCodeLine{00307\ \ \ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \ \ MergeStats\ stats;}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{comment}{//\ sort\ the\ list}}
+\DoxyCodeLine{00310\ \ \ \ \ QuickSorter::Sort(refs,\ cmp);}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ref\_cnt\ =\ refs.Count();}
+\DoxyCodeLine{00312\ \ \ \ \ output.SetCapacity(ref\_cnt);\ \textcolor{comment}{//\ better\ more\ that\ none\ :)}}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{comment}{//\ merge\ reflections}}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordtype}{double}\ Sdiff\ =\ 0,\ SI\_tot\ =\ 0,\ SI\ =\ 0,\ SS\ =\ 0;}
+\DoxyCodeLine{00315\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ mi\_o\_sig\_cnt\ =\ 0;}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ref\_cnt;\ )\ \{}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTReflection}{TReflection}}\ *ref\ =\ refs[i];}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ from\ =\ i++;}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ ((i\ <\ ref\_cnt)\ \&\&\ (cmp.Compare(ref,\ refs[i])\ ==\ 0))\ \{}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ merged\_count\ =\ i\ -\/\ from;}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (omits.Contains(ref-\/>GetHkl()))\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ stats.OmittedByUser\ +=\ merged\_count;}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (merged\_count\ >\ stats.ReflectionAPotMax)\ \{}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ stats.ReflectionAPotMax\ =\ merged\_count;}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}\ mo\ =\ RefListMerger::Merge(refs,\ from,\ i);}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (merged\_count\ >\ 1)\ \{}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ SI\_tot\ +=\ mo.sumI;}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ Sdiff\ +=\ mo.sumDiff;}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.sigInt\ >\ mo.ref-\/>GetS())\ \{}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.sigInt\ >\ 5\ *\ mo.ref-\/>GetS())\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.InconsistentEquivalents++;}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mo.ref-\/>SetTag(-\/1);\ \ \textcolor{comment}{//\ mark\ as\ unusable}}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \ \ mo.ref-\/>SetS(mo.sigInt);}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ mo.ref-\/>SetBatch(ref-\/>GetBatch());}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ output.Add(mo.ref);}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ SS\ +=\ mo.ref-\/>GetS();}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ SI\ +=\ mo.ref-\/>GetI();}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.ref-\/>GetS()\ >\ 0)\ \{}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ios\ =\ mo.ref-\/>GetI()\ /\ mo.ref-\/>GetS();}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ios\ >=\ gt\_v)\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ stats.GTRefs++;}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ stats.MeanIOverSigma\ +=\ ios;}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ mi\_o\_sig\_cnt++;}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ vec3i::UpdateMinMax(ref-\/>GetHkl(),\ stats.MinIndices,}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ stats.MaxIndices);}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00357\ \ \ \ \ \}}
+\DoxyCodeLine{00358\ \ \ \ \ stats.Rint\ =\ (SI\_tot\ !=\ 0)\ ?\ Sdiff\ /\ SI\_tot\ :\ 0.0;}
+\DoxyCodeLine{00359\ \ \ \ \ stats.Rsigma\ =\ (SI\ !=\ 0)\ ?\ SS\ /\ SI\ :\ 0.0;}
+\DoxyCodeLine{00360\ \ \ \ \ stats.UniqueReflections\ =\ output.Count();}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keywordflow}{if}\ (mi\_o\_sig\_cnt\ >\ 0)\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ stats.MeanIOverSigma\ /=\ mi\_o\_sig\_cnt;}
+\DoxyCodeLine{00363\ \ \ \ \ \}}
+\DoxyCodeLine{00364\ \ \ \ \ stats.IndependentReflections\ =\ (double)stats.UniqueReflections;}
+\DoxyCodeLine{00365\ \ \ \ \ \textcolor{keywordflow}{return}\ stats;}
+\DoxyCodeLine{00366\ \ \ \}}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00369\ \ \ \textcolor{keyword}{static}\ MergeStats\ \_DryMergeInP1(\mbox{\hyperlink{classTPtrList}{TPtrList<const\ TReflection>}}\&\ refs,}
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ \textcolor{keywordtype}{double}\ gt\_v)}
+\DoxyCodeLine{00371\ \ \ \{}
+\DoxyCodeLine{00372\ \ \ \ \ \textcolor{keywordflow}{if}\ (refs.IsEmpty())\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}empty\ reflection\ list"{}});}
+\DoxyCodeLine{00375\ \ \ \ \ \}}
+\DoxyCodeLine{00376\ \ \ \ \ MergeStats\ stats;}
+\DoxyCodeLine{00377\ \ \ \ \ \textcolor{comment}{//\ sort\ the\ list}}
+\DoxyCodeLine{00378\ \ \ \ \ QuickSorter::Sort(refs,\ cmp);}
+\DoxyCodeLine{00379\ \ \ \ \ \textcolor{comment}{//\ merge\ reflections}}
+\DoxyCodeLine{00380\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ref\_cnt\ =\ refs.Count();}
+\DoxyCodeLine{00381\ \ \ \ \ \textcolor{keywordtype}{double}\ Sdiff\ =\ 0,\ SI\_tot\ =\ 0,\ SI\ =\ 0,\ SS\ =\ 0;}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ mi\_o\_sig\_cnt\ =\ 0;}
+\DoxyCodeLine{00383\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ref\_cnt;)\ \{}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTReflection}{TReflection}}*\ ref\ =\ refs[i];}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ from\ =\ i++;}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ ((i\ <\ ref\_cnt)\ \&\&\ (cmp.Compare(ref,\ refs[i])\ ==\ 0))\ \{}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ merged\_count\ =\ i\ -\/\ from;}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (omits.Contains(ref-\/>GetHkl()))\ \{}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ stats.OmittedByUser\ +=\ merged\_count;}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (merged\_count\ >\ stats.ReflectionAPotMax)\ \{}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ stats.ReflectionAPotMax\ =\ merged\_count;}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}\ mo\ =\ RefListMerger::DryMerge(refs,\ from,\ i);}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (merged\_count\ >\ 1)\ \{}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \ \ SI\_tot\ +=\ mo.sumI;}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \ \ Sdiff\ +=\ mo.sumDiff;}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.sigInt\ >\ mo.rSig)\ \{}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.sigInt\ >\ 5\ *\ mo.rSig)\ \{}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.InconsistentEquivalents++;}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ SS\ +=\ mo.rSig;}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ SI\ +=\ mo.rI;}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mo.rSig\ >\ 0)\ \{}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ios\ =\ mo.rI\ /\ mo.rSig;}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ios\ >=\ gt\_v)\ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \ \ \ \ stats.GTRefs++;}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ stats.MeanIOverSigma\ +=\ ios;}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \ \ mi\_o\_sig\_cnt++;}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ vec3i::UpdateMinMax(ref-\/>GetHkl(),\ stats.MinIndices,}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ stats.MaxIndices);}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ stats.UniqueReflections++;}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00421\ \ \ \ \ \}}
+\DoxyCodeLine{00422\ \ \ \ \ stats.Rint\ =\ (SI\_tot\ !=\ 0)\ ?\ Sdiff\ /\ SI\_tot\ :\ 0.0;}
+\DoxyCodeLine{00423\ \ \ \ \ stats.Rsigma\ =\ (SI\ !=\ 0)\ ?\ SS\ /\ SI\ :\ 0.0;}
+\DoxyCodeLine{00424\ \ \ \ \ \textcolor{keywordflow}{if}\ (mi\_o\_sig\_cnt\ >\ 0)\ \{}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ stats.MeanIOverSigma\ /=\ mi\_o\_sig\_cnt;}
+\DoxyCodeLine{00426\ \ \ \ \ \}}
+\DoxyCodeLine{00427\ \ \ \ \ stats.IndependentReflections\ =\ (double)stats.UniqueReflections;}
+\DoxyCodeLine{00428\ \ \ \ \ \textcolor{keywordflow}{return}\ stats;}
+\DoxyCodeLine{00429\ \ \ \}}
+\DoxyCodeLine{00430\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00431\ \ \ \textcolor{comment}{/*\ Function\ merges\ provided\ reflections\ using\ provided\ list\ of\ matrices.}}
+\DoxyCodeLine{00432\ \textcolor{comment}{\ \ \ \ \ The\ reflections\ are\ standardised.\ The\ resulting\ reflections\ are\ stored\ in}}
+\DoxyCodeLine{00433\ \textcolor{comment}{\ \ \ \ \ the\ output.}}
+\DoxyCodeLine{00434\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00435\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ RefList,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00436\ \ \ \textcolor{keyword}{static}\ MergeStats\ MergeExS(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ si,\ RefList\&\ Refs,}
+\DoxyCodeLine{00437\ \ \ \ \ TRefList\&\ output,\ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,}
+\DoxyCodeLine{00438\ \ \ \ \ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00439\ \ \ \{}
+\DoxyCodeLine{00440\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00441\ \ \ \ \ TRefPList\ refs(Refs);}
+\DoxyCodeLine{00442\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoMerge<RefListMerger>(si,\ refs,\ omits,\ output,\ cmp,\ gt\_v);}
+\DoxyCodeLine{00443\ \ \ \}}
+\DoxyCodeLine{00444\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ MatList,\ \textcolor{keyword}{class}\ RefList,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00445\ \ \ \textcolor{keyword}{static}\ MergeStats\ MergeExM(\textcolor{keyword}{const}\ MatList\&\ ml,\ RefList\&\ Refs,\ TRefList\&\ output,}
+\DoxyCodeLine{00446\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keywordtype}{bool}\ mergeFP,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,}
+\DoxyCodeLine{00447\ \ \ \ \ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00448\ \ \ \{}
+\DoxyCodeLine{00449\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00450\ \ \ \ \ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\ info\_ex\ =\ SymmSpace::Compact(ml);}
+\DoxyCodeLine{00451\ \ \ \ \ \textcolor{keywordflow}{if}\ (mergeFP)\ \ info\_ex.centrosymmetric\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00452\ \ \ \ \ \textcolor{keywordflow}{return}\ MergeExS<RefListMerger>(info\_ex,\ Refs,\ output,\ omits,\ cmp,\ gt\_v);}
+\DoxyCodeLine{00453\ \ \ \}}
+\DoxyCodeLine{00454\ }
+\DoxyCodeLine{00455\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ RefList>}
+\DoxyCodeLine{00456\ \ \ \textcolor{keyword}{static}\ MergeStats\ Merge(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ si,\ RefList\&\ Refs,}
+\DoxyCodeLine{00457\ \ \ \ \ TRefList\&\ output,\ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00458\ \ \ \{}
+\DoxyCodeLine{00459\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00460\ \ \ \ \ \textcolor{keywordflow}{return}\ MergeExS<RefListMerger>(si,\ Refs,\ output,\ omits,}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ FunctionComparator::Make(\&TReflection::Compare),\ gt\_v);}
+\DoxyCodeLine{00462\ \ \ \}}
+\DoxyCodeLine{00463\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ MatList,\ \textcolor{keyword}{class}\ RefList>}
+\DoxyCodeLine{00464\ \ \ \textcolor{keyword}{static}\ MergeStats\ Merge(\textcolor{keyword}{const}\ MatList\&\ ml,\ RefList\&\ Refs,}
+\DoxyCodeLine{00465\ \ \ \ \ TRefList\&\ output,\ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keywordtype}{bool}\ MergeFP,\ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00466\ \ \ \{}
+\DoxyCodeLine{00467\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00468\ \ \ \ \ \textcolor{keywordflow}{return}\ MergeExM<RefListMerger>(ml,\ Refs,\ output,\ omits,\ MergeFP,}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ FunctionComparator::Make(\&TReflection::Compare),\ gt\_v);}
+\DoxyCodeLine{00470\ \ \ \}}
+\DoxyCodeLine{00471\ \ \ \textcolor{comment}{/*\ Functions\ gets\ the\ statistic\ on\ the\ list\ of\ provided\ reflections\ (which}}
+\DoxyCodeLine{00472\ \textcolor{comment}{\ \ get\ stantardised)}}
+\DoxyCodeLine{00473\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00474\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ RefList,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00475\ \ \ \textcolor{keyword}{static}\ MergeStats\ DryMergeExS(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ si,\ RefList\&\ Refs,}
+\DoxyCodeLine{00476\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ \textcolor{keywordtype}{double}\ gt\_v)}
+\DoxyCodeLine{00477\ \ \ \{}
+\DoxyCodeLine{00478\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00479\ \ \ \ \ TRefPList\ refs(Refs);}
+\DoxyCodeLine{00480\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DryMerge<RefListMerger>(si,\ refs,\ omits,\ cmp,\ gt\_v);}
+\DoxyCodeLine{00481\ \ \ \}}
+\DoxyCodeLine{00482\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ MatList,\ \textcolor{keyword}{class}\ RefList,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00483\ \ \ \textcolor{keyword}{static}\ MergeStats\ DryMergeExM(\textcolor{keyword}{const}\ MatList\&\ ml,\ RefList\&\ Refs,}
+\DoxyCodeLine{00484\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keywordtype}{bool}\ mergeFP,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,}
+\DoxyCodeLine{00485\ \ \ \ \ \textcolor{keywordtype}{double}\ gt\_v)}
+\DoxyCodeLine{00486\ \ \ \{}
+\DoxyCodeLine{00487\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00488\ \ \ \ \ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\ info\_ex\ =\ SymmSpace::Compact(ml);}
+\DoxyCodeLine{00489\ \ \ \ \ \textcolor{keywordflow}{if}\ (mergeFP)\ \{}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ info\_ex.centrosymmetric\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00491\ \ \ \ \ \}}
+\DoxyCodeLine{00492\ \ \ \ \ \textcolor{keywordflow}{return}\ DryMergeExS<RefListMerger>(info\_ex,\ Refs,\ omits,\ cmp,\ gt\_v);}
+\DoxyCodeLine{00493\ \ \ \}}
+\DoxyCodeLine{00494\ }
+\DoxyCodeLine{00495\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ RefList>}
+\DoxyCodeLine{00496\ \ \ \textcolor{keyword}{static}\ MergeStats\ DryMerge(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ si,\ RefList\&\ Refs,}
+\DoxyCodeLine{00497\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00498\ \ \ \{}
+\DoxyCodeLine{00499\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00500\ \ \ \ \ \textcolor{keywordflow}{return}\ DryMergeExS<RefListMerger>(si,\ Refs,\ omits,}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ FunctionComparator::Make(\&TReflection::Compare),\ gt\_v);}
+\DoxyCodeLine{00502\ \ \ \}}
+\DoxyCodeLine{00503\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ MatList,\ \textcolor{keyword}{class}\ RefList>}
+\DoxyCodeLine{00504\ \ \ \textcolor{keyword}{static}\ MergeStats\ DryMerge(\textcolor{keyword}{const}\ MatList\&\ ml,\ RefList\&\ Refs,}
+\DoxyCodeLine{00505\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keywordtype}{bool}\ mergeFP,\ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00506\ \ \ \{}
+\DoxyCodeLine{00507\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00508\ \ \ \ \ \textcolor{keywordflow}{return}\ DryMergeExM<RefListMerger>(ml,\ Refs,\ omits,\ mergeFP,}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ FunctionComparator::Make(\&TReflection::Compare),\ gt\_v);}
+\DoxyCodeLine{00510\ \ \ \}}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00512\ \ \ \textcolor{comment}{/*\ The\ function\ merges\ provided\ reflections\ in\ P1\ and\ strores\ the\ result\ in}}
+\DoxyCodeLine{00513\ \textcolor{comment}{\ \ the\ output}}
+\DoxyCodeLine{00514\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00515\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ RefList,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00516\ \ \ \textcolor{keyword}{static}\ MergeStats\ MergeInP1Ex(\textcolor{keyword}{const}\ RefList\&\ Refs,\ TRefList\&\ output,}
+\DoxyCodeLine{00517\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00518\ \ \ \{}
+\DoxyCodeLine{00519\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00520\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<const\ TReflection>}}\ refs(Refs);}
+\DoxyCodeLine{00521\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoMergeInP1<RefListMerger>(refs,\ omits,\ output,\ cmp,\ gt\_v);}
+\DoxyCodeLine{00522\ \ \ \}}
+\DoxyCodeLine{00523\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ RefList>}
+\DoxyCodeLine{00524\ \ \ \textcolor{keyword}{static}\ MergeStats\ MergeInP1(\textcolor{keyword}{const}\ RefList\&\ Refs,\ TRefList\&\ output,}
+\DoxyCodeLine{00525\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00526\ \ \ \{}
+\DoxyCodeLine{00527\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00528\ \ \ \ \ \textcolor{keywordflow}{return}\ MergeInP1Ex<RefListMerger>(Refs,\ output,\ omits,}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ FunctionComparator::Make(\&TReflection::Compare),\ gt\_v);}
+\DoxyCodeLine{00530\ \ \ \}}
+\DoxyCodeLine{00531\ }
+\DoxyCodeLine{00532\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ RefList,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00533\ \ \ \textcolor{keyword}{static}\ MergeStats\ DryMergeInP1Ex(\textcolor{keyword}{const}\ RefList\&\ Refs,}
+\DoxyCodeLine{00534\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00535\ \ \ \{}
+\DoxyCodeLine{00536\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00537\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<const\ TReflection>}}\ refs(Refs);}
+\DoxyCodeLine{00538\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DryMergeInP1<RefListMerger>(refs,\ omits,\ cmp,\ gt\_v);}
+\DoxyCodeLine{00539\ \ \ \}}
+\DoxyCodeLine{00540\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger,\ \textcolor{keyword}{class}\ RefList>}
+\DoxyCodeLine{00541\ \ \ \textcolor{keyword}{static}\ MergeStats\ DryMergeInP1(\textcolor{keyword}{const}\ RefList\&\ Refs,}
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00543\ \ \ \{}
+\DoxyCodeLine{00544\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00545\ \ \ \ \ \textcolor{keywordflow}{return}\ DryMergeInP1Ex<RefListMerger>(Refs,\ omits,}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ FunctionComparator::Make(\&TReflection::Compare),\ gt\_v);}
+\DoxyCodeLine{00547\ \ \ \}}
+\DoxyCodeLine{00548\ }
+\DoxyCodeLine{00549\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList,\ \textcolor{keyword}{class}\ RefList,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00550\ \ \ \textcolor{keyword}{static}\ MergeStats\ DrySGFilterEx(\textcolor{keyword}{const}\ MatList\&\ ml,\ RefList\&\ Refs,}
+\DoxyCodeLine{00551\ \ \ \ \ \textcolor{keywordtype}{bool}\ use\_batch,}
+\DoxyCodeLine{00552\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00553\ \ \ \{}
+\DoxyCodeLine{00554\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00555\ \ \ \ \ TRefPList\ refs(Refs);}
+\DoxyCodeLine{00556\ \ \ \ \ \textcolor{keywordflow}{if}\ (use\_batch)\ \{}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoDrySGFilter<MatList,Comparator,true>(ml.SubListFrom(ml[0].IsI()\ ?\ 1\ :\ 0),}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ refs,\ omits,\ cmp,\ gt\_v);}
+\DoxyCodeLine{00559\ \ \ \ \ \}}
+\DoxyCodeLine{00560\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoDrySGFilter<MatList,\ Comparator,\ false>(ml.SubListFrom(ml[0].IsI()\ ?\ 1\ :\ 0),}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \ \ refs,\ omits,\ cmp,\ gt\_v);}
+\DoxyCodeLine{00563\ \ \ \ \ \}}
+\DoxyCodeLine{00564\ \ \ \}}
+\DoxyCodeLine{00565\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList,\ \textcolor{keyword}{class}\ RefList>}
+\DoxyCodeLine{00566\ \ \ \textcolor{keyword}{static}\ MergeStats\ DrySGFilter(\textcolor{keyword}{const}\ MatList\&\ ml,\ RefList\&\ Refs,}
+\DoxyCodeLine{00567\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ omits,\ \textcolor{keywordtype}{double}\ gt\_v\ =\ 2)}
+\DoxyCodeLine{00568\ \ \ \{}
+\DoxyCodeLine{00569\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ sw(\_\_FUNC\_\_);}
+\DoxyCodeLine{00570\ \ \ \ \ \textcolor{keywordflow}{return}\ DrySGFilterEx(ml,\ Refs,\ omits,}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ FunctionComparator::Make(\&TReflection::Compare),\ gt\_v);}
+\DoxyCodeLine{00572\ \ \ \}}
+\DoxyCodeLine{00573\ }
+\DoxyCodeLine{00574\ \ \ \textcolor{keyword}{struct\ }MergerOut\ \{}
+\DoxyCodeLine{00575\ \ \ \ \ \mbox{\hyperlink{classTReflection}{TReflection}}*\ ref;}
+\DoxyCodeLine{00576\ \ \ \ \ \textcolor{keywordtype}{double}\ sigInt,\ sumI,\ sumDiff;}
+\DoxyCodeLine{00577\ \ \ \ \ MergerOut(\textcolor{keyword}{const}\ MergerOut\&\ mo)\ :}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ ref(mo.ref),}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ sigInt(mo.sigInt),}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ sumI(mo.sumI),}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ sumDiff(mo.sumDiff)}
+\DoxyCodeLine{00582\ \ \ \ \ \{\}}
+\DoxyCodeLine{00583\ \ \ \ \ MergerOut(\mbox{\hyperlink{classTReflection}{TReflection}}*\ \_ref,\ \textcolor{keywordtype}{double}\ \_sigInt\ =\ 0,\ \textcolor{keywordtype}{double}\ \_sumI\ =\ 0,}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \_sumDiff\ =\ 0)}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ :\ ref(\_ref),}
+\DoxyCodeLine{00586\ \ \ \ \ \ \ sigInt(\_sigInt),}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ sumI(\_sumI),}
+\DoxyCodeLine{00588\ \ \ \ \ \ \ sumDiff(\_sumDiff)}
+\DoxyCodeLine{00589\ \ \ \ \ \{\}}
+\DoxyCodeLine{00590\ \ \ \ \ MergerOut\&\ operator\ =\ (\textcolor{keyword}{const}\ MergerOut\&\ mo)\ \{}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ ref\ =\ mo.ref;}
+\DoxyCodeLine{00592\ \ \ \ \ \ \ sigInt\ =\ mo.sigInt;}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ sumI\ =\ mo.sumI;}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ sumDiff\ =\ mo.sumDiff;}
+\DoxyCodeLine{00595\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00596\ \ \ \ \ \}}
+\DoxyCodeLine{00597\ \ \ \};}
+\DoxyCodeLine{00598\ }
+\DoxyCodeLine{00599\ \ \ \textcolor{keyword}{struct\ }DryMergerOut\ \{}
+\DoxyCodeLine{00600\ \ \ \ \ \textcolor{keywordtype}{double}\ sigInt,\ sumI,\ sumDiff,\ rI,\ rSig;}
+\DoxyCodeLine{00601\ \ \ \ \ DryMergerOut(\textcolor{keyword}{const}\ DryMergerOut\&\ mo)\ :}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ sigInt(mo.sigInt),}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ sumI(mo.sumI),}
+\DoxyCodeLine{00604\ \ \ \ \ \ \ sumDiff(mo.sumDiff),}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ rI(mo.rI),}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ rSig(mo.rSig)}
+\DoxyCodeLine{00607\ \ \ \ \ \{\}}
+\DoxyCodeLine{00608\ \ \ \ \ DryMergerOut(\textcolor{keywordtype}{double}\ \_rI,\ \textcolor{keywordtype}{double}\ \_rSig,\ \textcolor{keywordtype}{double}\ \_sigInt\ =\ 0,\ \textcolor{keywordtype}{double}\ \_sumI\ =\ 0,}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \_sumDiff\ =\ 0)}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ :\ sigInt(\_sigInt),}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ sumI(\_sumI),}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ sumDiff(\_sumDiff),}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ rI(\_rI),}
+\DoxyCodeLine{00614\ \ \ \ \ \ \ rSig(\_rSig)}
+\DoxyCodeLine{00615\ \ \ \ \ \{\}}
+\DoxyCodeLine{00616\ \ \ \ \ DryMergerOut\&\ operator\ =\ (\textcolor{keyword}{const}\ DryMergerOut\&\ mo)\ \{}
+\DoxyCodeLine{00617\ \ \ \ \ \ \ sigInt\ =\ mo.sigInt;}
+\DoxyCodeLine{00618\ \ \ \ \ \ \ sumI\ =\ mo.sumI;}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ sumDiff\ =\ mo.sumDiff;}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ rI\ =\ mo.rI;}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ rSig\ =\ mo.rSig;}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00623\ \ \ \ \ \}}
+\DoxyCodeLine{00624\ \ \ \};}
+\DoxyCodeLine{00625\ \ \ \textcolor{comment}{/*\ merges\ using\ statistical\ weights\ for\ the\ intensities}}
+\DoxyCodeLine{00626\ \textcolor{comment}{\ \ Imean\ =\ sum(\ I/Sig\string^2\ )/sum(\ 1./Sig\string^2\ )}}
+\DoxyCodeLine{00627\ \textcolor{comment}{\ \ \ \ \ http://www.crystal.chem.uu.nl/distr/mergehklf5/mergehklf5.html}}
+\DoxyCodeLine{00628\ \textcolor{comment}{\ \ \ \ \ we\ cannot\ use\ a\ single\ pass\ algorithm\ like:}}
+\DoxyCodeLine{00629\ \textcolor{comment}{\ \ \ \ \ \ \ \ double\ sum\_wght\ =\ 0,\ sum\_wght\_i\_sq\ =\ 0,\ sum\_wght\_i\ =\ 0,\ sum\_i\ =\ 0;}}
+\DoxyCodeLine{00630\ \textcolor{comment}{\ \ \ \ \ \ \ \ for(\ size\_t\ l=0;\ l\ <\ rl.Count();\ l++\ )\ \ \{}}
+\DoxyCodeLine{00631\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ const\ double\ s\ =\ rl[l]-\/>GetS()\ !=\ 0\ ?\ rl[l]-\/>GetS()\ :\ 0.001;}}
+\DoxyCodeLine{00632\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ const\ double\ w\ =\ 1./(s*s);}}
+\DoxyCodeLine{00633\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ sum\_wght\ +=\ w;}}
+\DoxyCodeLine{00634\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ sum\_wght\_i\_sq\ +=\ w*rl[l]-\/>GetI()*rl[l]-\/>GetI();}}
+\DoxyCodeLine{00635\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ sum\_wght\_i\ +=\ w*rl[l]-\/>GetI();}}
+\DoxyCodeLine{00636\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ sum\_i\ +=\ rl[l]-\/>GetI();}}
+\DoxyCodeLine{00637\ \textcolor{comment}{\ \ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{00638\ \textcolor{comment}{\ \ \ \ \ \ \ \ const\ double\ mean\ =\ sum\_wght\_i/sum\_wght;}}
+\DoxyCodeLine{00639\ \textcolor{comment}{\ \ \ \ \ \ \ \ const\ double\ sig\_sq\ =\ (sum\_wght\_i\_sq\ -\/\ sum\_wght\_i*sum\_wght\_i/sum\_wght)/}}
+\DoxyCodeLine{00640\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ (\ (rl.Count()-\/1)*sum\_wght\ );}}
+\DoxyCodeLine{00641\ \textcolor{comment}{\ \ \ \ \ \ \ \ const\ double\ sum\_diff\ =\ (sum\_i*sum\_wght\ -\/\ rl.Count()*sum\_wght\_i)/}}
+\DoxyCodeLine{00642\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ sum\_wght;}}
+\DoxyCodeLine{00643\ \textcolor{comment}{\ \ \ \ \ \ \ \ return\ MergerOut(\ new\ TReflection(\ rl[0]-\/>GetH(),\ rl[0]-\/>GetK(),}}
+\DoxyCodeLine{00644\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ rl[0]-\/>GetL(),\ mean,\ 1./sqrt(sum\_wght)),\ sqrt(sig\_sq),\ sum\_i,\ sum\_diff);}}
+\DoxyCodeLine{00645\ \textcolor{comment}{\ \ \ \ since\ we\ need\ to\ return\ the\ sum(\ |Ii-\/Imean|\ )...}}
+\DoxyCodeLine{00646\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00647\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRefMerger_1_1StandardMerger}{StandardMerger}}\ \{}
+\DoxyCodeLine{00648\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00649\ \ \ \ \ \textcolor{comment}{//\ returns\ a\ newly\ created\ reflection\ do\ be\ deleted\ with\ delete}}
+\DoxyCodeLine{00650\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefPList>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}\ Merge(\textcolor{keyword}{const}\ RefPList\&\ rl,}
+\DoxyCodeLine{00651\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ to)}
+\DoxyCodeLine{00652\ \ \ \ \ \{}
+\DoxyCodeLine{00653\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ to\ -\/\ from;}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cnt\ ==\ 1)\ \{}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTReflection}{TReflection}}(*rl[from]));}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_wght\ =\ 0,\ sum\_wght\_i\ =\ 0,\ sum\_i\ =\ 0;}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ w\ =\ 1.\ /\ olx\_sqr(rl[i]-\/>GetS()\ !=\ 0\ ?\ rl[i]-\/>GetS()\ :\ 0.001);}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \ \ sum\_wght\ +=\ w;}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ \ \ sum\_wght\_i\ +=\ w*rl[i]-\/>GetI();}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ \ \ sum\_i\ +=\ rl[i]-\/>GetI();}
+\DoxyCodeLine{00663\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ mean\ =\ sum\_wght\_i\ /\ sum\_wght;}
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_diff\ =\ 0,\ sig\_top\ =\ 0;}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ diff\ =\ rl[i]-\/>GetI()\ -\/\ mean;}
+\DoxyCodeLine{00668\ \ \ \ \ \ \ \ \ sum\_diff\ +=\ (diff\ <\ 0\ ?\ -\/diff\ :\ diff);}
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ w\ =\ 1.\ /\ olx\_sqr(rl[i]-\/>GetS()\ !=\ 0\ ?\ rl[i]-\/>GetS()\ :\ 0.001);}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ \ \ sig\_top\ +=\ w*diff*diff;}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ s\ =\ sqrt(sig\_top\ /\ (sum\_wght\ *\ (cnt\ -\/\ 1)));}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}(}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTReflection}{TReflection}}(rl[from]-\/>GetH(),\ rl[from]-\/>GetK(),\ rl[from]-\/>GetL(),}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \ \ mean,\ s),}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ s,}
+\DoxyCodeLine{00677\ \ \ \ \ \ \ \ \ sum\_i,}
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \ \ sum\_diff}
+\DoxyCodeLine{00679\ \ \ \ \ \ \ );}
+\DoxyCodeLine{00680\ \ \ \ \ \}}
+\DoxyCodeLine{00681\ \ \ \ \ \textcolor{comment}{//\ returns\ just\ statistics}}
+\DoxyCodeLine{00682\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefPList>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}\ DryMerge(\textcolor{keyword}{const}\ RefPList\&\ rl,}
+\DoxyCodeLine{00683\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ to)}
+\DoxyCodeLine{00684\ \ \ \ \ \{}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ to\ -\/\ from;}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cnt\ ==\ 1)\ \{}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}(rl[from]-\/>GetI(),\ rl[from]-\/>GetS());}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_wght\ =\ 0,\ sum\_wght\_i\ =\ 0,\ sum\_i\ =\ 0;}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00691\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ w\ =\ 1.\ /\ olx\_sqr(rl[i]-\/>GetS()\ !=\ 0\ ?\ rl[i]-\/>GetS()\ :\ 0.001);}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \ \ sum\_wght\ +=\ w;}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \ \ sum\_wght\_i\ +=\ w*rl[i]-\/>GetI();}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ \ \ sum\_i\ +=\ rl[i]-\/>GetI();}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ mean\ =\ sum\_wght\_i\ /\ sum\_wght;}
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_diff\ =\ 0,\ sig\_top\ =\ 0;}
+\DoxyCodeLine{00698\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00699\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ diff\ =\ rl[i]-\/>GetI()\ -\/\ mean;}
+\DoxyCodeLine{00700\ \ \ \ \ \ \ \ \ sum\_diff\ +=\ (diff\ <\ 0\ ?\ -\/diff\ :\ diff);}
+\DoxyCodeLine{00701\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ w\ =\ 1.\ /\ olx\_sqr(rl[i]-\/>GetS()\ !=\ 0\ ?\ rl[i]-\/>GetS()\ :\ 0.001);}
+\DoxyCodeLine{00702\ \ \ \ \ \ \ \ \ sig\_top\ +=\ w*diff*diff;}
+\DoxyCodeLine{00703\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00704\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ s\ =\ sqrt(sig\_top\ /\ (sum\_wght\ *\ (cnt\ -\/\ 1)));}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}(}
+\DoxyCodeLine{00706\ \ \ \ \ \ \ \ \ mean,}
+\DoxyCodeLine{00707\ \ \ \ \ \ \ \ \ s,}
+\DoxyCodeLine{00708\ \ \ \ \ \ \ \ \ s,}
+\DoxyCodeLine{00709\ \ \ \ \ \ \ \ \ sum\_i,}
+\DoxyCodeLine{00710\ \ \ \ \ \ \ \ \ sum\_diff}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ );}
+\DoxyCodeLine{00712\ \ \ \ \ \}}
+\DoxyCodeLine{00713\ \ \ \};}
+\DoxyCodeLine{00714\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRefMerger_1_1UnitMerger}{UnitMerger}}\ \{}
+\DoxyCodeLine{00715\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00716\ \ \ \ \ \textcolor{comment}{//\ returns\ a\ newly\ created\ reflection\ do\ be\ deleted\ with\ delete}}
+\DoxyCodeLine{00717\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefPList>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}\ Merge(\textcolor{keyword}{const}\ RefPList\&\ rl,}
+\DoxyCodeLine{00718\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ to)}
+\DoxyCodeLine{00719\ \ \ \ \ \{}
+\DoxyCodeLine{00720\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ to\ -\/\ from;}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cnt\ ==\ 1)\ \{}
+\DoxyCodeLine{00722\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTReflection}{TReflection}}(*rl[from]));}
+\DoxyCodeLine{00723\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_sig\_sq\ =\ 0,\ sum\_i\ =\ 0;}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00726\ \ \ \ \ \ \ \ \ sum\_i\ +=\ rl[i]-\/>GetI();}
+\DoxyCodeLine{00727\ \ \ \ \ \ \ \ \ sum\_sig\_sq\ +=\ rl[i]-\/>GetS()*rl[i]-\/>GetS();}
+\DoxyCodeLine{00728\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00729\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ mean\ =\ sum\_i\ /\ cnt;}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_diff\ =\ 0,\ sum\_diff\_sq\ =\ 0;}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00732\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ diff\ =\ rl[i]-\/>GetI()\ -\/\ mean;}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ sum\_diff\ +=\ (diff\ <\ 0\ ?\ -\/diff\ :\ diff);}
+\DoxyCodeLine{00734\ \ \ \ \ \ \ \ \ sum\_diff\_sq\ +=\ diff*diff;}
+\DoxyCodeLine{00735\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00736\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}(}
+\DoxyCodeLine{00737\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTReflection}{TReflection}}(rl[from]-\/>GetH(),\ rl[from]-\/>GetK(),\ rl[from]-\/>GetL(),}
+\DoxyCodeLine{00738\ \ \ \ \ \ \ \ \ \ \ mean,\ sqrt(sum\_sig\_sq\ /\ cnt)),}
+\DoxyCodeLine{00739\ \ \ \ \ \ \ \ \ sqrt(sum\_diff\_sq\ /\ (cnt*(cnt\ -\/\ 1))),}
+\DoxyCodeLine{00740\ \ \ \ \ \ \ \ \ sum\_i,}
+\DoxyCodeLine{00741\ \ \ \ \ \ \ \ \ sum\_diff}
+\DoxyCodeLine{00742\ \ \ \ \ \ \ );}
+\DoxyCodeLine{00743\ \ \ \ \ \}}
+\DoxyCodeLine{00744\ \ \ \ \ \textcolor{comment}{//\ returns\ just\ statistic}}
+\DoxyCodeLine{00745\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefPList>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}\ DryMerge(\textcolor{keyword}{const}\ RefPList\&\ rl,}
+\DoxyCodeLine{00746\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ to)}
+\DoxyCodeLine{00747\ \ \ \ \ \{}
+\DoxyCodeLine{00748\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ to\ -\/\ from;}
+\DoxyCodeLine{00749\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cnt\ ==\ 1)\ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}(rl[from]-\/>GetI(),\ rl[from]-\/>GetS());}
+\DoxyCodeLine{00750\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_sig\_sq\ =\ 0,\ sum\_i\ =\ 0;}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00752\ \ \ \ \ \ \ \ \ sum\_i\ +=\ rl[i]-\/>GetI();}
+\DoxyCodeLine{00753\ \ \ \ \ \ \ \ \ sum\_sig\_sq\ +=\ rl[i]-\/>GetS()*rl[i]-\/>GetS();}
+\DoxyCodeLine{00754\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00755\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ mean\ =\ sum\_i\ /\ rl.Count();}
+\DoxyCodeLine{00756\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_diff\ =\ 0,\ sum\_diff\_sq\ =\ 0;}
+\DoxyCodeLine{00757\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00758\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ diff\ =\ rl[i]-\/>GetI()\ -\/\ mean;}
+\DoxyCodeLine{00759\ \ \ \ \ \ \ \ \ sum\_diff\ +=\ (diff\ <\ 0\ ?\ -\/diff\ :\ diff);}
+\DoxyCodeLine{00760\ \ \ \ \ \ \ \ \ sum\_diff\_sq\ +=\ diff*diff;}
+\DoxyCodeLine{00761\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00762\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}(}
+\DoxyCodeLine{00763\ \ \ \ \ \ \ \ \ mean,}
+\DoxyCodeLine{00764\ \ \ \ \ \ \ \ \ sqrt(sum\_sig\_sq\ /\ cnt),}
+\DoxyCodeLine{00765\ \ \ \ \ \ \ \ \ sqrt(sum\_diff\_sq\ /\ (cnt*(cnt\ -\/\ 1))),}
+\DoxyCodeLine{00766\ \ \ \ \ \ \ \ \ sum\_i,}
+\DoxyCodeLine{00767\ \ \ \ \ \ \ \ \ sum\_diff}
+\DoxyCodeLine{00768\ \ \ \ \ \ \ );}
+\DoxyCodeLine{00769\ \ \ \ \ \}}
+\DoxyCodeLine{00770\ \ \ \};}
+\DoxyCodeLine{00771\ \ \ \textcolor{comment}{/*\ merges\ using\ George's\ approach}}
+\DoxyCodeLine{00772\ \textcolor{comment}{\ \ \ \ \ http://www.crystal.chem.uu.nl/distr/mergehklf5/mergehklf5.html}}
+\DoxyCodeLine{00773\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00774\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRefMerger_1_1ShelxMerger}{ShelxMerger}}\ \{}
+\DoxyCodeLine{00775\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00776\ \ \ \ \ \textcolor{comment}{//\ returns\ a\ newly\ created\ reflection\ do\ be\ deleted\ with\ delete}}
+\DoxyCodeLine{00777\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefPList>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}\ Merge(\textcolor{keyword}{const}\ RefPList\&\ rl,}
+\DoxyCodeLine{00778\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ to)}
+\DoxyCodeLine{00779\ \ \ \ \ \{}
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ to\ -\/\ from;}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cnt\ ==\ 1)\ \{}
+\DoxyCodeLine{00782\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTReflection}{TReflection}}(*rl[from]));}
+\DoxyCodeLine{00783\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00784\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_wght\ =\ 0,\ sum\_wght\_i\ =\ 0,\ sum\_rec\_sig\_sq\ =\ 0;}
+\DoxyCodeLine{00785\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00786\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ s\ =\ rl[i]-\/>GetS()\ !=\ 0\ ?\ rl[i]-\/>GetS()\ :\ 0.001;}
+\DoxyCodeLine{00787\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ rec\_sig\_sq\ =\ 1.\ /\ (s*s);}
+\DoxyCodeLine{00788\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ w\ =\ (rl[i]-\/>GetI()\ >\ 3.0*s)\ ?\ rl[i]-\/>GetI()*rec\_sig\_sq}
+\DoxyCodeLine{00789\ \ \ \ \ \ \ \ \ \ \ :\ 3.\ /\ s;}
+\DoxyCodeLine{00790\ \ \ \ \ \ \ \ \ sum\_wght\ +=\ w;}
+\DoxyCodeLine{00791\ \ \ \ \ \ \ \ \ sum\_rec\_sig\_sq\ +=\ rec\_sig\_sq;}
+\DoxyCodeLine{00792\ \ \ \ \ \ \ \ \ sum\_wght\_i\ +=\ w*rl[i]-\/>GetI();}
+\DoxyCodeLine{00793\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00794\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ mean\ =\ sum\_wght\_i\ /\ sum\_wght;}
+\DoxyCodeLine{00795\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_diff\ =\ 0,\ sum\_i\ =\ 0;}
+\DoxyCodeLine{00796\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ diff\ =\ rl[i]-\/>GetI()\ -\/\ mean;}
+\DoxyCodeLine{00798\ \ \ \ \ \ \ \ \ sum\_diff\ +=\ (diff\ <\ 0\ ?\ -\/diff\ :\ diff);}
+\DoxyCodeLine{00799\ \ \ \ \ \ \ \ \ sum\_i\ +=\ rl[i]-\/>GetI();}
+\DoxyCodeLine{00800\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00801\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1MergerOut}{MergerOut}}(}
+\DoxyCodeLine{00802\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTReflection}{TReflection}}(rl[from]-\/>GetH(),\ rl[from]-\/>GetK(),\ rl[from]-\/>GetL(),}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ \ \ \ \ mean,\ 1.\ /\ sqrt(sum\_rec\_sig\_sq)),}
+\DoxyCodeLine{00804\ \ \ \ \ \ \ \ \ sum\_diff\ /\ (cnt*sqrt((\textcolor{keywordtype}{double})cnt\ -\/\ 1.0)),}
+\DoxyCodeLine{00805\ \ \ \ \ \ \ \ \ sum\_i,}
+\DoxyCodeLine{00806\ \ \ \ \ \ \ \ \ sum\_diff}
+\DoxyCodeLine{00807\ \ \ \ \ \ \ );}
+\DoxyCodeLine{00808\ \ \ \ \ \}}
+\DoxyCodeLine{00809\ \ \ \ \ \textcolor{comment}{//\ returns\ a\ just\ statistic}}
+\DoxyCodeLine{00810\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefPList>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}\ DryMerge(\textcolor{keyword}{const}\ RefPList\&\ rl,}
+\DoxyCodeLine{00811\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ to)}
+\DoxyCodeLine{00812\ \ \ \ \ \{}
+\DoxyCodeLine{00813\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ to\ -\/\ from;}
+\DoxyCodeLine{00814\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cnt\ ==\ 1)\ \{}
+\DoxyCodeLine{00815\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}(rl[from]-\/>GetI(),\ rl[from]-\/>GetS());}
+\DoxyCodeLine{00816\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00817\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_wght\ =\ 0,\ sum\_wght\_i\ =\ 0,\ sum\_rec\_sig\_sq\ =\ 0;}
+\DoxyCodeLine{00818\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00819\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ s\ =\ rl[i]-\/>GetS()\ !=\ 0\ ?\ rl[i]-\/>GetS()\ :\ 0.001;}
+\DoxyCodeLine{00820\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ rec\_sig\_sq\ =\ 1.\ /\ (s*s);}
+\DoxyCodeLine{00821\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ w\ =\ (rl[i]-\/>GetI()\ >\ 3.0*s)\ ?\ rl[i]-\/>GetI()*rec\_sig\_sq}
+\DoxyCodeLine{00822\ \ \ \ \ \ \ \ \ \ \ :\ 3.\ /\ s;}
+\DoxyCodeLine{00823\ \ \ \ \ \ \ \ \ sum\_wght\ +=\ w;}
+\DoxyCodeLine{00824\ \ \ \ \ \ \ \ \ sum\_rec\_sig\_sq\ +=\ rec\_sig\_sq;}
+\DoxyCodeLine{00825\ \ \ \ \ \ \ \ \ sum\_wght\_i\ +=\ w*rl[i]-\/>GetI();}
+\DoxyCodeLine{00826\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00827\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ mean\ =\ sum\_wght\_i\ /\ sum\_wght;}
+\DoxyCodeLine{00828\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_diff\ =\ 0,\ sum\_i\ =\ 0;}
+\DoxyCodeLine{00829\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00830\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ diff\ =\ rl[i]-\/>GetI()\ -\/\ mean;}
+\DoxyCodeLine{00831\ \ \ \ \ \ \ \ \ sum\_diff\ +=\ (diff\ <\ 0\ ?\ -\/diff\ :\ diff);}
+\DoxyCodeLine{00832\ \ \ \ \ \ \ \ \ sum\_i\ +=\ rl[i]-\/>GetI();}
+\DoxyCodeLine{00833\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00834\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structRefMerger_1_1DryMergerOut}{DryMergerOut}}(}
+\DoxyCodeLine{00835\ \ \ \ \ \ \ \ \ mean,}
+\DoxyCodeLine{00836\ \ \ \ \ \ \ \ \ 1.\ /\ sqrt(sum\_rec\_sig\_sq),}
+\DoxyCodeLine{00837\ \ \ \ \ \ \ \ \ sum\_diff\ /\ (cnt*sqrt((\textcolor{keywordtype}{double})cnt\ -\/\ 1.0)),}
+\DoxyCodeLine{00838\ \ \ \ \ \ \ \ \ sum\_i,}
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \ \ sum\_diff}
+\DoxyCodeLine{00840\ \ \ \ \ \ \ );}
+\DoxyCodeLine{00841\ \ \ \ \ \}}
+\DoxyCodeLine{00842\ \ \ \};}
+\DoxyCodeLine{00843\ \};}
+\DoxyCodeLine{00844\ }
+\DoxyCodeLine{00845\ EndXlibNamespace()}
+\DoxyCodeLine{00846\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

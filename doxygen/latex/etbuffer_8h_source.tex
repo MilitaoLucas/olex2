@@ -1,0 +1,195 @@
+\doxysection{etbuffer.\+h}
+\hypertarget{etbuffer_8h_source}{}\label{etbuffer_8h_source}\index{sdl/etbuffer.h@{sdl/etbuffer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_ttbuffer\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_ttbuffer\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#ifdef\ \_\_BORLANDC\_\_}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \#include\ <alloc.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \#include\ <stdlib.h>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\ \ \#include\ <string.h>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ BeginEsdlNamespace()}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ default\ buffer\ size,\ to\ be\ rational\ to\ avoid\ overhead\ with\ data\ associated\ with\ new}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ int\ *i\ =\ new\ int\ takes\ more\ memory\ than\ just\ int!}}
+\DoxyCodeLine{00025\ const\ \textcolor{keywordtype}{size\_t}\ DefBufferSize\ =\ 1024;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ template\ <typename\ T>}
+\DoxyCodeLine{00028\ class\ TTBuffer\ :\ public\ AReferencible\ \ \{}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{size\_t}\ Size,\ Capacity;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00031\ \ \ T*\ \_Data;}
+\DoxyCodeLine{00032\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ \ \ TTBuffer(\textcolor{keywordtype}{size\_t}\ capacity=DefBufferSize)\ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ Size\ =\ 0;\ \ Capacity\ =\ olx\_max(1,\ capacity);}
+\DoxyCodeLine{00035\ \ \ \ \ \_Data\ =\ olx\_malloc<T>(capacity);}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ TTBuffer(T*\ memoryBlockToOwn,\ \textcolor{keywordtype}{size\_t}\ size)\ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ Size\ =\ Capacity\ =\ size;}
+\DoxyCodeLine{00040\ \ \ \ \ \_Data\ =\ memoryBlockToOwn;}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//\ copy\ constructor\ -\/\ note\ that\ only\ the\ necessary\ amount\ of\ memory\ is\ allocated}}
+\DoxyCodeLine{00044\ \ \ TTBuffer(\textcolor{keyword}{const}\ TTBuffer\&\ entry)\ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ Capacity\ =\ Size\ =\ entry.GetSize();}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{if}(\ Size\ ==\ 0\ )\ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \_Data\ =\ NULL;}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \_Data\ =\ olx\_malloc<T>(Size);}
+\DoxyCodeLine{00051\ \ \ \ \ olx\_memcpy(\_Data,\ entry.GetData(),\ Size);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{virtual}\ \string~TTBuffer()\ \ \{\ \ olx\_free(\_Data);\ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{comment}{//\ this\ function\ must\ be\ used\ to\ allocate\ the\ memory\ provieded\ for\ the\ object}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ T*\ Alloc(\textcolor{keywordtype}{size\_t}\ count)\ \{\ \ \textcolor{keywordflow}{return}\ olx\_malloc<T>(count);\ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{comment}{//\ this\ function\ must\ be\ used\ to\ allocate\ the\ memory\ provided\ for\ the\ object}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{static}\ TTBuffer*\ New(\textcolor{keyword}{const}\ T\ *bf,\ \textcolor{keywordtype}{size\_t}\ count)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TTBuffer(olx\_malloc<T>(count),\ count);}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keywordtype}{size\_t}\ newSize)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{if}\ ((newSize\ ==\ 0)\ ||\ (newSize\ <=\ Capacity))\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \_Data\ =\ olx\_realloc(\_Data,\ newSize);}
+\DoxyCodeLine{00068\ \ \ \ \ Capacity\ =\ newSize;}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{void}\ SetSize(\textcolor{keywordtype}{size\_t}\ newSize)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{if}\ (newSize\ >\ Capacity)\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ SetCapacity(newSize);}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ Size\ =\ newSize;}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ Size\ =\ newSize;}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{/*\ writes\ data\ starting\ from\ specified\ offset,\ if\ necessary\ expand\ the\ size}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ \ to\ the\ required\ one\ plus\ the\ increment}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ \ returns\ the\ new\ size\ of\ the\ buffer\ */}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Insert(\textcolor{keyword}{const}\ T*\ arr,\ \textcolor{keywordtype}{size\_t}\ offset,\ \textcolor{keywordtype}{size\_t}\ count,\ \textcolor{keywordtype}{size\_t}\ increment=0)\ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{if}\ ((Capacity\ -\/\ Size)\ <\ count)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ SetCapacity((Capacity\ -\/\ Size)\ +\ count\ +\ increment);}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{comment}{//\ move\ the\ region\ to\ overwrite}}
+\DoxyCodeLine{00089\ \ \ \ \ olx\_memcpy(\&\_Data[offset+count],\ \&\_Data[offset],\ count);}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{comment}{//\ write\ the\ memory\ block}}
+\DoxyCodeLine{00091\ \ \ \ \ olx\_memcpy(\&\_Data[offset],\ arr,\ count);}
+\DoxyCodeLine{00092\ \ \ \ \ Size\ +=\ count;}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{return}\ Size;}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{comment}{/*\ writes\ data\ to\ the\ end\ of\ the\ buffer}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ returns\ the\ number\ of\ written\ elements\ if\ capacity-\/size\ <\ count*/}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ T*\ arr,\ \textcolor{keywordtype}{size\_t}\ count)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ written\ =\ count;}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{if}\ (Capacity\ -\/\ Size\ <\ count)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ written\ =\ Capacity\ -\/\ Size;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ olx\_memcpy(\&\_Data[Size],\ arr,\ written);}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ Size\ =\ Capacity;}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ olx\_memcpy(\&\_Data[Size],\ arr,\ written);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ Size\ +=\ written;}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ written;}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \textcolor{comment}{/*\ writes\ data\ starting\ from\ specified\ offset}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ \ returns\ the\ number\ of\ written\ elements\ if\ capacity-\/size\ <\ count*/}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ T*\ arr,\ \textcolor{keywordtype}{size\_t}\ offset,\ \textcolor{keywordtype}{size\_t}\ count)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ written\ =\ count;}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{if}\ (Capacity\ -\/\ offset\ <\ count)\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ written\ =\ Capacity\ -\/\ offset;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ olx\_memcpy(\&\_Data[offset],\ arr,\ written);}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ Size\ =\ Capacity;}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ olx\_memcpy(\&\_Data[offset],\ arr,\ written);}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (offset\ +\ count\ >\ Size)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ Size\ =\ offset\ +\ count;}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{return}\ written;}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{comment}{//\ returns\ the\ number\ read\ elements}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Read(T*\ arr,\ \textcolor{keywordtype}{size\_t}\ offset,\ \textcolor{keywordtype}{size\_t}\ count)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ read\ =\ count;}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{if}\ ((Size\ -\/\ offset)\ <\ count)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ read\ =\ Size\ -\/\ offset;}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ olx\_memcpy(arr,\ \&\_Data[offset],\ read);}
+\DoxyCodeLine{00135\ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ olx\_memcpy(arr,\ \&\_Data[offset],\ read);}
+\DoxyCodeLine{00138\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ read;}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{//\ returns\ 1\ if\ written\ and\ 0\ if\ not}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ T\&\ entity)\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{if}\ (Size\ ==\ Capacity)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ \_Data[Size]\ =\ entity;}
+\DoxyCodeLine{00148\ \ \ \ \ Size++;}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ T\&\ Get(\textcolor{keywordtype}{size\_t}\ ind\ )\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00154\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ ind,\ 0,\ Size);}
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{return}\ \_Data[ind];}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{size\_t}\ ind,\ T\&\ val)\ \{}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00161\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ ind,\ 0,\ Size);}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00163\ \ \ \ \ \_Data[ind]\ =\ val;}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{inline}\ T\&\ Item(\textcolor{keywordtype}{size\_t}\ ind)\ \{}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00168\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ ind,\ 0,\ Size);}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordflow}{return}\ \_Data[ind];}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{inline}\ T\&\ operator\ [](\textcolor{keywordtype}{size\_t}\ ind)\ \{}
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00175\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ ind,\ 0,\ Size);}
+\DoxyCodeLine{00176\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{return}\ \_Data[ind];}
+\DoxyCodeLine{00178\ \ \ \}}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ T*\ GetData()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \_Data;\ \ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{inline}\ T*\ Data()\ \ \{\ \ \textcolor{keywordflow}{return}\ \_Data;\ \ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ GetCapacity()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Capacity;\ \ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ GetSize()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Size;\ \ \}}
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ RawLen()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Size*\textcolor{keyword}{sizeof}(T);\ \ \}}
+\DoxyCodeLine{00186\ \};}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ EndEsdlNamespace()}
+\DoxyCodeLine{00189\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

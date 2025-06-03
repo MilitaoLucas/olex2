@@ -1,0 +1,918 @@
+\doxysection{glbase.\+h}
+\hypertarget{glbase_8h_source}{}\label{glbase_8h_source}\index{glib/glbase.h@{glib/glbase.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ ******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_glbase\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_glbase\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ BeginGlNamespace()\ \ namespace\ glObj\ \{}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ EndGlNamespace()\ \ \};\(\backslash\)}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ using\ namespace\ glObj;}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ UseGlNamespace()\ \ using\ namespace\ glObj;}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ GlobalGlFunction(\ fun\ )\ \ \ \ \ glObj::fun}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}gldefs.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}ebasis.h"{}}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#if\ defined\ \_\_APPLE\_\_\ \&\&\ defined\ \_\_MACH\_\_}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <OpenGL/gl.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <OpenGL/glu.h>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <GL/gl.h>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <GL/glu.h>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ BeginGlNamespace()}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ struct\ olx\_gl\ \{}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MC>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ orient(\textcolor{keyword}{const}\ MC\&\ m)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{float}\ Bf[4][4];}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 3;\ j++)}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ Bf[i][j]\ =\ (\textcolor{keywordtype}{float})\ m[i][j];}
+\DoxyCodeLine{00040\ \ \ \ \ Bf[0][3]\ =\ Bf[1][3]\ =\ Bf[2][3]\ =\ Bf[3][0]\ =\ Bf[3][1]\ =\ Bf[3][2]\ =\ 0;}
+\DoxyCodeLine{00041\ \ \ \ \ Bf[3][3]\ =\ 1.0;}
+\DoxyCodeLine{00042\ \ \ \ \ glMultMatrixf(\&Bf[0][0]);}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ orient(\textcolor{keyword}{const}\ TEBasis\&\ b)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ glMultMatrixf(b.GetMData());}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ orient(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ *m)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ glMultMatrixf(m);}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ orient(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ *m)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ glMultMatrixd(m);}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ loadMatrix(\textcolor{keyword}{const}\ TEBasis\&\ b)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ glLoadMatrixf(b.GetMData());}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ loadMatrix(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ *m)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ glLoadMatrixf(m);}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ loadMatrix(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ *m)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ glLoadMatrixd(m);}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ loadIdentity()\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ glLoadIdentity();}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ translate(\textcolor{keywordtype}{int}\ \_x,\ \textcolor{keywordtype}{int}\ \_y,\ \textcolor{keywordtype}{int}\ \_z)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ glTranslated(\_x,\ \_y,\ \_z);}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ translate(\textcolor{keywordtype}{float}\ \_x,\ \textcolor{keywordtype}{float}\ \_y,\ \textcolor{keywordtype}{float}\ \_z)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ glTranslatef(\_x,\ \_y,\ \_z);}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ translate(\textcolor{keywordtype}{double}\ \_x,\ \textcolor{keywordtype}{double}\ \_y,\ \textcolor{keywordtype}{double}\ \_z)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ glTranslated(\_x,\ \_y,\ \_z);}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ translate(\textcolor{keyword}{const}\ vec3f\&\ trans)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ glTranslatef(trans[0],\ trans[1],\ trans[2]);}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ translate(\textcolor{keyword}{const}\ vec3d\&\ trans)\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ glTranslated(trans[0],\ trans[1],\ trans[2]);}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ translate(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ trans)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ glTranslatef(trans[0],\ trans[1],\ trans[2]);}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ translate(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ trans)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ glTranslated(trans[0],\ trans[1],\ trans[2]);}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rotate(\textcolor{keywordtype}{int}\ angle,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ z)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ glRotated(angle,\ x,\ y,\ z);}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rotate(\textcolor{keywordtype}{float}\ angle,\ \textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ glRotatef(angle,\ x,\ y,\ z);}
+\DoxyCodeLine{00107\ \ \ \}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rotate(\textcolor{keywordtype}{double}\ angle,\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ z)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ glRotated(angle,\ x,\ y,\ z);}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rotate(\textcolor{keywordtype}{int}\ angle,\ \textcolor{keyword}{const}\ vec3i\&\ v)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ rotate(angle,\ v[0],\ v[1],\ v[2]);}
+\DoxyCodeLine{00115\ \ \ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rotate(\textcolor{keywordtype}{float}\ angle,\ \textcolor{keyword}{const}\ vec3f\&\ v)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ rotate(angle,\ v[0],\ v[1],\ v[2]);}
+\DoxyCodeLine{00119\ \ \ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rotate(\textcolor{keywordtype}{double}\ angle,\ \textcolor{keyword}{const}\ vec3d\&\ v)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ rotate(angle,\ v[0],\ v[1],\ v[2]);}
+\DoxyCodeLine{00123\ \ \ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ scale(\textcolor{keywordtype}{int}\ \_x,\ \textcolor{keywordtype}{int}\ \_y,\ \textcolor{keywordtype}{int}\ \_z)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ glScaled(\_x,\ \_y,\ \_z);}
+\DoxyCodeLine{00127\ \ \ \}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ scale(\textcolor{keywordtype}{float}\ \_x,\ \textcolor{keywordtype}{float}\ \_y,\ \textcolor{keywordtype}{float}\ \_z)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ glScalef(\_x,\ \_y,\ \_z);}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ scale(\textcolor{keywordtype}{double}\ \_x,\ \textcolor{keywordtype}{double}\ \_y,\ \textcolor{keywordtype}{double}\ \_z)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ glScaled(\_x,\ \_y,\ \_z);}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ scale(\textcolor{keyword}{const}\ vec3d\ \&v)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ glScaled(v[0],\ v[1],\ v[2]);}
+\DoxyCodeLine{00139\ \ \ \}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ scale(\textcolor{keyword}{const}\ vec3f\&\ v)\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ glScalef(v[0],\ v[1],\ v[2]);}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ scale(\textcolor{keywordtype}{int}\ S)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ scale(S,\ S,\ S);}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ scale(\textcolor{keywordtype}{float}\ S)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ scale(S,\ S,\ S);}
+\DoxyCodeLine{00151\ \ \ \}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ scale(\textcolor{keywordtype}{double}\ S)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ scale(S,\ S,\ S);}
+\DoxyCodeLine{00155\ \ \ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vertex(\textcolor{keyword}{const}\ vec3f\&\ v)\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ glVertex3fv(v.GetData());}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vertex(\textcolor{keyword}{const}\ vec3d\&\ v)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ glVertex3dv(v.GetData());}
+\DoxyCodeLine{00163\ \ \ \}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vertex(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ v)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ glVertex3fv(v);}
+\DoxyCodeLine{00167\ \ \ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vertex(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ v)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ glVertex3dv(v);}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vertex(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y)\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ glVertex2d(x,\ y);}
+\DoxyCodeLine{00175\ \ \ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vertex(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ glVertex2f(x,\ y);}
+\DoxyCodeLine{00179\ \ \ \}}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vertex(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ glVertex2d(x,\ y);}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vertex(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ z)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ glVertex3d(x,\ y,\ z);}
+\DoxyCodeLine{00187\ \ \ \}}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vertex(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ glVertex3f(x,\ y,\ z);}
+\DoxyCodeLine{00191\ \ \ \}}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vertex(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ z)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ glVertex3d(x,\ y,\ z);}
+\DoxyCodeLine{00195\ \ \ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rasterPos(\textcolor{keyword}{const}\ vec3f\&\ v)\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ rasterPos(v.GetData());}
+\DoxyCodeLine{00199\ \ \ \}}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rasterPos(\textcolor{keyword}{const}\ vec3d\&\ v)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ rasterPos(v.GetData());}
+\DoxyCodeLine{00203\ \ \ \}}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rasterPos(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ v)\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ glRasterPos3fv(v);}
+\DoxyCodeLine{00207\ \ \ \}}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rasterPos(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ v)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ glRasterPos3dv(v);}
+\DoxyCodeLine{00211\ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rasterPos(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y)\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ glRasterPos2d(x,\ y);}
+\DoxyCodeLine{00215\ \ \ \}}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rasterPos(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y)\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ glRasterPos2f(x,\ y);}
+\DoxyCodeLine{00219\ \ \ \}}
+\DoxyCodeLine{00220\ }
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rasterPos(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y)\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ glRasterPos2d(x,\ y);}
+\DoxyCodeLine{00223\ \ \ \}}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rasterPos(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ z)\ \{}
+\DoxyCodeLine{00226\ \ \ \ \ glRasterPos3d(x,\ y,\ z);}
+\DoxyCodeLine{00227\ \ \ \}}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rasterPos(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z)\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ glRasterPos3f(x,\ y,\ z);}
+\DoxyCodeLine{00231\ \ \ \}}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rasterPos(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ z)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ glRasterPos3d(x,\ y,\ z);}
+\DoxyCodeLine{00235\ \ \ \}}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ normal(\textcolor{keyword}{const}\ vec3f\&\ v)\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ normal(v.GetData());}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ normal(\textcolor{keyword}{const}\ vec3d\&\ v)\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ normal(v.GetData());}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ normal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ v)\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ glNormal3fv(v);}
+\DoxyCodeLine{00247\ \ \ \}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ normal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ v)\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ glNormal3dv(v);}
+\DoxyCodeLine{00251\ \ \ \}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ normal(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ z)\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ glNormal3i(x,\ y,\ z);}
+\DoxyCodeLine{00255\ \ \ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ normal(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ glNormal3f(x,\ y,\ z);}
+\DoxyCodeLine{00259\ \ \ \}}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ normal(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ z)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ glNormal3d(x,\ y,\ z);}
+\DoxyCodeLine{00263\ \ \ \}}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ color(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ v)\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ glColor4fv(v);}
+\DoxyCodeLine{00267\ \ \ \}}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ color(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ v)\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ glColor4dv(v);}
+\DoxyCodeLine{00271\ \ \ \}}
+\DoxyCodeLine{00272\ }
+\DoxyCodeLine{00273\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ color(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ z)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ glColor3i(x,\ y,\ z);}
+\DoxyCodeLine{00275\ \ \ \}}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ color(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z)\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ glColor3f(x,\ y,\ z);}
+\DoxyCodeLine{00279\ \ \ \}}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ color(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ z)\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ glColor3d(x,\ y,\ z);}
+\DoxyCodeLine{00283\ \ \ \}}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ color(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ z,\ \textcolor{keywordtype}{int}\ a)\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ glColor4i(x,\ y,\ z,\ a);}
+\DoxyCodeLine{00287\ \ \ \}}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ color(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z,\ \textcolor{keywordtype}{float}\ a)\ \{}
+\DoxyCodeLine{00290\ \ \ \ \ glColor4f(x,\ y,\ z,\ a);}
+\DoxyCodeLine{00291\ \ \ \}}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ color(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ z,\ \textcolor{keywordtype}{double}\ a)\ \{}
+\DoxyCodeLine{00294\ \ \ \ \ glColor4d(x,\ y,\ z,\ a);}
+\DoxyCodeLine{00295\ \ \ \}}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ cl\_t>}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ color(cl\_t\ v)\ \{}
+\DoxyCodeLine{00299\ \ \ \ \ glColor4f(}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})\ OLX\_GetRValue(v)\ /\ 255,}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})\ OLX\_GetGValue(v)\ /\ 255,}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})\ OLX\_GetBValue(v)\ /\ 255,}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ (\textcolor{keywordtype}{float})\ OLX\_GetAValue(v)\ /\ 255);}
+\DoxyCodeLine{00304\ \ \ \}}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ material(GLenum\ face,\ GLenum\ pname,\ GLint\ param)\ \{}
+\DoxyCodeLine{00307\ \ \ \ \ glMateriali(face,\ pname,\ param);}
+\DoxyCodeLine{00308\ \ \ \}}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ material(GLenum\ face,\ GLenum\ pname,\ GLfloat\ param)\ \{}
+\DoxyCodeLine{00311\ \ \ \ \ glMaterialf(face,\ pname,\ param);}
+\DoxyCodeLine{00312\ \ \ \}}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ material(GLenum\ face,\ GLenum\ pname,\ \textcolor{keyword}{const}\ GLint*\ param)\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ glMaterialiv(face,\ pname,\ param);}
+\DoxyCodeLine{00316\ \ \ \}}
+\DoxyCodeLine{00317\ }
+\DoxyCodeLine{00318\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ material(GLenum\ face,\ GLenum\ pname,\ \textcolor{keyword}{const}\ GLfloat*\ param)\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ glMaterialfv(face,\ pname,\ param);}
+\DoxyCodeLine{00320\ \ \ \}}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ colorMaterial(GLenum\ face,\ GLenum\ mode)\ \{}
+\DoxyCodeLine{00323\ \ \ \ \ glColorMaterial(face,\ mode);}
+\DoxyCodeLine{00324\ \ \ \}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ colorMask(\textcolor{keywordtype}{bool}\ r,\ \textcolor{keywordtype}{bool}\ g,\ \textcolor{keywordtype}{bool}\ b,\ \textcolor{keywordtype}{bool}\ a)\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ glColorMask(r,\ g,\ b,\ a);}
+\DoxyCodeLine{00328\ \ \ \}}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ bindTexture(GLenum\ target,\ GLuint\ tex)\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ glBindTexture(target,\ tex);}
+\DoxyCodeLine{00332\ \ \ \}}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texImage(GLenum\ target,\ GLint\ level,\ GLint\ internalFormat,}
+\DoxyCodeLine{00335\ \ \ \ \ GLsizei\ width,\ GLint\ border,\ GLint\ format,\ GLenum\ type,\ \textcolor{keyword}{const}\ GLvoid\ *pixels)}
+\DoxyCodeLine{00336\ \ \ \{}
+\DoxyCodeLine{00337\ \ \ \ \ glTexImage1D(target,\ level,\ internalFormat,\ width,\ border,\ format,}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ type,\ pixels);}
+\DoxyCodeLine{00339\ \ \ \}}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texImage(GLenum\ target,\ GLint\ level,\ GLint\ internalFormat,}
+\DoxyCodeLine{00342\ \ \ \ \ GLsizei\ width,\ GLsizei\ height,\ GLint\ border,\ GLint\ format,\ GLenum\ type,}
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keyword}{const}\ GLvoid\ *pixels)}
+\DoxyCodeLine{00344\ \ \ \{}
+\DoxyCodeLine{00345\ \ \ \ \ glTexImage2D(target,\ level,\ internalFormat,\ width,\ height,\ border,\ format,}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ type,\ pixels);}
+\DoxyCodeLine{00347\ \ \ \}}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ getTexImage(GLenum\ target,\ GLint\ level,\ GLenum\ format,\ GLenum\ type,}
+\DoxyCodeLine{00350\ \ \ \ \ GLvoid*\ data)}
+\DoxyCodeLine{00351\ \ \ \{}
+\DoxyCodeLine{00352\ \ \ \ \ glGetTexImage(target,\ level,\ format,\ type,\ data);}
+\DoxyCodeLine{00353\ \ \ \}}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00355\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ deleteTextures(GLsizei\ n,\ \textcolor{keyword}{const}\ GLuint*\ textures)\ \{}
+\DoxyCodeLine{00356\ \ \ \ \ glDeleteTextures(n,\ textures);}
+\DoxyCodeLine{00357\ \ \ \}}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ genTextures(GLsizei\ n,\ GLuint*\ textures)\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ glGenTextures(n,\ textures);}
+\DoxyCodeLine{00361\ \ \ \}}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ bitmap(GLsizei\ width,\ GLsizei\ height,\ GLfloat\ xorig,\ GLfloat\ yorig,}
+\DoxyCodeLine{00364\ \ \ \ \ GLfloat\ xmove,\ GLfloat\ ymove,\ \textcolor{keyword}{const}\ GLubyte\ *bitmap)\ \{}
+\DoxyCodeLine{00365\ \ \ \ \ glBitmap(width,\ height,\ xorig,\ yorig,\ xmove,\ ymove,\ bitmap);}
+\DoxyCodeLine{00366\ \ \ \}}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ pixelStore(GLenum\ pname,\ GLint\ param)\ \{}
+\DoxyCodeLine{00369\ \ \ \ \ glPixelStorei(pname,\ param);}
+\DoxyCodeLine{00370\ \ \ \}}
+\DoxyCodeLine{00371\ }
+\DoxyCodeLine{00372\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ pixelStore(GLenum\ pname,\ GLfloat\ param)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ glPixelStoref(pname,\ param);}
+\DoxyCodeLine{00374\ \ \ \}}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{int}\ s)\ \{}
+\DoxyCodeLine{00377\ \ \ \ \ glTexCoord1i(s);}
+\DoxyCodeLine{00378\ \ \ \}}
+\DoxyCodeLine{00379\ }
+\DoxyCodeLine{00380\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{float}\ s)\ \{}
+\DoxyCodeLine{00381\ \ \ \ \ glTexCoord1f(s);}
+\DoxyCodeLine{00382\ \ \ \}}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{double}\ s)\ \{}
+\DoxyCodeLine{00385\ \ \ \ \ glTexCoord1d(s);}
+\DoxyCodeLine{00386\ \ \ \}}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ t)\ \{}
+\DoxyCodeLine{00389\ \ \ \ \ glTexCoord2i(s,\ t);}
+\DoxyCodeLine{00390\ \ \ \}}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{float}\ s,\ \textcolor{keywordtype}{float}\ t)\ \{}
+\DoxyCodeLine{00393\ \ \ \ \ glTexCoord2f(s,\ t);}
+\DoxyCodeLine{00394\ \ \ \}}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{double}\ s,\ \textcolor{keywordtype}{double}\ t)\ \{}
+\DoxyCodeLine{00397\ \ \ \ \ glTexCoord2d(s,\ t);}
+\DoxyCodeLine{00398\ \ \ \}}
+\DoxyCodeLine{00399\ }
+\DoxyCodeLine{00400\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ t,\ \textcolor{keywordtype}{int}\ r)\ \{}
+\DoxyCodeLine{00401\ \ \ \ \ glTexCoord3i(s,\ t,\ r);}
+\DoxyCodeLine{00402\ \ \ \}}
+\DoxyCodeLine{00403\ }
+\DoxyCodeLine{00404\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{float}\ s,\ \textcolor{keywordtype}{float}\ t,\ \textcolor{keywordtype}{float}\ r)\ \{}
+\DoxyCodeLine{00405\ \ \ \ \ glTexCoord3f(s,\ t,\ r);}
+\DoxyCodeLine{00406\ \ \ \}}
+\DoxyCodeLine{00407\ }
+\DoxyCodeLine{00408\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{double}\ s,\ \textcolor{keywordtype}{double}\ t,\ \textcolor{keywordtype}{double}\ r)\ \{}
+\DoxyCodeLine{00409\ \ \ \ \ glTexCoord3d(s,\ t,\ r);}
+\DoxyCodeLine{00410\ \ \ \}}
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00412\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ t,\ \textcolor{keywordtype}{int}\ r,\ \textcolor{keywordtype}{int}\ q)\ \{}
+\DoxyCodeLine{00413\ \ \ \ \ glTexCoord4i(s,\ t,\ r,\ q);}
+\DoxyCodeLine{00414\ \ \ \}}
+\DoxyCodeLine{00415\ }
+\DoxyCodeLine{00416\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{float}\ s,\ \textcolor{keywordtype}{float}\ t,\ \textcolor{keywordtype}{float}\ r,\ \textcolor{keywordtype}{float}\ q)\ \{}
+\DoxyCodeLine{00417\ \ \ \ \ glTexCoord4f(s,\ t,\ r,\ q);}
+\DoxyCodeLine{00418\ \ \ \}}
+\DoxyCodeLine{00419\ }
+\DoxyCodeLine{00420\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texCoord(\textcolor{keywordtype}{double}\ s,\ \textcolor{keywordtype}{double}\ t,\ \textcolor{keywordtype}{double}\ r,\ \textcolor{keywordtype}{float}\ q)\ \{}
+\DoxyCodeLine{00421\ \ \ \ \ glTexCoord4d(s,\ t,\ r,\ q);}
+\DoxyCodeLine{00422\ \ \ \}}
+\DoxyCodeLine{00423\ }
+\DoxyCodeLine{00424\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texGen(GLenum\ coord,\ GLenum\ pname,\ GLint\ param)\ \{}
+\DoxyCodeLine{00425\ \ \ \ \ glTexGeni(coord,\ pname,\ param);}
+\DoxyCodeLine{00426\ \ \ \}}
+\DoxyCodeLine{00427\ }
+\DoxyCodeLine{00428\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texGen(GLenum\ coord,\ GLenum\ pname,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ param)\ \{}
+\DoxyCodeLine{00429\ \ \ \ \ glTexGenfv(coord,\ pname,\ param);}
+\DoxyCodeLine{00430\ \ \ \}}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00432\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texGen(GLenum\ coord,\ GLenum\ pname,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ param)\ \{}
+\DoxyCodeLine{00433\ \ \ \ \ glTexGendv(coord,\ pname,\ param);}
+\DoxyCodeLine{00434\ \ \ \}}
+\DoxyCodeLine{00435\ }
+\DoxyCodeLine{00436\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texParam(GLenum\ target,\ GLenum\ pname,\ GLint\ param)\ \{}
+\DoxyCodeLine{00437\ \ \ \ \ glTexParameteri(target,\ pname,\ param);}
+\DoxyCodeLine{00438\ \ \ \}}
+\DoxyCodeLine{00439\ }
+\DoxyCodeLine{00440\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texParam(GLenum\ target,\ GLenum\ pname,\ GLfloat\ param)\ \{}
+\DoxyCodeLine{00441\ \ \ \ \ glTexParameterf(target,\ pname,\ param);}
+\DoxyCodeLine{00442\ \ \ \}}
+\DoxyCodeLine{00443\ }
+\DoxyCodeLine{00444\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texParam(GLenum\ target,\ GLenum\ pname,\ \textcolor{keyword}{const}\ GLint*\ param)\ \{}
+\DoxyCodeLine{00445\ \ \ \ \ glTexParameteriv(target,\ pname,\ param);}
+\DoxyCodeLine{00446\ \ \ \}}
+\DoxyCodeLine{00447\ }
+\DoxyCodeLine{00448\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texParam(GLenum\ target,\ GLenum\ pname,\ \textcolor{keyword}{const}\ GLfloat*\ param)\ \{}
+\DoxyCodeLine{00449\ \ \ \ \ glTexParameterfv(target,\ pname,\ param);}
+\DoxyCodeLine{00450\ \ \ \}}
+\DoxyCodeLine{00451\ }
+\DoxyCodeLine{00452\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ getTexParam(GLenum\ target,\ GLenum\ pname,\ GLint*\ dest)\ \{}
+\DoxyCodeLine{00453\ \ \ \ \ glGetTexParameteriv(target,\ pname,\ dest);}
+\DoxyCodeLine{00454\ \ \ \}}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00456\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ getTexParam(GLenum\ target,\ GLenum\ pname,\ GLfloat*\ dest)\ \{}
+\DoxyCodeLine{00457\ \ \ \ \ glGetTexParameterfv(target,\ pname,\ dest);}
+\DoxyCodeLine{00458\ \ \ \}}
+\DoxyCodeLine{00459\ }
+\DoxyCodeLine{00460\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ getTexLevelParam(GLenum\ target,\ GLint\ level,\ GLenum\ pname,}
+\DoxyCodeLine{00461\ \ \ \ \ GLfloat*\ dest)\ \{}
+\DoxyCodeLine{00462\ \ \ \ \ glGetTexLevelParameterfv(target,\ level,\ pname,\ dest);}
+\DoxyCodeLine{00463\ \ \ \}}
+\DoxyCodeLine{00464\ }
+\DoxyCodeLine{00465\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ getTexLevelParam(GLenum\ target,\ GLint\ level,\ GLenum\ pname,}
+\DoxyCodeLine{00466\ \ \ \ \ GLint*\ dest)\ \{}
+\DoxyCodeLine{00467\ \ \ \ \ glGetTexLevelParameteriv(target,\ level,\ pname,\ dest);}
+\DoxyCodeLine{00468\ \ \ \}}
+\DoxyCodeLine{00469\ }
+\DoxyCodeLine{00470\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texEnv(GLenum\ target,\ GLenum\ pname,\ GLint\ param)\ \{}
+\DoxyCodeLine{00471\ \ \ \ \ glTexEnvi(target,\ pname,\ param);}
+\DoxyCodeLine{00472\ \ \ \}}
+\DoxyCodeLine{00473\ }
+\DoxyCodeLine{00474\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texEnv(GLenum\ target,\ GLenum\ pname,\ GLfloat\ param)\ \{}
+\DoxyCodeLine{00475\ \ \ \ \ glTexEnvf(target,\ pname,\ param);}
+\DoxyCodeLine{00476\ \ \ \}}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00478\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texEnv(GLenum\ target,\ GLenum\ pname,\ \textcolor{keyword}{const}\ GLint*\ param)\ \{}
+\DoxyCodeLine{00479\ \ \ \ \ glTexEnviv(target,\ pname,\ param);}
+\DoxyCodeLine{00480\ \ \ \}}
+\DoxyCodeLine{00481\ }
+\DoxyCodeLine{00482\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ texEnv(GLenum\ target,\ GLenum\ pname,\ \textcolor{keyword}{const}\ GLfloat*\ param)\ \{}
+\DoxyCodeLine{00483\ \ \ \ \ glTexEnvfv(target,\ pname,\ param);}
+\DoxyCodeLine{00484\ \ \ \}}
+\DoxyCodeLine{00485\ }
+\DoxyCodeLine{00486\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ getTexEnv(GLenum\ target,\ GLenum\ pname,\ GLint*\ dest)\ \{}
+\DoxyCodeLine{00487\ \ \ \ \ glGetTexEnviv(target,\ pname,\ dest);}
+\DoxyCodeLine{00488\ \ \ \}}
+\DoxyCodeLine{00489\ }
+\DoxyCodeLine{00490\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ getTexEnv(GLenum\ target,\ GLenum\ pname,\ GLfloat*\ dest)\ \{}
+\DoxyCodeLine{00491\ \ \ \ \ glGetTexEnvfv(target,\ pname,\ dest);}
+\DoxyCodeLine{00492\ \ \ \}}
+\DoxyCodeLine{00493\ }
+\DoxyCodeLine{00494\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ getTexGen(GLenum\ coord,\ GLenum\ pname,\ GLint*\ dest)\ \{}
+\DoxyCodeLine{00495\ \ \ \ \ glGetTexGeniv(coord,\ pname,\ dest);}
+\DoxyCodeLine{00496\ \ \ \}}
+\DoxyCodeLine{00497\ }
+\DoxyCodeLine{00498\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ getTexGen(GLenum\ coord,\ GLenum\ pname,\ GLfloat*\ dest)\ \{}
+\DoxyCodeLine{00499\ \ \ \ \ glGetTexGenfv(coord,\ pname,\ dest);}
+\DoxyCodeLine{00500\ \ \ \}}
+\DoxyCodeLine{00501\ }
+\DoxyCodeLine{00502\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ getTexGen(GLenum\ coord,\ GLenum\ pname,\ GLdouble*\ dest)\ \{}
+\DoxyCodeLine{00503\ \ \ \ \ glGetTexGendv(coord,\ pname,\ dest);}
+\DoxyCodeLine{00504\ \ \ \}}
+\DoxyCodeLine{00505\ }
+\DoxyCodeLine{00506\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ enable(GLenum\ v)\ \{}
+\DoxyCodeLine{00507\ \ \ \ \ glEnable(v);}
+\DoxyCodeLine{00508\ \ \ \}}
+\DoxyCodeLine{00509\ }
+\DoxyCodeLine{00510\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ isEnabled(GLenum\ param)\ \{}
+\DoxyCodeLine{00511\ \ \ \ \ \textcolor{keywordflow}{return}\ glIsEnabled(param)\ ==\ GL\_TRUE;}
+\DoxyCodeLine{00512\ \ \ \}}
+\DoxyCodeLine{00513\ }
+\DoxyCodeLine{00514\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ disable(GLenum\ v)\ \{}
+\DoxyCodeLine{00515\ \ \ \ \ glDisable(v);}
+\DoxyCodeLine{00516\ \ \ \}}
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00518\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ begin(GLenum\ v)\ \{}
+\DoxyCodeLine{00519\ \ \ \ \ glBegin(v);}
+\DoxyCodeLine{00520\ \ \ \}}
+\DoxyCodeLine{00521\ }
+\DoxyCodeLine{00522\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ end()\ \{}
+\DoxyCodeLine{00523\ \ \ \ \ glEnd();}
+\DoxyCodeLine{00524\ \ \ \}}
+\DoxyCodeLine{00525\ }
+\DoxyCodeLine{00526\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ get(GLenum\ param,\ GLboolean*\ dest)\ \{}
+\DoxyCodeLine{00527\ \ \ \ \ glGetBooleanv(param,\ dest);}
+\DoxyCodeLine{00528\ \ \ \}}
+\DoxyCodeLine{00529\ }
+\DoxyCodeLine{00530\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ get(GLenum\ param,\ GLint*\ dest)\ \{}
+\DoxyCodeLine{00531\ \ \ \ \ glGetIntegerv(param,\ dest);}
+\DoxyCodeLine{00532\ \ \ \}}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ get(GLenum\ param,\ GLfloat*\ dest)\ \{}
+\DoxyCodeLine{00535\ \ \ \ \ glGetFloatv(param,\ dest);}
+\DoxyCodeLine{00536\ \ \ \}}
+\DoxyCodeLine{00537\ }
+\DoxyCodeLine{00538\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ get(GLenum\ param,\ GLdouble*\ dest)\ \{}
+\DoxyCodeLine{00539\ \ \ \ \ glGetDoublev(param,\ dest);}
+\DoxyCodeLine{00540\ \ \ \}}
+\DoxyCodeLine{00541\ }
+\DoxyCodeLine{00542\ \ \ \textcolor{keyword}{static}\ GLint\ getInt(GLenum\ param)\ \{}
+\DoxyCodeLine{00543\ \ \ \ \ GLint\ v[4];\ \textcolor{comment}{//\ safety\ sake}}
+\DoxyCodeLine{00544\ \ \ \ \ glGetIntegerv(param,\ v);}
+\DoxyCodeLine{00545\ \ \ \ \ \textcolor{keywordflow}{return}\ v[0];}
+\DoxyCodeLine{00546\ \ \ \}}
+\DoxyCodeLine{00547\ }
+\DoxyCodeLine{00548\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ blendFunc(GLenum\ sfactor,\ GLenum\ dfactor)\ \{}
+\DoxyCodeLine{00549\ \ \ \ \ glBlendFunc(sfactor,\ dfactor);}
+\DoxyCodeLine{00550\ \ \ \}}
+\DoxyCodeLine{00551\ }
+\DoxyCodeLine{00552\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ alphaFunc(GLenum\ func,\ GLfloat\ ref)\ \{}
+\DoxyCodeLine{00553\ \ \ \ \ glAlphaFunc(func,\ ref);}
+\DoxyCodeLine{00554\ \ \ \}}
+\DoxyCodeLine{00555\ }
+\DoxyCodeLine{00556\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ callList(GLuint\ list)\ \{}
+\DoxyCodeLine{00557\ \ \ \ \ glCallList(list);}
+\DoxyCodeLine{00558\ \ \ \}}
+\DoxyCodeLine{00559\ }
+\DoxyCodeLine{00560\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ newList(GLuint\ list,\ GLenum\ mode)\ \{}
+\DoxyCodeLine{00561\ \ \ \ \ glNewList(list,\ mode);}
+\DoxyCodeLine{00562\ \ \ \}}
+\DoxyCodeLine{00563\ }
+\DoxyCodeLine{00564\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ endList()\ \{}
+\DoxyCodeLine{00565\ \ \ \ \ glEndList();}
+\DoxyCodeLine{00566\ \ \ \}}
+\DoxyCodeLine{00567\ }
+\DoxyCodeLine{00568\ \ \ \textcolor{keyword}{static}\ GLuint\ genLists(GLsizei\ range)\ \{}
+\DoxyCodeLine{00569\ \ \ \ \ \textcolor{keywordflow}{return}\ glGenLists(range);}
+\DoxyCodeLine{00570\ \ \ \}}
+\DoxyCodeLine{00571\ }
+\DoxyCodeLine{00572\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ deleteLists(GLuint\ list,\ GLsizei\ range)\ \{}
+\DoxyCodeLine{00573\ \ \ \ \ glDeleteLists(list,\ range);}
+\DoxyCodeLine{00574\ \ \ \}}
+\DoxyCodeLine{00575\ }
+\DoxyCodeLine{00576\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ shadeModel(GLenum\ mode)\ \{}
+\DoxyCodeLine{00577\ \ \ \ \ glShadeModel(mode);}
+\DoxyCodeLine{00578\ \ \ \}}
+\DoxyCodeLine{00579\ }
+\DoxyCodeLine{00580\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ cullFace(GLenum\ back\_or\_front)\ \{}
+\DoxyCodeLine{00581\ \ \ \ \ glCullFace(back\_or\_front);}
+\DoxyCodeLine{00582\ \ \ \}}
+\DoxyCodeLine{00583\ }
+\DoxyCodeLine{00584\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ lineWidth(GLfloat\ width)\ \{}
+\DoxyCodeLine{00585\ \ \ \ \ glLineWidth(width);}
+\DoxyCodeLine{00586\ \ \ \}}
+\DoxyCodeLine{00587\ }
+\DoxyCodeLine{00588\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ lineWidth(GLdouble\ width)\ \{}
+\DoxyCodeLine{00589\ \ \ \ \ glLineWidth(\textcolor{keyword}{static\_cast<}GLfloat\textcolor{keyword}{>}\ (width));}
+\DoxyCodeLine{00590\ \ \ \}}
+\DoxyCodeLine{00591\ }
+\DoxyCodeLine{00592\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ pointSize(GLfloat\ size)\ \{}
+\DoxyCodeLine{00593\ \ \ \ \ glPointSize(size);}
+\DoxyCodeLine{00594\ \ \ \}}
+\DoxyCodeLine{00595\ }
+\DoxyCodeLine{00596\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ clearColor(\textcolor{keyword}{const}\ GLfloat*\ v)\ \{}
+\DoxyCodeLine{00597\ \ \ \ \ glClearColor(v[0],\ v[1],\ v[2],\ v[3]);}
+\DoxyCodeLine{00598\ \ \ \}}
+\DoxyCodeLine{00599\ }
+\DoxyCodeLine{00600\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ clearColor(GLfloat\ r,\ GLfloat\ g,\ GLfloat\ b,\ GLfloat\ a)\ \{}
+\DoxyCodeLine{00601\ \ \ \ \ glClearColor(r,\ g,\ b,\ a);}
+\DoxyCodeLine{00602\ \ \ \}}
+\DoxyCodeLine{00603\ }
+\DoxyCodeLine{00604\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ clearDepth(GLfloat\ v)\ \{}
+\DoxyCodeLine{00605\ \ \ \ \ glClearDepth(v);}
+\DoxyCodeLine{00606\ \ \ \}}
+\DoxyCodeLine{00607\ }
+\DoxyCodeLine{00608\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ depthFunc(GLenum\ func)\ \{}
+\DoxyCodeLine{00609\ \ \ \ \ glDepthFunc(func);}
+\DoxyCodeLine{00610\ \ \ \}}
+\DoxyCodeLine{00611\ }
+\DoxyCodeLine{00612\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ clear(GLbitfield\ mask)\ \{}
+\DoxyCodeLine{00613\ \ \ \ \ glClear(mask);}
+\DoxyCodeLine{00614\ \ \ \}}
+\DoxyCodeLine{00615\ }
+\DoxyCodeLine{00616\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ clearAccum(\textcolor{keyword}{const}\ GLfloat*\ v)\ \{}
+\DoxyCodeLine{00617\ \ \ \ \ glClearAccum(v[0],\ v[1],\ v[2],\ v[3]);}
+\DoxyCodeLine{00618\ \ \ \}}
+\DoxyCodeLine{00619\ }
+\DoxyCodeLine{00620\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ clearAccum(GLfloat\ r,\ GLfloat\ g,\ GLfloat\ b,\ GLfloat\ a)\ \{}
+\DoxyCodeLine{00621\ \ \ \ \ glClearAccum(r,\ g,\ b,\ a);}
+\DoxyCodeLine{00622\ \ \ \}}
+\DoxyCodeLine{00623\ }
+\DoxyCodeLine{00624\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ accum(GLenum\ op,\ GLfloat\ value)\ \{}
+\DoxyCodeLine{00625\ \ \ \ \ glAccum(op,\ value);}
+\DoxyCodeLine{00626\ \ \ \}}
+\DoxyCodeLine{00627\ }
+\DoxyCodeLine{00628\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ stencilOp(GLenum\ fail,\ GLenum\ zfail,\ GLenum\ zpass)\ \{}
+\DoxyCodeLine{00629\ \ \ \ \ glStencilOp(fail,\ zfail,\ zpass);}
+\DoxyCodeLine{00630\ \ \ \}}
+\DoxyCodeLine{00631\ }
+\DoxyCodeLine{00632\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ stencilFunc(GLenum\ func,\ GLint\ ref,\ GLuint\ mask)\ \{}
+\DoxyCodeLine{00633\ \ \ \ \ glStencilFunc(func,\ ref,\ mask);}
+\DoxyCodeLine{00634\ \ \ \}}
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00636\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ hint(GLenum\ target,\ GLenum\ mode)\ \{}
+\DoxyCodeLine{00637\ \ \ \ \ glHint(target,\ mode);}
+\DoxyCodeLine{00638\ \ \ \}}
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00640\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ lightModel(GLenum\ pname,\ GLint\ param)\ \{}
+\DoxyCodeLine{00641\ \ \ \ \ glLightModeli(pname,\ param);}
+\DoxyCodeLine{00642\ \ \ \}}
+\DoxyCodeLine{00643\ }
+\DoxyCodeLine{00644\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ lightModel(GLenum\ pname,\ GLfloat\ param)\ \{}
+\DoxyCodeLine{00645\ \ \ \ \ glLightModelf(pname,\ param);}
+\DoxyCodeLine{00646\ \ \ \}}
+\DoxyCodeLine{00647\ }
+\DoxyCodeLine{00648\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ lightModel(GLenum\ pname,\ \textcolor{keyword}{const}\ GLint*\ param)\ \{}
+\DoxyCodeLine{00649\ \ \ \ \ glLightModeliv(pname,\ param);}
+\DoxyCodeLine{00650\ \ \ \}}
+\DoxyCodeLine{00651\ }
+\DoxyCodeLine{00652\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ lightModel(GLenum\ pname,\ \textcolor{keyword}{const}\ GLfloat*\ param)\ \{}
+\DoxyCodeLine{00653\ \ \ \ \ glLightModelfv(pname,\ param);}
+\DoxyCodeLine{00654\ \ \ \}}
+\DoxyCodeLine{00655\ }
+\DoxyCodeLine{00656\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ light(GLenum\ light,\ GLenum\ pname,\ GLint\ param)\ \{}
+\DoxyCodeLine{00657\ \ \ \ \ glLighti(light,\ pname,\ param);}
+\DoxyCodeLine{00658\ \ \ \}}
+\DoxyCodeLine{00659\ }
+\DoxyCodeLine{00660\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ light(GLenum\ light,\ GLenum\ pname,\ GLfloat\ param)\ \{}
+\DoxyCodeLine{00661\ \ \ \ \ glLightf(light,\ pname,\ param);}
+\DoxyCodeLine{00662\ \ \ \}}
+\DoxyCodeLine{00663\ }
+\DoxyCodeLine{00664\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ light(GLenum\ light,\ GLenum\ pname,\ \textcolor{keyword}{const}\ GLint*\ param)\ \{}
+\DoxyCodeLine{00665\ \ \ \ \ glLightiv(light,\ pname,\ param);}
+\DoxyCodeLine{00666\ \ \ \}}
+\DoxyCodeLine{00667\ }
+\DoxyCodeLine{00668\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ light(GLenum\ light,\ GLenum\ pname,\ \textcolor{keyword}{const}\ GLfloat*\ param)\ \{}
+\DoxyCodeLine{00669\ \ \ \ \ glLightfv(light,\ pname,\ param);}
+\DoxyCodeLine{00670\ \ \ \}}
+\DoxyCodeLine{00671\ }
+\DoxyCodeLine{00672\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ fog(GLenum\ pname,\ GLint\ param)\ \{}
+\DoxyCodeLine{00673\ \ \ \ \ glFogi(pname,\ param);}
+\DoxyCodeLine{00674\ \ \ \}}
+\DoxyCodeLine{00675\ }
+\DoxyCodeLine{00676\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ fog(GLenum\ pname,\ GLfloat\ param)\ \{}
+\DoxyCodeLine{00677\ \ \ \ \ glFogf(pname,\ param);}
+\DoxyCodeLine{00678\ \ \ \}}
+\DoxyCodeLine{00679\ }
+\DoxyCodeLine{00680\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ fog(GLenum\ pname,\ \textcolor{keyword}{const}\ GLint*\ param)\ \{}
+\DoxyCodeLine{00681\ \ \ \ \ glFogiv(pname,\ param);}
+\DoxyCodeLine{00682\ \ \ \}}
+\DoxyCodeLine{00683\ }
+\DoxyCodeLine{00684\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ fog(GLenum\ pname,\ \textcolor{keyword}{const}\ GLfloat*\ param)\ \{}
+\DoxyCodeLine{00685\ \ \ \ \ glFogfv(pname,\ param);}
+\DoxyCodeLine{00686\ \ \ \}}
+\DoxyCodeLine{00687\ }
+\DoxyCodeLine{00688\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ pushAttrib(GLbitfield\ mask)\ \{}
+\DoxyCodeLine{00689\ \ \ \ \ glPushAttrib(mask);}
+\DoxyCodeLine{00690\ \ \ \}}
+\DoxyCodeLine{00691\ }
+\DoxyCodeLine{00692\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ pushMatrix()\ \{}
+\DoxyCodeLine{00693\ \ \ \ \ glPushMatrix();}
+\DoxyCodeLine{00694\ \ \ \}}
+\DoxyCodeLine{00695\ }
+\DoxyCodeLine{00696\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ popAttrib()\ \{}
+\DoxyCodeLine{00697\ \ \ \ \ glPopAttrib();}
+\DoxyCodeLine{00698\ \ \ \}}
+\DoxyCodeLine{00699\ }
+\DoxyCodeLine{00700\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ popMatrix()\ \{}
+\DoxyCodeLine{00701\ \ \ \ \ glPopMatrix();}
+\DoxyCodeLine{00702\ \ \ \}}
+\DoxyCodeLine{00703\ }
+\DoxyCodeLine{00704\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ viewport(GLint\ left,\ GLint\ top,\ GLsizei\ width,\ GLsizei\ height)\ \{}
+\DoxyCodeLine{00705\ \ \ \ \ glViewport(left,\ top,\ width,\ height);}
+\DoxyCodeLine{00706\ \ \ \}}
+\DoxyCodeLine{00707\ }
+\DoxyCodeLine{00708\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ matrixMode(GLenum\ mode)\ \{}
+\DoxyCodeLine{00709\ \ \ \ \ glMatrixMode(mode);}
+\DoxyCodeLine{00710\ \ \ \}}
+\DoxyCodeLine{00711\ }
+\DoxyCodeLine{00712\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ frustum(GLdouble\ left,\ GLdouble\ right,}
+\DoxyCodeLine{00713\ \ \ \ \ GLdouble\ bottom,\ GLdouble\ top,\ GLdouble\ \_near,\ GLdouble\ \_far)\ \{}
+\DoxyCodeLine{00714\ \ \ \ \ glFrustum(left,\ right,\ bottom,\ top,\ \_near,\ \_far);}
+\DoxyCodeLine{00715\ \ \ \}}
+\DoxyCodeLine{00716\ }
+\DoxyCodeLine{00717\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ortho(GLdouble\ left,\ GLdouble\ right,}
+\DoxyCodeLine{00718\ \ \ \ \ GLdouble\ bottom,\ GLdouble\ top,\ GLdouble\ \_near,\ GLdouble\ \_far)\ \{}
+\DoxyCodeLine{00719\ \ \ \ \ glOrtho(left,\ right,\ bottom,\ top,\ \_near,\ \_far);}
+\DoxyCodeLine{00720\ \ \ \}}
+\DoxyCodeLine{00721\ }
+\DoxyCodeLine{00722\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ drawBuffer(GLenum\ mode)\ \{}
+\DoxyCodeLine{00723\ \ \ \ \ glDrawBuffer(mode);}
+\DoxyCodeLine{00724\ \ \ \}}
+\DoxyCodeLine{00725\ }
+\DoxyCodeLine{00726\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ readBuffer(GLenum\ mode)\ \{}
+\DoxyCodeLine{00727\ \ \ \ \ glReadBuffer(mode);}
+\DoxyCodeLine{00728\ \ \ \}}
+\DoxyCodeLine{00729\ }
+\DoxyCodeLine{00730\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ readPixels(GLint\ left,\ GLint\ top,\ GLsizei\ width,\ GLsizei\ height,}
+\DoxyCodeLine{00731\ \ \ \ \ GLenum\ format,\ GLenum\ type,\ GLvoid*\ pixels)\ \{}
+\DoxyCodeLine{00732\ \ \ \ \ glReadPixels(left,\ top,\ width,\ height,\ format,\ type,\ pixels);}
+\DoxyCodeLine{00733\ \ \ \}}
+\DoxyCodeLine{00734\ }
+\DoxyCodeLine{00735\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ drawPixels(GLsizei\ width,\ GLsizei\ height,\ GLenum\ format,}
+\DoxyCodeLine{00736\ \ \ \ \ GLenum\ type,\ \textcolor{keyword}{const}\ GLvoid*\ data)\ \{}
+\DoxyCodeLine{00737\ \ \ \ \ glDrawPixels(width,\ height,\ format,\ type,\ data);}
+\DoxyCodeLine{00738\ \ \ \}}
+\DoxyCodeLine{00739\ }
+\DoxyCodeLine{00740\ \ \ \textcolor{keyword}{static}\ GLint\ renderMode(GLenum\ mode)\ \{}
+\DoxyCodeLine{00741\ \ \ \ \ \textcolor{keywordflow}{return}\ glRenderMode(mode);}
+\DoxyCodeLine{00742\ \ \ \}}
+\DoxyCodeLine{00743\ }
+\DoxyCodeLine{00744\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ polygonMode(GLenum\ face,\ GLenum\ mode)\ \{}
+\DoxyCodeLine{00745\ \ \ \ \ glPolygonMode(face,\ mode);}
+\DoxyCodeLine{00746\ \ \ \}}
+\DoxyCodeLine{00747\ }
+\DoxyCodeLine{00748\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ polygonStipple(\textcolor{keyword}{const}\ GLubyte\ *mask)\ \{}
+\DoxyCodeLine{00749\ \ \ \ \ glPolygonStipple(mask);}
+\DoxyCodeLine{00750\ \ \ \}}
+\DoxyCodeLine{00751\ }
+\DoxyCodeLine{00752\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ lineStipple(GLint\ factor,\ GLushort\ pattern)\ \{}
+\DoxyCodeLine{00753\ \ \ \ \ glLineStipple(factor,\ pattern);}
+\DoxyCodeLine{00754\ \ \ \}}
+\DoxyCodeLine{00755\ }
+\DoxyCodeLine{00756\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ loadName(GLuint\ name)\ \{}
+\DoxyCodeLine{00757\ \ \ \ \ glLoadName(name);}
+\DoxyCodeLine{00758\ \ \ \}}
+\DoxyCodeLine{00759\ }
+\DoxyCodeLine{00760\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ pushName(GLuint\ name)\ \{}
+\DoxyCodeLine{00761\ \ \ \ \ glPushName(name);}
+\DoxyCodeLine{00762\ \ \ \}}
+\DoxyCodeLine{00763\ }
+\DoxyCodeLine{00764\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rect(\textcolor{keywordtype}{int}\ left,\ \textcolor{keywordtype}{int}\ top,\ \textcolor{keywordtype}{int}\ right,\ \textcolor{keywordtype}{int}\ bottom)\ \{}
+\DoxyCodeLine{00765\ \ \ \ \ glRecti(left,\ top,\ right,\ bottom);}
+\DoxyCodeLine{00766\ \ \ \}}
+\DoxyCodeLine{00767\ }
+\DoxyCodeLine{00768\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ clipPlane(GLenum\ plane,\ \textcolor{keyword}{const}\ GLdouble*\ equation)\ \{}
+\DoxyCodeLine{00769\ \ \ \ \ glClipPlane(plane,\ equation);}
+\DoxyCodeLine{00770\ \ \ \}}
+\DoxyCodeLine{00771\ }
+\DoxyCodeLine{00772\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ selectBuffer(GLsizei\ size,\ GLuint*\ buffer)\ \{}
+\DoxyCodeLine{00773\ \ \ \ \ glSelectBuffer(size,\ buffer);}
+\DoxyCodeLine{00774\ \ \ \}}
+\DoxyCodeLine{00775\ }
+\DoxyCodeLine{00776\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ initNames()\ \{}
+\DoxyCodeLine{00777\ \ \ \ \ glInitNames();}
+\DoxyCodeLine{00778\ \ \ \}}
+\DoxyCodeLine{00779\ }
+\DoxyCodeLine{00780\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ flush()\ \{}
+\DoxyCodeLine{00781\ \ \ \ \ glFlush();}
+\DoxyCodeLine{00782\ \ \ \}}
+\DoxyCodeLine{00783\ }
+\DoxyCodeLine{00784\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ GLubyte\ *\ getString(GLenum\ name)\ \{}
+\DoxyCodeLine{00785\ \ \ \ \ \textcolor{keywordflow}{return}\ glGetString(name);}
+\DoxyCodeLine{00786\ \ \ \}}
+\DoxyCodeLine{00787\ \ \ \textcolor{comment}{//\ changes\ a\ flag\ and\ restores\ it\ on\ destroying}}
+\DoxyCodeLine{00788\ \ \ \textcolor{keyword}{class\ }FlagChanger\ \{}
+\DoxyCodeLine{00789\ \ \ \ \ GLenum\ flag;}
+\DoxyCodeLine{00790\ \ \ \ \ \textcolor{keywordtype}{bool}\ original\_state,\ current\_state;}
+\DoxyCodeLine{00791\ \ \ \ \ \textcolor{keywordtype}{void}\ restore()\ \{}
+\DoxyCodeLine{00792\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (original\_state\ !=\ current\_state)\ \{}
+\DoxyCodeLine{00793\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (original\_state)\ \{}
+\DoxyCodeLine{00794\ \ \ \ \ \ \ \ \ \ \ olx\_gl::enable(flag);}
+\DoxyCodeLine{00795\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00796\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \ \ \ \ olx\_gl::disable(flag);}
+\DoxyCodeLine{00798\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00799\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00800\ \ \ \ \ \}}
+\DoxyCodeLine{00801\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00802\ \ \ \ \ FlagChanger(GLenum\ flag)}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ :\ flag(flag)}
+\DoxyCodeLine{00804\ \ \ \ \ \{}
+\DoxyCodeLine{00805\ \ \ \ \ \ \ original\_state\ =\ current\_state\ =\ isEnabled(flag);}
+\DoxyCodeLine{00806\ \ \ \ \ \}}
+\DoxyCodeLine{00807\ \ \ \ \ \textcolor{keywordtype}{void}\ enable()\ \{}
+\DoxyCodeLine{00808\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!current\_state)\ \{}
+\DoxyCodeLine{00809\ \ \ \ \ \ \ \ \ olx\_gl::enable(flag);}
+\DoxyCodeLine{00810\ \ \ \ \ \ \ \ \ current\_state\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00811\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00812\ \ \ \ \ \}}
+\DoxyCodeLine{00813\ \ \ \ \ \textcolor{keywordtype}{void}\ disable()\ \{}
+\DoxyCodeLine{00814\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (current\_state)\ \{}
+\DoxyCodeLine{00815\ \ \ \ \ \ \ \ \ olx\_gl::disable(flag);}
+\DoxyCodeLine{00816\ \ \ \ \ \ \ \ \ current\_state\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00817\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00818\ \ \ \ \ \}}
+\DoxyCodeLine{00819\ \ \ \ \ \string~FlagChanger()\ \{\ restore();\ \}}
+\DoxyCodeLine{00820\ \ \ \};}
+\DoxyCodeLine{00821\ }
+\DoxyCodeLine{00822\ \ \ \textcolor{keyword}{struct\ }FlagManipulatorBase\ \{}
+\DoxyCodeLine{00823\ \ \ \ \ FlagChanger\ fc;}
+\DoxyCodeLine{00824\ \ \ \ \ FlagManipulatorBase(GLenum\ f)}
+\DoxyCodeLine{00825\ \ \ \ \ \ \ :\ fc(f)}
+\DoxyCodeLine{00826\ \ \ \ \ \{\}}
+\DoxyCodeLine{00827\ \ \ \ \ \textcolor{keywordtype}{void}\ disable()\ \{\ fc.disable();\ \}}
+\DoxyCodeLine{00828\ \ \ \ \ \textcolor{keywordtype}{void}\ enable()\ \{\ fc.enable();\ \}}
+\DoxyCodeLine{00829\ \ \ \};}
+\DoxyCodeLine{00830\ }
+\DoxyCodeLine{00831\ \ \ \textcolor{keyword}{struct\ }FlagEnabler\ :\ FlagManipulatorBase\ \{}
+\DoxyCodeLine{00832\ \ \ \ \ FlagEnabler(GLenum\ f)}
+\DoxyCodeLine{00833\ \ \ \ \ \ \ :\ FlagManipulatorBase(f)}
+\DoxyCodeLine{00834\ \ \ \ \ \{}
+\DoxyCodeLine{00835\ \ \ \ \ \ \ FlagManipulatorBase::fc.enable();}
+\DoxyCodeLine{00836\ \ \ \ \ \}}
+\DoxyCodeLine{00837\ \ \ \};}
+\DoxyCodeLine{00838\ }
+\DoxyCodeLine{00839\ \ \ \textcolor{keyword}{struct\ }FlagDisabler\ :\ FlagManipulatorBase\ \{}
+\DoxyCodeLine{00840\ \ \ \ \ FlagDisabler(GLenum\ f)}
+\DoxyCodeLine{00841\ \ \ \ \ \ \ :\ FlagManipulatorBase(f)}
+\DoxyCodeLine{00842\ \ \ \ \ \{}
+\DoxyCodeLine{00843\ \ \ \ \ \ \ FlagManipulatorBase::fc.disable();}
+\DoxyCodeLine{00844\ \ \ \ \ \}}
+\DoxyCodeLine{00845\ \ \ \};}
+\DoxyCodeLine{00846\ }
+\DoxyCodeLine{00847\ \ \ \textcolor{keyword}{class\ }ColorMatertialChanger\ \{}
+\DoxyCodeLine{00848\ \ \ \ \ GLint\ original\_face,\ original\_value;}
+\DoxyCodeLine{00849\ \ \ \ \ GLint\ current\_face,\ current\_value;}
+\DoxyCodeLine{00850\ \ \ \ \ \textcolor{keywordtype}{void}\ restore()\ \{}
+\DoxyCodeLine{00851\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (original\_face\ !=\ current\_face\ ||\ original\_value\ !=\ current\_value)\ \{}
+\DoxyCodeLine{00852\ \ \ \ \ \ \ \ \ olx\_gl::colorMaterial(original\_face,\ original\_value);}
+\DoxyCodeLine{00853\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00854\ \ \ \ \ \}}
+\DoxyCodeLine{00855\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00856\ \ \ \ \ ColorMatertialChanger()\ \{}
+\DoxyCodeLine{00857\ \ \ \ \ \ \ original\_face\ =\ current\_face\ =\ olx\_gl::getInt(GL\_COLOR\_MATERIAL\_FACE);}
+\DoxyCodeLine{00858\ \ \ \ \ \ \ original\_value\ =\ current\_value\ =\ olx\_gl::getInt(GL\_COLOR\_MATERIAL\_PARAMETER);}
+\DoxyCodeLine{00859\ \ \ \ \ \}}
+\DoxyCodeLine{00860\ \ \ \ \ \textcolor{keywordtype}{void}\ set(GLint\ face,\ GLint\ value)\ \{}
+\DoxyCodeLine{00861\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (face\ !=\ current\_face\ ||\ value\ !=\ current\_value)\ \{}
+\DoxyCodeLine{00862\ \ \ \ \ \ \ \ \ olx\_gl::colorMaterial(current\_face\ =\ face,\ current\_value\ =\ value);}
+\DoxyCodeLine{00863\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00864\ \ \ \ \ \}}
+\DoxyCodeLine{00865\ \ \ \ \ \string~ColorMatertialChanger()\ \{\ restore();\ \}}
+\DoxyCodeLine{00866\ \ \ \};}
+\DoxyCodeLine{00867\ }
+\DoxyCodeLine{00868\ \ \ \textcolor{keyword}{struct\ }FlagManager\ \{}
+\DoxyCodeLine{00869\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00870\ \ \ \ \ olx\_object\_ptr<ColorMatertialChanger>\ cm\_ptr;}
+\DoxyCodeLine{00871\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00872\ \ \ \ \ olx\_pdict<GLenum,\ FlagChanger\ *>\ \ state;}
+\DoxyCodeLine{00873\ \ \ \ \ \string~FlagManager()\ \{}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ clear();}
+\DoxyCodeLine{00875\ \ \ \ \ \}}
+\DoxyCodeLine{00876\ \ \ \ \ \textcolor{keywordtype}{void}\ clear()\ \{}
+\DoxyCodeLine{00877\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ state.Count();\ i++)\ \{}
+\DoxyCodeLine{00878\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ state.GetValue(i);}
+\DoxyCodeLine{00879\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00880\ \ \ \ \ \ \ state.Clear();}
+\DoxyCodeLine{00881\ \ \ \ \ \ \ cm\_ptr\ =\ 0;}
+\DoxyCodeLine{00882\ \ \ \ \ \}}
+\DoxyCodeLine{00883\ \ \ \ \ \textcolor{keywordtype}{void}\ enable(GLenum\ f)\ \{}
+\DoxyCodeLine{00884\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx\ =\ state.IndexOf(f);}
+\DoxyCodeLine{00885\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00886\ \ \ \ \ \ \ \ \ state.Add(f,\ \textcolor{keyword}{new}\ FlagChanger(f))-\/>enable();}
+\DoxyCodeLine{00887\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00888\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00889\ \ \ \ \ \ \ \ \ state.GetValue(idx)-\/>enable();}
+\DoxyCodeLine{00890\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00891\ \ \ \ \ \}}
+\DoxyCodeLine{00892\ \ \ \ \ \textcolor{keywordtype}{void}\ disable(GLenum\ f)\ \{}
+\DoxyCodeLine{00893\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx\ =\ state.IndexOf(f);}
+\DoxyCodeLine{00894\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00895\ \ \ \ \ \ \ \ \ state.Add(f,\ \textcolor{keyword}{new}\ FlagChanger(f))-\/>disable();}
+\DoxyCodeLine{00896\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00897\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00898\ \ \ \ \ \ \ \ \ state.GetValue(idx)-\/>disable();}
+\DoxyCodeLine{00899\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00900\ \ \ \ \ \}}
+\DoxyCodeLine{00901\ \ \ \ \ \textcolor{keywordtype}{void}\ colorMaterial(GLint\ face,\ GLint\ value)\ \{}
+\DoxyCodeLine{00902\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!cm\_ptr.ok())\ \{}
+\DoxyCodeLine{00903\ \ \ \ \ \ \ \ \ cm\_ptr\ =\ \textcolor{keyword}{new}\ ColorMatertialChanger();}
+\DoxyCodeLine{00904\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00905\ \ \ \ \ \ \ cm\_ptr-\/>set(face,\ value);}
+\DoxyCodeLine{00906\ \ \ \ \ \}}
+\DoxyCodeLine{00907\ \ \ \};}
+\DoxyCodeLine{00908\ }
+\DoxyCodeLine{00909\ \};}
+\DoxyCodeLine{00910\ }
+\DoxyCodeLine{00911\ EndGlNamespace()}
+\DoxyCodeLine{00912\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

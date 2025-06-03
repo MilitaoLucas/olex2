@@ -1,0 +1,94 @@
+\doxysection{singleton.\+h}
+\hypertarget{singleton_8h_source}{}\label{singleton_8h_source}\index{sdl/singleton.h@{sdl/singleton.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_singleton\_\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_singleton\_\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}olxth.h"{}}}
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{/*\ the\ Impl\ class\ must\ provide\ the\ GetInstance\ method,\ which\ will\ allow\ it\ to}}
+\DoxyCodeLine{00018\ \textcolor{comment}{monitor\ the\ calls\ to\ the\ GetInstance\ and\ if\ required\ -\/\ to\ do\ any\ special}}
+\DoxyCodeLine{00019\ \textcolor{comment}{processing}}
+\DoxyCodeLine{00020\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00021\ template\ <class\ Impl>\ class\ SingletonBase\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00023\ \ \ SingletonBase()\ \{\}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{static}\ Impl\&\ GetInstance()\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{static}\ Impl\ Instance;}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ Instance.GetInstance();}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{comment}{/*\ Impl\ should\ be\ as\ above\ */}}
+\DoxyCodeLine{00032\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Impl>\ \textcolor{keyword}{struct\ }ThreadSingletonMainInstance\ \{}
+\DoxyCodeLine{00033\ \ \ Impl\ Instance;}
+\DoxyCodeLine{00034\ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<unsigned\ long,\ Impl*>}}\ Instances;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ main\_thread\_id;}
+\DoxyCodeLine{00036\ \ \ ThreadSingletonMainInstance()}
+\DoxyCodeLine{00037\ \ \ \ \ :\ main\_thread\_id(AOlxThread::GetCurrentThreadId())}
+\DoxyCodeLine{00038\ \ \ \{\}}
+\DoxyCodeLine{00039\ \ \ \string~ThreadSingletonMainInstance()\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i\ <\ Instances.Count();\ i++)}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Instances.GetValue(i);}
+\DoxyCodeLine{00042\ \ \ \ \ Instances.Clear();}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \};}
+\DoxyCodeLine{00045\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Impl>\ \textcolor{keyword}{class\ }ThreadSingletonBase\ \{}
+\DoxyCodeLine{00046\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structThreadSingletonMainInstance}{ThreadSingletonMainInstance<Impl>}}\ \&Instance()\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structThreadSingletonMainInstance}{ThreadSingletonMainInstance<Impl>}}\ i;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ cs;}
+\DoxyCodeLine{00052\ \ \ ThreadSingletonBase()\ :\ Impl()\ \{\}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{virtual}\ \string~ThreadSingletonBase()\ \ \{\}}
+\DoxyCodeLine{00054\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{static}\ Impl\&\ GetInstance()\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{if}\ (Instance().main\_thread\_id\ ==\ AOlxThread::GetCurrentThreadId())}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Instance().GetInstance();}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ th\_id\ =\ AOlxThread::GetCurrentThreadId();}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ cs.enter();}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ Impl*\ rv\ =\ NULL;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ii\ =\ Instance().Instances.IndexOf(th\_id);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ii\ !=\ InvalidIndex)}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ rv\ =\ \&Instance().Instances.GetValue(ii)-\/>GetInstance();}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ rv\ =\ \&Instance().Instances.Add(th\_id,\ \textcolor{keyword}{new}\ Impl)-\/>GetInstance();}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{catch}(...)\ \{\}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ cs.leave();}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rv\ ==\ NULL)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}could\ not\ acquire\ object\ instance"{}});}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *rv;}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HasInstance()\ \ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ th\_id\ =\ AOlxThread::GetCurrentThreadId();}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{if}(\ th\_id\ ==\ Instance().main\_thread\_id\ )}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Instance.Instances.HasKey(th\_id);}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ EndEsdlNamespace()}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

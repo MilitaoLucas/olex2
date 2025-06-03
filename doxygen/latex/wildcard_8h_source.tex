@@ -1,0 +1,60 @@
+\doxysection{wildcard.\+h}
+\hypertarget{wildcard_8h_source}{}\label{wildcard_8h_source}\index{sdl/wildcard.h@{sdl/wildcard.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_wildcard\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_wildcard\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}eset.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }Wildcard\ \{}
+\DoxyCodeLine{00016\ \ \ TStrList\ toks;}
+\DoxyCodeLine{00017\ \ \ olxstr\ mask;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{size\_t}\ toksEnd,\ toksStart;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{bool}\ hasWildcards,\ caseInsensitive;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ Wildcard(\textcolor{keywordtype}{bool}\ caseInsensitive\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00022\ \ \ \ \ :\ toksEnd(InvalidIndex),\ toksStart(InvalidIndex),\ hasWildcards(\textcolor{keyword}{false}),}
+\DoxyCodeLine{00023\ \ \ \ \ caseInsensitive(caseInsensitive)}
+\DoxyCodeLine{00024\ \ \ \{\}}
+\DoxyCodeLine{00025\ \ \ Wildcard(\textcolor{keyword}{const}\ olxstr\&\ msk,\ \textcolor{keywordtype}{bool}\ caseInsensitive=\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ Build(msk);}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{void}\ Build(\textcolor{keyword}{const}\ olxstr\&\ msk);}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ olxstr\&\ \_str)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{const}\ olxstr\ \&GetMask()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{return}\ mask;}
+\DoxyCodeLine{00032\ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ Wildcard\ \&c)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{return}\ mask.Compare(c.mask);}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsMask(\textcolor{keyword}{const}\ olxstr\ \&m);}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ a\ helper\ class\ to\ deal\ with\ a\ list\ of\ masks\ or\ non-\/mask\ values}}
+\DoxyCodeLine{00040\ \textcolor{keyword}{class\ }WildcardList\ \{}
+\DoxyCodeLine{00041\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<Wildcard>}}\ w\_cards;}
+\DoxyCodeLine{00042\ \ \ \mbox{\hyperlink{classolxset}{olxset<olxstr,\ olxstrComparator<true>}}\ >\ items;}
+\DoxyCodeLine{00043\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00044\ \ \ WildcardList()}
+\DoxyCodeLine{00045\ \ \ \{\}}
+\DoxyCodeLine{00046\ \ \ \textcolor{comment}{//\ adds\ a\ mask\ or\ a\ string\ item}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ Add(\textcolor{keyword}{const}\ olxstr\ \&item,\ \textcolor{keywordtype}{bool}\ caseInsensitive=\textcolor{keyword}{true});}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ olxstr\ \&value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{/*\ return\ [wildcard\ mask\ or\ the\ matching\ item]\ or\ empty\ string\ if\ there\ is}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ no\ match}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{const}\ olxstr\ \&FindMatching(\textcolor{keyword}{const}\ olxstr\ \&value)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

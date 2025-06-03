@@ -1,0 +1,176 @@
+\doxysection{log.\+h}
+\hypertarget{log_8h_source}{}\label{log_8h_source}\index{sdl/log.h@{sdl/log.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_log\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_log\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}talist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}egc.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}datastream.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}os\_util.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ convenience\ macro}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ OLX\_DISABLE\_LOGGING()\(\backslash\)}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\ volatile\ TLog::Disabler\ olx\_log\_disabler\ =\ TBasicApp::GetInstance().GetLog().Disable()}}
+\DoxyCodeLine{00021\ BeginEsdlNamespace()}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ enum\ \ \{}
+\DoxyCodeLine{00024\ \ \ logDefault,}
+\DoxyCodeLine{00025\ \ \ logVerbose,\ \textcolor{comment}{//\ as\ logInfo\ but\ may\ be\ discarded\ if\ TLog\ is\ not\ verbose}}
+\DoxyCodeLine{00026\ \ \ logInfo,}
+\DoxyCodeLine{00027\ \ \ logWarning,}
+\DoxyCodeLine{00028\ \ \ logError,}
+\DoxyCodeLine{00029\ \ \ logException,}
+\DoxyCodeLine{00030\ \ \ logExceptionTrace}
+\DoxyCodeLine{00031\ \};}
+\DoxyCodeLine{00032\ \textcolor{keyword}{class\ }TLog\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}\ \{}
+\DoxyCodeLine{00033\ \ \ \textcolor{comment}{//\ stream,\ to\ delete\ at\ the\ end}}
+\DoxyCodeLine{00034\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<olx\_pair\_t<IDataOutputStream*,\ bool>}}\ >\ Streams;}
+\DoxyCodeLine{00035\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{bool}\ verbose,\ auto\_flush;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{int}\ disabled;}
+\DoxyCodeLine{00038\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ Data,\ \textcolor{keywordtype}{size\_t}\ size);}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{virtual}\ uint64\_t\ GetSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 0;\ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{virtual}\ uint64\_t\ GetPosition()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 0;\ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetPosition(uint64\_t)\ \{\}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ Add(\textcolor{keyword}{const}\ olxstr\&\ str)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Streams.Count();\ i++)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ Streams[i].a-\/>Writeln(disabled\ !=\ 0\ ?\ EmptyString()\ :\ str);}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ Add(\textcolor{keyword}{const}\ List\&\ lst)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ lst.Count();\ i++)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ Streams.Count();\ j++)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ Streams[j].a-\/>Writeln(disabled\ !=\ 0\ ?\ EmptyString()\ :\ lst[i]);}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00058\ \ \ TLog();}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{virtual}\ \string~TLog();}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{bool}\ IsVerbose()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ verbose;\ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{void}\ SetVerbose(\textcolor{keywordtype}{bool}\ v)\ \{\ verbose\ =\ v;\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{bool}\ GetAutoFlush()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ auto\_flush;\ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ SetAutoFlush(\textcolor{keywordtype}{bool}\ v)\ \{\ auto\_flush\ =\ v;\ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{comment}{//\ if\ own\ is\ true,\ the\ object\ will\ be\ deleted\ in\ the\ end}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ AddStream(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}*\ stream,\ \textcolor{keywordtype}{bool}\ own)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ Streams.Add(\mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<IDataOutputStream*,\ bool>}}(stream,\ own));}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ RemoveStream(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}*\ stream)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Streams.Count();\ i++)}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Streams[i].GetA()\ ==\ stream)\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ Streams.Delete(i);}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{comment}{//\ use\ this\ operators\ for\ unconditional\ 'printing'}}
+\DoxyCodeLine{00078\ \ \ TLog\&\ operator\ <<\ (\textcolor{keyword}{const}\ olxstr\&\ str)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Streams.Count();\ i++)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ Streams[i].a-\/>Write(disabled\ !=\ 0\ ?\ EmptyString()\ :\ str);}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{if}\ (auto\_flush)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ Flush();}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00088\ \ \ TLog\&\ operator\ <<\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTStrList}{TTStrList<T>}}\&\ lst)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ Add(lst);}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{if}\ (auto\_flush)\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ Flush();}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Flush()\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Streams.Count();\ i++)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ Streams[i].GetA()-\/>Flush();}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\&\ GetCriticalSection()\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ cs;}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{return}\ cs;}
+\DoxyCodeLine{00104\ \ \ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{struct\ }LogEntry\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ TLog\&\ parent;}
+\DoxyCodeLine{00109\ \ \ \ \ olxstr\_buf\ buffer;}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordtype}{int}\ evt;}
+\DoxyCodeLine{00111\ \ \ \ \ LogEntry(TLog\&\ \_parent,\ \textcolor{keywordtype}{int}\ evt,\ \textcolor{keywordtype}{bool}\ annotate,\ \textcolor{keyword}{const}\ olxstr\&\ location);}
+\DoxyCodeLine{00112\ \ \ \ \ \string~LogEntry();}
+\DoxyCodeLine{00113\ \ \ \ \ LogEntry\&\ operator\ <<\ (\textcolor{keyword}{const}\ olxstr\&\ str)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ buffer\ <<\ str;}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ LogEntry\&\ operator\ <<\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\&\ e);}
+\DoxyCodeLine{00118\ \ \ \ \ LogEntry\&\ nl()\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ buffer\ <<\ NewLineSequence();}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00123\ \ \ \ \ LogEntry\&\ operator\ <<\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTStrList}{TTStrList<T>}}\&\ lst)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ buffer\ <<\ lst.Text(NewLineSequence());}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00128\ \ \ \ \ LogEntry\&\ operator\ <<\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstStrList}{ConstStrList<T>}}\&\ lst)\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ buffer\ <<\ lst.Text(NewLineSequence());}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ LogEntry\&\ operator\ <<\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\&\ o)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ buffer\ <<\ o.ToString();}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00135\ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \};}
+\DoxyCodeLine{00137\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00138\ \ \ \mbox{\hyperlink{structTLog_1_1LogEntry}{LogEntry}}\ NewEntry(\textcolor{keywordtype}{int}\ evt\ =\ logDefault,\ \textcolor{keywordtype}{bool}\ annotate\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ location\ =\ EmptyString())}
+\DoxyCodeLine{00140\ \ \ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structTLog_1_1LogEntry}{LogEntry}}(*\textcolor{keyword}{this},\ evt,\ annotate,\ location);}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{struct\ }Disabler\ \{}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00146\ \ \ \ \ TLog\&\ parent;}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00148\ \ \ \ \ Disabler(TLog\&\ parent)}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ :\ parent(parent)}
+\DoxyCodeLine{00150\ \ \ \ \ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ parent.disabled++;}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \string~Disabler()\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ parent.disabled-\/-\/;}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \};}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00158\ \ \ \mbox{\hyperlink{structTLog_1_1Disabler}{Disabler}}\ Disable()\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structTLog_1_1Disabler}{Disabler}}(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00160\ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00162\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnInfo;}
+\DoxyCodeLine{00163\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnWarning;}
+\DoxyCodeLine{00164\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnError;}
+\DoxyCodeLine{00165\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnException;}
+\DoxyCodeLine{00166\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnPost;}
+\DoxyCodeLine{00167\ \};}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ EndEsdlNamespace()}
+\DoxyCodeLine{00170\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

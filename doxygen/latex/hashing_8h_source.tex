@@ -1,0 +1,201 @@
+\doxysection{hashing.\+h}
+\hypertarget{hashing_8h_source}{}\label{hashing_8h_source}\index{sdl/hashing.h@{sdl/hashing.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_hashing\_\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_hashing\_\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}talist.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ struct\ HashingUtils\ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ uint32\_t\ hs\_rotl(uint32\_t\ v,\ uint32\_t\ c)\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordflow}{return}\ (v\ <<\ c)\ |\ (v\ >>\ (32\ -\/\ c));}
+\DoxyCodeLine{00018\ \ \ \}}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ uint32\_t\ hs\_rotr(uint32\_t\ v,\ uint32\_t\ c)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordflow}{return}\ (v\ >>\ c)\ |\ (v\ <<\ (32\ -\/\ c));}
+\DoxyCodeLine{00021\ \ \ \}}
+\DoxyCodeLine{00022\ \};}
+\DoxyCodeLine{00023\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structHashingUtilsLE}{HashingUtilsLE}}\ :\ \textcolor{keyword}{public}\ HashingUtils\ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{comment}{//\ operates\ on\ 64\ byte\ blocks\ only,\ little\ endian}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ hs\_copy(\textcolor{keyword}{const}\ uint8\_t*\ src,\ uint32\_t*\ dest,\ \textcolor{keywordtype}{size\_t}\ src\_len)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0,\ j\ =\ 0;\ i\ <\ src\_len;\ i\ +=\ 4,\ j++)}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ dest[j]\ =\ ((uint32\_t)src[i])\ |}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ (((uint32\_t)src[i\ +\ 1])\ <<\ 8)\ |}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ (((uint32\_t)src[i\ +\ 2])\ <<\ 16)\ |}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ (((uint32\_t)src[i\ +\ 3])\ <<\ 24);}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ hs\_copy(\textcolor{keyword}{const}\ uint32\_t*\ src,\ uint8\_t*\ dest,\ \textcolor{keywordtype}{size\_t}\ src\_len)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0,\ j\ =\ 0;\ j\ <\ src\_len;\ i\ +=\ 4,\ j++)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ dest[i]\ =\ (char)src[j];}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ dest[i\ +\ 1]\ =\ (char)(src[j]\ >>\ 8);}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ dest[i\ +\ 2]\ =\ (char)(src[j]\ >>\ 16);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ dest[i\ +\ 3]\ =\ (char)(src[j]\ >>\ 24);}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ hs\_write\_len(uint8\_t*\ dest,\ \textcolor{keyword}{const}\ uint64\_t\&\ len)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 8;\ i\ >=\ 1;\ i-\/-\/)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ dest[64\ -\/\ i]\ =\ ((uint8\_t*)\&len)[8\ -\/\ i];}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structHashingUtilsBE}{HashingUtilsBE}}\ :\ \textcolor{keyword}{public}\ HashingUtils\ \{}
+\DoxyCodeLine{00047\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//\ operates\ on\ 64\ byte\ blocks\ only,\ big\ endian}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ hs\_copy(\textcolor{keyword}{const}\ uint8\_t*\ src,\ uint32\_t*\ dest,\ \textcolor{keywordtype}{size\_t}\ src\_len)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0,\ j\ =\ 0;\ i\ <\ src\_len;\ i\ +=\ 4,\ j++)}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ dest[j]\ =\ ((uint32\_t)src[i\ +\ 3])\ |}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ (((uint32\_t)src[i\ +\ 2])\ <<\ 8)\ |}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ (((uint32\_t)src[i\ +\ 1])\ <<\ 16)\ |}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ (((uint32\_t)src[i])\ <<\ 24);}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ hs\_copy(\textcolor{keyword}{const}\ uint32\_t*\ src,\ uint8\_t*\ dest,\ \textcolor{keywordtype}{size\_t}\ src\_len)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0,\ j\ =\ 0;\ j\ <\ src\_len;\ i\ +=\ 4,\ j++)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ dest[i\ +\ 3]\ =\ (char)src[j];}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ dest[i\ +\ 2]\ =\ (char)(src[j]\ >>\ 8);}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ dest[i\ +\ 1]\ =\ (char)(src[j]\ >>\ 16);}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ dest[i]\ =\ (char)(src[j]\ >>\ 24);}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ hs\_write\_len(uint8\_t*\ dest,\ \textcolor{keyword}{const}\ uint64\_t\&\ len)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 8;\ i\ >=\ 1;\ i-\/-\/)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ dest[64\ -\/\ i]\ =\ ((uint8\_t*)\&len)[i\ -\/\ 1];}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Impl,\ \textcolor{keyword}{class}\ Tools>}
+\DoxyCodeLine{00071\ \textcolor{keyword}{class\ }HashingBase\ :\ \textcolor{keyword}{public}\ Impl\ \ \{}
+\DoxyCodeLine{00072\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00073\ \ \ uint32\_t\ bf[16];}
+\DoxyCodeLine{00074\ \ \ uint8\_t\ cbf[64];}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ DoRawDigest(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ msg,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ blocks\ =\ len>>6;}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ blocks;\ i++)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ Tools::hs\_copy(\&((\textcolor{keyword}{const}\ uint8\_t*)msg)[i<<6],\ bf,\ 64);}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ Impl::digest64(bf);}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ part\ =\ len\&0x3F;}
+\DoxyCodeLine{00082\ \ \ \ \ memset(cbf,\ 0,\ 64);}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{if}\ (part\ >\ 0)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ memcpy(cbf,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)\&(((\textcolor{keyword}{const}\ uint8\_t\ *)msg)[blocks<<6]),\ part);}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ cbf[part]\ |=\ (0x01\ <<\ 7);}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{if}\ (part\ >\ 56)\ \{\ \textcolor{comment}{//\ will\ not\ the\ length\ fit?}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ Tools::hs\_copy(cbf,\ bf,\ 64);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ Impl::digest64(bf);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ memset(cbf,\ 0,\ 64);}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ uint64\_t\ len\_bits\_o\ =\ len<<3;}
+\DoxyCodeLine{00093\ \ \ \ \ Tools::hs\_write\_len(cbf,\ len\_bits\_o);}
+\DoxyCodeLine{00094\ \ \ \ \ Tools::hs\_copy(cbf,\ bf,\ 64);}
+\DoxyCodeLine{00095\ \ \ \ \ Impl::digest64(bf);}
+\DoxyCodeLine{00096\ \ \ \ \ Impl::finalise();}
+\DoxyCodeLine{00097\ \ \ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ olxcstr\ DoDigest(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ msg,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ DoRawDigest(msg,\ len);}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{//\ prepeare\ the\ digest}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{return}\ Impl::formatDigest();}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ DoRawDigest(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ stream)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ uint8\_t\ cbf[64];}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{const}\ uint64\_t\ blocks\ =\ stream.GetSize()\ >>\ 6;}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{for}\ (uint64\_t\ i=0;\ i\ <\ blocks;\ i++)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ stream.Read(cbf,\ 64);}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ Tools::hs\_copy(cbf,\ bf,\ 64);}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ Impl::digest64(bf);}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ part\ =\ stream.GetSize()\&0x3F;}
+\DoxyCodeLine{00114\ \ \ \ \ memset(cbf,\ 0,\ 64);}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{if}\ (part\ >\ 0)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ stream.Read(cbf,\ part);}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ cbf[part]\ |=\ (0x01\ <<\ 7);}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{if}\ (part\ >=\ 56)\ \{\ \textcolor{comment}{//\ will\ not\ the\ length\ fit?}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ Tools::hs\_copy(cbf,\ bf,\ 64);}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ Impl::digest64(bf);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ memset(cbf,\ 0,\ 64);}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ uint64\_t\ len\_bits\_o\ =\ stream.GetSize()<<3;}
+\DoxyCodeLine{00125\ \ \ \ \ Tools::hs\_write\_len(cbf,\ len\_bits\_o);}
+\DoxyCodeLine{00126\ \ \ \ \ Tools::hs\_copy(cbf,\ bf,\ 64);}
+\DoxyCodeLine{00127\ \ \ \ \ Impl::digest64(bf);}
+\DoxyCodeLine{00128\ \ \ \ \ Impl::finalise();}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ olxcstr\ DoDigest(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ stream)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ DoRawDigest(stream);}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{comment}{//\ prepeare\ the\ digest}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ Impl::formatDigest();}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ \ \ HashingBase()\ :\ Impl()\ \{\}}
+\DoxyCodeLine{00137\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{static}\ olxcstr\ Digest(\textcolor{keyword}{const}\ olxcstr\&\ str)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ HashingBase<Impl,Tools>().DoDigest(str.raw\_str(),\ str.RawLen());}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{static}\ olxcstr\ Digest(\textcolor{keyword}{const}\ olxwstr\&\ str)\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ HashingBase<Impl,Tools>().DoDigest(}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ str.raw\_str(),\ str.RawLen());}
+\DoxyCodeLine{00144\ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{static}\ olxcstr\ Digest(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ str,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{return}\ HashingBase<Impl,Tools>().DoDigest(str,\ len);}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static}\ olxcstr\ Digest(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ str,\ \textcolor{keywordtype}{size\_t}\ len)\ \ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ HashingBase<Impl,Tools>().DoDigest(str,\ len*\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{wchar\_t}));}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{static}\ olxcstr\ Digest(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ str)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ Digest(str,\ olxstr::o\_strlen(str));}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{static}\ olxcstr\ Digest(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ str)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{return}\ Digest(str,\ olxstr::o\_strlen(str));}
+\DoxyCodeLine{00156\ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ olxcstr\ Digest(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ stream)\{}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{return}\ HashingBase<Impl,Tools>().DoDigest(stream);}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<uint8\_t>}}\ RawDigest(\textcolor{keyword}{const}\ olxcstr\&\ str)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ HashingBase<Impl,Tools>\ t;}
+\DoxyCodeLine{00163\ \ \ \ \ t.DoRawDigest(str.raw\_str(),\ str.RawLen());}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTArrayList}{TArrayList<uint8\_t>}}(t.DigestSize(),\ t.GetDigest());}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<uint8\_t>}}\ RawDigest(\textcolor{keyword}{const}\ olxwstr\&\ str)\ \{}
+\DoxyCodeLine{00167\ \ \ \ \ HashingBase<Impl,Tools>\ t;}
+\DoxyCodeLine{00168\ \ \ \ \ t.DoRawDigest(str.raw\_str(),\ str.RawLen());}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTArrayList}{TArrayList<uint8\_t>}}(t.DigestSize(),\ t.GetDigest());}
+\DoxyCodeLine{00170\ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<uint8\_t>}}\ RawDigest(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ str,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ HashingBase<Impl,Tools>\ t;}
+\DoxyCodeLine{00173\ \ \ \ \ t.DoRawDigest(str,\ len);}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTArrayList}{TArrayList<uint8\_t>}}(t.DigestSize(),\ t.GetDigest());}
+\DoxyCodeLine{00175\ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<uint8\_t>}}\ RawDigest(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ str,\ \textcolor{keywordtype}{size\_t}\ len)\ \ \{}
+\DoxyCodeLine{00177\ \ \ \ \ HashingBase<Impl,Tools>\ t;}
+\DoxyCodeLine{00178\ \ \ \ \ t.DoRawDigest(str,\ len*\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{wchar\_t}));}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTArrayList}{TArrayList<uint8\_t>}}(t.DigestSize(),\ t.GetDigest());}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<uint8\_t>}}\ RawDigest(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ str)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{return}\ RawDigest(str,\ olxstr::o\_strlen(str));}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<uint8\_t>}}\ RawDigest(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ str)\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{return}\ RawDigest(str,\ olxstr::o\_strlen(str));}
+\DoxyCodeLine{00186\ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<uint8\_t>}}\ RawDigest(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ stream)\{}
+\DoxyCodeLine{00188\ \ \ \ \ HashingBase<Impl,Tools>\ t;}
+\DoxyCodeLine{00189\ \ \ \ \ t.DoDigest(stream);}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTArrayList}{TArrayList<uint8\_t>}}(t.DigestSize(),\ t.GetDigest());}
+\DoxyCodeLine{00191\ \ \ \}}
+\DoxyCodeLine{00192\ \};}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ EndEsdlNamespace()}
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

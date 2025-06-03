@@ -1,0 +1,57 @@
+\doxysection{tex\+\_\+writer.\+h}
+\hypertarget{tex__writer_8h_source}{}\label{tex__writer_8h_source}\index{repository/tex\_writer.h@{repository/tex\_writer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_olx\_tex\_writerH}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_olx\_tex\_writerH}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}efile.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ A\ simple\ postscript\ file\ interface}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }TEXWriter\ \ \{}
+\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ out;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{char}\ bf[80];}
+\DoxyCodeLine{00021\ \ \ uint32\_t\ CurrentColor;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{float}\ CurrentLineWidth;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{typedef}\ void\ (TEXWriter::*RenderFunc)();}
+\DoxyCodeLine{00025\ \ \ TEXWriter(\textcolor{keyword}{const}\ olxstr\&\ fileName)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ CurrentColor\ =\ 0;}
+\DoxyCodeLine{00027\ \ \ \ \ CurrentLineWidth\ =\ 1;}
+\DoxyCodeLine{00028\ \ \ \ \ out.Open(fileName,\ \textcolor{stringliteral}{"{}w+b"{}});}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)documentclass[a4paper,10pt]\{article\}"{}});}
+\DoxyCodeLine{00031\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)usepackage\{color\}"{}});}
+\DoxyCodeLine{00032\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)usepackage\{graphicx\}"{}});}
+\DoxyCodeLine{00033\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)usepackage\{tikz\}"{}});}
+\DoxyCodeLine{00034\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)usetikzlibrary\{trees\}"{}});}
+\DoxyCodeLine{00035\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)usetikzlibrary\{shapes\}"{}});}
+\DoxyCodeLine{00036\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)usetikzlibrary\{patterns\}"{}});}
+\DoxyCodeLine{00037\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)usetikzlibrary\{calc,through,backgrounds\}"{}});}
+\DoxyCodeLine{00038\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)usetikzlibrary\{arrows,decorations.pathmorphing,backgrounds,positioning,fit\}"{}});}
+\DoxyCodeLine{00039\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)usepackage[english]\{babel\}"{}});}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{//out.Writeln("{}\(\backslash\)\(\backslash\)begin\{document\}"{});}}
+\DoxyCodeLine{00041\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//white\ border\ width\ around\ elements}}
+\DoxyCodeLine{00043\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)newcommand\{\(\backslash\)\(\backslash\)whitespace\}\{1pt\}"{}});}
+\DoxyCodeLine{00044\ \ \ \ \ out.Writeln(\textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ Writenl(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ bf)\ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ out.Writeln(bf);}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

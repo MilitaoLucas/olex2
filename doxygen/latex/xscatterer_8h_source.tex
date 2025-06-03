@@ -1,0 +1,149 @@
+\doxysection{xscatterer.\+h}
+\hypertarget{xscatterer_8h_source}{}\label{xscatterer_8h_source}\index{xlib/xscatterer.h@{xlib/xscatterer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2014\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_x\_scatterer\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_x\_scatterer\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}chemdata.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}pyext.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginXlibNamespace()}
+\DoxyCodeLine{00018\ \textcolor{comment}{/*\ scatterer\ wrapping\ to\ allow\ user\ defined\ values.\ */}}
+\DoxyCodeLine{00019\ class\ XScatterer\ \{}
+\DoxyCodeLine{00020\ \ \ \mbox{\hyperlink{structcm__Gaussians}{cm\_Gaussians}}\ gaussians;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{double}\ mu,\ wt,\ r;}
+\DoxyCodeLine{00022\ \ \ compd\ fpfdp;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ source;}
+\DoxyCodeLine{00024\ \ \ olxstr\ Label;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{short}\ set\_items;}
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00028\ \ \ \ \ setGaussian\ =\ 0x0001,}
+\DoxyCodeLine{00029\ \ \ \ \ setDispersion\ =\ 0x0002,}
+\DoxyCodeLine{00030\ \ \ \ \ setMu\ =\ 0x0004,}
+\DoxyCodeLine{00031\ \ \ \ \ setR\ =\ 0x0008,}
+\DoxyCodeLine{00032\ \ \ \ \ setWt\ =\ 0x0010,}
+\DoxyCodeLine{00033\ \ \ \ \ setAll\ =\ setGaussian\ |\ setDispersion\ |\ setMu\ |\ setR\ |\ setWt;}
+\DoxyCodeLine{00034\ \ \ \textcolor{comment}{//\ creates\ a\ dummy\ scatterer}}
+\DoxyCodeLine{00035\ \ \ XScatterer(\textcolor{keyword}{const}\ olxstr\&\ lbl)}
+\DoxyCodeLine{00036\ \ \ \ \ :\ mu(0),\ wt(0),\ r(0),\ source(NULL),\ Label(lbl),\ set\_items(0)}
+\DoxyCodeLine{00037\ \ \ \{\}}
+\DoxyCodeLine{00038\ \ \ \textcolor{comment}{//\ creates\ scatterer\ from\ the\ library}}
+\DoxyCodeLine{00039\ \ \ XScatterer(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ src,\ \textcolor{keywordtype}{double}\ energy)}
+\DoxyCodeLine{00040\ \ \ \ \ :\ mu(0),\ set\_items(0)}
+\DoxyCodeLine{00041\ \ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ SetSource(src,\ energy);}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{comment}{/*\ searches\ for\ the\ scatterer\ in\ the\ library\ and\ initialises\ data.\ If}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ scatterer\ no\ found,\ throws\ exception}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00047\ \ \ XScatterer(\textcolor{keyword}{const}\ olxstr\&\ lbl,\ \textcolor{keywordtype}{double}\ energy)\ :\ mu(0),\ set\_items(0)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ src\ =\ XElementLib::FindBySymbol(lbl);}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{if}\ (src\ ==\ 0)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}unknown\ scatterer\ symbol:\ "{}}).quote()\ <<\ lbl);}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ SetSource(*src,\ energy);}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{//\ copy\ constructor}}
+\DoxyCodeLine{00056\ \ \ XScatterer(\textcolor{keyword}{const}\ XScatterer\&\ sc)}
+\DoxyCodeLine{00057\ \ \ \ \ :\ gaussians(sc.gaussians),}
+\DoxyCodeLine{00058\ \ \ \ \ mu(sc.mu),}
+\DoxyCodeLine{00059\ \ \ \ \ wt(sc.wt),}
+\DoxyCodeLine{00060\ \ \ \ \ r(sc.r),}
+\DoxyCodeLine{00061\ \ \ \ \ fpfdp(sc.fpfdp),}
+\DoxyCodeLine{00062\ \ \ \ \ source(sc.source),}
+\DoxyCodeLine{00063\ \ \ \ \ Label(sc.Label),}
+\DoxyCodeLine{00064\ \ \ \ \ set\_items(sc.set\_items)}
+\DoxyCodeLine{00065\ \ \ \{\}}
+\DoxyCodeLine{00066\ \ \ \textcolor{comment}{//\ initialises\ data\ from\ the\ provided\ library\ element}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ SetSource(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ src,\ \textcolor{keywordtype}{double}\ energy);}
+\DoxyCodeLine{00068\ \ \ \textcolor{comment}{//\ updates\ a\ scetterer\ info}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{void}\ Merge(\textcolor{keyword}{const}\ XScatterer\&\ sc);}
+\DoxyCodeLine{00070\ \ \ XScatterer\&\ operator\ =\ (\textcolor{keyword}{const}\ XScatterer\&\ sc);}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//\ sets\ custom\ fp\ and\ fdp}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{void}\ SetFpFdp(\textcolor{keyword}{const}\ compd\&\ v)\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ fpfdp\ =\ v;}
+\DoxyCodeLine{00074\ \ \ \ \ set\_items\ |=\ setDispersion;}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{bool}\ IsNeutron()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{if}\ (IsSet(setGaussian))\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ gaussians.a1\ ==\ 0\ \&\&\ gaussians.b1\ ==\ 0\ \&\&}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ gaussians.a2\ ==\ 0\ \&\&\ gaussians.b2\ ==\ 0\ \&\&}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ gaussians.a3\ ==\ 0\ \&\&\ gaussians.b3\ ==\ 0\ \&\&}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ gaussians.a4\ ==\ 0\ \&\&\ gaussians.b4\ ==\ 0;}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{const}\ compd\&\ GetFpFdp()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ fpfdp;\ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{comment}{//\ sets\ custom\ bonding\ radius}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{void}\ SetR(\textcolor{keywordtype}{double}\ v)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ r\ =\ v;}
+\DoxyCodeLine{00089\ \ \ \ \ set\_items\ |=\ setR;}
+\DoxyCodeLine{00090\ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordtype}{double}\ GetR()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ r;\ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{comment}{//\ sets\ custom\ molecular\ weight}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordtype}{void}\ SetWeight(\textcolor{keywordtype}{double}\ v)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ wt\ =\ v;}
+\DoxyCodeLine{00095\ \ \ \ \ set\_items\ |=\ setWt;}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{double}\ GetWeight()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ wt;\ \}}
+\DoxyCodeLine{00098\ \ \ \textcolor{comment}{//\ sets\ custom\ adsorption\ coefficient}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{void}\ SetMu(\textcolor{keywordtype}{double}\ v)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ mu\ =\ v;}
+\DoxyCodeLine{00101\ \ \ \ \ set\_items\ |=\ setMu;}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{double}\ GetMu()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ mu;\ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{comment}{//\ sets\ custom\ gaussians}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ SetGaussians(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Gaussians}{cm\_Gaussians}}\&\ g)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ gaussians\ =\ g;}
+\DoxyCodeLine{00107\ \ \ \ \ set\_items\ |=\ setGaussian;}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Gaussians}{cm\_Gaussians}}\ \&GetGaussians()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ gaussians;}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keywordtype}{bool}\ IsSet(\textcolor{keywordtype}{short}\ what)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (set\_items\&what)\ !=\ 0;\ \}}
+\DoxyCodeLine{00113\ \ \ DefPropC(olxstr,\ Label)}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{comment}{//\ return\ an\ INS\ file\ string\ representation}}
+\DoxyCodeLine{00115\ \ \ \ \ olxstr\ ToInsString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordtype}{double}\ calc\_sq(\textcolor{keywordtype}{double}\ sqv)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ gaussians.calc\_sq(sqv);}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ \ \ compd\ calc\_sq\_anomalous(\textcolor{keywordtype}{double}\ sqv)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{return}\ compd(gaussians.calc\_sq(sqv)\ +\ fpfdp.GetRe(),\ fpfdp.GetIm());}
+\DoxyCodeLine{00121\ \ \ \}}
+\DoxyCodeLine{00122\ \ \ compd\ calc\_anomalous()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{return}\ GetFpFdp();}
+\DoxyCodeLine{00124\ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \textcolor{keywordtype}{bool}\ IsSFAC()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (set\_items\ ==\ setAll);\ \}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{bool}\ IsDISP()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{return}\ (set\_items\ ==\ setDispersion\ ||}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ set\_items\ ==\ (setDispersion\ |\ setMu));}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ \_di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di);}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00133\ \ \ PyObject*\ PyExport();}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ ChargeFromLabel(\textcolor{keyword}{const}\ olxstr\ \&l,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ *e\_\ =\ 0);}
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{/*\ Normalises\ a\ charged\ label\ from\ O2-\/\ to\ O-\/2\ etc}}
+\DoxyCodeLine{00137\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{static}\ olxstr\ NormaliseCharge(\textcolor{keyword}{const}\ olxstr\ \&l,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ *e\_\ =\ 0);}
+\DoxyCodeLine{00139\ \};}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ EndXlibNamespace()}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

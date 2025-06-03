@@ -1,0 +1,342 @@
+\doxysection{olxptr.\+h}
+\hypertarget{olxptr_8h_source}{}\label{olxptr_8h_source}\index{sdl/olxptr.h@{sdl/olxptr.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2014\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_ptr\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_ptr\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ptr>\ \textcolor{keyword}{struct\ }olx\_ptr\_\ \ \{}
+\DoxyCodeLine{00014\ \ \ ptr*\ p;}
+\DoxyCodeLine{00015\ \ \ \textcolor{keywordtype}{int}\ ref\_cnt;}
+\DoxyCodeLine{00016\ \ \ olx\_ptr\_(ptr*\ \_p)}
+\DoxyCodeLine{00017\ \ \ \ \ :\ p(\_p),\ ref\_cnt(1)}
+\DoxyCodeLine{00018\ \ \ \{\}}
+\DoxyCodeLine{00019\ \ \ olx\_ptr\_*\ inc\_ref()\ \ \{}
+\DoxyCodeLine{00020\ \ \ \ \ ref\_cnt++;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00022\ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{bool}\ do\_del,\ \textcolor{keywordtype}{bool}\ is\_array>\ \textcolor{keywordtype}{int}\ dec\_ref()\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{int}\ rc\ =\ -\/-\/ref\_cnt;}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{if}\ (rc\ <=\ 0)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p\ !=\ 0\ \&\&\ do\_del)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_array)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ p;}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p;}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{return}\ rc;}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ olx\_ptr\_\ \&ap)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ p\ ==\ ap.p;}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ olx\_ptr\_\&\ ap)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ p\ !=\ ap.p;}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ heir\_t,\ \textcolor{keyword}{typename}\ ptr>}
+\DoxyCodeLine{00047\ \textcolor{keyword}{struct\ }olx\_ptr\_base\ \{}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{typedef}\ olx\_ptr\_base<heir\_t,\ ptr>\ this\_t;}
+\DoxyCodeLine{00049\ \ \ heir\_t\&\ self()\ \{\ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{static\_cast<}heir\_t*\textcolor{keyword}{>}(\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{const}\ heir\_t\&\ self()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }heir\_t*\textcolor{keyword}{>}(\textcolor{keyword}{this});}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00054\ \ \ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<ptr>}}*\ p;}
+\DoxyCodeLine{00055\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ \ \ olx\_ptr\_base()\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ p\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<ptr>}}(0);}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ olx\_ptr\_base(ptr\ *p\_)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ p\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<ptr>}}(p\_);}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \ \ olx\_ptr\_base(\textcolor{keyword}{const}\ heir\_t\&\ \_p)}
+\DoxyCodeLine{00063\ \ \ \ \ :\ p(\_p.p-\/>inc\_ref())}
+\DoxyCodeLine{00064\ \ \ \{\}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{comment}{//\ use\ this\ to\ prevent\ the\ pointer\ from\ the\ removal}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ inc\_ref()\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ p-\/>inc\_ref();}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{virtual}\ \string~olx\_ptr\_base()\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ self().dec\_ref();}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ this\_t\&\ operator\ =\ (\textcolor{keyword}{const}\ this\_t\&\ \_p)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ self().dec\_ref();}
+\DoxyCodeLine{00077\ \ \ \ \ p\ =\ \_p.p-\/>inc\_ref();}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{bool}\ ok()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ p-\/>p\ !=\ 0;\ \}}
+\DoxyCodeLine{00081\ \ \ ptr*\ release()\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ ptr*\ p\_\ =\ p-\/>p;}
+\DoxyCodeLine{00083\ \ \ \ \ p-\/>p\ =\ 0;}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{return}\ p\_;}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{void}\ reset(ptr\ *def=0)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{if}\ (self().dec\_ref()\ ==\ 0)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ p\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<ptr>}}(def);}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ p-\/>p\ =\ def;}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ this\_t\&\ ap)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{return}\ *p\ ==\ *ap.p;}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ this\_t\&\ ap)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ !(operator\ ==\ (ap));}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (uintptr\_t\ pv)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(p-\/>p)\ ==\ pv;}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (uintptr\_t\ pv)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}uintptr\_t\textcolor{keyword}{>}(p-\/>p)\ !=\ pv;}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \};}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ptr>\ \textcolor{keyword}{struct\ }olx\_object\_ptr}
+\DoxyCodeLine{00110\ \ \ :\ \textcolor{keyword}{public}\ olx\_ptr\_base<olx\_object\_ptr<ptr>,\ ptr\ >}
+\DoxyCodeLine{00111\ \{}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{typedef}\ olx\_ptr\_base<olx\_object\_ptr<ptr>,\ ptr>\ parent\_t;}
+\DoxyCodeLine{00113\ \ \ olx\_object\_ptr()\ \{\}}
+\DoxyCodeLine{00114\ \ \ olx\_object\_ptr(ptr*\ p)}
+\DoxyCodeLine{00115\ \ \ \ \ :\ parent\_t(p)}
+\DoxyCodeLine{00116\ \ \ \{\}}
+\DoxyCodeLine{00117\ \ \ olx\_object\_ptr(\textcolor{keyword}{const}\ olx\_object\_ptr\ \&p)}
+\DoxyCodeLine{00118\ \ \ \ \ :\ parent\_t(p)}
+\DoxyCodeLine{00119\ \ \ \{\}}
+\DoxyCodeLine{00120\ \ \ olx\_object\_ptr\&\ operator\ =\ (\textcolor{keyword}{const}\ olx\_object\_ptr\&\ \_p)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ parent\_t::p-\/>template\ dec\_ref<true,\ false>();}
+\DoxyCodeLine{00122\ \ \ \ \ parent\_t::p\ =\ \_p.p-\/>inc\_ref();}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00124\ \ \ \}}
+\DoxyCodeLine{00125\ \ \ olx\_object\_ptr\&\ operator\ =\ (ptr*\ p\_)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{if}\ (-\/-\/parent\_t::p-\/>ref\_cnt\ <=\ 0\ \&\&\ parent\_t::p-\/>p\ !=\ 0)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ parent\_t::p-\/>p;}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ parent\_t::p-\/>p\ =\ p\_;}
+\DoxyCodeLine{00130\ \ \ \ \ parent\_t::p-\/>ref\_cnt\ =\ 1;}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ \ \ olx\_object\_ptr\&\ operator\ =\ (\textcolor{keyword}{const}\ ptr\ \&p\_)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{if}\ (-\/-\/parent\_t::p-\/>ref\_cnt\ <=\ 0\ \&\&\ parent\_t::p-\/>p\ !=\ 0)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ parent\_t::p-\/>p;}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ parent\_t::p-\/>p\ =\ \textcolor{keyword}{new}\ ptr(p\_);}
+\DoxyCodeLine{00138\ \ \ \ \ parent\_t::p-\/>ref\_cnt\ =\ 1;}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \ }
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{const}\ ptr*\ operator\ \&()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00143\ \ \ ptr*\ operator\ \&()\ \{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{const}\ ptr\&\ operator\ *()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00146\ \ \ ptr\&\ operator\ *()\ \{\ \textcolor{keywordflow}{return}\ *parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{const}\ ptr*\ operator\ -\/>()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00149\ \ \ ptr*\ operator\ -\/>()\ \{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{operator}\ \textcolor{keyword}{const}\ ptr\&\ ()\ \textcolor{keyword}{const}\ \{\ \textcolor{keywordflow}{return}\ *parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{operator}\ ptr\&\ ()\ \{\ \textcolor{keywordflow}{return}\ *parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{friend}\ parent\_t;}
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordtype}{int}\ dec\_ref()\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{return}\ parent\_t::p-\/>template\ dec\_ref<true,\ false>();}
+\DoxyCodeLine{00158\ \ \ \}}
+\DoxyCodeLine{00159\ \};}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ptr>\ \textcolor{keyword}{struct\ }olx\_array\_ptr}
+\DoxyCodeLine{00162\ \ \ :\ \textcolor{keyword}{public}\ olx\_ptr\_base<olx\_array\_ptr<ptr>,\ ptr>}
+\DoxyCodeLine{00163\ \{}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{typedef}\ olx\_ptr\_base<olx\_array\_ptr<ptr>,\ ptr>\ parent\_t;}
+\DoxyCodeLine{00165\ \ \ olx\_array\_ptr()\ \{\}}
+\DoxyCodeLine{00166\ \ \ olx\_array\_ptr(ptr*\ p)}
+\DoxyCodeLine{00167\ \ \ :\ parent\_t(p)}
+\DoxyCodeLine{00168\ \ \ \{\}}
+\DoxyCodeLine{00169\ \ \ olx\_array\_ptr(\textcolor{keyword}{const}\ olx\_array\_ptr\ \&p)}
+\DoxyCodeLine{00170\ \ \ \ \ :\ parent\_t(p)}
+\DoxyCodeLine{00171\ \ \ \{\}}
+\DoxyCodeLine{00172\ \ \ olx\_array\_ptr(\textcolor{keywordtype}{size\_t}\ sz)}
+\DoxyCodeLine{00173\ \ \ \ \ :\ parent\_t(\textcolor{keyword}{new}\ ptr[sz])}
+\DoxyCodeLine{00174\ \ \ \{\}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ olx\_array\_ptr\&\ operator\ =\ (ptr*\ p\_)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{if}\ (-\/-\/parent\_t::p-\/>ref\_cnt\ <=\ 0\ \&\&\ parent\_t::p-\/>p\ !=\ 0)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ parent\_t::p-\/>p;}
+\DoxyCodeLine{00179\ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ parent\_t::p-\/>p\ =\ p\_;}
+\DoxyCodeLine{00181\ \ \ \ \ parent\_t::p-\/>ref\_cnt\ =\ 1;}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{const}\ ptr*\ operator\ *()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00186\ \ \ ptr*\ operator\ *()\ \{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \textcolor{keyword}{const}\ ptr*\ operator\ \&()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00189\ \ \ ptr*\ operator\ \&()\ \{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{operator}\ \textcolor{keyword}{const}\ ptr*\ ()\ \textcolor{keyword}{const}\ \{\ \ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p;\ \ \}}
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{operator}\ ptr*\ ()\ \{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p;\ \}}
+\DoxyCodeLine{00193\ \ \ }
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{id}x\_t\_>}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{const}\ ptr\&\ operator\ []\ (idx\_t\_\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p[i];\ \}}
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{id}x\_t\_>}
+\DoxyCodeLine{00197\ \ \ ptr\&\ operator\ []\ (idx\_t\_\ i)\ \{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p[i];\ \}}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{static}\ olx\_array\_ptr\ copy(\textcolor{keyword}{const}\ ptr\ *p,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ ptr\ *rv\ =\ \textcolor{keyword}{new}\ ptr[sz];}
+\DoxyCodeLine{00201\ \ \ \ \ memcpy(rv,\ p,\ sz*\textcolor{keyword}{sizeof}(ptr));}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_array\_ptr(rv);}
+\DoxyCodeLine{00203\ \ \ \}}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \textcolor{keyword}{typedef}\ ptr\ object\_t;}
+\DoxyCodeLine{00206\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{friend}\ parent\_t;}
+\DoxyCodeLine{00208\ \ \ \textcolor{keywordtype}{int}\ dec\_ref()\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{return}\ parent\_t::p-\/>template\ dec\_ref<true,\ true>();}
+\DoxyCodeLine{00210\ \ \ \}}
+\DoxyCodeLine{00211\ \};}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__ref}{olx\_ref}}\ \{}
+\DoxyCodeLine{00214\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ P>}
+\DoxyCodeLine{00215\ \ \ \textcolor{keyword}{static}\ P\&\ get(P*\ p)\ \{\ \textcolor{keywordflow}{return}\ *p;\ \}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{char}\ *get(\textcolor{keywordtype}{char}\ *p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{wchar\_t}\ *get(\textcolor{keywordtype}{wchar\_t}\ *p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ P>}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ P\&\ get(\textcolor{keyword}{const}\ P\ *p)\ \{\ \textcolor{keywordflow}{return}\ *p;\ \}}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *get(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}\ *get(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}\ *p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00222\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ P>}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{static}\ P\&\ get(P\&\ p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00224\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ P>}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ P\&\ get(\textcolor{keyword}{const}\ P\&\ p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00226\ \};}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__ptr}{olx\_ptr}}\ \{}
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ P>}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{static}\ P*\ get(P*\ p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ P>}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ P*\ get(\textcolor{keyword}{const}\ P*\ p)\ \{\ \textcolor{keywordflow}{return}\ p;\ \}}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ P>}
+\DoxyCodeLine{00234\ \ \ \textcolor{keyword}{static}\ P*\ get(P\&\ p)\ \{\ \textcolor{keywordflow}{return}\ \&p;\ \}}
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ P>}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ P*\ get(\textcolor{keyword}{const}\ P\&\ p)\ \{\ \textcolor{keywordflow}{return}\ \&p;\ \}}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__array__ptr}{olx\_array\_ptr<T>}}\ copy(\textcolor{keyword}{const}\ T\ *d,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_array\_ptr<T>::copy(d,\ sz);}
+\DoxyCodeLine{00241\ \ \ \}}
+\DoxyCodeLine{00242\ \};}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \textcolor{comment}{//\ this\ object\ could\ be\ safelly\ passed\ to/from\ dll\ function\ calls}}
+\DoxyCodeLine{00245\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ptr>\ \textcolor{keyword}{struct\ }olx\_dll\_ptr\ \{}
+\DoxyCodeLine{00246\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{struct\ }olx\_dll\_ptr\_\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordtype}{void}\ *(*allocator\_func)(\textcolor{keywordtype}{size\_t}\ sz);}
+\DoxyCodeLine{00249\ \ \ \ \ void(*deallocator\_func)(\textcolor{keywordtype}{void}\ *p);}
+\DoxyCodeLine{00250\ \ \ \ \ ptr*\ p;}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordtype}{int}\ ref\_cnt;}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordtype}{void}\ init()\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ allocator\_func\ =\ \&olx\_dll\_ptr\_::alloc;}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ deallocator\_func\ =\ \&olx\_dll\_ptr\_::dealloc;}
+\DoxyCodeLine{00256\ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \ \ olx\_dll\_ptr\_()}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ :\ p(0),\ ref\_cnt(1)}
+\DoxyCodeLine{00259\ \ \ \ \ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ init();}
+\DoxyCodeLine{00261\ \ \ \ \ \}}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \ \ \ \ olx\_dll\_ptr\_(\textcolor{keywordtype}{size\_t}\ cnt)}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ :\ p(alloc(cnt)),\ ref\_cnt(1)}
+\DoxyCodeLine{00265\ \ \ \ \ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ init();}
+\DoxyCodeLine{00267\ \ \ \ \ \}}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \ \ \ \ olx\_dll\_ptr\_(ptr\ *p\_)}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ :\ p(p\_),\ ref\_cnt(1)}
+\DoxyCodeLine{00271\ \ \ \ \ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ init();}
+\DoxyCodeLine{00273\ \ \ \ \ \}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \ \ olx\_dll\_ptr\_*\ inc\_ref()\ \{}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ ref\_cnt++;}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00278\ \ \ \ \ \}}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordtype}{int}\ dec\_ref()\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ rc\ =\ -\/-\/ref\_cnt;}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rc\ <=\ 0)\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p\ !=\ 0)\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ (*deallocator\_func)(p);}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rc;}
+\DoxyCodeLine{00288\ \ \ \ \ \}}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ *alloc(\textcolor{keywordtype}{size\_t}\ sz)\ \{\ \textcolor{keywordflow}{return}\ malloc(sz);\ \}}
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ dealloc(\textcolor{keywordtype}{void}\ *p)\ \{\ free(p);\ \}}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ *\textcolor{keyword}{operator}\ \textcolor{keyword}{new}(\textcolor{keywordtype}{size\_t}\ n)\{\ \textcolor{keywordflow}{return}\ alloc(n);\ \}}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \textcolor{keyword}{operator}\ \textcolor{keyword}{delete}(\textcolor{keywordtype}{void}\ *p)\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ (*((olx\_dll\_ptr\_*)p)-\/>deallocator\_func)(p);}
+\DoxyCodeLine{00294\ \ \ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \};}
+\DoxyCodeLine{00296\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00297\ \ \ \mbox{\hyperlink{structolx__dll__ptr_1_1olx__dll__ptr__}{olx\_dll\_ptr\_}}*\ p;}
+\DoxyCodeLine{00298\ \ \ olx\_dll\_ptr()\ \{\ p\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__dll__ptr_1_1olx__dll__ptr__}{olx\_dll\_ptr\_}}();\ \}}
+\DoxyCodeLine{00299\ \ \ \mbox{\hyperlink{structolx__dll__ptr}{olx\_dll\_ptr}}(\textcolor{keywordtype}{size\_t}\ sz)\ \{\ p\ =\ \textcolor{keyword}{new}\ olx\_dll\_ptr\_(sz);\ \}}
+\DoxyCodeLine{00300\ \ \ olx\_dll\_ptr(ptr\ *p\_)\ \{\ p\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__dll__ptr_1_1olx__dll__ptr__}{olx\_dll\_ptr\_}}(p\_);\ \}}
+\DoxyCodeLine{00301\ \ \ olx\_dll\_ptr(\textcolor{keyword}{const}\ olx\_dll\_ptr\&\ \_p)}
+\DoxyCodeLine{00302\ \ \ \ \ :\ p(\_p.p-\/>inc\_ref())}
+\DoxyCodeLine{00303\ \ \ \{\}}
+\DoxyCodeLine{00304\ \ \ \string~olx\_dll\_ptr()\ \{\ p-\/>dec\_ref();\ \}}
+\DoxyCodeLine{00305\ \ \ olx\_dll\_ptr\&\ operator\ =\ (\textcolor{keyword}{const}\ olx\_dll\_ptr\&\ p\_)\ \{}
+\DoxyCodeLine{00306\ \ \ \ \ p-\/>dec\_ref();}
+\DoxyCodeLine{00307\ \ \ \ \ p\ =\ p\_.p-\/>inc\_ref();}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00309\ \ \ \}}
+\DoxyCodeLine{00310\ \ \ olx\_dll\_ptr\&\ operator\ =\ (ptr\ *p\_)\ \{}
+\DoxyCodeLine{00311\ \ \ \ \ p-\/>dec\_ref();}
+\DoxyCodeLine{00312\ \ \ \ \ p\ =\ \textcolor{keyword}{new}\ olx\_dll\_ptr(p\_);}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00314\ \ \ \}}
+\DoxyCodeLine{00315\ \ \ \textcolor{keywordtype}{bool}\ ok()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ p-\/>p\ !=\ 0;\ \}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \textcolor{keyword}{const}\ ptr*\ operator\ -\/>()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ p-\/>p;\ \}}
+\DoxyCodeLine{00318\ \ \ ptr*\ operator\ -\/>()\ \{\ \textcolor{keywordflow}{return}\ p-\/>p;\ \}}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \ \ \textcolor{keyword}{const}\ ptr*\ operator\ *()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ p-\/>p;\ \}}
+\DoxyCodeLine{00321\ \ \ ptr*\ operator\ *()\ \{\ \textcolor{keywordflow}{return}\ p-\/>p;\ \}}
+\DoxyCodeLine{00322\ }
+\DoxyCodeLine{00323\ \ \ \textcolor{comment}{//operator\ const\ ptr*\ ()\ const\ \{\ return\ p-\/>p;\ \}}}
+\DoxyCodeLine{00324\ \ \ \textcolor{comment}{//operator\ ptr*\ ()\ \{\ return\ p-\/>p;\ \}}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ ptr*\ get\_ptr()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ p-\/>p;\ \}}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \textcolor{keyword}{static}\ olx\_dll\_ptr\ copy(\textcolor{keyword}{const}\ ptr\ *p,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ tsz\ =\ sz*\textcolor{keyword}{sizeof}(ptr);}
+\DoxyCodeLine{00330\ \ \ \ \ ptr\ *rv\ =\ (ptr\ *)olx\_dll\_ptr\_::alloc(tsz);}
+\DoxyCodeLine{00331\ \ \ \ \ memcpy(rv,\ p,\ tsz);}
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_dll\_ptr(rv);}
+\DoxyCodeLine{00333\ \ \ \}}
+\DoxyCodeLine{00334\ \};}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

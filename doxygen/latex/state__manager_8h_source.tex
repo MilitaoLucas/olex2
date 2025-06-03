@@ -1,0 +1,32 @@
+\doxysection{state\+\_\+manager.\+h}
+\hypertarget{state__manager_8h_source}{}\label{state__manager_8h_source}\index{sdl/state\_manager.h@{sdl/state\_manager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ BeginEsdlNamespace()}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ a\ simple\ scalar\ state\ manager}}
+\DoxyCodeLine{00013\ template\ <typename\ T>}
+\DoxyCodeLine{00014\ struct\ StateManager\ \{}
+\DoxyCodeLine{00015\ \ \ T\&\ value;}
+\DoxyCodeLine{00016\ \ \ T\ start,\ end;}
+\DoxyCodeLine{00017\ \ \ StateManager(T\&\ value,\ \textcolor{keyword}{const}\ T\&\ start\_value,\ \textcolor{keyword}{const}\ T\&\ end\_value)}
+\DoxyCodeLine{00018\ \ \ \ \ :\ value(value),\ start(start\_value),\ end(end\_value)}
+\DoxyCodeLine{00019\ \ \ \{}
+\DoxyCodeLine{00020\ \ \ \ \ value\ =\ start;}
+\DoxyCodeLine{00021\ \ \ \}}
+\DoxyCodeLine{00022\ \ \ \string~StateManager()\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ value\ =\ end;}
+\DoxyCodeLine{00024\ \ \ \}}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ EndEsdlNamespace()}
+
+\end{DoxyCode}
