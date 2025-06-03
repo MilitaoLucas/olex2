@@ -1,0 +1,714 @@
+\doxysection{refmodel.\+h}
+\hypertarget{refmodel_8h_source}{}\label{refmodel_8h_source}\index{xlib/refmodel.h@{xlib/refmodel.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_refmodel\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_refmodel\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}asymmunit.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}srestraint.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}xscatterer.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}experimental.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}leq.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}refmerge.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}afixgroup.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}exyzgroup.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}samegroup.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}reflection.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}fragment.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}symmlib.h"{}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}constraints\_ext.h"{}}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}selected.h"{}}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}calc\_ext.h"{}}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ BeginXlibNamespace()}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ static\ const\ \textcolor{keywordtype}{double}}
+\DoxyCodeLine{00032\ \ \ def\_HKLF\_s\ \ =\ 1,}
+\DoxyCodeLine{00033\ \ \ def\_HKLF\_wt\ =\ 1,}
+\DoxyCodeLine{00034\ \ \ def\_OMIT\_s\ \ =\ -\/2,}
+\DoxyCodeLine{00035\ \ \ def\_OMIT\_2t\ =\ 180.0,}
+\DoxyCodeLine{00036\ \ \ def\_SHEL\_hr\ =\ 0,}
+\DoxyCodeLine{00037\ \ \ def\_SHEL\_lr\ =\ 100;\ \ \textcolor{comment}{//\ ['infinity'\ in\ A]}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ enum\ \{}
+\DoxyCodeLine{00040\ \ \ def\_HKLF\_m\ =\ 0,}
+\DoxyCodeLine{00041\ \ \ def\_MERG\ =\ 2,}
+\DoxyCodeLine{00042\ \ \ def\_TWIN\_n\ =\ 2,}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//\ unset,\ completeness\ for\ all\ batches,\ merge\ stats\ -\/\ for\ the\ largest\ set}}
+\DoxyCodeLine{00044\ \ \ def\_TWST\ =\ -\/1\ }
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ clear\ constants...}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{static}\ uint32\_t}
+\DoxyCodeLine{00049\ \ \ rm\_clear\_SAME\ =\ 0x00000001,}
+\DoxyCodeLine{00050\ \ \ rm\_clear\_AFIX\ =\ 0x00000002,}
+\DoxyCodeLine{00051\ \ \ rm\_clear\_VARS\ =\ 0x00000004,}
+\DoxyCodeLine{00052\ \ \ rm\_clear\_BadRefs\ =\ 0x00000008,}
+\DoxyCodeLine{00053\ \ \ rm\_clear\_ISAME\ =\ 0x00000010,\ \textcolor{comment}{//\ implicit\ SAME}}
+\DoxyCodeLine{00054\ \ \ rm\_clear\_ALL\ =\ 0xFFFFFFFF,}
+\DoxyCodeLine{00055\ \ \ rm\_clear\_DEF\ =\ (rm\_clear\_ALL\string^(}
+\DoxyCodeLine{00056\ \ \ rm\_clear\_SAME|rm\_clear\_AFIX|rm\_clear\_VARS|rm\_clear\_BadRefs));}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{keyword}{class\ }RefinementModel\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00059\ \ \ \textcolor{comment}{//\ in\ INS\ file\ is\ EQUV\ command}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{struct\ }Equiv\ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{int}\ ref\_cnt;}
+\DoxyCodeLine{00062\ \ \ \ \ smatd\ symop;}
+\DoxyCodeLine{00063\ \ \ \ \ Equiv()\ :\ ref\_cnt(0)\ \ \{\}}
+\DoxyCodeLine{00064\ \ \ \ \ Equiv(\textcolor{keyword}{const}\ Equiv\&\ e)\ :\ ref\_cnt(e.ref\_cnt),\ symop(e.symop)\ \ \{\}}
+\DoxyCodeLine{00065\ \ \ \ \ Equiv(\textcolor{keyword}{const}\ smatd\&\ so)\ :\ ref\_cnt(0),\ symop(so)\ \ \{\}}
+\DoxyCodeLine{00066\ \ \ \ \ Equiv\&\ operator\ =\ (\textcolor{keyword}{const}\ Equiv\&\ e)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ symop\ =\ e.symop;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ ref\_cnt\ =\ e.ref\_cnt;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \};}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<Equiv,\ false>}}\ UsedSymm;}
+\DoxyCodeLine{00073\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<XScatterer*,\ true>}}\ SfacData;}
+\DoxyCodeLine{00074\ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<int,\ Fragment*>}}\ Frags;}
+\DoxyCodeLine{00075\ \ \ ContentList\ UserContent;}
+\DoxyCodeLine{00076\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00077\ \ \ olxstr\ HKLSource,\ ModelSource;}
+\DoxyCodeLine{00078\ \ \ olxstr\ RefinementMethod,\ \ \textcolor{comment}{//\ L.S.\ or\ CGLS}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ SolutionMethod;}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{int}\ MERG;}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{int}\ HKLF;\ \textcolor{comment}{//\ can\ be\ modified\ by\ GetReflections!}}
+\DoxyCodeLine{00082\ \ \ mat3d\ HKLF\_mat;}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{double}\ HKLF\_s,\ HKLF\_wt;}
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordtype}{int}\ HKLF\_m;}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{double}\ OMIT\_s,\ OMIT\_2t;}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{double}\ SHEL\_lr,\ SHEL\_hr;}
+\DoxyCodeLine{00087\ \ \ mat3d\ TWIN\_mat;}
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{int}\ TWIN\_n,\ TWST;}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{bool}\ TWIN\_set,\ OMIT\_set,\ MERG\_set,\ HKLF\_set,\ SHEL\_set,}
+\DoxyCodeLine{00090\ \ \ \ \ DEFS\_set,\ SWAT\_set;}
+\DoxyCodeLine{00091\ \ \ TEValueD\ \mbox{\hyperlink{structRefinementModel_1_1SWAT}{SWAT}}[2];}
+\DoxyCodeLine{00092\ \ \ vec3i\_list\ Omits;}
+\DoxyCodeLine{00093\ \ \ TDoubleList\ DEFS;}
+\DoxyCodeLine{00094\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<IXVarReferencerContainer*,\ false>}}\ RefContainers;}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{void}\ SetDefaults();}
+\DoxyCodeLine{00096\ \ \ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<class\ InfoTab,\ IOlxObject>}}\ InfoTables;}
+\DoxyCodeLine{00097\ \ \ \mbox{\hyperlink{classSelectedTableRows}{SelectedTableRows}}\ selectedTableRows;}
+\DoxyCodeLine{00098\ \ \ \textcolor{comment}{//\ adds\ a\ givin\ direction\ (if\ unique)\ and\ returns\ its\ name}}
+\DoxyCodeLine{00099\ \ \ \mbox{\hyperlink{structadirection}{adirection}}\ \&AddDirection(\textcolor{keyword}{const}\ TCAtomGroup\ \&atoms,\ uint16\_t\ type);}
+\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//\ atoms\ omitted\ from\ the\ maps}}
+\DoxyCodeLine{00101\ \ \ \mbox{\hyperlink{classAtomRefList}{AtomRefList}}\ Omitted;}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//\ to\ be\ used\ with\ 'stack\_restraints'\ option}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{size\_t}\ next\_restraint\_pos;}
+\DoxyCodeLine{00104\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//\ needs\ to\ be\ extended\ for\ the\ us\ of\ the\ batch\ numbers...}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{struct\ }HklStat\ :\ \textcolor{keyword}{public}\ MergeStats\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordtype}{double}\ MaxD,\ MinD,\ LimDmin,\ LimDmax,}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ OMIT\_s,\ OMIT\_2t,\ SHEL\_lr,\ SHEL\_hr,\ MaxI,\ MinI,\ HKLF\_m,\ HKLF\_s;}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{double}\ Completeness;}
+\DoxyCodeLine{00110\ \ \ \ \ mat3d\ HKLF\_mat;}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{int}\ MERG,\ HKLF,\ TWST;}
+\DoxyCodeLine{00112\ \ \ \ \ vec3i\_list\ omits;}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ FilteredOff,\ \textcolor{comment}{//\ by\ LimD,\ OMIT\_2t,\ SHEL\_hr,\ SHEL\_lr}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ OmittedReflections,\ \textcolor{comment}{//\ refs\ after\ 0\ 0\ 0}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ TotalReflections,\ \textcolor{comment}{//\ reflections\ read\ =\ OmittedRefs\ +\ TotalRefs}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ IntensityTransformed,\ \ \textcolor{comment}{//\ by\ OMIT\_s}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ DataCount;\ \textcolor{comment}{//\ number\ of\ reflections\ for\ the\ refinemenmt}}
+\DoxyCodeLine{00118\ \ \ \ \ vec3i\ FileMinInd,\ FileMaxInd;\ \ \textcolor{comment}{//\ hkl\ range\ in\ the\ file\ (all\ before\ 0\ 0\ 0)}}
+\DoxyCodeLine{00119\ \ \ \ \ HklStat()\ \ \{\ \ SetDefaults();\ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ HklStat(\textcolor{keyword}{const}\ HklStat\&\ hs)\ \{\ \ this-\/>operator\ =\ (hs);\ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ HklStat\&\ operator\ =\ (\textcolor{keyword}{const}\ HklStat\&\ hs);}
+\DoxyCodeLine{00122\ \ \ \ \ HklStat\&\ operator\ =\ (\textcolor{keyword}{const}\ MergeStats\&\ ms)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ MergeStats::operator\ =\ (ms);}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{void}\ SetDefaults();}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ GetReadReflections()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ TotalReflections+OmittedReflections;}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{bool}\ need\_updating(\textcolor{keyword}{const}\ RefinementModel\ \&r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00131\ \ \ \};}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{struct\ }BadReflection\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ vec3i\ index;}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordtype}{double}\ Fo,\ Fc,\ esd,\ factor;}
+\DoxyCodeLine{00136\ \ \ \ \ BadReflection(\textcolor{keyword}{const}\ vec3i\ \&\_index,\ \textcolor{keywordtype}{double}\ \_Fo,\ \textcolor{keywordtype}{double}\ \_Fc,\ \textcolor{keywordtype}{double}\ \_esd,}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \_factor=0)}
+\DoxyCodeLine{00138\ \ \ \ \ :\ index(\_index),\ Fo(\_Fo),\ Fc(\_Fc),\ esd(\_esd),\ factor(\_factor)}
+\DoxyCodeLine{00139\ \ \ \ \ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (factor\ ==\ 0\ \&\&\ esd\ !=\ 0)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ factor\ =\ (Fo\ -\/\ Fc)\ /\ esd;}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ BadReflection()\ :\ Fo(0),\ Fc(0),\ esd(0),\ factor(0)\ \{\}}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateFactor()\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (esd\ !=\ 0)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ factor\ =\ (Fo\ -\/\ Fc)\ /\ esd;}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ CompareDirect(\textcolor{keyword}{const}\ BadReflection\ \&r1,\ \textcolor{keyword}{const}\ BadReflection\ \&r2)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(r1.factor,\ r2.factor);}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ CompareAbs(\textcolor{keyword}{const}\ BadReflection\ \&r1,\ \textcolor{keyword}{const}\ BadReflection\ \&r2)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(olx\_abs(r1.factor),\ olx\_abs(r2.factor));}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \};}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ \_HklStat;}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{mutable}\ TRefList\ \_Reflections;\ \ \textcolor{comment}{//\ ALL\ un-\/merged\ reflections}}
+\DoxyCodeLine{00161\ \ \ \textcolor{comment}{//\ if\ this\ is\ not\ the\ HKLSource,\ statistics\ is\ recalculated}}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{structTEFile_1_1FileID}{TEFile::FileID}}\ HklStatFileID,\ HklFileID;}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{mutable}\ mat3d\ HklFileMat;}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{mutable}\ TIntList\ \_Redundancy;}
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{int}\ \_FriedelPairCount;\ \ \textcolor{comment}{//\ the\ numbe\ of\ pairs\ only}}
+\DoxyCodeLine{00166\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<BadReflection>}}\ BadReflections;}
+\DoxyCodeLine{00167\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00168\ \ \ olxstr\ AtomListToStr(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<ExplicitCAtomRef>}}\ \&al,}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ group\_size,\ \textcolor{keyword}{const}\ olxstr\ \&sep)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00170\ \ \ \mbox{\hyperlink{classolxdict}{olxdict<ExplicitCAtomRef\ *,\ vec3d,\ TPointerComparator>}}\ atom\_refs;}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{/*\ this\ is\ used\ to\ initialise\ the\ old\_atom\_ids\ */}}
+\DoxyCodeLine{00172\ \ \ \mbox{\hyperlink{classolxdict}{olxdict<TCAtom\ *,\ size\_t,\ TPointerComparator>}}\ atom\_ids;}
+\DoxyCodeLine{00173\ \ \ TSizeList\ old\_atom\_ids;}
+\DoxyCodeLine{00174\ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<long,\ double>}}\ completeness\_cache;}
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordtype}{long}\ d\_to\_key(\textcolor{keywordtype}{double}\ d,\ \textcolor{keywordtype}{bool}\ centro)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_round(d*1e5)\ *\ (centro\ ?\ -\/1\ :\ 1);}
+\DoxyCodeLine{00177\ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ GenericStore;}
+\DoxyCodeLine{00179\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00180\ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}(\mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classRefinementModel}{\string~RefinementModel}}()\ \{\ \ Clear(rm\_clear\_DEF);\ \ \}}
+\DoxyCodeLine{00182\ \ \ ExperimentalDetails\ expl;}
+\DoxyCodeLine{00183\ \ \ XVarManager\ Vars;}
+\DoxyCodeLine{00184\ \ \ TSRestraintList}
+\DoxyCodeLine{00185\ \ \ \ \ rDFIX,\ \ \textcolor{comment}{//\ restrained\ distances\ (DFIX)}}
+\DoxyCodeLine{00186\ \ \ \ \ rDANG,\ \ \textcolor{comment}{//\ restrained\ angles\ (DANG)}}
+\DoxyCodeLine{00187\ \ \ \ \ rSADI,\ \ \textcolor{comment}{//\ similar\ distances\ (SADI)}}
+\DoxyCodeLine{00188\ \ \ \ \ rCHIV,\ \ \textcolor{comment}{//\ restrained\ atomic\ volume\ (CHIV)}}
+\DoxyCodeLine{00189\ \ \ \ \ rFLAT,\ \ \textcolor{comment}{//\ planar\ groups\ (FLAT)}}
+\DoxyCodeLine{00190\ \ \ \ \ rDELU,\ \ \textcolor{comment}{//\ rigid\ bond\ restraints\ (DELU)}}
+\DoxyCodeLine{00191\ \ \ \ \ rSIMU,\ \ \textcolor{comment}{//\ similar\ Uij\ (SIMU)}}
+\DoxyCodeLine{00192\ \ \ \ \ rISOR,\ \ \textcolor{comment}{//\ Uij\ components\ approximate\ to\ isotropic\ behavior\ (ISOR)}}
+\DoxyCodeLine{00193\ \ \ \ \ rEADP,\ \ \textcolor{comment}{//\ equivalent\ adp,\ constraint}}
+\DoxyCodeLine{00194\ \ \ \ \ rAngle,}
+\DoxyCodeLine{00195\ \ \ \ \ rDihedralAngle,}
+\DoxyCodeLine{00196\ \ \ \ \ rFixedUeq,}
+\DoxyCodeLine{00197\ \ \ \ \ rSimilarUeq,}
+\DoxyCodeLine{00198\ \ \ \ \ rSimilarAdpVolume,}
+\DoxyCodeLine{00199\ \ \ \ \ rRIGU;}
+\DoxyCodeLine{00200\ \ \ TExyzGroups\ ExyzGroups;}
+\DoxyCodeLine{00201\ \ \ TAfixGroups\ AfixGroups;}
+\DoxyCodeLine{00202\ \ \ TSameGroupList\ rSAME;}
+\DoxyCodeLine{00203\ \ \ TActionQueue\ \&OnSetBadReflections,}
+\DoxyCodeLine{00204\ \ \ \ \ \&OnCellDifference;}
+\DoxyCodeLine{00205\ \ \ TAsymmUnit\&\ aunit;}
+\DoxyCodeLine{00206\ \ \ ConstraintContainer<rotated\_adp\_constraint>\ SharedRotatedADPs;}
+\DoxyCodeLine{00207\ \ \ ConstraintContainer<rotating\_adp\_constraint>\ SharedRotatingADPs;}
+\DoxyCodeLine{00208\ \ \ ConstraintContainer<same\_group\_constraint>\ SameGroups;}
+\DoxyCodeLine{00209\ \ \ ConstraintContainer<same\_disp\_constraint>\ SameDisp;}
+\DoxyCodeLine{00210\ \ \ ConstraintContainer<adirection>\ Directions;}
+\DoxyCodeLine{00211\ \ \ ConstraintContainer<tls\_group\_constraint>\ cTLS;}
+\DoxyCodeLine{00212\ \ \ \textcolor{comment}{//\ restraints\ and\ constraints\ register}}
+\DoxyCodeLine{00213\ \ \ olxstr\_dict<IConstraintContainer*>\ rcRegister;}
+\DoxyCodeLine{00214\ \ \ TPtrList<IConstraintContainer>\ rcList;\ \ \textcolor{comment}{//\ when\ order\ matters}}
+\DoxyCodeLine{00215\ \ \ TPtrList<TSRestraintList>\ rcList1;}
+\DoxyCodeLine{00216\ \ \ \textcolor{comment}{//\ removes\ references\ to\ all\ deleted\ atoms}}
+\DoxyCodeLine{00217\ \ \ \textcolor{keywordtype}{void}\ Validate();}
+\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//\ creates\ a\ human\ readable\ description\ of\ the\ refinement}}
+\DoxyCodeLine{00219\ \ \ const\_strlist\ Describe();}
+\DoxyCodeLine{00220\ \ \ const\_strlist\ AnalyseModel()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00221\ \ \ \textcolor{keywordtype}{size\_t}\ MergeSADI();}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00223\ \ \ PyObject*\ PyExport(\textcolor{keywordtype}{bool}\ export\_connectivity);}
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ TDoubleList\ used\_weight,\ proposed\_weight;}
+\DoxyCodeLine{00227\ \ \ TIntList\ LS;\ \ \ \ \ \ \ \textcolor{comment}{//\ up\ to\ four\ params}}
+\DoxyCodeLine{00228\ \ \ TDoubleList\ PLAN;\ \ \textcolor{comment}{//\ up\ to\ three\ params}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ ConnInfo\ Conn;\ \ \ \ \ \textcolor{comment}{//\ extra\ connectivity\ information}}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ CalculatedVars\ CVars;}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{const}\ olxstr\ \&GetModelSource()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ModelSource;\ \}}
+\DoxyCodeLine{00234\ \ \ \textcolor{keywordtype}{void}\ SetModelSource(\textcolor{keyword}{const}\ olxstr\ \&src);}
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{const}\ olxstr\ \&GetHKLSource()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ HKLSource;\ \}}
+\DoxyCodeLine{00236\ \ \ \textcolor{keywordtype}{void}\ SetHKLSource(\textcolor{keyword}{const}\ olxstr\ \&src);}
+\DoxyCodeLine{00237\ \ \ }
+\DoxyCodeLine{00238\ \ \ olxstr\ GetHKLFStr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \ \ \textcolor{keywordtype}{void}\ SetHKLF(\textcolor{keyword}{const}\ IStrList\&\ hklf);}
+\DoxyCodeLine{00241\ \ \ \textcolor{comment}{//\ special\ handling\ of\ possibly\ merged\ numerical\ values...}}
+\DoxyCodeLine{00242\ \ \ \textcolor{keywordtype}{void}\ SetHKLFString(\textcolor{keyword}{const}\ olxstr\ \&str);}
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordtype}{int}\ GetHKLF()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ HKLF;\ \ \}}
+\DoxyCodeLine{00244\ \ \ \textcolor{keywordtype}{void}\ SetHKLF(\textcolor{keywordtype}{int}\ v)\ \ \{\ \ HKLF\ =\ v;\ \ HKLF\_set\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetHKLF\_mat()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ HKLF\_mat;\ \ \}}
+\DoxyCodeLine{00246\ \ \ \textcolor{keywordtype}{void}\ SetHKLF\_mat(\textcolor{keyword}{const}\ mat3d\&\ v);}
+\DoxyCodeLine{00247\ \ \ \textcolor{keywordtype}{double}\ GetHKLF\_s()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ HKLF\_s;\ \ \}}
+\DoxyCodeLine{00248\ \ \ \textcolor{keywordtype}{void}\ SetHKLF\_s(\textcolor{keywordtype}{double}\ v)\ \ \{\ \ HKLF\_s\ =\ v;\ \ HKLF\_set\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keywordtype}{double}\ GetHKLF\_wt()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ HKLF\_wt;\ \ \}}
+\DoxyCodeLine{00250\ \ \ \textcolor{keywordtype}{void}\ SetHKLF\_wt(\textcolor{keywordtype}{double}\ v)\ \ \{\ \ HKLF\_wt\ =\ v;\ \ HKLF\_set\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00251\ \ \ \textcolor{keywordtype}{double}\ GetHKLF\_m()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ HKLF\_m;\ \ \}}
+\DoxyCodeLine{00252\ \ \ \textcolor{keywordtype}{void}\ SetHKLF\_m(\textcolor{keywordtype}{int}\ v)\ \ \{\ \ HKLF\_m\ =\ v;\ \ HKLF\_set\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00253\ \ \ \textcolor{keywordtype}{bool}\ IsHKLFSet()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ HKLF\_set;\ \ \}}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \ \ \textcolor{keywordtype}{int}\ GetMERG()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ MERG;\ \ \}}
+\DoxyCodeLine{00256\ \ \ \textcolor{comment}{//\ MERG\ 4\ specifies\ not\ to\ use\ f''}}
+\DoxyCodeLine{00257\ \ \ \textcolor{keywordtype}{bool}\ UseFdp()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ MERG\ !=\ 4;\ \ \}}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{void}\ SetMERG(\textcolor{keywordtype}{int}\ v)\ \ \{\ \ MERG\ =\ v;\ \ MERG\_set\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00259\ \ \ \textcolor{keywordtype}{bool}\ HasMERG()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ MERG\_set;\ \ \}}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \textcolor{keywordtype}{double}\ GetOMIT\_s()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ OMIT\_s;\ \ \}}
+\DoxyCodeLine{00262\ \ \ \textcolor{keywordtype}{void}\ SetOMIT\_s(\textcolor{keywordtype}{double}\ v)\ \ \{\ \ OMIT\_s\ =\ v;\ \ OMIT\_set\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00263\ \ \ \textcolor{keywordtype}{double}\ GetOMIT\_2t()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ OMIT\_2t;\ \ \}}
+\DoxyCodeLine{00264\ \ \ \textcolor{keywordtype}{void}\ SetOMIT\_2t(\textcolor{keywordtype}{double}\ v)\ \{\ \ OMIT\_2t\ =\ v;\ \ OMIT\_set\ =\ \textcolor{keyword}{true};\}}
+\DoxyCodeLine{00265\ \ \ \textcolor{keywordtype}{bool}\ HasOMIT()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ OMIT\_set;\ \ \}}
+\DoxyCodeLine{00266\ \ \ \textcolor{keywordtype}{size\_t}\ OmittedCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Omits.Count();\ \ \}}
+\DoxyCodeLine{00267\ \ \ \textcolor{keyword}{const}\ vec3i\&\ GetOmitted(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Omits[i];\ \ \}}
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordtype}{void}\ Omit(\textcolor{keyword}{const}\ vec3i\&\ r);}
+\DoxyCodeLine{00269\ \ \ \textcolor{keywordtype}{void}\ ClearOmits()\ \{\ Omits.Clear();\ \}}
+\DoxyCodeLine{00270\ \ \ \textcolor{keywordtype}{void}\ ClearOmit()\ \{\ OMIT\_set\ =\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00271\ \ \ \textcolor{keyword}{const}\ vec3i\_list\&\ GetOmits()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Omits;\ \ \}}
+\DoxyCodeLine{00272\ \ \ \textcolor{keywordtype}{void}\ AddOMIT(\textcolor{keyword}{const}\ TStrList\&\ omit);}
+\DoxyCodeLine{00273\ \ \ \textcolor{keywordtype}{void}\ DelOMIT(\textcolor{keyword}{const}\ TStrList\&\ omit,\ \textcolor{keywordtype}{bool}\ all);}
+\DoxyCodeLine{00274\ \ \ \textcolor{keyword}{const}\ AtomRefList\ \&OmittedAtoms()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Omitted;\ \}}
+\DoxyCodeLine{00275\ \ \ olxstr\ GetOMITStr()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(OMIT\_s)\ <<\ \textcolor{charliteral}{'\ '}\ <<\ OMIT\_2t;}
+\DoxyCodeLine{00277\ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \textcolor{keywordtype}{void}\ SetTWST(\textcolor{keywordtype}{int}\ batch\_n)\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ TWST\ =\ batch\_n;}
+\DoxyCodeLine{00280\ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \textcolor{keywordtype}{int}\ GetTWST()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordflow}{return}\ TWST;}
+\DoxyCodeLine{00283\ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \textcolor{keywordtype}{bool}\ HasTWST()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keywordflow}{return}\ TWST\ !=\ def\_TWST;}
+\DoxyCodeLine{00286\ \ \ \}}
+\DoxyCodeLine{00287\ \ \ \textcolor{comment}{//\ processed\ user\ omits\ (hkl)\ and\ returns\ the\ number\ of\ removed\ reflections}}
+\DoxyCodeLine{00288\ \ \ \textcolor{keywordtype}{size\_t}\ ProcessOmits(TRefList\&\ refs);}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{const}\ TTypeList<BadReflection>\ \&GetBadReflectionList()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keywordflow}{return}\ BadReflections;}
+\DoxyCodeLine{00292\ \ \ \}}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ \textcolor{keywordtype}{void}\ SetBadReflectionList(}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keyword}{const}\ TTypeList<BadReflection>::const\_list\_type\ \&bad\_refs)}
+\DoxyCodeLine{00296\ \ \ \{}
+\DoxyCodeLine{00297\ \ \ \ \ OnSetBadReflections.Enter(\textcolor{keyword}{this});}
+\DoxyCodeLine{00298\ \ \ \ \ BadReflections\ =\ bad\_refs;}
+\DoxyCodeLine{00299\ \ \ \ \ OnSetBadReflections.Exit(\textcolor{keyword}{this});}
+\DoxyCodeLine{00300\ \ \ \}}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \ \ \textcolor{comment}{//\ SHEL\ reflection\ resolution\ filter\ low/high}}
+\DoxyCodeLine{00303\ \ \ \textcolor{keywordtype}{double}\ GetSHEL\_lr()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ SHEL\_lr;\ \ \}}
+\DoxyCodeLine{00304\ \ \ \textcolor{keywordtype}{void}\ SetSHEL\_lr(\textcolor{keywordtype}{double}\ v)\ \ \{\ \ SHEL\_lr\ =\ v;\ \ SHEL\_set\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00305\ \ \ \textcolor{keywordtype}{double}\ GetSHEL\_hr()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ SHEL\_hr;\ \ \}}
+\DoxyCodeLine{00306\ \ \ \textcolor{keywordtype}{void}\ SetSHEL\_hr(\textcolor{keywordtype}{double}\ v)\ \ \{\ \ SHEL\_hr\ =\ v;\ \ SHEL\_set\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordtype}{bool}\ HasSHEL()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ SHEL\_set;\ \ \}}
+\DoxyCodeLine{00308\ \ \ \textcolor{keywordtype}{void}\ SetSHEL(\textcolor{keyword}{const}\ TStrList\&\ shel);}
+\DoxyCodeLine{00309\ \ \ \textcolor{keywordtype}{void}\ ClearSHEL()\ \{\ SHEL\_set\ =\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00310\ \ \ olxstr\ GetSHELStr()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ olxstr(SHEL\_lr)\ <<\ \textcolor{charliteral}{'\ '}\ <<\ SHEL\_hr;\ \ \}}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \ \ TDoubleList::const\_list\_type\ GetBASFAsDoubleList()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00313\ \ \ \textcolor{comment}{//\ returns\ a\ list\ of\ [1-\/sum(basf),\ basf[0],\ basf[1],...]\ -\/\ complete\ scales}}
+\DoxyCodeLine{00314\ \ \ TDoubleList::const\_list\_type\ GetScales()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00315\ \ \ olxstr\ GetBASFStr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \textcolor{keywordtype}{void}\ SetTWIN(\textcolor{keyword}{const}\ IStrList\&\ twin);}
+\DoxyCodeLine{00318\ \ \ olxstr\ GetTWINStr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetTWIN\_mat()\textcolor{keyword}{\ \ const\ }\{\ \ \textcolor{keywordflow}{return}\ TWIN\_mat;\ \ \}}
+\DoxyCodeLine{00320\ \ \ \textcolor{keywordtype}{void}\ SetTWIN\_mat(\textcolor{keyword}{const}\ mat3d\&\ m)\ \ \{\ \ TWIN\_mat\ =\ m;\ \ TWIN\_set\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00321\ \ \ \textcolor{comment}{/*\ ShelXL\ manual:}}
+\DoxyCodeLine{00322\ \textcolor{comment}{If\ the\ racemic\ twinning\ is\ present\ at\ the\ same\ time\ as\ normal\ twinning,\ n}}
+\DoxyCodeLine{00323\ \textcolor{comment}{should\ be\ doubled\ (because\ there\ are\ twice\ as\ many\ components\ as\ before)\ and}}
+\DoxyCodeLine{00324\ \textcolor{comment}{given\ a\ negative\ sign\ (to\ indicate\ to\ the\ program\ that\ the\ inversion\ operator}}
+\DoxyCodeLine{00325\ \textcolor{comment}{is\ to\ be\ applied\ multiplicatively\ with\ the\ specified\ TWIN\ matrix).\ The\ number}}
+\DoxyCodeLine{00326\ \textcolor{comment}{of\ BASF\ parameters,\ if\ any,\ should\ be\ increased\ from\ m-\/1\ to\ 2m-\/1\ where\ m\ is\ the}}
+\DoxyCodeLine{00327\ \textcolor{comment}{original\ number\ of\ components\ (equal\ to\ the\ new\ |n|\ divided\ by\ 2).\ The\ TWIN}}
+\DoxyCodeLine{00328\ \textcolor{comment}{matrix\ is\ applied\ m-\/1\ times\ to\ generate\ components\ 2\ ...\ m\ from\ the\ prime}}
+\DoxyCodeLine{00329\ \textcolor{comment}{reflection\ (component\ 1);\ components\ m+1\ ...\ 2m\ are\ then\ generated\ as\ the}}
+\DoxyCodeLine{00330\ \textcolor{comment}{Friedel\ opposites\ of\ components\ 1\ ...\ m}}
+\DoxyCodeLine{00331\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00332\ \ \ \textcolor{keywordtype}{int}\ GetTWIN\_n()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TWIN\_n;\ \ \}}
+\DoxyCodeLine{00333\ \ \ \textcolor{keywordtype}{void}\ SetTWIN\_n(\textcolor{keywordtype}{int}\ v)\ \ \{\ \ TWIN\_n\ =\ v;\ \ TWIN\_set\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00334\ \ \ \textcolor{keywordtype}{bool}\ HasTWIN()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TWIN\_set;\ \ \}}
+\DoxyCodeLine{00335\ \ \ \textcolor{keywordtype}{void}\ RemoveTWIN()\ \ \{\ \ TWIN\_set\ =\ \textcolor{keyword}{false};\ \ \}}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \ \ \textcolor{comment}{//\ sets\ default\ esd\ values\ for\ restraints}}
+\DoxyCodeLine{00338\ \ \ \textcolor{keywordtype}{void}\ SetDEFS(\textcolor{keyword}{const}\ TStrList\ \&df);}
+\DoxyCodeLine{00339\ \ \ olxstr\ GetDEFSStr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00340\ \ \ \textcolor{keywordtype}{bool}\ IsDEFSSet()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ DEFS\_set;\ \ \}}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00342\ \ \ \textcolor{keywordtype}{void}\ SetSWAT(\textcolor{keyword}{const}\ TStrList\&\ df);}
+\DoxyCodeLine{00343\ \ \ olxstr\ GetSWATStr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00344\ \ \ \textcolor{keywordtype}{bool}\ IsSWATSet()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SWAT\_set;\ \}}
+\DoxyCodeLine{00345\ \ \ \textcolor{keywordtype}{void}\ ClearSWAT()\ \{\ SWAT\_set\ =\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ DefPropC(olxstr,\ RefinementMethod)}
+\DoxyCodeLine{00348\ \ \ DefPropC(olxstr,\ SolutionMethod)}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00350\ \ \ \textcolor{keywordtype}{void}\ SetIterations(\textcolor{keywordtype}{int}\ v);}
+\DoxyCodeLine{00351\ \ \ \textcolor{keywordtype}{void}\ SetPlan(\textcolor{keywordtype}{int}\ v);}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \ \ \textcolor{comment}{/*\ clears\ restraints,\ SFAC\ and\ used\ symm\ but\ not\ AfixGroups,\ Exyzroups\ and}}
+\DoxyCodeLine{00354\ \textcolor{comment}{\ \ Vars}}
+\DoxyCodeLine{00355\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00356\ \ \ \textcolor{keywordtype}{void}\ Clear(uint32\_t\ clear\_mask);}
+\DoxyCodeLine{00357\ \ \ \textcolor{comment}{//\ to\ be\ called\ by\ the\ Vars}}
+\DoxyCodeLine{00358\ \ \ \textcolor{keywordtype}{void}\ ClearVarRefs();}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \ \ \textcolor{keywordtype}{void}\ AddInfoTab(\textcolor{keyword}{const}\ TStrList\&\ l);}
+\DoxyCodeLine{00361\ \ \ \textcolor{keywordtype}{size\_t}\ InfoTabCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ InfoTables.Count();\ \ \}}
+\DoxyCodeLine{00362\ \ \ \textcolor{keyword}{const}\ InfoTab\&\ GetInfoTab(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ InfoTables[i];\ \ \}}
+\DoxyCodeLine{00363\ \ \ InfoTab\&\ GetInfoTab(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ InfoTables[i];\ \ \}}
+\DoxyCodeLine{00364\ \ \ \textcolor{keywordtype}{void}\ DeleteInfoTab(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ InfoTables.Delete(i);\ \ \}}
+\DoxyCodeLine{00365\ \ \ InfoTab\&\ AddHTAB();}
+\DoxyCodeLine{00366\ \ \ InfoTab\&\ AddRTAB(\textcolor{keyword}{const}\ olxstr\&\ codename);}
+\DoxyCodeLine{00367\ \ \ InfoTab\&\ AddCONF();}
+\DoxyCodeLine{00368\ \ \ TTypeList<cif\_dp::cetTable>::const\_list\_type\ ExportInfo(\textcolor{keyword}{const}\ TCif\ \&cif,}
+\DoxyCodeLine{00369\ \ \ \ \ olx\_object\_ptr<VcoVContainer>\ vcovc=0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00370\ \ \ \textcolor{comment}{//\ internal:\ this\ should\ be\ called\ before\ the\ AU\ atom\ coordinates\ are\ changed}}
+\DoxyCodeLine{00371\ \ \ \textcolor{keywordtype}{void}\ BeforeAUUpdate\_();}
+\DoxyCodeLine{00372\ \ \ \textcolor{comment}{//\ internal:\ this\ should\ be\ called\ after\ the\ AU\ atom\ coordinates\ are\ changed}}
+\DoxyCodeLine{00373\ \ \ \textcolor{keywordtype}{void}\ AfterAUUpdate\_();}
+\DoxyCodeLine{00374\ \ \ \textcolor{comment}{/*\ For\ internal\ use\ -\/\ this\ returns\ sensible\ results\ only\ in\ between\ a\ call\ to}}
+\DoxyCodeLine{00375\ \textcolor{comment}{\ \ BenAUUpdate\_\ and\ EndAUUpdate\_}}
+\DoxyCodeLine{00376\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00377\ \ \ \textcolor{keyword}{const}\ olxdict<ExplicitCAtomRef\ *,\ vec3d,\ TPointerComparator>\ \&\ GetAtomRefs\_()}
+\DoxyCodeLine{00378\ \ \ \{}
+\DoxyCodeLine{00379\ \ \ \ \ \textcolor{keywordflow}{return}\ atom\_refs;}
+\DoxyCodeLine{00380\ \ \ \}}
+\DoxyCodeLine{00381\ \ \ \textcolor{comment}{//\ internal:\ this\ should\ be\ called\ before\ the\ AU\ atom\ coordinates\ are\ changed}}
+\DoxyCodeLine{00382\ \ \ \textcolor{keywordtype}{void}\ BeforeAUSort\_();}
+\DoxyCodeLine{00383\ \ \ \textcolor{comment}{//\ internal:\ this\ should\ be\ called\ after\ the\ AU\ atom\ coordinates\ are\ changed}}
+\DoxyCodeLine{00384\ \ \ \textcolor{keywordtype}{void}\ AfterAUSort\_();}
+\DoxyCodeLine{00385\ \ \ \textcolor{comment}{//\ internal:\ sorts\ all\ possible\ atom\ containers}}
+\DoxyCodeLine{00386\ \ \ \textcolor{keywordtype}{void}\ Sort\_();}
+\DoxyCodeLine{00387\ \ \ \textcolor{comment}{/*\ For\ internal\ use\ -\/\ this\ returns\ sensible\ results\ only\ in\ between\ a\ call\ to}}
+\DoxyCodeLine{00388\ \textcolor{comment}{\ \ BeforeAUSort\_\ and\ EndAUSorte\_\ each\ [TCAtom::GetId()]\ returns\ previous\ value}}
+\DoxyCodeLine{00389\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00390\ \ \ \textcolor{keyword}{const}\ TSizeList\ \&\ GetOldAtomIds\_()\ \{\ \textcolor{keywordflow}{return}\ old\_atom\_ids;\ \}}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \ \ \textcolor{comment}{//\ if\ the\ name\ is\ empty\ -\/\ all\ tabs\ a\ removed}}
+\DoxyCodeLine{00393\ \ \ \textcolor{keywordtype}{void}\ ClearInfoTab(\textcolor{keyword}{const}\ olxstr\ \&name);}
+\DoxyCodeLine{00394\ \ \ SelectedTableRows\ \&GetSelectedTableRows()\ \{\ \textcolor{keywordflow}{return}\ selectedTableRows;\ \ \}}
+\DoxyCodeLine{00395\ \ \ \textcolor{keyword}{const}\ SelectedTableRows\ \&GetSelectedTableRows()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keywordflow}{return}\ selectedTableRows;}
+\DoxyCodeLine{00397\ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \textcolor{keywordtype}{bool}\ ValidateInfoTab(\textcolor{keyword}{const}\ InfoTab\&\ it);}
+\DoxyCodeLine{00399\ \ \ \textcolor{comment}{//\ adss\ new\ symmetry\ matrics,\ used\ in\ restraints/constraints}}
+\DoxyCodeLine{00400\ \ \ \textcolor{keyword}{const}\ smatd\&\ AddUsedSymm(\textcolor{keyword}{const}\ smatd\&\ matr,\ \textcolor{keyword}{const}\ olxstr\&\ \textcolor{keywordtype}{id}=EmptyString());}
+\DoxyCodeLine{00401\ \ \ \textcolor{comment}{//removes\ the\ matrix\ or\ decriments\ the\ reference\ count}}
+\DoxyCodeLine{00402\ \ \ \textcolor{keywordtype}{void}\ RemUsedSymm(\textcolor{keyword}{const}\ smatd\&\ matr)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00403\ \ \ \textcolor{comment}{//\ returns\ the\ number\ of\ the\ used\ symmetry\ matrices}}
+\DoxyCodeLine{00404\ \ \ \textcolor{keywordtype}{size\_t}\ UsedSymmCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ UsedSymm.Count();\ \ \}}
+\DoxyCodeLine{00405\ \ \ \textcolor{comment}{//\ returns\ used\ symmetry\ matric\ at\ specified\ index}}
+\DoxyCodeLine{00406\ \ \ \textcolor{keyword}{const}\ smatd\&\ GetUsedSymm(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keywordflow}{return}\ UsedSymm.GetValue(ind).symop;}
+\DoxyCodeLine{00408\ \ \ \}}
+\DoxyCodeLine{00409\ \ \ \textcolor{comment}{/*\ return\ index\ of\ given\ symmetry\ matrix\ in\ the\ list\ or\ -\/1,\ if\ it\ is\ not\ in}}
+\DoxyCodeLine{00410\ \textcolor{comment}{\ \ the\ list}}
+\DoxyCodeLine{00411\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00412\ \ \ \textcolor{keywordtype}{size\_t}\ UsedSymmIndex(\textcolor{keyword}{const}\ smatd\&\ matr)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00413\ \ \ \textcolor{comment}{//\ deletes\ all\ used\ symmetry\ matrices}}
+\DoxyCodeLine{00414\ \ \ \textcolor{keywordtype}{void}\ ClearUsedSymm()\ \ \{\ \ UsedSymm.Clear();\ \ \}}
+\DoxyCodeLine{00415\ \ \ \textcolor{keyword}{const}\ smatd*\ FindUsedSymm(\textcolor{keyword}{const}\ olxstr\&\ name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i\ =\ UsedSymm.IndexOf(name);}
+\DoxyCodeLine{00417\ \ \ \ \ \textcolor{keywordflow}{return}\ (i\ ==\ InvalidIndex\ ?\ NULL\ :\ \&UsedSymm.GetValue(i).symop);}
+\DoxyCodeLine{00418\ \ \ \}}
+\DoxyCodeLine{00419\ \ \ \textcolor{comment}{/*\ initialises\ ID's\ of\ the\ matrices\ to\ conform\ to\ the\ unit\ cell,\ this\ called}}
+\DoxyCodeLine{00420\ \textcolor{comment}{\ \ by\ TLattice}}
+\DoxyCodeLine{00421\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00422\ \ \ \textcolor{keywordtype}{void}\ UpdateUsedSymm(\textcolor{keyword}{const}\ \textcolor{keyword}{class}\ TUnitCell\&\ uc);}
+\DoxyCodeLine{00423\ \ \ \textcolor{comment}{//\ throws\ an\ exception\ if\ not\ found}}
+\DoxyCodeLine{00424\ \ \ \textcolor{keyword}{const}\ adirection\&\ DirectionById(\textcolor{keyword}{const}\ olxstr\ \&\textcolor{keywordtype}{id})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00425\ \ \ \textcolor{comment}{//\ adds\ new\ custom\ scatterer\ (created\ with\ new,\ will\ be\ deleted)}}
+\DoxyCodeLine{00426\ \ \ \textcolor{keywordtype}{void}\ AddSfac(XScatterer\&\ sc);}
+\DoxyCodeLine{00427\ \ \ \textcolor{comment}{//\ returns\ number\ of\ custom\ scatterers}}
+\DoxyCodeLine{00428\ \ \ \textcolor{keywordtype}{size\_t}\ SfacCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ SfacData.Count();\ \ \}}
+\DoxyCodeLine{00429\ \ \ \textcolor{comment}{//\ returns\ scatterer\ at\ specified\ index}}
+\DoxyCodeLine{00430\ \ \ XScatterer\&\ GetSfacData(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{keywordflow}{return}\ *SfacData.GetValue(i);}
+\DoxyCodeLine{00432\ \ \ \}}
+\DoxyCodeLine{00433\ \ \ \textcolor{comment}{//\ finds\ scatterer\ by\ label,\ returns\ NULL\ if\ nothing\ found}}
+\DoxyCodeLine{00434\ \ \ XScatterer*\ FindSfacData(\textcolor{keyword}{const}\ olxstr\&\ label)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00435\ \ \ \ \ \textcolor{keywordflow}{return}\ SfacData.Find(label,\ 0);}
+\DoxyCodeLine{00436\ \ \ \}}
+\DoxyCodeLine{00437\ \ \ \textcolor{keywordtype}{bool}\ RemoveSfacData(\textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00438\ \ \ \textcolor{keywordtype}{void}\ DeleteSfacData(\textcolor{keywordtype}{size\_t}\ i);}
+\DoxyCodeLine{00439\ \ \ \textcolor{keywordtype}{void}\ ClearSfacData();}
+\DoxyCodeLine{00440\ \ \ \textcolor{keywordtype}{void}\ InitDisp(TCAtom\&\ a)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00441\ \ \ \textcolor{comment}{//\ user\ content\ management}}
+\DoxyCodeLine{00442\ \ \ \textcolor{keyword}{const}\ ContentList\&\ GetUserContent()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ UserContent;\ \ \}}
+\DoxyCodeLine{00443\ \ \ olxstr\ GetUserContentStr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00444\ \ \ \textcolor{keywordtype}{void}\ SetUserContentType(\textcolor{keyword}{const}\ IStrList\&\ sfac);}
+\DoxyCodeLine{00445\ \ \ \textcolor{keywordtype}{void}\ SetUserContent(\textcolor{keyword}{const}\ IStrList\&\ sfac,\ \textcolor{keyword}{const}\ IStrList\&\ unit);}
+\DoxyCodeLine{00446\ \ \ \textcolor{keywordtype}{void}\ SetUserContent(\textcolor{keyword}{const}\ olxstr\&\ sfac,\ \textcolor{keyword}{const}\ olxstr\&\ unit)\ \ \{}
+\DoxyCodeLine{00447\ \ \ \ \ SetUserContent(TStrList(sfac,\ \textcolor{charliteral}{'\ '}),\ TStrList(unit,\ \textcolor{charliteral}{'\ '}));}
+\DoxyCodeLine{00448\ \ \ \}}
+\DoxyCodeLine{00449\ \ \ \textcolor{keywordtype}{void}\ SetUserContent(\textcolor{keyword}{const}\ ContentList\&\ cnt)\ \{}
+\DoxyCodeLine{00450\ \ \ \ \ UserContent\ =\ cnt;}
+\DoxyCodeLine{00451\ \ \ \}}
+\DoxyCodeLine{00452\ \ \ \textcolor{keywordtype}{void}\ SetUserContentSize(\textcolor{keyword}{const}\ IStrList\&\ unit);}
+\DoxyCodeLine{00453\ \ \ \textcolor{keywordtype}{void}\ AddUserContent(\textcolor{keyword}{const}\ olxstr\&\ type,\ \textcolor{keywordtype}{double}\ amount\ =\ 0,\ \textcolor{keywordtype}{int}\ charge\ =\ 0);}
+\DoxyCodeLine{00454\ \ \ \textcolor{keywordtype}{void}\ AddUserContent(\textcolor{keyword}{const}\ cm\_Element\&\ elm,\ \textcolor{keywordtype}{double}\ amount\ =\ 0,\ \textcolor{keywordtype}{int}\ charge\ =\ 0)\ \{}
+\DoxyCodeLine{00455\ \ \ \ \ UserContent.AddNew(elm,\ amount,\ charge);}
+\DoxyCodeLine{00456\ \ \ \}}
+\DoxyCodeLine{00457\ \ \ \textcolor{keywordtype}{void}\ SetUserFormula(\textcolor{keyword}{const}\ olxstr\&\ frm,\ \textcolor{keywordtype}{bool}\ mult\_z\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00458\ \ \ \textcolor{comment}{//\ returns\ the\ restrained\ distance\ or\ -\/1}}
+\DoxyCodeLine{00459\ \ \ \textcolor{keywordtype}{double}\ FindRestrainedDistance(\textcolor{keyword}{const}\ TCAtom\&\ a1,\ \textcolor{keyword}{const}\ TCAtom\&\ a2);}
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00461\ \ \ \textcolor{keywordtype}{void}\ AddEXYZ(\textcolor{keyword}{const}\ IStrList\&\ exyz,\ \textcolor{keyword}{const}\ olxstr\ \&resi);}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ \ \ RefinementModel\&\ Assign(\textcolor{keyword}{const}\ RefinementModel\&\ rm,\ \textcolor{keywordtype}{bool}\ AssignAUnit);}
+\DoxyCodeLine{00464\ \ \ \textcolor{comment}{/*\ updates\ refinable\ params\ -\/\ BASF,\ FVAR,\ WGHT,\ returns\ false\ if\ objects}}
+\DoxyCodeLine{00465\ \textcolor{comment}{\ \ mismatch\ */}}
+\DoxyCodeLine{00466\ \ \ \textcolor{keywordtype}{bool}\ Update(\textcolor{keyword}{const}\ RefinementModel\&\ rm);}
+\DoxyCodeLine{00467\ }
+\DoxyCodeLine{00468\ \ \ \textcolor{keywordtype}{size\_t}\ FragCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Frags.Count();\ \ \}}
+\DoxyCodeLine{00469\ \ \ Fragment\&\ GetFrag(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ *Frags.GetValue(i);\ \ \}}
+\DoxyCodeLine{00470\ \ \ \textcolor{keyword}{const}\ Fragment\&\ GetFrag(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Frags.GetValue(i);\ \ \}}
+\DoxyCodeLine{00471\ \ \ Fragment*\ FindFragByCode(\textcolor{keywordtype}{int}\ code)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Frags.Find(code,\ NULL);\ \}}
+\DoxyCodeLine{00472\ \ \ Fragment\&\ AddFrag(\textcolor{keywordtype}{int}\ code,\ \textcolor{keywordtype}{double}\ a\ =\ 1,\ \textcolor{keywordtype}{double}\ b\ =\ 1,\ \textcolor{keywordtype}{double}\ c\ =\ 1,}
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{keywordtype}{double}\ al\ =\ 90,\ \textcolor{keywordtype}{double}\ be\ =\ 90,\ \textcolor{keywordtype}{double}\ ga\ =\ 90)}
+\DoxyCodeLine{00474\ \ \ \{}
+\DoxyCodeLine{00475\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ Frags.IndexOf(code);}
+\DoxyCodeLine{00476\ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}duplicated\ FRAG\ instruction"{}});}
+\DoxyCodeLine{00479\ \ \ \ \ \}}
+\DoxyCodeLine{00480\ \ \ \ \ \textcolor{keywordflow}{return}\ *Frags.Add(code,\ \textcolor{keyword}{new}\ Fragment(code,\ a,\ b,\ c,\ al,\ be,\ ga));}
+\DoxyCodeLine{00481\ \ \ \}}
+\DoxyCodeLine{00482\ \ \ \textcolor{comment}{//\ the\ function\ does\ the\ atom\ fitting\ and\ clears\ the\ fragments}}
+\DoxyCodeLine{00483\ \ \ \textcolor{keywordtype}{void}\ ProcessFrags();}
+\DoxyCodeLine{00484\ }
+\DoxyCodeLine{00485\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\&\ GetMergeStat();}
+\DoxyCodeLine{00486\ \ \ \textcolor{comment}{//\ merged\ according\ to\ MERG}}
+\DoxyCodeLine{00487\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SymSpace,\ \textcolor{keyword}{class}\ Merger>}
+\DoxyCodeLine{00488\ \ \ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ GetRefinementRefList(\textcolor{keyword}{const}\ SymSpace\&\ sp,\ TRefList\&\ out)\ \ \{}
+\DoxyCodeLine{00489\ \ \ \ \ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ stats;}
+\DoxyCodeLine{00490\ \ \ \ \ TRefList\ refs;}
+\DoxyCodeLine{00491\ \ \ \ \ FilterHkl(refs,\ stats);}
+\DoxyCodeLine{00492\ \ \ \ \ \textcolor{keywordflow}{if}(\ MERG\ !=\ 0\ \&\&\ HKLF\ !=\ 5\ )\ \ \{}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ mergeFP\ =\ (MERG\ ==\ 4\ ||\ MERG\ ==\ 3)\ \&\&\ !sp.IsCentrosymmetric();}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ stats\ =\ RefMerger::Merge<Merger>(sp,\ refs,\ out,}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ Omits,\ mergeFP);}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ stats.MERG\ =\ MERG;}
+\DoxyCodeLine{00497\ \ \ \ \ \}}
+\DoxyCodeLine{00498\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ stats\ =\ RefMerger::MergeInP1<Merger>(refs,\ out,\ Omits);}
+\DoxyCodeLine{00500\ \ \ \ \ \}}
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{keywordflow}{return}\ AdjustIntensity(out,\ stats);}
+\DoxyCodeLine{00502\ \ \ \}}
+\DoxyCodeLine{00503\ \ \ \textcolor{comment}{//\ Friedel\ pairs\ always\ merged}}
+\DoxyCodeLine{00504\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Symm,\ \textcolor{keyword}{class}\ Merger>}
+\DoxyCodeLine{00505\ \ \ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ GetFourierRefList(\textcolor{keyword}{const}\ Symm\&\ sp,\ TRefList\&\ out)\ \{}
+\DoxyCodeLine{00506\ \ \ \ \ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ stats;}
+\DoxyCodeLine{00507\ \ \ \ \ TRefList\ refs;}
+\DoxyCodeLine{00508\ \ \ \ \ FilterHkl(refs,\ stats);}
+\DoxyCodeLine{00509\ \ \ \ \ stats\ =\ RefMerger::Merge<Merger>(sp,\ refs,\ out,\ Omits,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00510\ \ \ \ \ \textcolor{keywordflow}{return}\ AdjustIntensity(out,\ stats);}
+\DoxyCodeLine{00511\ \ \ \}}
+\DoxyCodeLine{00512\ \ \ \textcolor{comment}{//\ P-\/1\ merged,\ filtered}}
+\DoxyCodeLine{00513\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Merger>\ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ GetWilsonRefList(TRefList\&\ out)\ \{}
+\DoxyCodeLine{00514\ \ \ \ \ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ stats;}
+\DoxyCodeLine{00515\ \ \ \ \ TRefList\ refs;}
+\DoxyCodeLine{00516\ \ \ \ \ FilterHkl(refs,\ stats);}
+\DoxyCodeLine{00517\ \ \ \ \ smatd\_list\ ml;}
+\DoxyCodeLine{00518\ \ \ \ \ ml.AddNew().I();}
+\DoxyCodeLine{00519\ \ \ \ \ stats\ =\ RefMerger::Merge<Merger>(ml,\ refs,\ out,\ Omits,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00520\ \ \ \ \ \textcolor{keywordflow}{return}\ AdjustIntensity(out,\ stats);}
+\DoxyCodeLine{00521\ \ \ \}}
+\DoxyCodeLine{00522\ \ \ \textcolor{comment}{//\ P1\ merged,\ unfiltered}}
+\DoxyCodeLine{00523\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Merger>\ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ GetAllP1RefList(TRefList\&\ out)\ \{}
+\DoxyCodeLine{00524\ \ \ \ \ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ stats;}
+\DoxyCodeLine{00525\ \ \ \ \ TRefList\ refs(GetReflections());}
+\DoxyCodeLine{00526\ \ \ \ \ vec3i\_list\ empty\_omits;}
+\DoxyCodeLine{00527\ \ \ \ \ stats\ =\ RefMerger::MergeInP1<Merger>(refs,\ out,\ empty\_omits);}
+\DoxyCodeLine{00528\ \ \ \ \ \textcolor{keywordflow}{return}\ stats;}
+\DoxyCodeLine{00529\ \ \ \}}
+\DoxyCodeLine{00530\ \ \ \textcolor{comment}{//\ P1\ merged,\ filtered}}
+\DoxyCodeLine{00531\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Merger>\ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ GetFilteredP1RefList(TRefList\&\ out)\ \{}
+\DoxyCodeLine{00532\ \ \ \ \ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\ stats;}
+\DoxyCodeLine{00533\ \ \ \ \ TRefList\ refs;}
+\DoxyCodeLine{00534\ \ \ \ \ FilterHkl(refs,\ stats);}
+\DoxyCodeLine{00535\ \ \ \ \ stats\ =\ RefMerger::MergeInP1<Merger>(refs,\ out,\ Omits);}
+\DoxyCodeLine{00536\ \ \ \ \ \textcolor{keywordflow}{return}\ AdjustIntensity(out,\ stats);}
+\DoxyCodeLine{00537\ \ \ \}}
+\DoxyCodeLine{00538\ \ \ \textcolor{comment}{/*\ if\ none\ of\ the\ above\ functions\ help,\ try\ this\ ones}}
+\DoxyCodeLine{00539\ \textcolor{comment}{\ \ \ \ return\ complete\ list\ of\ unmerged\ reflections\ (HKLF\ matrix,\ if\ any,\ is}}
+\DoxyCodeLine{00540\ \textcolor{comment}{\ \ \ \ applied)}}
+\DoxyCodeLine{00541\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00542\ \ \ \textcolor{keyword}{const}\ TRefList\&\ GetReflections()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00543\ \ \ \textcolor{comment}{/*\ Sets\ the\ reflection\ list\ for\ this\ object\ -\/\ operates\ only\ on\ the\ mutable}}
+\DoxyCodeLine{00544\ \textcolor{comment}{\ \ members*/}}
+\DoxyCodeLine{00545\ \ \ \textcolor{keywordtype}{void}\ SetReflections(\textcolor{keyword}{const}\ TRefList\ \&refs)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00546\ \ \ \textcolor{comment}{//\ this\ will\ be\ only\ valid\ if\ any\ list\ of\ the\ reflections\ was\ called}}
+\DoxyCodeLine{00547\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\&\ GetReflectionStat()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \_HklStat;\ \ \}}
+\DoxyCodeLine{00548\ \ \ \textcolor{keywordtype}{void}\ ResetHklStats()\ \{\ \_HklStat.SetDefaults();\ \ \}}
+\DoxyCodeLine{00549\ \ \ \textcolor{comment}{//\ filters\ the\ reflections\ according\ to\ the\ parameters}}
+\DoxyCodeLine{00550\ \ \ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\&\ FilterHkl(TRefList\&\ out,\ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\&\ stats)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00551\ \ \ TRefPList::const\_list\_type\ GetNonoverlappingRefs(\textcolor{keyword}{const}\ TRefList\&\ refs);}
+\DoxyCodeLine{00552\ \ \ \textcolor{comment}{//\ adjust\ intensity\ of\ reflections\ according\ to\ OMIT}}
+\DoxyCodeLine{00553\ \ \ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\&\ AdjustIntensity(TRefList\&\ out,\ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\&\ stats)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00554\ \ \ \textcolor{comment}{/*\ returns\ redundancy\ information,\ like\ list[0]\ is\ the\ number\ of\ reflections}}
+\DoxyCodeLine{00555\ \textcolor{comment}{\ \ \ \ \ collected\ once\ list[1]\ =\ number\ of\ reflections\ collected\ wtice\ etc}}
+\DoxyCodeLine{00556\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00557\ \ \ \textcolor{keyword}{const}\ TIntList\&\ GetRedundancyInfo()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00558\ \ \ \ \ GetReflections();}
+\DoxyCodeLine{00559\ \ \ \ \ \textcolor{keywordflow}{return}\ \_Redundancy;}
+\DoxyCodeLine{00560\ \ \ \}}
+\DoxyCodeLine{00561\ \ \ \textcolor{comment}{//\ uses\ algebraic\ relation}}
+\DoxyCodeLine{00562\ \ \ \textcolor{keywordtype}{void}\ DetwinAlgebraic(TRefList\&\ refs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structRefinementModel_1_1HklStat}{HklStat}}\&\ st,}
+\DoxyCodeLine{00563\ \ \ \ \ \textcolor{keyword}{const}\ SymmSpace::InfoEx\&\ info\_ex)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00564\ \ \ \textcolor{comment}{//\ returns\ the\ number\ of\ pairs}}
+\DoxyCodeLine{00565\ \ \ \textcolor{keywordtype}{int}\ GetFriedelPairCount()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00566\ \ \ \ \ GetReflections();}
+\DoxyCodeLine{00567\ \ \ \ \ \textcolor{keywordflow}{return}\ \_FriedelPairCount;}
+\DoxyCodeLine{00568\ \ \ \}}
+\DoxyCodeLine{00569\ \ \ olx\_pair\_t<vec3i,\ vec3i>\ CalcIndicesToD(\textcolor{keywordtype}{double}\ d,}
+\DoxyCodeLine{00570\ \ \ \ \ \textcolor{keyword}{const}\ SymmSpace::InfoEx\ *si=0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00571\ \ \ vec3i\ CalcMaxHklIndexFor2Theta(\textcolor{keywordtype}{double}\ two\_theta=60,\ \textcolor{keywordtype}{double}\ tol=1e-\/3)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00572\ \ \ \ \ \textcolor{keywordflow}{return}\ CalcMaxHklIndexForD(expl.GetRadiation()/(2*sin(two\_theta*M\_PI/360)),}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ tol);}
+\DoxyCodeLine{00574\ \ \ \}}
+\DoxyCodeLine{00575\ \ \ vec3i\ CalcMaxHklIndexForD(\textcolor{keywordtype}{double}\ d,\ \textcolor{keywordtype}{double}\ tol=1e-\/3)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00576\ \ \ \ \ \textcolor{keywordflow}{return}\ vec3i(aunit.GetAxes()/d\ +\ tol);}
+\DoxyCodeLine{00577\ \ \ \}}
+\DoxyCodeLine{00578\ \ \ \textcolor{keywordtype}{double}\ CalcCompletenessTo2Theta(\textcolor{keywordtype}{double}\ tt,\ \textcolor{keywordtype}{bool}\ Laue);}
+\DoxyCodeLine{00579\ \ \ IXVarReferencerContainer\&\ GetRefContainer(\textcolor{keyword}{const}\ olxstr\&\ id\_name)\ \{}
+\DoxyCodeLine{00580\ \ \ \ \ \textcolor{keywordflow}{try}\ \{\ \textcolor{keywordflow}{return}\ *RefContainers.Get(id\_name);\ \}}
+\DoxyCodeLine{00581\ \ \ \ \ \textcolor{keywordflow}{catch}\ (...)\ \{}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}container\ id"{}});}
+\DoxyCodeLine{00583\ \ \ \ \ \}}
+\DoxyCodeLine{00584\ \ \ \}}
+\DoxyCodeLine{00585\ \ \ TPtrList<const\ TSRestraintList>::const\_list\_type\ GetRestraints()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00586\ \ \ TPtrList<TSRestraintList>::const\_list\_type\ GetRestraints();}
+\DoxyCodeLine{00587\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(TDataItem\&\ item);}
+\DoxyCodeLine{00588\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(TDataItem\&\ item);}
+\DoxyCodeLine{00589\ \ \ olxstr\ WriteInsExtras(\textcolor{keyword}{const}\ TCAtomPList*\ atoms,}
+\DoxyCodeLine{00590\ \ \ \ \ TPtrList<AReleasable>*\ processed,}
+\DoxyCodeLine{00591\ \ \ \ \ \textcolor{keywordtype}{bool}\ write\_internals)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00592\ \ \ \textcolor{keywordtype}{void}\ ReadInsExtras(\textcolor{keyword}{const}\ TStrList\ \&items);}
+\DoxyCodeLine{00593\ \ \ \textcolor{comment}{//\ initialises\ default\ values\ for\ esd\ and\ if\ needs,\ value\ (SIMU)}}
+\DoxyCodeLine{00594\ \ \ TSimpleRestraint\ \&SetRestraintDefaults(TSimpleRestraint\ \&restraint)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00595\ \ \ \textcolor{comment}{//\ returns\ true\ if\ restraint\ parameters\ are\ default}}
+\DoxyCodeLine{00596\ \ \ \textcolor{keywordtype}{bool}\ IsDefaultRestraint(\textcolor{keyword}{const}\ TSimpleRestraint\ \&restraint)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00597\ \ \ \textcolor{keywordtype}{bool}\ IsDefaultRestraint(\textcolor{keyword}{const}\ TSameGroup\ \&restraint)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00598\ \ \ \textcolor{comment}{//\ feeds\ on\ .options\ -\/\ instance\ static}}
+\DoxyCodeLine{00599\ \ \ \textcolor{keywordtype}{bool}\ DoShowRestraintDefaults()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00600\ \ \ \textcolor{keywordtype}{void}\ SortAtomsOrderOut();}
+\DoxyCodeLine{00601\ \ \ \textcolor{keyword}{const}\ TDataItem\&\ GetGenericStore()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00602\ \ \ \ \ \textcolor{keywordflow}{return}\ GenericStore;}
+\DoxyCodeLine{00603\ \ \ \}}
+\DoxyCodeLine{00604\ \ \ \textcolor{keywordtype}{void}\ LibHasOccu(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00605\ \ \ \textcolor{keywordtype}{void}\ LibOSF(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00606\ \ \ \textcolor{keywordtype}{void}\ LibBASF(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00607\ \ \ \textcolor{keywordtype}{void}\ LibFVar(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00608\ \ \ \textcolor{keywordtype}{void}\ LibEXTI(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00609\ \ \ \textcolor{keywordtype}{void}\ LibSWAT(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00610\ \ \ \textcolor{keywordtype}{void}\ LibUpdateCRParams(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00611\ \ \ \textcolor{keywordtype}{void}\ LibCalcCompleteness(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00612\ \ \ \textcolor{keywordtype}{void}\ LibMaxIndex(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00613\ \ \ \textcolor{comment}{//\ restraints\ \&\ constraints\ related\ functions}}
+\DoxyCodeLine{00614\ \ \ \textcolor{keywordtype}{void}\ LibShareADP(TStrObjList\ \&Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Opts,\ TMacroData\ \&E);}
+\DoxyCodeLine{00615\ \ \ \textcolor{keywordtype}{void}\ LibShareDisp(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Opts,\ TMacroData\&\ E);}
+\DoxyCodeLine{00616\ \ \ \textcolor{keywordtype}{void}\ LibNewAfixGroup(TStrObjList\ \&Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options,}
+\DoxyCodeLine{00617\ \ \ \ \ TMacroData\ \&E);}
+\DoxyCodeLine{00618\ \ \ \textcolor{keywordtype}{void}\ LibNewRestraint(TStrObjList\ \&Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options,}
+\DoxyCodeLine{00619\ \ \ \ \ TMacroData\ \&E);}
+\DoxyCodeLine{00620\ \ \ \textcolor{keywordtype}{void}\ LibModelSrc(\textcolor{keyword}{const}\ TStrObjList\ \&Params,\ TMacroData\ \&E);}
+\DoxyCodeLine{00621\ \ \ \textcolor{keywordtype}{void}\ LibStoreParam(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Opts,\ TMacroData\&\ E);}
+\DoxyCodeLine{00622\ \ \ \textcolor{keywordtype}{void}\ LibClearParams(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Opts,\ TMacroData\&\ E);}
+\DoxyCodeLine{00623\ }
+\DoxyCodeLine{00624\ \ \ TLibrary*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name=EmptyString());}
+\DoxyCodeLine{00625\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structRefinementModel_1_1VPtr}{VPtr}}\ :\ \textcolor{keyword}{public}\ olx\_virtual\_ptr<RefinementModel>\ \{}
+\DoxyCodeLine{00626\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *get\_ptr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00627\ \ \ \};}
+\DoxyCodeLine{00628\ \ \ }
+\DoxyCodeLine{00629\ \ \ \textcolor{comment}{//\ EXTI\ stuff}}
+\DoxyCodeLine{00630\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structRefinementModel_1_1EXTI}{EXTI}}\ \{}
+\DoxyCodeLine{00631\ \ \ \ \ \textcolor{keyword}{static}\ vec3d\ HklToCart(\textcolor{keyword}{const}\ vec3i\&\ mi,\ \textcolor{keyword}{const}\ mat3d\ \&hkl2cart)\ \{}
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ vec3d(}
+\DoxyCodeLine{00633\ \ \ \ \ \ \ \ \ mi[0]\ *\ hkl2cart[0][0],}
+\DoxyCodeLine{00634\ \ \ \ \ \ \ \ \ mi[0]\ *\ hkl2cart[0][1]\ +\ mi[1]\ *\ hkl2cart[1][1],}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ mi[0]\ *\ hkl2cart[0][2]\ +\ mi[1]\ *\ hkl2cart[1][2]\ +\ mi[2]\ *\ hkl2cart[2][2]}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ );}
+\DoxyCodeLine{00637\ \ \ \ \ \}}
+\DoxyCodeLine{00638\ \ \ \ \ \textcolor{keyword}{struct\ }Shelxl\ \{}
+\DoxyCodeLine{00639\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ l\_sq\_o\_4,\ k;}
+\DoxyCodeLine{00640\ \ \ \ \ \ \ \textcolor{keyword}{const}\ mat3d\ hkl2cart;}
+\DoxyCodeLine{00641\ \ \ \ \ \ \ Shelxl(\textcolor{keywordtype}{double}\ l,\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keyword}{const}\ mat3d\ \&hkl2cart)}
+\DoxyCodeLine{00642\ \ \ \ \ \ \ \ \ :\ l\_sq\_o\_4(l*l*0.25),\ k(l*l*l*x*0.001\ /\ 2),\ hkl2cart(hkl2cart)}
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00644\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ CalcForFo2(\textcolor{keyword}{const}\ vec3i\ \&mi,\ \textcolor{keywordtype}{double}\ Fc\_sq)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00645\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x\ =\ EXTI::HklToCart(mi,\ hkl2cart).QLength()*l\_sq\_o\_4;}
+\DoxyCodeLine{00646\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sqrt(1\ +\ Fc\_sq\ *\ k\ /\ sqrt(x*(1\ -\/\ x)));}
+\DoxyCodeLine{00647\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00648\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ CalcForFc(\textcolor{keyword}{const}\ vec3i\ \&mi,\ \textcolor{keywordtype}{double}\ Fc\_sq)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00649\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x\ =\ EXTI::HklToCart(mi,\ hkl2cart).QLength()*l\_sq\_o\_4;}
+\DoxyCodeLine{00650\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pow(1\ +\ Fc\_sq\ *\ k\ /\ sqrt(x*(1\ -\/\ x)),\ -\/0.25);}
+\DoxyCodeLine{00651\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00652\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ k\ !=\ 0;\ \}}
+\DoxyCodeLine{00653\ \ \ \ \ \};}
+\DoxyCodeLine{00654\ }
+\DoxyCodeLine{00655\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefList,\ \textcolor{keyword}{class}\ FList,\ \textcolor{keyword}{class}\ Corrector>}
+\DoxyCodeLine{00656\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ CorrectF(\textcolor{keyword}{const}\ RefList\&\ refs,\ FList\&\ F,\ \textcolor{keyword}{const}\ Corrector\&\ cr)\ \{}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!cr.IsValid())\ \{}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refs.Count()\ !=\ F.Count())\ \{}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSrcInfo,\ \textcolor{stringliteral}{"{}arrays\ size"{}});}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00663\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ refs.Count();\ i++)\ \{}
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \ \ F[i]\ *=\ cr.CalcForF(TReflection::GetHkl(refs[i]),\ F[i].qmod());}
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00666\ \ \ \ \ \}}
+\DoxyCodeLine{00667\ \ \ \};}
+\DoxyCodeLine{00668\ }
+\DoxyCodeLine{00669\ \ \ \textcolor{comment}{//\ SWAT\ stuff}}
+\DoxyCodeLine{00670\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structRefinementModel_1_1SWAT}{SWAT}}\ \{}
+\DoxyCodeLine{00671\ \ \ \ \ \textcolor{keyword}{struct\ }Shelxl\ \{}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ g,\ U;}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \textcolor{keyword}{const}\ mat3d\ hkl2cart;}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ Shelxl(\textcolor{keywordtype}{double}\ g,\ \textcolor{keywordtype}{double}\ U,\ \textcolor{keyword}{const}\ mat3d\ \&hkl2cart)}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ :\ g(g),\ U(U),\ hkl2cart(hkl2cart)}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ CalcForFc(\textcolor{keyword}{const}\ vec3i\&\ mi)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00679\ }
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ CalcForFo2(\textcolor{keyword}{const}\ vec3i\&\ mi)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1./olx\_sqr(CalcForFc(mi));}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00683\ }
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ g\ !=\ 0;\ \}}
+\DoxyCodeLine{00685\ \ \ \ \ \};}
+\DoxyCodeLine{00686\ }
+\DoxyCodeLine{00687\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefList,\ \textcolor{keyword}{class}\ FList,\ \textcolor{keyword}{class}\ Corrector>}
+\DoxyCodeLine{00688\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ CorrectF(\textcolor{keyword}{const}\ RefList\&\ refs,\ FList\&\ F,\ \textcolor{keyword}{const}\ Corrector\&\ cr)\ \{}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!cr.IsValid())\ \{}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00691\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refs.Count()\ !=\ F.Count())\ \{}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSrcInfo,\ \textcolor{stringliteral}{"{}arrays\ size"{}});}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ refs.Count();\ i++)\ \{}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \ \ F[i]\ *=\ cr.CalcForF(TReflection::GetHkl(refs[i]));}
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00698\ \ \ \ \ \}}
+\DoxyCodeLine{00699\ \ \ \};}
+\DoxyCodeLine{00700\ }
+\DoxyCodeLine{00701\ \ \ \mbox{\hyperlink{structRefinementModel_1_1EXTI_1_1Shelxl}{EXTI::Shelxl}}\ GetShelxEXTICorrector()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00702\ \ \ \mbox{\hyperlink{structRefinementModel_1_1SWAT_1_1Shelxl}{SWAT::Shelxl}}\ GetShelxSWATCorrector()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00703\ }
+\DoxyCodeLine{00704\ \};}
+\DoxyCodeLine{00705\ }
+\DoxyCodeLine{00706\ EndXlibNamespace()}
+\DoxyCodeLine{00707\ }
+\DoxyCodeLine{00708\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,202 @@
+\doxysection{gltexture.\+h}
+\hypertarget{gltexture_8h_source}{}\label{gltexture_8h_source}\index{glib/gltexture.h@{glib/gltexture.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_texture\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_texture\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gloption.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}estlist.h"{}}}
+\DoxyCodeLine{00015\ BeginGlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ const\ GLint}
+\DoxyCodeLine{00018\ \ \ tpFilterNearestMMNearest\ =\ GL\_NEAREST\_MIPMAP\_NEAREST,}
+\DoxyCodeLine{00019\ \ \ tpFilterNearestMMLinear\ \ =\ GL\_NEAREST\_MIPMAP\_LINEAR,}
+\DoxyCodeLine{00020\ \ \ tpFilterLinearMMLinear\ \ \ =\ GL\_LINEAR\_MIPMAP\_LINEAR,}
+\DoxyCodeLine{00021\ \ \ tpFilterLinearMMNearest\ \ =\ GL\_LINEAR\_MIPMAP\_NEAREST,}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ tpFilterNearest\ \ \ \ \ \ \ \ \ \ =\ GL\_NEAREST,}
+\DoxyCodeLine{00024\ \ \ tpFilterLinear\ \ \ \ \ \ \ \ \ \ \ =\ GL\_LINEAR,}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ tpCrdRepeat\ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ GL\_REPEAT,}
+\DoxyCodeLine{00027\ \ \ tpCrdClamp\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ GL\_CLAMP,}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ texture\ generation\ attributes}}
+\DoxyCodeLine{00029\ \ \ tpgObjectLinear\ \ \ \ \ \ \ \ \ \ =\ GL\_OBJECT\_LINEAR,}
+\DoxyCodeLine{00030\ \ \ tpgEyeLinear\ \ \ \ \ \ \ \ \ \ \ \ \ =\ GL\_EYE\_LINEAR,}
+\DoxyCodeLine{00031\ \ \ tpgSphereMap\ \ \ \ \ \ \ \ \ \ \ \ \ =\ GL\_SPHERE\_MAP,}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ tpeModulate\ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ GL\_MODULATE,}
+\DoxyCodeLine{00034\ \ \ tpeDecal\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ GL\_DECAL,}
+\DoxyCodeLine{00035\ \ \ tpeBlend\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ GL\_BLEND,}
+\DoxyCodeLine{00036\ \ \ tpeMode\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ GL\_TEXTURE\_ENV\_MODE,}
+\DoxyCodeLine{00037\ \ \ tpeColor\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ GL\_TEXTURE\_ENV\_COLOR;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ const\ uint32\_t}
+\DoxyCodeLine{00040\ \ \ tpminSet\ \ =\ 0x00000001,}
+\DoxyCodeLine{00041\ \ \ tpmagSet\ \ =\ 0x00000002,}
+\DoxyCodeLine{00042\ \ \ tpscrdSet\ =\ 0x00000004,}
+\DoxyCodeLine{00043\ \ \ tptcrdSet\ =\ 0x00000008,}
+\DoxyCodeLine{00044\ \ \ tpbrdSet\ \ =\ 0x00000010,}
+\DoxyCodeLine{00045\ \ \ tpclrSet\ \ =\ 0x00000020,}
+\DoxyCodeLine{00046\ \ \ tp1D\ \ \ \ \ \ =\ 0x00000040,}
+\DoxyCodeLine{00047\ \ \ tp2D\ \ \ \ \ \ =\ 0x00000080,}
+\DoxyCodeLine{00048\ \ \ tpEnvMode\ =\ 0x00000100,}
+\DoxyCodeLine{00049\ \ \ tpEnvColor=\ 0x00000200,}
+\DoxyCodeLine{00050\ \ \ tpEnabled\ =\ 0x00000400,}
+\DoxyCodeLine{00051\ \ \ tpt1D\ \ \ \ \ =\ 0x00000800,}
+\DoxyCodeLine{00052\ \ \ tpt2D\ \ \ \ \ =\ 0x00001000,}
+\DoxyCodeLine{00053\ \ \ tpSGen\ \ \ \ =\ 0x00002000,}
+\DoxyCodeLine{00054\ \ \ tpTGen\ \ \ \ =\ 0x00004000,}
+\DoxyCodeLine{00055\ \ \ tpRGen\ \ \ \ =\ 0x00008000,}
+\DoxyCodeLine{00056\ \ \ tpQGen\ \ \ \ =\ 0x00010000}
+\DoxyCodeLine{00057\ \ \ ;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ class\ TGlTexture\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00060\ \ \ GLint\ MinFilter,\ MagFilter,\ SCrd,\ TCrd,\ EnvMode,\ Level;}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ SetParams;}
+\DoxyCodeLine{00062\ \ \ TGlOption\ BorderColor,\ EnvColor,}
+\DoxyCodeLine{00063\ \ \ \ \ CrdObjPlaneParams[4],}
+\DoxyCodeLine{00064\ \ \ \ \ CrdEyePlaneParams[4];}
+\DoxyCodeLine{00065\ \ \ GLenum\ CrdGenMode[4];\ \textcolor{comment}{//\ S,T,R,Q;}}
+\DoxyCodeLine{00066\ \ \ GLuint\ Id;}
+\DoxyCodeLine{00067\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00068\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{void}\ SetCrdGen(GLenum\ crdName,\ GLenum\ modeName,}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{const}\ TGlOption\&\ op,\ \textcolor{keyword}{const}\ TGlOption\&\ ep)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{void}\ GetCrdGen(GLenum\ crdName,\ GLenum\&\ genMode,}
+\DoxyCodeLine{00072\ \ \ \ \ TGlOption\&\ op,\ TGlOption\&\ ep)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00073\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00074\ \ \ TGlTexture()\ :\ SetParams(0)\ \{\}}
+\DoxyCodeLine{00075\ \ \ TGlTexture(GLuint\ \textcolor{keywordtype}{id},\ uint32\_t\ type,\ GLint\ level,\ \textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{virtual}\ \string~TGlTexture()\ \{\}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Name;\ \}}
+\DoxyCodeLine{00078\ \ \ GLuint\ GetId()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Id;\ \}}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//\ this\ is\ mostly\ for\ internal\ use}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ SetId(GLuint\ \textcolor{keywordtype}{id})\ \{\ Id\ =\ id;\ \}}
+\DoxyCodeLine{00081\ \ \ GLint\ GetLevel()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Level;\ \}}
+\DoxyCodeLine{00082\ \ \ GLuint\ GetType()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{if}\ ((SetParams\&tp1D)\ !=\ 0)\ \ \textcolor{keywordflow}{return}\ GL\_TEXTURE\_1D;}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{if}\ ((SetParams\&tp2D)\ !=\ 0)\ \ \textcolor{keywordflow}{return}\ GL\_TEXTURE\_2D;}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}uninitialised\ object"{}});}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{\ SetParams\ \&=\ (tp1D|tp2D);\ \}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{void}\ SetEnabled(\textcolor{keywordtype}{bool}\ val)\ \{\ olx\_set\_bit(val,\ SetParams,\ tpEnabled);\ \}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{bool}\ IsEnabled()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (SetParams\ \&\ tpEnabled)\ !=\ 0;\ \}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordtype}{void}\ SetMinFilter(GLint\ val)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ olx\_set\_true(SetParams,\ tpminSet);}
+\DoxyCodeLine{00094\ \ \ \ \ MinFilter\ =\ val;}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{void}\ SetMagFilter(GLint\ val)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ olx\_set\_true(SetParams,\ tpmagSet);}
+\DoxyCodeLine{00099\ \ \ \ \ MagFilter\ =\ val;}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ SetSCrdWrapping(GLint\ val)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ olx\_set\_true(SetParams,\ tpscrdSet);}
+\DoxyCodeLine{00104\ \ \ \ \ SCrd\ =\ val;}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{void}\ SetTCrdWrapping(GLint\ val)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ olx\_set\_true(SetParams,\ tptcrdSet);}
+\DoxyCodeLine{00109\ \ \ \ \ TCrd\ =\ val;}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keywordtype}{void}\ SetBorderColor(\textcolor{keyword}{const}\ TGlOption\&\ cl)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ olx\_set\_true(SetParams,\ tpbrdSet);}
+\DoxyCodeLine{00114\ \ \ \ \ BorderColor\ =\ cl;}
+\DoxyCodeLine{00115\ \ \ \}}
+\DoxyCodeLine{00116\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{void}\ SetCrdGenMode(GLenum\ crd,\ GLenum\ modeName);}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{void}\ SetObjectPlane(GLenum\ crd,\ \textcolor{keyword}{const}\ TGlOption\ \&val);}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{void}\ SetEyePlane(GLenum\ crd,\ \textcolor{keyword}{const}\ TGlOption\ \&val);}
+\DoxyCodeLine{00120\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00121\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordtype}{void}\ SetEnvMode(GLenum\ modeName)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ olx\_set\_true(SetParams,\ tpEnvMode);}
+\DoxyCodeLine{00124\ \ \ \ \ EnvMode\ =\ modeName;}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordtype}{void}\ SetEnvColor(\textcolor{keyword}{const}\ TGlOption\&\ clr)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ olx\_set\_true(SetParams,\ tpEnvColor);}
+\DoxyCodeLine{00129\ \ \ \ \ EnvColor\ =\ clr;}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00132\ \ \ TGlTexture\&\ operator\ =\ (\textcolor{keyword}{const}\ TGlTexture\&\ tex);}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ ReadStatus();}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ RestoreStatus(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ status);}
+\DoxyCodeLine{00135\ \textcolor{comment}{/*\ the\ function\ reads\ the\ parameters\ which\ are\ going\ to\ be\ changed\ when\ this}}
+\DoxyCodeLine{00136\ \textcolor{comment}{texture\ is\ applied}}
+\DoxyCodeLine{00137\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{void}\ ReadCurrent(TGlTexture\&\ tex);}
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordtype}{void}\ SetCurrent()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{struct\ }Data\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \mbox{\hyperlink{structolx__array__ptr}{olx\_array\_ptr<unsigned\ char>}}\ data;}
+\DoxyCodeLine{00142\ \ \ \ \ GLint\ width,\ height,\ border;}
+\DoxyCodeLine{00143\ \ \ \ \ Data()\ :\ width(0),\ height(0),\ border(0)\ \{\}}
+\DoxyCodeLine{00144\ \ \ \};}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTGlTexture_1_1Data}{Data}}\ ReadData(\textcolor{keyword}{const}\ TGlTexture\&\ tex);}
+\DoxyCodeLine{00146\ \ \ \mbox{\hyperlink{structTGlTexture_1_1Data}{Data}}\ ReadData()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ReadData(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00147\ \ \ \textcolor{comment}{//\ reverse\ to\ read\ -\/\ must\ be\ done\ on\ the\ same\ textures!}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ WriteData(\mbox{\hyperlink{classTGlTexture}{TGlTexture}}\&\ tex,\ \textcolor{keyword}{const}\ Data\ \&data);}
+\DoxyCodeLine{00149\ \ \ \textcolor{keywordtype}{void}\ WriteData(\textcolor{keyword}{const}\ Data\ \&data)\ \{\ WriteData(*\textcolor{keyword}{this},\ data);\ \}}
+\DoxyCodeLine{00150\ \};}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \textcolor{comment}{/*\ the\ textures\ might\ be\ reused\ by\ different\ object\ (just\ having\ different}}
+\DoxyCodeLine{00153\ \textcolor{comment}{parameters\ applied\ to\ the\ same\ texture).\ So\ the\ AddTexture\ function\ returns\ an}}
+\DoxyCodeLine{00154\ \textcolor{comment}{integer\ which\ allows\ to\ access\ the\ texture\ object,\ but\ must\ not\ be\ used\ to\ bind}}
+\DoxyCodeLine{00155\ \textcolor{comment}{textures\ -\/\ just\ use\ texture::SetCurrent()}}
+\DoxyCodeLine{00156\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00157\ \textcolor{keyword}{class\ }TTextureManager\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00158\ \ \ \mbox{\hyperlink{classsorted_1_1PrimitiveAssociation}{sorted::PrimitiveAssociation<GLuint,\ TGlTexture*>}}\ Textures;}
+\DoxyCodeLine{00159\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TGlTexture::Data>}}\ TextureData;}
+\DoxyCodeLine{00160\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00161\ \ \ \ TTextureManager()\ \ \{\}}
+\DoxyCodeLine{00162\ \ \ \ \textcolor{comment}{//\ when\ cloning\ is\ implemented\ -\/\ this\ has\ to\ change!}}
+\DoxyCodeLine{00163\ \ \ \ \textcolor{keyword}{virtual}\ \string~TTextureManager();}
+\DoxyCodeLine{00164\ \ \ \textcolor{comment}{/*\ creates\ a\ 2D,\ texture\ takes\ arrays\ of\ GL\_RGB\ or\ GL\_RGBA\ only,\ see}}
+\DoxyCodeLine{00165\ \textcolor{comment}{\ \ glTexImage2D\ for\ details.\ returns\ -\/1\ is\ texture\ createion\ failed}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00167\ \ \ GLuint\ Add2DTexture(\textcolor{keyword}{const}\ olxstr\&\ name,\ GLint\ level,\ GLsizei\ width,}
+\DoxyCodeLine{00168\ \ \ \ \ GLsizei\ height,\ GLint\ border,\ GLenum\ format,\ \textcolor{keyword}{const}\ GLvoid\ *pixels);}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{/*\ replaces\ data\ for\ a\ particular\ texture\ */}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keywordtype}{void}\ Replace2DTexture(\mbox{\hyperlink{classTGlTexture}{TGlTexture}}\&\ tex,\ GLint\ level,\ GLsizei\ width,}
+\DoxyCodeLine{00171\ \ \ \ \ GLsizei\ height,\ GLint\ border,\ GLenum\ format,\ \textcolor{keyword}{const}\ GLvoid\ *pixels);}
+\DoxyCodeLine{00172\ \ \ \textcolor{comment}{/*\ creates\ a\ 1D,\ texture\ takes\ arrays\ of\ GL\_RGB\ or\ GL\_RGBA\ only,\ see}}
+\DoxyCodeLine{00173\ \textcolor{comment}{\ \ glTexImage1D\ for\ details.\ returns\ \string~0\ is\ texture\ creation\ failed}}
+\DoxyCodeLine{00174\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00175\ \ \ GLuint\ Add1DTexture(\textcolor{keyword}{const}\ olxstr\&\ name,\ GLint\ level,\ GLsizei\ width,}
+\DoxyCodeLine{00176\ \ \ \ \ GLint\ border,\ GLenum\ format,\ \textcolor{keyword}{const}\ GLvoid\ *pixels);}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \ \ \textcolor{comment}{//int\ CloneTexture(\ int\ )}}
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{//int\ GetTextureIndex(\ const\ TGlTexture\&\ tex)\ const\ \{\ \ return\ Textures.\}}}
+\DoxyCodeLine{00180\ \ \ \mbox{\hyperlink{classTGlTexture}{TGlTexture}}*\ FindTexture(GLuint\ textureIndex)\ \ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ index\ =\ Textures.IndexOf(textureIndex);}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{return}\ Textures.GetValue(index);}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \mbox{\hyperlink{classTGlTexture}{TGlTexture}}*\ FindByName(\textcolor{keyword}{const}\ olxstr\ \&name)\ \ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Textures.Count();\ i++)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Textures.GetValue(i)-\/>GetName()\ ==\ name)}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Textures.GetValue(i);}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{00190\ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \textcolor{keywordtype}{void}\ BeforeContextChange();}
+\DoxyCodeLine{00192\ \ \ \textcolor{keywordtype}{void}\ AfterContextChange();}
+\DoxyCodeLine{00193\ \};}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ EndGlNamespace()}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

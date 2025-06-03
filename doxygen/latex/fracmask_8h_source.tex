@@ -1,0 +1,57 @@
+\doxysection{fracmask.\+h}
+\hypertarget{fracmask_8h_source}{}\label{fracmask_8h_source}\index{xlib/fracmask.h@{xlib/fracmask.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_fractional\_mask\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_fractional\_mask\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }FractMask\ \{}
+\DoxyCodeLine{00018\ \ \ olx\_array::TArray3D<bool>*\ Mask;}
+\DoxyCodeLine{00019\ \ \ vec3d\ Norm;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ FractMask()}
+\DoxyCodeLine{00022\ \ \ \ \ :\ Mask(NULL)}
+\DoxyCodeLine{00023\ \ \ \{\}}
+\DoxyCodeLine{00024\ \ \ \string~FractMask()\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{if}\ (Mask\ !=\ NULL)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Mask;}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{/*\ min\ and\ max\ -\/\ fractional\ coordinates,\ norm\ -\/\ length\ of\ the\ sides,}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ \ resolution\ -\/\ the\ mask\ resolution\ in\ anstrems\ */}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ Init(\textcolor{keyword}{const}\ vec3d\&\ \_min,\ \textcolor{keyword}{const}\ vec3d\&\ \_max,\ \textcolor{keyword}{const}\ vec3d\&\ norms,}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{double}\ resolution\ =\ 1.0);}
+\DoxyCodeLine{00033\ \ \ \textcolor{comment}{//\ takes\ fractional\ coordinates}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Set(\textcolor{keyword}{const}\ vec3d\&\ fc,\ \textcolor{keywordtype}{bool}\ v)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ ind\ =\ fc\ *\ Norm;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{if}\ (Mask-\/>IsInRange(ind))}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ Mask-\/>Value(ind)\ =\ v;}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{comment}{//\ takes\ fractional\ coordinates}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ Get(\textcolor{keyword}{const}\ vec\&\ fc)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ ind\ =\ fc*Norm;}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ Mask-\/>IsInRange(ind)\ ?\ Mask-\/>Value(ind)\ :\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{inline}\ olx\_array::TArray3D<bool>*\ GetMask()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Mask;\ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \mbox{\hyperlink{classIOutputStream}{IOutputStream}}\&\ os)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ is);}
+\DoxyCodeLine{00048\ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

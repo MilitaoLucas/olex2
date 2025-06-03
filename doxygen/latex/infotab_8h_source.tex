@@ -1,0 +1,101 @@
+\doxysection{infotab.\+h}
+\hypertarget{infotab_8h_source}{}\label{infotab_8h_source}\index{xlib/infotab.h@{xlib/infotab.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{/*\ implementation\ of\ the\ HTAB\ and\ RTAB\ for\ management\ of\ deleted\ atoms\ etc\ */}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ \_olx\_info\_tab\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ \_olx\_info\_tab\_H}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}catomlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}refmodel.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#undef\ AddAtom}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginXlibNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00020\ \ \ infotab\_htab\ =\ 1,}
+\DoxyCodeLine{00021\ \ \ infotab\_rtab\ =\ 2,}
+\DoxyCodeLine{00022\ \ \ infotab\_mpla\ =\ 3,}
+\DoxyCodeLine{00023\ \ \ infotab\_bond\ =\ 4,}
+\DoxyCodeLine{00024\ \ \ infotab\_conf\ =\ 5;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ class\ InfoTab\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{\ \ \textcolor{comment}{//\ need\ to\ cast\ to\ delete}}
+\DoxyCodeLine{00027\ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ RM;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{short}\ Type,}
+\DoxyCodeLine{00029\ \ \ \ \ AtomCount;\ \textcolor{comment}{//\ for\ MPLA,\ CONF}}
+\DoxyCodeLine{00030\ \ \ olxstr\ ParamName;}
+\DoxyCodeLine{00031\ \ \ \mbox{\hyperlink{classAtomRefList}{AtomRefList}}\ atoms;}
+\DoxyCodeLine{00032\ \ \ TDoubleList\ args;\ \textcolor{comment}{//\ for\ new\ CONF}}
+\DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ InfoTab(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keywordtype}{short}\ type,}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ paramName\ =\ EmptyString(),\ \textcolor{keywordtype}{short}\ atomCount\ =\ -\/1)}
+\DoxyCodeLine{00036\ \ \ \ \ :\ RM(rm),\ Type(type),\ AtomCount(atomCount),}
+\DoxyCodeLine{00037\ \ \ \ \ ParamName(paramName),\ atoms(rm)}
+\DoxyCodeLine{00038\ \ \ \{\}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ InfoTab(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)}
+\DoxyCodeLine{00041\ \ \ \ \ :\ RM(rm),\ atoms(rm)}
+\DoxyCodeLine{00042\ \ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ FromDataItem(di,\ rm);}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ InfoTab(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ InfoTab\&\ it)}
+\DoxyCodeLine{00047\ \ \ \ \ :\ RM(rm),\ atoms(rm)}
+\DoxyCodeLine{00048\ \ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ this-\/>operator\ =\ (it);}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ \string~InfoTab()\ \{\}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ InfoTab\&\ it)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00054\ \ \ InfoTab\&\ operator\ =\ (\textcolor{keyword}{const}\ InfoTab\&\ it);}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ FromExpression(\textcolor{keyword}{const}\ olxstr\ \&e,\ \textcolor{keyword}{const}\ olxstr\ \&resi\ =\ EmptyString());}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{void}\ AddAtom(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca,\ \textcolor{keyword}{const}\ smatd*\ sm);}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{void}\ UpdateResi()\ \{\ atoms.UpdateResi();\ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{comment}{//\ this\ is\ called\ internally\ by\ the\ RM}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{void}\ OnAUUpdate()\ \{\ atoms.OnAUUpdate();\ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ BeginAUSort()\ \{\ atoms.BeginAUSort();\ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{void}\ EndAUSort()\ \{\ atoms.EndAUSort(\textcolor{keyword}{false});\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \mbox{\hyperlink{classAtomRefList}{AtomRefList}}\&\ GetAtoms()\ \{\ \textcolor{keywordflow}{return}\ atoms;\ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classAtomRefList}{AtomRefList}}\&\ GetAtoms()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ atoms;\ \}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{const}\ TDoubleList\ \&\ getArgs()\ \{\ \textcolor{keywordflow}{return}\ args;\ \}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{void}\ setArgs(\textcolor{keyword}{const}\ TDoubleList\ \&args)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ this-\/>args\ =\ args;}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{short}\ GetType()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Type;\ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ olxstr\ GetName()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(Type\ ==\ infotab\_htab\ ?\ \textcolor{stringliteral}{"{}HTAB"{}}\ :}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ (Type\ ==\ infotab\_rtab\ ?\ \textcolor{stringliteral}{"{}RTAB"{}}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ :\ (Type\ ==\ infotab\_mpla\ ?\ \textcolor{stringliteral}{"{}MPLA"{}}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ :\ (Type\ ==\ infotab\_bond\ ?\ \textcolor{stringliteral}{"{}BOND"{}}\ :\ \textcolor{stringliteral}{"{}CONF"{}}))));}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ TIString\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ olxstr\ InsStr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00090\ \ \ PyObject*\ PyExport();}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00092\ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ EndXlibNamespace()}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

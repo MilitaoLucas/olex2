@@ -1,0 +1,115 @@
+\doxysection{glgroup.\+h}
+\hypertarget{glgroup_8h_source}{}\label{glgroup_8h_source}\index{glib/glgroup.h@{glib/glgroup.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_group\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_group\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}sortedlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}gdrawobject.h"{}}}
+\DoxyCodeLine{00015\ BeginGlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ \mbox{\hyperlink{classTMouseData}{TMouseData}};}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ class\ TGlGroup\ :\ public\ AGDrawObject\ \{}
+\DoxyCodeLine{00020\ \ \ AGDObjList\ Objects;\ \ \textcolor{comment}{//\ a\ list\ of\ grouped\ objects}}
+\DoxyCodeLine{00021\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\ GlM;}
+\DoxyCodeLine{00022\ \ \ TGlOption\ BlendColor;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{bool}\ DefaultColor,\ Blended;}
+\DoxyCodeLine{00024\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{void}\ InitMaterial()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ DoDraw(\textcolor{keywordtype}{bool}\ SelectPrimitives,\ \textcolor{keywordtype}{bool}\ SelectObjects);}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTGlGroup_1_1ObjectReleaser}{ObjectReleaser}}\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ OnItem(item\_t\ \&o\_,\ \textcolor{keywordtype}{size\_t})\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ AGDrawObject\ \&o\ =\ olx\_ref::get(o\_);}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ o.SetParentGroup(NULL);}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ o.SetGrouped(\textcolor{keyword}{false});}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \};}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{void}\ OverrideMaterialDraw(\textcolor{keywordtype}{bool}\ SelectPrimitives,\ \textcolor{keywordtype}{bool}\ SelectObjects)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ BlendMaterialDraw(\textcolor{keywordtype}{bool}\ SelectPrimitives,\ \textcolor{keywordtype}{bool}\ SelectObjects)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ \ \ TGlOption\ GetBlendColor()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{bool}\ CheckBlended()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00040\ \ \ TGlGroup(\textcolor{keyword}{class}\ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ R,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName);}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName\ =\ EmptyString());}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{virtual}\ \string~TGlGroup();}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ Draw(\textcolor{keywordtype}{bool}\ SelectPrimitives\ =\ \textcolor{keyword}{false},\ \textcolor{keywordtype}{bool}\ SelectObjects\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ DoDraw(SelectPrimitives,\ SelectObjects);}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ IncCapacity(\textcolor{keywordtype}{size\_t}\ v)\ \{\ Objects.SetCapacity(Objects.Count()\ +\ v);\ \}}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//\ Adds\ an\ object\ to\ the\ list\ if\ it\ is\ not\ there\ and\ removes\ it\ otherwise}}
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//\ returns\ true\ if\ the\ object\ is\ added\ and\ false\ if\ it\ is\ removed}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{bool}\ Add(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ G,\ \textcolor{keywordtype}{bool}\ remove\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00051\ \ \ \textcolor{comment}{//\ a\ list\ to\ ADrawObjects/derived\ classes\ is\ expected}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ \textcolor{keywordtype}{void}\ AddObjects(\textcolor{keyword}{const}\ List\&\ list)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ Objects.SetCapacity(Objects.Count()\ +\ list.Count());}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ Add(*list[i],\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ obj\_t,\ \textcolor{keyword}{class}\ list\_t>\ list\_t\&\ Extract(list\_t\&\ l)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Objects.Count();\ i++)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ obj\_t\ *a\ =\ \textcolor{keyword}{dynamic\_cast<}obj\_t*\textcolor{keyword}{>}(Objects[i]);}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a\ !=\ 0)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ l.Add(a);}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{return}\ l;}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ obj\_t>\ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<obj\_t>}}\ Extract()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00068\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<obj\_t>}}\ rv;}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{return}\ Extract<obj\_t,\ TPtrList<obj\_t>\ >(rv);}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{/*\ Returns\ true\ if\ th\ eobejct\ was\ removed\ and\ false\ if\ it\ was\ not\ a\ part\ of}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ the\ group}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{bool}\ Remove(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ G);}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ RemoveHidden();}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{bool}\ Contains(\textcolor{keyword}{const}\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ G)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \ Objects.Contains(G);\ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Objects.Count();\ \}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Objects.IsEmpty();\ \}}
+\DoxyCodeLine{00080\ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ GetObject(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Objects[i];\ \}}
+\DoxyCodeLine{00081\ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Objects[i];\ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{void}\ SortObjectsByTag();}
+\DoxyCodeLine{00083\ \ \ \textcolor{comment}{/*\ returns\ true\ if\ there\ are\ at\ least\ two\ groupable\ objects,\ moving\ the}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ \ ungroupable\ ones\ to\ the\ provided\ list}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{bool}\ TryToGroup(AGDObjList\&\ ungroupable);}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{virtual}\ vec3d\ CalcCenter()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&,\ vec3d\&)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnMouseDown(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnMouseMove(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetVisible(\textcolor{keywordtype}{bool}\ On);}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetSelected(\textcolor{keywordtype}{bool}\ On);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{bool}\ IsDefaultColor()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ DefaultColor;\ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{bool}\ IsBlended()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Blended;\ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ SetBlended(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ GetGlM()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GlM;\ \}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ SetGlM(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ m);}
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//\ returns\ the\ actually\ rendered\ material}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\ GetActualMaterial(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ list\_item\_type;}
+\DoxyCodeLine{00106\ \};}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ EndGlNamespace()}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

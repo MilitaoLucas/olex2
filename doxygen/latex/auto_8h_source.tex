@@ -1,0 +1,597 @@
+\doxysection{auto.\+h}
+\hypertarget{auto_8h_source}{}\label{auto_8h_source}\index{xlib/auto.h@{xlib/auto.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_auto\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_auto\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}asymmunit.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}unitcell.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}lattice.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}satom.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}network.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}xfiles.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}analysis.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}xapp.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}olxmps.h"{}}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ BeginXlibNamespace()}
+\DoxyCodeLine{00026\ class\ \mbox{\hyperlink{classTAutoDB}{TAutoDB}};}
+\DoxyCodeLine{00027\ class\ \mbox{\hyperlink{classTAutoDBNet}{TAutoDBNet}};}
+\DoxyCodeLine{00028\ class\ \mbox{\hyperlink{classTAtomTypePermutator}{TAtomTypePermutator}};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ struct\ TAutoDBIdObject\ \{}
+\DoxyCodeLine{00031\ \ \ int32\_t\ id;}
+\DoxyCodeLine{00032\ \ \ olxstr\ reference;}
+\DoxyCodeLine{00033\ \ \ TAutoDBIdObject(int32\_t\ id\_)}
+\DoxyCodeLine{00034\ \ \ \ \ :\ id(id\_)}
+\DoxyCodeLine{00035\ \ \ \{\}}
+\DoxyCodeLine{00036\ \ \ TAutoDBIdObject(int32\_t\ id\_,\ \textcolor{keyword}{const}\ olxstr\&\ ref)\ :\ id(id\_),\ reference(ref)\ \{\}}
+\DoxyCodeLine{00037\ \ \ TAutoDBIdObject()\ :\ id(-\/1)\ \{\}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TAutoDBIdObject\&\ oid)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{id}\ ==\ oid.id;\ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ TAutoDBIdObject\&\ oid)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{id}\ !=\ oid.id;\ \}}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TAutoDBIdObject>}}\ \ TAutoDBIdPList;}
+\DoxyCodeLine{00043\ \textcolor{keyword}{class\ }TAutoDBRegistry\ \{}
+\DoxyCodeLine{00044\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TAutoDBIdObject*,\ true>}}\ entries;}
+\DoxyCodeLine{00045\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00046\ \ \ TAutoDBRegistry()\ \{\}}
+\DoxyCodeLine{00047\ \ \ TAutoDBRegistry(\textcolor{keyword}{const}\ TAutoDBRegistry\&\ dbf)}
+\DoxyCodeLine{00048\ \ \ \ \ :\ entries(dbf.entries)}
+\DoxyCodeLine{00049\ \ \ \{\}}
+\DoxyCodeLine{00050\ \ \ \string~TAutoDBRegistry()\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ Clear();}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00054\ \ \ TAutoDBRegistry\&\ operator\ =\ (\textcolor{keyword}{const}\ TAutoDBRegistry\&\ dbf)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ entries\ =\ dbf.entries;}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ TAutoDBRegistry(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ in)\ \{\ LoadFromStream(in);\ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{bool}\ Contains(\textcolor{keyword}{const}\ olxstr\&\ hash)\ \{\ \textcolor{keywordflow}{return}\ entries.HasKey(hash);\ \}}
+\DoxyCodeLine{00060\ \ \ \mbox{\hyperlink{structTAutoDBIdObject}{TAutoDBIdObject}}\&\ Add(\textcolor{keyword}{const}\ olxstr\&\ hash,\ \textcolor{keyword}{const}\ olxstr\&\ file\_name)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \mbox{\hyperlink{structTAutoDBIdObject}{TAutoDBIdObject}}*\ df\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTAutoDBIdObject}{TAutoDBIdObject}}(-\/1,\ file\_name),}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ *\ rv;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{if}\ ((rv\ =\ entries.Add(hash,\ df))\ !=\ df)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ df;}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ *rv;}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ entries.Count();\ \}}
+\DoxyCodeLine{00069\ \ \ \mbox{\hyperlink{structTAutoDBIdObject}{TAutoDBIdObject}}\&\ GetIdObject(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{return}\ *entries.GetValue(ind);}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetObjectName(\textcolor{keywordtype}{size\_t}\ ind)\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{return}\ entries.GetKey(ind);}
+\DoxyCodeLine{00074\ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ AssignIds()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ entries.Count();\ i++)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ entries.GetValue(i)-\/>id\ =\ (uint32\_t)i;}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ SaveToStream(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}\&\ output)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{void}\ LoadFromStream(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ input);}
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{//\ saves\ a\ map\ of\ the\ hashes\ to\ the\ phisical\ file\ names}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ SaveMap(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}\&\ output);}
+\DoxyCodeLine{00084\ \ \ \textcolor{comment}{//\ loads\ a\ map\ of\ the\ hashes\ to\ the\ phisical\ file\ names}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{void}\ LoadMap(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ input);}
+\DoxyCodeLine{00086\ \};}
+\DoxyCodeLine{00088\ \textcolor{keyword}{class\ }TAttachedNode\ \{}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ Element;}
+\DoxyCodeLine{00090\ \ \ vec3d\ FCenter;}
+\DoxyCodeLine{00091\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00092\ \ \ TAttachedNode(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ element,\ \textcolor{keyword}{const}\ vec3d\&\ c)}
+\DoxyCodeLine{00093\ \ \ \ \ :\ Element(element),\ FCenter(c)\ \{\}}
+\DoxyCodeLine{00094\ \ \ TAttachedNode(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ in);}
+\DoxyCodeLine{00095\ \ \ TAttachedNode()\ :\ Element(0)\ \{\}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{void}\ SaveToStream(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}\&\ output)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{void}\ SetType(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ e)\ \{\ Element\ =\ e;\ \}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{void}\ SetCenter(\textcolor{keyword}{const}\ vec3d\&\ c)\ \{\ FCenter\ =\ c;\ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ GetType()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Element;\ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetCenter()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FCenter;\ \}}
+\DoxyCodeLine{00101\ \};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00104\ \textcolor{keyword}{class\ }TAutoDBNode\ \{}
+\DoxyCodeLine{00105\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TAttachedNode>}}\ AttachedNodes;}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ Element;}
+\DoxyCodeLine{00107\ \ \ vec3d\ Center;}
+\DoxyCodeLine{00108\ \ \ \textcolor{comment}{//\ \ int\ AppendedCount,}}
+\DoxyCodeLine{00109\ \ \ int32\_t\ Id;}
+\DoxyCodeLine{00110\ \ \ \textcolor{comment}{//\ runtime\ information}}
+\DoxyCodeLine{00111\ \ \ \textcolor{comment}{//\ this\ is\ the\ "{}index"{}}}
+\DoxyCodeLine{00112\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<olx\_pair\_t<TAutoDBNet*,\ uint32\_t>}}\ >\ Parents;}
+\DoxyCodeLine{00113\ \ \ evecd\ Params;\ \textcolor{comment}{//\ pre-\/calculated\ parameters}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keywordtype}{void}\ \_PreCalc();}
+\DoxyCodeLine{00115\ \ \ \textcolor{keywordtype}{double}\ CalcDistance(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ AttachedNodes[i].GetCenter().DistanceTo(Center);}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{double}\ CalcAngle(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00119\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ SortMetricsFunc(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAttachedNode}{TAttachedNode}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAttachedNode}{TAttachedNode}}\&\ b);}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ SortCAtomsFunc(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TCAtom*,\ vec3d>}}\&\ a,}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TCAtom*,\ vec3d>}}\&\ b);}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{static}\ vec3d\ SortCenter;}
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordtype}{void}\ FromCAtom(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca,\ \textcolor{keyword}{const}\ smatd\&\ m,}
+\DoxyCodeLine{00125\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TCAtom*,\ vec3d>}}\ >*\ atoms);}
+\DoxyCodeLine{00126\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00127\ \ \ TAutoDBNode(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa,\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TCAtom*,\ vec3d>}}\ >*\ atoms)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ FromCAtom(sa.CAtom(),\ sa.GetMatrix(),\ atoms);}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \ \ TAutoDBNode(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca,\ \textcolor{keyword}{const}\ smatd\&\ m,}
+\DoxyCodeLine{00131\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TCAtom*,\ vec3d>}}\ >*\ atoms)}
+\DoxyCodeLine{00132\ \ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ FromCAtom(ca,\ m,\ atoms);}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ \ \ TAutoDBNode(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ in)\ \{\ LoadFromStream(in);\ \}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ olxstr\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordtype}{void}\ SaveToStream(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}\&\ output)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordtype}{void}\ LoadFromStream(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ input);}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \textcolor{keywordtype}{void}\ AddParent(\mbox{\hyperlink{classTAutoDBNet}{TAutoDBNet}}*\ net,\ uint32\_t\ index)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ Parents.AddNew<\mbox{\hyperlink{classTAutoDBNet}{TAutoDBNet}}*,\ uint32\_t>(net,\ index);}
+\DoxyCodeLine{00144\ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{size\_t}\ ParentCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Parents.Count();\ \}}
+\DoxyCodeLine{00146\ \ \ \mbox{\hyperlink{classTAutoDBNet}{TAutoDBNet}}*\ GetParent(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Parents[i].GetA();\ \}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{int}\ GetParentIndex(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Parents[i].GetB();\ \}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ \textcolor{keywordtype}{size\_t}\ NodeCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ AttachedNodes.Count();\ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAttachedNode}{TAttachedNode}}\&\ GetNode(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ AttachedNodes[i];}
+\DoxyCodeLine{00152\ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ GetType()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Element;\ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordtype}{size\_t}\ DistanceCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ AttachedNodes.Count();\ \}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordtype}{double}\ GetDistance(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Params[i];\ \}}
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordtype}{double}\ GetAngle(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{return}\ Params[AttachedNodes.Count()\ +\ i];}
+\DoxyCodeLine{00158\ \ \ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \textcolor{keywordtype}{void}\ DecodeAngle(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keywordtype}{size\_t}\&\ nodea,\ \textcolor{keywordtype}{size\_t}\&\ nodeb)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ AttachedNodes.Count(),\ itr\ =\ 0;}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{while}\ (index\ >\ cnt)\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ index\ -\/=\ cnt;}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ cnt-\/-\/;}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ itr++;}
+\DoxyCodeLine{00166\ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \ \ nodea\ =\ itr;}
+\DoxyCodeLine{00168\ \ \ \ \ nodeb\ =\ index\ +\ (AttachedNodes.Count()\ -\/\ cnt);}
+\DoxyCodeLine{00169\ \ \ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ DefPropP(int32\_t,\ Id)}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{comment}{//\ sorts\ by\ connectivity,\ type\ and\ params}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordtype}{int}\ UpdateCompare(\textcolor{keyword}{const}\ TAutoDBNode\&\ dbn)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ sorts\ by\ connectivity\ and\ params}}
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordtype}{double}\ SearchCompare(\textcolor{keyword}{const}\ TAutoDBNode\&\ dbn,\ \textcolor{keywordtype}{double}*\ fom\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordtype}{bool}\ IsSameType(\textcolor{keyword}{const}\ TAutoDBNode\&\ dbn)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00178\ \ \ \textcolor{keywordtype}{bool}\ IsSimilar(\textcolor{keyword}{const}\ TAutoDBNode\&\ dbn)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00179\ \ \ \textcolor{keywordtype}{bool}\ IsMetricSimilar(\textcolor{keyword}{const}\ TAutoDBNode\&\ dbn,\ \textcolor{keywordtype}{double}\&\ fom)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00180\ \};}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<\ TAutoDBNode\ >}}\ TAutoDBNodePList;}
+\DoxyCodeLine{00183\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<\ TAutoDBNode\ >}}\ TAutoDBNodeList;}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00186\ \textcolor{keyword}{class\ }TAutoDBNetNode\ \{}
+\DoxyCodeLine{00187\ \ \ \mbox{\hyperlink{classTAutoDBNode}{TAutoDBNode}}*\ FCenter;}
+\DoxyCodeLine{00188\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TAutoDBNetNode>}}\ \ AttachedNodes;}
+\DoxyCodeLine{00189\ \ \ int32\_t\ Id,\ Tag;}
+\DoxyCodeLine{00190\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00191\ \ \ TAutoDBNetNode(\mbox{\hyperlink{classTAutoDBNode}{TAutoDBNode}}*\ node)\ \{\ FCenter\ =\ node;\ \}}
+\DoxyCodeLine{00192\ \ \ TAutoDBNetNode(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ input)\ \{\ LoadFromStream(input);\ \}}
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordtype}{void}\ AttachNode(TAutoDBNetNode*\ node)\ \{\ AttachedNodes.Add(node);\ \}}
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ AttachedNodes.Count();\ \}}
+\DoxyCodeLine{00195\ \ \ TAutoDBNetNode*\ Node(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ AttachedNodes[i];\ \}}
+\DoxyCodeLine{00196\ \ \ \mbox{\hyperlink{classTAutoDBNode}{TAutoDBNode}}*\ Center()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FCenter;\ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{bool}\ IsSameType(\textcolor{keyword}{const}\ TAutoDBNetNode\&\ dbn,\ \textcolor{keywordtype}{bool}\ ExtraLevel)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00199\ \ \ \textcolor{keywordtype}{bool}\ IsMetricSimilar(\textcolor{keyword}{const}\ TAutoDBNetNode\&\ nd,\ \textcolor{keywordtype}{double}\&\ cfom,}
+\DoxyCodeLine{00200\ \ \ \ \ uint16\_t*\ cindexes,\ \textcolor{keywordtype}{bool}\ ExtraLevel)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{void}\ SaveToStream(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}\&\ output)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordtype}{void}\ LoadFromStream(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ input);}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ olxstr\ ToString(\textcolor{keywordtype}{int}\ level)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ DefPropP(int32\_t,\ Id);}
+\DoxyCodeLine{00208\ \ \ DefPropP(int32\_t,\ Tag);}
+\DoxyCodeLine{00209\ \};}
+\DoxyCodeLine{00211\ \textcolor{keyword}{class\ }TAutoDBNet\ \{}
+\DoxyCodeLine{00212\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TAutoDBNetNode>}}\ Nodes;}
+\DoxyCodeLine{00213\ \ \ \mbox{\hyperlink{structTAutoDBIdObject}{TAutoDBIdObject}}*\ FReference;}
+\DoxyCodeLine{00214\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00215\ \ \ \textcolor{keyword}{static}\ TAutoDBNet*\ CurrentlyLoading;}
+\DoxyCodeLine{00216\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00217\ \ \ TAutoDBNet(\mbox{\hyperlink{structTAutoDBIdObject}{TAutoDBIdObject}}*\ ref)\ \{\ FReference\ =\ ref;\ \}}
+\DoxyCodeLine{00218\ \ \ TAutoDBNet(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ input)\ \{\ LoadFromStream(input);\ \}}
+\DoxyCodeLine{00219\ \ \ \mbox{\hyperlink{classTAutoDBNetNode}{TAutoDBNetNode}}\&\ NewNode(\mbox{\hyperlink{classTAutoDBNode}{TAutoDBNode}}*\ node)\ \{\ \textcolor{keywordflow}{return}\ Nodes.AddNew(node);\ \}}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTAutoDBIdObject}{TAutoDBIdObject}}\&\ GetReference()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *FReference;\ \}}
+\DoxyCodeLine{00221\ \ \ \mbox{\hyperlink{structTAutoDBIdObject}{TAutoDBIdObject}}*\ Reference()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FReference;\ \}}
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Nodes.Count();\ \}}
+\DoxyCodeLine{00223\ \ \ \mbox{\hyperlink{classTAutoDBNetNode}{TAutoDBNetNode}}\&\ Node(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ Nodes[i];\ \}}
+\DoxyCodeLine{00224\ \ \ \textcolor{keywordtype}{void}\ SaveToStream(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}\&\ output)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00225\ \ \ \textcolor{keywordtype}{void}\ LoadFromStream(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ input);}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordtype}{bool}\ Contains(\mbox{\hyperlink{classTAutoDBNode}{TAutoDBNode}}*\ nd)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Nodes.Count();\ i++)}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Nodes[i].Center()\ ==\ nd)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00232\ \ \ \}}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOf(\mbox{\hyperlink{classTAutoDBNode}{TAutoDBNode}}*\ nd,\ \textcolor{keywordtype}{int}\ start\ =\ 0)\textcolor{keyword}{\ \ const\ }\{}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start;\ i\ <\ Nodes.Count();\ i++)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Nodes[i].Center()\ ==\ nd)\ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00240\ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{static}\ TAutoDBNet\&\ GetCurrentlyLoading()\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{return}\ *CurrentlyLoading;}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ \};}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00247\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTAutoDBSearchNode}{TAutoDBSearchNode}}\ \{}
+\DoxyCodeLine{00248\ \ \ TAutoDBNodePList\ PossibleCentres;}
+\DoxyCodeLine{00249\ \};}
+\DoxyCodeLine{00251\ \textcolor{keyword}{class\ }TAutoDB\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00252\ \ \ \textcolor{comment}{//\ a\ fixed\ size\ list\ 0\ -\/\ nodes\ connected\ to\ one\ other\ node,\ 1\ -\/\ two,\ etc}}
+\DoxyCodeLine{00253\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<\ TPtrList<TAutoDBNode>}}\ >\ Nodes;}
+\DoxyCodeLine{00254\ \ \ \mbox{\hyperlink{classTXFile}{TXFile}}\&\ XFile;}
+\DoxyCodeLine{00255\ \ \ olxstr\ src\_file;}
+\DoxyCodeLine{00256\ \ \ \textcolor{comment}{//TSStrPObjList<olxstr,TAutoDBFolder*,\ true>\ Folders;}}
+\DoxyCodeLine{00257\ \ \ \mbox{\hyperlink{classTAutoDBRegistry}{TAutoDBRegistry}}\ registry;}
+\DoxyCodeLine{00258\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TAutoDBNet>}}\ Nets;}
+\DoxyCodeLine{00259\ \ \ \textcolor{keywordtype}{void}\ PrepareForSearch();}
+\DoxyCodeLine{00260\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00261\ \ \ \textcolor{keywordtype}{void}\ ProcessNodes(\mbox{\hyperlink{structTAutoDBIdObject}{TAutoDBIdObject}}*\ currentFile,\ \mbox{\hyperlink{classTNetwork}{TNetwork}}\&\ net);}
+\DoxyCodeLine{00262\ \ \ \mbox{\hyperlink{classTAutoDBNet}{TAutoDBNet}}*\ BuildSearchNet(\mbox{\hyperlink{classTNetwork}{TNetwork}}\&\ net,\ TSAtomPList\&\ cas);}
+\DoxyCodeLine{00263\ \ \ \textcolor{comment}{//............................................................................}}
+\DoxyCodeLine{00264\ \ \ \mbox{\hyperlink{classTAutoDBNode}{TAutoDBNode}}*\ LocateNode(\textcolor{keywordtype}{size\_t}\ index)\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Nodes.Count();\ i++)\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ <\ Nodes[i].Count())\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Nodes[i][index];}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ index\ -\/=\ Nodes[i].Count();}
+\DoxyCodeLine{00270\ \ \ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}index"{}});}
+\DoxyCodeLine{00272\ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \textcolor{comment}{//............................................................................}}
+\DoxyCodeLine{00274\ \ \ \textcolor{keywordtype}{void}\ SafeSave(\textcolor{keyword}{const}\ olxstr\&\ file\_name);}
+\DoxyCodeLine{00275\ \ \ \textcolor{keywordtype}{void}\ DoInitialise();}
+\DoxyCodeLine{00276\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00277\ \ \ \textcolor{comment}{//\ structre\ to\ store\ analysis\ statistics}}
+\DoxyCodeLine{00278\ \ \ \textcolor{keyword}{struct\ }AnalysisStat\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordtype}{int}\ AtomTypeChanges,\ ConfidentAtomTypes,\ SNAtomTypeAssignments;}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keywordtype}{bool}\ FormulaConstrained,\ AtomDeltaConstrained;}
+\DoxyCodeLine{00281\ \ \ \ \ AnalysisStat()\ \{\ Clear();\ \}}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ AtomTypeChanges\ =\ ConfidentAtomTypes\ =\ SNAtomTypeAssignments\ =\ 0;}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ FormulaConstrained\ =\ AtomDeltaConstrained\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00285\ \ \ \ \ \}}
+\DoxyCodeLine{00286\ \ \ \};}
+\DoxyCodeLine{00287\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00288\ \ \ TDoubleList\ Uisos;}
+\DoxyCodeLine{00289\ \ \ \mbox{\hyperlink{structTAutoDB_1_1AnalysisStat}{AnalysisStat}}\ LastStat;}
+\DoxyCodeLine{00290\ \ \ olxstr\ LastFileName;}
+\DoxyCodeLine{00291\ \ \ \textcolor{comment}{//\ maximim\ element\ promotion}}
+\DoxyCodeLine{00292\ \ \ \textcolor{keywordtype}{int}\ BAIDelta;}
+\DoxyCodeLine{00293\ \ \ \textcolor{comment}{//\ ratio\ beyond\ which\ search\ for\ element\ promotion}}
+\DoxyCodeLine{00294\ \ \ \textcolor{keywordtype}{double}\ URatio,\ URatioFormula,\ LengthVar,\ AngleVar;}
+\DoxyCodeLine{00295\ \ \ \textcolor{keywordtype}{bool}\ EnforceFormula;}
+\DoxyCodeLine{00296\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00297\ \ \ \textcolor{comment}{/*\ the\ instance\ must\ be\ created\ with\ Replicate\ to\ avoid\ problems}}
+\DoxyCodeLine{00298\ \textcolor{comment}{\ \ \ It\ will\ be\ deleted\ by\ this\ object}}
+\DoxyCodeLine{00299\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00300\ \ \ TAutoDB(\mbox{\hyperlink{classTXFile}{TXFile}}\&\ xfile,\ \mbox{\hyperlink{classALibraryContainer}{ALibraryContainer}}\&\ lc);}
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{virtual}\ \string~TAutoDB();}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \textcolor{keywordtype}{void}\ ProcessFolder(\textcolor{keyword}{const}\ olxstr\&\ folder,\ \textcolor{keywordtype}{bool}\ allow\_disorder=\textcolor{keyword}{false},}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keywordtype}{double}\ max\_r=5.0,\ \textcolor{keywordtype}{double}\ max\_shift\_over\_esd=0.05,\ \textcolor{keywordtype}{double}\ max\_GoF\_dev=0.1,}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&dest=EmptyString());}
+\DoxyCodeLine{00306\ \ \ \textcolor{keywordtype}{void}\ SaveToStream(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}\&\ output)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordtype}{void}\ LoadFromStream(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ input);}
+\DoxyCodeLine{00308\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00309\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00310\ \ \ \textcolor{keywordtype}{void}\ AnalyseNet(\mbox{\hyperlink{classTNetwork}{TNetwork}}\&\ net,\ \mbox{\hyperlink{classTAtomTypePermutator}{TAtomTypePermutator}}*\ permutator,}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keywordtype}{double}\&\ Uiso,\ \mbox{\hyperlink{structTAutoDB_1_1AnalysisStat}{AnalysisStat}}\&\ stat,\ \textcolor{keywordtype}{bool}\ dry\_run,}
+\DoxyCodeLine{00312\ \ \ \ \ ElementPList*\ proposed\_atoms\ =\ 0);}
+\DoxyCodeLine{00313\ \ \ \textcolor{comment}{//\ a\ helper\ function\ to\ check\ C-\/O\ and\ C-\/N}}
+\DoxyCodeLine{00314\ \ \ \textcolor{keywordtype}{bool}\ A2Pemutate(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ e1,}
+\DoxyCodeLine{00315\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ e2,\ \textcolor{keywordtype}{bool}\ dry\_run,\ \textcolor{keywordtype}{double}\ threshold);}
+\DoxyCodeLine{00316\ \ \ \textcolor{comment}{//\ returns\ bitmask,\ 1\ -\/\ a1\ should\ be\ changed,\ 2\ -\/\ a2}}
+\DoxyCodeLine{00317\ \ \ \textcolor{keywordtype}{short}\ CheckA2Pemutate(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ e1,}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ e2,\ \textcolor{keywordtype}{double}\ threshold);}
+\DoxyCodeLine{00319\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00320\ \ \ \textcolor{keywordtype}{void}\ AnalyseStructure(\textcolor{keyword}{const}\ olxstr\&\ LastFileName,\ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ latt,}
+\DoxyCodeLine{00321\ \ \ \ \ \mbox{\hyperlink{classTAtomTypePermutator}{TAtomTypePermutator}}*\ permutator,\ \mbox{\hyperlink{structTAutoDB_1_1AnalysisStat}{AnalysisStat}}\&\ stat,\ \textcolor{keywordtype}{bool}\ dry\_run,}
+\DoxyCodeLine{00322\ \ \ \ \ ElementPList*\ proposed\_atoms\ =\ 0);}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00324\ \ \ \textcolor{keyword}{const}\ TDoubleList\&\ GetUisos()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Uisos;\ \}}
+\DoxyCodeLine{00325\ \ \ \textcolor{keyword}{const}\ AnalysisStat\&\ GetStats()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ LastStat;\ \}}
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetLastFileName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ LastFileName;\ \}}
+\DoxyCodeLine{00327\ \ \ \textcolor{keywordtype}{void}\ AnalyseNode(TSAtom\&\ sa,\ TStrList\&\ report);}
+\DoxyCodeLine{00328\ \ \ \textcolor{keyword}{static}\ TAutoDB*\&\ GetInstance\_()\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{keyword}{static}\ TAutoDB*\ inst\ =\ 0;}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keywordflow}{return}\ inst;}
+\DoxyCodeLine{00331\ \ \ \}}
+\DoxyCodeLine{00332\ \ \ \textcolor{keyword}{static}\ TAutoDB\&\ GetInstance(\textcolor{keywordtype}{bool}\ init=\textcolor{keyword}{true});}
+\DoxyCodeLine{00333\ \ \ \textcolor{keyword}{class\ }TLibrary*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name\ =\ EmptyString());}
+\DoxyCodeLine{00334\ \ \ TAutoDBNode*\ Node(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ LocateNode(i);\ \}}
+\DoxyCodeLine{00335\ \ \ TAutoDBIdObject\&\ Reference(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ registry.GetIdObject(i);\ \}}
+\DoxyCodeLine{00336\ \ \ DefPropP(\textcolor{keywordtype}{int},\ BAIDelta);}
+\DoxyCodeLine{00337\ \ \ DefPropP(\textcolor{keywordtype}{double},\ URatio);}
+\DoxyCodeLine{00338\ \ \ DefPropP(\textcolor{keywordtype}{double},\ LengthVar);}
+\DoxyCodeLine{00339\ \ \ DefPropP(\textcolor{keywordtype}{double},\ AngleVar);}
+\DoxyCodeLine{00340\ \ \ DefPropBIsSet(EnforceFormula);}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ NodeClass>}
+\DoxyCodeLine{00344\ \ \ \textcolor{keyword}{struct\ }THitStruct\ \{}
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keywordtype}{double}\ Fom;}
+\DoxyCodeLine{00346\ \ \ \ \ NodeClass*\ Node;}
+\DoxyCodeLine{00347\ \ \ \ \ THitStruct(NodeClass*\ node,\ \textcolor{keywordtype}{double}\ fom)\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ Node\ =\ node;}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ Fom\ =\ fom;}
+\DoxyCodeLine{00350\ \ \ \ \ \}}
+\DoxyCodeLine{00351\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ SortByFOMFunc(\textcolor{keyword}{const}\ THitStruct<NodeClass>\&\ a,}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \textcolor{keyword}{const}\ THitStruct<NodeClass>\&\ b)}
+\DoxyCodeLine{00353\ \ \ \ \ \{}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a.Fom,\ b.Fom);}
+\DoxyCodeLine{00355\ \ \ \ \ \}}
+\DoxyCodeLine{00356\ \ \ \};}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ NodeClass>}
+\DoxyCodeLine{00359\ \ \ \textcolor{keyword}{struct\ }THitList\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<\ THitStruct<NodeClass>}}\ >\ hits;}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ Type;}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keywordtype}{double}\ meanFom;}
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ SortByFOMFunc(\textcolor{keyword}{const}\ THitList<NodeClass>\&\ a,}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \textcolor{keyword}{const}\ THitList<NodeClass>\&\ b)\ \{}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ nc\ =\ olx\_min(a.hits.Count(),\ b.hits.Count());}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ foma\ =\ 0,\ fomb\ =\ 0;}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ nc;\ i++)\ \{}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ foma\ +=\ a.hits[i].Fom;}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ fomb\ +=\ b.hits[i].Fom;}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(foma,\ fomb);}
+\DoxyCodeLine{00372\ \ \ \ \ \}}
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ SortByCountFunc(\textcolor{keyword}{const}\ THitList<NodeClass>\&\ a,}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \textcolor{keyword}{const}\ THitList<NodeClass>\&\ b)\ \{}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(b.hits.Count(),\ a.hits.Count());}
+\DoxyCodeLine{00376\ \ \ \ \ \}}
+\DoxyCodeLine{00377\ \ \ \ \ THitList(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ type,\ NodeClass*\ node,\ \textcolor{keywordtype}{double}\ fom)\ \{}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ Type\ =\ \&type;}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ hits.AddNew(node,\ fom);}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ meanFom\ =\ 0;}
+\DoxyCodeLine{00381\ \ \ \ \ \}}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keywordtype}{double}\ MeanFom()\ \{}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (meanFom\ !=\ 0)\ \{}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ meanFom;}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ hits.Count();\ i++)\ \{}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ meanFom\ +=\ hits[i].Fom;}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ meanFom\ /=\ hits.Count();}
+\DoxyCodeLine{00390\ \ \ \ \ \}}
+\DoxyCodeLine{00391\ \ \ \ \ \textcolor{keywordtype}{double}\ MeanFomN(\textcolor{keywordtype}{size\_t}\ cnt)\ \{}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ mf\ =\ 0;}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cnt;\ i++)\ \{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ mf\ +=\ hits[i].Fom;}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mf\ /=\ cnt;}
+\DoxyCodeLine{00397\ \ \ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \ \ \textcolor{keywordtype}{void}\ Sort()\ \{}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ QuickSorter::SortSF(hits,\ THitStruct<NodeClass>::SortByFOMFunc);}
+\DoxyCodeLine{00400\ \ \ \ \ \}}
+\DoxyCodeLine{00401\ \ \ \};}
+\DoxyCodeLine{00402\ \ \ \textcolor{keyword}{struct\ }Type\ \{}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keywordtype}{double}\ fom;}
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ type;}
+\DoxyCodeLine{00405\ \ \ \ \ Type(\textcolor{keywordtype}{double}\ \_fom,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ \_type)}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ :\ fom(\_fom),\ type(\_type)}
+\DoxyCodeLine{00407\ \ \ \ \ \{\}}
+\DoxyCodeLine{00408\ \ \ \};}
+\DoxyCodeLine{00409\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTAutoDB_1_1TGuessCount}{TGuessCount}}\ \{}
+\DoxyCodeLine{00410\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ atom;}
+\DoxyCodeLine{00411\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<THitList<TAutoDBNode>}}\ >\ list1;}
+\DoxyCodeLine{00412\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<THitList<TAutoDBNetNode>}}\ >\ list2;}
+\DoxyCodeLine{00413\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<THitList<TAutoDBNetNode>}}\ >\ list3;}
+\DoxyCodeLine{00414\ \ \ \};}
+\DoxyCodeLine{00415\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTAutoDB_1_1TAnalysisResult}{TAnalysisResult}}\ \{}
+\DoxyCodeLine{00416\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ atom;}
+\DoxyCodeLine{00417\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<Type>}}\ list1,\ list2,\ list3,}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ enforced;}
+\DoxyCodeLine{00419\ \ \ \};}
+\DoxyCodeLine{00420\ \ \ TStrList::const\_list\_type\ ValidateResult(\textcolor{keyword}{const}\ olxstr\&\ fileName,}
+\DoxyCodeLine{00421\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ latt);}
+\DoxyCodeLine{00422\ }
+\DoxyCodeLine{00423\ \ \ \mbox{\hyperlink{classConstTypeList}{ConstTypeList<TAnalysisResult>}}\ AnalyseStructure(\mbox{\hyperlink{classTLattice}{TLattice}}\&\ latt);}
+\DoxyCodeLine{00424\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ChangeType(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ e,\ \textcolor{keywordtype}{bool}\ dry\_run);}
+\DoxyCodeLine{00425\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00426\ \ \ \mbox{\hyperlink{classConstTypeList}{ConstTypeList<TAnalysisResult>}}\ AnalyseNet(\mbox{\hyperlink{classTNetwork}{TNetwork}}\&\ net);}
+\DoxyCodeLine{00427\ \ \ \textcolor{comment}{//\ hits\ must\ be\ sorted\ beforehand!}}
+\DoxyCodeLine{00428\ \ \ \textcolor{keywordtype}{void}\ AnalyseUiso(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structTAutoDB_1_1THitList}{THitList<TAutoDBNode>}}\ >\&\ list,}
+\DoxyCodeLine{00429\ \ \ \ \ \mbox{\hyperlink{structTAutoDB_1_1AnalysisStat}{AnalysisStat}}\&\ stat,}
+\DoxyCodeLine{00430\ \ \ \ \ \textcolor{keywordtype}{bool}\ dry\_run,}
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{keywordtype}{bool}\ heavier,\ \textcolor{keywordtype}{bool}\ lighter,}
+\DoxyCodeLine{00432\ \ \ \ \ ElementPList*\ proposed\_atoms\ =\ 0);}
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00434\ \ \ \textcolor{keyword}{class\ }TAnalyseNetNodeTask\ :\ \textcolor{keyword}{public}\ TaskBase\ \{}
+\DoxyCodeLine{00435\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<\ TPtrList<TAutoDBNode>}}\ >\&\ Nodes;}
+\DoxyCodeLine{00436\ \ \ \ \ \mbox{\hyperlink{classTAutoDBNet}{TAutoDBNet}}\&\ Network;}
+\DoxyCodeLine{00437\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TGuessCount>}}\&\ Guesses;}
+\DoxyCodeLine{00438\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ LocateDBNodeIndex(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TAutoDBNode>}}\&\ segment,}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \mbox{\hyperlink{classTAutoDBNode}{TAutoDBNode}}*\ nd,\ \textcolor{keywordtype}{size\_t}\ from\ =\ InvalidIndex,\ \textcolor{keywordtype}{size\_t}\ to\ =\ InvalidIndex);}
+\DoxyCodeLine{00440\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00441\ \ \ \ \ TAnalyseNetNodeTask(\mbox{\hyperlink{classTTypeList}{TTypeList}}<\ \mbox{\hyperlink{classTPtrList}{TPtrList<TAutoDBNode>}}\ >\&\ nodes,}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \mbox{\hyperlink{classTAutoDBNet}{TAutoDBNet}}\&\ network,\ \mbox{\hyperlink{classTTypeList}{TTypeList<TGuessCount>}}\&\ guesses)\ :}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ Nodes(nodes),\ Network(network),\ Guesses(guesses)\ \{\}}
+\DoxyCodeLine{00444\ \ \ \ \ \textcolor{keywordtype}{void}\ Run(\textcolor{keywordtype}{size\_t}\ index);}
+\DoxyCodeLine{00445\ \ \ \ \ TAnalyseNetNodeTask*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TAnalyseNetNodeTask(Nodes,\ Network,\ Guesses);}
+\DoxyCodeLine{00447\ \ \ \ \ \}}
+\DoxyCodeLine{00448\ \ \ \};}
+\DoxyCodeLine{00449\ \ \ \textcolor{comment}{//\ \ these\ are\ protected,\ but\ exposed\ in\ the\ constructor}}
+\DoxyCodeLine{00450\ \ \ \textcolor{keywordtype}{void}\ LibBAIDelta(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00451\ \ \ \textcolor{keywordtype}{void}\ LibURatio(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00452\ \ \ \textcolor{keywordtype}{void}\ LibEnforceFormula(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00453\ \ \ \textcolor{keywordtype}{void}\ LibTolerance(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00454\ \ \ \textcolor{keywordtype}{void}\ LibClear(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00455\ \ \ \textcolor{keywordtype}{void}\ LibLoad(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00456\ \ \ \textcolor{keywordtype}{void}\ LibSave(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00457\ \ \ \textcolor{keywordtype}{void}\ LibDigest(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00458\ \ \ \textcolor{keywordtype}{void}\ LibLock(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00460\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ NodeType>}
+\DoxyCodeLine{00461\ \ \ \textcolor{keywordtype}{bool}\ AnalyseUiso(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\ \mbox{\hyperlink{structTAutoDB_1_1THitList}{THitList<NodeType>}}\ >\&\ list,}
+\DoxyCodeLine{00462\ \ \ \ \ \mbox{\hyperlink{structTAutoDB_1_1AnalysisStat}{AnalysisStat}}\&\ stat,\ \textcolor{keywordtype}{bool}\ dry\_run,\ \textcolor{keywordtype}{bool}\ heavier,\ \textcolor{keywordtype}{bool}\ lighter,}
+\DoxyCodeLine{00463\ \ \ \ \ ElementPList*\ proposed\_atoms)}
+\DoxyCodeLine{00464\ \ \ \{}
+\DoxyCodeLine{00465\ \ \ \ \ \textcolor{keywordflow}{if}\ (!lighter\ \&\&\ !heavier)\ \{}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00467\ \ \ \ \ \}}
+\DoxyCodeLine{00468\ \ \ \ \ \textcolor{keywordtype}{bool}\ return\_any\ =\ !olx\_analysis::alg::check\_connectivity(ca,\ ca.GetType());}
+\DoxyCodeLine{00469\ \ \ \ \ olxstr\ tmp\ =\ ca.GetLabel();}
+\DoxyCodeLine{00470\ \ \ \ \ tmp\ <<\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00471\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ type\ =\ \&ca.GetType();}
+\DoxyCodeLine{00472\ \ \ \ \ \textcolor{keywordflow}{if}\ (heavier)\ \{}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!dry\_run)\ \{}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry(logVerbose)\ <<\ \textcolor{stringliteral}{"{}Searching\ element\ heavier\ for\ "{}}\ <<}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ \ \ ca.GetLabel();}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ list.Count();\ j++)\ \{}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list[j].\mbox{\hyperlink{structTAutoDB_1_1Type}{Type}}-\/>z\ >\ type-\/>z)\ \{}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (proposed\_atoms\ !=\ 0)\ \{}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (proposed\_atoms-\/>IndexOf(list[j].Type)\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ type\ =\ list[j].Type;}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (BAIDelta\ !=\ -\/1)\ \{}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((list[j].\mbox{\hyperlink{structTAutoDB_1_1Type}{Type}}-\/>z\ -\/\ ca.GetType().z)\ <\ BAIDelta)\ \{}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ type\ =\ list[j].Type;}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \ \ \ \ type\ =\ list[j].Type;}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \textcolor{comment}{//\ last\ option}}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ ==\ \&ca.GetType()\ \&\&\ proposed\_atoms\ !=\ 0)\ \{}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ delta\ =\ 100;}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ proposed\_atoms-\/>Count();\ i++)\ \{}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ d\ =\ (*proposed\_atoms)[i]-\/>z\ -\/\ ca.GetType().z;}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ >\ 0\ \&\&\ d\ <\ delta\ \&\&}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ \ \ \ \ (return\_any\ ||}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ olx\_analysis::alg::check\_connectivity(ca,\ *(*proposed\_atoms)[i])))}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \ \ \ \ delta\ =\ d;}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ \ \ \ \ type\ =\ (*proposed\_atoms)[i];}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ !=\ \&ca.GetType()\ \&\&\ BAIDelta\ !=\ -\/1\ \&\&\ delta\ >\ BAIDelta)\ \{}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ \ \ type\ =\ \&ca.GetType();}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00514\ \ \ \ \ \}}
+\DoxyCodeLine{00515\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (lighter)\ \{}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!dry\_run)\ \{}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry(logVerbose)\ <<\ \textcolor{stringliteral}{"{}Searching\ element\ lighter\ for\ "{}}\ <<}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \ \ \ \ ca.GetLabel();}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ list.Count();\ j++)\ \{}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list[j].\mbox{\hyperlink{structTAutoDB_1_1Type}{Type}}-\/>z\ <\ type-\/>z)\ \{}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (proposed\_atoms\ !=\ 0)\ \{}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (proposed\_atoms-\/>IndexOf(list[j].Type)\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ type\ =\ list[j].Type;}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (BAIDelta\ !=\ -\/1)\ \{}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((ca.GetType().z\ -\/\ list[j].Type-\/>z)\ <\ BAIDelta)\ \{}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ type\ =\ list[j].Type;}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ \ \ \ \ type\ =\ list[j].Type;}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00539\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \textcolor{comment}{//\ last\ option}}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ ==\ \&ca.GetType()\ \&\&\ proposed\_atoms\ !=\ 0)\ \{}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ delta\ =\ 100;}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ proposed\_atoms-\/>Count();\ i++)\ \{}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ d\ =\ ca.GetType().z\ -\/\ (*proposed\_atoms)[i]-\/>z;}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ >\ 0\ \&\&\ d\ <\ delta\ \&\&}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \ \ \ \ (return\_any\ ||}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ olx\_analysis::alg::check\_connectivity(ca,\ *(*proposed\_atoms)[i])))}
+\DoxyCodeLine{00548\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ \ \ \ \ delta\ =\ d;}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \ \ \ \ \ \ type\ =\ (*proposed\_atoms)[i];}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ !=\ \&ca.GetType()\ \&\&\ BAIDelta\ !=\ -\/1\ \&\&\ delta\ >\ BAIDelta)\ \{}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \ \ type\ =\ \&ca.GetType();}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00557\ \ \ \ \ \}}
+\DoxyCodeLine{00558\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ list.Count();\ j++)\ \{}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ tmp\ <<\ list[j].Type-\/>symbol\ <<\ \textcolor{charliteral}{'('}\ <<}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ olxstr::FormatFloat(3,\ 1.0\ /\ (list[j].MeanFom()\ +\ 0.001))\ <<\ \textcolor{stringliteral}{"{})"{}}\ <<}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \ \ list[j].hits[0].Fom;}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((j\ +\ 1)\ <\ list.Count())\ \{}
+\DoxyCodeLine{00563\ \ \ \ \ \ \ \ \ tmp\ <<\ \textcolor{charliteral}{','};}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00565\ \ \ \ \ \}}
+\DoxyCodeLine{00566\ \ \ \ \ \textcolor{keywordflow}{if}\ (ChangeType(ca,\ *type,\ dry\_run))\ \{}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ stat.AtomTypeChanges++;}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!dry\_run)\ \{}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ olx\_analysis::helper::reset\_u(ca);}
+\DoxyCodeLine{00570\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry(logVerbose)\ <<\ tmp;}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00573\ \ \ \ \ \}}
+\DoxyCodeLine{00574\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00575\ \ \ \}}
+\DoxyCodeLine{00576\ \};}
+\DoxyCodeLine{00577\ }
+\DoxyCodeLine{00578\ \textcolor{keyword}{class\ \ }TAtomTypePermutator\ \{}
+\DoxyCodeLine{00579\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00580\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTAtomTypePermutator_1_1TPermutation}{TPermutation}}\ \{}
+\DoxyCodeLine{00581\ \ \ \ \ vec3d\ AtomCenter;}
+\DoxyCodeLine{00582\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ Atom;}
+\DoxyCodeLine{00583\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AnAssociation3<const\ cm\_Element*,\ double,\ double>}}\ >\ Tries;}
+\DoxyCodeLine{00584\ \ \ \};}
+\DoxyCodeLine{00585\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00586\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TPermutation>}}\ Atoms;}
+\DoxyCodeLine{00587\ \ \ ElementPList\ TypeRestraints;}
+\DoxyCodeLine{00588\ \ \ \textcolor{keywordtype}{bool}\ Active;}
+\DoxyCodeLine{00589\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00590\ \ \ TAtomTypePermutator()\ \{\ Active\ =\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00591\ \ \ \textcolor{keywordtype}{void}\ Init(ElementPList*\ typeRestraints\ =\ 0);}
+\DoxyCodeLine{00592\ \ \ \textcolor{keywordtype}{void}\ ReInit(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00593\ \ \ \textcolor{keywordtype}{void}\ InitAtom(\mbox{\hyperlink{structTAutoDB_1_1TGuessCount}{TAutoDB::TGuessCount}}\&\ guess);}
+\DoxyCodeLine{00594\ \ \ \textcolor{keywordtype}{void}\ Permutate();}
+\DoxyCodeLine{00595\ \ \ DefPropBIsSet(Active);}
+\DoxyCodeLine{00596\ \};}
+\DoxyCodeLine{00597\ }
+\DoxyCodeLine{00598\ EndXlibNamespace()}
+\DoxyCodeLine{00599\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

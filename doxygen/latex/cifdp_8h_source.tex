@@ -1,0 +1,421 @@
+\doxysection{cifdp.\+h}
+\hypertarget{cifdp_8h_source}{}\label{cifdp_8h_source}\index{xlib/cifdp.h@{xlib/cifdp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_cifdp\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_cifdp\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}etable.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}bitarray.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }cif\_dp\ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{class\ }ParsingException\ :\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ LineNumber;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ ParsingException(\textcolor{keyword}{const}\ ParsingException\&\ e)}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ :\ TBasicException(e),\ LineNumber(e.LineNumber)\ \{\}}
+\DoxyCodeLine{00023\ \ \ \ \ ParsingException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ msg,\ \textcolor{keywordtype}{size\_t}\ lineNumber)}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ :\ TBasicException(location,\ olxstr(\textcolor{stringliteral}{"{}Failed\ to\ parse\ CIF\ because\ "{}})\ <<}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ msg\ <<\ \textcolor{stringliteral}{"{}\ at\ CIF\#"{}}\ <<\ lineNumber),}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ LineNumber(lineNumber)}
+\DoxyCodeLine{00027\ \ \ \ \ \{\}}
+\DoxyCodeLine{00028\ \ \ \ \ ParsingException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\&\ cause,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ msg\ =\ EmptyString())}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ :\ TBasicException(location,\ cause,\ msg)}
+\DoxyCodeLine{00031\ \ \ \ \ \{\}}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}CIF\ reading"{}};\ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ ParsingException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ GetLineNumber()\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ LineNumber;}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \};}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{struct\ }CifToken\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ olxstr\ value;}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ lineNumber;}
+\DoxyCodeLine{00044\ \ \ \ \ CifToken(\textcolor{keyword}{const}\ olxstr\ \&v,\ \textcolor{keywordtype}{size\_t}\ ln)}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ :\ value(v),\ lineNumber(ln)}
+\DoxyCodeLine{00046\ \ \ \ \ \{\}}
+\DoxyCodeLine{00047\ \ \ \};}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{struct\ }ICifEntry\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<olxstr>}}\ name,\ comment;}
+\DoxyCodeLine{00051\ \ \ \ \ ICifEntry()\ \{\}}
+\DoxyCodeLine{00052\ \ \ \ \ ICifEntry(\textcolor{keyword}{const}\ ICifEntry\ \&e)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e.name.ok())\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ name\ =\ \textcolor{keyword}{new}\ olxstr(*e.name);}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e.comment.ok())\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ comment\ =\ \textcolor{keyword}{new}\ olxstr(*e.comment);}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~ICifEntry()\ \{\}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Format()\ \{\}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{bool}\ HasName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ name.ok();\ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{bool}\ HasComment()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ comment.ok();\ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{comment}{//\ if\ the\ returned\ valus\ is\ InvalidIndex\ -\/\ the\ object\ is\ not\ comparable}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetCmpHash()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ InvalidIndex;\ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (name.ok())\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *name;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetName(\textcolor{keyword}{const}\ olxstr\ \&n)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ name\ =\ \textcolor{keyword}{new}\ olxstr(n);}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetComment()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (comment.ok())\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *comment;}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ SetComment(\textcolor{keyword}{const}\ olxstr\ \&c)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ comment\ =\ \textcolor{keyword}{new}\ olxstr(c);}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{virtual}\ ICifEntry*\ Replicate()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00088\ \ \ \ \ TIString\ ToString()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetStringValue();\ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keyword}{static}\ ICifEntry\ *FromToken(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcif__dp_1_1CifToken}{CifToken}}\ \&t,\ \textcolor{keywordtype}{int}\ version);}
+\DoxyCodeLine{00090\ \ \ \};}
+\DoxyCodeLine{00092\ \ \ \textcolor{comment}{//\ string(s)\ value\ accessor\ interface}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{struct\ }IStringCifEntry\ :\ \textcolor{keyword}{public}\ ICifEntry\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ IStringCifEntry()\ \{\}}
+\DoxyCodeLine{00095\ \ \ \ \ IStringCifEntry(\textcolor{keyword}{const}\ ICifEntry\ \&e)}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ :\ ICifEntry(e)}
+\DoxyCodeLine{00097\ \ \ \ \ \{\}}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~IStringCifEntry()\ \{\}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 0;\ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetComment()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \};}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{struct\ }cetComment\ :\ \textcolor{keyword}{public}\ IStringCifEntry\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ cetComment(\textcolor{keyword}{const}\ cetComment\&\ v)}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ :\ IStringCifEntry(v)}
+\DoxyCodeLine{00111\ \ \ \ \ \{\}}
+\DoxyCodeLine{00112\ \ \ \ \ cetComment(\textcolor{keyword}{const}\ olxstr\&\ \_value)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ comment\ =\ \textcolor{keyword}{new}\ olxstr(\_value);}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!comment-\/>IsEmpty())\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ list.Add(\textcolor{charliteral}{'\#'})\ <<\ *comment;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ HasComment()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetComment()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *comment;\ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structcif__dp_1_1ICifEntry}{ICifEntry}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ cetComment(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *comment;\ \}}
+\DoxyCodeLine{00124\ \ \ \};}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{struct\ }cetString\ :\ \textcolor{keyword}{public}\ IStringCifEntry\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ olxstr\ value;}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&GetEmptyValue()\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ empty\_value(\textcolor{stringliteral}{"{}''"{}});}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ empty\_value;}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{void}\ SetValue\_(\textcolor{keyword}{const}\ olxstr\ \&val);}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordtype}{bool}\ quoted;}
+\DoxyCodeLine{00134\ \ \ \ \ cetString(\textcolor{keyword}{const}\ cetString\&\ v)}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ :\ IStringCifEntry(v),}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ value(v.value),\ quoted(v.quoted)}
+\DoxyCodeLine{00137\ \ \ \ \ \{\}}
+\DoxyCodeLine{00138\ \ \ \ \ cetString(\textcolor{keyword}{const}\ olxstr\&\ \_val)\ :\ quoted(\textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ SetValue\_(\_val);}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ cetString(\textcolor{keyword}{const}\ olxstr\&\ \_name,\ \textcolor{keyword}{const}\ olxstr\ \&val)}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ :\ quoted(\textcolor{keyword}{false})}
+\DoxyCodeLine{00143\ \ \ \ \ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ SetName(\_name);}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ SetValue\_(val);}
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ cetString(\textcolor{keyword}{const}\ olxstr\&\ \_val,\ \textcolor{keywordtype}{bool}\ quoted\_)}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ :\ value(\_val),\ quoted(quoted\_)}
+\DoxyCodeLine{00149\ \ \ \ \ \{\}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ value;\ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structcif__dp_1_1ICifEntry}{ICifEntry}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ cetString(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ value;\ \}}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keyword}{static}\ cetString\ *NewNamedString(\textcolor{keyword}{const}\ olxstr\ \&name,\ \textcolor{keyword}{const}\ olxstr\ \&val)\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ cetString\ *r\ =\ \textcolor{keyword}{new}\ cetString(val);}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ r-\/>SetName(name);}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00159\ \ \ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \};}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{struct\ }cetStringList\ :\ \textcolor{keyword}{public}\ IStringCifEntry\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ TStrList\ lines;}
+\DoxyCodeLine{00164\ \ \ \ \ cetStringList()\ \{\}}
+\DoxyCodeLine{00165\ \ \ \ \ cetStringList(\textcolor{keyword}{const}\ olxstr\ \&name)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ SetName(name);}
+\DoxyCodeLine{00167\ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \ \ cetStringList(\textcolor{keyword}{const}\ cetStringList\&\ v)}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ :\ IStringCifEntry(v),}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ lines(v.lines)}
+\DoxyCodeLine{00171\ \ \ \ \ \{\}}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Format()\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (lines.Count()\ >\ 1)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ lines.TrimWhiteCharStrings();}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ lines.Count();\ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ lines[i];\ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structcif__dp_1_1ICifEntry}{ICifEntry}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ cetStringList(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00182\ \ \ \};}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{struct\ }cetList\ :\ \textcolor{keyword}{public}\ ICifEntry\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<ICifEntry>}}\ data;}
+\DoxyCodeLine{00186\ \ \ \ \ cetList(\textcolor{keyword}{const}\ cetList\ \&l);}
+\DoxyCodeLine{00187\ \ \ \ \ cetList()\ \{\}}
+\DoxyCodeLine{00188\ \ \ \ \ \string~cetList();}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordtype}{void}\ FromToken(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcif__dp_1_1CifToken}{CifToken}}\ \&token);}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ HasName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{virtual}\ ICifEntry*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ cetList(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00197\ \ \ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \};}
+\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{struct\ }cetDict\ :\ \textcolor{keyword}{public}\ ICifEntry\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<IStringCifEntry*,\ ICifEntry*>}}\ dict\_item\_t;}
+\DoxyCodeLine{00202\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<dict\_item\_t>}}\ data;}
+\DoxyCodeLine{00203\ \ \ \ \ cetDict(\textcolor{keyword}{const}\ cetDict\ \&l);}
+\DoxyCodeLine{00204\ \ \ \ \ cetDict()\ \{\}}
+\DoxyCodeLine{00205\ \ \ \ \ \string~cetDict();}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keywordtype}{void}\ FromToken(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcif__dp_1_1CifToken}{CifToken}}\ \&token);}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordtype}{void}\ Add(\textcolor{keyword}{const}\ olxstr\ \&name,\ ICifEntry\ *\ value)\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ data.Add(\textcolor{keyword}{new}\ dict\_item\_t(\textcolor{keyword}{new}\ \mbox{\hyperlink{structcif__dp_1_1cetString}{cetString}}(name,\ \textcolor{keyword}{true}),\ value));}
+\DoxyCodeLine{00209\ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ HasName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00214\ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keyword}{virtual}\ ICifEntry*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ cetDict(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00217\ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \};}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<ICifEntry>}}\ CifRow;}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{typedef}\ TTTable<CifRow>\ CifTable;}
+\DoxyCodeLine{00222\ \ \ \textcolor{keyword}{struct\ }cetTable\ :\ \textcolor{keyword}{public}\ ICifEntry\ \{}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00224\ \ \ \ \ CifTable\ data;}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00226\ \ \ \ \ cetTable()\ \{\}}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{comment}{//takes\ comma\ separated\ list\ of\ column\ names}}
+\DoxyCodeLine{00228\ \ \ \ \ cetTable(\textcolor{keyword}{const}\ olxstr\&\ cols,\ \textcolor{keywordtype}{size\_t}\ row\_count\ =\ InvalidSize);}
+\DoxyCodeLine{00229\ \ \ \ \ cetTable(\textcolor{keyword}{const}\ cetTable\&\ v);}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~cetTable()\ \{\ Clear();\ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetName(\textcolor{keyword}{const}\ olxstr\&);}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordtype}{void}\ AddCol(\textcolor{keyword}{const}\ olxstr\&\ col\_name);}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SC>}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordtype}{bool}\ RemoveCol(\textcolor{keyword}{const}\ SC\&\ col\_name)\ \{\ \textcolor{keywordflow}{return}\ DelCol(ColIndex(col\_name));\ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordtype}{void}\ DelRow(\textcolor{keywordtype}{size\_t}\ idx);}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keywordtype}{bool}\ DelCol(\textcolor{keywordtype}{size\_t}\ idx);}
+\DoxyCodeLine{00238\ \ \ \ \ CifRow\&\ AddRow()\ \{\ \textcolor{keywordflow}{return}\ data.AddRow();\ \}}
+\DoxyCodeLine{00239\ \ \ \ \ ICifEntry\&\ Set(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ ICifEntry*\ v);}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keyword}{const}\ ICifEntry\&\ Get(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ *data[i][j];\ \}}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keyword}{const}\ CifTable\&\ GetData()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data;\ \}}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keyword}{const}\ CifRow\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ColCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.ColCount();\ \}}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ ColName(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.ColName(i);\ \}}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Str>}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ColIndex(\textcolor{keyword}{const}\ Str\&\ name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data.ColIndexi(name);}
+\DoxyCodeLine{00248\ \ \ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ RowCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.RowCount();\ \}}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordtype}{void}\ SetRowCount(\textcolor{keywordtype}{size\_t}\ sz)\ \{\ data.SetRowCount(sz);\ \}}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordtype}{void}\ SetRowCapacity(\textcolor{keywordtype}{size\_t}\ sz)\ \{\ data.SetRowCapacity(sz);\ \}}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{comment}{/*\ adds\ the\ table\ content\ if\ the\ column\ names\ match\ (order\ does\ not\ matter).}}
+\DoxyCodeLine{00253\ \textcolor{comment}{\ \ \ \ *\ if\ unique\ ==\ true,\ only\ unique\ entries\ are\ added,\ the\ uniq\_cols\ mask\ can}}
+\DoxyCodeLine{00254\ \textcolor{comment}{\ \ \ \ *\ specify\ which\ cols\ to\ consider\ for\ unqiqueness.\ If\ a\ non\ unique\ row\ is}}
+\DoxyCodeLine{00255\ \textcolor{comment}{\ \ \ \ located\ it\ could\ be\ updated\ with\ values\ from\ t\ by\ setting\ update\_existing}}
+\DoxyCodeLine{00256\ \textcolor{comment}{\ \ \ \ to\ true}}
+\DoxyCodeLine{00257\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordtype}{bool}\ Add(\textcolor{keyword}{const}\ cetTable\&\ t,\ \textcolor{keywordtype}{bool}\ unique,\ \textcolor{keywordtype}{bool}\ update\_existing,}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTEBitArray}{TEBitArray}}*\ uniq\_cols=0);}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Format()\ \{\}}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keyword}{virtual}\ ICifEntry*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ cetTable(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00265\ \ \ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ \textcolor{keyword}{static}\ olxstr\ GenerateName(\textcolor{keyword}{const}\ List\&\ l)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (l.IsEmpty())\ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ EmptyString();}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (l.Count()\ ==\ 1)\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ l[0];}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ olxstr\ name\ =\ l[0].CommonSubString(l[1]);}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ min\_len\ =\ olx\_min(l[0].Length(),\ l[1].Length());}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 2;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ name\ =\ l[i].CommonSubString(name);}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (l[i].Length()\ <\ min\_len)\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ min\_len\ =\ l[i].Length();}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (name.IsEmpty())\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Mismatching\ loop\ columns"{}});}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (name.Length()\ !=\ min\_len)\ \{\ \ \textcolor{comment}{//\ lihe\ \_geom\_angle\ and\ geom\_angle\_etc}}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ u\_ind\ =\ name.LastIndexOf(\textcolor{charliteral}{'\_'});}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u\_ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ name.SetLength(u\_ind);}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ name;}
+\DoxyCodeLine{00292\ \ \ \ \ \}}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keywordtype}{void}\ Sort();}
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{comment}{//\ used\ in\ table\ sorting,\ not\ suitable\ for\ parallelisation}}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcif__dp_1_1cetTable_1_1TableSorter}{TableSorter}}\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ Compare\_(\textcolor{keyword}{const}\ CifRow\ \&r1,\ \textcolor{keyword}{const}\ CifRow\ \&r2)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_a\_t,\ \textcolor{keyword}{class}\ item\_b\_t>}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&r1,\ \textcolor{keyword}{const}\ item\_b\_t\ \&r2)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Compare\_(olx\_ref::get(r1),\ olx\_ref::get(r2));}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \ \ \};}
+\DoxyCodeLine{00302\ \ \ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TStrList>}}\ RowContent(\textcolor{keywordtype}{size\_t}\ row,}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TSizeList*\ indices=0,}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTEBitArray}{TEBitArray}}*\ mask=0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{comment}{/*\ returns\ indecis\ of\ cols\ in\ t2\ to\ match\ cols\ in\ t1\ or\ an\ epmty\ list\ if}}
+\DoxyCodeLine{00307\ \textcolor{comment}{\ \ \ \ cols\ do\ not\ matach}}
+\DoxyCodeLine{00308\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keyword}{static}\ TSizeList::const\_list\_type\ MatchCols(\textcolor{keyword}{const}\ cetTable\&\ t1,}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \textcolor{keyword}{const}\ cetTable\&\ t2);}
+\DoxyCodeLine{00311\ \ \ \};}
+\DoxyCodeLine{00313\ \ \ \textcolor{keyword}{struct\ }CifBlock\ :\ \textcolor{keyword}{public}\ ICifEntry\ \{}
+\DoxyCodeLine{00314\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00315\ \ \ \ \ \textcolor{keywordtype}{bool}\ Delete(\textcolor{keywordtype}{size\_t}\ idx);}
+\DoxyCodeLine{00316\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00317\ \ \ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<cetTable*,\ true>}}\ table\_map;}
+\DoxyCodeLine{00318\ \ \ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<ICifEntry*,\ true>}}\ param\_map;}
+\DoxyCodeLine{00319\ \ \ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ ICifEntry*>}}\ params;}
+\DoxyCodeLine{00320\ \ \ \ \ CifBlock*\ parent;}
+\DoxyCodeLine{00321\ \ \ \ \ CifBlock(\textcolor{keyword}{const}\ CifBlock\&\ v);}
+\DoxyCodeLine{00322\ \ \ \ \ \textcolor{comment}{//\ if\ parent\ is\ not\ NULL,\ creates\ save\_\ rather\ than\ data\_}}
+\DoxyCodeLine{00323\ \ \ \ \ CifBlock(\textcolor{keyword}{const}\ olxstr\&\ \_name,\ CifBlock*\ \_parent\ =\ 0)}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ :\ parent(\_parent)}
+\DoxyCodeLine{00325\ \ \ \ \ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ SetName(\_name);}
+\DoxyCodeLine{00327\ \ \ \ \ \}}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~CifBlock();}
+\DoxyCodeLine{00329\ \ \ \ \ ICifEntry\&\ Add(ICifEntry*\ p);}
+\DoxyCodeLine{00330\ \ \ \ \ ICifEntry\&\ Add(ICifEntry\&\ p)\ \{\ \textcolor{keywordflow}{return}\ Add(\&p);\ \}}
+\DoxyCodeLine{00331\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SC>}
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keywordtype}{bool}\ Remove(\textcolor{keyword}{const}\ SC\ \&pname)\ \{\ \textcolor{keywordflow}{return}\ Delete(param\_map.IndexOf(pname));\ \}}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keywordtype}{bool}\ Remove(\textcolor{keyword}{const}\ ICifEntry\&\ e)\ \{\ \textcolor{keywordflow}{return}\ Remove(e.GetName());\ \}}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{comment}{/*Renames\ an\ item,\ if\ new\_name\ already\ exists,\ replace\_if\_exists\ controls}}
+\DoxyCodeLine{00335\ \textcolor{comment}{\ \ \ \ what\ happens\ to\ it\ -\/\ if\ this\ flag\ is\ true,\ the\ old\ value\ will\ replace\ the}}
+\DoxyCodeLine{00336\ \textcolor{comment}{\ \ \ \ new\ one,\ otherwise\ it\ will\ be\ deleted}}
+\DoxyCodeLine{00337\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00338\ \ \ \ \ \textcolor{keywordtype}{void}\ Rename(\textcolor{keyword}{const}\ olxstr\&\ old\_name,\ \textcolor{keyword}{const}\ olxstr\&\ new\_name,}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ replace\_if\_exists\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Format();}
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keyword}{virtual}\ ICifEntry*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ CifBlock(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00345\ \ \ \ \ \}}
+\DoxyCodeLine{00346\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ HasName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ name;\ \}}
+\DoxyCodeLine{00348\ \ \ \ \ \textcolor{keywordtype}{void}\ Sort(\textcolor{keyword}{const}\ TStrList\&\ pivots,\ \textcolor{keyword}{const}\ TStrList\&\ endings);}
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcif__dp_1_1CifBlock_1_1EntryGroup}{EntryGroup}}\ \{}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<ICifEntry>}}\ items;}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ olxstr\ name;}
+\DoxyCodeLine{00352\ \ \ \ \ \};}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keyword}{struct\ }CifSorter\ \{}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TStrList\ \&pivots,\ \&endings;}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ CifSorter(\textcolor{keyword}{const}\ TStrList\&\ \_pivots,\ \textcolor{keyword}{const}\ TStrList\&\ \_endings)\ :}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ pivots(\_pivots),\ endings(\_endings)\ \{\}}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ Compare\_(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcif__dp_1_1CifBlock_1_1EntryGroup}{EntryGroup}}\ \&e1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcif__dp_1_1CifBlock_1_1EntryGroup}{EntryGroup}}\ \&e2)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_a\_t,\ \textcolor{keyword}{class}\ item\_b\_t>}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&e1,\ \textcolor{keyword}{const}\ item\_b\_t\ \&e2)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Compare\_(olx\_ref::get(e1),\ olx\_ref::get(e2));}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \ \ \};}
+\DoxyCodeLine{00363\ \ \ \};}
+\DoxyCodeLine{00365\ \ \ \textcolor{keyword}{class\ }TCifDP\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00366\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00367\ \ \ \ \ \textcolor{keywordtype}{int}\ version;}
+\DoxyCodeLine{00368\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<CifBlock>}}\ data;}
+\DoxyCodeLine{00369\ \ \ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<CifBlock*,\ true>}}\ data\_map;}
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keywordtype}{void}\ Format();}
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsLoopBreaking(\textcolor{keyword}{const}\ olxstr\&\ v)\ \{}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ v.StartsFrom(\textcolor{charliteral}{'\_'})\ ||\ v.StartsFromi(\textcolor{stringliteral}{"{}loop\_"{}})\ ||}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ v.StartsFromi(\textcolor{stringliteral}{"{}data\_"{}})\ ||\ v.StartsFromi(\textcolor{stringliteral}{"{}save\_"{}});}
+\DoxyCodeLine{00374\ \ \ \ \ \}}
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{keyword}{struct\ }LineIndexer\ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&str;}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ lastPos,\ ln;}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ LineIndexer(\textcolor{keyword}{const}\ olxstr\ \&str)}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ :\ str(str),\ lastPos(0),\ ln(0)}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ GetLineNumber(\textcolor{keywordtype}{size\_t}\ idx);}
+\DoxyCodeLine{00382\ \ \ \ \ \};}
+\DoxyCodeLine{00383\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00384\ \ \ \ \ TCifDP()}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ :version(2)}
+\DoxyCodeLine{00386\ \ \ \ \ \{\}}
+\DoxyCodeLine{00387\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~TCifDP()\ \{\ Clear();\ \}}
+\DoxyCodeLine{00388\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00389\ \ \ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00390\ \ \ \ \ \textcolor{comment}{//Load\ the\ object\ from\ a\ file.}}
+\DoxyCodeLine{00391\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromStrings(\textcolor{keyword}{const}\ TStrList\ \&lines);}
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromStream(\mbox{\hyperlink{classIInputStream}{IInputStream}}\ \&stream);}
+\DoxyCodeLine{00393\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromString(\textcolor{keyword}{const}\ olxstr\ \&lines);}
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{comment}{//Saves\ the\ data\ to\ a\ strings}}
+\DoxyCodeLine{00395\ \ \ \ \ \textcolor{keyword}{virtual}\ TStrList\&\ SaveToStrings(TStrList\&\ Strings)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00396\ \ \ \ \ TStrList::const\_list\_type\ SaveToStrings()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ TStrList\ out;}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ SaveToStrings(out);}
+\DoxyCodeLine{00399\ \ \ \ \ \}}
+\DoxyCodeLine{00400\ \ \ \ \ \textcolor{comment}{//\ number\ of\ data\ blocks}}
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.Count();\ \}}
+\DoxyCodeLine{00402\ \ \ \ \ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{CifBlock}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{comment}{//\ if\ parent\ is\ not\ null\ -\/\ it\ is\ save\_\ rather\ than\ data\_\ block}}
+\DoxyCodeLine{00404\ \ \ \ \ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{CifBlock}}\&\ Add(\textcolor{keyword}{const}\ olxstr\&\ name,\ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{CifBlock}}*\ parent\ =\ 0);}
+\DoxyCodeLine{00405\ \ \ \ \ \textcolor{comment}{//Finds\ a\ value\ by\ name}}
+\DoxyCodeLine{00406\ \ \ \ \ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{CifBlock}}*\ Find(\textcolor{keyword}{const}\ olxstr\&\ data\_name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data\_map.Find(data\_name,\ NULL);}
+\DoxyCodeLine{00408\ \ \ \ \ \}}
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{keywordtype}{int}\ GetVersion()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ version;}
+\DoxyCodeLine{00411\ \ \ \ \ \}}
+\DoxyCodeLine{00412\ \ \ \ \ \textcolor{keywordtype}{void}\ SetVersion(\textcolor{keywordtype}{int}\ v)\ \{}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ version\ =\ v;}
+\DoxyCodeLine{00414\ \ \ \ \ \}}
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ IndexOf(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{CifBlock}}\&\ cb)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keywordtype}{void}\ Rename(\textcolor{keyword}{const}\ olxstr\&\ old\_name,\ \textcolor{keyword}{const}\ olxstr\&\ new\_name);}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ \ \ \textcolor{keyword}{static}\ TTypeList<CifToken>::const\_list\_type}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ TokenizeString(\textcolor{keyword}{const}\ olxstr\ \&str,\ \textcolor{keywordtype}{int}\ version);}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ ExtractBracketedData(\textcolor{keyword}{const}\ olxstr\ \&str,}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ olxch\ open,\ olxch\ close,\ \textcolor{keywordtype}{size\_t}\ \&i);}
+\DoxyCodeLine{00423\ \ \ \};}
+\DoxyCodeLine{00424\ \};\ \textcolor{comment}{//\ end\ cif\_dp\ namespace}}
+\DoxyCodeLine{00425\ }
+\DoxyCodeLine{00426\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

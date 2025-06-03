@@ -1,0 +1,57 @@
+\doxysection{tasks.\+h}
+\hypertarget{tasks_8h_source}{}\label{tasks_8h_source}\index{olex/tasks.h@{olex/tasks.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_tasks\_H}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ \_\_olx\_tasks\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}evector.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}p4p.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ a\ scheduled\ macro}}
+\DoxyCodeLine{00015\ \textcolor{keyword}{struct\ }TScheduledTask\ \ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{bool}\ Repeatable,\ NeedsGUI;}
+\DoxyCodeLine{00017\ \ \ olxstr\ Task;}
+\DoxyCodeLine{00018\ \ \ time\_t\ Interval,\ LastCalled;}
+\DoxyCodeLine{00019\ \ \ TScheduledTask()}
+\DoxyCodeLine{00020\ \ \ \ \ :\ Repeatable(\textcolor{keyword}{false}),\ NeedsGUI(\textcolor{keyword}{false}),\ Interval(0),\ LastCalled(0)}
+\DoxyCodeLine{00021\ \ \ \{\}}
+\DoxyCodeLine{00022\ \};}
+\DoxyCodeLine{00023\ \textcolor{comment}{/*\ some\ tasks\ which\ can\ be\ executed\ at\ startup,\ but\ the\ main\ window\ must\ be}}
+\DoxyCodeLine{00024\ \textcolor{comment}{visible}}
+\DoxyCodeLine{00025\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIOlxTask}{IOlxTask}}\ \{}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structIOlxTask}{\string~IOlxTask}}()\ \{\}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Run()\ =\ 0;}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{struct\ }P4PTask\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structIOlxTask}{IOlxTask}}\ \{}
+\DoxyCodeLine{00032\ \ \ olxstr\ file\_id;}
+\DoxyCodeLine{00033\ \ \ P4PTask(\textcolor{keyword}{const}\ TP4PFile\ \&p4p)}
+\DoxyCodeLine{00034\ \ \ \ \ :\ file\_id(p4p.GetFileId())}
+\DoxyCodeLine{00035\ \ \ \{\}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Run();}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{struct\ }CellChangeTask\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structIOlxTask}{IOlxTask}}\ \{}
+\DoxyCodeLine{00040\ \ \ olxstr\ hklsrc;}
+\DoxyCodeLine{00041\ \ \ vec3d\ axes,\ axis\_esd,\ angles,\ angle\_esd;}
+\DoxyCodeLine{00042\ \ \ CellChangeTask(\textcolor{keyword}{const}\ olxstr\ \&hklsrc\_,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au)}
+\DoxyCodeLine{00043\ \ \ \ \ :\ hklsrc(hklsrc\_),}
+\DoxyCodeLine{00044\ \ \ \ \ axes(au.GetAxes()),\ axis\_esd(au.GetAxisEsds()),}
+\DoxyCodeLine{00045\ \ \ \ \ angles(au.GetAngles()),\ angle\_esd(au.GetAngleEsds())}
+\DoxyCodeLine{00046\ \ \ \{\}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Run();}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

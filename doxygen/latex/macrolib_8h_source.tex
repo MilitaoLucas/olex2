@@ -1,0 +1,133 @@
+\doxysection{macrolib.\+h}
+\hypertarget{macrolib_8h_source}{}\label{macrolib_8h_source}\index{sdl/macrolib.h@{sdl/macrolib.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_macrolib}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_macrolib}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}datafile.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}integration.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}estack.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ BeginEsdlNamespace()}
+\DoxyCodeLine{00022\ namespace\ macrolib\ \{}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{const}\ uint8\_t}
+\DoxyCodeLine{00025\ \ \ macro\_log\_macro\ \ \ \ =\ 0x01,\ \ \textcolor{comment}{//default\ log\ level}}
+\DoxyCodeLine{00026\ \ \ macro\_log\_function\ =\ 0x02;}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{class\ }TEMacro\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAMacro}{AMacro}}\ \{}
+\DoxyCodeLine{00029\ \ \ TTypeList<exparse::expression\_parser>\ Commands,\ OnAbort;}
+\DoxyCodeLine{00030\ \ \ TStrStrList\ Args;}
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ TEMacro(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ olxstr\&\ desc);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ DoRun(TStrObjList\ \&Params,\ \textcolor{keyword}{const}\ TParamList\ \&Options,}
+\DoxyCodeLine{00035\ \ \ \ \ TMacroData\&\ E);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ AddCmd(\textcolor{keyword}{const}\ olxstr\&\ cmd);}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ AddOnAbortCmd(\textcolor{keyword}{const}\ olxstr\&\ cmd);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{void}\ AddArg(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ olxstr\&\ val)\ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ Args.Add(name,\ val);}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{virtual}\ ABasicFunction\ *Replicate()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{class\ }TEMacroLib\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00045\ \ \ olex2::IOlex2Processor\&\ OlexProcessor;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_allowed\_in\_name(olxch\ ch)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ (olxstr::o\_isalphanumeric(ch)\ ||\ ch\ ==\ \textcolor{charliteral}{'\_'}\ ||\ ch\ ==\ \textcolor{charliteral}{'.'});}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ uint8\_t\ LogLevel;}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{static}\ olxstr\_dict<void\ (*)(}
+\DoxyCodeLine{00051\ \ \ \ \ exparse::evaluator<exparse::expression\_tree>\ *t,}
+\DoxyCodeLine{00052\ \ \ \ \ TMacroData\&\ E,\ \textcolor{keyword}{const}\ TStrList\ \&argv)>\&\ GetBuiltins()}
+\DoxyCodeLine{00053\ \ \ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\_dict<void\ (*)(}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ exparse::evaluator<exparse::expression\_tree>\ *t,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ TMacroData\&\ E,\ \textcolor{keyword}{const}\ TStrList\ \&argv)>\ b\_;}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ b\_;}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{static}\ olxstr\ SubstituteArgs(\textcolor{keyword}{const}\ olxstr\ \&arg,\ \textcolor{keyword}{const}\ TStrList\ \&argv,}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&location=EmptyString());}
+\DoxyCodeLine{00061\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{bool}\ ExtractItemVal(\textcolor{keyword}{const}\ TDataItem\&\ tdi,\ olxstr\&\ val)\ \ \{\ \ \textcolor{comment}{//\ helper\ function}}
+\DoxyCodeLine{00064\ \ \ \ \ val\ =\ tdi.GetValue();}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{if}(\ val.IsEmpty()\ )}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ val\ =\ tdi.FindField(\textcolor{stringliteral}{"{}cmd"{}});}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ !val.IsEmpty();}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{void}\ ParseMacro(\textcolor{keyword}{const}\ TDataItem\&\ macro\_def,\ TEMacro\&\ macro);}
+\DoxyCodeLine{00070\ \ \ DefMacro(Abort)}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//\ will\ thi\ comment\ fix\ the\ SF\ svn?}}
+\DoxyCodeLine{00072\ \ \ DefMacro(Callback)}
+\DoxyCodeLine{00073\ \ \ DefFunc(LastError)}
+\DoxyCodeLine{00074\ \ \ DefFunc(LogLevel)}
+\DoxyCodeLine{00075\ \ \ DefFunc(Process)}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ funIF(exparse::evaluator<exparse::expression\_tree>\ *t,}
+\DoxyCodeLine{00077\ \ \ \ \ TMacroData\&\ E,\ \textcolor{keyword}{const}\ TStrList\ \&argv);}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ funOr(exparse::evaluator<exparse::expression\_tree>\ *t,}
+\DoxyCodeLine{00079\ \ \ \ \ TMacroData\&\ E,\ \textcolor{keyword}{const}\ TStrList\ \&argv);}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ funAnd(exparse::evaluator<exparse::expression\_tree>\ *t,}
+\DoxyCodeLine{00081\ \ \ \ \ TMacroData\&\ E,\ \textcolor{keyword}{const}\ TStrList\ \&argv);}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ funNot(exparse::evaluator<exparse::expression\_tree>\ *t,}
+\DoxyCodeLine{00083\ \ \ \ \ TMacroData\&\ E,\ \textcolor{keyword}{const}\ TStrList\ \&argv);}
+\DoxyCodeLine{00084\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00085\ \ \ TEMacroLib(olex2::IOlex2Processor\&\ olexProcessor);}
+\DoxyCodeLine{00086\ \ \ \string~TEMacroLib()\ \{\}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{void}\ Init();\ \ \textcolor{comment}{//\ extends\ the\ Library\ with\ functionality}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{void}\ Load(\textcolor{keyword}{const}\ TDataItem\&\ m\_root);}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{typedef}\ olx\_pair\_t<olxstr,olxstr>\ arg\_t;}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{static}\ ABasicFunction\ *FindEvaluator(\textcolor{keyword}{const}\ olxstr\ \&name,\ \textcolor{keywordtype}{bool}\ macro\_first);}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{static}\ ABasicFunction\ *FindEvaluator(exparse::expression\_tree\ *\&e,}
+\DoxyCodeLine{00093\ \ \ \ \ olxstr\ \&name);}
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{/*\ allow\ dummy\ -\/\ if\ the\ expression\ is\ not\ an\ evaluator\ -\/\ it\ returns\ unquoted}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ \ version\ of\ the\ tree\ data,\ otherwise\ if\ the\ value\ of\ dummy\ is\ false\ -\/\ it}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ \ reports\ non-\/existent\ macro/function}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{static}\ olxstr\ ProcessEvaluator(exparse::expression\_tree\ *e,}
+\DoxyCodeLine{00099\ \ \ \ \ TMacroData\&\ me,\ \textcolor{keyword}{const}\ TStrList\ \&argv,\ \textcolor{keyword}{const}\ TParamList*\ global\_options=0,}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{bool}\ allow\_dummy=\textcolor{keyword}{false});}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ arg\_t\ EvaluateArg(exparse::expression\_tree\ *t,}
+\DoxyCodeLine{00102\ \ \ \ \ TMacroData\&\ me,\ \textcolor{keyword}{const}\ TStrList\ \&argv);}
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{/*\ if\ has\_owner\ is\ true,\ then\ in\ the\ case\ the\ function\ does\ not\ exist\ no}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\ \ flags\ are\ set\ in\ E}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{bool}\ ProcessFunction(olxstr\&\ Cmd,\ TMacroData\&\ E,\ \textcolor{keywordtype}{bool}\ has\_owner,}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\ \&argv=TStrList());}
+\DoxyCodeLine{00108\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Base>\ \textcolor{keywordtype}{void}\ ProcessTopMacro(\textcolor{keyword}{const}\ olxstr\&\ Cmd,\ TMacroData\&\ Error,}
+\DoxyCodeLine{00110\ \ \ \ \ Base\&\ base\_instance,\ \textcolor{keywordtype}{void}\ (Base::*ErrorAnalyser)(TMacroData\&\ error))}
+\DoxyCodeLine{00111\ \ \ \{}
+\DoxyCodeLine{00112\ \ \ \ \ ProcessMacro(Cmd,\ Error);}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{if}\ (ErrorAnalyser\ !=\ 0)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ (base\_instance.*ErrorAnalyser)(Error);}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{void}\ ProcessMacro(\textcolor{keyword}{const}\ olxstr\&\ Cmd,\ TMacroData\&\ Error,}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\ \&argv=TStrList());}
+\DoxyCodeLine{00120\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keywordtype}{void}\ ProcessMacro(\textcolor{keyword}{const}\ olxstr\&\ Cmd,\ TStrObjList\&\ args,}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{const}\ TParamList\&\ options,\ TMacroData\&\ Error);}
+\DoxyCodeLine{00123\ \ \ DefPropP(uint8\_t,\ LogLevel)}
+\DoxyCodeLine{00124\ \};}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \}\ \textcolor{comment}{//\ end\ namespace\ macrolib}}
+\DoxyCodeLine{00127\ EndEsdlNamespace()}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,57 @@
+\doxysection{rmsds\+\_\+adp.\+h}
+\hypertarget{rmsds__adp_8h_source}{}\label{rmsds__adp_8h_source}\index{gxlib/rmsds\_adp.h@{gxlib/rmsds\_adp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2019\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxl\_rmds\_adp\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxl\_rmds\_adp\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}gdrawobject.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}glutil.h"{}}}
+\DoxyCodeLine{00015\ BeginGxlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{/*\ R/MSD\ reference}}
+\DoxyCodeLine{00018\ \textcolor{comment}{*\ W.\ HUMMEL,\ A.\ RASELLI\ AND\ H.-\/B.\ BURGI.\ Acta\ Cryst.\ (1990).\ B46,\ 683-\/692}}
+\DoxyCodeLine{00019\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00020\ class\ TRMDSADP\ :\ public\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ type\_rmsd\ =\ 0,}
+\DoxyCodeLine{00024\ \ \ \ \ type\_msd\ =\ 1}
+\DoxyCodeLine{00025\ \ \ \};}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ anh\_none,}
+\DoxyCodeLine{00028\ \ \ \ \ anh\_anh,}
+\DoxyCodeLine{00029\ \ \ \ \ anh\_anh\_C,}
+\DoxyCodeLine{00030\ \ \ \ \ anh\_anh\_D,}
+\DoxyCodeLine{00031\ \ \ \ \ anh\_all}
+\DoxyCodeLine{00032\ \ \ \};}
+\DoxyCodeLine{00033\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00034\ \ \ uint32\_t\ Quality;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{int}\ Type,\ AnhType;}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{double}\ Scale;}
+\DoxyCodeLine{00037\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ \ \ TRMDSADP(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName,}
+\DoxyCodeLine{00039\ \ \ \ \ uint32\_t\ quality=5,\ \textcolor{keywordtype}{int}\ type=type\_rmsd,\ \textcolor{keywordtype}{int}\ anh\_type=anh\_all);}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName\ =\ EmptyString());}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&\ Max,\ vec3d\&\ Min);}
+\DoxyCodeLine{00044\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Scale);}
+\DoxyCodeLine{00045\ \ \ DefPropP(\textcolor{keywordtype}{int},\ Type);}
+\DoxyCodeLine{00046\ \ \ DefPropP(\textcolor{keywordtype}{int},\ AnhType);}
+\DoxyCodeLine{00047\ \ \ DefPropP(uint32\_t,\ Quality);}
+\DoxyCodeLine{00048\ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ EndGxlNamespace()}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

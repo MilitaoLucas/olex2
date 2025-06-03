@@ -1,0 +1,70 @@
+\doxysection{etime.\+h}
+\hypertarget{etime_8h_source}{}\label{etime_8h_source}\index{sdl/etime.h@{sdl/etime.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_etime\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_etime\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \#ifdef\ \_\_BORLANDC\_\_\ }\textcolor{comment}{//\ this\ if\ for\ time\_t\ definition}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \ \ \#include\ <time.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\ \ \#include\ <sys/time.h>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ BeginEsdlNamespace()}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ const\ \textcolor{keywordtype}{long}\ HoursADay\ \ \ =\ 24,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ MinsADay\ \ \ \ =\ HoursADay\ *\ 60,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ SecsADay\ \ \ \ =\ MinsADay\ *\ 60,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ MSecsADay\ \ \ =\ SecsADay\ *\ 1000;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ class\ \mbox{\hyperlink{classTETime}{TETime}}\ \{}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{static}\ time\_t\ TimeStart;}
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \textcolor{comment}{//\ returns\ a\ number\ of\ seconds\ elapsed\ since\ 1970}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{static}\ time\_t\ EncodeDateTimeSec(\ \textcolor{keywordtype}{short}\ Year,\ \textcolor{keywordtype}{short}\ Month,\ \textcolor{keywordtype}{short}\ Day,}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{short}\ Hour,\ \textcolor{keywordtype}{short}\ Min,\ \ \textcolor{keywordtype}{short}\ Sec\ );}
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//\ decodes\ given\ datetime\ to\ components}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DecodeDateTimeSec(\ time\_t\ datetime,\ \textcolor{keywordtype}{short}\&\ Year,\ \textcolor{keywordtype}{short}\&\ Month,\ \textcolor{keywordtype}{short}\&\ Day,}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{short}\&\ Hour,\ \textcolor{keywordtype}{short}\&\ Min,\ \textcolor{keywordtype}{short}\&\ Sec);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ time\_t\ StartTime()\ \ \{\ \ \textcolor{keywordflow}{return}\ TimeStart;\ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ time\_t\ Now()\ \ \ \ \ \ \ \ \{\ \ \textcolor{keywordflow}{return}\ EpochTime();\ \ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \textcolor{comment}{/*\ returns\ number\ of\ milliseconds\ at\ the\ time\ of\ call}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ \ \ \ \ beware\ it\ is\ to\ be\ used\ only\ for\ time\ differences,\ as\ on\ windows\ on\ POSIX}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ \ \ \ \ it\ will\ return\ system\ dependent\ values\ (1601.01.01\ win\ and\ 1970.01.01\ POSIX)}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{static}\ uint64\_t\ msNow();}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{static}\ time\_t\ EpochTime();}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{static}\ olxstr\ FormatDateTime(\ time\_t\ v\ );}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{static}\ olxstr\ FormatDateTime(\ \textcolor{keyword}{const}\ olxstr\&\ format,\ time\_t\ v\ );}
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{//\ splits\ a\ string\ of\ this\ kind:\ "{}Oct\ 2\ 2008"{}}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{static}\ time\_t\ ParseDate(\textcolor{keyword}{const}\ olxstr\&\ date);}
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ splits\ a\ string\ of\ this\ kind:\ "{}19:16:57"{}}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{static}\ time\_t\ ParseTime(\textcolor{keyword}{const}\ olxstr\&\ time);}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsLeapYear(\ \textcolor{keywordtype}{int}\ year\ )\ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ !(year\%4)\ \&\&\ ((year\%100)\ ||\ !(year\%400));}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name=EmptyString());}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ EndEsdlNamespace()}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

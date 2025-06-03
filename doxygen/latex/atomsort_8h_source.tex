@@ -1,0 +1,393 @@
+\doxysection{atomsort.\+h}
+\hypertarget{atomsort_8h_source}{}\label{atomsort_8h_source}\index{xlib/atomsort.h@{xlib/atomsort.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_atom\_sort\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_atom\_sort\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}lattice.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00016\ \ \ atom\_sort\_None\ \ \ \ \ \ =\ 0x0000,}
+\DoxyCodeLine{00017\ \ \ atom\_sort\_Mw\ \ \ \ \ \ \ \ =\ 0x0001,}
+\DoxyCodeLine{00018\ \ \ atom\_sort\_Label\ \ \ \ \ =\ 0x0002,\ \ \textcolor{comment}{//\ clever\ sort\ C1a1}}
+\DoxyCodeLine{00019\ \ \ atom\_sort\_Label1\ \ \ \ =\ 0x0004,\ \textcolor{comment}{//\ string\ comparison\ sort}}
+\DoxyCodeLine{00020\ \ \ atom\_sort\_MoietySize\ =\ 0x0008,\ \ \textcolor{comment}{//\ fgrament\ size}}
+\DoxyCodeLine{00021\ \ \ atom\_sort\_KeepH\ \ \ \ \ =\ 0x0010,\ \ \textcolor{comment}{//\ keeps\ H\ atoms\ after\ the\ pivoting\ one}}
+\DoxyCodeLine{00022\ \ \ moiety\_sort\_Create\ \ \ =\ 0x0020,}
+\DoxyCodeLine{00023\ \ \ moiety\_sort\_Size\ \ \ \ \ =\ 0x0040,}
+\DoxyCodeLine{00024\ \ \ moiety\_sort\_Weight\ \ \ =\ 0x0080,}
+\DoxyCodeLine{00025\ \ \ moiety\_sort\_Heaviest\ =\ 0x0100;\ \ \textcolor{comment}{//\ sorts\ moieties\ by\ heaviest\ element\ of\ the\ moiety}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classAtomSorter}{AtomSorter}}\ \{}
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{struct\ }Sorter\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ int(*func)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&);}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{classolxdict}{olxdict<const\ cm\_Element\ *,\ int,\ TPointerComparator>}}\ type\_exc;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{bool}\ reverse;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ Sorter(\textcolor{keywordtype}{int}(*f)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&),\ \textcolor{keywordtype}{bool}\ reverse\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ :\ func(f),}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ reverse(reverse)}
+\DoxyCodeLine{00037\ \ \ \ \ \{\}}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ AddExceptions(\textcolor{keyword}{const}\ TStrList\ \&e)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ e.Count();\ i++)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e[i].StartsFrom(\textcolor{charliteral}{'\$'}))\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ *elm\ =\ XElementLib::FindBySymbol(e[i].SubStringFrom(1));}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (elm\ ==\ 0)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}element\ "{}}).quote()\ <<\ e[i].SubStringFrom(1));}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ type\_exc.Add(elm,\ (\textcolor{keywordtype}{int})type\_exc.Count());}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{int}\ sort(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (type\_exc.HasKey(\&a.GetType())\ \&\&\ type\_exc.HasKey(\&b.GetType()))\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(type\_exc.Get(\&a.GetType()),\ type\_exc.Get(\&b.GetType()));}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ reverse\ ?\ -\/(*func)(a,\ b)\ :\ (*func)(a,\ b);}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ atom\_cmp\_Part(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a2)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{if}\ (a2.GetPart()\ <\ 0\ \&\&\ a1.GetPart()\ >=\ 0)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{if}\ (a2.GetPart()\ >=\ 0\ \&\&\ a1.GetPart()\ <\ 0)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{return}\ a1.GetPart()\ -\/\ a2.GetPart();\ \ \textcolor{comment}{//\ smallest\ goes\ first}}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ atom\_cmp\_Z(\textcolor{keyword}{const}\ TCAtom\ \&a1,\ \textcolor{keyword}{const}\ TCAtom\ \&a2)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a2.GetType().z,\ a1.GetType().z);}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ atom\_cmp\_Mw(\textcolor{keyword}{const}\ TCAtom\ \&a1,\ \textcolor{keyword}{const}\ TCAtom\ \&a2)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a2.GetType().GetMr(),\ a1.GetType().GetMr());}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ atom\_cmp\_Label(\textcolor{keyword}{const}\ TCAtom\ \&a1,\ \textcolor{keyword}{const}\ TCAtom\ \&a2)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ TCAtom::CompareAtomLabels(a1.GetLabel(),\ a2.GetLabel());}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ atom\_cmp\_Suffix(\textcolor{keyword}{const}\ TCAtom\ \&a1,\ \textcolor{keyword}{const}\ TCAtom\ \&a2)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ olxstr\ sa,\ sb;}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ a1.GetType().symbol.Length();}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{while}\ (++i\ <\ a1.GetLabel().Length()\ \&\&\ olxstr::o\_isdigit(a1.GetLabel()[i]))}
+\DoxyCodeLine{00080\ \ \ \ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ a1.GetLabel().Length())\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ sa\ =\ a1.GetLabel().SubStringFrom(i);}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ i\ =\ a2.GetType().symbol.Length();}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{while}\ (++i\ <\ a2.GetLabel().Length()\ \&\&\ olxstr::o\_isdigit(a2.GetLabel()[i]))}
+\DoxyCodeLine{00087\ \ \ \ \ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ a2.GetLabel().Length())\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ sb\ =\ a2.GetLabel().SubStringFrom(i);}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{return}\ olxstrComparator<false>().Compare(sa,\ sb);}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ atom\_cmp\_Number(\textcolor{keyword}{const}\ TCAtom\ \&a1,\ \textcolor{keyword}{const}\ TCAtom\ \&a2)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ olxstr\ sa,\ sb;}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ a1.GetType().symbol.Length();\ i\ <\ a1.GetLabel().Length();\ i++)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olxstr::o\_isdigit(a1.GetLabel().CharAt(i)))\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ sa\ <<\ a1.GetLabel().CharAt(i);}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ a2.GetType().symbol.Length();\ i\ <\ a2.GetLabel().Length();\ i++)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olxstr::o\_isdigit(a2.GetLabel().CharAt(i)))\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ sb\ <<\ a2.GetLabel().CharAt(i);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{if}\ (sa.IsEmpty())\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (sb.IsEmpty()\ ?\ 0\ :\ -\/1);}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{return}\ (sb.IsEmpty()\ ?\ 1\ :\ olx\_cmp(sa.ToInt(),\ sb.ToInt()));}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ atom\_cmp\_Id(\textcolor{keyword}{const}\ TCAtom\ \&a1,\ \textcolor{keyword}{const}\ TCAtom\ \&a2)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a1.GetId(),\ a2.GetId());}
+\DoxyCodeLine{00119\ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ atom\_cmp\_Label1(\textcolor{keyword}{const}\ TCAtom\ \&a1,\ \textcolor{keyword}{const}\ TCAtom\ \&a2)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ a1.GetLabel().Comparei(a2.GetLabel());}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ atom\_cmp\_MoietySize(\textcolor{keyword}{const}\ TCAtom\ \&a1,\ \textcolor{keyword}{const}\ TCAtom\ \&a2)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{return}\ a1.GetFragmentId()\ -\/\ a2.GetFragmentId();}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structAtomSorter_1_1CombiSort}{CombiSort}}\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<Sorter>}}\ sequence;}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordtype}{int}\ atom\_cmp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a2)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sequence.Count();\ i++)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ res\ =\ sequence[i].sort(a1,\ a2);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (res\ !=\ 0)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \};}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ KeepH(TCAtomPList\&\ list,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au,}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordtype}{int}(*sort\_func)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&))}
+\DoxyCodeLine{00142\ \ \ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TCAtom*,\ TCAtomPList>}}\ tree\_node;}
+\DoxyCodeLine{00144\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<tree\_node>}}\ atom\_tree;}
+\DoxyCodeLine{00145\ \ \ \ \ au.GetAtoms().ForEach(ACollectionItem::TagSetter(-\/1));}
+\DoxyCodeLine{00146\ \ \ \ \ list.ForEach(ACollectionItem::TagSetter(0));}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list[i]-\/>GetType()\ ==\ iHydrogenZ\ ||\ list[i]-\/>IsDeleted())\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ TCAtomPList\&\ ca\_list\ =\ atom\_tree.Add(\textcolor{keyword}{new}\ tree\_node(list[i])).b;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ list[i]-\/>SetTag(1);}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ list[i]-\/>AttachedSiteCount();\ j++)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a\ =\ list[i]-\/>GetAttachedAtom(j);}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a.GetTag()\ ==\ 0\ \&\&\ a.GetType()\ ==\ iHydrogenZ)\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ ca\_list.Add(a)-\/>SetTag(1);}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ca\_list.Count()\ >\ 1\ \&\&\ sort\_func\ !=\ 0)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ QuickSorter::SortSF(ca\_list,\ sort\_func);}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ TCAtomPList\ left\ =\ list.Filter(ACollectionItem::TagAnalyser(0));}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ atom\_count\ =\ 0;}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atom\_tree.Count();\ i++)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ list[atom\_count++]\ =\ atom\_tree[i].a;}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ atom\_tree[i].GetB().Count();\ j++)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ list[atom\_count++]\ =\ atom\_tree[i].GetB()[j];}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ left.Count();\ i++)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ list[atom\_count++]\ =\ left[i];}
+\DoxyCodeLine{00173\ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \textcolor{comment}{/*\ Sorts\ the\ list\ according\ to\ the\ atom\_names.\ The\ atoms\ named\ by\ the}}
+\DoxyCodeLine{00177\ \textcolor{comment}{\ \ atom\_names\ will\ be\ following\ each\ other\ in\ the\ specified\ order\ and\ will\ be}}
+\DoxyCodeLine{00178\ \textcolor{comment}{\ \ postioned\ at\ the\ location\ of\ the\ first\ found\ of\ the\ atom\_names\ if}}
+\DoxyCodeLine{00179\ \textcolor{comment}{\ \ insert\_at\_first\_name\ is\ true\ and\ at\ the\ smallest\ index\ in\ the\ list}}
+\DoxyCodeLine{00180\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortByName(TCAtomPList\&\ list,\ \textcolor{keyword}{const}\ TStrList\&\ atom\_names,}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordtype}{bool}\ insert\_at\_first\_name)}
+\DoxyCodeLine{00183\ \ \ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{if}\ (atom\_names.Count()\ <\ 2)\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00186\ \ \ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \ \ TCAtomPList\ sorted;}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ fi\ =\ InvalidIndex;}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atom\_names.Count();\ i++)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ list.Count();\ j++)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list[j]\ ==\ 0)\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list[j]-\/>GetLabel().Equalsi(atom\_names[i]))\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (insert\_at\_first\_name)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (fi\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fi\ =\ j;}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (j\ <\ fi)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ fi\ =\ j;}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ sorted.Add(list[j]);}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ list[j]\ =\ 0;}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00208\ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{if}\ (fi\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ins\_pos\ =\ 0;}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ fi;\ i++)\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list[i]\ !=\ 0)\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ ins\_pos++;}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \ \ list.Pack();}
+\DoxyCodeLine{00219\ \ \ \ \ list.Insert(ins\_pos,\ sorted);}
+\DoxyCodeLine{00220\ \ \ \}}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ \textcolor{comment}{/*\ Reorders\ the\ atom\_names\ in\ the\ given\ order\ (the\ positions\ of\ the\ other}}
+\DoxyCodeLine{00223\ \textcolor{comment}{\ \ atoms\ stay\ the\ same.}}
+\DoxyCodeLine{00224\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ReorderByName(TCAtomPList\&\ list,\ \textcolor{keyword}{const}\ TStrList\&\ atom\_names)\ \{}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordflow}{if}\ (atom\_names.Count()\ <\ 2)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00227\ \ \ \ \ TSizeList\ indices(list.Count(),\ olx\_list\_init::index());}
+\DoxyCodeLine{00228\ \ \ \ \ TPtrList<TCAtom>\ atoms;}
+\DoxyCodeLine{00229\ \ \ \ \ TSizeList\ found;}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atom\_names.Count();\ i++)\ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pos\ =\ InvalidIndex;}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ list.Count();\ j++)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list[j]-\/>GetLabel().Equalsi(atom\_names[i]))\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ found.Add(j);}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ atoms.Add(list[j]);}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \ \ QuickSorter::Sort(found,\ TPrimitiveComparator());}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ found.Count();\ i++)\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ list[found[i]]\ =\ atoms[i];}
+\DoxyCodeLine{00243\ \ \ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Sort(TCAtomPList\&\ list,}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordtype}{int}(*sort\_func)(\textcolor{keyword}{const}\ TCAtom\&,\ \textcolor{keyword}{const}\ TCAtom\&))}
+\DoxyCodeLine{00248\ \ \ \{}
+\DoxyCodeLine{00249\ \ \ \ \ QuickSorter::SortSF(list,\ sort\_func);}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Sort(TCAtomPList\&\ list,\ AtomSorter::CombiSort\&\ cs)\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ QuickSorter::SortMF(list,\ cs,\ \&AtomSorter::CombiSort::atom\_cmp);}
+\DoxyCodeLine{00253\ \ \ \}}
+\DoxyCodeLine{00254\ \};}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMoietySorter}{MoietySorter}}\ \{}
+\DoxyCodeLine{00257\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{typedef}\ TCAtomPList\ moiety\_t;}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{static}\ TTypeList<moiety\_t>::const\_list\_type\ SplitIntoMoieties(}
+\DoxyCodeLine{00260\ \ \ \ \ TCAtomPList\&\ list)}
+\DoxyCodeLine{00261\ \ \ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<moiety\_t>}}\ moieties;}
+\DoxyCodeLine{00263\ \ \ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<uint32\_t,\ moiety\_t\ *>}}\ cache;}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ moiety\_t*\ ca\_list\ =\ cache.Find(list[i]-\/>GetFragmentId(),\ 0);}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ca\_list\ ==\ 0)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ cache.Add(list[i]-\/>GetFragmentId(),}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ ca\_list\ =\ \&moieties.Add(\textcolor{keyword}{new}\ moiety\_t()));}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ ca\_list-\/>Add(list[i]);}
+\DoxyCodeLine{00271\ \ \ \ \ \}}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordflow}{return}\ moieties;}
+\DoxyCodeLine{00273\ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ moiety\_cmp\_size(\textcolor{keyword}{const}\ moiety\_t\ \&a,\ \textcolor{keyword}{const}\ moiety\_t\ \&b)\ \{}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(b.Count(),\ a.Count());}
+\DoxyCodeLine{00276\ \ \ \}}
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ moiety\_cmp\_label(\textcolor{keyword}{const}\ moiety\_t\ \&a,\ \textcolor{keyword}{const}\ moiety\_t\ \&b)\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keywordflow}{return}\ TCAtom::CompareAtomLabels(a[0]-\/>GetLabel(),\ b[0]-\/>GetLabel());}
+\DoxyCodeLine{00279\ \ \ \}}
+\DoxyCodeLine{00280\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ moiety\_cmp\_mass(\textcolor{keyword}{const}\ moiety\_t\ \&a,\ \textcolor{keyword}{const}\ moiety\_t\ \&b)\ \{}
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keywordtype}{double}\ m1\ =\ 0,\ m2\ =\ 0;}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ a.Count();\ i++)\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ m1\ +=\ a[i]-\/>GetType().GetMr();}
+\DoxyCodeLine{00284\ \ \ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ b.Count();\ i++)\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ m2\ +=\ b[i]-\/>GetType().GetMr();}
+\DoxyCodeLine{00287\ \ \ \ \ \}}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(m2,\ m1);}
+\DoxyCodeLine{00289\ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ moiety\_cmp\_heaviest(\textcolor{keyword}{const}\ moiety\_t\ \&a,\ \textcolor{keyword}{const}\ moiety\_t\ \&b)\ \{}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keywordtype}{double}\ m1\ =\ 0,\ m2\ =\ 0;}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ a.Count();\ i++)\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a[i]-\/>GetType().GetMr()\ >\ m1)\ \{}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ m1\ =\ a[i]-\/>GetType().GetMr();}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \ \ \}}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ b.Count();\ i++)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (b[i]-\/>GetType().GetMr()\ >\ m2)\ \{}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ m2\ =\ b[i]-\/>GetType().GetMr();}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(m2,\ m1);}
+\DoxyCodeLine{00303\ \ \ \}}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00305\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structMoietySorter_1_1CombiSort}{CombiSort}}\ \{}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keyword}{typedef}\ int(*cmp\_f)(\textcolor{keyword}{const}\ moiety\_t\ \&,\ \textcolor{keyword}{const}\ moiety\_t\ \&);}
+\DoxyCodeLine{00307\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<cmp\_f>}}\ sequence;}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordtype}{int}\ moiety\_cmp(\textcolor{keyword}{const}\ moiety\_t\ \&a,\ \textcolor{keyword}{const}\ moiety\_t\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sequence.Count();\ i++)\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ res\ =\ (*sequence[i])(a,\ b);}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (res\ !=\ 0)\ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00316\ \ \ \ \ \}}
+\DoxyCodeLine{00317\ \ \ \};}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UpdateList(TCAtomPList\&\ list,}
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<moiety\_t>}}\ \&moieties)}
+\DoxyCodeLine{00321\ \ \ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ atom\_cnt\ =\ 0;}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ moieties.Count();\ i++)\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ moieties[i].Count();\ j++)\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ list[atom\_cnt++]\ =\ moieties[i][j];}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \ \ \}}
+\DoxyCodeLine{00328\ \ \ \}}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ReoderByMoietyAtom(TTypeList<moiety\_t>\ \&moieties,}
+\DoxyCodeLine{00331\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ atom\_names)}
+\DoxyCodeLine{00332\ \ \ \{}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keywordflow}{if}\ (atom\_names.Count()\ <\ 2)\ \{}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00335\ \ \ \ \ \}}
+\DoxyCodeLine{00336\ \ \ \ \ \mbox{\hyperlink{structMoietySorter_1_1MoietyAtomCmp}{MoietyAtomCmp}}(moieties,\ atom\_names);}
+\DoxyCodeLine{00337\ \ \ \}}
+\DoxyCodeLine{00338\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00339\ \ \ \textcolor{keyword}{struct\ }MoietyAtomCmp\ \{}
+\DoxyCodeLine{00340\ \ \ \ \ TStrList\ labels;}
+\DoxyCodeLine{00341\ \ \ \ \ \mbox{\hyperlink{classolxdict}{olxdict<moiety\_t*,\ olxstr,\ TPointerComparator>}}\ moiety\_cache;}
+\DoxyCodeLine{00342\ \ \ \ \ MoietyAtomCmp(\mbox{\hyperlink{classTTypeList}{TTypeList<moiety\_t>}}\ \&moieties,\ \textcolor{keyword}{const}\ TStrList\ \&labels)}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ :\ labels(labels)}
+\DoxyCodeLine{00344\ \ \ \ \ \{}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ moieties.Count();\ i++)\ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ moieties[i].Count();\ j++)\ \{}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ li\ =\ 0;\ li\ <\ labels.Count();\ li++)\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (moieties[i][j]-\/>GetLabel().Equalsi(labels[li]))\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ moiety\_cache.Add(\&moieties[i],\ labels[li]);}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (moiety\_cache.Count()\ <\ 2)\ \{}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<moiety\_t>}}\ to\_sort;}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ moiety\_cache.Count();\ i++)\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ to\_sort.Add(moiety\_cache.GetKey(i));}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ moieties.Count();\ j++)\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\&moieties[j]\ ==\ moiety\_cache.GetKey(i))\ \{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \ \ moieties.Release(j);}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ QuickSorter::SortMF(to\_sort,\ *\textcolor{keyword}{this},\ \&MoietyAtomCmp::compare);}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ moieties.Count();\ i++)\ \{}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ to\_sort.Add(moieties[i]);}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ moieties.ReleaseAll();}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ to\_sort.Count();\ i++)\ \{}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ moieties.Add(to\_sort[i]);}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00376\ \ \ \ \ \}}
+\DoxyCodeLine{00377\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00378\ \ \ \ \ \textcolor{keywordtype}{int}\ compare(\textcolor{keyword}{const}\ moiety\_t\ \&a,\ \textcolor{keyword}{const}\ moiety\_t\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(labels.IndexOf(moiety\_cache[\&a]),}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ labels.IndexOf(moiety\_cache[\&b]));}
+\DoxyCodeLine{00381\ \ \ \ \ \}}
+\DoxyCodeLine{00382\ \ \ \};}
+\DoxyCodeLine{00383\ \};}
+\DoxyCodeLine{00384\ }
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ }
+\DoxyCodeLine{00387\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

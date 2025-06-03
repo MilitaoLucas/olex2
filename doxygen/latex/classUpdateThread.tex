@@ -1,0 +1,122 @@
+\doxysection{Update\+Thread Class Reference}
+\hypertarget{classUpdateThread}{}\label{classUpdateThread}\index{UpdateThread@{UpdateThread}}
+Inheritance diagram for Update\+Thread\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classUpdateThread}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classUpdateThread_a0c5ae64a3df587f48b137202c6422af8}\label{classUpdateThread_a0c5ae64a3df587f48b137202c6422af8} 
+{\bfseries Update\+Thread} (const olxstr \&patch\+\_\+dir, bool force\+\_\+update, bool reinstall, bool cleanup)
+\item 
+\Hypertarget{classUpdateThread_acf373202abed2dc19ff1309f103d1e4c}\label{classUpdateThread_acf373202abed2dc19ff1309f103d1e4c} 
+void {\bfseries Do\+Update} ()
+\item 
+\Hypertarget{classUpdateThread_a5ae2d256b94dd680d3ecb40c9970886a}\label{classUpdateThread_a5ae2d256b94dd680d3ecb40c9970886a} 
+uint64\+\_\+t {\bfseries Get\+Update\+Size} () const
+\item 
+\Hypertarget{classUpdateThread_a9d12ad988c778093b4e4d3b820d6ab20}\label{classUpdateThread_a9d12ad988c778093b4e4d3b820d6ab20} 
+void {\bfseries Reset\+Update\+Size} ()
+\item 
+virtual int \mbox{\hyperlink{classUpdateThread_a7a4801ccb574816b6ef349b0f870e686}{Run}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries Start} ()
+\item 
+bool {\bfseries Join} (bool send\+\_\+terminate=false)
+\item 
+void {\bfseries Send\+Terminate} ()
+\item 
+bool {\bfseries Is\+Running} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classAPerishable}{APerishable}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries Add\+Destruction\+Observer} (\mbox{\hyperlink{structADestructionObserver}{ADestruction\+Observer}} \&)
+\item 
+void {\bfseries Remove\+Destruction\+Observer} (const \mbox{\hyperlink{structADestructionObserver}{ADestruction\+Observer}} \&)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classIOlxObject}{IOlx\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classTTIString}{TIString}} {\bfseries To\+String} () const
+\item 
+virtual \mbox{\hyperlink{classIOlxObject}{IOlx\+Object}} \texorpdfstring{$\ast$}{*} {\bfseries Replicate} () const
+\item 
+{\footnotesize template$<$class T$>$ }\\bool {\bfseries Is} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classUpdateThread_a961a8396c96e125e9edf5249bbe4ec79}\label{classUpdateThread_a961a8396c96e125e9edf5249bbe4ec79} 
+\mbox{\hyperlink{classTActionQueue}{TAction\+Queue}} \& {\bfseries On\+Download}
+\item 
+\Hypertarget{classUpdateThread_ac92a0a9a3772769c3ad4271c3edca9bb}\label{classUpdateThread_ac92a0a9a3772769c3ad4271c3edca9bb} 
+\mbox{\hyperlink{classTActionQueue}{TAction\+Queue}} \& {\bfseries On\+Action}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTActionQueue}{TAction\+Queue}} \& {\bfseries On\+Terminate}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class T$>$ }\\static bool {\bfseries Run\+Thread} (T f)
+\item 
+static void {\bfseries Yield} ()
+\item 
+static unsigned long {\bfseries Get\+Current\+Thread\+Id} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Member Functions inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+static void \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+\+Run} (void \texorpdfstring{$\ast$}{*}\+\_\+instance)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+int volatile {\bfseries Ret\+Val}
+\item 
+bool volatile {\bfseries Terminate}
+\item 
+bool volatile {\bfseries Detached}
+\item 
+bool volatile {\bfseries Running}
+\item 
+pthread\+\_\+t {\bfseries Handle}
+\item 
+\mbox{\hyperlink{classTActionQList}{TAction\+QList}} {\bfseries Actions}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classAPerishable}{APerishable}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structADestructionObserver}{ADestruction\+Observer}} \texorpdfstring{$\ast$}{*} {\bfseries dsh\+\_\+head}
+\item 
+\mbox{\hyperlink{structADestructionObserver}{ADestruction\+Observer}} \texorpdfstring{$\ast$}{*} {\bfseries dsh\+\_\+tail}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classUpdateThread_a7a4801ccb574816b6ef349b0f870e686}\index{UpdateThread@{UpdateThread}!Run@{Run}}
+\index{Run@{Run}!UpdateThread@{UpdateThread}}
+\doxysubsubsection{\texorpdfstring{Run()}{Run()}}
+{\footnotesize\ttfamily \label{classUpdateThread_a7a4801ccb574816b6ef349b0f870e686} 
+int Update\+Thread\+::\+Run (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+olex/updateth.\+h\item 
+olex/updateth.\+cpp\end{DoxyCompactItemize}

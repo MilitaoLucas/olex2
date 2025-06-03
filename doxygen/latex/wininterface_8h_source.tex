@@ -1,0 +1,75 @@
+\doxysection{wininterface.\+h}
+\hypertarget{wininterface_8h_source}{}\label{wininterface_8h_source}\index{olex/wininterface.h@{olex/wininterface.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_WinInterfaceH}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_WinInterfaceH}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <wx/wx.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}gldefs.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }TWindowInterface\ \ \{}
+\DoxyCodeLine{00017\ \ \ wxWindow\ *Window;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ TWindowInterface(wxWindow\ *window)\ :\ Window(window)\ \{\}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{int}\ GetWidth()\textcolor{keyword}{\ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ Window-\/>GetRect().width;\ \};}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{void}\ SetWidth(\textcolor{keywordtype}{int}\ w)\ \ \ \{\ Window-\/>SetSize(-\/1,\ -\/1,\ w,\ -\/1,\ wxSIZE\_USE\_EXISTING);\ \};}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{int}\ GetHeight()\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ Window-\/>GetRect().height;\ \};}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{void}\ SetHeight(\textcolor{keywordtype}{int}\ h)\ \ \{\ Window-\/>SetSize(-\/1,\ -\/1,\ -\/1,\ h,\ wxSIZE\_USE\_EXISTING);\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{int}\ GetLeft()\textcolor{keyword}{\ \ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ Window-\/>GetRect().x;\ \};}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{void}\ SetLeft(\textcolor{keywordtype}{int}\ l)\ \ \ \ \{\ Window-\/>SetSize(l,\ -\/1,\ -\/1,\ -\/1,\ wxSIZE\_USE\_EXISTING);\ \};}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{int}\ GetTop()\textcolor{keyword}{\ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ Window-\/>GetRect().y;\ \};}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}\ SetTop(\textcolor{keywordtype}{int}\ r)\ \ \ \ \ \{\ Window-\/>SetSize(-\/1,\ r,\ -\/1,\ -\/1,\ wxSIZE\_USE\_EXISTING);\ \};}
+\DoxyCodeLine{00030\ \ \ uint32\_t\ GetColor()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00031\ \ \ \ \ wxColour\ c\ =\ Window-\/>GetBackgroundColour();}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{return}\ OLX\_RGB(c.Red(),\ c.Green(),\ c.Blue());}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ SetColor(uint32\_t\ c)\ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ Window-\/>SetBackgroundColour(wxColour(OLX\_GetRValue(c),\ OLX\_GetGValue(c),}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ OLX\_GetBValue(c)));}
+\DoxyCodeLine{00037\ \ \ \ \ Window-\/>Refresh();}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ SetColor(wxColor\ c)\ \ \{\ \ Window-\/>SetBackgroundColour(c);\ \ Window-\/>Refresh();\ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{bool}\ IsVisible()\textcolor{keyword}{\ \ \ \ const\ }\{\ \ \textcolor{keywordflow}{return}\ Window-\/>IsShown();\ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ SetVisible(\textcolor{keywordtype}{bool}\ v)\ \ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{if}(\ v\ )}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ Window-\/>Show();}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ Window-\/>Hide();}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{bool}\ IsEnabled()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Window-\/>IsEnabled();\ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ SetEnabled(\textcolor{keywordtype}{bool}\ v)\ \{\ Window-\/>Enable(v);\ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{long}\ GetWindowStyle()\textcolor{keyword}{\ \ const\ }\{\ \ \ \textcolor{keywordflow}{return}\ Window-\/>GetWindowStyleFlag();\ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ SetWindowStyle(\textcolor{keywordtype}{long}\ v)\ \ \{\ Window-\/>SetWindowStyleFlag(v);\ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ AddWindowStyle(\textcolor{keywordtype}{long}\ v)\ \ \{\ Window-\/>SetWindowStyleFlag(GetWindowStyle()\ |\ v);\ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ DelWindowStyle(\textcolor{keywordtype}{long}\ v)\ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ Window-\/>SetWindowStyleFlag(GetWindowStyle()\ \&\ \string~v);}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{bool}\ HasWindowStyle(\textcolor{keywordtype}{long}\ v)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (GetWindowStyle()\ \&\ v)\ !=\ 0;\ \ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{long}\ GetExtraStyle()\textcolor{keyword}{\ \ \ const\ }\{\ \ \ \textcolor{keywordflow}{return}\ Window-\/>GetExtraStyle();\ \ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ SetExtraStyle(\textcolor{keywordtype}{long}\ v)\ \ \ \{\ Window-\/>SetExtraStyle(v);\ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{void}\ AddExtraStyle(\textcolor{keywordtype}{long}\ v)\ \ \ \{\ Window-\/>SetExtraStyle(GetWindowStyle()\ |\ v);\ \ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ DelExtraStyle(\textcolor{keywordtype}{long}\ v)\ \ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ SetExtraStyle(GetExtraStyle()\ \&\ \string~v);}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{bool}\ HasExtraStyle(\textcolor{keywordtype}{long}\ v)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (GetExtraStyle()\ \&\ v)\ !=\ 0;\ \ \}}
+\DoxyCodeLine{00067\ \};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

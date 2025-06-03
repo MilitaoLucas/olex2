@@ -1,0 +1,313 @@
+\doxysection{exception.\+h}
+\hypertarget{exception_8h_source}{}\label{exception_8h_source}\index{sdl/exception.h@{sdl/exception.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_exception\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_exception\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ class\ TBasicException:\ public\ \mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\ \{}
+\DoxyCodeLine{00016\ \ \ olxstr\ Message,}
+\DoxyCodeLine{00017\ \ \ \ \ Location;}
+\DoxyCodeLine{00018\ \ \ TBasicException\ *Cause;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ CreationProtection()\ \{\}}
+\DoxyCodeLine{00020\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00021\ \ \ TBasicException(\textcolor{keyword}{const}\ TBasicException\&\ toReplicate)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ this-\/>Message\ =\ toReplicate.Message;}
+\DoxyCodeLine{00023\ \ \ \ \ this-\/>Location\ =\ toReplicate.Location;}
+\DoxyCodeLine{00024\ \ \ \ \ this-\/>Cause\ =\ toReplicate.Cause\ !=\ 0}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}TBasicException\ *\textcolor{keyword}{>}(toReplicate.Cause-\/>Replicate())}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ :\ 0;}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ TBasicException()\ :\ Cause(0)\ \{\}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ TBasicException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\&\ cause,}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ msg=EmptyString())}
+\DoxyCodeLine{00033\ \ \ \ \ :\ Message(msg),}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ Location(location),}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ Cause(static\_cast<TBasicException\ *>(cause.GetException()-\/>Replicate()))}
+\DoxyCodeLine{00036\ \ \ \{\}}
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{/*\ caution:\ the\ expected\ object\ is\ an\ instance\ from\ a\ call\ to\ Replicate()\ !}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ \ \ and\ will\ be\ deleted}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00040\ \ \ TBasicException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ cause)}
+\DoxyCodeLine{00041\ \ \ \ \ :\ Location(location),\ Cause(static\_cast<TBasicException\ *>(cause))}
+\DoxyCodeLine{00042\ \ \ \{\}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ TBasicException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ Msg)}
+\DoxyCodeLine{00045\ \ \ \ \ :\ Message(Msg),\ Location(location),\ Cause(0)}
+\DoxyCodeLine{00046\ \ \ \{\}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{virtual}\ \string~TBasicException();}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetError()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Message;\ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetLocation()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Location;\ \}}
+\DoxyCodeLine{00051\ \ \ TBasicException*\ GetCause()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Cause;\ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 0;\ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{comment}{//\ traces\ back\ to\ the\ original\ cause}}
+\DoxyCodeLine{00054\ \ \ TBasicException*\ GetSource()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ List\&\ GetStackTrace(List\&\ output)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00057\ \ \ \ \ TBasicException\ \textcolor{keyword}{const}*\ cause\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{while}\ (cause\ !=\ 0)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ output.Add(cause-\/>GetFullMessage());}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ cause\ =\ cause-\/>GetCause();}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_reverse(output);}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetFullMessage()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ PrintStackTrace(\textcolor{keywordtype}{bool}\ annotate=\textcolor{keyword}{false},}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&prefix=EmptyString())\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00067\ \};}
+\DoxyCodeLine{00068\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00069\ \textcolor{keyword}{class\ }TIndexOutOfRangeException:\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{size\_t}\ Index,\ Min,\ Max;}
+\DoxyCodeLine{00071\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00072\ \ \ TIndexOutOfRangeException(\textcolor{keyword}{const}\ olxstr\&\ location,}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keywordtype}{size\_t}\ min,\ \textcolor{keywordtype}{size\_t}\ max)}
+\DoxyCodeLine{00074\ \ \ \ \ :\ TBasicException(location,}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}["{}})\ <<\ min\ <<\ \textcolor{stringliteral}{"{}.."{}}\ <<\ max\ <<\ \textcolor{stringliteral}{"{}]:\ "{}}\ <<\ index),}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ Index(index),}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ Min(min),}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ Max(max)}
+\DoxyCodeLine{00079\ \ \ \{\}}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{/*\ use\ \_\_POlxSourceInfo\ to\ provide\ source\ exception,\ this\ is\ to\ avoid\ HUGE}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ \ overhead\ when\ creating\ olxstr}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ValidateRange(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,\ \textcolor{keywordtype}{int}\ line,}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keywordtype}{size\_t}\ min,\ \textcolor{keywordtype}{size\_t}\ max)}
+\DoxyCodeLine{00085\ \ \ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ <\ min\ ||\ index\ >=\ max)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TIndexOutOfRangeException(}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ TExceptionBase::FormatSrc(file,\ function,\ line),\ index,\ min,\ max);}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordtype}{size\_t}\ GetIndex()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Index;\ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordtype}{size\_t}\ GetMin()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Min;\ \}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{size\_t}\ GetMax()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Max;\ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Invalid\ index"{}};\ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TIndexOutOfRangeException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ \};}
+\DoxyCodeLine{00101\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00102\ \textcolor{keyword}{class\ }TFunctionFailedException:\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00103\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00104\ \ \ TFunctionFailedException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ msg)}
+\DoxyCodeLine{00105\ \ \ \ \ :\ TBasicException(location,\ msg\ )}
+\DoxyCodeLine{00106\ \ \ \{\}}
+\DoxyCodeLine{00107\ \ \ TFunctionFailedException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\&\ cause,}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ msg=EmptyString())}
+\DoxyCodeLine{00109\ \ \ \ \ :\ TBasicException(location,\ cause,\ msg\ )}
+\DoxyCodeLine{00110\ \ \ \{\}}
+\DoxyCodeLine{00111\ \ \ TFunctionFailedException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ cause)}
+\DoxyCodeLine{00112\ \ \ \ \ :\ TBasicException(location,\ cause\ )}
+\DoxyCodeLine{00113\ \ \ \{\}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Failed"{}};\ \ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TFunctionFailedException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ \};}
+\DoxyCodeLine{00119\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00120\ \textcolor{keyword}{class\ }TInvalidArgumentException:\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00121\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00122\ \ \ TInvalidArgumentException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ argName)}
+\DoxyCodeLine{00123\ \ \ \ \ :\ TBasicException(location,\ argName)}
+\DoxyCodeLine{00124\ \ \ \{\}}
+\DoxyCodeLine{00125\ \ \ TInvalidArgumentException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ argName,}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&argVal)}
+\DoxyCodeLine{00127\ \ \ \ \ :\ TBasicException(location,\ olxstr(argName)\ <<\ \textcolor{charliteral}{'='}\ <<\ argVal)}
+\DoxyCodeLine{00128\ \ \ \{\}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetArgumentName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetError();\ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TInvalidArgumentException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ \};}
+\DoxyCodeLine{00134\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00135\ \textcolor{keyword}{class\ }TNotImplementedException:\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00136\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00137\ \ \ TNotImplementedException(\textcolor{keyword}{const}\ olxstr\&\ location)}
+\DoxyCodeLine{00138\ \ \ \ \ :\ TBasicException(location,\ EmptyString())}
+\DoxyCodeLine{00139\ \ \ \{\}}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Not\ implemented"{}};\ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TNotImplementedException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \};}
+\DoxyCodeLine{00145\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00146\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00147\ \textcolor{comment}{//......................IO\ exceptions..........................................}}
+\DoxyCodeLine{00148\ \textcolor{keyword}{class\ }TIOException:\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00149\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00150\ \ \ TIOException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\ \&msg):}
+\DoxyCodeLine{00151\ \ \ \ \ TBasicException(location,\ msg\ )\ \ \{\ \ \ \ \}}
+\DoxyCodeLine{00152\ \};}
+\DoxyCodeLine{00153\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00154\ \textcolor{keyword}{class\ }TFileException:\ \textcolor{keyword}{public}\ TIOException\ \{}
+\DoxyCodeLine{00155\ \ \ olxstr\ FileName;}
+\DoxyCodeLine{00156\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00157\ \ \ TFileException(\textcolor{keyword}{const}\ olxstr\&\ location,}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ fileName,\ \textcolor{keyword}{const}\ olxstr\&\ reason)}
+\DoxyCodeLine{00159\ \ \ \ \ :\ TIOException(location,\ olxstr(fileName)\ <<\ \textcolor{charliteral}{'\ '}\ <<\ reason),}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ FileName(fileName)}
+\DoxyCodeLine{00161\ \ \ \{\}}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetFileName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FileName;\ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TFileException(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00164\ \};}
+\DoxyCodeLine{00165\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00166\ \textcolor{keyword}{class\ }TFileDoesNotExistException:\ \textcolor{keyword}{public}\ TFileException\ \{}
+\DoxyCodeLine{00167\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00168\ \ \ TFileDoesNotExistException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ fileName)}
+\DoxyCodeLine{00169\ \ \ \ \ :\ TFileException(location,\ fileName,\ EmptyString()\ )}
+\DoxyCodeLine{00170\ \ \ \{\}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}File\ does\ not\ exist"{}};\ \}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TFileDoesNotExistException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ \};}
+\DoxyCodeLine{00176\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00177\ \textcolor{keyword}{class\ }TEmptyFileException:\ \textcolor{keyword}{public}\ TFileException\ \{}
+\DoxyCodeLine{00178\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00179\ \ \ TEmptyFileException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ fileName)}
+\DoxyCodeLine{00180\ \ \ \ \ :\ TFileException(location,\ fileName,\ EmptyString())}
+\DoxyCodeLine{00181\ \ \ \{\}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Empty\ file"{}};\ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TEmptyFileException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00185\ \ \ \}}
+\DoxyCodeLine{00186\ \};}
+\DoxyCodeLine{00187\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00188\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00189\ \textcolor{comment}{//...........................MATH\ exceptions...................................}}
+\DoxyCodeLine{00190\ \textcolor{keyword}{class\ }TMathException:\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00191\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00192\ \ \ TMathException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ msg)}
+\DoxyCodeLine{00193\ \ \ \ \ :\ TBasicException(location,\ msg)}
+\DoxyCodeLine{00194\ \ \ \{\}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TMathException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00197\ \ \ \}}
+\DoxyCodeLine{00198\ \};}
+\DoxyCodeLine{00199\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00200\ \textcolor{keyword}{class\ }TDivException:\ \textcolor{keyword}{public}\ TMathException\ \{}
+\DoxyCodeLine{00201\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00202\ \ \ TDivException(\textcolor{keyword}{const}\ olxstr\&\ location)}
+\DoxyCodeLine{00203\ \ \ \ \ :\ TMathException(location,\ EmptyString())}
+\DoxyCodeLine{00204\ \ \ \{\}}
+\DoxyCodeLine{00205\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Division\ by\ zero"{}};\ \}}
+\DoxyCodeLine{00206\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TDivException(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00207\ \};}
+\DoxyCodeLine{00208\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00209\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00210\ \textcolor{comment}{//.......................FORMAT\ exceptions.....................................}}
+\DoxyCodeLine{00211\ \textcolor{keyword}{class\ }TInvalidFormatException:\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00212\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00213\ \ \ TInvalidFormatException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ msg)}
+\DoxyCodeLine{00214\ \ \ \ \ :\ TBasicException(location,\ msg)}
+\DoxyCodeLine{00215\ \ \ \{\}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TInvalidFormatException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00218\ \ \ \}}
+\DoxyCodeLine{00219\ \};}
+\DoxyCodeLine{00220\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00221\ \textcolor{keyword}{class\ }TInvalidNumberException:\ \textcolor{keyword}{public}\ TInvalidFormatException\ \{}
+\DoxyCodeLine{00222\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00223\ \ \ TInvalidNumberException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ msg)}
+\DoxyCodeLine{00224\ \ \ \ \ :\ TInvalidFormatException(location,\ msg)}
+\DoxyCodeLine{00225\ \ \ \{\}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TInvalidNumberException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ \};}
+\DoxyCodeLine{00230\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00231\ \textcolor{keyword}{class\ }TInvalidIntegerNumberException\ :\ \textcolor{keyword}{public}\ TInvalidNumberException\ \{}
+\DoxyCodeLine{00232\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00233\ \ \ TInvalidIntegerNumberException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ str)}
+\DoxyCodeLine{00234\ \ \ \ \ :\ TInvalidNumberException(location,\ str)}
+\DoxyCodeLine{00235\ \ \ \{\}}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Invalid\ integer\ format"{}};\ \}}
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TInvalidIntegerNumberException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ \};}
+\DoxyCodeLine{00241\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00242\ \textcolor{keyword}{class\ }TInvalidUnsignedNumberException\ :\ \textcolor{keyword}{public}\ TInvalidNumberException\ \{}
+\DoxyCodeLine{00243\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00244\ \ \ TInvalidUnsignedNumberException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ str)}
+\DoxyCodeLine{00245\ \ \ \ \ :\ TInvalidNumberException(location,\ str)}
+\DoxyCodeLine{00246\ \ \ \{\}}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Invalid\ unsigned\ format"{}};\ \}}
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TInvalidUnsignedNumberException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ \};}
+\DoxyCodeLine{00252\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00253\ \textcolor{keyword}{class\ }TInvalidFloatNumberException\ :\ \textcolor{keyword}{public}\ TInvalidNumberException\ \{}
+\DoxyCodeLine{00254\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00255\ \ \ TInvalidFloatNumberException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ str)}
+\DoxyCodeLine{00256\ \ \ \ \ :\ TInvalidNumberException(location,\ str)}
+\DoxyCodeLine{00257\ \ \ \{\}}
+\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Invalid\ float\ format"{}};\ \}}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TInvalidFloatNumberException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00261\ \ \ \}}
+\DoxyCodeLine{00262\ \};}
+\DoxyCodeLine{00263\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00264\ \textcolor{keyword}{class\ }TInvalidBoolException\ :\ \textcolor{keyword}{public}\ TInvalidFormatException\ \{}
+\DoxyCodeLine{00265\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00266\ \ \ TInvalidBoolException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ str)}
+\DoxyCodeLine{00267\ \ \ \ \ :\ TInvalidFormatException(location,\ str)}
+\DoxyCodeLine{00268\ \ \ \{\}}
+\DoxyCodeLine{00269\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Invalid\ boolean\ format"{}};\ \}}
+\DoxyCodeLine{00270\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TInvalidBoolException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00272\ \ \ \}}
+\DoxyCodeLine{00273\ \};}
+\DoxyCodeLine{00274\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00275\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00276\ \textcolor{comment}{//.......................SYSTEM\ exceptions.....................................}}
+\DoxyCodeLine{00277\ \textcolor{keyword}{class\ }TOutOfMemoryException:\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00278\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00279\ \ \ TOutOfMemoryException(\textcolor{keyword}{const}\ olxstr\&\ location)}
+\DoxyCodeLine{00280\ \ \ \ \ :\ TBasicException(location,\ EmptyString())}
+\DoxyCodeLine{00281\ \ \ \{\}}
+\DoxyCodeLine{00282\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Out\ of\ memory"{}};\ \}}
+\DoxyCodeLine{00283\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00284\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TOutOfMemoryException(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00285\ \ \ \}}
+\DoxyCodeLine{00286\ \};}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \textcolor{comment}{//checks\ if\ the\ index\ within\ bounds}}
+\DoxyCodeLine{00289\ \textcolor{preprocessor}{\#define\ OLX\_VALIDATE\_RANGE(index,\ min\_index,\ max\_index)\ \(\backslash\)}}
+\DoxyCodeLine{00290\ \textcolor{preprocessor}{\ \ if((index)\ <\ min\_index\ ||\ (index)\ >=\ max\_index)\ \(\backslash\)}}
+\DoxyCodeLine{00291\ \textcolor{preprocessor}{\ \ \ \ throw\ TIndexOutOfRangeException(\_\_OlxSourceInfo,\ index,\ min\_index,\ max\_index);}}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00293\ \textcolor{comment}{//checks\ if\ the\ range\ [index,\ index+count)\ within\ bounds}}
+\DoxyCodeLine{00294\ \textcolor{preprocessor}{\#define\ OLX\_VALIDATE\_SUBRANGE(index,\ count,\ min\_index,\ max\_index)\ \(\backslash\)}}
+\DoxyCodeLine{00295\ \textcolor{preprocessor}{\ \ if((index)\ <\ min\_index\ ||\ (index)\ >=\ max\_index)\ \(\backslash\)}}
+\DoxyCodeLine{00296\ \textcolor{preprocessor}{\ \ \ \ throw\ TIndexOutOfRangeException(\_\_OlxSourceInfo,\ index,\ min\_index,\ max\_index);\(\backslash\)}}
+\DoxyCodeLine{00297\ \textcolor{preprocessor}{\ \ if\ (((index)+count)\ >=\ max\_index)\ \(\backslash\)}}
+\DoxyCodeLine{00298\ \textcolor{preprocessor}{\ \ \ \ throw\ TIndexOutOfRangeException(\_\_OlxSourceInfo,\ index+count,\ min\_index,\ max\_index);}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#define\ OLX\_VALIDATE\_CONTAINER\_RANGE(index,\ container)\ \(\backslash\)}}
+\DoxyCodeLine{00301\ \textcolor{preprocessor}{\ \ OLX\_VALIDATE\_CONTAINER\_RANGE(index,\ 0,\ container.Count());}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \textcolor{preprocessor}{\#define\ OLX\_VALIDATE\_CONTAINER\_SUBRANGE(index,\ count,\ container)\ \(\backslash\)}}
+\DoxyCodeLine{00304\ \textcolor{preprocessor}{\ \ OLX\_VALIDATE\_CONTAINER\_SUBRANGE(index,\ count,\ 0,\ container.Count());}}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ EndEsdlNamespace()}
+\DoxyCodeLine{00307\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

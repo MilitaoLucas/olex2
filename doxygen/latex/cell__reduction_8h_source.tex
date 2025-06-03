@@ -1,0 +1,163 @@
+\doxysection{cell\+\_\+reduction.\+h}
+\hypertarget{cell__reduction_8h_source}{}\label{cell__reduction_8h_source}\index{xlib/cell\_reduction.h@{xlib/cell\_reduction.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_cell\_reduction\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_cell\_reduction\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}evector.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}symmlib.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ BeginXlibNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ I.\ Krivy\ and\ B.\ Gruber.\ Acta\ Cryst.\ (1976)\ A32,\ 297-\/298}}
+\DoxyCodeLine{00019\ struct\ Niggli\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{struct\ }EpsilonComparator\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{double}\ epsilon;}
+\DoxyCodeLine{00022\ \ \ \ \ EpsilonComparator(\textcolor{keywordtype}{double}\ eps\ =\ 1e-\/3)\ :\ epsilon(eps)\ \{\}}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{bool}\ eq(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_abs(a\ -\/\ b)\ <\ epsilon;}
+\DoxyCodeLine{00025\ \ \ \ \ \}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{bool}\ lt(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ a\ <\ b\ -\/\ epsilon;}
+\DoxyCodeLine{00028\ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{bool}\ gt(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \textcolor{comment}{//return\ a\ >\ b\ +\ epsilon;}}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ b\ <\ a\ -\/\ epsilon;}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \};}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ arr\_t>}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{static}\ evecd::const\_vec\_type\ reduce\_const(\textcolor{keywordtype}{short}\ \_latt,\ \textcolor{keyword}{const}\ arr\_t\&\ arr)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ vec3d\ s(arr[0],\ arr[1],\ arr[2]),\ a(arr[3],\ arr[4],\ arr[5]);}
+\DoxyCodeLine{00037\ \ \ \ \ reduce(\_latt,\ s,\ a);}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{return}\ evecd::build(s[0],\ s[1],\ s[2],\ a[0],\ a[1],\ a[2]).release();}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ arr\_t>}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{static}\ arr\_t\&\ reduce(\textcolor{keywordtype}{short}\ \_latt,\ arr\_t\&\ arr)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ vec3d\ s(arr[0],\ arr[1],\ arr[2]),\ a(arr[3],\ arr[4],\ arr[5]);}
+\DoxyCodeLine{00043\ \ \ \ \ reduce(\_latt,\ s,\ a);}
+\DoxyCodeLine{00044\ \ \ \ \ arr[0]\ =\ s[0];\ \ arr[1]\ =\ s[1];\ \ arr[2]\ =\ s[2];}
+\DoxyCodeLine{00045\ \ \ \ \ arr[3]\ =\ a[0];\ \ arr[4]\ =\ a[1];\ \ arr[5]\ =\ a[2];}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{return}\ arr;}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ reduce(\textcolor{keywordtype}{short}\ \_latt,\ vec3d\&\ sides,\ vec3d\&\ angles)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{double}\ R[6];}
+\DoxyCodeLine{00050\ \ \ \ \ vec3d\ cs(cos(angles[0]\ /\ 180.0\ *\ M\_PI),\ cos(angles[1]\ /\ 180.0\ *\ M\_PI),}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ cos(angles[2]\ /\ 180.0\ *\ M\_PI));}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{double}\ vol\ =\ sides.Prod()\ *\ sqrt(1\ -\/\ cs.QLength()\ +\ 2\ *\ cs.Prod());}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{comment}{//\ Acta\ Cryst.\ (2004).\ A60,\ 1–6}}
+\DoxyCodeLine{00054\ \ \ \ \ EpsilonComparator\ cmp(1e-\/5\ *\ pow(vol,\ 1.\ /\ 3));}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ mat3d\ metr\_m(}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ olx\_sqr(sides[0]),\ sides[0]\ *\ sides[1]\ *\ cs[2],\ sides[0]\ *\ sides[2]\ *\ cs[1],}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ olx\_sqr(sides[1]),\ sides[1]\ *\ sides[2]\ *\ cs[0],}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ olx\_sqr(sides[2]));}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ mat3d\ tm\ =\ TCLattice::FromPrimitive(\_latt);}
+\DoxyCodeLine{00062\ \ \ \ \ tm\ =\ tm.Inverse();}
+\DoxyCodeLine{00063\ \ \ \ \ metr\_m\ =\ tm.GetT()\ *\ metr\_m\ *\ tm;}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ R[0]\ =\ metr\_m[0][0];}
+\DoxyCodeLine{00066\ \ \ \ \ R[1]\ =\ metr\_m[1][1];}
+\DoxyCodeLine{00067\ \ \ \ \ R[2]\ =\ metr\_m[2][2];}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ R[3]\ =\ 2\ *\ metr\_m[1][2];}
+\DoxyCodeLine{00070\ \ \ \ \ R[4]\ =\ 2\ *\ metr\_m[0][2];}
+\DoxyCodeLine{00071\ \ \ \ \ R[5]\ =\ 2\ *\ metr\_m[0][1];}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{bool}\ Used\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{int}\ Cycles\ =\ 0;}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{while}\ (Used)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ Used\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ Cycles++;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Cycles\ >\ 100)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}procedure\ did\ not\ converge"{}});}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.gt(R[0],\ R[1])\ ||}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ (cmp.eq(R[0],\ R[1])\ \&\&\ cmp.gt(olx\_abs(R[3]),\ olx\_abs(R[4]))))}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \{\ \textcolor{comment}{//1}}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ olx\_swap(R[0],\ R[1]);}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ olx\_swap(R[3],\ R[4]);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ Used\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.gt(R[1],\ R[2])\ ||}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ (cmp.eq(R[1],\ R[2])\ \&\&\ cmp.gt(olx\_abs(R[4]),\ olx\_abs(R[5]))))}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \{\ \textcolor{comment}{//2}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ olx\_swap(R[1],\ R[2]);}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ olx\_swap(R[4],\ R[5]);}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ Used\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.gt(R[3]\ *\ R[4]\ *\ R[5],\ 0))\ \{\ \textcolor{comment}{//3}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ R[3]\ =\ olx\_abs(R[3]);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ R[4]\ =\ olx\_abs(R[4]);}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ R[5]\ =\ olx\_abs(R[5]);}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ R[3]\ =\ -\/olx\_abs(R[3]);}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ R[4]\ =\ -\/olx\_abs(R[4]);}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ R[5]\ =\ -\/olx\_abs(R[5]);}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.gt(olx\_abs(R[3]),\ R[1])\ ||}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ (cmp.eq(R[3],\ R[1])\ \&\&\ cmp.lt(2\ *\ R[4],\ R[5]))\ ||\ \textcolor{comment}{//5}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ (cmp.eq(R[3],\ -\/R[1])\ \&\&\ cmp.lt(R[5],\ 0)))}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sig\ =\ olx\_sign(R[3]);}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ R[2]\ +=\ R[1]\ -\/\ R[3]\ *\ sig;}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ R[3]\ -\/=\ 2\ *\ R[1]\ *\ sig;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ R[4]\ -\/=\ R[5]\ *\ sig;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ Used\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.gt(olx\_abs(R[4]),\ R[0])\ ||}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ (cmp.eq(R[4],\ R[0])\ \&\&\ cmp.lt(2\ *\ R[3],\ R[5]))\ ||\ \ \textcolor{comment}{//6}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ (cmp.eq(R[4],\ -\/R[0])\ \&\&\ cmp.lt(R[5],\ 0)))}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sig\ =\ olx\_sign(R[4]);}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ R[2]\ +=\ R[0]\ -\/\ R[4]\ *\ sig;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ R[3]\ -\/=\ R[5]\ *\ sig;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ R[4]\ -\/=\ 2\ *\ R[0]\ *\ sig;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ Used\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.gt(olx\_abs(R[5]),\ R[0])\ ||}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ (cmp.eq(R[5],\ R[0])\ \&\&\ cmp.lt(2\ *\ R[3],\ R[4]))\ ||\ \ \textcolor{comment}{//7}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ (cmp.eq(R[5],\ -\/R[0])\ \&\&\ cmp.lt(R[4],\ 0)))}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sig\ =\ olx\_sign(R[5]);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ R[1]\ +=\ R[0]\ -\/\ R[5]\ *\ sig;}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ R[3]\ -\/=\ R[4]\ *\ sig;}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ R[5]\ -\/=\ 2\ *\ R[0]\ *\ sig;}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ Used\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.lt(R[0]\ +\ R[1]\ +\ R[3]\ +\ R[4]\ +\ R[5],\ 0)\ ||}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ (cmp.eq(R[0]\ +\ R[1]\ +\ R[3]\ +\ R[4]\ +\ R[5],\ 0)\ \&\&\ cmp.gt(2\ *\ (R[0]\ +\ R[4])\ +\ R[5],\ 0)))\ \textcolor{comment}{//8}}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ R[2]\ +=\ R[0]\ +\ R[1]\ +\ R[3]\ +\ R[4]\ +\ R[5];}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ R[3]\ +=\ 2\ *\ R[1]\ +\ R[5];}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ R[4]\ +=\ 2\ *\ R[0]\ +\ R[5];}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ Used\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ sides[0]\ =\ sqrt(R[0]);}
+\DoxyCodeLine{00148\ \ \ \ \ sides[1]\ =\ sqrt(R[1]);}
+\DoxyCodeLine{00149\ \ \ \ \ sides[2]\ =\ sqrt(R[2]);}
+\DoxyCodeLine{00150\ \ \ \ \ angles[0]\ =\ acos(R[3]\ /\ (sides[1]\ *\ sides[2]\ *\ 2))\ *\ 180\ /\ M\_PI;}
+\DoxyCodeLine{00151\ \ \ \ \ angles[1]\ =\ acos(R[4]\ /\ (sides[0]\ *\ sides[2]\ *\ 2))\ *\ 180\ /\ M\_PI;}
+\DoxyCodeLine{00152\ \ \ \ \ angles[2]\ =\ acos(R[5]\ /\ (sides[0]\ *\ sides[1]\ *\ 2))\ *\ 180\ /\ M\_PI;}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \};}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ EndXlibNamespace()}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,159 @@
+\doxysection{fragment.\+h}
+\hypertarget{fragment_8h_source}{}\label{fragment_8h_source}\index{xlib/fragment.h@{xlib/fragment.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ins\_frag\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ins\_frag\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ BeginXlibNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ enum\ \{}
+\DoxyCodeLine{00016\ \ \ frag\_id\_cp\ =\ 0,}
+\DoxyCodeLine{00017\ \ \ frag\_id\_ph,}
+\DoxyCodeLine{00018\ \ \ frag\_id\_naphthalene,}
+\DoxyCodeLine{00019\ \ \ frag\_id\_cp\_star}
+\DoxyCodeLine{00020\ \};}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ coordinates\ are\ always\ cartesian}}
+\DoxyCodeLine{00022\ \textcolor{keyword}{struct\ }FragAtom\ \{}
+\DoxyCodeLine{00023\ \ \ olxstr\ label;}
+\DoxyCodeLine{00024\ \ \ vec3d\ crd;}
+\DoxyCodeLine{00025\ \ \ FragAtom(\textcolor{keyword}{const}\ olxstr\&\ labl,\ \textcolor{keyword}{const}\ vec3d\&\ \_crd)\ :\ label(labl),\ crd(\_crd)\ \ \{\ \ \}}
+\DoxyCodeLine{00026\ \ \ FragAtom(\textcolor{keyword}{const}\ FragAtom\&\ a)\ :}
+\DoxyCodeLine{00027\ \ \ label(a.label),}
+\DoxyCodeLine{00028\ \ \ \ \ crd(a.crd)\ \{\ \ \}}
+\DoxyCodeLine{00029\ \ \ FragAtom\&\ operator\ =\ (\textcolor{keyword}{const}\ FragAtom\&\ a)\ \ \{}
+\DoxyCodeLine{00030\ \ \ \ \ label\ =\ a.label;}
+\DoxyCodeLine{00031\ \ \ \ \ crd\ =\ a.crd;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ \ \ olxstr\ ToString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ (olxstr(label).RightPadding(5,\ \textcolor{charliteral}{'\ '},\ \textcolor{keyword}{true})\ <<\ \textcolor{stringliteral}{"{}-\/1\ \ "{}}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ <<\ olxstr::FormatFloat(-\/5,\ crd[0])\ <<\ \textcolor{charliteral}{'\ '}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ <<\ olxstr::FormatFloat(-\/5,\ crd[1])\ <<\ \textcolor{charliteral}{'\ '}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ <<\ olxstr::FormatFloat(-\/5,\ crd[2]));}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{class\ }Fragment\ \{}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{int}\ Code;}
+\DoxyCodeLine{00044\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<FragAtom>}}\ Atoms;}
+\DoxyCodeLine{00045\ \ \ mat3d\ f2c;\ \ \textcolor{comment}{//\ fractioal\ to\ cartesian}}
+\DoxyCodeLine{00046\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ BuildMatrix(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b,\ \textcolor{keywordtype}{double}\ c,\ \textcolor{keywordtype}{double}\ alpha,\ \textcolor{keywordtype}{double}\ beta,}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{double}\ gamma)}
+\DoxyCodeLine{00049\ \ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{double}\ cG\ =\ cos(gamma/180*M\_PI),}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ cB\ =\ cos(beta/180*M\_PI),}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ cA\ =\ cos(alpha/180*M\_PI),}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ sG\ =\ sin(gamma/180*M\_PI);}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{double}\ cs\ =\ sG/(c*sqrt(\ (1-\/cA*cA-\/cB*cB-\/cG*cG)\ +\ 2*(cA*cB*cG)));}
+\DoxyCodeLine{00055\ \ \ \ \ f2c[0][0]\ =\ a;}
+\DoxyCodeLine{00056\ \ \ \ \ f2c[1][0]\ =\ b*cG;}
+\DoxyCodeLine{00057\ \ \ \ \ f2c[2][0]\ =\ c*cB;}
+\DoxyCodeLine{00058\ \ \ \ \ f2c[1][1]\ =\ b*sG;}
+\DoxyCodeLine{00059\ \ \ \ \ f2c[2][1]\ =\ -\/c*(cB*cG-\/cA)/sG;}
+\DoxyCodeLine{00060\ \ \ \ \ f2c[2][2]\ =\ 1./cs;}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00063\ \ \ Fragment(\textcolor{keywordtype}{int}\ code,\ \textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b,\ \textcolor{keywordtype}{double}\ c,}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{double}\ alpha,\ \textcolor{keywordtype}{double}\ beta,\ \textcolor{keywordtype}{double}\ gamma)\ :\ Code(code)}
+\DoxyCodeLine{00065\ \ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ BuildMatrix(a,\ b,\ c,\ alpha,\ beta,\ gamma);}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \ \ Fragment(\textcolor{keyword}{const}\ Fragment\&\ frag)\ :\ Code(frag.Code),\ Atoms(frag.Atoms)\ \ \{\}}
+\DoxyCodeLine{00069\ \ \ Fragment\&\ operator\ =\ (\textcolor{keyword}{const}\ Fragment\&\ f)\ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ Atoms\ =\ f.Atoms;}
+\DoxyCodeLine{00071\ \ \ \ \ Code\ =\ f.Code;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ Reset(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b,\ \textcolor{keywordtype}{double}\ c,\ \textcolor{keywordtype}{double}\ alpha,\ \textcolor{keywordtype}{double}\ beta,}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{double}\ gamma)}
+\DoxyCodeLine{00077\ \ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ BuildMatrix(a,\ b,\ c,\ alpha,\ beta,\ gamma);}
+\DoxyCodeLine{00079\ \ \ \ \ Atoms.Clear();}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VecType>}
+\DoxyCodeLine{00083\ \ \ \mbox{\hyperlink{structFragAtom}{FragAtom}}\&\ Add(\textcolor{keyword}{const}\ olxstr\&\ label,\ \textcolor{keyword}{const}\ VecType\&\ v)\ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{return}\ Add(label,\ v[0],\ v[1],\ v[2]);}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \mbox{\hyperlink{structFragAtom}{FragAtom}}\&\ Add(\textcolor{keyword}{const}\ olxstr\&\ label,\ \textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b,\ \textcolor{keywordtype}{double}\ c)\ \ \{}
+\DoxyCodeLine{00088\ \ \ \ \ vec3d\ crd(}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ a*f2c[0][0]\ +\ b*f2c[1][0]\ +\ c*f2c[2][0],}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ b*f2c[1][1]\ +\ c*f2c[2][1],}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ c*f2c[2][2]}
+\DoxyCodeLine{00092\ \ \ \ \ );}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{return}\ Atoms.AddNew(\ label,\ crd\ );}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{int}\ GetCode()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Code;\ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Atoms.IsEmpty();\ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Atoms.Count();\ \ \}}
+\DoxyCodeLine{00100\ \ \ \mbox{\hyperlink{structFragAtom}{FragAtom}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Atoms[i];\ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structFragAtom}{FragAtom}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Atoms[i];\ \ \}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ Atoms.Delete(i);\ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ slist>\ \textcolor{keywordtype}{void}\ ToStrings(slist\&\ lst)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00104\ \ \ \ \ lst.Add(\textcolor{stringliteral}{"{}FRAG\ "{}})\ <<\ Code;}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Atoms.Count();\ i++\ )}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ lst.Add(\ Atoms[i].ToString()\ );}
+\DoxyCodeLine{00107\ \ \ \ \ lst.Add(\textcolor{stringliteral}{"{}FEND"{}});}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ \ \textcolor{comment}{//\ one\ of\ the\ type\_list}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{static}\ List\&\ GenerateRegularRing(\textcolor{keywordtype}{size\_t}\ sides,\ \textcolor{keywordtype}{double}\ norm,\ List\&\ rv)\ \ \{}
+\DoxyCodeLine{00112\ \ \ \ \ rv.SetCapacity(rv.Count()+sides);}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{double}\ sin\_a,\ cos\_a;}
+\DoxyCodeLine{00114\ \ \ \ \ olx\_sincos(2*M\_PI/sides,\ \&sin\_a,\ \&cos\_a);}
+\DoxyCodeLine{00115\ \ \ \ \ vec3d\ ps(cos\_a,\ -\/sin\_a,\ 0);}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ sides;\ i++\ )\ \ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ rv.AddCopy(ps*norm);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x\ =\ ps[0];}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ ps[0]\ =\ (cos\_a*x\ +\ sin\_a*ps[1]);}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ ps[1]\ =\ (cos\_a*ps[1]\ -\/\ sin\_a*x);}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00123\ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ \ \textcolor{comment}{//\ one\ of\ the\ type\_list}}
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{static}\ List\&\ GenerateFragCrds(\textcolor{keywordtype}{int}\ frag\_id,\ List\&\ rv)\ \ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{if}(\ frag\_id\ ==\ frag\_id\_cp\ )}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ GenerateRegularRing(5,\ 0.5*1.42/cos(54*M\_PI/180),\ rv);}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ frag\_id\ ==\ frag\_id\_ph\ )}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ GenerateRegularRing(6,\ 1.39,\ rv);}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ frag\_id\ ==\ frag\_id\_naphthalene\ )\ \ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ GenerateRegularRing(6,\ 1.39,\ rv);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ rv.AddCopy(rv[0]);}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=3;\ i\ <\ 6;\ i++\ )}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ rv.AddCopy(rv[i]);}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ t\ =\ (rv[4]+rv[5]).NormaliseTo(1.39*2*cos(M\_PI/6));}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=6;\ i\ <\ rv.Count();\ i++\ )}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ rv[i]\ +=\ t;}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ olx\_swap(rv[9],\ rv[7]);}
+\DoxyCodeLine{00139\ \ \ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ frag\_id\ ==\ frag\_id\_cp\_star\ )\ \ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ l\ =\ 0.5*1.42/cos(54*M\_PI/180);}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ GenerateRegularRing(5,\ l,\ rv);}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ GenerateRegularRing(5,\ l+1.063,\ rv);}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}invalid\ fragment\ identifier"{}});}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ \};}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ EndXlibNamespace()}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,150 @@
+\doxysection{xangle.\+h}
+\hypertarget{xangle_8h_source}{}\label{xangle_8h_source}\index{gxlib/xangle.h@{gxlib/xangle.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}ematrix.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glrender.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glmousehandler.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}gllabel.h"{}}}
+\DoxyCodeLine{00015\ BeginGxlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ TXAngle\ :\ public\ \mbox{\hyperlink{classAGlMouseHandlerImp}{AGlMouseHandlerImp}}\ \{}
+\DoxyCodeLine{00018\ \ \ TXGlLabel*\ Label;}
+\DoxyCodeLine{00019\ \ \ vec3d\ center,\ from,\ to,\ draw\_center;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{double}\ thickness,\ radius;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsMaskSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsStyleSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsRadiusSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{void}\ Init();}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoRotate(\textcolor{keyword}{const}\ vec3d\&\ vec,\ \textcolor{keywordtype}{double}\ angle)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoTranslate(\textcolor{keyword}{const}\ vec3d\&\ t);}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoZoom(\textcolor{keywordtype}{double}\ zoom,\ \textcolor{keywordtype}{bool}\ inc);}
+\DoxyCodeLine{00030\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ TXAngle(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName,}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ cnt,\ \textcolor{keyword}{const}\ vec3d\ \&from,\ \textcolor{keyword}{const}\ vec3d\&\ to);}
+\DoxyCodeLine{00034\ \ \ TXAngle(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \string~TXAngle();}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName\ =\ EmptyString());}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&\ Max,\ vec3d\&\ Min)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ Update();}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ ListParams(TStrList\&\ List,\ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}*\ Primitive);}
+\DoxyCodeLine{00042\ \ \ \textcolor{comment}{//\ for\ internal\ object\ parameters}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ ListParams(TStrList\&\ List);}
+\DoxyCodeLine{00044\ \ \ \textcolor{comment}{//\ fills\ the\ list\ with\ proposal\ primitives\ to\ construct\ object}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ ListPrimitives(TStrList\&\ List)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ ListDrawingStyles(TStrList\&\ List);}
+\DoxyCodeLine{00047\ \ \ uint32\_t\ GetPrimitiveMask()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ UpdatePrimitiveParams(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}*\ Primitive);}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ SetVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di);}
+\DoxyCodeLine{00053\ \ \ TXGlLabel\&\ GetGlLabel()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Label;\ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ UpdateLabel()\ \{\ GetGlLabel().UpdateLabel();\ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{//const\_strlist\ ToPov(olx\_cdict<TGlMaterial,\ olxstr>\&\ materials)\ const;}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{const}\ vec3d\ \&GetCenter()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ center;}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetFrom()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ from;}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetTo()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ to;}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ SetCenter(\textcolor{keyword}{const}\ vec3d\&\ v)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ center\ =\ v;}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{void}\ SetFrom(\textcolor{keyword}{const}\ vec3d\&\ v)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ from\ =\ v;}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{void}\ SetTo(\textcolor{keyword}{const}\ vec3d\&\ v)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ to\ =\ v;}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{class\ }Settings\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAGOSettings}{AGOSettings}}\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{int}\ mask,\ sections;}
+\DoxyCodeLine{00077\ \ \ \ \ Settings(TGlRenderer\&\ r)}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ :\ AGOSettings(r,\ \textcolor{stringliteral}{"{}AngleParams"{}})}
+\DoxyCodeLine{00079\ \ \ \ \ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ set\_defaults();}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{void}\ set\_defaults()\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ mask\ =\ sections\ =\ -\/1;}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{void}\ OnStyleChange()\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ set\_defaults();}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ ClearPrimitives();}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{void}\ OnRendererClear()\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ ClearPrimitives();}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{void}\ CreatePrimitives();}
+\DoxyCodeLine{00093\ \ \ \ \ TStringToList<olxstr,\ TGlPrimitive*>\ primitives;}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{int}\ GetMask()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetParam(\textcolor{stringliteral}{"{}DefM"{}},\ mask,\ \textcolor{keywordtype}{int}(1));\ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{void}\ SetMask(\textcolor{keywordtype}{int}\ v)\ \{\ style-\/>SetParam(\textcolor{stringliteral}{"{}DefM"{}},\ (mask\ =\ v),\ \textcolor{keyword}{true});\ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{int}\ GetSections()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetParam(\textcolor{stringliteral}{"{}Sections"{}},\ sections,\ \textcolor{keywordtype}{int}(10));\ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{void}\ SetSections(\textcolor{keywordtype}{int}\ v)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ style-\/>SetParam(\textcolor{stringliteral}{"{}Sections"{}},\ (sections\ =\ v),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00100\ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{const}\ TStringToList<olxstr,\ TGlPrimitive*>\ GetPrimitives()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ primitives;}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{const}\ TStringToList<olxstr,\ TGlPrimitive*>\ GetPrimitives(\textcolor{keywordtype}{bool}\ check)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (check\ \&\&\ primitives.IsEmpty())\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ CreatePrimitives();}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ primitives;}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{void}\ ClearPrimitives()\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ primitives.Clear();}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{static}\ Settings\&\ GetInstance(TGlRenderer\&\ r)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ AGOSettings*\ s\ =\ r.FindSettings(\textcolor{stringliteral}{"{}angle"{}});}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (s\ ==\ 0)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (Settings\&)r.RegisterSettings(*(\textcolor{keyword}{new}\ Settings(r)),\ \textcolor{stringliteral}{"{}angle"{}});}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}Settings\&\textcolor{keyword}{>}(*s);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \};}
+\DoxyCodeLine{00125\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{mutable}\ Settings*\ settings;}
+\DoxyCodeLine{00127\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00128\ \ \ Settings\&\ GetSettings()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ *(settings\ ==\ 0\ ?\ (settings\ =\ \&Settings::GetInstance(Parent))}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ :\ settings);}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{static}\ Settings\&\ GetSettings(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ r)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{return}\ Settings::GetInstance(r);}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnStyleChange()\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ settings\ =\ \&Settings::GetInstance(Parent);}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnPrimitivesCleared()\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ GetSettings().ClearPrimitives();}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \};}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ EndGxlNamespace()}
+\DoxyCodeLine{00144\ }
+
+\end{DoxyCode}

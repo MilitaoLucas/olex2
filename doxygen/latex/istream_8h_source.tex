@@ -1,0 +1,127 @@
+\doxysection{istream.\+h}
+\hypertarget{istream_8h_source}{}\label{istream_8h_source}\index{sdl/istream.h@{sdl/istream.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_istream\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_istream\_H}}
+\DoxyCodeLine{00012\ BeginEsdlNamespace()}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ class\ \mbox{\hyperlink{classOlxIStream}{OlxIStream}};}
+\DoxyCodeLine{00015\ class\ \mbox{\hyperlink{classIInputStream}{IInputStream}};}
+\DoxyCodeLine{00016\ class\ \mbox{\hyperlink{classIOutputStream}{IOutputStream}};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ \mbox{\hyperlink{classOlxIStream}{OlxIStream}}\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classOlxIStream}{\string~OlxIStream}}()\ \{\}}
+\DoxyCodeLine{00021\ \ \ \textcolor{comment}{//\ these\ functions\ must\ throw\ an\ exception\ if\ an\ error\ happens}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{virtual}\ uint64\_t\ GetSize()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ uint64\_t\ GetPosition()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetPosition(uint64\_t\ newPos)\ =\ 0;}
+\DoxyCodeLine{00025\ \ \ \textcolor{comment}{/*\ if\ do\_throw\ is\ true\ throws\ an\ exception\ if\ size\ is\ larger\ than\ size\_t}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ \ (so\ that\ ne\ etc\ will\ fail)\ otherwise\ will\ return\ max\ size\_t.\ Works\ ONLY\ for}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ \ unsigned\ types!}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ IT>}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{static}\ IT\ CheckSize(uint64\_t\ sz,\ \textcolor{keywordtype}{bool}\ do\_throw\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint64\_t\ \_mask\ =\ \string~(uint64\_t)((IT)(\string~0));}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{if}\ ((sz\ \&\ \_mask)\ !=\ 0)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_throw)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ TExceptionBase::ThrowFunctionFailed(\_\_POlxSourceInfo,\ \textcolor{stringliteral}{"{}invalid\ stream\ position"{}});}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;\ \ \textcolor{comment}{//\ make\ the\ compiler\ happy}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \string~0;}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}IT\textcolor{keyword}{>}(sz);}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ CheckSizeT(uint64\_t\ sz,\ \textcolor{keywordtype}{bool}\ do\_throw\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckSize<size\_t>(sz,\ do\_throw);}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{/*\ if\ do\_throw\ is\ true\ throws\ an\ exception\ if\ size\ is\ larger\ than\ size\_t}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ (so\ that\ ne\ etc\ will\ fail)\ otherwise\ will\ return\ max\ size\_t}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{size\_t}\ GetAvailableSizeT(\textcolor{keywordtype}{bool}\ do\_throw\ =\ \textcolor{keyword}{true})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{return}\ CheckSizeT(GetSize()\ -\/\ GetPosition(),\ do\_throw);}
+\DoxyCodeLine{00053\ \ \ \}}
+\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIInputStream}{IInputStream}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classOlxIStream}{OlxIStream}}\ \{}
+\DoxyCodeLine{00057\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ \mbox{\hyperlink{classIInputStream_ac298ab7f7ec39b5fc3b399c6a2315984}{ValidateRead}}(uint64\_t\ amount)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{if}\ ((GetPosition()\ +\ amount)\ <=\ GetSize())\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ TExceptionBase::ThrowFunctionFailed(\_\_POlxSourceInfo,\ \textcolor{stringliteral}{"{}invalid\ stream\ position"{}});}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};\ \ }
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIInputStream}{\string~IInputStream}}()\ \{\}}
+\DoxyCodeLine{00067\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Read(\textcolor{keywordtype}{void}*\ Data,\ \textcolor{keywordtype}{size\_t}\ size)\ =\ 0;}
+\DoxyCodeLine{00069\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{comment}{//\ return\ the\ number\ of\ actual\ bytes\ read}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{size\_t}\ SafeRead(\textcolor{keywordtype}{void}*\ Data,\ \textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ toread\ =\ olx\_min(GetAvailableSizeT(\textcolor{keyword}{false}),\ size);}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{if}\ (toread\ ==\ 0)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ Read(Data,\ toread);}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{return}\ toread;}
+\DoxyCodeLine{00078\ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ ReadCc()\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{char}\ cc;}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{classIInputStream_ac298ab7f7ec39b5fc3b399c6a2315984}{ValidateRead}}(\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char})).Read(\&cc,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char}));}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ cc;}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{wchar\_t}\ ReadWc()\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{wchar\_t}\ wc;}
+\DoxyCodeLine{00088\ \ \ \ \ \mbox{\hyperlink{classIInputStream_ac298ab7f7ec39b5fc3b399c6a2315984}{ValidateRead}}(\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{wchar\_t})).Read(\&wc,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{wchar\_t}));}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{return}\ wc;}
+\DoxyCodeLine{00090\ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{inline}\ olxch\ ReadCh()\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ olxch\ ch;}
+\DoxyCodeLine{00094\ \ \ \ \ \mbox{\hyperlink{classIInputStream_ac298ab7f7ec39b5fc3b399c6a2315984}{ValidateRead}}(\textcolor{keyword}{sizeof}(olxch)).Read(\&ch,\ \textcolor{keyword}{sizeof}(olxch));}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{return}\ ch;}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{void}\ operator\ >>\ (IOutputStream\&\ os);}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{comment}{//\ beware\ not\ to\ pass\ classes\ here!}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator\ >>\ (T\&\ v)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \mbox{\hyperlink{classIInputStream_ac298ab7f7ec39b5fc3b399c6a2315984}{ValidateRead}}(\textcolor{keyword}{sizeof}(T)).Read(\&v,\ \textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ \};}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIOutputStream}{IOutputStream}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classOlxIStream}{OlxIStream}}\ \{}
+\DoxyCodeLine{00107\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOutputStream}{\string~IOutputStream}}()\ \{\}}
+\DoxyCodeLine{00109\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ Data,\ \textcolor{keywordtype}{size\_t}\ size)\ =\ 0;}
+\DoxyCodeLine{00111\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Flush()\ \{\}}
+\DoxyCodeLine{00113\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{comment}{//\ these\ functions\ must\ return\ pointer\ *this}}
+\DoxyCodeLine{00115\ \ \ \mbox{\hyperlink{classIOutputStream}{IOutputStream}}\&\ operator\ <<\ (\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ is);}
+\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//...................................................................................}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ beware\ not\ to\ pass\ classes\ here}}
+\DoxyCodeLine{00118\ \};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ EndEsdlNamespace()}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

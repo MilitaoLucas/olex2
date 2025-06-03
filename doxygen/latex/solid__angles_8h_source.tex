@@ -1,0 +1,92 @@
+\doxysection{solid\+\_\+angles.\+h}
+\hypertarget{solid__angles_8h_source}{}\label{solid__angles_8h_source}\index{gxlib/solid\_angles.h@{gxlib/solid\_angles.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2014\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_solid\_angles\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_solid\_angles\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}lattice.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}xatom.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ BeginGxlNamespace()}
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ 'generic'\ point\ analyser\ -\/\ */}}
+\DoxyCodeLine{00017\ class\ APointAnalyser\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem\_(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{virtual}\ \string~APointAnalyser()\ \ \{\}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{virtual}\ uint32\_t\ Analyse(vec3f\ \&p)\ =\ 0;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetDryRun(\textcolor{keywordtype}{bool}\ v)\ =\ 0;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ GetReady()\ =\ 0;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsValid()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetIdString()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{static}\ APointAnalyser\ *FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di);}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//\ object\ factory}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict}}<APointAnalyser\ *(*)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di),\ \textcolor{keyword}{false}>\ \&}
+\DoxyCodeLine{00031\ \ \ \ \ Registry()}
+\DoxyCodeLine{00032\ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict}}<APointAnalyser\ *(*)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di),\ \textcolor{keyword}{false}>\ r;}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{/*\ Used\ for\ the\ solid\ angle\ analysis\ as\ described\ here:}}
+\DoxyCodeLine{00039\ \textcolor{comment}{Guzei,\ I.A.,\ Wendt,\ M.Dalton\ Trans.,\ 2006,\ 3991–3999.}}
+\DoxyCodeLine{00040\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{struct\ }PointAnalyser\ :\ \textcolor{keyword}{public}\ APointAnalyser\ \{}
+\DoxyCodeLine{00042\ \ \ \mbox{\hyperlink{structolx__perishable__ptr}{olx\_perishable\_ptr<TXAtom>}}\ \ center;}
+\DoxyCodeLine{00043\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<uint32\_t>}}\ colors;}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{bool}\ emboss,\ dry\_run,\ clone;}
+\DoxyCodeLine{00045\ \ \ uint8\_t\ alpha;}
+\DoxyCodeLine{00046\ \ \ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ \&cs;}
+\DoxyCodeLine{00047\ \ \ ElementRadii\ radii;}
+\DoxyCodeLine{00048\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00049\ \ \ PointAnalyser(\textcolor{keyword}{const}\ PointAnalyser\ \&pa)}
+\DoxyCodeLine{00050\ \ \ \ \ :\ center(pa.center),\ colors(pa.colors),}
+\DoxyCodeLine{00051\ \ \ \ \ emboss(pa.emboss),\ dry\_run(pa.dry\_run),\ clone(\textcolor{keyword}{true}),\ alpha(pa.alpha),}
+\DoxyCodeLine{00052\ \ \ \ \ cs(pa.cs),\ areas(pa.areas)}
+\DoxyCodeLine{00053\ \ \ \{\}}
+\DoxyCodeLine{00054\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00055\ \ \ PointAnalyser(\mbox{\hyperlink{classTXAtom}{TXAtom}}\ \&c);}
+\DoxyCodeLine{00056\ \ \ \string~PointAnalyser()\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{if}\ (!clone)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \&areas;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \&cs;}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{void}\ SetDryRun(\textcolor{keywordtype}{bool}\ v)\ \{\ dry\_run\ =\ v;\ \}}
+\DoxyCodeLine{00063\ \ \ uint32\_t\ Analyse(vec3f\ \&p\_);}
+\DoxyCodeLine{00064\ \ \ olxstr\ GetIdString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{return}\ IdString();}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ GetReady();}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ center.ok();\ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{static}\ olxstr\ IdString()\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ name\ =\ \textcolor{stringliteral}{"{}SolidAngles"{}};}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}\ name;}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Register()\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ APointAnalyser::Registry().Add(IdString(),}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \&PointAnalyser::Load);}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ ToDataItem\_(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00078\ \ \ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ PointAnalyser(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{static}\ APointAnalyser\ *Load(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di);}
+\DoxyCodeLine{00082\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<size\_t,\ false>}}\ \&areas;}
+\DoxyCodeLine{00083\ \};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ EndGxlNamespace()}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,101 @@
+\doxysection{list\+\_\+joiner.\+h}
+\hypertarget{list__joiner_8h_source}{}\label{list__joiner_8h_source}\index{sdl/list\_joiner.h@{sdl/list\_joiner.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ BeginEsdlNamespace()}
+\DoxyCodeLine{00013\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ For\ a\ list\ of\ lists\ finds\ overlapping\ lists\ (considering\ the\ individual\ list}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ content\ to\ be\ unique)\ and\ joins\ them.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00017\ struct\ ListJoiner\ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ list\_add(\mbox{\hyperlink{classTTypeList}{TTypeList<item\_t>}}\&\ a,\ \textcolor{keyword}{const}\ item\_t\&\ i)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ a.AddCopy(i);}
+\DoxyCodeLine{00021\ \ \ \}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ list\_add(\mbox{\hyperlink{classTPtrList}{TPtrList<item\_t>}}\&\ a,\ item\_t*\ i)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ a.Add(i);}
+\DoxyCodeLine{00025\ \ \ \}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ merge\_lists(list\_t\&\ a,\ \textcolor{keyword}{const}\ list\_t\&\ b)\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ a\_sz\ =\ a.Count();}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ b.Count();\ i++)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ uniq\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ a\_sz;\ j++)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (b[i]\ ==\ a[j])\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ uniq\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (uniq)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ list\_add(a,\ b[i]);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t,\ \textcolor{keyword}{class}\ in\_list\_t>}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TTypeList<item\_t>}}\ >::const\_list\_type}
+\DoxyCodeLine{00046\ \ \ \ \ Join(\textcolor{keyword}{const}\ in\_list\_t\&\ lists,\ \textcolor{keywordtype}{size\_t}\ min\_sz,\ \textcolor{keyword}{const}\ item\_t\&\ dummy)}
+\DoxyCodeLine{00047\ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<item\_t>}}\ list\_t;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<list\_t>}}\ list\_ptr\_t;}
+\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{classolxdict}{olxdict<item\_t,\ olx\_object\_ptr<list\_t>}},\ \mbox{\hyperlink{classTComparableComparator}{TComparableComparator}}>\ dest;}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ lists.Count();\ i++)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ in\_list\_t::list\_item\_type\&\ pl\ =\ lists[i];}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ list\_ptr\_t\ d;}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ pl.Count();\ j++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx\ =\ dest.IndexOf(pl[j]);}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!d.ok())\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ d\ =\ dest.GetValue(idx);}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (d\ !=\ dest.GetValue(idx))\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ merge\_lists(*d,\ *dest.GetValue(idx));}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ list\_ptr\_t\ d\_\ =\ dest.GetValue(idx);}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ dest.Count();\ k++)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dest.GetValue(k)\ ==\ d\_)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dest.GetValue(k)\ =\ d;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!d.ok())\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ d\ =\ \textcolor{keyword}{new}\ list\_t();}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ list\_t\&\ dl\ =\ *d;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ pl.Count();\ j++)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dest.HasKey(pl[j]))\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ dl.AddCopy(pl[j]);}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ dest.Add(pl[j],\ d);}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<list\_t>}}\ res;}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ dest.Count();\ i++)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!dest.GetValue(i).ok()\ ||\ dest.GetValue(i)-\/>Count()\ <\ min\_sz)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ res.Add(dest.GetValue(i).release());}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ EndEsdlNamespace()}
+\DoxyCodeLine{00095\ }
+
+\end{DoxyCode}

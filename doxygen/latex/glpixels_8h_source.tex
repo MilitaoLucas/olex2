@@ -1,0 +1,59 @@
+\doxysection{glpixels.\+h}
+\hypertarget{glpixels_8h_source}{}\label{glpixels_8h_source}\index{glib/glpixels.h@{glib/glpixels.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_pixels\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_pixels\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glmousehandler.h"{}}}
+\DoxyCodeLine{00014\ BeginGlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ class\ TGlPixels\ :\ public\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{int}\ Width,\ Height;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{int}\ Top,\ Left;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{double}\ Z;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *Data;}
+\DoxyCodeLine{00021\ \ \ GLint\ DataFormat;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{void}\ Init(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *data,\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keywordtype}{int}\ h);}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ TGlPixels(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName,}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{int}\ left,\ \textcolor{keywordtype}{int}\ top,\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ data,\ GLenum\ format);}
+\DoxyCodeLine{00027\ \ \ \string~TGlPixels()\ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordflow}{if}(\ Data\ !=\ NULL\ )}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ []\ Data;}
+\DoxyCodeLine{00030\ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ SetData(\textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ data,\ GLenum\ format);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName=EmptyString());}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{void}\ SetZ(\textcolor{keywordtype}{double}\ z);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{double}\ GetZ()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Z;\ \ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ SetWidth(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ w);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ GetWidth()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Width;\ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ SetHeight(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ w);}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ GetHeight()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Height;\ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ SetLeft(\textcolor{keywordtype}{int}\ w);}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{int}\ GetLeft()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Left;\ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ SetTop(\textcolor{keywordtype}{int}\ w);}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{int}\ GetTop()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Top;\ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&\ Max,\ vec3d\&\ Min)\ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ EndGlNamespace()}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

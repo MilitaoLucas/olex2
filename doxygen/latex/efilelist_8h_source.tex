@@ -1,0 +1,102 @@
+\doxysection{efilelist.\+h}
+\hypertarget{efilelist_8h_source}{}\label{efilelist_8h_source}\index{sdl/efilelist.h@{sdl/efilelist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_efilelist\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_efilelist\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}etime.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginEsdlNamespace()}
+\DoxyCodeLine{00018\ \ \ class\ TFileListItem\ \ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ Attributes;}
+\DoxyCodeLine{00021\ \ \ \ \ uint64\_t\ CreationTime,\ ModificationTime,\ LastAccessTime;}
+\DoxyCodeLine{00022\ \ \ \ \ uint64\_t\ Size;}
+\DoxyCodeLine{00023\ \ \ \ \ olxstr\ Name;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ TFileListItem()\ \ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ Size\ =\ 0;}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ CreationTime\ =\ ModificationTime\ =\ LastAccessTime\ =\ 0;}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ Attributes\ =\ 0;}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ TFileListItem(\ \textcolor{keyword}{const}\ TFileListItem\&\ item)\ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ Name\ =\ item.Name;}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ Size\ =\ item.Size;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ Attributes\ =\ item.Attributes;}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ CreationTime\ =\ item.CreationTime;}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ ModificationTime\ =\ item.ModificationTime;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ LastAccessTime\ =\ item.LastAccessTime;}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ DefPropP(uint64\_t,\ CreationTime)}
+\DoxyCodeLine{00039\ \ \ \ \ DefPropP(uint64\_t,\ ModificationTime)}
+\DoxyCodeLine{00040\ \ \ \ \ DefPropP(uint64\_t,\ LastAccessTime)}
+\DoxyCodeLine{00041\ \ \ \ \ DefPropP(uint64\_t,\ Size)}
+\DoxyCodeLine{00042\ \ \ \ \ DefPropP(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short},\ Attributes)}
+\DoxyCodeLine{00043\ \ \ \ \ DefPropC(olxstr,\ Name)}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{short}\ field>\ \textcolor{keyword}{class\ }TFileListItemSorter\ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ ExtractFileExt(\textcolor{keyword}{const}\ olxstr\&\ fn)\ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ fn.LastIndexOf(\textcolor{charliteral}{'.'});}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (ind\ !=\ InvalidIndex)\ ?\ \ fn.SubStringFrom(ind+1)\ :\ EmptyString();}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_a\_t,\ \textcolor{keyword}{class}\ item\_b\_t>}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&i1\_,\ \textcolor{keyword}{const}\ item\_b\_t\ \&i2\_)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ TFileListItem\ \&i1\ =\ olx\_ref::get(i1\_),}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \&i2\ =\ olx\_ref::get(i2\_);}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ field\ ==\ 0\ )}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i1.GetName().Compare(i2.GetName());}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ field\ ==\ 1\ )\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ExtractFileExt(i1.GetName()).Compare(}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ ExtractFileExt(i2.GetName()));}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ field\ ==\ 2\ )}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(i1.GetCreationTime(),\ i2.GetCreationTime());}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ field\ ==\ 3\ )}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(i1.GetModificationTime(),\ i2.GetModificationTime());}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ field\ ==\ 4\ )}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(i1.GetLastAccessTime(),\ i2.GetLastAccessTime());}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ field\ ==\ 5\ )}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(i1.GetSize(),\ i2.GetSize());}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortListByName(\mbox{\hyperlink{classTTypeList}{TTypeList<TFileListItem>}}\&\ list)\ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ QuickSorter::Sort(list,\ TFileListItemSorter<0>());}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortListByExt(\mbox{\hyperlink{classTTypeList}{TTypeList<TFileListItem>}}\&\ list)\ \ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ QuickSorter::Sort(list,\ TFileListItemSorter<1>());}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortListByAge(\mbox{\hyperlink{classTTypeList}{TTypeList<TFileListItem>}}\&\ list)\ \ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ QuickSorter::Sort(list,\ TFileListItemSorter<2>());}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortListByModificationTime(\mbox{\hyperlink{classTTypeList}{TTypeList<TFileListItem>}}\&\ list)\ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ QuickSorter::Sort(list,\ TFileListItemSorter<3>());}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortListByLastAccessTime(\mbox{\hyperlink{classTTypeList}{TTypeList<TFileListItem>}}\&\ list)\ \ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ QuickSorter::Sort(list,\ TFileListItemSorter<4>());}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortListBySize(\mbox{\hyperlink{classTTypeList}{TTypeList<TFileListItem>}}\&\ list)\ \ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ QuickSorter::Sort(list,\ TFileListItemSorter<5>());}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \};}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TFileListItem>}}\ TFileList;}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ EndEsdlNamespace()}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

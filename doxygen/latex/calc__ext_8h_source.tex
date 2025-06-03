@@ -1,0 +1,159 @@
+\doxysection{calc\+\_\+ext.\+h}
+\hypertarget{calc__ext_8h_source}{}\label{calc__ext_8h_source}\index{xlib/calc\_ext.h@{xlib/calc\_ext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2014\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_calc\_ext\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_calc\_ext\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}evalue.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}catom.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}cifdp.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}vcov.h"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ BeginXlibNamespace()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ class\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ const\ uint16\_t}
+\DoxyCodeLine{00023\ \ \ cv\_ot\_centroid\ =\ 1,}
+\DoxyCodeLine{00024\ \ \ cv\_ot\_line\ =\ 2,}
+\DoxyCodeLine{00025\ \ \ cv\_ot\_plane\ =\ 3,}
+\DoxyCodeLine{00026\ \ \ cv\_vt\_distance\ =\ 1,}
+\DoxyCodeLine{00027\ \ \ cv\_vt\_angle\ =\ 2,}
+\DoxyCodeLine{00028\ \ \ cv\_vt\_shift\ =\ 3;}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ class\ CalculatedVars\ \{}
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{struct\ }Object\ :\ \textcolor{keyword}{public}\ AReferencible\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ olxstr\ name;}
+\DoxyCodeLine{00034\ \ \ \ \ TCAtomGroup\ atoms;}
+\DoxyCodeLine{00035\ \ \ \ \ uint16\_t\ type;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//\ initialised\ when\ saving}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{size\_t}\ group\_id,\ obj\_id;}
+\DoxyCodeLine{00038\ \ \ \ \ Object(uint16\_t\ type)}
+\DoxyCodeLine{00039\ \ \ \ \ :\ type(type),\ group\_id(InvalidIndex),\ obj\_id(InvalidIndex)}
+\DoxyCodeLine{00040\ \ \ \ \ \{\}}
+\DoxyCodeLine{00041\ \ \ \ \ Object(\textcolor{keyword}{const}\ Object\ \&o,\ CalculatedVars\ \&parent);}
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<class\ TSAtom>}}\ GetAtoms()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&i,\ \textcolor{keywordtype}{bool}\ use\_id)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FromDataItem\_(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&i,}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ CalculatedVars\ \&parent,\ \textcolor{keywordtype}{bool}\ use\_id);}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<Object>}}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&i,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ CalculatedVars\ \&parent,\ \textcolor{keywordtype}{bool}\ use\_id);}
+\DoxyCodeLine{00048\ \ \ \ \ olxstr\ GetTypeName()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ \ \ \ \ olxstr\ GetQualifiedName()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ GetTypeName()\ <<\ \textcolor{charliteral}{'.'}\ <<\ name;}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsValid()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{bool}\ SameAtoms(\textcolor{keyword}{const}\ Object\&\ o,\ \textcolor{keywordtype}{bool}\ order\_matters)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{static}\ Object\ *create(\textcolor{keyword}{class}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&a,\ CalculatedVars\ \&parent);}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{static}\ Object\ *create(\textcolor{keyword}{class}\ \mbox{\hyperlink{classTSBond}{TSBond}}\ \&b,\ CalculatedVars\ \&parent);}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{static}\ Object\ *create(\textcolor{keyword}{class}\ \mbox{\hyperlink{classTSPlane}{TSPlane}}\ \&p,\ CalculatedVars\ \&parent);}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{static}\ Object*\ Clone(Object\&\ a,\ CalculatedVars\&\ parent);}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{static}\ uint16\_t\ DecodeType(\textcolor{keyword}{const}\ olxstr\&\ v);}
+\DoxyCodeLine{00062\ \ \ \};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{struct\ }Plane\ :\ \textcolor{keyword}{public}\ Object\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ vec3d\ normal;}
+\DoxyCodeLine{00066\ \ \ \ \ Plane()\ :\ Object(cv\_ot\_plane)\ \{\}}
+\DoxyCodeLine{00067\ \ \ \ \ Plane(\textcolor{keyword}{const}\ Plane\ \&o,\ CalculatedVars\ \&parent)}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ :\ Object(o,\ parent),\ normal(o.normal)}
+\DoxyCodeLine{00069\ \ \ \ \ \{\}}
+\DoxyCodeLine{00070\ \ \ \ \ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&i,\ \textcolor{keywordtype}{bool}\ use\_id)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ FromDataItem\_(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&i,\ CalculatedVars\ \&parent,\ \textcolor{keywordtype}{bool}\ use\_id);}
+\DoxyCodeLine{00072\ \ \ \};}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{struct\ }ObjectRef\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \mbox{\hyperlink{structCalculatedVars_1_1Object}{Object}}\ \&object;}
+\DoxyCodeLine{00076\ \ \ \ \ olxstr\ prop;\ \textcolor{comment}{//\ referred\ property,\ like\ c\ or\ n\ for\ plane}}
+\DoxyCodeLine{00077\ \ \ \ \ ObjectRef(\textcolor{keyword}{const}\ ObjectRef\ \&o)\ :\ object(o.object),\ prop(o.prop)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordtype}{object}.IncRef();}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ ObjectRef(\mbox{\hyperlink{structCalculatedVars_1_1Object}{Object}}\ \&o)\ :\ object(o)\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ o.IncRef();}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ ObjectRef(\mbox{\hyperlink{structCalculatedVars_1_1Object}{Object}}\ \&o,\ \textcolor{keyword}{const}\ olxstr\ \&p)\ :\ object(o),\ prop(p)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ o.IncRef();}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \string~ObjectRef()\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordtype}{object}.DecRef();}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ olxstr\ GetQualifiedName()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ olxstr\ rv\ =\ \textcolor{keywordtype}{object}.GetQualifiedName();}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ prop.IsEmpty()\ ?\ rv\ :\ (rv\ <<\ \textcolor{charliteral}{'.'}\ <<\ prop);}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ olxstr\ GetName()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00094\ \ \ \};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{struct\ }Var\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ olxstr\ name;}
+\DoxyCodeLine{00098\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<ObjectRef>}}\ refs;}
+\DoxyCodeLine{00099\ \ \ \ \ uint16\_t\ type;}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{comment}{//\ transient\ field}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{mutable}\ TEValueD\ value;}
+\DoxyCodeLine{00102\ \ \ \ \ Var(uint16\_t\ type,\ \textcolor{keyword}{const}\ olxstr\ \&n)}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ :\ type(type),\ name(n)}
+\DoxyCodeLine{00104\ \ \ \ \ \{\}}
+\DoxyCodeLine{00105\ \ \ \ \ Var\ \&AddRef(\mbox{\hyperlink{structCalculatedVars_1_1Object}{Object}}\&\ o,\ \textcolor{keyword}{const}\ olxstr\ \&prop=EmptyString())\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ refs.Add(\textcolor{keyword}{new}\ \mbox{\hyperlink{structCalculatedVars_1_1ObjectRef}{ObjectRef}}(o,\ prop));}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ TEValueD\ Calculate(\textcolor{keyword}{class}\ \mbox{\hyperlink{classVcoVContainer}{VcoVContainer}}\ \&vcov)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&i)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ refs.Count();\ i++)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!refs[i].\textcolor{keywordtype}{object}.IsValid())\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ olxstr\ GetName()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{static}\ Var\ *Clone(\textcolor{keyword}{const}\ Var\ \&v,\ CalculatedVars\ \&parent);}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<olxstr,\ olxstr>}}\ parseObject(\textcolor{keyword}{const}\ olxstr\ \&on);}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{static}\ Var\ *FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&i,\ CalculatedVars\ \&parent);}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{bool}\ ToCIF(\mbox{\hyperlink{classolx__pdict}{olx\_pdict<uint16\_t,\ cif\_dp::cetTable*>}}\ out)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{static}\ uint16\_t\ DecodeType(\textcolor{keyword}{const}\ olxstr\&\ v);}
+\DoxyCodeLine{00126\ \ \ \};}
+\DoxyCodeLine{00127\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00128\ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\ \&rm;}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<Object\ *>}}\ objects;}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<Var\ *>}}\ vars;}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<uint64\_t,\ smatd*>}}\ eqivs;}
+\DoxyCodeLine{00132\ \ \ smatd\ *\ GetEqiv(\textcolor{keywordtype}{size\_t}\ idx)\ \{\ \textcolor{keywordflow}{return}\ eqivs.GetValue(idx);\ \}}
+\DoxyCodeLine{00133\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00134\ \ \ \mbox{\hyperlink{classCalculatedVars}{CalculatedVars}}(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\ \&);}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classCalculatedVars}{\string~CalculatedVars}}()\ \{\ Clear();\ \}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ \mbox{\hyperlink{classCalculatedVars}{CalculatedVars}}\ \&cv);}
+\DoxyCodeLine{00139\ \ \ smatd\ *\ GetEqiv(\textcolor{keyword}{const}\ smatd\ \&m);}
+\DoxyCodeLine{00140\ \ \ Object\ \&AddObject(Object\ *o);}
+\DoxyCodeLine{00141\ \ \ Var\ \&AddVar(Var\ *v);}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//\ validates\ the\ object\ and\ returns\ true\ if\ it\ is\ not\ empty}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordtype}{bool}\ Validate()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&i,\ \textcolor{keywordtype}{bool}\ use\_id)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&i,\ \textcolor{keywordtype}{bool}\ use\_id);}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \textcolor{keywordtype}{void}\ CalcAll(\mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<VcoVContainer>}}\ vcovc=0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00149\ \ \ TTypeList<cif\_dp::cetTable>::const\_list\_type\ ToCIF(\textcolor{keyword}{const}\ \textcolor{keyword}{class}\ TCif\ \&cif)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00150\ \};}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ EndXlibNamespace()}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,271 @@
+\doxysection{olxalg.\+h}
+\hypertarget{olxalg_8h_source}{}\label{olxalg_8h_source}\index{sdl/olxalg.h@{sdl/olxalg.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_alg\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_alg\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}eaccessor.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__alg}{olx\_alg}}\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00016\ \ \ \textcolor{comment}{//\ logical\ NOT\ operator\ for\ an\ analyser}}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Analyser>\ \textcolor{keyword}{struct\ }not\_\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{const}\ Analyser\&\ analyser;}
+\DoxyCodeLine{00019\ \ \ \ \ not\_(\textcolor{keyword}{const}\ Analyser\&\ \_analyser)}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ :\ analyser(\_analyser)}
+\DoxyCodeLine{00021\ \ \ \ \ \{\}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>\ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !analyser.OnItem(o);}
+\DoxyCodeLine{00024\ \ \ \ \ \}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>\ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o,\ \textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !analyser.OnItem(o,\ i);}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \};}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//\ logical\ AND\ operator\ for\ two\ analysers}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AnalyserA,\ \textcolor{keyword}{class}\ AnalyserB>\ \textcolor{keyword}{struct\ }and\_\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{const}\ AnalyserA\&\ analyserA;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{const}\ AnalyserB\&\ analyserB;}
+\DoxyCodeLine{00033\ \ \ \ \ and\_(\textcolor{keyword}{const}\ AnalyserA\&\ \_analyserA,\ \textcolor{keyword}{const}\ AnalyserB\&\ \_analyserB)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ :\ analyserA(\_analyserA),\ analyserB(\_analyserB)}
+\DoxyCodeLine{00035\ \ \ \ \ \{\}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>\ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ analyserA.OnItem(o)\ \&\&\ analyserB.OnItem(o);}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>\ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o,\ \textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ analyserA.OnItem(o,\ i)\ \&\&\ analyserB.OnItem(o,\ i);}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \};}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//\ logical\ OR\ operator\ for\ two\ analysers}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AnalyserA,\ \textcolor{keyword}{class}\ AnalyserB>\ \textcolor{keyword}{struct\ }or\_\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{const}\ AnalyserA\&\ analyserA;}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{const}\ AnalyserB\&\ analyserB;}
+\DoxyCodeLine{00047\ \ \ \ \ or\_(\textcolor{keyword}{const}\ AnalyserA\&\ \_analyserA,\ \textcolor{keyword}{const}\ AnalyserB\&\ \_analyserB)}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ :\ analyserA(\_analyserA),\ analyserB(\_analyserB)}
+\DoxyCodeLine{00049\ \ \ \ \ \{\}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>\ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ analyserA.OnItem(o)\ ||\ analyserB.OnItem(o);}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>\ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o,\ \textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ analyserA.OnItem(o,\ i)\ ||\ analyserB.OnItem(o,\ i);}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }chsig\_\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00060\ \ \ \ \ chsig\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_)\ :\ accessor(accessor\_)\ \{\}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{typename}\ Accessor::return\_type\ OnItem(\textcolor{keyword}{const}\ Item\&\ o)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/accessor(o);}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{typename}\ Accessor::return\_type\ OnItem(\textcolor{keyword}{const}\ Item\&\ o,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/accessor(o);}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{typename}\ Accessor::return\_type\ operator\ ()\ (\textcolor{keyword}{const}\ Item\&\ o)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/accessor(o);}
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__alg_1_1op__eq}{op\_eq}}\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_to,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ op(\textcolor{keyword}{const}\ item\_to\ \&to,\ \textcolor{keyword}{const}\ item\_t\ \&t)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ t\ ==\ to;}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \};}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__alg_1_1op__neq}{op\_neq}}\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_to,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ op(\textcolor{keyword}{const}\ item\_to\ \&to,\ \textcolor{keyword}{const}\ item\_t\ \&t)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ t\ !=\ to;}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \};}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__alg_1_1op__lt}{op\_lt}}\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_to,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ op(\textcolor{keyword}{const}\ item\_to\ \&to,\ \textcolor{keyword}{const}\ item\_t\ \&t)\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ t\ <\ to;}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \};}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__alg_1_1op__le}{op\_le}}\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_to,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ op(\textcolor{keyword}{const}\ item\_to\ \&to,\ \textcolor{keyword}{const}\ item\_t\ \&t)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ t\ <=\ to;}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \};}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__alg_1_1op__gt}{op\_gt}}\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_to,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ op(\textcolor{keyword}{const}\ item\_to\ \&to,\ \textcolor{keyword}{const}\ item\_t\ \&t)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ t\ >\ to;}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \};}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__alg_1_1op__ge}{op\_ge}}\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_to,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ op(\textcolor{keyword}{const}\ item\_to\ \&to,\ \textcolor{keyword}{const}\ item\_t\ \&t)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ t\ >=\ to;}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t,\ \textcolor{keyword}{class}\ Accessor,\ \textcolor{keyword}{class}\ op\_t>\ \textcolor{keyword}{struct\ }op\_\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ to\_t\ to;}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00115\ \ \ \ \ op\_(\textcolor{keyword}{const}\ to\_t\ \&t,\ \textcolor{keyword}{const}\ Accessor\ \&accessor\_)\ :\ to(t),\ accessor(accessor\_)}
+\DoxyCodeLine{00116\ \ \ \ \ \{\}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>\ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ op\_t::op(to,\ accessor(o));}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>\ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ op\_t::op(to,\ accessor(o));}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \};}
+\DoxyCodeLine{00124\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00125\ \ \ \textcolor{comment}{/*\ creates\ a\ new\ not\ logical\ operator\ */}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Analyser>}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1not__}{not\_<Analyser>}}\ olx\_not(\textcolor{keyword}{const}\ Analyser\&\ a)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1not__}{not\_<Analyser>}}(a);}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{comment}{/*\ creates\ a\ new\ and\ logical\ operator\ */}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AnalyserA,\ \textcolor{keyword}{class}\ AnalyserB>}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{static}\ and\_<AnalyserA,\ AnalyserB>\ olx\_and(}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{const}\ AnalyserA\&\ a,\ \textcolor{keyword}{const}\ AnalyserB\&\ b)}
+\DoxyCodeLine{00134\ \ \ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{return}\ and\_<AnalyserA,\ AnalyserB>(a,\ b);}
+\DoxyCodeLine{00136\ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \textcolor{comment}{/*\ creates\ a\ new\ or\ logical\ operator\ */}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AnalyserA,\ \textcolor{keyword}{class}\ AnalyserB>}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1or__}{or\_<AnalyserA,\ AnalyserB>}}\ olx\_or(}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keyword}{const}\ AnalyserA\&\ a,\ \textcolor{keyword}{const}\ AnalyserB\&\ b)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1or__}{or\_<AnalyserA,\ AnalyserB>}}(a,\ b);}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{/*\ creates\ a\ new\ chsig\ arithmetic\ functor/accessor\ */}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1chsig__}{chsig\_<Accessor>}}\ olx\_chsig(\textcolor{keyword}{const}\ Accessor\&\ a)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1chsig__}{chsig\_<Accessor>}}(a);}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{comment}{/*\ creates\ a\ new\ equality\ checker\ */}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t>}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_eq>}}\ olx\_eq(\textcolor{keyword}{const}\ to\_t\ \&to)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_eq>}}(to,\ DummyAccessor());}
+\DoxyCodeLine{00152\ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_eq>}}\ olx\_eq(\textcolor{keyword}{const}\ to\_t\ \&to,\ \textcolor{keyword}{const}\ Accessor\&\ a)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_eq>}}(to,\ a);}
+\DoxyCodeLine{00156\ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{/*\ creates\ a\ new\ non-\/equality\ checker\ */}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t>}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_neq>}}\ olx\_neq(\textcolor{keyword}{const}\ to\_t\ \&to)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_neq>}}(to,\ DummyAccessor());}
+\DoxyCodeLine{00161\ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_neq>}}\ olx\_neq(\textcolor{keyword}{const}\ to\_t\ \&to,\ \textcolor{keyword}{const}\ Accessor\&\ a)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_neq>}}(to,\ a);}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{comment}{/*\ creates\ a\ LT\ checker\ */}}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t>}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_lt>}}\ olx\_lt(\textcolor{keyword}{const}\ to\_t\ \&to)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_lt>}}(to,\ DummyAccessor());}
+\DoxyCodeLine{00170\ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_lt>}}\ olx\_lt(\textcolor{keyword}{const}\ to\_t\ \&to,\ \textcolor{keyword}{const}\ Accessor\&\ a)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_lt>}}(to,\ a);}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{/*\ creates\ a\ LE\ checker\ */}}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t>}
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_le>}}\ olx\_le(\textcolor{keyword}{const}\ to\_t\ \&to)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_le>}}(to,\ DummyAccessor());}
+\DoxyCodeLine{00179\ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_le>}}\ olx\_le(\textcolor{keyword}{const}\ to\_t\ \&to,\ \textcolor{keyword}{const}\ Accessor\&\ a)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_le>}}(to,\ a);}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{comment}{/*\ creates\ a\ GT\ checker\ */}}
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t>}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_gt>}}\ olx\_gt(\textcolor{keyword}{const}\ to\_t\ \&to)\ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_gt>}}(to,\ DummyAccessor());}
+\DoxyCodeLine{00188\ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_gt>}}\ olx\_gt(\textcolor{keyword}{const}\ to\_t\ \&to,\ \textcolor{keyword}{const}\ Accessor\&\ a)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_gt>}}(to,\ a);}
+\DoxyCodeLine{00192\ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \textcolor{comment}{/*\ creates\ a\ GE\ checker\ */}}
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t>}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_ge>}}\ olx\_ge(\textcolor{keyword}{const}\ to\_t\ \&to)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ DummyAccessor,\ op\_ge>}}(to,\ DummyAccessor());}
+\DoxyCodeLine{00197\ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ to\_t,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_ge>}}\ olx\_ge(\textcolor{keyword}{const}\ to\_t\ \&to,\ \textcolor{keyword}{const}\ Accessor\&\ a)\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__alg_1_1op__}{op\_<to\_t,\ Accessor,\ op\_ge>}}(to,\ a);}
+\DoxyCodeLine{00201\ \ \ \}}
+\DoxyCodeLine{00202\ \};}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \textcolor{comment}{//\ can\ turn\ a\ bool\ function\ into\ an\ anlyaser\ for\ filtering/packing}}
+\DoxyCodeLine{00205\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFunctionAccessorAnalyser}{FunctionAccessorAnalyser}}\ \{}
+\DoxyCodeLine{00206\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc\_t>}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{struct\ }AccessorAnalyser\_\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keyword}{const}\ acc\_t\&\ acc;}
+\DoxyCodeLine{00209\ \ \ \ \ AccessorAnalyser\_(\textcolor{keyword}{const}\ acc\_t\&\ acc)\ :\ acc(acc)\ \{\}}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ item\_t\&\ item,\ \textcolor{keywordtype}{size\_t}\ idx\ =\ InvalidIndex)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ acc(item);}
+\DoxyCodeLine{00213\ \ \ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \};}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc\_t>}
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structFunctionAccessorAnalyser_1_1AccessorAnalyser__}{AccessorAnalyser\_<acc\_t>}}\ Make(\textcolor{keyword}{const}\ acc\_t\&\ acc)\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionAccessorAnalyser_1_1AccessorAnalyser__}{AccessorAnalyser\_<acc\_t>}}(acc);}
+\DoxyCodeLine{00219\ \ \ \}}
+\DoxyCodeLine{00220\ \};}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \textcolor{comment}{/*\ swaps\ two\ objects\ using\ a\ temporary\ variable\ (copy\ constructor\ must\ be}}
+\DoxyCodeLine{00224\ \textcolor{comment}{available\ for\ complex\ types)\ */}}
+\DoxyCodeLine{00225\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ obj>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ olx\_swap(obj\&\ o1,\ obj\&\ o2)\ \{}
+\DoxyCodeLine{00226\ \ \ obj\ tmp\ =\ o1;}
+\DoxyCodeLine{00227\ \ \ o1\ =\ o2;}
+\DoxyCodeLine{00228\ \ \ o2\ =\ tmp;}
+\DoxyCodeLine{00229\ \}}
+\DoxyCodeLine{00230\ \textcolor{comment}{//\ returns\ 10\string^val,\ cannot\ put\ it\ to\ emath\ due\ to\ dependencies...}}
+\DoxyCodeLine{00231\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ FT\ olx\_pow10(\textcolor{keywordtype}{size\_t}\ val)\ \ \{}
+\DoxyCodeLine{00232\ \ \ \textcolor{keywordflow}{if}\ (val\ ==\ 0)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00234\ \ \ \}}
+\DoxyCodeLine{00235\ \ \ FT\ rv\ =\ 10;}
+\DoxyCodeLine{00236\ \ \ \textcolor{keywordflow}{while}\ (-\/-\/val\ >\ 0)\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ rv\ *=\ 10;}
+\DoxyCodeLine{00238\ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00240\ \}}
+\DoxyCodeLine{00241\ \textcolor{comment}{/*\ comparison\ function\ (useful\ for\ the\ size\_t\ on\ Win64,\ where\ size\_t=uint64\_t}}
+\DoxyCodeLine{00242\ \textcolor{comment}{*\ \ and\ int\ is\ int32\_t)\ */}}
+\DoxyCodeLine{00243\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T1,\ \textcolor{keyword}{typename}\ T2>\ \textcolor{keyword}{inline}}
+\DoxyCodeLine{00244\ \textcolor{keywordtype}{int}\ olx\_cmp(T1\ a,\ T2\ b)\ \{\ \textcolor{keywordflow}{return}\ a\ <\ b\ ?\ -\/1\ :\ (a\ >\ b\ ?\ 1\ :\ 0);\ \}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ T1>\ \textcolor{keywordtype}{bool}\ olx\_is(\textcolor{keyword}{const}\ T1\ \&v)\ \{}
+\DoxyCodeLine{00247\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typeid}(T)\ ==\ \textcolor{keyword}{typeid}(olx\_ref::get(v));}
+\DoxyCodeLine{00248\ \};}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ from\_t,\ \textcolor{keyword}{typename}\ to\_t>}
+\DoxyCodeLine{00251\ \textcolor{keywordtype}{void}\ olx\_copy(\textcolor{keyword}{const}\ from\_t\ \&f,\ to\_t\ \&t,\ \textcolor{keywordtype}{size\_t}\ cnt,\ \textcolor{keywordtype}{size\_t}\ f\_off=0,\ \textcolor{keywordtype}{size\_t}\ t\_off=0)\ \{}
+\DoxyCodeLine{00252\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cnt;\ i++)\ \{}
+\DoxyCodeLine{00253\ \ \ \ \ t[t\_off+i]\ =\ f[f\_off+i];}
+\DoxyCodeLine{00254\ \ \ \}}
+\DoxyCodeLine{00255\ \}}
+\DoxyCodeLine{00256\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ from\_t,\ \textcolor{keyword}{typename}\ to\_t,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00257\ \textcolor{keywordtype}{void}\ olx\_copy(\textcolor{keyword}{const}\ from\_t\&\ f,\ to\_t\&\ t,\ \textcolor{keyword}{const}\ Accessor\ \&a,}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{size\_t}\ cnt,\ \textcolor{keywordtype}{size\_t}\ f\_off,\ \textcolor{keywordtype}{size\_t}\ t\_off)}
+\DoxyCodeLine{00259\ \{}
+\DoxyCodeLine{00260\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cnt;\ i++)\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ t[t\_off\ +\ i]\ =\ a(f[f\_off\ +\ i]);}
+\DoxyCodeLine{00262\ \ \ \}}
+\DoxyCodeLine{00263\ \}}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

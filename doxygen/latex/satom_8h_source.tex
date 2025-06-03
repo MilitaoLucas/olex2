@@ -1,0 +1,292 @@
+\doxysection{satom.\+h}
+\hypertarget{satom_8h_source}{}\label{satom_8h_source}\index{xlib/satom.h@{xlib/satom.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_satom\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_satom\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}catom.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}symmat.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}comparable\_operators.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ BeginXlibNamespace()}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ const\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00022\ \ \ satom\_Deleted\ \ \ \ =\ 0x0001,}
+\DoxyCodeLine{00023\ \ \ \textcolor{comment}{//satom\_Grown\ \ \ \ \ \ =\ 0x0002,\ -\/\ obsolete}}
+\DoxyCodeLine{00024\ \ \ satom\_Standalone\ =\ 0x0004,}
+\DoxyCodeLine{00025\ \ \ satom\_Masked\ \ \ \ \ =\ 0x0008,}
+\DoxyCodeLine{00026\ \ \ satom\_Processed\ \ =\ 0x0010;\ \ \textcolor{comment}{//\ generic\ bit}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ class\ TSAtom\ :\ public\ TBasicNode<class\ \mbox{\hyperlink{classTNetwork}{TNetwork}},\ TSAtom,\ class\ \mbox{\hyperlink{classTSBond}{TSBond}}>\ \{}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//\ the\ generator\ matrix,\ a\ reference\ borrowed\ from\ the\ Lattice}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{const}\ smatd\ *Matrix;}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ a\ list\ of\ pointers\ to\ matrices\ used\ for\ generation\ of\ atom}}
+\DoxyCodeLine{00032\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ FCAtom;\ \ \textcolor{comment}{//\ basic\ crystallographic\ information}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTEllipsoid}{TEllipsoid}}*\ FEllipsoid;\ \ \textcolor{comment}{//\ a\ pointer\ to\ TEllipsoid\ object}}
+\DoxyCodeLine{00034\ \ \ vec3d\ \ FCCenter;\ \ \textcolor{comment}{//\ atom\ center\ in\ fractional\ coordinates}}
+\DoxyCodeLine{00035\ \ \ vec3d\ \ FCenter;\ \ \textcolor{comment}{//\ atom\ center\ in\ cartesian\ coordinates}}
+\DoxyCodeLine{00036\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{short}\ Flags;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{int}\ \_SortNodesByDistanceAsc(\textcolor{keyword}{const}\ TSAtom\ \&a1,\ \textcolor{keyword}{const}\ TSAtom\ \&a2)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ FCenter.DistanceTo(a1.FCenter),\ FCenter.DistanceTo(a2.FCenter));}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{int}\ \_SortNodesByDistanceDsc(\textcolor{keyword}{const}\ TSAtom\ \&a1,\ \textcolor{keyword}{const}\ TSAtom\ \&a2)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ FCenter.DistanceTo(a2.FCenter),\ FCenter.DistanceTo(a1.FCenter));}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ \_SortBondsByLengthAsc(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSBond}{TSBond}}\ \&b1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSBond}{TSBond}}\ \&b2);}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ \_SortBondsByLengthDsc(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSBond}{TSBond}}\ \&b1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSBond}{TSBond}}\ \&b2);}
+\DoxyCodeLine{00048\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ \ \ TSAtom(\mbox{\hyperlink{classTNetwork}{TNetwork}}*\ N);}
+\DoxyCodeLine{00050\ \ \ TSAtom(\mbox{\hyperlink{classTNetwork}{TNetwork}}*\ N,\ \mbox{\hyperlink{structTCAtom_1_1Site}{TCAtom::Site}}\&\ site);}
+\DoxyCodeLine{00051\ \ \ TSAtom(\mbox{\hyperlink{classTNetwork}{TNetwork}}*\ N,\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classExplicitCAtomRef}{ExplicitCAtomRef}}\&\ aref);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ \string~TSAtom()\ \ \{\}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TSAtom\&\ S);}
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ Is/Set}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsDeleted()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \ (Flags\&satom\_Deleted)\ !=\ 0;\ \ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetDeleted(\textcolor{keywordtype}{bool}\ v)\ \ \{\ \ olx\_set\_bit(v,\ Flags,\ satom\_Deleted);\ \ \}}
+\DoxyCodeLine{00057\ \ \ DefPropBFIsSet(Standalone,\ Flags,\ satom\_Standalone)}
+\DoxyCodeLine{00058\ \ \ DefPropBFIsSet(Masked,\ Flags,\ satom\_Masked)}
+\DoxyCodeLine{00059\ \ \ DefPropBFIsSet(Processed,\ Flags,\ satom\_Processed)}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{bool}\ IsAvailable()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ (Flags\&(satom\_Deleted|satom\_Masked))\ ==\ 0\ \&\&\ !FCAtom-\/>IsDetached();}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{bool}\ IsGrown()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ NodeCount()\ ==\ CAtom().AttachedSiteCount();\ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CAtom()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *FCAtom;\ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ CAtom(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ GetType()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FCAtom-\/>GetType();\ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetLabel()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FCAtom-\/>GetLabel();\ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{/*\ returns\ a\ label\ plus\ (if\ not\ identity)\ first\ matrix\ like}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ label\_resi.2\_556}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00074\ \ \ olxstr\ GetGuiLabel()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{/*\ returns\ a\ label\ plus\ (if\ not\ identity)\ first\ matrix\ like}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ \ label\_resi(-\/2/3+X,Y,2-\/Z)}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00078\ \ \ olxstr\ GetGuiLabelEx()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{const}\ smatd\&\ GetMatrix()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#ifdef\ \_DEBUG}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{if}\ (Matrix\ ==\ 0)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}uninitialised\ object"{}});}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{return}\ *Matrix;}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//\ to\ be\ called\ by\ TLattice!}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{void}\ \_SetMatrix(\textcolor{keyword}{const}\ smatd\ \&M);}
+\DoxyCodeLine{00090\ \ \ \textcolor{comment}{//\ checks\ if\ the\ matrix\ is\ a\ generator\ for\ this\ atom\ site}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordtype}{bool}\ IsGenerator(\textcolor{keyword}{const}\ smatd\ \&m)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ IsGenerator(m.GetId());\ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordtype}{bool}\ IsGenerator(uint32\_t\ m\_id)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ weight\_unit(\textcolor{keyword}{const}\ TSAtom\ \&)\ \ \{\ \ \textcolor{keywordflow}{return}\ 1.0;\ \ \}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ weight\_occu(\textcolor{keyword}{const}\ TSAtom\ \&a)\ \ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{return}\ a.CAtom().GetChemOccu();}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ weight\_z(\textcolor{keyword}{const}\ TSAtom\ \&a)\ \ \{\ \ \textcolor{keywordflow}{return}\ a.GetType().z;\ \ \}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ weight\_occu\_z(\textcolor{keyword}{const}\ TSAtom\ \&a)\ \ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ a.CAtom().GetChemOccu()*a.GetType().z;}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ weight\_atom\_mass(\textcolor{keyword}{const}\ TSAtom\ \&a)\ \ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{return}\ a.GetType().GetMr()*a.CAtom().GetChemOccu();}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ weight\_element\_mass(\textcolor{keyword}{const}\ TSAtom\ \&a)\ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ a.GetType().GetMr();}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{comment}{/*\ returns\ true\ if\ the\ atom\ os\ generated\ by\ the\ identity\ transformation}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ \ i.e.\ -\/\ belong\ to\ the\ asymmetric\ unit\ */}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordtype}{bool}\ IsAUAtom()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GetMatrix().IsFirst();\ \ \}}
+\DoxyCodeLine{00110\ \ \ \textcolor{comment}{//\ beware\ that\ underlying\ objkect\ might\ be\ shared\ by\ several\ atoms!}}
+\DoxyCodeLine{00111\ \ \ \mbox{\hyperlink{classTEllipsoid}{TEllipsoid}}*\ GetEllipsoid()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FEllipsoid;\ \ \}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keywordtype}{void}\ SetEllipsoid(\mbox{\hyperlink{classTEllipsoid}{TEllipsoid}}*\ v)\ \{\ \ FEllipsoid\ =\ v;\ \ \}}
+\DoxyCodeLine{00113\ \ \ vec3d\&\ ccrd()\ \ \{\ \ \textcolor{keywordflow}{return}\ FCCenter;\ \ \}}
+\DoxyCodeLine{00114\ \ \ vec3d\&\ crd()\ \ \{\ \ \textcolor{keywordflow}{return}\ FCenter;\ \ \}}
+\DoxyCodeLine{00115\ \ \ vec3d\ \textcolor{keyword}{const}\&\ ccrd()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FCCenter;\ \ \}}
+\DoxyCodeLine{00116\ \ \ vec3d\ \textcolor{keyword}{const}\&\ crd()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FCenter;\ \ \}}
+\DoxyCodeLine{00117\ \ \ \textcolor{comment}{//\ pointers\ comparison!}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TSAtom\&\ a)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this}\ ==\ \&a;\ \ \}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLattice}{TLattice}}\ \&GetParent()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordtype}{void}\ SortNodesByDistanceAsc()\ \ \{}
+\DoxyCodeLine{00121\ \ \ \ \ QuickSorter::SortMF(Nodes,\ *\textcolor{keyword}{this},\ \&TSAtom::\_SortNodesByDistanceAsc);}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{void}\ SortNodesByDistanceDsc()\ \ \{}
+\DoxyCodeLine{00124\ \ \ \ \ QuickSorter::SortMF(Nodes,\ *\textcolor{keyword}{this},\ \&TSAtom::\_SortNodesByDistanceDsc);}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{void}\ SortBondsByLengthAsc()\ \ \{}
+\DoxyCodeLine{00127\ \ \ \ \ QuickSorter::SortSF(Bonds,\ \&TSAtom::\_SortBondsByLengthAsc);}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{void}\ SortBondsByLengthDsc()\ \ \{}
+\DoxyCodeLine{00130\ \ \ \ \ QuickSorter::SortSF(Bonds,\ \&TSAtom::\_SortBondsByLengthDsc);}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{comment}{/*\ removes\ specified\ node\ from\ the\ list\ of\ nodes\ (this\ node\ is\ also\ removed}}
+\DoxyCodeLine{00133\ \textcolor{comment}{\ \ from\ the\ list\ of\ the\ node\ nodes}}
+\DoxyCodeLine{00134\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keywordtype}{void}\ RemoveNode(TSAtom\&\ node);}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{struct\ }Ref\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classcomparable__operators}{comparable\_operators}}<Ref>\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ au\_id,\ atom\_id;}
+\DoxyCodeLine{00139\ \ \ \ \ uint32\_t\ matrix\_id;}
+\DoxyCodeLine{00140\ \ \ \ \ Ref()\ :\ au\_id(\string~0),\ atom\_id(\string~0),\ matrix\_id(\string~0)}
+\DoxyCodeLine{00141\ \ \ \ \ \{\}}
+\DoxyCodeLine{00142\ \ \ \ \ Ref(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a,\ uint32\_t\ m\_id);}
+\DoxyCodeLine{00143\ \ \ \ \ Ref(\textcolor{keyword}{const}\ Ref\&\ r)}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ :\ au\_id(r.au\_id),\ atom\_id(r.atom\_id),\ matrix\_id(r.matrix\_id)}
+\DoxyCodeLine{00145\ \ \ \ \ \{\}}
+\DoxyCodeLine{00146\ \ \ \ \ Ref(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ FromDataItem(item,\ app);}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ Ref\&\ operator\ =\ (\textcolor{keyword}{const}\ Ref\&\ r)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ au\_id\ =\ r.au\_id;}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ atom\_id\ =\ r.atom\_id;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ matrix\_id\ =\ r.matrix\_id;}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00154\ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ Ref\&\ r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (au\_id\ ==\ r.au\_id\ \&\&\ atom\_id\ ==\ r.atom\_id\ \&\&\ matrix\_id\ ==\ r.matrix\_id);}
+\DoxyCodeLine{00157\ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TSAtom\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ a.operator\ ==\ (*this);}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ GetCAtom(\textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00162\ \ \ \ \ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ GetLattice(\textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ Ref\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app,\ \textcolor{keywordtype}{bool}\ use\_id=\textcolor{keyword}{false})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{comment}{//\ checks\ if\ the\ atom's\ tag\ is\ valid}}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsValid(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTXApp}{TXApp}}\ \&app);}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordtype}{void}\ swap(Ref\&\ r)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ olx\_swap(au\_id,\ r.au\_id);}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ olx\_swap(atom\_id,\ r.atom\_id);}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ olx\_swap(matrix\_id,\ r.matrix\_id);}
+\DoxyCodeLine{00172\ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{comment}{//\ a\ string\ hash\ for\ the\ plane\ definition}}
+\DoxyCodeLine{00174\ \ \ \ \ TIString\ ToString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ olxstr\_buf\ rv;}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(rv\ <<\ au\_id\ <<\ atom\_id\ <<\ matrix\_id);}
+\DoxyCodeLine{00177\ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \};}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{structTSAtom_1_1Ref}{Ref}}\&\ \textcolor{keywordtype}{id})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00181\ \ \ \mbox{\hyperlink{structTSAtom_1_1Ref}{Ref}}\ GetRef()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00182\ \ \ \textcolor{comment}{//\ finds\ the\ matrix\ with\ smallest\ Id}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTSAtom_1_1Ref}{Ref}}\ GetRef(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a,\ \textcolor{keyword}{const}\ smatd\ \&generator);}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ parent);}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \textcolor{comment}{//\ sorts\ atoms\ according\ to\ the\ distcance\ from\ \{0,0,0\}}}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTSAtom_1_1SortByDistance}{SortByDistance}}\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_a\_t,\ \textcolor{keyword}{class}\ item\_b\_t>}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&A,\ \textcolor{keyword}{const}\ item\_b\_t\ \&A1)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(olx\_ref::get(A).crd().QLength(),}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ olx\_ref::get(A1).crd().QLength());}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \};}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }FlagsAnalyser\_\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ ref\_flags;}
+\DoxyCodeLine{00200\ \ \ \ \ FlagsAnalyser\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_,\ \textcolor{keywordtype}{short}\ \_ref\_flags)}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ :\ accessor(accessor\_),\ ref\_flags(\_ref\_flags)\ \ \{\}}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (olx\_ref::get(Accessor::Access(o)).Flags\&ref\_flags)\ !=\ 0;}
+\DoxyCodeLine{00205\ \ \ \ \ \}}
+\DoxyCodeLine{00206\ \ \ \};}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc\_t>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTSAtom_1_1FlagsAnalyser__}{FlagsAnalyser\_<acc\_t>}}}
+\DoxyCodeLine{00208\ \ \ FlagsAnalyser(\textcolor{keyword}{const}\ acc\_t\ \&acc,\ \textcolor{keywordtype}{short}\ flag)\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structTSAtom_1_1FlagsAnalyser__}{FlagsAnalyser\_<acc\_t>}}(acc,\ flag);}
+\DoxyCodeLine{00210\ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{static}\ FlagsAnalyser\_<DummyAccessor>}
+\DoxyCodeLine{00212\ \ \ FlagsAnalyser(\textcolor{keywordtype}{short}\ flags)\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keywordflow}{return}\ FlagsAnalyser\_<DummyAccessor>(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}(),\ flags);}
+\DoxyCodeLine{00214\ \ \ \}}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }FlagSetter\_\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ ref\_flags;}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keywordtype}{bool}\ set;}
+\DoxyCodeLine{00220\ \ \ \ \ FlagSetter\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_,\ \textcolor{keywordtype}{short}\ ref\_flags\_,\ \textcolor{keywordtype}{bool}\ set\_)}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ :\ accessor(accessor\_),\ ref\_flags(ref\_flags\_),\ set(set\_)}
+\DoxyCodeLine{00222\ \ \ \ \ \{\}}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordtype}{void}\ OnItem(Item\&\ o,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_set\_bit(set,\ olx\_ref::get(accessor(o)).Flags,\ ref\_flags);}
+\DoxyCodeLine{00226\ \ \ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \};}
+\DoxyCodeLine{00228\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc\_t>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTSAtom_1_1FlagSetter__}{FlagSetter\_<acc\_t>}}}
+\DoxyCodeLine{00229\ \ \ FlagSetter(\textcolor{keyword}{const}\ acc\_t\ \&acc,\ \textcolor{keywordtype}{short}\ ref\_flags,\ \textcolor{keywordtype}{bool}\ set)\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structTSAtom_1_1FlagSetter__}{FlagSetter\_<acc\_t>}}(acc,\ ref\_flags,\ set);}
+\DoxyCodeLine{00231\ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{static}\ FlagSetter\_<DummyAccessor>}
+\DoxyCodeLine{00233\ \ \ FlagSetter(\textcolor{keywordtype}{short}\ ref\_flags,\ \textcolor{keywordtype}{bool}\ set)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordflow}{return}\ FlagSetter\_<DummyAccessor>(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}(),\ ref\_flags,\ set);}
+\DoxyCodeLine{00235\ \ \ \}}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }TypeAnalyser\_\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ ref\_type;}
+\DoxyCodeLine{00240\ \ \ \ \ TypeAnalyser\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_,\ \textcolor{keywordtype}{short}\ \_ref\_type)}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ :\ accessor(accessor\_),\ ref\_type(\_ref\_type)\ \ \{\}}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>\ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(accessor(o)).GetType()\ ==\ ref\_type;}
+\DoxyCodeLine{00244\ \ \ \ \ \}}
+\DoxyCodeLine{00245\ \ \ \};}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc\_t>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTSAtom_1_1TypeAnalyser__}{TypeAnalyser\_<acc\_t>}}}
+\DoxyCodeLine{00247\ \ \ TypeAnalyser(\textcolor{keyword}{const}\ acc\_t\ \&acc,\ \textcolor{keywordtype}{short}\ z)\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structTSAtom_1_1TypeAnalyser__}{TypeAnalyser\_<acc\_t>}}(acc,\ z);}
+\DoxyCodeLine{00249\ \ \ \}}
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc\_t>\ \textcolor{keyword}{static}\ TypeAnalyser\_<acc\_t>}
+\DoxyCodeLine{00251\ \ \ TypeAnalyser(\textcolor{keyword}{const}\ acc\_t\ \&acc,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{return}\ TypeAnalyser\_<acc\_t>(acc,\ e.z);}
+\DoxyCodeLine{00253\ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{static}\ TypeAnalyser\_<DummyAccessor>}
+\DoxyCodeLine{00255\ \ \ TypeAnalyser(\textcolor{keywordtype}{short}\ z)\ \{}
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keywordflow}{return}\ TypeAnalyser\_<DummyAccessor>(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}(),\ z);}
+\DoxyCodeLine{00257\ \ \ \}}
+\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{static}\ TypeAnalyser\_<DummyAccessor>}
+\DoxyCodeLine{00259\ \ \ TypeAnalyser(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keywordflow}{return}\ TypeAnalyser\_<DummyAccessor>(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}(),\ e.z);}
+\DoxyCodeLine{00261\ \ \ \}}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTSAtom_1_1CrdAccessor}{CrdAccessor}}\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ operator\ ()\ (\textcolor{keyword}{const}\ T\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(a).crd();}
+\DoxyCodeLine{00267\ \ \ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keyword}{typedef}\ vec3d\ return\_type;}
+\DoxyCodeLine{00269\ \ \ \};}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTSAtom_1_1CAtomAccessor}{CAtomAccessor}}\ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ operator\ ()\ (\textcolor{keyword}{const}\ T\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(a).CAtom();}
+\DoxyCodeLine{00275\ \ \ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ return\_type;}
+\DoxyCodeLine{00277\ \ \ \};}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \};}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtom>}}\ TSAtomList;}
+\DoxyCodeLine{00282\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TSAtom>}}\ TSAtomPList;}
+\DoxyCodeLine{00283\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<const\ TSAtom>}}\ TSAtomCPList;}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ EndXlibNamespace()}
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

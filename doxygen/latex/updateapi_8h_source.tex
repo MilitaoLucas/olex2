@@ -1,0 +1,187 @@
+\doxysection{updateapi.\+h}
+\hypertarget{updateapi_8h_source}{}\label{updateapi_8h_source}\index{repository/updateapi.h@{repository/updateapi.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_update\_api\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_update\_api\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}filesystem.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}settingsfile.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ a\ usettings.dat\ file\ processor\ since\ the\ launch\ and\ unirun\ do\ not\ their}}
+\DoxyCodeLine{00017\ \textcolor{comment}{original\ job\ now,\ their\ API\ is\ here,\ night\ be\ useful\ in\ the\ future...}}
+\DoxyCodeLine{00018\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }updater\ \ \{}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00022\ \ \ uapi\_OK\ \ \ \ \ \ \ \ \ \ \ \ \ =\ 0,\ \ \textcolor{comment}{//\ operation\ is\ done\ successfully}}
+\DoxyCodeLine{00023\ \ \ uapi\_UptoDate\ \ \ \ \ \ \ =\ 1,\ \ \textcolor{comment}{//\ repositories\ are\ upto\ date}}
+\DoxyCodeLine{00024\ \ \ uapi\_NoSettingsFile\ =\ 2,\ \ \textcolor{comment}{//\ setings\ file\ does\ not\ exist}}
+\DoxyCodeLine{00025\ \ \ uapi\_NoSource\ \ \ \ \ \ \ =\ 3,\ \ \textcolor{comment}{//\ no\ source\ is\ provided}}
+\DoxyCodeLine{00026\ \ \ uapi\_NoDestination\ \ =\ 4,\ \ \textcolor{comment}{//\ destination\ is\ not\ specified}}
+\DoxyCodeLine{00027\ \ \ uapi\_UpdateError\ \ \ \ =\ 5,\ \ \textcolor{comment}{//\ error\ happend\ while\ updating}}
+\DoxyCodeLine{00028\ \ \ uapi\_NoTask\ \ \ \ \ \ \ \ \ =\ 6,\ \ \textcolor{comment}{//\ nor\ source\ or\ destination\ exists}}
+\DoxyCodeLine{00029\ \ \ uapi\_InstallError\ \ \ =\ 7,\ \ \textcolor{comment}{//\ an\ installation\ error\ has\ occured}}
+\DoxyCodeLine{00030\ \ \ uapi\_InvaildRepository\ =\ 8,\ \ \textcolor{comment}{//\ repository\ does\ not\ contain\ required\ files}}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ tag\ is\ missing\ on\ the\ repo,\ new\ isntall\ might\ be\ required}}
+\DoxyCodeLine{00032\ \ \ uapi\_MissingTag\ \ \ \ \ =\ 9,}
+\DoxyCodeLine{00033\ \ \ uapi\_AccessDenied\ \ \ =\ 10,\ \textcolor{comment}{//\ the\ destination\ folder\ is\ not\ writeable}}
+\DoxyCodeLine{00034\ \ \ uapi\_InvalidInstallation\ =\ 11,\ \ \textcolor{comment}{//\ required\ files\ are\ missing}}
+\DoxyCodeLine{00035\ \ \ uapi\_Busy\ \ \ \ \ \ \ \ \ \ \ =\ 12;\ \ \textcolor{comment}{//\ updater\ API\ is\ busy}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ Olex2\ settings\ file\ wrapper}}
+\DoxyCodeLine{00040\ \textcolor{keyword}{struct\ }SettingsFile\ \{}
+\DoxyCodeLine{00041\ \ \ olxstr\ source\_file;}
+\DoxyCodeLine{00042\ \ \ olxstr\ repository,\ \ \textcolor{comment}{//\ repository\ for\ local\ update}}
+\DoxyCodeLine{00043\ \ \ \ \ proxy,\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ repository\ proxy}}
+\DoxyCodeLine{00044\ \ \ \ \ dest\_repository,\ \ \textcolor{comment}{//\ like\ ftp}}
+\DoxyCodeLine{00045\ \ \ \ \ src\_for\_dest,\ \ \ \ \ \textcolor{comment}{//\ source\ for\ dest,\ local\ or\ remote\ (repository)}}
+\DoxyCodeLine{00046\ \ \ \ \ update\_interval,}
+\DoxyCodeLine{00047\ \ \ \ \ olex2\_port;}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{bool}\ ask\_for\_update;}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ TStrList\ extensions\_to\_skip,\ files\_to\_skip;}
+\DoxyCodeLine{00051\ \ \ time\_t\ last\_updated;}
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00053\ \ \ SettingsFile()\ \{\}}
+\DoxyCodeLine{00054\ \ \ SettingsFile(\textcolor{keyword}{const}\ olxstr\&\ file\_name)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ Init(file\_name);}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{void}\ Init(\textcolor{keyword}{const}\ olxstr\&\ file\_name);}
+\DoxyCodeLine{00058\ \ \ \textcolor{comment}{//\ save\ will\ change\ repo/update/\ to\ repo...}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{bool}\ Save()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TEFile::Exists(source\_file);\ \}}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ Olex2\ updater/installer\ API}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{keyword}{class\ }UpdateAPI\ \{}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{mutable}\ TStrList\ log;}
+\DoxyCodeLine{00069\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AActionHandler>}}\ f\_lsnr,\ p\_lsnr;}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ InitAQueues(\mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ f,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ p);}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{short}\ \_Update(\mbox{\hyperlink{classAFileSystem}{AFileSystem}}\&\ SrcFS,\ \textcolor{keyword}{const}\ TStrList\&\ properties,}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTFSItem_1_1SkipOptions}{TFSItem::SkipOptions}}*\ toSkip);}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{short}\ \_Update(\mbox{\hyperlink{classAFileSystem}{AFileSystem}}\&\ src,\ \mbox{\hyperlink{classAFileSystem}{AFileSystem}}\&\ dest);}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00075\ \ \ \mbox{\hyperlink{structupdater_1_1SettingsFile}{SettingsFile}}\ settings;}
+\DoxyCodeLine{00076\ \ \ olxstr\ Tag;}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{static}\ olxstr\ NewInstallationFN()\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}new\_installation"{}};}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{static}\ const\_strlist\ GetSystemTags();}
+\DoxyCodeLine{00081\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00082\ \ \ UpdateAPI();}
+\DoxyCodeLine{00083\ \ \ \string~UpdateAPI();}
+\DoxyCodeLine{00084\ \ \ \textcolor{comment}{/*\ calls\ IsInstallRequired\ and\ if\ required,\ checks\ for}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ GetInstallationFileName\ in\ the\ basedir,\ fetches\ (using\ default\ or\ provided}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ \ repository\ or\ zip\ file)\ GetInstallationFileName\ and\ extracts\ to\ basedir}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ \ return\ uapi\_OK\ if\ install\ is\ not\ required\ or\ was\ successful\ and}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ \ uapi\_InstallError\ or\ uapi\_InvalidRepository\ or\ uapi\_NoSource\ in\ case\ of\ an}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ \ error}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordtype}{short}\ DoInstall(\mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AActionHandler>}}\ download\_lsnr,}
+\DoxyCodeLine{00092\ \ \ \ \ olx\_object\_ptr\ <\ AActionHandler>\ extract\_lsnr,}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ repo);}
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//\ provided\ handlers\ must\ be\ created\ with\ new,\ and\ will\ be\ deleted}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{short}\ InstallPlugin(\mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AActionHandler>}}\ download\_lsnr,}
+\DoxyCodeLine{00096\ \ \ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AActionHandler>}}\ extract\_lsnr,\ \textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{static}\ const\_strlist\ GetPluginProperties(\textcolor{keyword}{const}\ olxstr\&\ p);}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \mbox{\hyperlink{structupdater_1_1SettingsFile}{SettingsFile}}\&\ GetSettings()\ \{\ \textcolor{keywordflow}{return}\ settings;\ \}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structupdater_1_1SettingsFile}{SettingsFile}}\&\ GetSettings()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ settings;\ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{void}\ EvaluateProperties(TStrList\&\ props)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{short}\ DoUpdate(\mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AActionHandler>}}\ file\_slnr,}
+\DoxyCodeLine{00106\ \ \ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AActionHandler>}}\ progress\_lsnr);}
+\DoxyCodeLine{00107\ \ \ \textcolor{comment}{//\ updates\ specified\ repository\ (if\ any\ provided)}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{short}\ DoSynch(\mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AActionHandler>}}\ file\_slnr,}
+\DoxyCodeLine{00109\ \ \ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AActionHandler>}}\ progress\_lsnr);}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{const}\ TStrList\&\ GetLog()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ log;\ \}}
+\DoxyCodeLine{00111\ \ \ \textcolor{comment}{/*\ if\ fails\ or\ the\ repository\ is\ uptodate\ return\ NULL,\ res\ can\ be\ NULL,\ if}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ \ not\ it\ will\ be\ set\ to\ updater::uapi\_UptoDate\ or\ an\ error\ code}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ \ update\ -\/\ will\ add\ /update\ to\ non-\/zip\ FS}}
+\DoxyCodeLine{00114\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00115\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AFileSystem>}}\ FindActiveRepositoryFS(\textcolor{keywordtype}{short}*\ res,}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{bool}\ force\ =\ \textcolor{keyword}{false},\ \textcolor{keywordtype}{bool}\ update\ =\ \textcolor{keyword}{true})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00117\ \ \ \textcolor{comment}{//returns\ true\ if\ the\ program\ will/allowed\ try\ to\ update\ itself}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{bool}\ WillUpdate(\textcolor{keywordtype}{bool}\ force\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00119\ \ \ \textcolor{comment}{//\ creates\ an\ FS\ from\ string\ -\/\ ftpfs,\ httpfs,\ os-\/fs\ or\ zipfs}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{static}\ olx\_object\_ptr\ <\ AFileSystem>\ FSFromString(\textcolor{keyword}{const}\ olxstr\&\ repo\_str,}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ proxy\_str);}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ TStrList\&\ GetDefaultRepositories();}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{static}\ olxstr\ GetSettingsFileName()\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::GetInstanceDir()\ +\ \textcolor{stringliteral}{"{}usettings.dat"{}};}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{static}\ olxstr\ GetReinstallFileName()\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::GetInstanceDir()\ +\ \textcolor{stringliteral}{"{}\_\_reinstall"{}};}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{static}\ olxstr\ GetCleanUpFileName()\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::GetInstanceDir()\ +\ \textcolor{stringliteral}{"{}\_\_cleanup"{}};}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{static}\ olxstr\ GetIndexFileName()\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::GetBaseDir()\ +\ \textcolor{stringliteral}{"{}index.ind"{}};}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{static}\ olxstr\ GetMirrorsFileName()\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::GetInstanceDir()\ +\ \textcolor{stringliteral}{"{}mirrors.txt"{}};}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsNewInstallation()\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ TEFile::Exists(TBasicApp::GetBaseDir()\ +\ NewInstallationFN());}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ TagInstallationAsNew()\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ f(TBasicApp::GetBaseDir()\ +\ NewInstallationFN(),\ \textcolor{stringliteral}{"{}w+"{}});}
+\DoxyCodeLine{00143\ \ \ \ \ f.Close();}
+\DoxyCodeLine{00144\ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ TagInstallationAsOld()\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ TEFile::DelFile(TBasicApp::GetBaseDir()\ +\ NewInstallationFN());}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetTagsFileName()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}tags.txt"{}};\ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{comment}{//\ transforms\ /olex2-\/distro/tag\ or\ /olex2-\/distro/tag/update\ to\ /olex2-\/distro}}
+\DoxyCodeLine{00150\ \ \ olxstr\ TrimTagPart(\textcolor{keyword}{const}\ olxstr\&\ path)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00151\ \ \ \textcolor{comment}{/*\ transforms\ /olex2-\/distro\ to\ to\ /olex2/distro/tag\ or}}
+\DoxyCodeLine{00152\ \textcolor{comment}{\ \ /olex2/distro/tag/update}}
+\DoxyCodeLine{00153\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00154\ \ \ olxstr\ AddTagPart(\textcolor{keyword}{const}\ olxstr\&\ path,\ \textcolor{keywordtype}{bool}\ Update)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetTag()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Tag;\ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsInstallRequired()\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{return}\ !TEFile::Exists(GetIndexFileName());}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{/*\ checks\ the\ repository\ if\ in\ the\ settings,\ if\ down\ -\/\ then\ the\ default\ URL}}
+\DoxyCodeLine{00161\ \textcolor{comment}{\ \ (http://www.olex2.org/olex2-\/distro/,\ if\ down\ -\/\ checks\ the\ mirrors.txt\ file,}}
+\DoxyCodeLine{00162\ \textcolor{comment}{\ \ if\ no\ valid\ repositories\ found,\ returns\ empty\ string}}
+\DoxyCodeLine{00163\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00164\ \ \ olxstr\ FindActiveRepositoryUrl()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00165\ \ \ \ \ olxstr\ repo\_name;}
+\DoxyCodeLine{00166\ \ \ \ \ FindActiveRepositoryFS(\&repo\_name,\ GetInstallationFileName());}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ repo\_name;}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{/*\ as\ above,\ but\ returns\ newly\ created\ file\ system\ wrapper\ or\ NULL\ if\ failed;}}
+\DoxyCodeLine{00170\ \textcolor{comment}{\ \ if\ check\ file\ is\ not\ empty,\ the\ file\ existence\ will\ be\ also\ checked\ */}}
+\DoxyCodeLine{00171\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AFileSystem>}}\ FindActiveRepositoryFS(olxstr*\ repo\_name\ =\ 0,}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ check\_file\ =\ EmptyString())\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00173\ \ \ \textcolor{comment}{//\ fills\ list\ with\ available\ repositories}}
+\DoxyCodeLine{00174\ \ \ \textcolor{keywordtype}{void}\ GetAvailableRepositories(TStrList\&\ res)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//\ fills\ list\ with\ available\ repositories}}
+\DoxyCodeLine{00176\ \ \ \textcolor{keywordtype}{void}\ GetAvailableMirrors(TStrList\&\ res)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00177\ \ \ \textcolor{comment}{//\ fills\ list\ with\ available\ tags\ and\ initialises\ the\ chosen\ repository\ URL}}
+\DoxyCodeLine{00178\ \ \ \textcolor{keywordtype}{void}\ GetAvailableTags(TStrList\&\ res,\ olxstr\&\ repo\_URL)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{//\ returns\ platform-\/dependen\ instalaltion\ file\ name}}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{static}\ olxstr\ GetInstallationFileName();}
+\DoxyCodeLine{00181\ \};}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \};}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

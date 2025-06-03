@@ -1,0 +1,189 @@
+\doxysection{ipimp.\+h}
+\hypertarget{ipimp_8h_source}{}\label{ipimp_8h_source}\index{sdl/ipimp.h@{sdl/ipimp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_op\_imp\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_op\_imp\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}integration.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}macrolib.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{/*\ This\ is\ a\ default\ and\ sufficient\ implementation\ of\ the\ IOlex2Processor}}
+\DoxyCodeLine{00016\ \textcolor{comment}{interface}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }olex2\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }OlexProcessorImp\ :\ \textcolor{keyword}{public}\ IOlex2Processor,\ \textcolor{keyword}{public}\ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00021\ \ \ \mbox{\hyperlink{classsorted_1_1StringAssociation}{sorted::StringAssociation<ABasicFunction*>}}\ CallbackFuncs;}
+\DoxyCodeLine{00022\ \ \ \mbox{\hyperlink{classALibraryContainer}{ALibraryContainer}}\ *LibraryContainer;}
+\DoxyCodeLine{00023\ \ \ \textcolor{comment}{//\ object\ destruction\ handler}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{void}\ ODH(\mbox{\hyperlink{classAPerishable}{APerishable}}\ *o)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{if}\ (o\ ==\ LibraryContainer)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ LibraryContainer\ =\ 0;}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00030\ \ \ macrolib::TEMacroLib\ Macros;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ AnalyseError(\mbox{\hyperlink{classTMacroData}{TMacroData}}\ \&error)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ AnalyseErrorEx(error,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ AnalyseErrorEx(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ \&error,\ \textcolor{keywordtype}{bool}\ quiet)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{if}\ (!error.IsSuccessful())\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!error.IsBreakCalled())\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (error.IsProcessingException())\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry(logException)\ <<\ error.GetLocation()\ <<\ \textcolor{stringliteral}{"{}:\ "{}}\ <<}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ error.GetInfo();}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!error.GetInfo().IsEmpty())\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry(quiet\ ?\ logInfo\ :\ logError)\ <<}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ error.GetLocation()\ <<\ \textcolor{stringliteral}{"{}:\ "{}}\ <<\ error.GetInfo();}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ error.PrintStack(quiet\ ?\ logInfo\ :\ logDefault,\ \textcolor{keyword}{false},\ \textcolor{charliteral}{'\(\backslash\)t'});}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ beforeCall(\textcolor{keyword}{const}\ olxstr\ \&cmd)\ \{\}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ afterCall(\textcolor{keyword}{const}\ olxstr\ \&cmd)\ \{\}}
+\DoxyCodeLine{00053\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00054\ \ \ OlexProcessorImp(\mbox{\hyperlink{classALibraryContainer}{ALibraryContainer}}\ *lc)}
+\DoxyCodeLine{00055\ \ \ \ \ :\ LibraryContainer(lc),}
+\DoxyCodeLine{00056\ \ \ \ \ Macros(*\textcolor{keyword}{this})}
+\DoxyCodeLine{00057\ \ \ \{\}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{virtual}\ \string~OlexProcessorImp()\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ CallbackFuncs.Count();\ i++)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ CallbackFuncs.GetValue(i);}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{if}\ (LibraryContainer)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ LibraryContainer-\/>RemoveDestructionObserver(}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ DestructionObserver::Make(\textcolor{keyword}{this},\ \&OlexProcessorImp::ODH));}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTLibrary}{TLibrary}}\&\ \ GetLibrary()\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{if}\ (LibraryContainer\ ==\ NULL)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}uninitialised\ library\ container"{}});}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ LibraryContainer-\/>GetLibrary();}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ SetLibraryContainer(\mbox{\hyperlink{classALibraryContainer}{ALibraryContainer}}\ \&lc)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ LibraryContainer\ =\ \&lc;}
+\DoxyCodeLine{00079\ \ \ \ \ lc.AddDestructionObserver}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ (DestructionObserver::MakeNew(\textcolor{keyword}{this},\ \&OlexProcessorImp::ODH));}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ registerCallbackFunc(\textcolor{keyword}{const}\ olxstr\&\ cbEvent,}
+\DoxyCodeLine{00084\ \ \ \ \ \mbox{\hyperlink{classABasicFunction}{ABasicFunction}}*\ fn)}
+\DoxyCodeLine{00085\ \ \ \{}
+\DoxyCodeLine{00086\ \ \ \ \ CallbackFuncs.Add(cbEvent,\ fn);}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ unregisterCallbackFunc(\textcolor{keyword}{const}\ olxstr\&\ cbEvent,}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ funcName)}
+\DoxyCodeLine{00092\ \ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ CallbackFuncs.IndexOf(cbEvent),}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ i\ =\ ind;}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ ==\ InvalidIndex)\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{comment}{//\ go\ forward}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{while}\ (i\ <\ CallbackFuncs.Count()\ \&\&}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ CallbackFuncs.GetKey(i).Equals(cbEvent))}
+\DoxyCodeLine{00099\ \ \ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (CallbackFuncs.GetValue(i)-\/>GetName()\ ==\ funcName)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ CallbackFuncs.GetValue(i);}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ CallbackFuncs.Delete(i);}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{00106\ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{comment}{//\ go\ backwards}}
+\DoxyCodeLine{00108\ \ \ \ \ i\ =\ ind-\/1;}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{while}\ (i\ !=InvalidIndex\ \&\&\ (!CallbackFuncs.GetKey(i).Compare(cbEvent)))\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (CallbackFuncs.GetValue(i)-\/>GetName()\ ==\ funcName)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ CallbackFuncs.GetValue(i);}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ CallbackFuncs.Delete(i);}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ i-\/-\/;}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ processFunction(olxstr\ \&cmd,}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ location=EmptyString(),\ \textcolor{keywordtype}{bool}\ quiet=\textcolor{keyword}{false})}
+\DoxyCodeLine{00121\ \ \ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ cmd\_\ =\ cmd;}
+\DoxyCodeLine{00123\ \ \ \ \ beforeCall(cmd\_);}
+\DoxyCodeLine{00124\ \ \ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ err;}
+\DoxyCodeLine{00125\ \ \ \ \ err.SetLocation(location);}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ rv\ =\ Macros.ProcessFunction(cmd,\ err,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00127\ \ \ \ \ AnalyseErrorEx(err,\ quiet);}
+\DoxyCodeLine{00128\ \ \ \ \ afterCall(cmd\_);}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ processMacro(\textcolor{keyword}{const}\ olxstr\&\ cmd,}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ location=EmptyString(),\ \textcolor{keywordtype}{bool}\ quiet=\textcolor{keyword}{false})}
+\DoxyCodeLine{00134\ \ \ \{}
+\DoxyCodeLine{00135\ \ \ \ \ beforeCall(cmd);}
+\DoxyCodeLine{00136\ \ \ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ err;}
+\DoxyCodeLine{00137\ \ \ \ \ err.SetLocation(location);}
+\DoxyCodeLine{00138\ \ \ \ \ Macros.ProcessTopMacro(cmd,\ err,\ *\textcolor{keyword}{this},}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ quiet\ ?\ 0\ :\ \&OlexProcessorImp::AnalyseError);}
+\DoxyCodeLine{00140\ \ \ \ \ afterCall(cmd);}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ err.IsSuccessful();}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ processMacroEx(\textcolor{keyword}{const}\ olxstr\&\ cmd,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ \&err,}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ location=EmptyString(),\ \textcolor{keywordtype}{bool}\ quiet=\textcolor{keyword}{false})}
+\DoxyCodeLine{00146\ \ \ \{}
+\DoxyCodeLine{00147\ \ \ \ \ beforeCall(cmd);}
+\DoxyCodeLine{00148\ \ \ \ \ err.SetLocation(location);}
+\DoxyCodeLine{00149\ \ \ \ \ Macros.ProcessTopMacro(cmd,\ err,\ *\textcolor{keyword}{this},}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ quiet\ ?\ 0\ :\ \&OlexProcessorImp::AnalyseError);}
+\DoxyCodeLine{00151\ \ \ \ \ afterCall(cmd);}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ err.IsSuccessful();}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ processMacroExt(\textcolor{keyword}{const}\ olxstr\&\ cmd,}
+\DoxyCodeLine{00156\ \ \ \ \ TStrObjList\&\ args,\ \textcolor{keyword}{const}\ TParamList\&\ options,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ me,}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ location\ =\ EmptyString(),\ \textcolor{keywordtype}{bool}\ quiet\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00158\ \ \ \{}
+\DoxyCodeLine{00159\ \ \ \ \ beforeCall(cmd);}
+\DoxyCodeLine{00160\ \ \ \ \ me.SetLocation(location);}
+\DoxyCodeLine{00161\ \ \ \ \ Macros.ProcessMacro(cmd,\ args,\ options,\ me);}
+\DoxyCodeLine{00162\ \ \ \ \ afterCall(cmd);}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{if}\ (!quiet)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ OlexProcessorImp::AnalyseError(me);}
+\DoxyCodeLine{00165\ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordflow}{return}\ me.IsSuccessful();}
+\DoxyCodeLine{00167\ \ \ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ callCallbackFunc(\textcolor{keyword}{const}\ olxstr\&\ cbEvent,\ \textcolor{keyword}{const}\ TStrList\&\ params)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ beforeCall(cbEvent);}
+\DoxyCodeLine{00171\ \ \ \ \ TSizeList\ indexes;}
+\DoxyCodeLine{00172\ \ \ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ me;}
+\DoxyCodeLine{00173\ \ \ \ \ CallbackFuncs.GetIndices(cbEvent,\ indexes);}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ indexes.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ CallbackFuncs.GetValue(indexes[i])-\/>Run(params,\ me);}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ AnalyseError(me);}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ me.Reset();}
+\DoxyCodeLine{00178\ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ afterCall(cbEvent);}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ \};\ \textcolor{comment}{//\ end\ OlexProcessorImp}}
+\DoxyCodeLine{00182\ \}\ \textcolor{comment}{//end\ namespace\ olex}}
+\DoxyCodeLine{00183\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

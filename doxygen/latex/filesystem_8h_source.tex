@@ -1,0 +1,373 @@
+\doxysection{filesystem.\+h}
+\hypertarget{filesystem_8h_source}{}\label{filesystem_8h_source}\index{repository/filesystem.h@{repository/filesystem.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ olx\_filesysteH}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ olx\_filesysteH}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}url.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}etime.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}estlist.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}etraverse.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}efile.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#undef\ GetObject}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTFSIndex}{TFSIndex}};}
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTFSItem}{TFSItem}};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{const}\ uint16\_t}
+\DoxyCodeLine{00026\ \ \ afs\_ReadAccess\ \ =\ 0x0001,}
+\DoxyCodeLine{00027\ \ \ afs\_WriteAccess\ =\ 0x0002,}
+\DoxyCodeLine{00028\ \ \ afs\_DeleteAccess\ =\ 0x0004,}
+\DoxyCodeLine{00029\ \ \ afs\_BrowseAccess\ =\ 0x0008,}
+\DoxyCodeLine{00030\ \ \ afs\_FullAccess\ =}
+\DoxyCodeLine{00031\ \ \ \ \ afs\_ReadAccess|afs\_BrowseAccess|afs\_WriteAccess|afs\_DeleteAccess,}
+\DoxyCodeLine{00032\ \ \ afs\_ReadOnlyAccess\ =\ afs\_ReadAccess|afs\_BrowseAccess;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{class\ }AFileSystem\ :\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00036\ \ \ olxstr\ FBase;}
+\DoxyCodeLine{00037\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00038\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00039\ \ \ \mbox{\hyperlink{classTFSIndex}{TFSIndex}}*\ Index;}
+\DoxyCodeLine{00040\ \ \ uint16\_t\ Access;}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{volatile}\ Break;}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoDelFile(\textcolor{keyword}{const}\ olxstr\&\ f)\ =\ 0;}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoDelDir(\textcolor{keyword}{const}\ olxstr\&\ f)\ =\ 0;}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoNewDir(\textcolor{keyword}{const}\ olxstr\&\ f)\ =\ 0;}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoAdoptFile(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTFSItem}{TFSItem}}\&\ src)\ =\ 0;}
+\DoxyCodeLine{00046\ \ \ \textcolor{comment}{/*\ forced\ check\ only\ affects\ remote\ systems\ like\ http,\ if\ the\ value\ is\ true}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ \ the\ check\ will\ be\ performed,\ otherwise,\ unless\ the\ index\ is\ loaded,\ FS}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ \ dependent\ value\ will\ be\ returned}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoesExist(\textcolor{keyword}{const}\ olxstr\&\ df,\ \textcolor{keywordtype}{bool}\ forced\_check)\ =\ 0;}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<IInputStream>}}\ \_DoOpenFile(\textcolor{keyword}{const}\ olxstr\&\ src)\ =\ 0;}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoAdoptStream(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ file,\ \textcolor{keyword}{const}\ olxstr\&\ name)\ =\ 0;}
+\DoxyCodeLine{00053\ \ \ \textcolor{comment}{//\ handles\ OnBreak}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}*)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ DoBreak();}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00059\ \ \ AFileSystem()\ :}
+\DoxyCodeLine{00060\ \ \ \ \ Index(0),}
+\DoxyCodeLine{00061\ \ \ \ \ Access(afs\_FullAccess),}
+\DoxyCodeLine{00062\ \ \ \ \ Break(\textcolor{keyword}{false}),}
+\DoxyCodeLine{00063\ \ \ \ \ OnProgress(Actions.New(\textcolor{stringliteral}{"{}ON\_PROGRESS"{}})),}
+\DoxyCodeLine{00064\ \ \ \ \ OnBreak(Actions.New(\textcolor{stringliteral}{"{}ON\_BREAK"{}}))}
+\DoxyCodeLine{00065\ \ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ AActionHandler::SetToDelete(\textcolor{keyword}{false});}
+\DoxyCodeLine{00067\ \ \ \ \ OnBreak.Add(\textcolor{keyword}{this});}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{virtual}\ \string~AFileSystem()\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ OnBreak.Clear();}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//\ called\ on\ progress}}
+\DoxyCodeLine{00075\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnProgress,}
+\DoxyCodeLine{00076\ \ \ \ \ \&\ OnBreak;\ \ \textcolor{comment}{//\ add\ this\ one\ to\ the\ higher\ level\ handler\ to\ handle\ breaks}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \textcolor{comment}{//\ deletes\ a\ file}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{bool}\ DelFile(\textcolor{keyword}{const}\ olxstr\&\ f)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{if}\ ((Access\ \&\ afs\_DeleteAccess)\ ==\ 0)\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoDelFile(f);}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{comment}{//\ deletes\ a\ folder}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{bool}\ DelDir(\textcolor{keyword}{const}\ olxstr\&\ d)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{if}\ ((Access\ \&\ afs\_DeleteAccess)\ ==\ 0)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoDelDir(d);}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{comment}{//\ puts\ a\ file\ to\ the\ file\ system}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordtype}{bool}\ AdoptFile(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTFSItem}{TFSItem}}\&\ src)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{if}\ ((Access\ \&\ afs\_WriteAccess)\ ==\ 0)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoAdoptFile(src);}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//\ creates\ a\ new\ folder}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{bool}\ NewDir(\textcolor{keyword}{const}\ olxstr\&\ d)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{if}\ ((Access\ \&\ afs\_WriteAccess)\ ==\ 0)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoNewDir(d);}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{/*\ checks\ if\ the\ file\ exists,\ forced\_check\ is\ applies\ to\ http\ FS,\ where}}
+\DoxyCodeLine{00107\ \textcolor{comment}{\ \ the\ check\ can\ take\ some\ time.\ See\ \_DoesExist\ description\ for\ more\ details.\ */}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{bool}\ Exists(\textcolor{keyword}{const}\ olxstr\&\ fn,\ \textcolor{keywordtype}{bool}\ forced\_check\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{if}\ ((Access\ \&\ afs\_BrowseAccess)\ ==\ 0)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoesExist(fn,\ forced\_check);}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \textcolor{comment}{//\ returns\ a\ stream\ for\ a\ specified\ stream,\ must\ be\ deleted}}
+\DoxyCodeLine{00115\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<IInputStream>}}\ OpenFile(\textcolor{keyword}{const}\ olxstr\&\ src)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{if}\ ((Access\ \&\ afs\_ReadAccess)\ ==\ 0)\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoOpenFile(src);}
+\DoxyCodeLine{00120\ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keywordtype}{bool}\ AdoptStream(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ file,\ \textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{if}\ ((Access\ \&\ afs\_WriteAccess)\ ==\ 0)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00124\ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{return}\ \_DoAdoptStream(file,\ name);}
+\DoxyCodeLine{00126\ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordtype}{void}\ RemoveAccessRight(uint16\_t\ access)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ Access\ \&=\ \string~access;}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{bool}\ HasAccess(uint16\_t\ access)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (Access\ \&\ access)\ !=\ 0;\ \}}
+\DoxyCodeLine{00131\ \ \ DefPropP(\mbox{\hyperlink{classTFSIndex}{TFSIndex}}*,\ Index);}
+\DoxyCodeLine{00132\ \ \ \textcolor{comment}{//\ returns\ a\ base\ at\ which\ the\ file\ system\ is\ initalised}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetBase()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FBase;\ \}}
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordtype}{void}\ SetBase(\textcolor{keyword}{const}\ olxstr\&\ b)\ \{\ FBase\ =\ TEFile::AddPathDelimeter(b);\ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{//\ depends\ on\ the\ file\ system\ implementation}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ DoBreak()\ \{\ Break\ =\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00138\ \};}
+\DoxyCodeLine{00139\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00140\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00141\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00142\ \textcolor{keyword}{class\ }TOSFileSystem:\ \textcolor{keyword}{public}\ AFileSystem\ \{}
+\DoxyCodeLine{00143\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Events;}
+\DoxyCodeLine{00144\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoDelFile(\textcolor{keyword}{const}\ olxstr\&\ f);}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoDelDir(\textcolor{keyword}{const}\ olxstr\&\ f);}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoNewDir(\textcolor{keyword}{const}\ olxstr\&\ f);}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoAdoptFile(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTFSItem}{TFSItem}}\&\ Source);}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoesExist(\textcolor{keyword}{const}\ olxstr\&\ df,\ \textcolor{keywordtype}{bool});}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<IInputStream>}}\ \_DoOpenFile(\textcolor{keyword}{const}\ olxstr\&\ src);}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoAdoptStream(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ file,\ \textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00152\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00153\ \ \ TOSFileSystem(\textcolor{keyword}{const}\ olxstr\&\ base);}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{virtual}\ \string~TOSFileSystem()\ \{\}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnRmFile;}
+\DoxyCodeLine{00157\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnRmDir;}
+\DoxyCodeLine{00158\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnMkDir;}
+\DoxyCodeLine{00159\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnAdoptFile;}
+\DoxyCodeLine{00160\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnOpenFile;}
+\DoxyCodeLine{00161\ \};}
+\DoxyCodeLine{00162\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00163\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00164\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00165\ \textcolor{comment}{/*\ A\ read-\/only\ proxy\ file\ system\ -\/\ the\ files\ to\ be\ updated\ are\ located\ at\ the}}
+\DoxyCodeLine{00166\ \textcolor{comment}{file\ system\ base,\ however\ then\ file\ existence\ is\ asked\ -\/\ both\ locations,\ this}}
+\DoxyCodeLine{00167\ \textcolor{comment}{and\ of\ the\ 'actual'\ or\ proxied\ file\ systems\ are\ checked.\ The\ index\ file\ stored}}
+\DoxyCodeLine{00168\ \textcolor{comment}{in\ this\ FS\ is\ assumed\ to\ be\ newer\ than\ the\ one\ on\ the\ proxied\ FS}}
+\DoxyCodeLine{00169\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00170\ \textcolor{keyword}{class\ }TUpdateFS:\ \textcolor{keyword}{public}\ TOSFileSystem\ \{}
+\DoxyCodeLine{00171\ \ \ TOSFileSystem\ \&Proxied;}
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordtype}{bool}\ own;}
+\DoxyCodeLine{00173\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoesExist(\textcolor{keyword}{const}\ olxstr\&\ df,\ \textcolor{keywordtype}{bool});}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<IInputStream>}}\ \_DoOpenFile(\textcolor{keyword}{const}\ olxstr\&\ src);}
+\DoxyCodeLine{00176\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00177\ \ \ \textcolor{comment}{//\ if\ own\_\ is\ true\ (default),\ the\ proxied\ will\ be\ deleted\ in\ the\ end}}
+\DoxyCodeLine{00178\ \ \ TUpdateFS(\textcolor{keyword}{const}\ olxstr\&\ base,\ TOSFileSystem\ \&proxied,\ \textcolor{keywordtype}{bool}\ own\_=\textcolor{keyword}{true})}
+\DoxyCodeLine{00179\ \ \ \ \ :\ TOSFileSystem(base),\ Proxied(proxied),\ own(own\_)}
+\DoxyCodeLine{00180\ \ \ \{\}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{virtual}\ \string~TUpdateFS()\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{if}\ (own)\ \textcolor{keyword}{delete}\ \&Proxied;}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ \};}
+\DoxyCodeLine{00185\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00186\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00187\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00188\ \textcolor{keyword}{class\ }TFSItem\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00189\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{struct\ }SkipOptions\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ TStrList*\ extsToSkip,\ \ \textcolor{comment}{//\ extenstions\ to\ skip}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ *\ filesToSkip;\ \textcolor{comment}{//\ file\ names\ to\ skip}}
+\DoxyCodeLine{00193\ \ \ \ \ SkipOptions()\ :\ extsToSkip(0),\ filesToSkip(0)}
+\DoxyCodeLine{00194\ \ \ \ \ \{\}}
+\DoxyCodeLine{00195\ \ \ \};}
+\DoxyCodeLine{00196\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00197\ \ \ TFSItem*\ Parent;}
+\DoxyCodeLine{00198\ \ \ \mbox{\hyperlink{classTFSIndex}{TFSIndex}}\&\ Index;}
+\DoxyCodeLine{00199\ \ \ \textcolor{keywordtype}{bool}\ Folder;}
+\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{bool}\ Processed;}
+\DoxyCodeLine{00201\ \ \ uint64\_t\ DateTime,\ Size;}
+\DoxyCodeLine{00202\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TFSItem*>}}\ Items;}
+\DoxyCodeLine{00203\ \ \ olxstr\ Name,\ Digest;}
+\DoxyCodeLine{00204\ \ \ TStrList\ Properties,\ Actions;}
+\DoxyCodeLine{00205\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00206\ \ \ \textcolor{keywordtype}{void}\ DeleteItem(TFSItem*\ item);}
+\DoxyCodeLine{00207\ \ \ \textcolor{keywordtype}{bool}\ IsProcessed()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Processed;\ \}}
+\DoxyCodeLine{00208\ \ \ \textcolor{comment}{/*\ recursive\ version,\ must\ be\ called\ with\ false\ before\ Syncronise\ or}}
+\DoxyCodeLine{00209\ \textcolor{comment}{\ \ CalcDiffSize}}
+\DoxyCodeLine{00210\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00211\ \ \ \textcolor{keywordtype}{void}\ SetProcessed(\textcolor{keywordtype}{bool}\ v)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00212\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00213\ \ \ \mbox{\hyperlink{classTFSItem}{TFSItem}}(\mbox{\hyperlink{classTFSIndex}{TFSIndex}}\&\ index,\ \mbox{\hyperlink{classTFSItem}{TFSItem}}*\ parent,\ \textcolor{keyword}{const}\ olxstr\&\ name)\ :}
+\DoxyCodeLine{00214\ \ \ \ \ Parent(parent),}
+\DoxyCodeLine{00215\ \ \ \ \ Index(index),}
+\DoxyCodeLine{00216\ \ \ \ \ Folder(false),}
+\DoxyCodeLine{00217\ \ \ \ \ Processed(false),}
+\DoxyCodeLine{00218\ \ \ \ \ DateTime(0),}
+\DoxyCodeLine{00219\ \ \ \ \ Size(0),}
+\DoxyCodeLine{00220\ \ \ \ \ Name(name)\ \{\ \}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{virtual}\ \string~TFSItem()\ \{\ Clear();\ \}}
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00223\ \ \ TFSItem*\ GetParent()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Parent;\ \}}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \ \ \textcolor{keywordtype}{void}\ operator\ >>\ (TStrList\&\ strings)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordtype}{size\_t}\ ReadStrings(\textcolor{keywordtype}{size\_t}\&\ index,\ TFSItem*\ caller,\ TStrList\&\ strings,}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTFSItem_1_1SkipOptions}{SkipOptions}}*\ toSkip\ =\ 0);}
+\DoxyCodeLine{00228\ \ \ \textcolor{comment}{//\ removes\ empty\ folders\ recursively}}
+\DoxyCodeLine{00229\ \ \ \textcolor{keywordtype}{void}\ ClearEmptyFolders();}
+\DoxyCodeLine{00230\ \ \ \textcolor{comment}{//\ removes\ nonexiting\ files\ recursively}}
+\DoxyCodeLine{00231\ \ \ \textcolor{keywordtype}{void}\ ClearNonexisting();}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ TFSItem\&\ operator\ =\ (\textcolor{keyword}{const}\ TFSItem\&\ FI);}
+\DoxyCodeLine{00234\ \ \ TFSItem\&\ Item(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Items.GetValue(i);\ \}}
+\DoxyCodeLine{00235\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Items.Count();\ \}}
+\DoxyCodeLine{00236\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Items.IsEmpty();\ \}}
+\DoxyCodeLine{00237\ \ \ TFSItem\&\ NewItem(\textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00238\ \ \ \textcolor{comment}{//\ recreates\ specified\ item\ in\ current\ context}}
+\DoxyCodeLine{00239\ \ \ TFSItem\&\ NewItem(TFSItem*\ item);}
+\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//\ removes\ the\ item\ and\ deletes\ the\ file/folder}}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Remove(TFSItem\&\ item);}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordtype}{size\_t}\ PropertyCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Properties.Count();\ \}}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetProperty(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Properties[ind];\ \}}
+\DoxyCodeLine{00245\ \ \ \textcolor{keywordtype}{void}\ AddProperty(\textcolor{keyword}{const}\ olxstr\&\ p)\ \{\ Properties.Add(p);\ \}}
+\DoxyCodeLine{00246\ \ \ \textcolor{keywordtype}{bool}\ HasProperty(\textcolor{keyword}{const}\ olxstr\&\ pn)\textcolor{keyword}{\ \ const\ }\{}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{return}\ Properties.IndexOf(pn)\ !=\ InvalidIndex;}
+\DoxyCodeLine{00248\ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keywordtype}{bool}\ ValidateProperties(\textcolor{keyword}{const}\ TStrList\&\ prs)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordflow}{if}\ (Properties.IsEmpty()\ ||\ prs.IsEmpty())\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00252\ \ \ \ \ \}}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ prs.Count();\ i++)\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Properties.IndexOf(prs[i])\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \ \ \}}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00259\ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \textcolor{keywordtype}{void}\ ListUniqueProperties(TStrList\&\ Properties);}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{const}\ TStrList\&\ GetActions()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Actions;\ \}}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ DefPropBIsSet(Folder);}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Name;\ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordtype}{int}\ GetLevel()\ \ \textcolor{keyword}{const};}
+\DoxyCodeLine{00269\ \ \ olxstr\ GetFullName()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ DefPropP(uint64\_t,\ DateTime);}
+\DoxyCodeLine{00272\ \ \ DefPropP(uint64\_t,\ Size);}
+\DoxyCodeLine{00273\ \ \ DefPropC(olxstr,\ Digest);}
+\DoxyCodeLine{00274\ \ \ \textcolor{comment}{//\ only\ updates\ the\ digest\ if\ current\ is\ empty}}
+\DoxyCodeLine{00275\ \ \ \textcolor{keywordtype}{size\_t}\ UpdateDigest();}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SC>\ TFSItem*\ FindByName(\textcolor{keyword}{const}\ SC\&\ Name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keywordflow}{return}\ Items.Find(Name,\ 0);}
+\DoxyCodeLine{00279\ \ \ \}}
+\DoxyCodeLine{00280\ \ \ \textcolor{comment}{//\ does\ a\ search\ of\ /parent\_folder/parent\_folder/file\_name}}
+\DoxyCodeLine{00281\ \ \ TFSItem*\ FindByFullName(\textcolor{keyword}{const}\ olxstr\&\ Name)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \ \ AFileSystem\&\ GetIndexFS()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00284\ \ \ \textcolor{comment}{//\ calculates\ the\ update\ size}}
+\DoxyCodeLine{00285\ \ \ uint64\_t\ CalcDiffSize(\textcolor{keyword}{const}\ TFSItem\&\ Dest,\ \textcolor{keyword}{const}\ TStrList\&\ properties)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00286\ \ \ \textcolor{comment}{//\ syncronises\ two\ items}}
+\DoxyCodeLine{00287\ \ \ uint64\_t\ Synchronise(TFSItem\&\ Dest,\ \textcolor{keyword}{const}\ TStrList\&\ properties,}
+\DoxyCodeLine{00288\ \ \ \ \ TStrList*\ cmds\ =\ 0);}
+\DoxyCodeLine{00289\ \ \ TFSItem*\ UpdateFile(TFSItem\&\ FN);}
+\DoxyCodeLine{00290\ \ \ \textcolor{comment}{/*\ deletes\ underlying\ physical\ object\ (file\ or\ folder).\ If\ the\ object\ is\ a}}
+\DoxyCodeLine{00291\ \textcolor{comment}{\ \ folder\ the\ content\ of\ that\ folder\ will\ be\ removed\ completely}}
+\DoxyCodeLine{00292\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00293\ \ \ \textcolor{keywordtype}{void}\ DelFile();}
+\DoxyCodeLine{00294\ \ \ \textcolor{comment}{/*\ this\ if\ for\ internal\ use\ only\ -\/\ the\ FS\ access\ rights\ are\ not\ taken\ into}}
+\DoxyCodeLine{00295\ \textcolor{comment}{\ \ the\ account!\ but\ operates\ only\ on\ the\ TOSFileSystem\ and\ only\ on\ files}}
+\DoxyCodeLine{00296\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00297\ \ \ \textcolor{keywordtype}{void}\ \_DelFile();}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ \ \ uint64\_t\ CalcTotalItemsSize(\textcolor{keyword}{const}\ TStrList\&\ props)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{static}\ TGraphTraverser<TFSItem>\ Traverser;}
+\DoxyCodeLine{00302\ \};}
+\DoxyCodeLine{00303\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00304\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00305\ \textcolor{comment}{//...........................................................................//}}
+\DoxyCodeLine{00306\ \textcolor{keyword}{class\ }TFSIndex\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00307\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00308\ \ \ TFSItem\ Root;}
+\DoxyCodeLine{00309\ \ \ \textcolor{keywordtype}{bool}\ IndexLoaded;}
+\DoxyCodeLine{00310\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{bool}\ Break;}
+\DoxyCodeLine{00311\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00312\ \ \ olxstr\ Source,\ Destination;}
+\DoxyCodeLine{00313\ \ \ TStrList\ Properties;}
+\DoxyCodeLine{00314\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00315\ \ \ \mbox{\hyperlink{classAFileSystem}{AFileSystem}}\&\ IndexFS;}
+\DoxyCodeLine{00316\ \ \ \mbox{\hyperlink{classTOnProgress}{TOnProgress}}\ Progress;}
+\DoxyCodeLine{00317\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnBreak;}
+\DoxyCodeLine{00318\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00319\ \ \ TFSIndex(\mbox{\hyperlink{classAFileSystem}{AFileSystem}}\&\ fs);}
+\DoxyCodeLine{00320\ \ \ \textcolor{keyword}{virtual}\ \string~TFSIndex();}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \ \ \textcolor{comment}{//\ this\ is\ to\ be\ used\ for\ the\ overal\ progress\ monitorring}}
+\DoxyCodeLine{00323\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnProgress;}
+\DoxyCodeLine{00324\ \ \ \textcolor{comment}{/*\ this\ is\ to\ be\ used\ for\ when\ an\ action\ is\ being\ applied\ to\ a\ file\ (like}}
+\DoxyCodeLine{00325\ \textcolor{comment}{\ \ extract)}}
+\DoxyCodeLine{00326\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00327\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnAction;}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00329\ \ \ \textcolor{keywordtype}{void}\ LoadIndex(\textcolor{keyword}{const}\ olxstr\&\ IndexFile,}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTFSItem_1_1SkipOptions}{TFSItem::SkipOptions}}*\ toSkip\ =\ 0);}
+\DoxyCodeLine{00331\ \ \ \textcolor{keywordtype}{void}\ SaveIndex(\textcolor{keyword}{const}\ olxstr\&\ IndexFile);}
+\DoxyCodeLine{00332\ \ \ \textcolor{comment}{/*\ returns\ the\ number\ transfered\ bytes.\ \ If\ the\ dest\_fs\ is\ not\ NULL,\ the}}
+\DoxyCodeLine{00333\ \textcolor{comment}{\ \ difference\ is\ adopted\ by\ that\ file\ syste.\ If\ cmds\ is\ not\ NULL,\ the\ rm}}
+\DoxyCodeLine{00334\ \textcolor{comment}{\ \ commands\ are\ stored\ in\ it}}
+\DoxyCodeLine{00335\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00336\ \ \ uint64\_t\ Synchronise(\mbox{\hyperlink{classAFileSystem}{AFileSystem}}\&\ To,\ \textcolor{keyword}{const}\ TStrList\&\ properties,}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTFSItem_1_1SkipOptions}{TFSItem::SkipOptions}}*\ toSkip\ =\ 0,\ TStrList*\ cmds\ =\ 0,}
+\DoxyCodeLine{00338\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ indexName\ =\ \textcolor{stringliteral}{"{}index.ind"{}});}
+\DoxyCodeLine{00339\ \ \ uint64\_t\ CalcDiffSize(\mbox{\hyperlink{classAFileSystem}{AFileSystem}}\&\ To,\ \textcolor{keyword}{const}\ TStrList\&\ properties,}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTFSItem_1_1SkipOptions}{TFSItem::SkipOptions}}*\ toSkip\ =\ 0,}
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ indexName\ =\ \textcolor{stringliteral}{"{}index.ind"{}});}
+\DoxyCodeLine{00342\ \ \ \textcolor{comment}{//\ returns\ true\ if\ the\ file\ is\ updated\ (added)\ and\ false\ otherwise}}
+\DoxyCodeLine{00343\ \ \ \textcolor{keywordtype}{bool}\ UpdateFile(\mbox{\hyperlink{classAFileSystem}{AFileSystem}}\&\ To,\ \textcolor{keyword}{const}\ olxstr\&\ fileName,\ \textcolor{keywordtype}{bool}\ Force,}
+\DoxyCodeLine{00344\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ indexName\ =\ \textcolor{stringliteral}{"{}index.ind"{}});}
+\DoxyCodeLine{00345\ \ \ \textcolor{keyword}{const}\ TFSItem\&\ GetRoot()\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ Root;\ \}}
+\DoxyCodeLine{00346\ \ \ TFSItem\&\ GetRoot()\ \{\ \textcolor{keywordflow}{return}\ Root;\ \}}
+\DoxyCodeLine{00347\ \ \ \textcolor{comment}{/*\ checks\ if\ the\ file\ actions\ specify\ to\ delete\ it,\ if\ a\ delete\ action\ is}}
+\DoxyCodeLine{00348\ \textcolor{comment}{\ \ found\ return\ false\ if\ the\ timestamps\ of\ the\ items\ and\ size\ match\ and\ false\ in}}
+\DoxyCodeLine{00349\ \textcolor{comment}{\ \ other\ cases;\ updates\ the\ dest\ digest\ if\ empty}}
+\DoxyCodeLine{00350\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00351\ \ \ \textcolor{keywordtype}{bool}\ ShallAdopt(\textcolor{keyword}{const}\ TFSItem\&\ src,\ TFSItem\&\ dest)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00352\ \ \ \textcolor{keywordtype}{bool}\ ShouldExist(\textcolor{keyword}{const}\ TFSItem\&\ src)\textcolor{keyword}{\ \ const\ }\{}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keywordflow}{return}\ src.GetActions().IndexOfi(\textcolor{stringliteral}{"{}delete"{}})\ ==\ InvalidIndex;}
+\DoxyCodeLine{00354\ \ \ \}}
+\DoxyCodeLine{00355\ \ \ \textcolor{comment}{//\ returns\ if\ the\ action\ was\ procesed\ (or\ not)\ successful}}
+\DoxyCodeLine{00356\ \ \ \textcolor{keywordtype}{bool}\ ProcessActions(TFSItem\&\ item);}
+\DoxyCodeLine{00357\ \ \ \textcolor{comment}{//\ stops\ the\ syncronisation\ and\ updates\ the\ index}}
+\DoxyCodeLine{00358\ \ \ \textcolor{keywordtype}{void}\ DoBreak()\ \{}
+\DoxyCodeLine{00359\ \ \ \ \ Break\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00360\ \ \ \ \ OnBreak.Execute(\textcolor{keyword}{this});}
+\DoxyCodeLine{00361\ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \textcolor{keywordtype}{bool}\ IsInterrupted()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{keywordflow}{return}\ Break\ \&\&\ Progress.GetPos()\ !=\ Progress.GetMax();}
+\DoxyCodeLine{00364\ \ \ \}}
+\DoxyCodeLine{00365\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TFSItem;}
+\DoxyCodeLine{00366\ \};}
+\DoxyCodeLine{00367\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

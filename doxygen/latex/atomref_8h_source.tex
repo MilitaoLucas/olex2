@@ -1,0 +1,174 @@
+\doxysection{atomref.\+h}
+\hypertarget{atomref_8h_source}{}\label{atomref_8h_source}\index{xlib/atomref.h@{xlib/atomref.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_atomref\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_atomref\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}refmodel.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}residue.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ BeginXlibNamespace()}
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ Possible\ Shelx\ syntax}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ \ C\_*\ \ -\/\ 'C'\ atom\ for\ all\ residues}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ C\_Res\ -\/\ 'C'\ of\ particular\ residue}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ \$C\_Res\ -\/\ ?\ all\ carbons\ of\ particular\ residue}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ \ \$C\_Res\$Eqiv\ -\/\ all\ carbons\ of\ Res\ in\ Eqiv\ symmetry}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ \ C\_\$1}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ C\_+,\ C\_-\/\ -\/\ cannot\ be\ expanded,\ just\ references\ for\ previous\ and\ next\ residues}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ \ \ when\ something\ is\ being\ calculated}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ O21\ >\ O25\ -\/>\ [021..O25]}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ O25\ <\ O21\ -\/>\ [025..O21]}}
+\DoxyCodeLine{00026\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//TODO:\ add\ C?\ C?1\ kind\ of\ expressions}}
+\DoxyCodeLine{00028\ class\ ASelectionOwner\ \{}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{bool}\ DoClearSelection;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ ASelectionOwner()\ :\ DoClearSelection(true)\ \{\}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ExpandSelection(TCAtomGroup\&\ catoms)\ =\ 0;}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ExpandSelectionEx(\mbox{\hyperlink{classTPtrList}{TPtrList<class\ TSAtom>}}\&\ satoms)\ =\ 0;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TSObject<class\ TNetwork>}}\ >\ GetSelected()\ =\ 0;}
+\DoxyCodeLine{00035\ \ \ DefPropP(\textcolor{keywordtype}{bool},\ DoClearSelection)}
+\DoxyCodeLine{00036\ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}\ \{}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structIAtomSelectionCriterium}{\string~IAtomSelectionCriterium}}()\ \{\}}
+\DoxyCodeLine{00041\ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{keyword}{struct\ }AtomSelectionNotCriterium\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}\ \{}
+\DoxyCodeLine{00044\ \ \ \mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}\ *c;}
+\DoxyCodeLine{00045\ \ \ AtomSelectionNotCriterium(\mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}*\ c)\ :\ c(c)\ \{\}}
+\DoxyCodeLine{00046\ \ \ \string~AtomSelectionNotCriterium()\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{delete}\ c;}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ !c-\/>Match(a);}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{struct\ }AtomTypeSelectionCriterium\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}\ \{}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ e;}
+\DoxyCodeLine{00056\ \ \ AtomTypeSelectionCriterium(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ e)\ :\ e(e)\ \{\}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ e.GetIndex()\ ==\ a.GetType().GetIndex();}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{struct\ }AtomLabelSelectionCriterium\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}\ \{}
+\DoxyCodeLine{00063\ \ \ olxstr\ label;}
+\DoxyCodeLine{00064\ \ \ AtomLabelSelectionCriterium(\textcolor{keyword}{const}\ olxstr\&\ l)\ :\ label(l)\ \{\}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ label.Equalsi(a.GetLabel());}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{struct\ }AtomZSelectionCriterium\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}\ \{}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ e;}
+\DoxyCodeLine{00072\ \ \ AtomZSelectionCriterium(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ e)\ :\ e(e)\ \{\}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ e.z\ ==\ a.GetType().z;}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{struct\ }AtomFlagSelectionCriterium\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}\ \{}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{short}\ flag;}
+\DoxyCodeLine{00080\ \ \ AtomFlagSelectionCriterium(\textcolor{keywordtype}{short}\ flag)\ :\ flag(flag)\ \{\}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{return}\ a.CheckFlags(flag);}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \};}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \textcolor{keyword}{struct\ }AtomPartSelectionCriterium\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}\ \{}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{int}\ part;}
+\DoxyCodeLine{00088\ \ \ AtomPartSelectionCriterium(\textcolor{keywordtype}{int}\ part)\ :\ part(part)\ \{\}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ a.GetPart()\ ==\ part;}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{keyword}{struct\ }AtomAFIXSelectionCriterium\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}\ \{}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{int}\ afix;}
+\DoxyCodeLine{00096\ \ \ AtomAFIXSelectionCriterium(\textcolor{keywordtype}{int}\ afix)\ :\ afix(afix)\ \{\}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ a.GetAfix()\ ==\ afix;}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ \};}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structAtomSelectionLogicalCriterium}{AtomSelectionLogicalCriterium}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structIAtomSelectionCriterium}{IAtomSelectionCriterium}}\ \{}
+\DoxyCodeLine{00103\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<IAtomSelectionCriterium>}}\ criteria;}
+\DoxyCodeLine{00104\ \ \ \mbox{\hyperlink{structAtomSelectionLogicalCriterium}{\string~AtomSelectionLogicalCriterium}}()\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ criteria.Count();\ i++)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ criteria[i];}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structAtomSelectionOrCriterium}{AtomSelectionOrCriterium}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structAtomSelectionLogicalCriterium}{AtomSelectionLogicalCriterium}}\ \{}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ criteria.Count();\ i++)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (criteria[i]-\/>Match(a))\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00119\ \ \ \}}
+\DoxyCodeLine{00120\ \};}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structAtomSelectionAndCriterium}{AtomSelectionAndCriterium}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structAtomSelectionLogicalCriterium}{AtomSelectionLogicalCriterium}}\ \{}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Match(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ criteria.Count();\ i++)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!criteria[i]-\/>Match(a))\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ \};}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \textcolor{keyword}{class\ }TAtomReference\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00134\ \ \ olxstr\ Expression;}
+\DoxyCodeLine{00135\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsValidAtom(\mbox{\hyperlink{classTCAtom}{TCAtom}}*\ ca)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{return}\ !ca-\/>IsDeleted()\ \&\&\ ca-\/>GetType().z\ >\ 1;}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ \ \ ASelectionOwner*\ SelectionOwner;}
+\DoxyCodeLine{00140\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00141\ \ \ \textcolor{comment}{//\ if\ a\ NULL\ selectionOwner\ is\ given\ -\/\ the\ one\ of\ the\ TXApp\ is\ used}}
+\DoxyCodeLine{00142\ \ \ TAtomReference(\textcolor{keyword}{const}\ olxstr\&\ expression,}
+\DoxyCodeLine{00143\ \ \ \ \ ASelectionOwner*\ selectionOwner\ =\ 0);}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetExpression()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Expression;\ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{size\_t}\ \_Expand(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ TCAtomGroup\&\ atoms,}
+\DoxyCodeLine{00148\ \ \ \ \ TResidue*\ CurrResi);}
+\DoxyCodeLine{00149\ \ \ \textcolor{comment}{//\ prcesses\ shelx\ expressions\ and\ returns\ unprocessed\ expressions\ (like\ sel)}}
+\DoxyCodeLine{00150\ \ \ olxstr\ Expand(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ TCAtomGroup\&\ atoms,\ \textcolor{keyword}{const}\ olxstr\&\ DefResi,}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordtype}{size\_t}\&\ atomAGroup);}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \textcolor{comment}{/*\ decodes\ M\ to\ all\ metals,\ X\ to\ halogens,\ extensions\ are\ possible...\ }}
+\DoxyCodeLine{00154\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{static}\ ConstSortedElementPList\ ExpandAcronym(\textcolor{keyword}{const}\ olxstr\&\ type,}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{/*Returns\ a\ list\ of\ elements\ reffered\ like\ \$C,O\ -\/\ all\ O\ and\ C\ or\ \$*,C}}
+\DoxyCodeLine{00158\ \textcolor{comment}{\ \ (alternatively:\ \$*-\/C\ -\/\ all\ but\ C}}
+\DoxyCodeLine{00159\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{static}\ ConstSortedElementPList\ DecodeTypes(\textcolor{keyword}{const}\ olxstr\&\ types,}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{/*\ returns\ root\ criteria\ */}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{static}\ olx\_object\_ptr\ <IAtomSelectionCriterium>}
+\DoxyCodeLine{00164\ \ \ \ \ BuildCriteria(\textcolor{keyword}{const}\ olxstr\&\ expr,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00165\ \};}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ EndXlibNamespace()}
+\DoxyCodeLine{00168\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

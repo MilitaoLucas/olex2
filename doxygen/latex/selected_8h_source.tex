@@ -1,0 +1,138 @@
+\doxysection{selected.\+h}
+\hypertarget{selected_8h_source}{}\label{selected_8h_source}\index{xlib/selected.h@{xlib/selected.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2014\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ \_olx\_xlib\_selected\_H}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ \_olx\_xlib\_selected\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}asymmunit.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#undef\ AddAtom}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BeginXlibNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ class\ IAtomMask\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{virtual}\ \string~IAtomMask()\ \{\}}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ matches(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ equals(\textcolor{keyword}{const}\ IAtomMask\ \&m)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ isValid()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{virtual}\ IAtomMask\ *replicate(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ olxstr\ toString()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{static}\ IAtomMask\ *build(\textcolor{keyword}{const}\ olxstr\ \&mask,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au);}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{class\ }AtomNameMask\ :\ \textcolor{keyword}{public}\ IAtomMask\ \{}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ *atom;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ AtomNameMask(\textcolor{keyword}{const}\ AtomNameMask\ \&m,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au);}
+\DoxyCodeLine{00032\ \ \ AtomNameMask(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&atom)}
+\DoxyCodeLine{00033\ \ \ \ \ :\ atom(\&atom)}
+\DoxyCodeLine{00034\ \ \ \{\}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ matches(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ isValid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !atom-\/>IsDeleted();\ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ equals(\textcolor{keyword}{const}\ IAtomMask\ \&m\_)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ olxstr\ toString()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ atom-\/>GetLabel();\ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{virtual}\ IAtomMask\ *replicate(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ AtomNameMask(*\textcolor{keyword}{this},\ au);}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00045\ \textcolor{keyword}{class\ }AtomTypeMask\ :\ \textcolor{keyword}{public}\ IAtomMask\ \{}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{struct\ }AtomType\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{short}\ z;}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ *element;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{bool}\ Not;}
+\DoxyCodeLine{00050\ \ \ \ \ AtomType(\textcolor{keywordtype}{short}\ z,\ \textcolor{keywordtype}{bool}\ Not)\ :\ z(z),\ element(0),\ Not(Not)}
+\DoxyCodeLine{00051\ \ \ \ \ \{\}}
+\DoxyCodeLine{00052\ \ \ \ \ AtomType(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&elm,\ \textcolor{keywordtype}{bool}\ Not)\ :\ z(0),\ element(\&elm),\ Not(Not)}
+\DoxyCodeLine{00053\ \ \ \ \ \{\}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ AtomType\ \&a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (element\ ==\ 0)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a.element\ ==\ 0)}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(z,\ a.z);}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (z\ ==\ -\/2\ \&\&\ XElementLib::IsMetal(*a.element))}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (z\ ==\ -\/3\ \&\&\ XElementLib::IsHalogen(*a.element))}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a.element\ ==\ 0)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ a.Compare(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(element-\/>z,\ a.element-\/>z);}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ olxstr\ str()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (element\ !=\ 0)\ \textcolor{keywordflow}{return}\ element-\/>symbol;}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (z\ ==\ -\/2)\ \textcolor{keywordflow}{return}\ \textcolor{charliteral}{'M'};}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{charliteral}{'X'};}
+\DoxyCodeLine{00074\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ olxstr\ toString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Not\ ?\ str().Insert(\textcolor{charliteral}{'-\/'},\ 0)\ :\ str();}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \};}
+\DoxyCodeLine{00079\ \ \ \mbox{\hyperlink{classSortedObjectList}{SortedObjectList<AtomType,\ TComparableComparator>}}\ types;}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{bool}\ Not;}
+\DoxyCodeLine{00081\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00082\ \ \ AtomTypeMask(\textcolor{keyword}{const}\ AtomTypeMask\ \&m)}
+\DoxyCodeLine{00083\ \ \ \ \ :\ types(m.types),\ Not(m.Not)}
+\DoxyCodeLine{00084\ \ \ \{\}}
+\DoxyCodeLine{00085\ \ \ AtomTypeMask(\textcolor{keyword}{const}\ olxstr\ \&exp,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&);}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ matches(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ equals(\textcolor{keyword}{const}\ IAtomMask\ \&m\_)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ isValid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{virtual}\ olxstr\ toString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{virtual}\ IAtomMask\ *replicate(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ AtomTypeMask(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ \};}
+\DoxyCodeLine{00094\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00097\ \textcolor{keyword}{class\ }SelectedTableRows\ \{}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<IAtomMask>}}\ row\_t;}
+\DoxyCodeLine{00099\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<row\_t>}}\ bonds,}
+\DoxyCodeLine{00100\ \ \ \ \ angles,}
+\DoxyCodeLine{00101\ \ \ \ \ dihedrals;}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{bool}\ MatchRows(\textcolor{keyword}{const}\ TCAtomPList\ \&row,\ \mbox{\hyperlink{classTTypeList}{TTypeList<row\_t>}}\ \&where)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{bool}\ AddRow(\mbox{\hyperlink{classTTypeList}{TTypeList<row\_t>}}\ \&where,\ \textcolor{keyword}{const}\ olxstr\ \&row\_,}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au);}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ ProcessRows(\mbox{\hyperlink{classTTypeList}{TTypeList<row\_t>}}\ \&dest,}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\ \&rows,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au);}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<row\_t>}}\ \&what,\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\mbox{\hyperlink{classTTypeList}{TTypeList<row\_t>}}\ \&what,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di,}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au);}
+\DoxyCodeLine{00110\ \ \ \textcolor{keywordtype}{void}\ Assign(\mbox{\hyperlink{classTTypeList}{TTypeList<row\_t>}}\ \&dest,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<row\_t>}}\ \&src,}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au);}
+\DoxyCodeLine{00112\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00113\ \ \ SelectedTableRows()}
+\DoxyCodeLine{00114\ \ \ \{\}}
+\DoxyCodeLine{00115\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ SelectedTableRows\ \&str,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{void}\ AddSelectedBonds(\textcolor{keyword}{const}\ TStrList\ \&defs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ ProcessRows(bonds,\ defs,\ au);}
+\DoxyCodeLine{00119\ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordtype}{void}\ AddSelectedAngles(\textcolor{keyword}{const}\ TStrList\ \&defs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ ProcessRows(angles,\ defs,\ au);}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{void}\ AddSelectedDihedrals(\textcolor{keyword}{const}\ TStrList\ \&defs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ ProcessRows(dihedrals,\ defs,\ au);}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{void}\ Process(\textcolor{keyword}{class}\ TCif\ \&cif);}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au);}
+\DoxyCodeLine{00129\ \};}
+\DoxyCodeLine{00130\ EndXlibNamespace()}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

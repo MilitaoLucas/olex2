@@ -1,0 +1,299 @@
+\doxysection{pyext.\+h}
+\hypertarget{pyext_8h_source}{}\label{pyext_8h_source}\index{repository/pyext.h@{repository/pyext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_python\_ext\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_python\_ext\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}macrolib.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}etime.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}etbuffer.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#if\ !defined\ OLX\_CCAT}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ OLX\_CCAT(A,\ B)\ A\ \#\#\ B}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#if\ PY\_MAJOR\_VERSION\ >=\ 3}}
+\DoxyCodeLine{00021\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ olx\_PyUnicode\_Length(PyObject*\ pobj)\ \{\ \textcolor{keywordflow}{return}\ PyUnicode\_GetLength(pobj);\ \}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ OlxInitPyModule(m\_name,\ m\_def)\ PyMODINIT\_FUNC\ OLX\_CCAT(PyInit\_,\ m\_name)()\ \(\backslash\)}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\ \{\ return\ PythonExt::init\_module(\#m\_name,\ m\_def);\ \}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00025\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ olx\_PyUnicode\_Length(PyObject*\ pobj)\ \{\ \textcolor{keywordflow}{return}\ PyUnicode\_GetSize(pobj);\ \}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ OlxInitPyModule(m\_name,\ m\_def)\ void\ OLX\_CCAT(init,m\_name)()\ \(\backslash\)}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\ \{\ PythonExt::init\_module(\#m\_name,\ m\_def);\ \}}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00031\ \textcolor{keyword}{using\ namespace\ }olex2;}
+\DoxyCodeLine{00032\ \textcolor{keyword}{typedef}\ PyObject\ *(*pyRegFunc)();}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{class\ }PythonExt\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{static}\ PythonExt\ *\&Instance()\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{static}\ PythonExt*\ inst\ =\ 0;}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{return}\ inst;}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ IOlex2Processor*\ OlexProcessor;}
+\DoxyCodeLine{00040\ \ \ TLibrary\ *Library,\ *BindLibrary;}
+\DoxyCodeLine{00041\ \ \ TTypeList<pyRegFunc>\ ToRegister;}
+\DoxyCodeLine{00042\ \ \ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{struct\ }ProfileInfo\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{int}\ CallCount;}
+\DoxyCodeLine{00045\ \ \ \ \ uint64\_t\ TotalTimeMs;}
+\DoxyCodeLine{00046\ \ \ \ \ ProfileInfo()\ :}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ CallCount(0),}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ TotalTimeMs(0)}
+\DoxyCodeLine{00049\ \ \ \ \ \{\}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ Reset()\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ CallCount\ =\ 0;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ TotalTimeMs\ =\ 0;}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \};}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ Olx\_PyUnicode\_AsWideChar(PyObject\ *unic,\ \textcolor{keywordtype}{wchar\_t}\ *w,}
+\DoxyCodeLine{00057\ \ \ \ \ Py\_ssize\_t\ sz)}
+\DoxyCodeLine{00058\ \ \ \{}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#if\ PY\_MAJOR\_VERSION\ >=\ 3}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ PyUnicode\_AsWideChar(unic,\ w,\ sz);}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ PyUnicode\_AsWideChar((PyUnicodeObject\ *)unic,\ w,\ sz);}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#if\ PY\_MAJOR\_VERSION\ >=\ 3}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{static}\ PyObject\ *pyInit();}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00068\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{class\ }BasicWrapper\ :\ \textcolor{keyword}{public}\ IOlxObject\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ PythonExt::ProfileInfo\ *PI;}
+\DoxyCodeLine{00071\ \ \ \ \ uint64\_t\ StartTime;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{int}\ Recursion;\ \ \textcolor{comment}{//\ specifies\ that\ the\ function\ is\ called\ recursively}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00074\ \ \ \ \ PyObject\ *PyFunction;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsProfilingEnabled()\textcolor{keyword}{\ \ const\ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ PI\ !=\ 0;}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ OnCallEnter()\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (PI\ ==\ 0)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ PI-\/>CallCount++;}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (++Recursion\ >\ 1)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ StartTime\ =\ TETime::msNow();}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{void}\ OnCallLeave()\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (PI\ ==\ 0)\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (-\/-\/Recursion\ >\ 0)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ uint64\_t\ now\ =\ TETime::msNow();}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ PI-\/>TotalTimeMs\ +=\ ((StartTime\ <\ now)\ ?\ (now\ -\/\ StartTime)\ :\ 0);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ Recursion\ =\ 0;}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00101\ \ \ \ \ BasicWrapper(\textcolor{keywordtype}{bool}\ enableProfiling)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ PI\ =\ 0;}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ StartTime\ =\ 0;}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ Recursion\ =\ 0;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ EnableProfiling(enableProfiling);}
+\DoxyCodeLine{00106\ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{comment}{//..........................................................................}}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~BasicWrapper()\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ olx\_del\_obj(PI);}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ PyObject*\ GetFunction()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ PyFunction;\ \}}
+\DoxyCodeLine{00112\ \ \ \ \ PythonExt::ProfileInfo\ *ProfileInfo()\ \{\ \textcolor{keywordflow}{return}\ PI;\ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{void}\ EnableProfiling(\textcolor{keywordtype}{bool}\ enable)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (enable)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (PI\ ==\ 0)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ PI\ =\ \textcolor{keyword}{new}\ PythonExt::ProfileInfo();}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ PI-\/>Reset();}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ PI;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ PI\ =\ 0;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \};}
+\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00127\ \ \ TPtrList<BasicWrapper>\ ToDelete;}
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{void}\ macReset(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options,\ TMacroData\&\ E);}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{void}\ macRun(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options,\ TMacroData\&\ E);}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{void}\ funLogLevel(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00132\ \ \ \textcolor{keywordtype}{void}\ funExport(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00133\ \ \ PythonExt(IOlex2Processor*\ olexProcessor);}
+\DoxyCodeLine{00134\ \ \ uint16\_t\ LogLevel;}
+\DoxyCodeLine{00135\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00136\ \ \ \string~PythonExt();}
+\DoxyCodeLine{00137\ \ \ \textcolor{comment}{//\ must\ be\ called\ only\ once}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{static}\ PythonExt\&\ Init(IOlex2Processor*\ olexProcessor)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ *(\textcolor{keyword}{new}\ PythonExt(olexProcessor));}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Finilise()\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{if}\ (Instance()\ !=\ 0)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Instance();}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ Instance()\ =\ 0;}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{int}\ RunPython(\textcolor{keyword}{const}\ olxstr\&\ script);}
+\DoxyCodeLine{00148\ \ \ DefPropP(uint16\_t,\ LogLevel);}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00150\ \ \ T\ *\ AddToDelete(T*\ td)\ \{\ \textcolor{keywordflow}{return}\ (T*)ToDelete.Add(td);\ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \textcolor{keywordtype}{void}\ Register(\textcolor{keyword}{const}\ olxcstr\ \&name,\ pyRegFunc\ regFunc);}
+\DoxyCodeLine{00153\ \ \ TLibrary*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name\ =\ EmptyString());}
+\DoxyCodeLine{00154\ \ \ \textcolor{comment}{//\ \ static\ TLibrary*\ GetExportedLibrary()\ \ \{\ \ return\ Library;\ \ \}}}
+\DoxyCodeLine{00155\ \ \ TLibrary*\ GetBindLibrary()\ \{\ \textcolor{keywordflow}{return}\ BindLibrary;\ \}}
+\DoxyCodeLine{00156\ \ \ IOlex2Processor*\ GetOlexProcessor()\ \{\ \textcolor{keywordflow}{return}\ OlexProcessor;\ \}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keywordtype}{void}\ CheckInitialised();}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{static}\ PythonExt*\ GetInstance()\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{if}\ (Instance()\ ==\ 0)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Uninitialised\ object"{}});}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ Instance();}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordtype}{void}\ ProfileAll();}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ PyObject*\ GetProfileInfo();}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{//\ building\ string}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{static}\ PyObject*\ BuildString(\textcolor{keyword}{const}\ olxstr\&\ str)\ \{}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#ifdef\ \_UNICODE}}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{if}\ (str.IsEmpty())\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ PyUnicode\_FromWideChar(L\textcolor{stringliteral}{"{}"{}},\ 0);}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordflow}{return}\ PyUnicode\_FromWideChar(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00176\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{if}\ (str.IsEmpty())\ \textcolor{comment}{//\ silly\ Py...}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ PyString\_FromStringAndSize(\textcolor{stringliteral}{"{}"{}},\ 0);}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{return}\ PyString\_FromStringAndSize(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00181\ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{static}\ PyObject*\ BuildCString(\textcolor{keyword}{const}\ olxcstr\&\ str)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{if}\ (str.IsEmpty())\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ PyBytes\_FromStringAndSize(\textcolor{stringliteral}{"{}"{}},\ 0);}
+\DoxyCodeLine{00185\ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordflow}{return}\ PyBytes\_FromStringAndSize(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00187\ \ \ \}}
+\DoxyCodeLine{00188\ \ \ \textcolor{keyword}{static}\ PyObject*\ BuildWString(\textcolor{keyword}{const}\ olxwstr\&\ str)\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{if}\ (str.IsEmpty())\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ PyUnicode\_FromWideChar(L\textcolor{stringliteral}{"{}"{}},\ 0);}
+\DoxyCodeLine{00191\ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{return}\ PyUnicode\_FromWideChar(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \textcolor{comment}{//\ parsing\ string}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{static}\ olxstr\ ParseStr(PyObject\ *pobj)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordtype}{char}*\ crv;}
+\DoxyCodeLine{00197\ \ \ \ \ olxstr\ rv;}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{if}\ (pobj-\/>ob\_type\ ==\ \&PyBytes\_Type\ \&\&\ PyArg\_Parse(pobj,\ \textcolor{stringliteral}{"{}s"{}},\ \&crv))\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ rv\ =\ crv;}
+\DoxyCodeLine{00200\ \ \ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (pobj-\/>ob\_type\ ==\ \&PyUnicode\_Type)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ sz\ =\ olx\_PyUnicode\_Length(pobj);}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ TTBuffer<wchar\_t>\ wc\_bf(sz\ +\ 1);}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ sz\ =\ Olx\_PyUnicode\_AsWideChar(pobj,\ wc\_bf.Data(),\ sz);}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sz\ >\ 0)\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ rv.Append(wc\_bf.Data(),\ sz);}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00208\ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ pobj\ =\ PyObject\_Repr(pobj);}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pobj\ !=\ 0)\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ParseStr(pobj);}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00216\ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \textcolor{comment}{/*\ to\ tackle\ the\ difference\ with\ list\ and\ tuple...\ it\ steals\ the\ reference}}
+\DoxyCodeLine{00218\ \textcolor{comment}{\ \ now}}
+\DoxyCodeLine{00219\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SetDictItem(PyObject*\ dict,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ field\_name,}
+\DoxyCodeLine{00221\ \ \ \ \ PyObject*\ val)}
+\DoxyCodeLine{00222\ \ \ \{}
+\DoxyCodeLine{00223\ \ \ \ \ PyDict\_SetItemString(dict,\ field\_name,\ val);}
+\DoxyCodeLine{00224\ \ \ \ \ Py\_DECREF(val);}
+\DoxyCodeLine{00225\ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SetDictItem(PyObject*\ dict,\ PyObject*\ field\_name,}
+\DoxyCodeLine{00227\ \ \ \ \ PyObject*\ val)}
+\DoxyCodeLine{00228\ \ \ \{}
+\DoxyCodeLine{00229\ \ \ \ \ PyDict\_SetItem(dict,\ field\_name,\ val);}
+\DoxyCodeLine{00230\ \ \ \ \ Py\_DECREF(field\_name);}
+\DoxyCodeLine{00231\ \ \ \ \ Py\_DECREF(val);}
+\DoxyCodeLine{00232\ \ \ \}}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SetDictItem(PyObject*\ dict,\ \textcolor{keyword}{const}\ olxstr\&\ field\_name,}
+\DoxyCodeLine{00234\ \ \ \ \ PyObject*\ val)}
+\DoxyCodeLine{00235\ \ \ \{}
+\DoxyCodeLine{00236\ \ \ \ \ SetDictItem(dict,\ BuildString(field\_name),\ val);}
+\DoxyCodeLine{00237\ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{static}\ PyObject*\ SetErrorMsg(PyObject*\ err\_type,\ \textcolor{keyword}{const}\ olxcstr\&\ location,}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ msg)}
+\DoxyCodeLine{00240\ \ \ \{}
+\DoxyCodeLine{00241\ \ \ \ \ PyObject*\ val\ =\ BuildString(olxstr(location)\ <<\ \textcolor{stringliteral}{"{}:\ "{}}\ <<\ msg);}
+\DoxyCodeLine{00242\ \ \ \ \ PyErr\_SetObject(err\_type,\ val);}
+\DoxyCodeLine{00243\ \ \ \ \ Py\_DECREF(val);}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00245\ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{static}\ PyObject*\ SetErrorMsg(PyObject*\ err\_type,\ \textcolor{keyword}{const}\ olxcstr\&\ location,}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ msg)}
+\DoxyCodeLine{00248\ \ \ \{}
+\DoxyCodeLine{00249\ \ \ \ \ PyObject*\ val\ =\ Py\_BuildValue(\textcolor{stringliteral}{"{}s:\ s"{}},\ location.c\_str(),\ msg);}
+\DoxyCodeLine{00250\ \ \ \ \ PyErr\_SetObject(err\_type,\ val);}
+\DoxyCodeLine{00251\ \ \ \ \ Py\_DECREF(val);}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00253\ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{static}\ PyObject*\ InvalidArgumentException(\textcolor{keyword}{const}\ olxcstr\&\ location,}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ msg)}
+\DoxyCodeLine{00256\ \ \ \{}
+\DoxyCodeLine{00257\ \ \ \ \ PyObject*\ val\ =\ Py\_BuildValue(\textcolor{stringliteral}{"{}s:\ ss"{}},\ location.c\_str(),}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}invalid\ argument\ format\ for\ "{}},\ msg);}
+\DoxyCodeLine{00259\ \ \ \ \ PyErr\_SetObject(PyExc\_TypeError,\ val);}
+\DoxyCodeLine{00260\ \ \ \ \ Py\_DECREF(val);}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00262\ \ \ \}}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{keyword}{static}\ olxcstr\ UpdateBinaryFormat(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *f)\ \{}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\#if\ PY\_MAJOR\_VERSION\ >=\ 3}}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordflow}{return}\ olxcstr(f).Replace(\textcolor{stringliteral}{"{}s\#"{}},\ \textcolor{stringliteral}{"{}y\#"{}});}
+\DoxyCodeLine{00267\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keywordflow}{return}\ f;}
+\DoxyCodeLine{00269\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00270\ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \textcolor{keyword}{static}\ PyObject*\ PyNone()\ \{\ Py\_INCREF(Py\_None);\ \ \textcolor{keywordflow}{return}\ Py\_None;\ \}}
+\DoxyCodeLine{00272\ \ \ \textcolor{keyword}{static}\ PyObject*\ PyTrue()\ \{\ Py\_INCREF(Py\_True);\ \ \textcolor{keywordflow}{return}\ Py\_True;\ \}}
+\DoxyCodeLine{00273\ \ \ \textcolor{keyword}{static}\ PyObject*\ PyFalse()\ \{\ Py\_INCREF(Py\_False);\ \ \textcolor{keywordflow}{return}\ Py\_False;\ \}}
+\DoxyCodeLine{00274\ \ \ \textcolor{comment}{/*\ tuple\ parsing\ to\ process\ unicode\ and\ string\ in\ the\ same\ way...}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ \ \ \ s\#\ -\/\ char*,\ len}}
+\DoxyCodeLine{00276\ \textcolor{comment}{\ \ \ \ s\ -\/\ char*}}
+\DoxyCodeLine{00277\ \textcolor{comment}{\ \ \ \ w\ -\/\ olxstr}}
+\DoxyCodeLine{00278\ \textcolor{comment}{\ \ \ \ i\ -\/\ int}}
+\DoxyCodeLine{00279\ \textcolor{comment}{\ \ \ \ f\ -\/\ float}}
+\DoxyCodeLine{00280\ \textcolor{comment}{\ \ \ \ O\ -\/\ PyObject}}
+\DoxyCodeLine{00281\ \textcolor{comment}{\ \ \ \ |\ -\/\ optional\ params\ after\ column}}
+\DoxyCodeLine{00282\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00283\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ParseTuple(PyObject*\ tuple,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ ...);}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \ \ \textcolor{keyword}{static}\ PyObject*\ ToPython(\textcolor{keyword}{const}\ TDataItem\&\ i,\ PyObject*\ to=0);}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \ \ \textcolor{keyword}{static}\ olxcstr\ \&ModuleName();}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \ \ \textcolor{keyword}{static}\ PyObject\ *init\_module(\textcolor{keyword}{const}\ olxcstr\ \&name,\ PyMethodDef\ *m\_def);}
+\DoxyCodeLine{00290\ \};}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00293\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

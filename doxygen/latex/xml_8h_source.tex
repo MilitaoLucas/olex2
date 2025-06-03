@@ -1,0 +1,37 @@
+\doxysection{xml.\+h}
+\hypertarget{xml_8h_source}{}\label{xml_8h_source}\index{sdl/xml.h@{sdl/xml.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2014\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ \_\_sdl\_xml\_H}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ \_\_sdl\_xml\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00012\ BeginEsdlNamespace()}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ struct\ XML\ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{static}\ olxstr\ encode(\textcolor{keyword}{const}\ olxstr\ \&s)\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(s).Replace(\textcolor{charliteral}{'\&'},\ \textcolor{stringliteral}{"{}\&amp;"{}})}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ .Replace(\textcolor{charliteral}{'"{}'},\ \textcolor{stringliteral}{"{}\&quot;"{}})}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ .Replace(\textcolor{charliteral}{'>'},\ \textcolor{stringliteral}{"{}\&gt;"{}})}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ .Replace(\textcolor{charliteral}{'<'},\ \textcolor{stringliteral}{"{}\&lt;"{}});}
+\DoxyCodeLine{00020\ \ \ \}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ olxstr\ decode(\textcolor{keyword}{const}\ olxstr\ \&s)\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(s).Replace(\textcolor{stringliteral}{"{}\&quot;"{}},\ \textcolor{charliteral}{'"{}'})}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ .Replace(\textcolor{stringliteral}{"{}\&gt;"{}},\ \textcolor{charliteral}{'>'})}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ .Replace(\textcolor{stringliteral}{"{}\&lt;"{}},\ \textcolor{charliteral}{'<'})}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ .Replace(\textcolor{stringliteral}{"{}\&amp;"{}},\ \textcolor{charliteral}{'\&'});}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ EndEsdlNamespace()}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

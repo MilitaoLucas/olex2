@@ -1,0 +1,39 @@
+\doxysection{refinement\+\_\+listener.\+h}
+\hypertarget{refinement__listener_8h_source}{}\label{refinement__listener_8h_source}\index{repository/refinement\_listener.h@{repository/refinement\_listener.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}olxth.h"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{namespace\ }olex2\ \{}
+\DoxyCodeLine{00006\ \ \ \textcolor{keyword}{struct\ }RefinementListener\ \{}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\&\ Continue();}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DoBreak()\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \ \ Continue()\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00011\ \ \ \ \ \}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ OnProgress(\textcolor{keywordtype}{size\_t}\ max,\ \textcolor{keywordtype}{size\_t}\ pos);}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ResetInstance()\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ RefinementListener*\&\ i\ =\ GetInstance();}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ !=\ 0)\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ i;}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ i\ =\ 0;}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00020\ \ \ \ \ \}}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00022\ \ \ \ \ RefinementListener();}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{static}\ RefinementListener*\&\ GetInstance()\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \textcolor{keyword}{static}\ RefinementListener*\ i\ =\ 0;}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00026\ \ \ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \ \ olxstr\ fin\_fn;}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\&\ get\_critical\_section()\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ cs\_;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cs\_;}
+\DoxyCodeLine{00031\ \ \ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \};}
+\DoxyCodeLine{00033\ \}}
+
+\end{DoxyCode}

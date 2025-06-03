@@ -1,0 +1,487 @@
+\doxysection{sparser.\+h}
+\hypertarget{sparser_8h_source}{}\label{sparser_8h_source}\index{sdl/sparser.h@{sdl/sparser.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sld\_sparser\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sld\_sparser\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ arithmetic\ operators/functions}}
+\DoxyCodeLine{00016\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00017\ \ \ aofAdd\ \ =\ 1,}
+\DoxyCodeLine{00018\ \ \ aofSub\ \ =\ 2,}
+\DoxyCodeLine{00019\ \ \ aofMul\ \ =\ 3,}
+\DoxyCodeLine{00020\ \ \ aofDiv\ \ =\ 4,}
+\DoxyCodeLine{00021\ \ \ aofExt\ \ =\ 5,}
+\DoxyCodeLine{00022\ \ \ aofSin\ \ =\ 6,}
+\DoxyCodeLine{00023\ \ \ aofCos\ \ =\ 7,}
+\DoxyCodeLine{00024\ \ \ aofTan\ \ =\ 8,}
+\DoxyCodeLine{00025\ \ \ aofAsin\ =\ 9,}
+\DoxyCodeLine{00026\ \ \ aofAcos\ =\ 10,}
+\DoxyCodeLine{00027\ \ \ aofAtan\ =\ 11,}
+\DoxyCodeLine{00028\ \ \ aofAbs\ \ =\ 12,}
+\DoxyCodeLine{00029\ \ \ aofRemainder\ =\ 13;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ IC>}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTObjectFactory}{TObjectFactory}}\ \ \{}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTObjectFactory}{\string~TObjectFactory}}()\ \{\}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{virtual}\ IC\ *NewInstance(\mbox{\hyperlink{classTPtrList}{TPtrList<IOlxObject>}}*\ Arguments)\ =\ 0;}
+\DoxyCodeLine{00036\ \ \ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{class\ }TOperatorSignature\ \ \{}
+\DoxyCodeLine{00039\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00040\ \ \ olxstr\ StringValue;}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{short}\ ShortValue;}
+\DoxyCodeLine{00042\ \ \ TOperatorSignature(\textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ shortVal,\ \textcolor{keyword}{const}\ olxstr\ \&strVal);}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{static}\ TOperatorSignature\ DefinedFunctions[];}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{short}\ DefinedFunctionCount;}
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIDataProvider}{IDataProvider}}\ \{}
+\DoxyCodeLine{00048\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIDataProvider}{\string~IDataProvider}}()\ \{\}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIDataProvider}{IDataProvider}}*\ cast(\textcolor{keyword}{const}\ std::type\_info\ \&ti)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00056\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIEvaluable}{\string~IEvaluable}}()\ \{\}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Evaluate()\ =\ 0;}
+\DoxyCodeLine{00059\ \};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ an\ abstract\ class\ for\ evaluation\ simple\ expressions}}
+\DoxyCodeLine{00063\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00064\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIEvaluator}{\string~IEvaluator}}()\ \{\}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{class\ }TUnsupportedOperator\ :\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00069\ \ \ \ \ TUnsupportedOperator(\textcolor{keyword}{const}\ olxstr\&\ location)\ :}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ TBasicException(location,\ EmptyString())\ \{\}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TUnsupportedOperator(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00072\ \ \ \};}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classIEvaluator_1_1TUnsupportedOperator}{TUnsupportedOperator}}(\_\_OlxSourceInfo);\ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{throw}\ TUnsupportedOperator(\_\_OlxSourceInfo);\ \}}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ >\ (\textcolor{keyword}{const}\ IEvaluator\&)\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classIEvaluator_1_1TUnsupportedOperator}{TUnsupportedOperator}}(\_\_OlxSourceInfo);\ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ >=\ (\textcolor{keyword}{const}\ IEvaluator\&)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classIEvaluator_1_1TUnsupportedOperator}{TUnsupportedOperator}}(\_\_OlxSourceInfo);\ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ <\ (\textcolor{keyword}{const}\ IEvaluator\&)\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classIEvaluator_1_1TUnsupportedOperator}{TUnsupportedOperator}}(\_\_OlxSourceInfo);\ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ <=\ (\textcolor{keyword}{const}\ IEvaluator\&)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classIEvaluator_1_1TUnsupportedOperator}{TUnsupportedOperator}}(\_\_OlxSourceInfo);\ \}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{virtual}\ IEvaluator*\ NewInstance(IDataProvider*)\ =\ 0;}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{class\ }TCastException\ :\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00084\ \ \ \ \ TCastException(\textcolor{keyword}{const}\ olxstr\&\ location)\ :}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ TBasicException(location,\ EmptyString())\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ ;}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TCastException(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00089\ \ \ \};}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{long}\ EvaluateInt()\textcolor{keyword}{\ \ \ \ \ \ \ \ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classIEvaluator_1_1TCastException}{TCastException}}(\_\_OlxSourceInfo);\ \}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ EvaluateFloat()\textcolor{keyword}{\ \ \ \ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{throw}\ TCastException(\_\_OlxSourceInfo);\ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ EvaluateBool()\textcolor{keyword}{\ \ \ \ \ \ \ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classIEvaluator_1_1TCastException}{TCastException}}(\_\_OlxSourceInfo);\ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{virtual}\ olxstr\ EvaluateString()\textcolor{keyword}{\ \ \ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classIEvaluator_1_1TCastException}{TCastException}}(\_\_OlxSourceInfo);\ \}}
+\DoxyCodeLine{00094\ \};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIStringEvaluator}{IStringEvaluator}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \{}
+\DoxyCodeLine{00097\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00098\ \ \ \mbox{\hyperlink{classIStringEvaluator}{\string~IStringEvaluator}}()\ \{\ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ !EvaluateString().Comparei(val.EvaluateString());\ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateString().Comparei(val.EvaluateString())\ !=\ 0;\ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{bool}\ operator\ >\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateString().Comparei(val.EvaluateString())\ >\ 0;\ \}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{bool}\ operator\ >=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateString().Comparei(val.EvaluateString())\ >=\ 0;\ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{bool}\ operator\ <\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateString().Comparei(val.EvaluateString())\ <\ 0;\ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{bool}\ operator\ <=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateString().Comparei(val.EvaluateString())\ <=\ 0;\ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{long}\ EvaluateInt()\textcolor{keyword}{\ \ \ \ \ \ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateString().RadInt<\textcolor{keywordtype}{long}>();\ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{double}\ EvaluateFloat()\textcolor{keyword}{\ \ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateString().ToDouble();\ \}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{bool}\ EvaluateBool()\textcolor{keyword}{\ \ \ \ \ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateString().ToBool();\ \}}
+\DoxyCodeLine{00109\ \ \ olxstr\ EvaluateString()\ \ \ \ \ \ \ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00110\ \};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIFloatEvaluator}{IFloatEvaluator}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \ \{}
+\DoxyCodeLine{00113\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00114\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \&val)\textcolor{keyword}{\ const\ \ }\{\ \ \textcolor{keywordflow}{return}\ EvaluateFloat()\ ==\ val.EvaluateFloat();\ \ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \&val)\textcolor{keyword}{\ const\ \ }\{\ \ \textcolor{keywordflow}{return}\ EvaluateFloat()\ !=\ val.EvaluateFloat();\ \ \}}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordtype}{bool}\ operator\ >\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \&val)\textcolor{keyword}{\ const\ \ \ }\{\ \ \textcolor{keywordflow}{return}\ EvaluateFloat()\ >\ val.EvaluateFloat();\ \ \}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{bool}\ operator\ >=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \&val)\textcolor{keyword}{\ const\ \ }\{\ \ \textcolor{keywordflow}{return}\ EvaluateFloat()\ >=\ val.EvaluateFloat();\ \ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{bool}\ operator\ <\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \&val)\textcolor{keyword}{\ const\ \ \ }\{\ \ \textcolor{keywordflow}{return}\ EvaluateFloat()\ <\ val.EvaluateFloat();\ \ \}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{bool}\ operator\ <=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \&val)\textcolor{keyword}{\ const\ \ }\{\ \ \textcolor{keywordflow}{return}\ EvaluateFloat()\ <=\ val.EvaluateFloat();\ \ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ \textcolor{keywordtype}{long}\ EvaluateInt()\textcolor{keyword}{\ \ \ \ \ \ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{long})EvaluateFloat();\ \}}
+\DoxyCodeLine{00122\ \ \ olxstr\ EvaluateString()\textcolor{keyword}{\ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ olxstr(EvaluateFloat());\ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{double}\ EvaluateFloat()\ \ \ \ \ \ \ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00124\ \};}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIIntEvaluator}{IIntEvaluator}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \{}
+\DoxyCodeLine{00127\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateInt()\ ==\ val.EvaluateInt();\ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateInt()\ !=\ val.EvaluateInt();\ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{bool}\ operator\ >\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateInt()\ >\ val.EvaluateInt();\ \}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{bool}\ operator\ >=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateInt()\ >=\ val.EvaluateInt();\ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keywordtype}{bool}\ operator\ <\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateInt()\ <\ val.EvaluateInt();\ \}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{bool}\ operator\ <=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateInt()\ <=\ val.EvaluateInt();\ \}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \textcolor{keywordtype}{double}\ EvaluateFloat()\textcolor{keyword}{\ \ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{double})EvaluateInt();\ \}}
+\DoxyCodeLine{00136\ \ \ olxstr\ EvaluateString()\textcolor{keyword}{\ \ \ \ \ \ const\ }\{\ \textcolor{keywordflow}{return}\ olxstr(EvaluateInt());\ \}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{long}\ EvaluateInt()\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00138\ \};}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIBoolEvaluator}{IBoolEvaluator}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \{}
+\DoxyCodeLine{00141\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00142\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateBool()\ ==\ val.EvaluateBool();\ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\&\ val)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EvaluateBool()\ !=\ val.EvaluateBool();\ \}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordtype}{bool}\ \ \ EvaluateBool()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00145\ \ \ olxstr\ EvaluateString()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ olxstr(EvaluateBool());\ \}}
+\DoxyCodeLine{00146\ \};}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \textcolor{keyword}{class\ }TStringEvaluator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIStringEvaluator}{IStringEvaluator}}\ \{}
+\DoxyCodeLine{00149\ \ \ olxstr\ Value;}
+\DoxyCodeLine{00150\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00151\ \ \ TStringEvaluator(\textcolor{keyword}{const}\ olxstr\&\ Val)\ \{\ Value\ =\ Val;\ \}}
+\DoxyCodeLine{00152\ \ \ olxstr\ EvaluateString()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Value;\ \}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keywordtype}{void}\ SetValue(\textcolor{keyword}{const}\ olxstr\&\ v)\ \{\ Value\ =\ v;\ \}}
+\DoxyCodeLine{00154\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ NewInstance(\mbox{\hyperlink{classIDataProvider}{IDataProvider}}*)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TStringEvaluator(Value);\ \}}
+\DoxyCodeLine{00155\ \};}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \textcolor{keyword}{class\ }TScalarEvaluator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIFloatEvaluator}{IFloatEvaluator}}\ \{}
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordtype}{double}\ Value;}
+\DoxyCodeLine{00159\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00160\ \ \ TScalarEvaluator(\textcolor{keywordtype}{double}\ Val)\ \{\ Value\ =\ Val;\ \}}
+\DoxyCodeLine{00161\ \ \ \string~TScalarEvaluator()\ \{\}}
+\DoxyCodeLine{00162\ \ \ \textcolor{keywordtype}{double}\ EvaluateFloat()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Value;\ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keywordtype}{void}\ SetValue(\textcolor{keywordtype}{double}\ v)\ \{\ Value\ =\ v;\ \}}
+\DoxyCodeLine{00164\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ NewInstance(\mbox{\hyperlink{classIDataProvider}{IDataProvider}}*)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TScalarEvaluator(Value);\ \}}
+\DoxyCodeLine{00165\ \};}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \textcolor{keyword}{class\ }TBoolEvaluator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIBoolEvaluator}{IBoolEvaluator}}\ \{}
+\DoxyCodeLine{00168\ \ \ \textcolor{keywordtype}{bool}\ Value;}
+\DoxyCodeLine{00169\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00170\ \ \ TBoolEvaluator(\textcolor{keywordtype}{bool}\ Val)\ \{\ Value\ =\ Val;\ \}}
+\DoxyCodeLine{00171\ \ \ \string~TBoolEvaluator()\ \{\ ;\ \}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordtype}{bool}\ \ \ EvaluateBool()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Value;\ \}}
+\DoxyCodeLine{00173\ \ \ \textcolor{keywordtype}{void}\ SetValue(\textcolor{keywordtype}{bool}\ v)\ \{\ Value\ =\ v;\ \}}
+\DoxyCodeLine{00174\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ NewInstance(\mbox{\hyperlink{classIDataProvider}{IDataProvider}}*)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TBoolEvaluator(Value);\ \}}
+\DoxyCodeLine{00175\ \};}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ PropertyProv\textcolor{keywordtype}{id}erClass,\ \textcolor{keyword}{class}\ EvaluatorClass>}
+\DoxyCodeLine{00178\ \textcolor{keyword}{class\ }TPropertyEvaluator\ :\ \textcolor{keyword}{public}\ EvaluatorClass\ \{}
+\DoxyCodeLine{00179\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00180\ \ \ PropertyProviderClass\ FData;}
+\DoxyCodeLine{00181\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00182\ \ \ TPropertyEvaluator()\ \{\ FData\ =\ 0;\ \}}
+\DoxyCodeLine{00183\ \ \ TPropertyEvaluator(PropertyProviderClass\ data)\ \{\ FData\ =\ data;\ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{keywordtype}{void}\ Data(PropertyProviderClass\ data)\ \{\ FData\ =\ data;\ \}}
+\DoxyCodeLine{00185\ \ \ PropertyProviderClass\ Data()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FData;\ \}}
+\DoxyCodeLine{00186\ \};}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ CollectionProv\textcolor{keywordtype}{id}erClass,\ \textcolor{keyword}{class}\ PropertyProv\textcolor{keywordtype}{id}erClass>}
+\DoxyCodeLine{00189\ \textcolor{keyword}{class\ }ACollection\ \{}
+\DoxyCodeLine{00190\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00191\ \ \ CollectionProviderClass\ FData;}
+\DoxyCodeLine{00192\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00193\ \ \ ACollection()\ \{\ FData\ =\ 0;\ \}}
+\DoxyCodeLine{00194\ \ \ ACollection(CollectionProviderClass\ data)\ \{\ FData\ =\ data;\ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{virtual}\ \string~ACollection()\ \{\}}
+\DoxyCodeLine{00196\ \ \ PropertyProviderClass\ Item(\textcolor{keywordtype}{int}\ index)\ \{\ \textcolor{keywordflow}{return}\ 0;\ \}}
+\DoxyCodeLine{00197\ \ \ \textcolor{keywordtype}{void}\ Data(CollectionProviderClass\ data)\ \{\ FData\ =\ data;\ \}}
+\DoxyCodeLine{00198\ \ \ CollectionProviderClass\ Data()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FData;\ \}}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ Size()\ =\ 0;}
+\DoxyCodeLine{00200\ \};}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ CollectionProv\textcolor{keywordtype}{id}erClass,\ \textcolor{keyword}{class}\ PropertyProv\textcolor{keywordtype}{id}erClass,\ \textcolor{keyword}{class}\ EvaluatorClass>}
+\DoxyCodeLine{00203\ \textcolor{keyword}{class\ }TCollectionPropertyEvaluator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \{}
+\DoxyCodeLine{00204\ \ \ \mbox{\hyperlink{classACollection}{ACollection<CollectionProviderClass,\ PropertyProviderClass>}}*\ FCollection;}
+\DoxyCodeLine{00205\ \ \ \mbox{\hyperlink{classTPropertyEvaluator}{TPropertyEvaluator<PropertyProviderClass,\ EvaluatorClass>}}*\ FPropertyEvaluator;}
+\DoxyCodeLine{00206\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ FIterator;}
+\DoxyCodeLine{00207\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00208\ \ \ TCollectionPropertyEvaluator(\mbox{\hyperlink{classACollection}{ACollection<CollectionProviderClass,\ PropertyProviderClass>}}*\ C,}
+\DoxyCodeLine{00209\ \ \ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ itr,\ \mbox{\hyperlink{classTPropertyEvaluator}{TPropertyEvaluator<PropertyProviderClass,\ EvaluatorClass>}}*\ PE)}
+\DoxyCodeLine{00210\ \ \ \{}
+\DoxyCodeLine{00211\ \ \ \ \ FCollection\ =\ C;}
+\DoxyCodeLine{00212\ \ \ \ \ FIterator\ =\ itr;}
+\DoxyCodeLine{00213\ \ \ \ \ FPropertyEvaluator\ =\ PE;}
+\DoxyCodeLine{00214\ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \textcolor{keywordtype}{bool}\ EvaluateBool()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00216\ \ \ \ \ FPropertyEvaluator-\/>Data(FCollection-\/>Item(FIterator-\/>EvaluateInt()));}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordflow}{return}\ FPropertyEvaluator-\/>EvaluateBool();}
+\DoxyCodeLine{00218\ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{long}\ EvaluateInt()\textcolor{keyword}{\ \ const\ }\{}
+\DoxyCodeLine{00220\ \ \ \ \ FPropertyEvaluator-\/>Data(FCollection-\/>Item(FIterator-\/>EvaluateInt()));}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordflow}{return}\ FPropertyEvaluator-\/>EvaluateInt();}
+\DoxyCodeLine{00222\ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \textcolor{keywordtype}{double}\ EvaluateFloat()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00224\ \ \ \ \ FPropertyEvaluator-\/>Data(FCollection-\/>Item(FIterator-\/>EvaluateInt()));}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keywordflow}{return}\ FPropertyEvaluator-\/>EvaluateDouble();}
+\DoxyCodeLine{00226\ \ \ \}}
+\DoxyCodeLine{00227\ \ \ olxstr\ EvaluateString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00228\ \ \ \ \ FPropertyEvaluator-\/>Data(FCollection-\/>Item(FIterator-\/>EvaluateInt()));}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordflow}{return}\ FPropertyEvaluator-\/>EvaluateString();}
+\DoxyCodeLine{00230\ \ \ \}}
+\DoxyCodeLine{00231\ \};}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \textcolor{comment}{//\ property\ types}}
+\DoxyCodeLine{00234\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ mtUndefined\ \ =\ -\/1,}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ mtProperty\ \ \ =\ 1,}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ mtComplex\ \ \ \ =\ 2,}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ mtCollection\ =\ 3;}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIClassDefinition}{IClassDefinition}}\ \ \{}
+\DoxyCodeLine{00240\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIClassDefinition}{\string~IClassDefinition}}()\ \{\}}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{//\ returns\ one\ of\ the\ above\ mtXXX\ constants}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{short}\ GetMemberType(\textcolor{keyword}{const}\ olxstr\&\ propName);}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetPropertyType(\textcolor{keyword}{const}\ olxstr\&\ propName);}
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetComplexType(\textcolor{keyword}{const}\ olxstr\&\ propName);}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetCollectionType(\textcolor{keyword}{const}\ olxstr\&\ propName);}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ GetPropertyEvaluator(\textcolor{keyword}{const}\ olxstr\&\ propName);}
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIDataProvider}{IDataProvider}}*\ GetComplexEvaluator(\textcolor{keyword}{const}\ olxstr\&\ propName);}
+\DoxyCodeLine{00249\ \ \ \textcolor{comment}{//virtual\ ICollection*\ GetCollectionEvaluator(const\ olxstr\&\ propName);}}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \};}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{keyword}{class\ }TEvaluatorFactory\ \ \{}
+\DoxyCodeLine{00254\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<IClassDefinition*,\ true>}}\ ClassDefinitions;}
+\DoxyCodeLine{00255\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00256\ \ \ TEvaluatorFactory()\ \{\}}
+\DoxyCodeLine{00257\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Evaluator(\textcolor{keyword}{const}\ olxstr\ \&Val)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ TStrList\ toks(Val,\ \textcolor{charliteral}{'.'});}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{if}(\ toks.Count()\ <=\ 1\ )\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \textcolor{comment}{//\ a\ special\ action\ has\ to\ be\ taken\ if\ operators\ are\ to\ be\ considered}}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \textcolor{comment}{//\ in\ the\ future}}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00263\ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \mbox{\hyperlink{classIClassDefinition}{IClassDefinition}}\ *\ classDef\ =\ ClassDefinitions.Find(toks[0],\ 0);}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{comment}{//TODO:\ report\ the\ error}}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordflow}{if}\ (classDef\ ==\ 0)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00268\ \ \ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \ \ toks.Delete(0);}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordflow}{return}\ ProcessProperties(classDef,\ toks);}
+\DoxyCodeLine{00271\ \ \ \}}
+\DoxyCodeLine{00272\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00273\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ ProcessProperties(\mbox{\hyperlink{classIClassDefinition}{IClassDefinition}}\ *classDef,\ \textcolor{keyword}{const}\ TStrList\ \&props)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordtype}{short}\ memberType\ =\ classDef-\/>GetMemberType(props[0]);}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{switch}(\ memberType\ )\ \{}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ mtProperty:}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ mtComplex:}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ mtCollection:}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \textcolor{comment}{//\ TODO:\ report\ error}}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00285\ \ \ \ \ \}}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00287\ \ \ \}}
+\DoxyCodeLine{00288\ \};}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}\ \{}
+\DoxyCodeLine{00291\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00292\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ EvaluatorCount()\ =\ 0;}
+\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Evaluator(\textcolor{keywordtype}{size\_t}\ index)\ =\ 0;}
+\DoxyCodeLine{00294\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}*\ FindFactory(\textcolor{keyword}{const}\ olxstr\&)\ \{}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00296\ \ \ \}}
+\DoxyCodeLine{00297\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ EvaluatorName(\textcolor{keywordtype}{size\_t}\ index)\ =\ 0;}
+\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIEvaluatorFactory}{\string~IEvaluatorFactory}}()\ \{\}}
+\DoxyCodeLine{00299\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Evaluator(\textcolor{keyword}{const}\ olxstr\&\ Val)\ =\ 0;}
+\DoxyCodeLine{00300\ \};}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00303\ \textcolor{comment}{a\ class\ to\ peform\ comparison\ operations\ on\ one\ (!)\ or\ two\ objects}}
+\DoxyCodeLine{00304\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00305\ \textcolor{keyword}{class\ }TArithmeticOperator:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ \ \{}
+\DoxyCodeLine{00306\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ *Left,\ *Right;}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordtype}{short}\ Type;}
+\DoxyCodeLine{00308\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00309\ \ \ TArithmeticOperator(\textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ type,\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ *left,\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ *Right\ =\ 0);}
+\DoxyCodeLine{00310\ \};}
+\DoxyCodeLine{00311\ \textcolor{comment}{/*\ \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_*/}}
+\DoxyCodeLine{00312\ \textcolor{comment}{/*\ \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_COMPARISON\ OPERATORS\ IMPLEMENTATION\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_*/}}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \textcolor{keyword}{class\ }TcoGOperator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00315\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Left,\ *\ Right;}
+\DoxyCodeLine{00316\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00317\ \ \ TcoGOperator(\mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ left,\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ right)\ \{}
+\DoxyCodeLine{00318\ \ \ \ \ Left\ =\ left;}
+\DoxyCodeLine{00319\ \ \ \ \ Right\ =\ right;}
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{keywordflow}{if}\ (Left\ ==\ 0\ ||\ Right\ ==\ 0)\ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}NULL\ evaluator"{}});}
+\DoxyCodeLine{00322\ \ \ \ \ \}}
+\DoxyCodeLine{00323\ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \textcolor{keywordtype}{bool}\ Evaluate()\ \{\ \textcolor{keywordflow}{return}\ *Left\ >\ *\ Right;\ \}}
+\DoxyCodeLine{00325\ \};}
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00327\ \textcolor{keyword}{class\ }TcoLOperator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00328\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Left,\ *\ Right;}
+\DoxyCodeLine{00329\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00330\ \ \ TcoLOperator(\mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ left,\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ right)\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ Left\ =\ left;}
+\DoxyCodeLine{00332\ \ \ \ \ Right\ =\ right;}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keywordflow}{if}\ (Left\ ==\ 0\ ||\ Right\ ==\ 0)\ \{}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}NULL\ evaluator"{}});}
+\DoxyCodeLine{00335\ \ \ \ \ \}}
+\DoxyCodeLine{00336\ \ \ \}}
+\DoxyCodeLine{00337\ \ \ \textcolor{keywordtype}{bool}\ Evaluate()\ \{\ \textcolor{keywordflow}{return}\ *Left\ <\ *Right;\ \}}
+\DoxyCodeLine{00338\ \};}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ \textcolor{keyword}{class\ }TcoNEOperator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00341\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Left,\ *\ Right;}
+\DoxyCodeLine{00342\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00343\ \ \ TcoNEOperator(\mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ left,\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ right)\ \{}
+\DoxyCodeLine{00344\ \ \ \ \ Left\ =\ left;}
+\DoxyCodeLine{00345\ \ \ \ \ Right\ =\ right;}
+\DoxyCodeLine{00346\ \ \ \ \ \textcolor{keywordflow}{if}\ (Left\ ==\ 0\ ||\ Right\ ==\ 0)\ \{}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}NULL\ evaluator"{}});}
+\DoxyCodeLine{00348\ \ \ \ \ \}}
+\DoxyCodeLine{00349\ \ \ \}}
+\DoxyCodeLine{00350\ \ \ \textcolor{keywordtype}{bool}\ Evaluate()\ \{\ \textcolor{keywordflow}{return}\ *Left\ !=\ *Right;\ \}}
+\DoxyCodeLine{00351\ \};}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \textcolor{keyword}{class\ }TcoGEOperator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00354\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Left,\ *\ Right;}
+\DoxyCodeLine{00355\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00356\ \ \ TcoGEOperator(\mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ left,\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ right)\ \{}
+\DoxyCodeLine{00357\ \ \ \ \ Left\ =\ left;}
+\DoxyCodeLine{00358\ \ \ \ \ Right\ =\ right;}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keywordflow}{if}\ (Left\ ==\ 0\ ||\ Right\ ==\ 0)\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}NULL\ evaluator"{}});}
+\DoxyCodeLine{00361\ \ \ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \textcolor{keywordtype}{bool}\ Evaluate()\ \{\ \textcolor{keywordflow}{return}\ *Left\ >=\ *Right;\ \}}
+\DoxyCodeLine{00364\ \};}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \textcolor{keyword}{class\ }TcoEOperator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00367\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Left,\ *\ Right;}
+\DoxyCodeLine{00368\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00369\ \ \ TcoEOperator(\mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ left,\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ right)\ \{}
+\DoxyCodeLine{00370\ \ \ \ \ Left\ =\ left;}
+\DoxyCodeLine{00371\ \ \ \ \ Right\ =\ right;}
+\DoxyCodeLine{00372\ \ \ \ \ \textcolor{keywordflow}{if}\ (Left\ ==\ 0\ ||\ Right\ ==\ 0)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}NULL\ evaluator"{}});}
+\DoxyCodeLine{00374\ \ \ \ \ \}}
+\DoxyCodeLine{00375\ \ \ \}}
+\DoxyCodeLine{00376\ \ \ \textcolor{keywordtype}{bool}\ Evaluate()\ \{\ \textcolor{keywordflow}{return}\ *Left\ ==\ *Right;\ \}}
+\DoxyCodeLine{00377\ \};}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \textcolor{keyword}{class\ }TcoLEOperator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00380\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Left,\ *\ Right;}
+\DoxyCodeLine{00381\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00382\ \ \ TcoLEOperator(\mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ left,\ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ right)\ \{}
+\DoxyCodeLine{00383\ \ \ \ \ Left\ =\ left;}
+\DoxyCodeLine{00384\ \ \ \ \ Right\ =\ right;}
+\DoxyCodeLine{00385\ \ \ \ \ \textcolor{keywordflow}{if}\ (Left\ ==\ 0\ ||\ Right\ ==\ 0)\ \{}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}NULL\ evaluator"{}});}
+\DoxyCodeLine{00387\ \ \ \ \ \}}
+\DoxyCodeLine{00388\ \ \ \}}
+\DoxyCodeLine{00389\ \ \ \textcolor{keywordtype}{bool}\ Evaluate()\ \{\ \textcolor{keywordflow}{return}\ *Left\ <=\ *Right;\ \}}
+\DoxyCodeLine{00390\ \};}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \textcolor{comment}{/*\ \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_*/}}
+\DoxyCodeLine{00393\ \textcolor{comment}{/*\ \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_*/}}
+\DoxyCodeLine{00394\ \textcolor{comment}{/*\ \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_LOGICAL\ OPERATORS\ IMPLEMENTATION\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_*/}}
+\DoxyCodeLine{00395\ \textcolor{keyword}{class\ }TloAndOperator:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \ \{}
+\DoxyCodeLine{00396\ \ \ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ *OperandA,\ *OperandB;}
+\DoxyCodeLine{00397\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00398\ \ \ TloAndOperator(\mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ *operandA,\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ *operandB)\ \{}
+\DoxyCodeLine{00399\ \ \ \ \ OperandA\ =\ operandA;}
+\DoxyCodeLine{00400\ \ \ \ \ OperandB\ =\ operandB;}
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{keywordflow}{if}\ (OperandA\ ==\ 0\ ||\ OperandB\ ==\ 0)\ \{}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}NULL\ evaluable"{}});}
+\DoxyCodeLine{00403\ \ \ \ \ \}}
+\DoxyCodeLine{00404\ \ \ \}}
+\DoxyCodeLine{00405\ \ \ \textcolor{keywordtype}{bool}\ Evaluate()\ \{}
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keywordflow}{return}\ OperandA-\/>Evaluate()\ \&\&\ OperandB-\/>Evaluate();}
+\DoxyCodeLine{00407\ \ \ \}}
+\DoxyCodeLine{00408\ \};}
+\DoxyCodeLine{00409\ }
+\DoxyCodeLine{00410\ \textcolor{keyword}{class\ }TloOrOperator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00411\ \ \ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ OperandA,\ *\ OperandB;}
+\DoxyCodeLine{00412\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00413\ \ \ TloOrOperator(\mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ operandA,\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ operandB)\ \{}
+\DoxyCodeLine{00414\ \ \ \ \ OperandA\ =\ operandA;}
+\DoxyCodeLine{00415\ \ \ \ \ OperandB\ =\ operandB;}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keywordflow}{if}\ (OperandA\ ==\ 0\ ||\ OperandB\ ==\ 0)\ \{}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}NULL\ evaluable"{}});}
+\DoxyCodeLine{00418\ \ \ \ \ \}}
+\DoxyCodeLine{00419\ \ \ \}}
+\DoxyCodeLine{00420\ \ \ \textcolor{keywordtype}{bool}\ Evaluate()\ \{}
+\DoxyCodeLine{00421\ \ \ \ \ \textcolor{keywordflow}{return}\ OperandA-\/>Evaluate()\ ||\ OperandB-\/>Evaluate();}
+\DoxyCodeLine{00422\ \ \ \}}
+\DoxyCodeLine{00423\ \};}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \textcolor{keyword}{class\ }TloNotOperator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00426\ \ \ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ Operand;}
+\DoxyCodeLine{00427\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00428\ \ \ TloNotOperator(\mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ operand)\ \{}
+\DoxyCodeLine{00429\ \ \ \ \ Operand\ =\ operand;}
+\DoxyCodeLine{00430\ \ \ \ \ \textcolor{keywordflow}{if}\ (Operand\ ==\ 0)\ \{}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}NULL\ evaluable"{}});}
+\DoxyCodeLine{00432\ \ \ \ \ \}}
+\DoxyCodeLine{00433\ \ \ \}}
+\DoxyCodeLine{00434\ \ \ \textcolor{keywordtype}{bool}\ Evaluate()\ \{\ \textcolor{keywordflow}{return}\ !Operand-\/>Evaluate();\ \}}
+\DoxyCodeLine{00435\ \};}
+\DoxyCodeLine{00436\ \textcolor{comment}{/*\ \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_*/}}
+\DoxyCodeLine{00437\ }
+\DoxyCodeLine{00438\ \textcolor{comment}{//\ signgle\ argument\ operator\ factory}}
+\DoxyCodeLine{00439\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ OC,\ \textcolor{keyword}{class}\ IC,\ \textcolor{keyword}{class}\ AC>}
+\DoxyCodeLine{00440\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTsaFactory}{TsaFactory}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTObjectFactory}{TObjectFactory}}<OC>\ \{}
+\DoxyCodeLine{00441\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00442\ \ \ \mbox{\hyperlink{classTsaFactory}{\string~TsaFactory}}()\ \{\}}
+\DoxyCodeLine{00443\ \ \ OC*\ NewInstance(\mbox{\hyperlink{classTPtrList}{TPtrList<IOlxObject>}}*\ Args)\ \{}
+\DoxyCodeLine{00444\ \ \ \ \ \textcolor{keywordflow}{if}\ (Args-\/>Count()\ !=\ 1)\ \{}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}number\ of\ operands"{}});}
+\DoxyCodeLine{00446\ \ \ \ \ \}}
+\DoxyCodeLine{00447\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ IC((AC*)Args-\/>GetItem(0));}
+\DoxyCodeLine{00448\ \ \ \}}
+\DoxyCodeLine{00449\ \};}
+\DoxyCodeLine{00450\ \textcolor{comment}{//\ two\ argument\ operator\ factory}}
+\DoxyCodeLine{00451\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ OC,\ \textcolor{keyword}{class}\ IC,\ \textcolor{keyword}{class}\ AC>}
+\DoxyCodeLine{00452\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTtaFactory}{TtaFactory}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTObjectFactory}{TObjectFactory}}<OC>\ \{}
+\DoxyCodeLine{00453\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00454\ \ \ \mbox{\hyperlink{classTtaFactory}{\string~TtaFactory}}()\ \{\}}
+\DoxyCodeLine{00455\ \ \ OC*\ NewInstance(\mbox{\hyperlink{classTPtrList}{TPtrList<IOlxObject>}}*\ Args)\ \{}
+\DoxyCodeLine{00456\ \ \ \ \ \textcolor{keywordflow}{if}\ (Args-\/>Count()\ !=\ 2)\ \{}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}number\ of\ operands"{}});}
+\DoxyCodeLine{00458\ \ \ \ \ \}}
+\DoxyCodeLine{00459\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ IC((AC*)Args-\/>GetItem(0),\ (AC*)Args-\/>GetItem(1));}
+\DoxyCodeLine{00460\ \ \ \}}
+\DoxyCodeLine{00461\ \};}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ }
+\DoxyCodeLine{00464\ \textcolor{keyword}{class\ }TExpressionParser\ \{}
+\DoxyCodeLine{00465\ \ \ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ Root;}
+\DoxyCodeLine{00466\ \ \ \mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}*\ EvaluatorFactory;}
+\DoxyCodeLine{00467\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<IEvaluable>}}\ Evaluables;}
+\DoxyCodeLine{00468\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<IEvaluator>}}\ Evaluators;}
+\DoxyCodeLine{00469\ \ \ TStrList\ FErrors;}
+\DoxyCodeLine{00470\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TObjectFactory<IEvaluable>}}*,\ \textcolor{keyword}{false}>\ LogicalOperators,}
+\DoxyCodeLine{00471\ \ \ \ \ ComparisonOperators,\ ArithmeticFunctions;}
+\DoxyCodeLine{00472\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00473\ \ \ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ SimpleParse(\textcolor{keyword}{const}\ olxstr\&\ Expression);}
+\DoxyCodeLine{00474\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00475\ \ \ TExpressionParser(\mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}*\ FactoryInstance,\ \textcolor{keyword}{const}\ olxstr\&\ Text);}
+\DoxyCodeLine{00476\ \ \ \string~TExpressionParser();}
+\DoxyCodeLine{00477\ \ \ \textcolor{keywordtype}{bool}\ Evaluate()\ \{\ \textcolor{keywordflow}{return}\ Root-\/>Evaluate();\ \}}
+\DoxyCodeLine{00478\ \ \ \textcolor{keyword}{const}\ TStrList\&\ Errors()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FErrors;\ \}}
+\DoxyCodeLine{00479\ \};}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

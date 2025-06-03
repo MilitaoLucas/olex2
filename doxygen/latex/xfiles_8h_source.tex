@@ -1,0 +1,233 @@
+\doxysection{xfiles.\+h}
+\hypertarget{xfiles_8h_source}{}\label{xfiles_8h_source}\index{xlib/xfiles.h@{xlib/xfiles.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_xfiles\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_xfiles\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}symmlib.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}refmodel.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}lattice.h"{}}}
+\DoxyCodeLine{00016\ BeginXlibNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ TBasicCFile\ :\ public\ \mbox{\hyperlink{classACollectionItem}{ACollectionItem}}\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{void}\ PostLoad();}
+\DoxyCodeLine{00021\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00022\ \ \ olxstr\ FileName,\ \ \textcolor{comment}{//\ file\ name\ if\ file\ is\ loaded}}
+\DoxyCodeLine{00023\ \ \ \ \ Title;\ \ \ \ \ \textcolor{comment}{//\ title\ of\ the\ file}}
+\DoxyCodeLine{00024\ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\ RefMod;}
+\DoxyCodeLine{00025\ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ AsymmUnit;}
+\DoxyCodeLine{00026\ \ \ \textcolor{comment}{//\ do\ not\ use\ it\ directly\ -\/\ use\ LoadStrings\ instead}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromStrings(\textcolor{keyword}{const}\ TStrList\&\ Strings)\ =\ 0;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{void}\ GenerateCellForCartesianFormat();}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SaveToStrings(TStrList\&\ Strings)\ =\ 0;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ TBasicCFile();}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \string~TBasicCFile();}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ GetAsymmUnit()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ AsymmUnit;\ \}}
+\DoxyCodeLine{00035\ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ GetAsymmUnit()\ \{\ \textcolor{keywordflow}{return}\ AsymmUnit;\ \}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ GetRM()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RefMod;\ \}}
+\DoxyCodeLine{00037\ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ GetRM()\ \{\ \textcolor{keywordflow}{return}\ RefMod;\ \}}
+\DoxyCodeLine{00038\ \ \ DefPropC(olxstr,\ Title)}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetFileName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FileName;\ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{/*\ this\ function\ could\ be\ const,\ but\ many\ file\ handlers\ might\ do\ some}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ preprocessing\ of\ changes\ before\ flushing...}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SaveToFile(\textcolor{keyword}{const}\ olxstr\&\ fileName);}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromFile(\textcolor{keyword}{const}\ olxstr\&\ fileName);}
+\DoxyCodeLine{00045\ \ \ \textcolor{comment}{//\ default\ implementation\ read\ strings\ and\ calls\ LoadStrings}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromStream(\mbox{\hyperlink{classIInputStream}{IInputStream}}\ \&is,\ \textcolor{keyword}{const}\ olxstr\&\ nameToken);}
+\DoxyCodeLine{00047\ \ \ \textcolor{comment}{//\ name\ token\ can\ specify\ the\ dataset\ index\ or\ name}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{void}\ LoadStrings(\textcolor{keyword}{const}\ TStrList\ \&lines,}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&nameToken\ =\ EmptyString());}
+\DoxyCodeLine{00050\ \ \ \textcolor{comment}{//\ only\ oxm\ loader\ is\ native}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsNative()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{//\ adopts\ the\ content\ of\ the\ AsymmUnit\ to\ the\ virtual\ format}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Adopt(\textcolor{keyword}{class}\ \mbox{\hyperlink{classTXFile}{TXFile}}\ \&,\ \textcolor{keywordtype}{int}\ flags\ =\ 0)\ =\ 0;}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ RearrangeAtoms(\textcolor{keyword}{const}\ TSizeList\ \&\ new\_indices);}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{//\ saves\ just\ title\ and\ file\ name}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00057\ \ \ \textcolor{comment}{//\ loads\ only\ title\ and\ file\ name}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00059\ \};}
+\DoxyCodeLine{00060\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00063\ \ \ XFILE\_EVT\_SG\_Change,}
+\DoxyCodeLine{00064\ \ \ XFILE\_EVT\_UNIQ,}
+\DoxyCodeLine{00065\ \ \ XFILE\_EVT\_LAST}
+\DoxyCodeLine{00066\ \};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00069\ \textcolor{keyword}{class\ }TXFile\ :\ \textcolor{keyword}{public}\ AEventsDispatcher\ \{}
+\DoxyCodeLine{00070\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00071\ \ \ \mbox{\hyperlink{classTLattice}{TLattice}}\ Lattice;}
+\DoxyCodeLine{00072\ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\ RefMod;}
+\DoxyCodeLine{00073\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00074\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00075\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ TBasicCFile*>}}\ FileFormats;}
+\DoxyCodeLine{00076\ \ \ TBasicCFile\ *FLastLoader;}
+\DoxyCodeLine{00077\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}*\ FSG;}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ ValidateTabs();}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{void}\ PostLoad(\textcolor{keyword}{const}\ olxstr\ \&fn,\ TBasicCFile\ *loader,\ \textcolor{keywordtype}{bool}\ replicated);}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{double}\ CalcMass(\textcolor{keyword}{const}\ ContentList\ \&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00083\ \ \ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \textcolor{keyword}{const}*\ data\_source;}
+\DoxyCodeLine{00084\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00085\ \ \ TXFile(\mbox{\hyperlink{structASObjectProvider}{ASObjectProvider}}\&\ Objects);}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{virtual}\ \string~TXFile();}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ \&OnFileLoad,}
+\DoxyCodeLine{00089\ \ \ \ \ \&OnFileSave,}
+\DoxyCodeLine{00090\ \ \ \ \ \&OnFileClose;\ \textcolor{comment}{//\ OnEnter,\ LastLoader\ is\ passed\ as\ Data}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \textcolor{comment}{/*\ takes\ over\ the\ object\ event\ queues}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ TakeOver(TXFile\ \&f);}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ GetLattice()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Lattice;\ \}}
+\DoxyCodeLine{00097\ \ \ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ GetLattice()\ \{\ \textcolor{keywordflow}{return}\ Lattice;\ \}}
+\DoxyCodeLine{00098\ \ \ \mbox{\hyperlink{classTUnitCell}{TUnitCell}}\&\ GetUnitCell()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Lattice.GetUnitCell();\ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ GetRM()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RefMod;\ \}}
+\DoxyCodeLine{00100\ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ GetRM()\ \{\ \textcolor{keywordflow}{return}\ RefMod;\ \}}
+\DoxyCodeLine{00101\ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ GetAsymmUnit()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Lattice.GetAsymmUnit();\ \}}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{/*\ a\ propper\ pointer,\ created\ with\ new\ should\ be\ passed}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ \ \ the\ object\ will\ be\ deleted\ in\ the\ destructor\ !!\ */}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ RegisterFileFormat(TBasicCFile*\ F,\ \textcolor{keyword}{const}\ olxstr\&\ Ext);}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00107\ \ \ \textcolor{comment}{/*\ the\ space\ group\ is\ initialised\ upon\ file\ loading}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ \ \ if\ the\ space\ group\ is\ unknow,\ TFunctionFailedException\ is\ thrown}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00110\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ GetLastLoaderSG()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{if}\ (FSG\ ==\ 0)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unknown\ space\ group"{}});}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{return}\ *FSG;}
+\DoxyCodeLine{00115\ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//\ returns\ file\ loader\ associated\ with\ given\ file\ extension}}
+\DoxyCodeLine{00117\ \ \ TBasicCFile*\ FindFormat(\textcolor{keyword}{const}\ olxstr\&\ Ext);}
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//\ returns\ a\ reference\ to\ the\ last\ loader\ (type\ safe)}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ LoaderClass>}
+\DoxyCodeLine{00120\ \ \ LoaderClass\&\ GetLastLoader()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{if}\ (FLastLoader\ ==\ 0)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}no\ last\ loader"{}});}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ LoaderClass*\ rv\ =\ \textcolor{keyword}{dynamic\_cast<}LoaderClass*\textcolor{keyword}{>}(FLastLoader);}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{if}\ (rv\ ==\ 0)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}wrong\ last\ loader\ type"{}});}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ *rv;}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{comment}{/*\ this\ will\ use\ a\ loader\ from\ internal\ registry\ -\/\ not\ what\ is\ provided\ unless}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ \ it\ is\ owned\ by\ this\ object.\ COuld\ also\ be\ used\ to\ reset\ the\ last\ loader\ to\ null}}
+\DoxyCodeLine{00132\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{void}\ SetLastLoader(\textcolor{keyword}{const}\ TBasicCFile*\ ll);}
+\DoxyCodeLine{00134\ \ \ \textcolor{comment}{//\ returns\ true\ if\ a\ file\ is\ loaded}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keywordtype}{bool}\ HasLastLoader()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FLastLoader\ !=\ 0;\ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{/*\ returns\ last\ loader\ object\ to\ access\ properties\ of\ the\ base\ class\ if\ type}}
+\DoxyCodeLine{00137\ \textcolor{comment}{\ \ is\ not\ required.\ Use\ HasLastLoader\ to\ check\ if\ valid!}}
+\DoxyCodeLine{00138\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00139\ \ \ TBasicCFile*\ LastLoader()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{if}\ (FLastLoader\ ==\ 0)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}no\ last\ loader"{}});}
+\DoxyCodeLine{00142\ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{return}\ FLastLoader;}
+\DoxyCodeLine{00144\ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \textcolor{comment}{//\ locates\ related\ HKL\ file,\ processes\ raw\ or\ hkc\ file\ if\ necessary}}
+\DoxyCodeLine{00146\ \ \ olxstr\ LocateHklFile();}
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{void}\ UpdateAsymmUnit();}
+\DoxyCodeLine{00148\ \ \ \textcolor{comment}{/*\ Generic\ sort\ procedure,\ taking\ string\ instructions...}}
+\DoxyCodeLine{00149\ \textcolor{comment}{\ \ \ \ instructions:\ Mw,\ Label,\ Label1,\ moiety\ size,\ weight,\ heaviest}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordtype}{void}\ Sort(\textcolor{keyword}{const}\ TStrList\&\ instructions,\ \textcolor{keyword}{const}\ TParamList\ \&options);}
+\DoxyCodeLine{00152\ \ \ \textcolor{comment}{/*\ this\ function\ checks\ how\ the\ atom\ sequence\ will\ change\ when\ saving\ to\ a}}
+\DoxyCodeLine{00153\ \textcolor{comment}{\ \ file\ and\ synchronise\ it\ with\ the\ atom\ Ids}}
+\DoxyCodeLine{00154\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordtype}{void}\ UpdateAtomIds();}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//\ nameToken\ is\ build\ is\ similar\ way\ to\ the\ NameArg!}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keywordtype}{void}\ LoadFromStream(\mbox{\hyperlink{classIInputStream}{IInputStream}}\ \&is,\ \textcolor{keyword}{const}\ olxstr\ \&nameToken);}
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordtype}{void}\ LoadFromStrings(\textcolor{keyword}{const}\ TStrList\&\ lines,\ \textcolor{keyword}{const}\ olxstr\ \&nameToken);}
+\DoxyCodeLine{00159\ \ \ \textcolor{keywordtype}{void}\ LoadFromFile(\textcolor{keyword}{const}\ olxstr\&FN);}
+\DoxyCodeLine{00160\ \ \ \textcolor{keywordtype}{void}\ SaveToFile(\textcolor{keyword}{const}\ olxstr\ \&FN,\ \textcolor{keywordtype}{int}\ flags\ =\ 0);}
+\DoxyCodeLine{00161\ \ \ \textcolor{comment}{//\ clears\ the\ last\ loader\ and\ the\ model}}
+\DoxyCodeLine{00162\ \ \ \textcolor{keywordtype}{void}\ Close();}
+\DoxyCodeLine{00163\ \ \ \textcolor{comment}{//\ returns\ last\ loaded\ file\ name\ (if\ any)\ or\ empty\ string}}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetFileName()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{return}\ FLastLoader\ !=\ 0\ ?\ FLastLoader-\/>GetFileName()\ :\ EmptyString();}
+\DoxyCodeLine{00166\ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \textcolor{comment}{/*\ returns\ 'file\_path/olex2'\ if\ the\ folder\ does\ not\ exists\ -\/\ it\ tries\ to}}
+\DoxyCodeLine{00168\ \textcolor{comment}{\ \ create\ one\ and\ may\ throw\ an\ exception\ if\ it\ fails.}}
+\DoxyCodeLine{00169\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00170\ \ \ olxstr\ GetStructureDataFolder()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordtype}{void}\ EndUpdate();}
+\DoxyCodeLine{00173\ \ \ \textcolor{keywordtype}{void}\ LastLoaderChanged();\ \ \textcolor{comment}{//\ performs\ complete\ reinitialisation}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ const\_strlist\ ToJSON()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00178\ \ \ \textcolor{comment}{/*\ this\ loads\ planes,\ should\ be\ called\ after\ all\ files\ have\ been}}
+\DoxyCodeLine{00179\ \textcolor{comment}{\ \ loaded.\ For\ internal\ use}}
+\DoxyCodeLine{00180\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FinaliseFromDataItem\_();}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{void}\ LibDataCount(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00184\ \ \ \textcolor{keywordtype}{void}\ LibCurrentData(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordtype}{void}\ LibDataName(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{void}\ LibGetFormula(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{void}\ LibSetFormula(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00188\ \ \ \textcolor{keywordtype}{void}\ LibEndUpdate(TStrObjList\ \&Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options,}
+\DoxyCodeLine{00189\ \ \ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ \&E);}
+\DoxyCodeLine{00190\ \ \ \textcolor{keywordtype}{void}\ LibSaveSolution(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \textcolor{keywordtype}{void}\ LibGetMu(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordtype}{void}\ LibGetMass(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordtype}{void}\ LibGetF000(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordtype}{void}\ LibGetDensity(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \textcolor{keywordtype}{void}\ LibRefinementInfo(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{void}\ LibIncludedFiles(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name\ =\ EmptyString());}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTXFile_1_1VPtr}{VPtr}}\ :\ \textcolor{keyword}{public}\ olx\_virtual\_ptr<TXFile>\ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *get\_ptr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00204\ \ \ \};}
+\DoxyCodeLine{00205\ \ \ \textcolor{comment}{//\ include\ leading\ '.'!}}
+\DoxyCodeLine{00206\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ Olex2SameExt();}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \ \ \textcolor{comment}{/*\ describes\ a\ file\ name\ with\ which\ may\ carry\ reference\ to\ the\ dataset\ in\ the}}
+\DoxyCodeLine{00209\ \textcolor{comment}{\ \ case\ of\ multiple-\/dataset\ files}}
+\DoxyCodeLine{00210\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{struct\ }NameArg\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ olxstr\ file\_name;}
+\DoxyCodeLine{00213\ \ \ \ \ olxstr\ data\_name;}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_index;}
+\DoxyCodeLine{00215\ \ \ \ \ NameArg()\ :\ is\_index(\textcolor{keyword}{false})\ \{\}}
+\DoxyCodeLine{00216\ \ \ \ \ NameArg(\textcolor{keyword}{const}\ olxstr\ \&name)\ \{\ Parse(name);\ \}}
+\DoxyCodeLine{00217\ \ \ \ \ NameArg\ \&operator\ =\ (\textcolor{keyword}{const}\ olxstr\ \&name)\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ Parse(name);}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00220\ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ olxstr\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordtype}{void}\ Parse(\textcolor{keyword}{const}\ olxstr\&\ fn);}
+\DoxyCodeLine{00223\ \ \ \};}
+\DoxyCodeLine{00224\ \};}
+\DoxyCodeLine{00225\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00226\ EndXlibNamespace()}
+\DoxyCodeLine{00227\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

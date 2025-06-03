@@ -1,0 +1,286 @@
+\doxysection{ebtree.\+h}
+\hypertarget{ebtree_8h_source}{}\label{ebtree_8h_source}\index{sdl/ebtree.h@{sdl/ebtree.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_\_BTREE}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_\_BTREE}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}etraverse.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ template\ <typename\ C,\ typename\ O>\ \ class\ BTree\ \ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{struct\ }Entry\ \ \{}
+\DoxyCodeLine{00018\ \ \ \ \ C\ key;}
+\DoxyCodeLine{00019\ \ \ \ \ O\ val;}
+\DoxyCodeLine{00020\ \ \ \ \ Entry*\ next,\ *last;\ \ \textcolor{comment}{//\ linked\ list\ of\ items\ with\ equal\ key}}
+\DoxyCodeLine{00021\ \ \ \ \ Entry*\ left,\ *right;}
+\DoxyCodeLine{00022\ \ \ \ \ Entry()\ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ next\ =\ last\ =\ left\ =\ right\ =\ NULL;}
+\DoxyCodeLine{00024\ \ \ \ \ \}}
+\DoxyCodeLine{00025\ \ \ \ \ Entry(\textcolor{keyword}{const}\ C\&\ key,\ \textcolor{keyword}{const}\ O\&\ val)\ \ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ this-\/>key\ =\ key;}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ this-\/>val\ =\ val;}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ next\ =\ last\ =\ left\ =\ right\ =\ NULL;}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \string~Entry()\ \ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Clear()\ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ next\ )\ \ \textcolor{keyword}{delete}\ next;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ next\ =\ NULL;}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ right\ )\ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ right-\/>Clear();}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ right;}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ right\ =\ NULL;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ left\ )\ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ left-\/>Clear();}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ left;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ left\ =\ NULL;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \};}
+\DoxyCodeLine{00046\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00047\ \ \ \mbox{\hyperlink{structBTree_1_1Entry}{Entry}}\ Root;}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{int}\ \_Count;}
+\DoxyCodeLine{00049\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00050\ \ \ BTree()\ :\ \_Count(0)\ \ \{\ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \mbox{\hyperlink{classBTree}{\string~BTree}}()\ \ \{\ \ Root.Clear();\ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \ \{\ \ Root.Clear();\ \ \_Count\ =\ 0;\ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Entry*\ GetRoot()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (\_Count\ ==\ 0)\ ?\ NULL\ :\ \&Root;\ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ Count()\textcolor{keyword}{\ \ \ \ \ \ \ \ \ \ \ \ const\ }\{\ \ \textcolor{keywordflow}{return}\ \_Count;\ \ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ O\&\ Add(\textcolor{keyword}{const}\ C\&\ key,\ \textcolor{keyword}{const}\ O\&\ val,\ Entry*\ insertPoint=NULL)\ \ \{}
+\DoxyCodeLine{00060\ \ \ \ \ Entry*\ rv\ =\ NULL;}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{if}(\ \_Count\ ==\ 0\ )\ \ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ Root.key\ =\ key;}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ Root.val\ =\ val;}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ rv\ =\ \&Root;}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ Entry*\ en\ =\ (insertPoint\ ==\ NULL)\ ?\ \&Root\ :\ insertPoint;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ en-\/>key\ <\ key\ )\ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ en-\/>right\ \&\&\ en-\/>right-\/>key\ <=\ key\ )}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ en\ =\ en-\/>right;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ en-\/>key\ >\ key\ )\ \ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ en-\/>left\ \&\&\ en-\/>left-\/>key\ >=\ key\ )}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ en\ =\ en-\/>left;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ en-\/>key\ ==\ key\ )\ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ en-\/>last\ )\ \ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ rv\ =\ en-\/>last-\/>next\ =\ \textcolor{keyword}{new}\ Entry(key,\ val);}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ en-\/>last\ =\ en-\/>last-\/>next;}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ rv\ =\ en-\/>last\ =\ en-\/>next\ =\ \textcolor{keyword}{new}\ Entry(key,\ val);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ en-\/>key\ <\ key\ )}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ rv\ =\ en-\/>right\ =\ \textcolor{keyword}{new}\ Entry(key,\ val);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ en-\/>key\ >\ key\ )}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ rv\ =\ en-\/>left\ =\ \textcolor{keyword}{new}\ Entry(key,\ val);}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \_Count++;}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ rv-\/>val;}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{comment}{/*\ find\ an\ entry\ by\ the\ key,\ if\ entry\ is\ not\ found\ and\ closest\ is\ provided,}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ closest\ is\ initlised\ with\ the\ entry\ to\ accept\ the\ key\ for\ the\ next\ add\ operation\ */}}
+\DoxyCodeLine{00098\ \ \ O*\ Find(\textcolor{keyword}{const}\ C\&\ key,\ Entry**\ insertPoint=NULL)\ \ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{if}(\ \_Count\ ==\ 0\ )\ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ insertPoint\ )\ *insertPoint\ =\ \&Root;}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ Entry*\ en\ =\ \&Root;}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{while}(\ en-\/>key\ <\ key\ )\ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ en-\/>right\ \&\&\ en-\/>right-\/>key\ <=\ key\ )}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ en\ =\ en-\/>right;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{while}(\ en-\/>key\ >\ key\ )\ \ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ en-\/>left\ \&\&\ en-\/>left-\/>key\ >=\ key\ )}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ en\ =\ en-\/>left;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{if}(\ insertPoint\ !=\ NULL\ )\ \ *insertPoint\ =\ en;}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ (en-\/>key\ ==\ key)\ ?\ \&en-\/>val\ :\ NULL;}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTBTreeTraverser}{TBTreeTraverser<\ BTree<C,O>}}\ >\ Traverser;}
+\DoxyCodeLine{00121\ \};}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ C,\ \textcolor{keyword}{typename}\ O>}
+\DoxyCodeLine{00124\ \ \ \mbox{\hyperlink{classTBTreeTraverser}{TBTreeTraverser<\ BTree<C,O>}}\ >\ BTree<C,O>::Traverser;}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ C,\ \textcolor{keyword}{typename}\ O>\ \ \textcolor{keyword}{class\ }BTree2\ \{}
+\DoxyCodeLine{00127\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classBTree}{BTree<C,\ O>}}\ XTree;}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classBTree}{BTree<C,XTree*>}}\ YTree;}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ YTree::Entry\ YEntry;}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ XTree::Entry\ XEntry;}
+\DoxyCodeLine{00132\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{int}\ \_Count;}
+\DoxyCodeLine{00134\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00135\ \ \ YTree\ Tree;}
+\DoxyCodeLine{00136\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00137\ \ \ BTree2()\ :\ \_Count(0)\ \{\ \ \}}
+\DoxyCodeLine{00138\ \ \ \string~BTree2()\ \ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00139\ \textcolor{comment}{//\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ YEntry*\ item)\ \ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{delete}\ \textcolor{keyword}{const\_cast<}YEntry*\textcolor{keyword}{>}(item)-\/>val;}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \textcolor{comment}{//\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \ \{}
+\DoxyCodeLine{00146\ \ \ \ \ Tree.Traverser.Traverse(Tree,\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{00147\ \ \ \ \ Tree.Clear();}
+\DoxyCodeLine{00148\ \ \ \ \ \_Count\ =\ 0;}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ YEntry*\ GetRoot()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Tree.GetRoot();\ \ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ Count()\textcolor{keyword}{\ \ \ \ \ \ \ \ \ \ \ \ const\ }\{\ \ \textcolor{keywordflow}{return}\ \_Count;\ \ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ O\&\ Add(\textcolor{keyword}{const}\ C\&\ x,\ \textcolor{keyword}{const}\ C\&\ y,\ \textcolor{keyword}{const}\ O\&\ val)\ \ \{}
+\DoxyCodeLine{00155\ \ \ \ \ YEntry*\ insertPY\ =\ NULL;}
+\DoxyCodeLine{00156\ \ \ \ \ XEntry*\ insertPX\ =\ NULL;}
+\DoxyCodeLine{00157\ \ \ \ \ XTree**\ rx\ =\ Tree.Find(y,\ \&insertPY);}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{if}(\ rx\ ==\ NULL\ )\ \ rx\ =\ \&Tree.Add(y,\ \textcolor{keyword}{new}\ XTree(),\ insertPY\ );}
+\DoxyCodeLine{00159\ \ \ \ \ O*\ ry\ =\ (*rx)-\/>Find(x,\ \&insertPX);}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{if}(\ ry\ ==\ NULL\ )\ \ ry\ =\ \&(*rx)-\/>Add(x,\ val,\ insertPX);}
+\DoxyCodeLine{00161\ \ \ \ \ \_Count++;}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{return}\ *ry;}
+\DoxyCodeLine{00163\ \ \ \}}
+\DoxyCodeLine{00164\ \ \ O*\ Find(\textcolor{keyword}{const}\ C\&\ x,\ \textcolor{keyword}{const}\ C\&\ y)\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ XTree**\ rx\ =\ Tree.Find(y);}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordflow}{return}\ (rx\ ==\ NULL)\ ?\ NULL\ :\ (*rx)-\/>Find(x);}
+\DoxyCodeLine{00167\ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classBTree2_1_1Tree2Traverser}{Tree2Traverser}}\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traverser>\ \textcolor{keyword}{class\ }InternalTraverser\ \ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ Traverser\&\ trav;}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ InternalTraverser(Traverser\&\ t)\ :\ trav(t)\ \ \{\}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ YEntry*\ item)\ \ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ item-\/>val-\/>Traverser.Traverse(*item-\/>val,\ trav);}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \ \ \};}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traverser>\ \textcolor{keyword}{class\ }InternalFullTraverser\ \ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ Traverser\&\ trav;}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ InternalFullTraverser(Traverser\&\ t)\ :\ trav(t)\ \ \{\}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ YEntry*\ item)\ \ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ trav.SetY(\ item-\/>key\ );}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ item-\/>val-\/>Traverser.Traverse(*item-\/>val,\ trav);}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \ \ \};}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00187\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Trav>}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordtype}{bool}\ Traverse(\textcolor{keyword}{const}\ BTree2<C,O>\&\ tree,\ Trav\&\ traverser)\ \ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ InternalTraverser<Trav>\ t(traverser);}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tree.Tree.Traverser.Traverse(tree.Tree,\ t);}
+\DoxyCodeLine{00191\ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Trav>}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordtype}{bool}\ FullTraverse(\textcolor{keyword}{const}\ BTree2<C,O>\&\ tree,\ Trav\&\ traverser)\ \ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ InternalFullTraverser<Trav>\ t(traverser);}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tree.Tree.Traverser.Traverse(tree.Tree,\ t);}
+\DoxyCodeLine{00196\ \ \ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \};}
+\DoxyCodeLine{00198\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classBTree2_1_1Tree2Traverser}{Tree2Traverser}}\ Traverser;}
+\DoxyCodeLine{00199\ \};}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ C,\ \textcolor{keyword}{typename}\ O>}
+\DoxyCodeLine{00202\ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{classBTree2_1_1Tree2Traverser}{BTree2<C,O>::Tree2Traverser}}\ BTree2<C,O>::Traverser;}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ C,\ \textcolor{keyword}{typename}\ O>\ \ \textcolor{keyword}{class\ }BTree3\ \{}
+\DoxyCodeLine{00205\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00206\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classBTree2}{BTree2<C,\ O>}}\ XYTree;}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classBTree}{BTree<C,XYTree*>}}\ ZTree;}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ XYTree::YEntry\ XYEntry;}
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ ZTree::Entry\ ZEntry;}
+\DoxyCodeLine{00210\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00211\ \ \ \textcolor{keywordtype}{int}\ \_Count;}
+\DoxyCodeLine{00212\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00213\ \ \ ZTree\ Tree;}
+\DoxyCodeLine{00214\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00215\ \ \ BTree3()\ :\ \_Count(0)\ \{\ \ \}}
+\DoxyCodeLine{00216\ \ \ \string~BTree3()\ \ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00217\ \textcolor{comment}{//\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}}
+\DoxyCodeLine{00218\ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ ZEntry*\ item)\ \ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keyword}{delete}\ \textcolor{keyword}{const\_cast<}ZEntry*\textcolor{keyword}{>}(item)-\/>val;}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00221\ \ \ \}}
+\DoxyCodeLine{00222\ \textcolor{comment}{//\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}}
+\DoxyCodeLine{00223\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \ \{}
+\DoxyCodeLine{00224\ \ \ \ \ Tree.Traverser.Traverse(Tree,\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{00225\ \ \ \ \ Tree.Clear();}
+\DoxyCodeLine{00226\ \ \ \ \ \_Count\ =\ 0;}
+\DoxyCodeLine{00227\ \ \ \}}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ ZEntry*\ GetRoot()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Tree.GetRoot();\ \ \}}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ Count()\textcolor{keyword}{\ \ \ \ \ \ \ \ \ \ \ \ const\ }\{\ \ \textcolor{keywordflow}{return}\ \_Count;\ \ \}}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ O\&\ Add(\textcolor{keyword}{const}\ C\&\ x,\ \textcolor{keyword}{const}\ C\&\ y,\ \textcolor{keyword}{const}\ C\&\ z,\ \textcolor{keyword}{const}\ O\&\ val)\ \ \{}
+\DoxyCodeLine{00233\ \ \ \ \ ZEntry*\ insertPZ\ =\ NULL;}
+\DoxyCodeLine{00234\ \ \ \ \ XYTree**\ xy\ =\ Tree.Find(z,\ \&insertPZ);}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordflow}{if}(\ xy\ ==\ NULL\ )\ \ xy\ =\ \&Tree.Add(z,\ \textcolor{keyword}{new}\ XYTree(),\ insertPZ\ );}
+\DoxyCodeLine{00236\ \ \ \ \ \_Count++;}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keywordflow}{return}\ (*xy)-\/>Add(x,\ y,\ val);}
+\DoxyCodeLine{00238\ \ \ \}}
+\DoxyCodeLine{00239\ \ \ O*\ Find(\textcolor{keyword}{const}\ C\&\ x,\ \textcolor{keyword}{const}\ C\&\ y,\ \textcolor{keyword}{const}\ C\&\ z)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ XYTree**\ xy\ =\ Tree.Find(z);}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keywordflow}{return}\ (xy\ ==\ NULL)\ ?\ NULL\ :\ (*xy)-\/>Find(x,\ y);}
+\DoxyCodeLine{00242\ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classBTree3_1_1Tree3Traverser}{Tree3Traverser}}\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traverser>\ \textcolor{keyword}{class\ }InternalTraverser\ \ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ Traverser\&\ trav;}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ InternalTraverser(Traverser\&\ t)\ :\ trav(t)\ \ \{\}}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ ZEntry*\ item)\ \ \{}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ item-\/>val-\/>Traverser.Traverse(*item-\/>val,\ trav);}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \ \ \};}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Traverser>\ \textcolor{keyword}{class\ }InternalFullTraverser\ \ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ Traverser\&\ trav;}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ InternalFullTraverser(Traverser\&\ t)\ :\ trav(t)\ \ \{\}}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ ZEntry*\ item)\ \ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ trav.SetZ(item-\/>key);}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ item-\/>val-\/>Traverser.FullTraverse(*item-\/>val,\ trav);}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \ \ \};}
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Trav>}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordtype}{bool}\ Traverse(\textcolor{keyword}{const}\ BTree3<C,O>\&\ tree,\ Trav\&\ traverser)\ \ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ InternalTraverser<Trav>\ t(traverser);}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tree.Tree.Traverser.Traverse(tree.Tree,\ t);}
+\DoxyCodeLine{00266\ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Trav>}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keywordtype}{bool}\ FullTraverse(\textcolor{keyword}{const}\ BTree3<C,O>\&\ tree,\ Trav\&\ traverser)\ \ \{}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ InternalFullTraverser<Trav>\ t(traverser);}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tree.Tree.Traverser.Traverse(tree.Tree,\ t);}
+\DoxyCodeLine{00271\ \ \ \ \ \}}
+\DoxyCodeLine{00272\ \ \ \};}
+\DoxyCodeLine{00273\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classBTree3_1_1Tree3Traverser}{Tree3Traverser}}\ Traverser;}
+\DoxyCodeLine{00274\ \};}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ C,\ \textcolor{keyword}{typename}\ O>}
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{classBTree3_1_1Tree3Traverser}{BTree3<C,O>::Tree3Traverser}}\ BTree3<C,O>::Traverser;}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ EndEsdlNamespace()}
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

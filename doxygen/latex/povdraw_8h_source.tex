@@ -1,0 +1,79 @@
+\doxysection{povdraw.\+h}
+\hypertarget{povdraw_8h_source}{}\label{povdraw_8h_source}\index{glib/povdraw.h@{glib/povdraw.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxl\_powdraw\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxl\_powdraw\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gloption.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}ebasis.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00015\ BeginGlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ \mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}};}
+\DoxyCodeLine{00018\ class\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}};}
+\DoxyCodeLine{00019\ class\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ struct\ \mbox{\hyperlink{structpov}{pov}}\ \{}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumT>}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{static}\ olxstr\ to\_str(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<NumT>}}\ \&v)\ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(EmptyString(),\ 64)\ <<\ \textcolor{charliteral}{'<'}\ <<\ v[0]\ <<\ \textcolor{charliteral}{','}\ <<\ v[1]\ <<\ \textcolor{charliteral}{','}\ <<}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ v[2]\ <<\ \textcolor{charliteral}{'>'};}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumT>}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{static}\ olxstr\ to\_str(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<NumT>}}\ \&m,}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<NumT>}}\ \&t)}
+\DoxyCodeLine{00030\ \ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(EmptyString(),\ 120)\ <<\ \textcolor{charliteral}{'<'}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ <<\ m[0][0]\ <<\ \textcolor{charliteral}{','}\ <<\ m[0][1]\ <<\ \textcolor{charliteral}{','}\ <<\ m[0][2]\ <<\ \textcolor{charliteral}{','}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ <<\ m[1][0]\ <<\ \textcolor{charliteral}{','}\ <<\ m[1][1]\ <<\ \textcolor{charliteral}{','}\ <<\ m[1][2]\ <<\ \textcolor{charliteral}{','}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ <<\ m[2][0]\ <<\ \textcolor{charliteral}{','}\ <<\ m[2][1]\ <<\ \textcolor{charliteral}{','}\ <<\ m[2][2]\ <<\ \textcolor{charliteral}{','}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ <<\ t[0]\ <<\ \textcolor{charliteral}{','}\ <<\ t[1]\ <<\ \textcolor{charliteral}{','}\ <<\ t[2]\ <<\ \textcolor{charliteral}{'>'};}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ olxstr\ to\_str(\textcolor{keyword}{const}\ TGlOption\ \&v,\ \textcolor{keywordtype}{bool}\ color=\textcolor{keyword}{true})\ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{if}(\ color\ )\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(EmptyString(),\ 64)\ <<\ \textcolor{stringliteral}{"{}rgb<"{}}\ <<\ v[0]\ <<\ \textcolor{charliteral}{','}\ <<\ v[1]\ <<}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{charliteral}{','}\ <<\ v[2]\ <<\ \textcolor{charliteral}{'>'};}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(EmptyString(),\ 64)\ <<\ \textcolor{charliteral}{'<'}\ <<\ v[0]\ <<\ \textcolor{charliteral}{','}\ <<\ v[1]\ <<\ \textcolor{charliteral}{','}\ <<}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ v[2]\ <<\ \textcolor{charliteral}{'>'};}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{static}\ olxstr\ get\_mat\_name(\textcolor{keyword}{const}\ olxstr\ \&primitive\_name,}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}\ \&style,\ \mbox{\hyperlink{classolx__cdict}{olx\_cdict<TGlMaterial,\ olxstr>}}\ \&materials,}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ *sender=NULL);}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{static}\ olxstr\ get\_mat\_name(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ glm,}
+\DoxyCodeLine{00052\ \ \ \ \ \mbox{\hyperlink{classolx__cdict}{olx\_cdict<TGlMaterial,\ olxstr>}}\ \&materials,}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ *sender=NULL);}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{struct\ }CrdTransformer\ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ TEBasis\ basis;}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{double}\ scale;}
+\DoxyCodeLine{00058\ \ \ \ \ CrdTransformer(\textcolor{keyword}{const}\ TEBasis\ \&\_basis,\ \textcolor{keywordtype}{double}\ \_scale=1.0)}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ :\ basis(\_basis),\ scale(\_scale)\ \{\}}
+\DoxyCodeLine{00060\ \ \ \ \ vec3d\ crd(\textcolor{keyword}{const}\ vec3d\ \&v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (v\ +\ basis.GetCenter())*basis.GetMatrix();}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ mat3d\ matr(\textcolor{keyword}{const}\ mat3d\ \&m)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m*basis.GetMatrix();}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ vec3d\ normal(\textcolor{keyword}{const}\ vec3d\ \&v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ v*basis.GetMatrix();}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \};}
+\DoxyCodeLine{00070\ \};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ EndGlNamespace()}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

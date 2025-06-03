@@ -1,0 +1,96 @@
+\doxysection{releasable.\+h}
+\hypertarget{releasable_8h_source}{}\label{releasable_8h_source}\index{sdl/releasable.h@{sdl/releasable.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2025\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ class\ \mbox{\hyperlink{classAReleasable}{AReleasable}};}
+\DoxyCodeLine{00017\ class\ \mbox{\hyperlink{classIReleasableContainer}{IReleasableContainer}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Release(AReleasable\&\ item)\ =\ 0;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Restore(AReleasable\&\ item)\ =\ 0;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Add(AReleasable*\ item)\ =\ 0;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIReleasableContainer}{\string~IReleasableContainer}}()\ \{\}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }AReleasable;}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{class\ }AReleasable\ \{}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{size\_t}\ ReleasableId;}
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classIReleasableContainer}{IReleasableContainer}}\ parent\_t;}
+\DoxyCodeLine{00031\ \ \ parent\_t\&\ parent;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{size\_t}\ GetReleasableId()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ReleasableId;\ \}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{void}\ SetReleasableId(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ ReleasableId\ =\ id;}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ AReleasable(parent\_t\&\ parent,\ \textcolor{keywordtype}{bool}\ tmp=\textcolor{keyword}{false});}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ \string~AReleasable()\ \{\}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ Release();}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ Restore();}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnReleasedDelete()\ \{\}}
+\DoxyCodeLine{00043\ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>}
+\DoxyCodeLine{00046\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIReleasableContainer}{IReleasableContainer}}\ \{}
+\DoxyCodeLine{00047\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00048\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<item\_t>}}\ items;}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ Add(AReleasable*\ item)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ item-\/>SetReleasableId(items.Count());}
+\DoxyCodeLine{00051\ \ \ \ \ items.Add((item\_t*)item);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ Release(AReleasable\&\ item)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ items.Release(item.GetReleasableId());}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ items.Count();\ i++)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ items[i].SetReleasableId(i);}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ OnRelease(\textcolor{keyword}{dynamic\_cast<}item\_t\&\textcolor{keyword}{>}(item));}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ Restore(AReleasable\&\ item)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ item.SetReleasableId(items.Count());}
+\DoxyCodeLine{00063\ \ \ \ \ item\_t\&\ i\ =\ \textcolor{keyword}{dynamic\_cast<}item\_t\&\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00064\ \ \ \ \ items.Add(i);}
+\DoxyCodeLine{00065\ \ \ \ \ OnRestore(i);}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnRestore(item\_t\&\ item)\ =\ 0;}
+\DoxyCodeLine{00068\ \ \ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnRelease(item\_t\&\ item)\ =\ 0;}
+\DoxyCodeLine{00070\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAReleasableContainer}{\string~AReleasableContainer}}()}
+\DoxyCodeLine{00072\ \ \ \{\}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Clear()\ \{\ items.Clear();\ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ Delete(AReleasable\&\ i)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ items.Delete(i.GetReleasableId());}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ items.Count();\ \}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ items.IsEmpty();\ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ item\_t\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{return}\ items[i];}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ item\_t\&\ GetItem(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{return}\ items[i];}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ EndEsdlNamespace()}
+
+\end{DoxyCode}

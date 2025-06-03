@@ -1,0 +1,419 @@
+\doxysection{esort.\+h}
+\hypertarget{esort_8h_source}{}\label{esort_8h_source}\index{sdl/esort.h@{sdl/esort.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_esort\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_esort\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}equeue.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{/*\ a\ comparator\ for\ primitive\ types,\ or\ object\ having\ <\ and\ >\ operators\ only}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ \ the\ comparison\ might\ call\ both\ operators,\ so\ use\ the\ TComparableComparator}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ \ for\ whose\ objects\ which\ implement\ Compare\ function\ to\ improve\ the\ speed}}
+\DoxyCodeLine{00020\ \textcolor{comment}{}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ \ \ Note\ that\ a\ pointer\ lists\ should\ be\ treated\ differently\ -\/\ as\ the\ Item(i)}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ \ method\ returns\ a\ reference\ to\ the\ location\ and\ considering\ the\ implementation}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ \ of\ QS\ that\ location\ will\ get\ changed\ as\ Swap\ operations\ used!}}
+\DoxyCodeLine{00024\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ class\ TPrimitiveComparator\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ TPrimitiveComparator()\ \{\}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ComparableA,\ \textcolor{keyword}{class}\ ComparableB>}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ ComparableA\&\ A,\ \textcolor{keyword}{const}\ ComparableB\&\ B)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_ref::get(A)\ <\ olx\_ref::get(B))\ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_ref::get(A)\ >\ olx\_ref::get(B))\ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }TPointerComparator\ \{}
+\DoxyCodeLine{00038\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00039\ \ \ TPointerComparator()\ \{\}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ComparableA,\ \textcolor{keyword}{class}\ ComparableB>}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ ComparableA\&\ A,\ \textcolor{keyword}{const}\ ComparableB\&\ B)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_ptr::get(A)\ <\ olx\_ptr::get(B))\ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_ptr::get(A)\ >\ olx\_ptr::get(B))\ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \};}
+\DoxyCodeLine{00047\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{class\ }TComparableComparator\ \{}
+\DoxyCodeLine{00049\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00050\ \ \ TComparableComparator()\ \{\}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ComparableA,\ \textcolor{keyword}{class}\ ComparableB>}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ ComparableA\&\ A,\ \textcolor{keyword}{const}\ ComparableB\&\ B)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(A).Compare(olx\_ref::get(B));}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \};}
+\DoxyCodeLine{00056\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFunctionComparator}{FunctionComparator}}\ \{}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Base,\ \textcolor{keyword}{typename}\ ItemClass>\ \textcolor{keyword}{struct\ }ComparatorMF\_\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ Base\&\ Instance;}
+\DoxyCodeLine{00060\ \ \ \ \ int\ (Base::*Func)(\textcolor{keyword}{const}\ ItemClass\ \&a,\ \textcolor{keyword}{const}\ ItemClass\ \&b);}
+\DoxyCodeLine{00061\ \ \ \ \ ComparatorMF\_(Base\&\ instance,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ (Base::*func)(\textcolor{keyword}{const}\ ItemClass\ \&a,\ \textcolor{keyword}{const}\ ItemClass\ \&b))}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ :\ \ Instance(instance),\ Func(func)}
+\DoxyCodeLine{00064\ \ \ \ \ \{\}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_a\_t,\ \textcolor{keyword}{typename}\ item\_b\_t>}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&a,\ \textcolor{keyword}{const}\ item\_b\_t\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (Instance.*Func)(olx\_ref::get(a),\ olx\_ref::get(b));}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \};}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Base,\ \textcolor{keyword}{typename}\ ItemClass>\ \textcolor{keyword}{struct\ }ComparatorCMF\_\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{const}\ Base\&\ Instance;}
+\DoxyCodeLine{00072\ \ \ \ \ int\ (Base::*Func)(\textcolor{keyword}{const}\ ItemClass\ \&a,\ \textcolor{keyword}{const}\ ItemClass\ \&b)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00073\ \ \ \ \ ComparatorCMF\_(\textcolor{keyword}{const}\ Base\&\ instance,}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ (Base::*func)(\textcolor{keyword}{const}\ ItemClass\ \&a,\ \textcolor{keyword}{const}\ ItemClass\ \&b)\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ :\ \ Instance(instance),\ Func(func)}
+\DoxyCodeLine{00076\ \ \ \ \ \{\}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_a\_t,\ \textcolor{keyword}{typename}\ item\_b\_t>}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&a,\ \textcolor{keyword}{const}\ item\_b\_t\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (Instance.*Func)(olx\_ref::get(a),\ olx\_ref::get(b));}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \};}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ItemClass>\ \textcolor{keyword}{struct\ }ComparatorSF\_\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ int\ (*Func)(\textcolor{keyword}{const}\ ItemClass\ \&a,\ \textcolor{keyword}{const}\ ItemClass\ \&b);}
+\DoxyCodeLine{00084\ \ \ \ \ ComparatorSF\_(\textcolor{keywordtype}{int}\ (*func)(\textcolor{keyword}{const}\ ItemClass\ \&a,\ \textcolor{keyword}{const}\ ItemClass\ \&b))}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ :\ Func(func)\ \ \{\}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_a\_t,\ \textcolor{keyword}{typename}\ item\_b\_t>}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&a,\ \textcolor{keyword}{const}\ item\_b\_t\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (*Func)(olx\_ref::get(a),\ olx\_ref::get(b));}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00093\ \ \ \mbox{\hyperlink{structFunctionComparator_1_1ComparatorMF__}{ComparatorMF\_<base\_t,item\_t>}}\ Make(}
+\DoxyCodeLine{00094\ \ \ \ \ base\_t\ \&base,}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{int}\ (base\_t::*func)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&)\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00096\ \ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionComparator_1_1ComparatorMF__}{ComparatorMF\_<base\_t,item\_t>}}(base,\ func);}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00100\ \ \ ComparatorCMF\_<base\_t,item\_t>\ MakeConst(}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{const}\ base\_t\ \&base,}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{int}\ (base\_t::*func)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&)\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00103\ \ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ ComparatorCMF\_<base\_t,item\_t>(base,\ func);}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00108\ \ \ \mbox{\hyperlink{structFunctionComparator_1_1ComparatorSF__}{ComparatorSF\_<item\_t>}}\ Make(}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{int}\ (*func)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&))}
+\DoxyCodeLine{00110\ \ \ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionComparator_1_1ComparatorSF__}{ComparatorSF\_<item\_t>}}(func);}
+\DoxyCodeLine{00112\ \ \ \}}
+\DoxyCodeLine{00113\ \};}
+\DoxyCodeLine{00114\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00115\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structComplexComparator}{ComplexComparator}}\ \{}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{class\ }TComplexComparator\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ Accessor\ acc;}
+\DoxyCodeLine{00119\ \ \ \ \ Comparator\ cmp;}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00121\ \ \ \ \ TComplexComparator(\textcolor{keyword}{const}\ Accessor\ \&acc,\ \textcolor{keyword}{const}\ Comparator\ \&cmp)}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ :\ acc(acc),\ cmp(cmp)}
+\DoxyCodeLine{00123\ \ \ \ \ \{\}}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ComparableA,\ \textcolor{keyword}{class}\ ComparableB>}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ ComparableA\&\ A,\ \textcolor{keyword}{const}\ ComparableB\&\ B)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cmp.Compare(acc(A),\ acc(B));}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \};}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classComplexComparator_1_1TComplexComparator}{TComplexComparator<Accessor,\ Comparator>}}}
+\DoxyCodeLine{00132\ \ \ \ \ Make(\textcolor{keyword}{const}\ Accessor\ \&acc,\ \textcolor{keyword}{const}\ Comparator\ \&cmp)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classComplexComparator_1_1TComplexComparator}{TComplexComparator<Accessor,\ Comparator>}}(acc,\ cmp);}
+\DoxyCodeLine{00134\ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \};}
+\DoxyCodeLine{00136\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00137\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structReverseComparator}{ReverseComparator}}\ \{}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ cmp\_t>\ \textcolor{keyword}{struct\ }ReverseComparator\_\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keyword}{const}\ cmp\_t\ \&cmp;}
+\DoxyCodeLine{00140\ \ \ \ \ ReverseComparator\_(\textcolor{keyword}{const}\ cmp\_t\ \&cmp\_)\ :\ cmp(cmp\_)\ \{\}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_a\_t,\ \textcolor{keyword}{typename}\ item\_b\_t>}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&i1,\ \textcolor{keyword}{const}\ item\_b\_t\ \&i2)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cmp.Compare(i2,\ i1);}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \};}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>\ \textcolor{keyword}{struct\ }ReverseSF\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ int\ (*func)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&);}
+\DoxyCodeLine{00148\ \ \ \ \ ReverseSF(\textcolor{keywordtype}{int}\ (*func\_)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&))\ :\ func(func\_)\ \{\}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_a\_t,\ \textcolor{keyword}{typename}\ item\_b\_t>}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&i1,\ \textcolor{keyword}{const}\ item\_b\_t\ \&i2)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (*func)(olx\_ref::get(i2),\ olx\_ref::get(i1));}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \};}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t,\ \textcolor{keyword}{typename}\ item\_t>\ \textcolor{keyword}{struct\ }ReverseMF\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ base\_t\ \&instance;}
+\DoxyCodeLine{00156\ \ \ \ \ int\ (base\_t::*func)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&);}
+\DoxyCodeLine{00157\ \ \ \ \ ReverseMF(base\_t\ \&instance\_,}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ (base\_t::*func\_)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&))}
+\DoxyCodeLine{00159\ \ \ \ \ :\ instance(instance\_),\ func(func\_)}
+\DoxyCodeLine{00160\ \ \ \ \ \{\}}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_a\_t,\ \textcolor{keyword}{typename}\ item\_b\_t>}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&i1,\ \textcolor{keyword}{const}\ item\_b\_t\ \&i2)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (instance.*func)(olx\_ref::get(i2),\ olx\_ref::get(i1));}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \};}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t,\ \textcolor{keyword}{typename}\ item\_t>\ \textcolor{keyword}{struct\ }ReverseCMF\ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keyword}{const}\ base\_t\ \&instance;}
+\DoxyCodeLine{00168\ \ \ \ \ int\ (base\_t::*func)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00169\ \ \ \ \ ReverseCMF(\textcolor{keyword}{const}\ base\_t\ \&instance\_,}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ (base\_t::*func\_)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&)\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00171\ \ \ \ \ :\ instance(instance\_),\ func(func\_)}
+\DoxyCodeLine{00172\ \ \ \ \ \{\}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_a\_t,\ \textcolor{keyword}{typename}\ item\_b\_t>}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_a\_t\ \&i1,\ \textcolor{keyword}{const}\ item\_b\_t\ \&i2)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (instance.*func)(olx\_ref::get(i2),\ olx\_ref::get(i1));}
+\DoxyCodeLine{00176\ \ \ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \};}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00180\ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structReverseComparator_1_1ReverseSF}{ReverseSF<item\_t>}}\ Make(\textcolor{keywordtype}{int}\ (*func)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&))\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structReverseComparator_1_1ReverseSF}{ReverseSF<item\_t>}}(func);}
+\DoxyCodeLine{00182\ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00184\ \ \ \ \textcolor{keyword}{static}\ ReverseMF<base\_t,\ item\_t>\ Make(base\_t\ \&instance,}
+\DoxyCodeLine{00185\ \ \ \ \ \ \textcolor{keywordtype}{int}\ (base\_t::*func)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&))}
+\DoxyCodeLine{00186\ \ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{return}\ ReverseMF<base\_t,\ item\_t>(instance,\ func);}
+\DoxyCodeLine{00188\ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_t,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00190\ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structReverseComparator_1_1ReverseCMF}{ReverseCMF<base\_t,\ item\_t>}}\ MakeConst(\textcolor{keyword}{const}\ base\_t\ \&instance,}
+\DoxyCodeLine{00191\ \ \ \ \ \ \textcolor{keywordtype}{int}\ (base\_t::*func)(\textcolor{keyword}{const}\ item\_t\ \&,\ \textcolor{keyword}{const}\ item\_t\&)\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00192\ \ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structReverseComparator_1_1ReverseCMF}{ReverseCMF<base\_t,\ item\_t>}}(instance,\ func);}
+\DoxyCodeLine{00194\ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ cmp\_t>}
+\DoxyCodeLine{00196\ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structReverseComparator_1_1ReverseComparator__}{ReverseComparator\_<cmp\_t>}}\ Make(\textcolor{keyword}{const}\ cmp\_t\&\ cmp)}
+\DoxyCodeLine{00197\ \ \ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structReverseComparator_1_1ReverseComparator__}{ReverseComparator\_<cmp\_t>}}(cmp);}
+\DoxyCodeLine{00199\ \ \ \}}
+\DoxyCodeLine{00200\ \};}
+\DoxyCodeLine{00201\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00202\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structDummySortListener}{DummySortListener}}\ \{}
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ OnSwap(\textcolor{keywordtype}{size\_t},\ \textcolor{keywordtype}{size\_t})\ \ \{\}}
+\DoxyCodeLine{00204\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ OnMove(\textcolor{keywordtype}{size\_t},\ \textcolor{keywordtype}{size\_t})\ \ \{\}}
+\DoxyCodeLine{00205\ \};}
+\DoxyCodeLine{00206\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00207\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structSyncSortListener}{SyncSortListener}}\ \{}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ acc\_t>}
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{struct\ }SyncSortListener\_1\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ list\_t\&\ list;}
+\DoxyCodeLine{00211\ \ \ \ \ acc\_t\ acc;}
+\DoxyCodeLine{00212\ \ \ \ \ SyncSortListener\_1(list\_t\&\ \_list,\ \textcolor{keyword}{const}\ acc\_t\&\ a)}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ :\ list(\_list),\ acc(a)}
+\DoxyCodeLine{00214\ \ \ \ \ \{\}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordtype}{void}\ OnSwap(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{\ acc(list).Swap(i,\ j);\ \}}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordtype}{void}\ OnMove(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{\ acc(list).Move(i,\ j);\ \}}
+\DoxyCodeLine{00217\ \ \ \};}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ acc\_t>}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{struct\ }SyncSortListener\_N\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ list\_t\&\ list;}
+\DoxyCodeLine{00221\ \ \ \ \ acc\_t\ acc;}
+\DoxyCodeLine{00222\ \ \ \ \ SyncSortListener\_N(list\_t\&\ \_list,\ \textcolor{keyword}{const}\ acc\_t\ \&acc)}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ :\ list(\_list),\ acc(acc)}
+\DoxyCodeLine{00224\ \ \ \ \ \{\}}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keywordtype}{void}\ OnSwap(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ li\ =\ 0;\ li\ <\ list.Count();\ li++)\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ olx\_ref::get(acc(list[li])).Swap(i,\ j);}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \ \ \}}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordtype}{void}\ OnMove(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ li\ =\ 0;\ li\ <\ list.Count();\ li++)\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ olx\_ref::get(acc(list[li])).Move(i,\ j);}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00234\ \ \ \ \ \}}
+\DoxyCodeLine{00235\ \ \ \};}
+\DoxyCodeLine{00236\ \ \ \textcolor{comment}{/*\ synchronises\ a\ single\ list\ */}}
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structSyncSortListener_1_1SyncSortListener__1}{SyncSortListener\_1<list\_t,\ DummyAccessor>}}\ MakeSingle(}
+\DoxyCodeLine{00239\ \ \ \ \ list\_t\ \&l)}
+\DoxyCodeLine{00240\ \ \ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structSyncSortListener_1_1SyncSortListener__1}{SyncSortListener\_1<list\_t,\ DummyAccessor>}}(l,\ \mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}());}
+\DoxyCodeLine{00242\ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ acc\_t>}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{static}\ SyncSortListener\_1<list\_t,\ acc\_t>\ MakeSingle(}
+\DoxyCodeLine{00245\ \ \ \ \ list\_t\ \&l,\ \textcolor{keyword}{const}\ acc\_t\ \&acc)}
+\DoxyCodeLine{00246\ \ \ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{return}\ SyncSortListener\_1<list\_t,\ acc\_t>(l,\ acc);}
+\DoxyCodeLine{00248\ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \textcolor{comment}{/*\ syncronises\ a\ list\ of\ lists\ */}}
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structSyncSortListener_1_1SyncSortListener__N}{SyncSortListener\_N<list\_t,\ DummyAccessor>}}\ MakeMultiple(}
+\DoxyCodeLine{00252\ \ \ \ \ list\_t\ \&l)}
+\DoxyCodeLine{00253\ \ \ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structSyncSortListener_1_1SyncSortListener__N}{SyncSortListener\_N<list\_t,\ DummyAccessor>}}(l,\ DummyAccessor());}
+\DoxyCodeLine{00255\ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ acc\_t>}
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structSyncSortListener_1_1SyncSortListener__N}{SyncSortListener\_N<list\_t,\ acc\_t>}}\ MakeMultiple(}
+\DoxyCodeLine{00258\ \ \ \ \ list\_t\ \&l,\ \textcolor{keyword}{const}\ acc\_t\ \&acc)}
+\DoxyCodeLine{00259\ \ \ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structSyncSortListener_1_1SyncSortListener__N}{SyncSortListener\_N<list\_t,\ acc\_t>}}(l,\ acc);}
+\DoxyCodeLine{00261\ \ \ \}}
+\DoxyCodeLine{00262\ \};}
+\DoxyCodeLine{00263\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00264\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Sorter>}
+\DoxyCodeLine{00265\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structSortInterface}{SortInterface}}\ \{}
+\DoxyCodeLine{00266\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ comparator\_t,\ \textcolor{keyword}{class}\ listener\_t>}
+\DoxyCodeLine{00267\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Sort(list\_t\ \&list,\ \textcolor{keyword}{const}\ comparator\_t\&\ cmp,}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keyword}{const}\ listener\_t\&\ l)}
+\DoxyCodeLine{00269\ \ \ \{}
+\DoxyCodeLine{00270\ \ \ \ \ Sorter::Make(list,\ cmp,\ l).Sort();}
+\DoxyCodeLine{00271\ \ \ \}}
+\DoxyCodeLine{00272\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ comparator\_t>}
+\DoxyCodeLine{00273\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Sort(list\_t\ \&list,\ \textcolor{keyword}{const}\ comparator\_t\ \&cmp)\ \ \{}
+\DoxyCodeLine{00274\ \ \ \ \ Sorter::Make(list,\ cmp,\ \mbox{\hyperlink{structDummySortListener}{DummySortListener}}()).Sort();}
+\DoxyCodeLine{00275\ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Sort(list\_t\ \&list)\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ Sorter::Make(list,\ \mbox{\hyperlink{classTComparableComparator}{TComparableComparator}}(),\ \mbox{\hyperlink{structDummySortListener}{DummySortListener}}()).Sort();}
+\DoxyCodeLine{00279\ \ \ \}}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ item\_t>}
+\DoxyCodeLine{00282\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortSF(list\_t\ \&list,\ \textcolor{keywordtype}{int}\ (*f)(\textcolor{keyword}{const}\ item\_t\&,\ \textcolor{keyword}{const}\ item\_t\&))}
+\DoxyCodeLine{00283\ \ \ \{}
+\DoxyCodeLine{00284\ \ \ \ \ Sorter::Make(list,\ FunctionComparator::Make(f),\ \mbox{\hyperlink{structDummySortListener}{DummySortListener}}()).Sort();}
+\DoxyCodeLine{00285\ \ \ \}}
+\DoxyCodeLine{00286\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ base\_t,\ \textcolor{keyword}{class}\ item\_t>}
+\DoxyCodeLine{00287\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortMF(list\_t\ \&list,}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keyword}{const}\ base\_t\ \&base,}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordtype}{int}\ (base\_t::*f)(\textcolor{keyword}{const}\ item\_t\&,\ \textcolor{keyword}{const}\ item\_t\&)\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00290\ \ \ \{}
+\DoxyCodeLine{00291\ \ \ \ \ Sorter::Make(list,\ FunctionComparator::MakeConst(base,\ f),}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \mbox{\hyperlink{structDummySortListener}{DummySortListener}}()).Sort();}
+\DoxyCodeLine{00293\ \ \ \}}
+\DoxyCodeLine{00294\ \};}
+\DoxyCodeLine{00295\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structQuickSorter}{QuickSorter}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structSortInterface}{SortInterface}}<QuickSorter>\ \{}
+\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ comparator\_t,\ \textcolor{keyword}{class}\ listener\_t>}
+\DoxyCodeLine{00297\ \ \ \textcolor{keyword}{struct\ }QuickSorter\_\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ QuickSorter\_(list\_t\&\ list\_,\ \textcolor{keyword}{const}\ comparator\_t\&\ comparator\_,}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keyword}{const}\ listener\_t\&\ listener\_)}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ :\ list(list\_),\ listener(listener\_),\ cmp(comparator\_)}
+\DoxyCodeLine{00301\ \ \ \ \ \{\}}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordtype}{void}\ Sort()\ \{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ list.list.Count();}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cnt\ <\ 2)\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ DoSort(0,\ cnt\ -\/\ 1);}
+\DoxyCodeLine{00306\ \ \ \ \ \}}
+\DoxyCodeLine{00307\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keyword}{typename}\ list\_t::InternalAccessor\ list;}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keyword}{const}\ listener\_t\&\ listener;}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keyword}{const}\ comparator\_t\&\ cmp;}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ list\_t::InternalAccessor::list\_item\_type\ item\_t;}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keywordtype}{void}\ DoSort(\textcolor{keywordtype}{size\_t}\ lo0\_,\ \textcolor{keywordtype}{size\_t}\ hi0\_)\ \{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structAnAssociation3}{AnAssociation3<size\_t,\ size\_t,\ bool>}}\ d\_t;}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ TQueue<d\_t>\ stack;}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ stack.Push(d\_t(lo0\_,\ hi0\_,\ \textcolor{keyword}{true}));}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!stack.IsEmpty())\ \{}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ d\_t\ tv\ =\ stack.Pop();}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ diff\ =\ tv.GetB()\ -\/\ tv.GetA();}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (diff\ ==\ 1)\ \{}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.Compare(list[tv.GetA()],\ list[tv.GetB()])\ >\ 0)\ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ listener.OnSwap(tv.GetA(),\ tv.GetB());}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ list.list.Swap(tv.GetA(),\ tv.GetB());}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (diff\ >\ 0)\ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pi\ =\ tv.GetA()\ +\ (diff\ >>\ 1);}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tv.GetC())\ \{\ \textcolor{comment}{//\ try\ to\ fix\ pivot}}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ inc\ =\ (diff\ >>\ 2),\ li\ =\ pi\ -\/\ inc,\ ri\ =\ pi\ +\ inc;}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ c1\ =\ cmp.Compare(list[pi],\ list[li]);}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ c2\ =\ cmp.Compare(list[pi],\ list[ri]);}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((c1\ >\ 0\ \&\&\ c2\ >\ 0)\ ||\ (c1\ <\ 0\ \&\&\ c2\ <\ 0))\ \{}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ c3\ =\ cmp.Compare(list[li],\ list[ri]);}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c1\ <\ 0)\ \{\ \textcolor{comment}{//\ li/ri\ <\ mi}}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pi\ =\ (c3\ <\ 0\ ?\ ri\ :\ li);}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \textcolor{comment}{//\ mi\ <\ li/ri}}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pi\ =\ (c3\ <\ 0\ ?\ li\ :\ ri);}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ item\_t\ mid\ =\ list[pi];}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ listener.OnSwap(pi,\ tv.GetB());}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ list.list.Swap(pi,\ tv.GetB());}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ pi\ =\ tv.GetA();}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ tv.GetA();\ i\ <\ tv.GetB();\ i++)\ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.Compare(list[i],\ mid)\ <=\ 0)\ \{}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ !=\ pi)\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ listener.OnSwap(i,\ pi);}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ list.list.Swap(i,\ pi);}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pi++;}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ listener.OnSwap(pi,\ tv.GetB());}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ list.list.Swap(pi,\ tv.GetB());}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ l1\ =\ pi\ -\/\ tv.GetA(),\ l2\ =\ tv.GetB()\ -\/\ pi,}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ ml\ =\ olx\_max(l1,\ l2);}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ sp\ =\ (l1\ ==\ 0\ ||\ l2\ ==\ 0)\ ?\ \textcolor{keyword}{true}}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \ \ \ \ :\ (ml\ >\ 32\ \&\&\ (double)ml\ /\ (double)olx\_min(l1,\ l2)\ >=\ 1.75);}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (l2\ >\ 0)\ \{}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ \ \ \ stack.Push(d\_t(pi\ +\ 1,\ tv.GetB(),\ sp\ ?\ l2\ ==\ ml\ :\ \textcolor{keyword}{false}));}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (l1\ >\ 0)\ \{}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ stack.Push(d\_t(tv.GetA(),\ pi\ -\/\ 1,\ sp\ ?\ l1\ ==\ ml\ :\ \textcolor{keyword}{false}));}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00368\ \ \ \ \ \}}
+\DoxyCodeLine{00369\ \ \ \};}
+\DoxyCodeLine{00370\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ comparator\_t,\ \textcolor{keyword}{class}\ listener\_t>}
+\DoxyCodeLine{00371\ \ \ \textcolor{keyword}{static}\ QuickSorter\_\ <list\_t,comparator\_t,listener\_t>}
+\DoxyCodeLine{00372\ \ \ Make(list\_t\&\ list,\ \textcolor{keyword}{const}\ comparator\_t\&\ cmp,\ \textcolor{keyword}{const}\ listener\_t\&\ listener)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structQuickSorter_1_1QuickSorter__}{QuickSorter\_<list\_t,comparator\_t,listener\_t>}}(}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ list,\ cmp,\ listener);}
+\DoxyCodeLine{00375\ \ \ \}}
+\DoxyCodeLine{00376\ \};}
+\DoxyCodeLine{00377\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00378\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structBubbleSorter}{BubbleSorter}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structSortInterface}{SortInterface}}<BubbleSorter>\ \{}
+\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ comparator\_t,\ \textcolor{keyword}{class}\ listener\_t>}
+\DoxyCodeLine{00380\ \ \ \textcolor{keyword}{struct\ }BubbleSorter\_\ \{}
+\DoxyCodeLine{00381\ \ \ \ \ BubbleSorter\_(list\_t\ \&list\_,\ \textcolor{keyword}{const}\ comparator\_t\ \&cmp\_,}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \textcolor{keyword}{const}\ listener\_t\ \&listener\_)}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ :\ list(list\_),\ cmp(cmp\_),\ listener(listener\_)}
+\DoxyCodeLine{00384\ \ \ \ \ \{\}}
+\DoxyCodeLine{00385\ \ \ \ \ \textcolor{keywordtype}{void}\ Sort()\ \ \{}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ lc\ =\ list.list.Count();}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (lc\ >\ 0)\ \{}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ nlc\ =\ 0;}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ lc-\/1;\ i++)\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.Compare(list[i+1],\ list[i])\ <\ 0)\ \{}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ \ \ list.list.Swap(i+1,\ i);}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ listener.OnSwap(i+1,\ i);}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \ \ nlc\ =\ i+1;}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ lc\ =\ nlc;}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \ \ \}}
+\DoxyCodeLine{00399\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00400\ \ \ \ \ \textcolor{keyword}{typename}\ list\_t::InternalAccessor\ list;}
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{keyword}{const}\ comparator\_t\ \&cmp;}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keyword}{const}\ listener\_t\ \&listener;}
+\DoxyCodeLine{00403\ \ \ \};}
+\DoxyCodeLine{00404\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ comparator\_t,\ \textcolor{keyword}{class}\ listener\_t>}
+\DoxyCodeLine{00405\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structBubbleSorter_1_1BubbleSorter__}{BubbleSorter\_<list\_t,comparator\_t,listener\_t>}}}
+\DoxyCodeLine{00406\ \ \ Make(list\_t\ \&list,\ \textcolor{keyword}{const}\ comparator\_t\ \&cmp,\ \textcolor{keyword}{const}\ listener\_t\ \&listener)\ \{}
+\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structBubbleSorter_1_1BubbleSorter__}{BubbleSorter\_<list\_t,comparator\_t,listener\_t>}}(}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ list,\ cmp,\ listener);}
+\DoxyCodeLine{00409\ \ \ \}}
+\DoxyCodeLine{00410\ \};}
+\DoxyCodeLine{00411\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00412\ EndEsdlNamespace()}
+\DoxyCodeLine{00413\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

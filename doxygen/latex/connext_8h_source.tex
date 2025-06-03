@@ -1,0 +1,60 @@
+\doxysection{connext.\+h}
+\hypertarget{connext_8h_source}{}\label{connext_8h_source}\index{xlib/connext.h@{xlib/connext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_conn\_ext\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_conn\_ext\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}catom.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BeginXlibNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00017\ \ \ def\_max\_bonds\ =\ 12;}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ struct\ CXBondInfo\ \{}
+\DoxyCodeLine{00020\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ to;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{const}\ smatd*\ matr;}
+\DoxyCodeLine{00022\ \ \ CXBondInfo(\textcolor{keyword}{const}\ CXBondInfo\&\ bi)}
+\DoxyCodeLine{00023\ \ \ \ \ :\ to(bi.to),\ matr(bi.matr)}
+\DoxyCodeLine{00024\ \ \ \{\}}
+\DoxyCodeLine{00025\ \ \ CXBondInfo(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca,\ \textcolor{keyword}{const}\ smatd*\ m\ =\ 0)}
+\DoxyCodeLine{00026\ \ \ \ \ :\ to(ca),\ matr(m)}
+\DoxyCodeLine{00027\ \ \ \{\}}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ implemented\ in\ conninfo.h}}
+\DoxyCodeLine{00029\ \ \ olxstr\ ToString(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&\ from)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \};}
+\DoxyCodeLine{00031\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<CXBondInfo>}}\ BondInfoList;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{struct\ }CXConnInfoBase\ \{}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{short}\ maxBonds;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{double}\ r;}
+\DoxyCodeLine{00036\ \ \ CXConnInfoBase()}
+\DoxyCodeLine{00037\ \ \ \ \ :\ maxBonds(def\_max\_bonds),\ r(-\/1)}
+\DoxyCodeLine{00038\ \ \ \{\}}
+\DoxyCodeLine{00039\ \ \ CXConnInfoBase(\textcolor{keyword}{const}\ CXConnInfoBase\&\ ci)}
+\DoxyCodeLine{00040\ \ \ \ \ :\ maxBonds(ci.maxBonds),\ r(ci.r)}
+\DoxyCodeLine{00041\ \ \ \{\}}
+\DoxyCodeLine{00042\ \ \ CXConnInfoBase\&\ operator\ =\ (\textcolor{keyword}{const}\ CXConnInfoBase\&\ ci)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ maxBonds\ =\ ci.maxBonds;}
+\DoxyCodeLine{00044\ \ \ \ \ r\ =\ ci.r;}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structCXConnInfo}{CXConnInfo}}\ :\ \textcolor{keyword}{public}\ CXConnInfoBase\ \{}
+\DoxyCodeLine{00050\ \ \ BondInfoList\ BondsToCreate,\ BondsToRemove;}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ EndXlibNamespace()}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

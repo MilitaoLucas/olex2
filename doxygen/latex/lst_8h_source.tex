@@ -1,0 +1,112 @@
+\doxysection{lst.\+h}
+\hypertarget{lst_8h_source}{}\label{lst_8h_source}\index{xlib/lst.h@{xlib/lst.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_lst\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_lst\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}evalue.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}symmat.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}bitarray.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00018\ BeginXlibNamespace()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ const\ \textcolor{keywordtype}{short}\ slstReflections\ =\ 1,}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ slslRefineData\ \ =\ 2;}
+\DoxyCodeLine{00022\ struct\ \mbox{\hyperlink{structTLstRef}{TLstRef}}\ \ \{}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{short}\ H,\ K,\ L;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{double}\ DF,\ Res,\ Fo,\ Fc;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{bool}\ Deleted;}
+\DoxyCodeLine{00026\ \};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTLstSplitAtom}{TLstSplitAtom}}\ \ \{}
+\DoxyCodeLine{00029\ \ \ olxstr\ AtomName;}
+\DoxyCodeLine{00030\ \ \ vec3d\ PositionA,\ PositionB;}
+\DoxyCodeLine{00031\ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTTrefTry}{TTrefTry}}\ \ \{}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{double}\ CFOM,\ RAlpha,\ NQual,\ SigmaM1,\ Mabs;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{long}\ Try;}
+\DoxyCodeLine{00036\ \ \ \mbox{\hyperlink{classTEBitArray}{TEBitArray}}\ Semivariants;}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{class\ }TPattAtom\ \{}
+\DoxyCodeLine{00040\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00041\ \ \ vec3d\ Crd;}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{double}\ Occup;}
+\DoxyCodeLine{00043\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00044\ \ \ TPattAtom()\ \ \{\ \ Occup\ =\ 0;\ \ \}}
+\DoxyCodeLine{00045\ \ \ TPattAtom(\textcolor{keyword}{const}\ TPattAtom\&\ A)\ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ Name\ =\ A.Name;}
+\DoxyCodeLine{00047\ \ \ \ \ Crd\ =\ A.Crd;}
+\DoxyCodeLine{00048\ \ \ \ \ Occup\ =\ A.Occup;}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ \ \ TPattAtom\&\ operator\ =\ (\textcolor{keyword}{const}\ TPattAtom\&\ A)\ \ \{}
+\DoxyCodeLine{00051\ \ \ \ \ Name\ =\ A.Name;}
+\DoxyCodeLine{00052\ \ \ \ \ Crd\ =\ A.Crd;}
+\DoxyCodeLine{00053\ \ \ \ \ Occup\ =\ A.Occup;}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Name;\ \ \}}
+\DoxyCodeLine{00058\ \ \ vec3d\&\ GetCrd()\ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \ \textcolor{keywordflow}{return}\ Crd;\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{double}\ GetOccup()\textcolor{keyword}{\ const\ \ \ \ \ \ \ }\{\ \ \textcolor{keywordflow}{return}\ Occup;\ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ SetName(\textcolor{keyword}{const}\ olxstr\&\ n)\ \ \{\ Name\ =\ n;\ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{void}\ SetOccup(\textcolor{keywordtype}{double}\ v)\ \ \ \ \ \ \ \ \ \ \{\ Occup\ =\ v;\ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{class\ }TLst:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00067\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TLstRef>}}\ FDRefs;}
+\DoxyCodeLine{00069\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TTrefTry>}}\ TrefTries;}
+\DoxyCodeLine{00070\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<\ TTypeList<TPattAtom>}}\ >\ PattSolutions;}
+\DoxyCodeLine{00071\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TLstSplitAtom>}}\ FSplitAtoms;}
+\DoxyCodeLine{00072\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<\ olx\_pair\_t<olxstr,\ olxstr>}}\ >\ ErrorMsgs;}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{bool}\ Loaded;}
+\DoxyCodeLine{00074\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00075\ \ \ TLst()\ :\ Loaded(\textcolor{keyword}{false})\ \{\}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00077\ \ \ \string~TLst()\ \{\}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{bool}\ LoadFromFile(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{void}\ SynchroniseOmits(\textcolor{keyword}{class}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{bool}\ ExportHTML(\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ Param,\ TStrList\ \&Html,\ \textcolor{keywordtype}{bool}\ TableDef=\textcolor{keyword}{true});}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{size\_t}\ DRefCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FDRefs.Count();\ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTLstRef}{TLstRef}}\&\ DRef(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FDRefs[i];\ \}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ DelRef(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ FDRefs.Delete(i);\ \ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordtype}{size\_t}\ SplitAtomCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FSplitAtoms.Count();\ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTLstSplitAtom}{TLstSplitAtom}}\&\ SplitAtom(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FSplitAtoms[i];\ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{size\_t}\ TrefTryCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TrefTries.Count();\ \}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTTrefTry}{TTrefTry}}\&\ TrefTry(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TrefTries[i];\ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{size\_t}\ PattSolutionCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ PattSolutions.Count();\ \}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TPattAtom>}}\&\ PattSolution(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ PattSolutions[i];\ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordtype}{bool}\ IsLoaded()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Loaded;\ \ \}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{size\_t}\ ErrMsgCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ErrorMsgs.Count();\ \ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetError(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ErrorMsgs[i].GetA();\ \ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetCause(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ErrorMsgs[i].GetB();\ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<olxstr,\ true>}}\ params;}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{/*\ max\_shift,\ mean\_shift,\ F000,\ Mu,\ Rho,\ flack,\ flack\_type\ (Q,\ x),\ wR2,\ S,}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ \ rS,\ R1,\ R1all,\ param\_n,\ ref\_4sig,\ hole,\ peak,\ Rint,\ Rsig,\ ref\_total,}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ \ ref\_unique}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ \ \ */}}
+\DoxyCodeLine{00103\ \};}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ EndXlibNamespace()}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

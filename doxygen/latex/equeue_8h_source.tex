@@ -1,0 +1,118 @@
+\doxysection{equeue.\+h}
+\hypertarget{equeue_8h_source}{}\label{equeue_8h_source}\index{sdl/equeue.h@{sdl/equeue.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_queue\_h}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_queue\_h}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{/*\ very\ simple\ queue\ implementation,}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ performs\ as\ a}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ \ queue\ (Push,Pop)\ alternatively\ (PushLast,\ PopFirst)}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ stack\ (PushFirst,\ PopFirst:pop)}}
+\DoxyCodeLine{00019\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00020\ template\ <class\ T>}
+\DoxyCodeLine{00021\ class\ TQueue\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{struct\ }item\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ T\ data;}
+\DoxyCodeLine{00025\ \ \ \ \ item*\ next;}
+\DoxyCodeLine{00026\ \ \ \ \ item(\textcolor{keyword}{const}\ T\&\ v)\ :\ data(v),\ next(NULL)}
+\DoxyCodeLine{00027\ \ \ \ \ \{\}}
+\DoxyCodeLine{00028\ \ \ \};}
+\DoxyCodeLine{00029\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00030\ \ \ item\ *first,\ *last;}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{size\_t}\ \_count;}
+\DoxyCodeLine{00032\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ \ \ TQueue()\ :\ first(NULL),\ last(NULL),\ \_count(0)}
+\DoxyCodeLine{00034\ \ \ \{\}}
+\DoxyCodeLine{00035\ \ \ TQueue(\textcolor{keyword}{const}\ TQueue\ \&\ q)\ :\ first(0),\ last(0),\ \_count(q.\_count)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{if}\ (q.first\ !=\ 0)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ first\ =\ last\ =\ new\ item(q.first-\/>data);}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ item\ *i\ =\ q.first-\/>next,\ *j\ =\ first;}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ while\ (i\ !=\ 0)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ j-\/>next\ =\ new\ item(i-\/>data);}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ last\ =\ j\ =\ j-\/>next;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ i\ =\ i-\/>next;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \string~TQueue()\ \ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{while}\ (first\ !=\ NULL)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ item*\ p\ =\ first-\/>next;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ first;}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ first\ =\ p;}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \_count\ =\ 0;}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ T\&\ Push(\textcolor{keyword}{const}\ T\&\ v)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ item*\ ni\ =\ \textcolor{keyword}{new}\ item(v);}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{if}\ (first\ ==\ NULL\ )\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ first\ =\ last\ =\ ni;}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ last-\/>next\ =\ ni;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ last\ =\ ni;}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \_count++;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{return}\ last-\/>data;}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ T\&\ PushLast(\textcolor{keyword}{const}\ T\&\ v)\ \{\ \textcolor{keywordflow}{return}\ Push(v);\ \}}
+\DoxyCodeLine{00068\ \ \ T\ PopFirst()\ \{\ \textcolor{keywordflow}{return}\ Pop();\ \}}
+\DoxyCodeLine{00069\ \ \ T\&\ Last()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{if}\ (last\ ==\ NULL)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ TExceptionBase::ThrowFunctionFailed(\_\_POlxSourceInfo,\ \textcolor{stringliteral}{"{}queue\ is\ empty"{}});}
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{return}\ last-\/>data;}
+\DoxyCodeLine{00074\ \ \ \}}
+\DoxyCodeLine{00075\ \ \ T\&\ First()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{if}\ (first\ ==\ NULL)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ TExceptionBase::ThrowFunctionFailed(\_\_POlxSourceInfo,\ \textcolor{stringliteral}{"{}queue\ is\ empty"{}});}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ first-\/>data;}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ item\ *head()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ first;\ \}}
+\DoxyCodeLine{00082\ \ \ T\&\ PushFirst(\textcolor{keyword}{const}\ T\&\ v)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ item*\ ni\ =\ \textcolor{keyword}{new}\ item(v);}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{if}\ (first\ ==\ NULL)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ first\ =\ last\ =\ ni;}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ ni-\/>next\ =\ first;}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ first\ =\ ni;}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \_count++;}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{return}\ first-\/>data;}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ \ \ T\ Pop()\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{if}\ (first\ !=\ NULL)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ item*\ i\ =\ first-\/>next;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ T\ rv\ =\ first-\/>data;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ first;}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ first\ =\ i;}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \_count-\/-\/;}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ TExceptionBase::ThrowFunctionFailed(\_\_POlxSourceInfo,\ \textcolor{stringliteral}{"{}queue\ is\ empty"{}});}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{comment}{//\ make\ the\ compiler\ happy}}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ T();}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_count\ ==\ 0;\ \}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_count;\ \}}
+\DoxyCodeLine{00109\ \};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ EndEsdlNamespace()}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

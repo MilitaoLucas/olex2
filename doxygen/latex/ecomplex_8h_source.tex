@@ -1,0 +1,235 @@
+\doxysection{ecomplex.\+h}
+\hypertarget{ecomplex_8h_source}{}\label{ecomplex_8h_source}\index{sdl/ecomplex.h@{sdl/ecomplex.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_complex\_h}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_complex\_h}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <complex>}}
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ template\ <class\ T>\ class\ TEComplex\ \{}
+\DoxyCodeLine{00017\ \ \ T\ \_A,\ \_B;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ TEComplex()\ \{\ \_A\ =\ \_B\ =\ 0;\ \}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ TEComplex(T\ \_real)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \_A\ =\ \_real;}
+\DoxyCodeLine{00023\ \ \ \ \ \_B\ =\ 0;}
+\DoxyCodeLine{00024\ \ \ \}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TEComplex(AT\ \_real)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \_A\ =\ (T)\_real;}
+\DoxyCodeLine{00027\ \ \ \ \ \_B\ =\ 0;}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ TEComplex(T\ \_real,\ T\ \_compl)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \_A\ =\ \_real;}
+\DoxyCodeLine{00032\ \ \ \ \ \_B\ =\ \_compl;}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TEComplex(AT\ \_real,\ AT\ \_compl)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \_A\ =\ (T)\_real;}
+\DoxyCodeLine{00036\ \ \ \ \ \_B\ =\ (T)\_compl;}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ TEComplex(\textcolor{keyword}{const}\ TEComplex\&\ cmpl)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \_A\ =\ cmpl.\_A;}
+\DoxyCodeLine{00041\ \ \ \ \ \_B\ =\ cmpl.\_B;}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ TEComplex(\textcolor{keyword}{const}\ TEComplex<AT>\&\ cmpl)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \_A\ =\ (T)cmpl.\_A;}
+\DoxyCodeLine{00045\ \ \ \ \ \_B\ =\ (T)cmpl.\_B;}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{inline}\ T\&\ A()\ \{\ \textcolor{keywordflow}{return}\ \_A;\ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{inline}\ T\&\ B()\ \{\ \textcolor{keywordflow}{return}\ \_B;\ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{inline}\ T\&\ Re()\ \{\ \textcolor{keywordflow}{return}\ \_A;\ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{inline}\ T\&\ Im()\ \{\ \textcolor{keywordflow}{return}\ \_B;\ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ T\&\ GetA()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_A;\ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ T\&\ GetB()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_B;\ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ T\&\ GetRe()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_A;\ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ T\&\ GetIm()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_B;\ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetA(\textcolor{keyword}{const}\ T\&\ v)\ \{\ \_A\ =\ v;\ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetB(\textcolor{keyword}{const}\ T\&\ v)\ \{\ \_B\ =\ v;\ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetRe(\textcolor{keyword}{const}\ T\&\ v)\ \{\ \_A\ =\ v;\ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetIm(\textcolor{keyword}{const}\ T\&\ v)\ \{\ \_B\ =\ v;\ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Null()\ \{\ \_A\ =\ \_B\ =\ 0;\ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{inline}\ T\ abs()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00062\ \ \ \ \ T\ mx\ =\ olx\_max(\_A,\ \_B);}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{if}\ (mx\ ==\ 0)\ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00064\ \ \ \ \ T\ a\ =\ \_A\ /\ mx,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ b\ =\ \_B\ /\ mx;}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ mx\ *\ sqrt(a\ *\ a\ +\ b\ *\ b);}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{inline}\ T\ mod()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_B\ ==\ 0)\ \ \textcolor{keywordflow}{return}\ (\_A\ <\ 0)\ ?\ -\/\_A\ :\ \_A;}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}\ sqrt(\_A\ *\ \_A\ +\ \_B\ *\ \_B);}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{inline}\ T\ qmod()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_A\ *\ \_A\ +\ \_B\ *\ \_B;\ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{inline}\ TEComplex\ inv()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00077\ \ \ \ \ TEComplex\ rv(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00078\ \ \ \ \ rv.\_B\ *=\ -\/1;}
+\DoxyCodeLine{00079\ \ \ \ \ rv\ /=\ qmod();}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{inline}\ TEComplex\ conj()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TEComplex(\_A,\ -\/\_B);\ \}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{inline}\ T\ arg()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ atan2(\_B,\ \_A);\ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{inline}\ TEComplex\ exp()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TEComplex<T>(::exp(\_A),\ \_B);\ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{inline}\ TEComplex\ log()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TEComplex<T>(this-\/>abs(),\ this-\/>arg());\ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{inline}\ TEComplex\ pow(\textcolor{keyword}{const}\ TEComplex\&\ pv)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ (pv\ *\ this-\/>log()).exp();}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{static}\ TEComplex\ polar(T\ r,\ T\ theta)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ TEComplex<T>(r\ *\ cos(theta),\ r\ *\ sin(theta));}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{static}\ TEComplex\ polar(T\ theta)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ TEComplex<T>(cos(theta),\ sin(theta));}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{inline}\ TEComplex\&\ operator\ =\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \_A\ =\ \_compl.\_A;}
+\DoxyCodeLine{00103\ \ \ \ \ \_B\ =\ \_compl.\_B;}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{inline}\ TEComplex\&\ operator\ =\ (\textcolor{keyword}{const}\ TEComplex<AT>\&\ \_compl)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \_A\ =\ (T)\_compl.\_A;}
+\DoxyCodeLine{00109\ \ \ \ \ \_B\ =\ (T)\_compl.\_B;}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator\ +=\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \_A\ +=\ \_compl.\_A;}
+\DoxyCodeLine{00115\ \ \ \ \ \_B\ +=\ \_compl.\_B;}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator\ -\/=\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \_A\ -\/=\ \_compl.\_A;}
+\DoxyCodeLine{00119\ \ \ \ \ \_B\ -\/=\ \_compl.\_B;}
+\DoxyCodeLine{00120\ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator\ *=\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{const}\ T\ v\ =\ \_A\ *\ \_compl.\_A\ -\/\ \_B\ *\ \_compl.\_B;}
+\DoxyCodeLine{00123\ \ \ \ \ \_B\ =\ \_B\ *\ \_compl.\_A\ +\ \_A\ *\ \_compl.\_B;}
+\DoxyCodeLine{00124\ \ \ \ \ \_A\ =\ v;}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator\ /=\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ T\ dv\ =\ \_compl.\_A\ *\ \_compl.\_A\ +\ \_compl.\_B\ *\ \_compl.\_B,}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ oa\ =\ \_A,}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ ob\ =\ \_B;}
+\DoxyCodeLine{00130\ \ \ \ \ \_A\ =\ (oa\ *\ \_compl.\_A\ +\ ob\ *\ \_compl.\_B)\ /\ dv;}
+\DoxyCodeLine{00131\ \ \ \ \ \_B\ =\ (ob\ *\ \_compl.\_A\ -\/\ oa\ *\ \_compl.\_B)\ /\ dv;}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator\ +=\ (\textcolor{keyword}{const}\ T\ a)\ \{\ \_A\ +=\ a;\ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator\ -\/=\ (\textcolor{keyword}{const}\ T\ a)\ \{\ \_A\ -\/=\ a;\ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator\ *=\ (\textcolor{keyword}{const}\ T\ a)\ \{\ \_A\ *=\ a;\ \ \_B\ *=\ a;\ \}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ operator\ /=\ (\textcolor{keyword}{const}\ T\ a)\ \{\ \_A\ /=\ a;\ \ \_A\ /=\ a;\ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{inline}\ TEComplex\ operator\ +\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{return}\ TEComplex<T>(\_A\ +\ \_compl.\_A,\ \_B\ +\ \_compl.\_B);}
+\DoxyCodeLine{00141\ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{inline}\ TEComplex\ operator\ -\/\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{return}\ TEComplex<T>(\_A\ -\/\ \_compl.\_A,\ \_B\ -\/\ \_compl.\_B);}
+\DoxyCodeLine{00144\ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{inline}\ TEComplex\ operator\ -\/\ ()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{return}\ TEComplex<T>(-\/\_A,\ -\/\_B);}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{inline}\ TEComplex\ operator\ *\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ TEComplex<T>(\_A\ *\ \_compl.\_A\ -\/\ \_B\ *\ \_compl.\_B,\ \_B\ *\ \_compl.\_A\ +\ \_A\ *\ \_compl.\_B);}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{inline}\ TEComplex\ operator\ /\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00152\ \ \ \ \ T\ dv\ =\ \_compl.\_A\ *\ \_compl.\_A\ +\ \_compl.\_B\ *\ \_compl.\_B;}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{return}\ TEComplex((\_A\ *\ \_compl.\_A\ +\ \_B\ *\ \_compl.\_B)\ /\ dv,\ (\_B\ *\ \_compl.\_A\ -\/\ \_A\ *\ \_compl.\_B)\ /\ dv);}
+\DoxyCodeLine{00154\ \ \ \}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{inline}\ TEComplex\ operator\ +\ (\textcolor{keyword}{const}\ T\ a)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TEComplex<T>(\_A\ +\ a,\ \_B);\ \}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{inline}\ TEComplex\ operator\ -\/\ (\textcolor{keyword}{const}\ T\ a)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TEComplex<T>(\_A\ -\/\ a,\ \_B);\ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{inline}\ TEComplex\ operator\ *\ (\textcolor{keyword}{const}\ T\ a)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TEComplex<T>(\_A\ *\ a,\ \_B\ *\ a);\ \}}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{inline}\ TEComplex\ operator\ /\ (\textcolor{keyword}{const}\ T\ a)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TEComplex<T>(\_A\ /\ a,\ \_B\ /\ a);\ \}}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{return}\ (\_A\ ==\ \_compl.\_A\ \&\&\ \_B\ ==\ \_compl.\_B);}
+\DoxyCodeLine{00162\ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ TEComplex\&\ \_compl)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{return}\ (\_A\ !=\ \_compl.\_A\ ||\ \_B\ !=\ \_compl.\_B);}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \};}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ T\ olx\_abs(\textcolor{keyword}{const}\ TEComplex<T>\ \&n)\ \{}
+\DoxyCodeLine{00170\ \ \ \textcolor{keywordflow}{return}\ n.abs();}
+\DoxyCodeLine{00171\ \}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ T\ olx\_abs(\textcolor{keyword}{const}\ std::complex<T>\&\ n)\ \{}
+\DoxyCodeLine{00174\ \ \ \textcolor{keywordflow}{return}\ std::abs(n);}
+\DoxyCodeLine{00175\ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T1,\ \textcolor{keyword}{typename}\ T2>}
+\DoxyCodeLine{00178\ TEComplex<T2>\ operator\ /\ (T1\ n,\ \textcolor{keyword}{const}\ TEComplex<T2>\&\ c)\ \{}
+\DoxyCodeLine{00179\ \ \ T2\ dv\ =\ c.qmod();}
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordflow}{return}\ TEComplex<T2>((n\ *\ c.GetRe())\ /\ dv,\ (-\/\ n\ *\ c.GetIm())\ /\ dv);}
+\DoxyCodeLine{00181\ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ TEComplex<T>\ olx\_exp(\textcolor{keyword}{const}\ TEComplex<T>\&\ n)\ \{}
+\DoxyCodeLine{00184\ \ \ T\ v\ =\ exp(n.GetRe());}
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordflow}{return}\ TEComplex<T>(v\ *\ cos(n.GetIm()),\ v*sin(n.GetIm()));}
+\DoxyCodeLine{00186\ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ T\ olx\_sqr(\textcolor{keyword}{const}\ TEComplex<T>\&\ n)\ \{}
+\DoxyCodeLine{00189\ \ \ \textcolor{keywordflow}{return}\ n.qmod();}
+\DoxyCodeLine{00190\ \}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ T\ olx\_exp(\textcolor{keyword}{const}\ T\&\ n)\ \{}
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordflow}{return}\ std::exp(n);}
+\DoxyCodeLine{00194\ \}}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \textcolor{keyword}{typedef}\ TEComplex<double>\ compd;}
+\DoxyCodeLine{00197\ \textcolor{keyword}{typedef}\ TEComplex<float>\ compf;}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00200\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ TEComplex<T>\&\ n)\ \{}
+\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{static}\ olxcstr\ fmt\ =\ olxcstr()\ <<\ olx\_format\_modifier(n.GetRe())}
+\DoxyCodeLine{00202\ \ \ \ \ <<\ \textcolor{stringliteral}{"{}e\%ci\%.4"{}};}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordflow}{return}\ fmt.c\_str();}
+\DoxyCodeLine{00204\ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \textcolor{comment}{/*\ if\ the\ fmt\ is\ used\ -\/\ it\ should\ take\ re,\ char\ sign\ of\ the\ im\ and\ im\ as}}
+\DoxyCodeLine{00207\ \textcolor{comment}{*\ arguments.\ Padded\ to\ 20\ chars,\ default\ "{}\%12.4le\%ci\%.4lf"{}}}
+\DoxyCodeLine{00208\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00209\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00210\ olxstr\ strof(\textcolor{keyword}{const}\ TEComplex<T>\ \&n,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt\ =\ 0)\ \{}
+\DoxyCodeLine{00211\ \ \ \textcolor{keywordflow}{if}\ (fmt\ ==\ 0)\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_print((olxcstr(\textcolor{stringliteral}{"{}\%12.4"{}})\ <<}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ olx\_format\_modifier(n.GetRe())\ <<\ \textcolor{stringliteral}{"{}e\%ci\%.4"{}}\ <<\ olx\_format\_modifier(n.GetIm())\ <<\ \textcolor{charliteral}{'f'}).c\_str(),}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ n.GetRe(),\ (\textcolor{keywordtype}{char})olx\_sign\_char(n.GetIm()),\ olx\_abs(n.GetIm()))}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ .RightPadding(20,\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00216\ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \textcolor{keywordflow}{return}\ olx\_print(fmt,}
+\DoxyCodeLine{00218\ \ \ \ \ n.GetRe(),\ (\textcolor{keywordtype}{char})olx\_sign\_char(n.GetIm()),\ olx\_abs(n.GetIm()))}
+\DoxyCodeLine{00219\ \ \ \ \ .RightPadding(20,\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00220\ \}}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00223\ \textcolor{keyword}{const}\ T\&\ olx\_get\_primitive\_type(\textcolor{keyword}{const}\ TEComplex<T>\&\ n)\ \{}
+\DoxyCodeLine{00224\ \ \ \textcolor{keywordflow}{return}\ n.GetRe();}
+\DoxyCodeLine{00225\ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ EndEsdlNamespace()}
+\DoxyCodeLine{00229\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

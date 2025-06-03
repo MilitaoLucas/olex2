@@ -1,0 +1,70 @@
+\doxysection{mol2.\+h}
+\hypertarget{mol2_8h_source}{}\label{mol2_8h_source}\index{xlib/mol2.h@{xlib/mol2.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ olx\_mol2\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ olx\_mol2\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}xfiles.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ BeginXlibNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00018\ \ \ mol2btUnknown\ \ \ \ \ \ =\ 0,}
+\DoxyCodeLine{00019\ \ \ mol2btSingle\ \ \ \ \ \ \ =\ 1,}
+\DoxyCodeLine{00020\ \ \ mol2btDouble\ \ \ \ \ \ \ =\ 2,}
+\DoxyCodeLine{00021\ \ \ mol2btTriple\ \ \ \ \ \ \ =\ 3,}
+\DoxyCodeLine{00022\ \ \ mol2btAromatic\ \ \ \ \ =\ 4,}
+\DoxyCodeLine{00023\ \ \ mol2btAmide\ \ \ \ \ \ \ \ =\ 5,}
+\DoxyCodeLine{00024\ \ \ mol2btDummy\ \ \ \ \ \ \ \ =\ 6,}
+\DoxyCodeLine{00025\ \ \ mol2btNotConnected\ =\ 7;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ struct\ TMol2Bond\ \ \{}
+\DoxyCodeLine{00028\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{size\_t}\ Id;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ TMol2Bond(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ Id(\textcolor{keywordtype}{id})\ \{\ \}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{size\_t}\ BondType;}
+\DoxyCodeLine{00033\ \ \ index\_t\ a1,\ a2;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{size\_t}\ GetId()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Id;\ \ \}}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }TMol2:\ \textcolor{keyword}{public}\ TBasicCFile\ \ \{}
+\DoxyCodeLine{00038\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00040\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TMol2Bond>}}\ Bonds;}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ TStrList\ \&BondNames()\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{static}\ TStrList\ rv(\textcolor{stringliteral}{"{}un;1;2;3;ar;am;du;nc"{}},\ \textcolor{charliteral}{';'});}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00047\ \ \ olxstr\ MOLAtom(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA);}
+\DoxyCodeLine{00048\ \ \ olxstr\ MOLBond(\mbox{\hyperlink{structTMol2Bond}{TMol2Bond}}\&\ B);}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{const}\ olxstr\&\ EncodeBondType(\textcolor{keywordtype}{size\_t}\ type)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{size\_t}\ DecodeBondType(\textcolor{keyword}{const}\ olxstr\&\ name)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00051\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00052\ \ \ TMol2()\ \{\ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{virtual}\ \string~TMol2()\ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{size\_t}\ BondCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Bonds.Count();\ \ \}}
+\DoxyCodeLine{00056\ \ \ \mbox{\hyperlink{structTMol2Bond}{TMol2Bond}}\&\ Bond(\textcolor{keywordtype}{size\_t}\ index)\ \{\ \ \textcolor{keywordflow}{return}\ Bonds[index];\ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SaveToStrings(TStrList\&\ Strings);}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromStrings(\textcolor{keyword}{const}\ TStrList\&\ Strings);}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Adopt(\mbox{\hyperlink{classTXFile}{TXFile}}\ \&,\ \textcolor{keywordtype}{int});}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ \ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TMol2;\ \ \}}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ EndXlibNamespace()}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

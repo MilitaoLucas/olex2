@@ -1,0 +1,208 @@
+\doxysection{shared.\+h}
+\hypertarget{shared_8h_source}{}\label{shared_8h_source}\index{sdl/shared.h@{sdl/shared.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_shared\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_shared\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ template\ <class\ cont\_t,\ typename\ item\_t>}
+\DoxyCodeLine{00016\ class\ shared\_base\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<cont\_t>}}\ *p;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ throw\_invalid(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,\ \textcolor{keywordtype}{int}\ line)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ TExceptionBase::ThrowFunctionFailed(file,\ function,\ line,}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}uninitialised\ object"{}});}
+\DoxyCodeLine{00022\ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{void}\ on\_modify()\ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{if}(\ p-\/>ref\_cnt\ >\ 1\ )\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ p-\/>ref\_cnt-\/-\/;}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ p\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<cont\_t>}}(\textcolor{keyword}{new}\ cont\_t(*p-\/>p));}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ shared\_base()\ :\ p(\textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<cont\_t>}}(\textcolor{keyword}{new}\ cont\_t))\ \ \{\}}
+\DoxyCodeLine{00031\ \ \ shared\_base(\textcolor{keyword}{const}\ shared\_base\ \&l)\ :\ p(l.p\ ==\ NULL\ ?\ NULL\ :\ l.p-\/>inc\_ref())\ \ \{\}}
+\DoxyCodeLine{00032\ \ \ shared\_base(cont\_t\ *l)\ :\ p\ (\textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<cont\_t>}}(l))\ \{\}}
+\DoxyCodeLine{00033\ \ \ shared\_base(cont\_t\ \&l)\ :\ p(\textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<cont\_t>}}(\textcolor{keyword}{new}\ cont\_t))\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ p-\/>p-\/>TakeOver(l);}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \string~shared\_base()\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{if}(\ p\ !=\ NULL\ \&\&\ -\/-\/p-\/>ref\_cnt\ ==\ 0\ )\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p-\/>p;}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p;}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{operator}\ \textcolor{keyword}{const}\ cont\_t\ \&()\ \textcolor{keyword}{const}\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{if}(\ p\ ==\ NULL\ )}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ throw\_invalid(\_\_POlxSourceInfo);}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{return}\ *p-\/>p;}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{const}\ cont\_t\&\ GetObject()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{if}(\ p\ ==\ NULL\ )}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ throw\_invalid(\_\_POlxSourceInfo);}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ *p-\/>p;}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ shared\_base\&\ operator\ =\ (\textcolor{keyword}{const}\ shared\_base\ \&a)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{if}(\ p\ !=\ NULL\ \&\&\ -\/-\/p-\/>ref\_cnt\ ==\ 0\ )\ \ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p-\/>p;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p;}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ p\ =\ a.p-\/>inc\_ref();}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{comment}{//\ the\ caller\ must\ delete\ the\ container\ after\ this\ call}}
+\DoxyCodeLine{00061\ \ \ cont\_t\ \&Release()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{if}(\ p\ ==\ NULL\ )}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ throw\_invalid(\_\_POlxSourceInfo);}
+\DoxyCodeLine{00064\ \ \ \ \ cont\_t\ *rv;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{if}(\ -\/-\/p-\/>ref\_cnt\ ==\ 0\ )\ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ rv\ =\ p-\/>p;}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ p\ =\ NULL;}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ rv\ =\ \textcolor{keyword}{new}\ cont\_t(*p-\/>p);}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ p\ =\ NULL;}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ *rv;}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ p\ !=\ NULL;\ \ \}}
+\DoxyCodeLine{00077\ \};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ cont\_t,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00080\ \textcolor{keyword}{class\ }shared\_list\_base\ :\ \textcolor{keyword}{public}\ shared\_base<cont\_t,\ item\_t>\ \{}
+\DoxyCodeLine{00081\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{class\ }Item\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index;}
+\DoxyCodeLine{00084\ \ \ \ \ shared\_list\_base<cont\_t,item\_t>\ \&instance;}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00086\ \ \ \ \ Item(\textcolor{keywordtype}{size\_t}\ idx,\ shared\_list\_base<cont\_t,item\_t>\ \&inst)}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ :\ index(idx),\ instance(inst)\ \{\}}
+\DoxyCodeLine{00088\ \ \ \ \ Item\&\ operator\ =\ (\textcolor{keyword}{const}\ item\_t\ \&v)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ instance.Set(index,\ v);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ Item\&\ operator\ =\ (\textcolor{keyword}{const}\ Item\ \&v)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ instance-\/>Set(index,\ v.instance.Get(v.index));}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{operator}\ \textcolor{keyword}{const}\ item\_t\ \&\ ()\ \{\ \ \textcolor{keywordflow}{return}\ instance.Get(index);\ \ \}}
+\DoxyCodeLine{00097\ \ \ \};}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keyword}{const}\ item\_t\ \&v)\ \ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keyword}{typedef}\ shared\_base<cont\_t,\ item\_t>\ p\_t;}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{if}(\ p\_t::p-\/>ref\_cnt\ >\ 1\ )\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ p\_t::p-\/>ref\_cnt-\/-\/;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ p\_t::p\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<cont\_t>}}(\textcolor{keyword}{new}\ cont\_t(*p\_t::p-\/>p));}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ (*p\_t::p-\/>p)[i]\ =\ v;}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ (*p\_t::p-\/>p)[i]\ =\ v;}
+\DoxyCodeLine{00107\ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{const}\ item\_t\ \&Get(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ (*shared\_base<cont\_t,\ item\_t>::p-\/>p)[i];}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00112\ \ \ shared\_list\_base()\ \{\}}
+\DoxyCodeLine{00113\ \ \ shared\_list\_base(\textcolor{keyword}{const}\ shared\_list\_base\ \&l)}
+\DoxyCodeLine{00114\ \ \ \ \ :\ shared\_base<cont\_t,\ item\_t>(l)\ \ \{\}}
+\DoxyCodeLine{00115\ \ \ shared\_list\_base(cont\_t\ *l)}
+\DoxyCodeLine{00116\ \ \ \ \ :\ shared\_base<cont\_t,\ item\_t>(l)\ \{\}}
+\DoxyCodeLine{00117\ \ \ shared\_list\_base(cont\_t\ \&l)}
+\DoxyCodeLine{00118\ \ \ \ \ :\ shared\_base<cont\_t,\ item\_t>(l)\ \{\}}
+\DoxyCodeLine{00119\ \ \ \mbox{\hyperlink{classshared__list__base_1_1Item}{Item}}\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classshared__list__base_1_1Item}{Item}}(i,\ *\textcolor{keyword}{this});\ \ \}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{const}\ item\_t\ \&operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ (*shared\_base<cont\_t,item\_t>::p-\/>p)[i];}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{return}\ shared\_base<cont\_t,item\_t>::p\ ==\ NULL\ ?\ 0}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ :\ shared\_base<cont\_t,item\_t>::p-\/>p-\/>Count();}
+\DoxyCodeLine{00126\ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Count()\ ==\ 0;\ \ \}}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ i)\ \ \{}
+\DoxyCodeLine{00129\ \ \ \ \ shared\_base<cont\_t,item\_t>::on\_modify();}
+\DoxyCodeLine{00130\ \ \ \ \ shared\_base<cont\_t,item\_t>::p-\/>p-\/>Delete(i);}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keywordtype}{void}\ IncCapacity(\textcolor{keywordtype}{size\_t}\ v)\ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ shared\_base<cont\_t,item\_t>::on\_modify();}
+\DoxyCodeLine{00134\ \ \ \ \ shared\_base<cont\_t,item\_t>::p-\/>p-\/>Setcapcity(}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ shared\_base<cont\_t,item\_t>::p-\/>p-\/>GetCount()+v);}
+\DoxyCodeLine{00136\ \ \ \}}
+\DoxyCodeLine{00137\ \};}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00140\ \textcolor{keyword}{class\ }shared\_list\ :\ \textcolor{keyword}{public}\ shared\_list\_base<list\_t,item\_t>\ \{}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{typedef}\ shared\_list\_base<list\_t,item\_t>\ \_parent\_t;}
+\DoxyCodeLine{00142\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00143\ \ \ shared\_list()\ \{\}}
+\DoxyCodeLine{00144\ \ \ shared\_list(\textcolor{keyword}{const}\ shared\_list\ \&l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00145\ \ \ shared\_list(list\_t\ *l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00146\ \ \ shared\_list(list\_t\ \&l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00147\ \ \ item\_t\ \&Add(item\_t\ *i)\ \ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{if}(\ \_parent\_t::p\ ==\ NULL\ )}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \_parent\_t::throw\_invalid(\_\_POlxSourceInfo);}
+\DoxyCodeLine{00150\ \ \ \ \ \_parent\_t::on\_modify();}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ \_parent\_t::p-\/>p-\/>Add(i);}
+\DoxyCodeLine{00152\ \ \ \}}
+\DoxyCodeLine{00153\ \ \ item\_t\ \&Add(item\_t\ \&i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Add(\&i);\ \ \}}
+\DoxyCodeLine{00154\ \ \ shared\_list\&\ operator\ =\ (\textcolor{keyword}{const}\ shared\_list\ \&a)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \_parent\_t::operator\ =\ (a);}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \};}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00161\ \textcolor{keyword}{class\ }shared\_ptr\_list\ :\ \textcolor{keyword}{public}\ shared\_list\_base<list\_t,item\_t*>\ \{}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{typedef}\ shared\_list\_base<list\_t,item\_t*>\ \_parent\_t;}
+\DoxyCodeLine{00163\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00164\ \ \ shared\_ptr\_list()\ \{\}}
+\DoxyCodeLine{00165\ \ \ shared\_ptr\_list(\textcolor{keyword}{const}\ shared\_ptr\_list\ \&l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00166\ \ \ shared\_ptr\_list(list\_t\ *l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00167\ \ \ shared\_ptr\_list(list\_t\ \&l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00168\ \ \ item\_t\ *Add(item\_t\ *i)\ \ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{if}(\ \_parent\_t::p\ ==\ NULL\ )}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \_parent\_t::throw\_invalid(\_\_POlxSourceInfo);}
+\DoxyCodeLine{00171\ \ \ \ \ \_parent\_t::on\_modify();}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{return}\ \_parent\_t::p-\/>p-\/>Add(i);}
+\DoxyCodeLine{00173\ \ \ \}}
+\DoxyCodeLine{00174\ \ \ item\_t\ *Add(item\_t\ \&i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Add(\&i);\ \ \}}
+\DoxyCodeLine{00175\ \ \ shared\_ptr\_list\&\ operator\ =\ (\textcolor{keyword}{const}\ shared\_ptr\_list\ \&a)\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \_parent\_t::operator\ =\ (a);}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00178\ \ \ \}}
+\DoxyCodeLine{00179\ \};}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ array\_t,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00182\ \textcolor{keyword}{class\ }shared\_array\ :\ \textcolor{keyword}{public}\ shared\_list\_base<array\_t,item\_t>\ \{}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{typedef}\ shared\_list\_base<array\_t,item\_t>\ \_parent\_t;}
+\DoxyCodeLine{00184\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00185\ \ \ shared\_array()\ \{\}}
+\DoxyCodeLine{00186\ \ \ shared\_array(\textcolor{keyword}{const}\ shared\_array\ \&l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00187\ \ \ shared\_array(array\_t\ *l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00188\ \ \ shared\_array(array\_t\ \&l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00189\ \ \ item\_t\ \&Add(\textcolor{keyword}{const}\ item\_t\ \&i)\ \ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordflow}{if}(\ \_parent\_t::p\ ==\ NULL\ )}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \_parent\_t::throw\_invalid(\_\_POlxSourceInfo);}
+\DoxyCodeLine{00192\ \ \ \ \ \_parent\_t::on\_modify();}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{return}\ \_parent\_t::p-\/>p-\/>Add(i);}
+\DoxyCodeLine{00194\ \ \ \}}
+\DoxyCodeLine{00195\ \ \ shared\_array\&\ operator\ =\ (\textcolor{keyword}{const}\ shared\_array\ \&a)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \_parent\_t::operator\ =\ (a);}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00198\ \ \ \}}
+\DoxyCodeLine{00199\ \};}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ EndEsdlNamespace()}
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

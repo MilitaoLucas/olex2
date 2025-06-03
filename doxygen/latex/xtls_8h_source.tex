@@ -1,0 +1,49 @@
+\doxysection{xtls.\+h}
+\hypertarget{xtls_8h_source}{}\label{xtls_8h_source}\index{gxlib/xtls.h@{gxlib/xtls.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ OlexSys\ Proprietrary\ file\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}dusero.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}gxapp.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}tls.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }glx\_ext\ \{}
+\DoxyCodeLine{00013\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00014\ \ \ xtls\_diff\_Obs\_Tls\ =\ 1,}
+\DoxyCodeLine{00015\ \ \ xtls\_diff\_Tls\_Obs\ =\ 2,}
+\DoxyCodeLine{00016\ \ \ xtls\_obj\_diff\ =\ 1,}
+\DoxyCodeLine{00017\ \ \ xtls\_obj\_rmsd\ =\ 2;}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{struct\ }XTLS\ \{}
+\DoxyCodeLine{00020\ \ \ uint32\_t\ start\_color,\ end\_color,\ quality;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{bool}\ use\_gradient;}
+\DoxyCodeLine{00022\ \ \ XTLS(uint32\_t\ start\_color,\ uint32\_t\ end\_color,\ uint32\_t\ quality=5,}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{bool}\ use\_grad=\textcolor{keyword}{true})}
+\DoxyCodeLine{00024\ \ \ \ \ :\ start\_color(start\_color),}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ end\_color(end\_color),}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ quality(quality),}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ use\_gradient(use\_grad)}
+\DoxyCodeLine{00028\ \ \ \{\}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ TDUserObj\ *CreateTLSObject(\textcolor{keyword}{const}\ TXAtomPList\ \&atoms,\ \textcolor{keyword}{const}\ TLS\ \&tls,}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{short}\ diff\_dir,\ \textcolor{keywordtype}{float}\ scale,\ \textcolor{keywordtype}{short}\ obj\_type)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ TDUserObj\ *CreateUdiffObject(\textcolor{keyword}{const}\ vec3f\_alist\ \&crds,}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{const}\ TEllpPList\ \&from,\ \textcolor{keyword}{const}\ TEllpPList\ \&to,}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{float}\ scale,\ \textcolor{keyword}{const}\ olxstr\ \&obj\_name,}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{short}\ obj\_type)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{void}\ CreatePovRayFile(\textcolor{keyword}{const}\ TXAtomPList\ \&atoms,\ \textcolor{keyword}{const}\ TLS\ \&tls,}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{short}\ diff\_dir,}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&fn)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00041\ \};}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+
+\end{DoxyCode}

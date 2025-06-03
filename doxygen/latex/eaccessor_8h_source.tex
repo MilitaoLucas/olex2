@@ -1,0 +1,396 @@
+\doxysection{eaccessor.\+h}
+\hypertarget{eaccessor_8h_source}{}\label{eaccessor_8h_source}\index{sdl/eaccessor.h@{sdl/eaccessor.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_eaccessor\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_eaccessor\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}\ \ \{}
+\DoxyCodeLine{00014\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{const}\ item\_t\&\ operator\ ()(\textcolor{keyword}{const}\ item\_t\&\ item)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ item;\ \}}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00017\ \ \ item\_t\&\ operator\ ()(item\_t\&\ item)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ item;\ \}}
+\DoxyCodeLine{00018\ \};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00021\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTDirectAccessor}{TDirectAccessor}}\ \ \{}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{typedef}\ item\_t\ return\_type;}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{const}\ item\_t\&\ operator\ ()(\textcolor{keyword}{const}\ item\_t\&\ item)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ item;\ \}}
+\DoxyCodeLine{00025\ \ \ item\_t\&\ operator\ ()(item\_t\&\ item)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ item;\ \}}
+\DoxyCodeLine{00026\ \};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00029\ \mbox{\hyperlink{structTDirectAccessor}{TDirectAccessor<typename\ list\_t::list\_item\_type>}}}
+\DoxyCodeLine{00030\ \ \ ListAccessor(\textcolor{keyword}{const}\ list\_t\ \&t)}
+\DoxyCodeLine{00031\ \{}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structTDirectAccessor}{TDirectAccessor<typename\ list\_t::list\_item\_type>}}();}
+\DoxyCodeLine{00033\ \}}
+\DoxyCodeLine{00034\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structDereferenceAccessor}{DereferenceAccessor}}\ \ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{const}\ item\_t\&\ operator\ ()(\textcolor{keyword}{const}\ item\_t*\ item)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *item;\ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00038\ \ \ item\_t\&\ operator\ ()(item\_t*\ item)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *item;\ \}}
+\DoxyCodeLine{00039\ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00042\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTDereferenceAccessor}{TDereferenceAccessor}}\ \ \{}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{typedef}\ item\_t\ return\_type;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{const}\ item\_t\&\ operator\ ()(\textcolor{keyword}{const}\ item\_t*\ item)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *item;\ \}}
+\DoxyCodeLine{00046\ \ \ item\_t\&\ operator\ ()(item\_t*\ item)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *item;\ \}}
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CastType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structCCastAccessor}{CCastAccessor}}\ \ \{}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{typedef}\ CastType\ return\_type;}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ CastType\&\ Access(\textcolor{keyword}{const}\ Item\&\ item)\ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keyword}{const}\ CastType\&)item;}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ CastType\&\ Access(Item\&\ item)\ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ (CastType\&)item;}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ CastType*\ Access(\textcolor{keyword}{const}\ Item*\ item)\ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keyword}{const}\ CastType*)item;}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{static}\ CastType*\ Access(Item*\ item)\ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{return}\ (CastType*)item;}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{const}\ CastType\&\ operator\ ()(\textcolor{keyword}{const}\ Item\&\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keyword}{const}\ CastType\&)item;}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00073\ \ \ CastType\&\ operator\ ()(Item\&\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ (CastType\&)item;}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{const}\ CastType*\ operator\ ()(\textcolor{keyword}{const}\ Item*\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keyword}{const}\ CastType*)item;}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00081\ \ \ CastType*\ operator\ ()(Item*\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{return}\ (CastType*)item;}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \};}
+\DoxyCodeLine{00085\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CastType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structStaticCastAccessor}{StaticCastAccessor}}\ \ \{}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{typedef}\ CastType\ return\_type;}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ CastType\&\ Access(\textcolor{keyword}{const}\ Item\&\ item)\ \ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }CastType\&\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00090\ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{static}\ CastType\&\ Access(Item\&\ item)\ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}CastType\&\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ CastType*\ Access(\textcolor{keyword}{const}\ Item*\ item)\ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }CastType*\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{static}\ CastType*\ Access(Item*\ item)\ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}CastType*\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{const}\ CastType\&\ operator\ ()(\textcolor{keyword}{const}\ Item\&\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }CastType\&\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00107\ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00109\ \ \ CastType\&\ operator\ ()(Item\&\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}CastType\&\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{const}\ CastType*\ operator\ ()(\textcolor{keyword}{const}\ Item*\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }CastType*\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00115\ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00117\ \ \ CastType*\ operator\ ()(Item*\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}CastType*\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00119\ \ \ \}}
+\DoxyCodeLine{00120\ \};}
+\DoxyCodeLine{00121\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CastType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structDynamicCastAccessor}{DynamicCastAccessor}}\ \ \{}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{typedef}\ CastType\ return\_type;}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ CastType\&\ Access(\textcolor{keyword}{const}\ Item\&\ item)\ \ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const\ }CastType\&\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00126\ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{static}\ CastType\&\ Access(Item\&\ item)\ \ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}CastType\&\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ CastType*\ Access(\textcolor{keyword}{const}\ Item*\ item)\ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const\ }CastType*\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{static}\ CastType*\ Access(Item*\ item)\ \ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}CastType*\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{const}\ CastType\&\ operator\ ()(\textcolor{keyword}{const}\ Item\&\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const\ }CastType\&\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00145\ \ \ CastType\&\ operator\ ()(Item\&\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}CastType\&\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{const}\ CastType*\ operator\ ()(\textcolor{keyword}{const}\ Item*\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const\ }CastType*\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00151\ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Item>}
+\DoxyCodeLine{00153\ \ \ CastType*\ operator\ ()(Item*\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}CastType*\textcolor{keyword}{>}(item);}
+\DoxyCodeLine{00155\ \ \ \}}
+\DoxyCodeLine{00156\ \};}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structFunctionAccessor}{FunctionAccessor}}\ \{}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{struct\ }ConstFunctionAccessorT\_\ \ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keyword}{typedef}\ rv\_t\ return\_type;}
+\DoxyCodeLine{00161\ \ \ \ \ rv\_t\ (base\_t::*func)()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00162\ \ \ \ \ ConstFunctionAccessorT\_(rv\_t\ (base\_t::*\_func)()\ \textcolor{keyword}{const})\ :\ func(\_func)\ \ \{\}}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>\ rv\_t\ operator\ ()(\textcolor{keyword}{const}\ item\_t\&\ it)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (olx\_ref::get(it).*func)();}
+\DoxyCodeLine{00165\ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \};}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{struct\ }ConstFunctionAccessorR\_\ \ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keyword}{typedef}\ rv\_t\ return\_type;}
+\DoxyCodeLine{00169\ \ \ \ \ rv\_t\ \&(base\_t::*func)()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00170\ \ \ \ \ ConstFunctionAccessorR\_(rv\_t\ \&\ (base\_t::*\_func)()\ \textcolor{keyword}{const})\ :\ func(\_func)\ \ \{\}}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>\ rv\_t\ \&\ operator\ ()(\textcolor{keyword}{const}\ item\_t\&\ it)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (olx\_ref::get(it).*func)();}
+\DoxyCodeLine{00173\ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \};}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{struct\ }ConstFunctionAccessorCR\_\ \ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keyword}{typedef}\ rv\_t\ return\_type;}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{const}\ rv\_t\ \&(base\_t::*func)()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00178\ \ \ \ \ ConstFunctionAccessorCR\_(\textcolor{keyword}{const}\ rv\_t\ \&\ (base\_t::*\_func)()\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ :\ func(\_func)\ \ \{\}}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keyword}{const}\ rv\_t\ \&\ operator\ ()(\textcolor{keyword}{const}\ item\_t\&\ it)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (olx\_ref::get(it).*func)();}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \};}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{struct\ }FunctionAccessorT\_\ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keyword}{typedef}\ rv\_t\ return\_type;}
+\DoxyCodeLine{00188\ \ \ \ \ rv\_t\ (base\_t::*func)();}
+\DoxyCodeLine{00189\ \ \ \ \ FunctionAccessorT\_(rv\_t\ (base\_t::*\_func)())\ :\ func(\_func)\ \ \{\}}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>\ rv\_t\ operator()(item\_t\&\ it)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (olx\_ref::get(it).*func)();}
+\DoxyCodeLine{00192\ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \};}
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{struct\ }FunctionAccessorR\_\ \ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{typedef}\ rv\_t\ return\_type;}
+\DoxyCodeLine{00196\ \ \ \ \ rv\_t\ \&(base\_t::*func)();}
+\DoxyCodeLine{00197\ \ \ \ \ FunctionAccessorR\_(rv\_t\ \&\ (base\_t::*\_func)())\ :\ func(\_func)\ \ \{\}}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>\ rv\_t\ \&\ operator()(item\_t\&\ it)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (olx\_ref::get(it).*func)();}
+\DoxyCodeLine{00200\ \ \ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \};}
+\DoxyCodeLine{00202\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{struct\ }FunctionAccessorCR\_\ \ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keyword}{typedef}\ rv\_t\ return\_type;}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keyword}{const}\ rv\_t\ \&(base\_t::*func)();}
+\DoxyCodeLine{00205\ \ \ \ \ FunctionAccessorCR\_(\textcolor{keyword}{const}\ rv\_t\ \&\ (base\_t::*\_func)())\ :\ func(\_func)\ \ \{\}}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>\ \textcolor{keyword}{const}\ rv\_t\ \&\ operator()(item\_t\&\ it)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (olx\_ref::get(it).*func)();}
+\DoxyCodeLine{00208\ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \};}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00212\ \ \ \textcolor{keyword}{struct\ }StaticFunctionAccessorT\_\ \ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keyword}{typedef}\ rv\_t\ return\_type;}
+\DoxyCodeLine{00214\ \ \ \ \ rv\_t\ (*func)(\textcolor{keyword}{const}\ item\_t\ \&);}
+\DoxyCodeLine{00215\ \ \ \ \ StaticFunctionAccessorT\_(rv\_t\ (*\_func)(\textcolor{keyword}{const}\ item\_t\ \&))}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ :\ func(\_func)}
+\DoxyCodeLine{00217\ \ \ \ \ \{\}}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t\_t>}
+\DoxyCodeLine{00219\ \ \ \ \ rv\_t\ operator()(item\_t\_t\&\ it)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (*func)(olx\_ref::get(it));}
+\DoxyCodeLine{00221\ \ \ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \};}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00224\ \ \ \textcolor{keyword}{struct\ }StaticFunctionAccessorR\_\ \ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keyword}{typedef}\ rv\_t\ return\_type;}
+\DoxyCodeLine{00226\ \ \ \ \ rv\_t\ \&(*func)(\textcolor{keyword}{const}\ item\_t\ \&);}
+\DoxyCodeLine{00227\ \ \ \ \ StaticFunctionAccessorR\_(rv\_t\ \&\ (*\_func)(\textcolor{keyword}{const}\ item\_t\ \&))}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ :\ func(\_func)}
+\DoxyCodeLine{00229\ \ \ \ \ \{\}}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t\_t>}
+\DoxyCodeLine{00231\ \ \ \ \ rv\_t\ \&\ operator()(item\_t\_t\&\ it)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (*func)(olx\_ref::get(it));}
+\DoxyCodeLine{00233\ \ \ \ \ \}}
+\DoxyCodeLine{00234\ \ \ \};}
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{struct\ }StaticFunctionAccessorCR\_\ \ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keyword}{typedef}\ rv\_t\ return\_type;}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{const}\ rv\_t\ \&(*func)(\textcolor{keyword}{const}\ item\_t\ \&);}
+\DoxyCodeLine{00239\ \ \ \ \ StaticFunctionAccessorCR\_(\textcolor{keyword}{const}\ rv\_t\ \&\ (*\_func)(\textcolor{keyword}{const}\ item\_t\ \&))}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ :\ func(\_func)}
+\DoxyCodeLine{00241\ \ \ \ \ \{\}}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t\_t>}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keyword}{const}\ rv\_t\ \&\ operator()(item\_t\_t\&\ it)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (*func)(olx\_ref::get(it));}
+\DoxyCodeLine{00245\ \ \ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \};}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00249\ \ \ \mbox{\hyperlink{structFunctionAccessor_1_1ConstFunctionAccessorT__}{ConstFunctionAccessorT\_<rv\_t,base\_t>}}\ MakeConst(}
+\DoxyCodeLine{00250\ \ \ \ \ rv\_t\ (base\_t::*func)()\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00251\ \ \ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionAccessor_1_1ConstFunctionAccessorT__}{ConstFunctionAccessorT\_<rv\_t,base\_t>}}(func);}
+\DoxyCodeLine{00253\ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00255\ \ \ ConstFunctionAccessorR\_<rv\_t,base\_t>\ MakeConst(}
+\DoxyCodeLine{00256\ \ \ \ \ rv\_t\ \&\ (base\_t::*func)()\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00257\ \ \ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordflow}{return}\ ConstFunctionAccessorR\_<rv\_t,base\_t>(func);}
+\DoxyCodeLine{00259\ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00261\ \ \ \mbox{\hyperlink{structFunctionAccessor_1_1ConstFunctionAccessorCR__}{ConstFunctionAccessorCR\_<rv\_t,base\_t>}}\ MakeConst(}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keyword}{const}\ rv\_t\ \&(base\_t::*func)()\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00263\ \ \ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionAccessor_1_1ConstFunctionAccessorCR__}{ConstFunctionAccessorCR\_<rv\_t,base\_t>}}(func);}
+\DoxyCodeLine{00265\ \ \ \}}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00268\ \ \ \mbox{\hyperlink{structFunctionAccessor_1_1FunctionAccessorT__}{FunctionAccessorT\_<rv\_t,base\_t>}}\ Make(rv\_t\ (base\_t::*func)())\ \ \{}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionAccessor_1_1FunctionAccessorT__}{FunctionAccessorT\_<rv\_t,base\_t>}}(func);}
+\DoxyCodeLine{00270\ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00272\ \ \ \mbox{\hyperlink{structFunctionAccessor_1_1FunctionAccessorR__}{FunctionAccessorR\_<rv\_t,base\_t>}}\ Make(rv\_t\ \&\ (base\_t::*func)())\ \ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionAccessor_1_1FunctionAccessorR__}{FunctionAccessorR\_<rv\_t,base\_t>}}(func);}
+\DoxyCodeLine{00274\ \ \ \}}
+\DoxyCodeLine{00275\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ base\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00276\ \ \ \mbox{\hyperlink{structFunctionAccessor_1_1FunctionAccessorCR__}{FunctionAccessorCR\_<rv\_t,base\_t>}}\ Make(\textcolor{keyword}{const}\ rv\_t\ \&\ (base\_t::*func)())\ \ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionAccessor_1_1FunctionAccessorCR__}{FunctionAccessorCR\_<rv\_t,base\_t>}}(func);}
+\DoxyCodeLine{00278\ \ \ \}}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ item\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00281\ \ \ \mbox{\hyperlink{structFunctionAccessor_1_1StaticFunctionAccessorT__}{StaticFunctionAccessorT\_<rv\_t,item\_t>}}}
+\DoxyCodeLine{00282\ \ \ MakeStatic(rv\_t\ (*func)(\textcolor{keyword}{const}\ item\_t\ \&))\ \ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionAccessor_1_1StaticFunctionAccessorT__}{StaticFunctionAccessorT\_<rv\_t,item\_t>}}(func);}
+\DoxyCodeLine{00284\ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ item\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00286\ \ \ \mbox{\hyperlink{structFunctionAccessor_1_1StaticFunctionAccessorR__}{StaticFunctionAccessorR\_<rv\_t,item\_t>}}}
+\DoxyCodeLine{00287\ \ \ MakeStatic(rv\_t\ \&\ (*func)(\textcolor{keyword}{const}\ item\_t\ \&))\ \ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionAccessor_1_1StaticFunctionAccessorR__}{StaticFunctionAccessorR\_<rv\_t,item\_t>}}(func);}
+\DoxyCodeLine{00289\ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ rv\_t,\ \textcolor{keyword}{typename}\ item\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00291\ \ \ \mbox{\hyperlink{structFunctionAccessor_1_1StaticFunctionAccessorCR__}{StaticFunctionAccessorCR\_<rv\_t,item\_t>}}}
+\DoxyCodeLine{00292\ \ \ MakeStatic(\textcolor{keyword}{const}\ rv\_t\ \&\ (*func)(\textcolor{keyword}{const}\ item\_t\ \&))\ \ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structFunctionAccessor_1_1StaticFunctionAccessorCR__}{StaticFunctionAccessorCR\_<rv\_t,item\_t>}}(func);}
+\DoxyCodeLine{00294\ \ \ \}}
+\DoxyCodeLine{00295\ \};}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structComplexAccessor}{ComplexAccessor}}\ \{}
+\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc1\_t,\ \textcolor{keyword}{class}\ acc2\_t>}
+\DoxyCodeLine{00299\ \ \ \textcolor{keyword}{class\ }TComplexAccessor\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ acc1\_t\ acc1;}
+\DoxyCodeLine{00301\ \ \ \ \ acc2\_t\ acc2;}
+\DoxyCodeLine{00302\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00303\ \ \ \ \ TComplexAccessor(\textcolor{keyword}{const}\ acc1\_t\ \&a1,\ \textcolor{keyword}{const}\ acc2\_t\ \&a2)}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ :\ acc1(a1),\ acc2(a2)}
+\DoxyCodeLine{00305\ \ \ \ \ \{\}}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ acc2\_t::return\_type\ return\_type;}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ i\_t>}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keyword}{const}\ return\_type\&\ operator\ ()(\textcolor{keyword}{const}\ i\_t\&\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ acc2(acc1(item));}
+\DoxyCodeLine{00310\ \ \ \ \ \}}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ i\_t>}
+\DoxyCodeLine{00312\ \ \ \ \ return\_type\&\ operator\ ()(i\_t\&\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ acc2(acc1(item));}
+\DoxyCodeLine{00314\ \ \ \ \ \}}
+\DoxyCodeLine{00315\ \ \ \};}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc1\_t,\ \textcolor{keyword}{class}\ acc2\_t>}
+\DoxyCodeLine{00318\ \ \ \textcolor{keyword}{class\ }TComplexAccessorP\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ acc1\_t\ acc1;}
+\DoxyCodeLine{00320\ \ \ \ \ acc2\_t\ acc2;}
+\DoxyCodeLine{00321\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00322\ \ \ \ \ TComplexAccessorP(\textcolor{keyword}{const}\ acc1\_t\ \&a1,\ \textcolor{keyword}{const}\ acc2\_t\ \&a2)}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ :\ acc1(a1),\ acc2(a2)}
+\DoxyCodeLine{00324\ \ \ \ \ \{\}}
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ acc2\_t::return\_type\ return\_type;}
+\DoxyCodeLine{00326\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ i\_t>}
+\DoxyCodeLine{00327\ \ \ \ \ return\_type\ operator\ ()(\textcolor{keyword}{const}\ i\_t\&\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ acc2(acc1(item));}
+\DoxyCodeLine{00329\ \ \ \ \ \}}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ i\_t>}
+\DoxyCodeLine{00331\ \ \ \ \ return\_type\ operator\ ()(i\_t\&\ item)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ acc2(acc1(item));}
+\DoxyCodeLine{00333\ \ \ \ \ \}}
+\DoxyCodeLine{00334\ \ \ \};}
+\DoxyCodeLine{00335\ \ \ \textcolor{comment}{//\ for\ accessors\ returning\ references\ like\ const\ int\ \&f()}}
+\DoxyCodeLine{00336\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc1\_t,\ \textcolor{keyword}{class}\ acc2\_t>}
+\DoxyCodeLine{00337\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classComplexAccessor_1_1TComplexAccessor}{TComplexAccessor<acc1\_t,\ acc2\_t>}}}
+\DoxyCodeLine{00338\ \ \ \ \ Make(\textcolor{keyword}{const}\ acc1\_t\ \&a1,\ \textcolor{keyword}{const}\ acc2\_t\ \&a2)\ \{}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classComplexAccessor_1_1TComplexAccessor}{TComplexAccessor<acc1\_t,\ acc2\_t>}}(a1,\ a2);}
+\DoxyCodeLine{00340\ \ \ \ \ \}}
+\DoxyCodeLine{00341\ \ \ \textcolor{comment}{//\ for\ accessors\ returning\ instances\ like\ int\ f()}}
+\DoxyCodeLine{00342\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ acc1\_t,\ \textcolor{keyword}{class}\ acc2\_t>}
+\DoxyCodeLine{00343\ \ \ \textcolor{keyword}{static}\ TComplexAccessorP<acc1\_t,\ acc2\_t>}
+\DoxyCodeLine{00344\ \ \ \ \ MakeP(\textcolor{keyword}{const}\ acc1\_t\ \&a1,\ \textcolor{keyword}{const}\ acc2\_t\ \&a2)\ \{}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ TComplexAccessorP<acc1\_t,\ acc2\_t>(a1,\ a2);}
+\DoxyCodeLine{00346\ \ \ \ \ \}}
+\DoxyCodeLine{00347\ \};}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00350\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIndexAccessor}{IndexAccessor}}\ \{}
+\DoxyCodeLine{00351\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ data\_list\_t>}
+\DoxyCodeLine{00352\ \ \ \textcolor{keyword}{struct\ }ConstIndexAccessor\_\ \ \{}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ data\_list\_t::list\_item\_type\ return\_type;}
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keyword}{const}\ data\_list\_t\ \&data;}
+\DoxyCodeLine{00355\ \ \ \ \ ConstIndexAccessor\_(\textcolor{keyword}{const}\ data\_list\_t\ \&data\_)\ :\ data(data\_)\ \{\}}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ IndexT>}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{keyword}{const}\ return\_type\&\ operator\ ()(\textcolor{keyword}{const}\ IndexT\&\ idx)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data[idx];}
+\DoxyCodeLine{00359\ \ \ \ \ \}}
+\DoxyCodeLine{00360\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ IndexT>}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keyword}{const}\ return\_type\&\ operator\ [](\textcolor{keyword}{const}\ IndexT\&\ idx)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data[idx];}
+\DoxyCodeLine{00363\ \ \ \ \ \}}
+\DoxyCodeLine{00364\ \ \ \};}
+\DoxyCodeLine{00365\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ data\_list\_t>}
+\DoxyCodeLine{00366\ \ \ \textcolor{keyword}{struct\ }IndexAccessor\_\ \ \{}
+\DoxyCodeLine{00367\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ data\_list\_t::list\_item\_type\ return\_type;}
+\DoxyCodeLine{00368\ \ \ \ \ data\_list\_t\ \&data;}
+\DoxyCodeLine{00369\ \ \ \ \ IndexAccessor\_(data\_list\_t\ \&data\_)\ :\ data(data\_)\ \{\}}
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ IndexT>}
+\DoxyCodeLine{00371\ \ \ \ \ return\_type\&\ operator\ ()(\textcolor{keyword}{const}\ IndexT\&\ idx)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data[idx];}
+\DoxyCodeLine{00373\ \ \ \ \ \}}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ IndexT>}
+\DoxyCodeLine{00375\ \ \ \ \ return\_type\&\ operator\ [](\textcolor{keyword}{const}\ IndexT\&\ idx)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data[idx];}
+\DoxyCodeLine{00377\ \ \ \ \ \}}
+\DoxyCodeLine{00378\ \ \ \};}
+\DoxyCodeLine{00379\ }
+\DoxyCodeLine{00380\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00381\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structIndexAccessor_1_1IndexAccessor__}{IndexAccessor\_<list\_t>}}\ Make(list\_t\ \&l)\ \{}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structIndexAccessor_1_1IndexAccessor__}{IndexAccessor\_<list\_t>}}(l);}
+\DoxyCodeLine{00383\ \ \ \}}
+\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00385\ \ \ \textcolor{keyword}{static}\ ConstIndexAccessor\_<list\_t>\ MakeConst(\textcolor{keyword}{const}\ list\_t\ \&l)\ \{}
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keywordflow}{return}\ ConstIndexAccessor\_<list\_t>(l);}
+\DoxyCodeLine{00387\ \ \ \}}
+\DoxyCodeLine{00388\ \};}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

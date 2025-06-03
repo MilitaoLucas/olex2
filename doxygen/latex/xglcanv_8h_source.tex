@@ -1,0 +1,62 @@
+\doxysection{xglcanv.\+h}
+\hypertarget{xglcanv_8h_source}{}\label{xglcanv_8h_source}\index{olex/xglcanv.h@{olex/xglcanv.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xglCanvas\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xglCanvas\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxapp.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}wx/wx.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}wx/glcanvas.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }TGlCanvas:\ \textcolor{keyword}{public}\ wxGLCanvas\ \ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGXApp}{TGXApp}}\ *FXApp;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{void}\ OnMouseDown(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{void}\ OnMouseUp(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{void}\ OnMouseMove(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{void}\ OnMouseDblClick(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{void}\ OnMouseCaptureChange(wxMouseCaptureChangedEvent\&\ event);}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{void}\ OnMouseWheel(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ OnKeyUp(wxKeyEvent\&\ event);}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{void}\ OnKeyDown(wxKeyEvent\&\ event);}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{void}\ OnChar(wxKeyEvent\&\ event);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{int}\ FMX,\ FMY;\ \textcolor{comment}{//\ mouse\ coordinates\ to\ process\ clicks}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{short}\ MouseButton;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTMainForm}{TMainForm}}\ *FParent;}
+\DoxyCodeLine{00033\ \ \ wxGLContext*\ Context;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{short}\ EncodeEvent(\textcolor{keyword}{const}\ wxMouseState\ \&evt,\ \textcolor{keywordtype}{bool}\ update\_button=\textcolor{keyword}{true});}
+\DoxyCodeLine{00035\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ \ \ TGlCanvas(\mbox{\hyperlink{classTMainForm}{TMainForm}}\ *parent,\ \textcolor{keywordtype}{int}*\ gl\_attr,\ \textcolor{keyword}{const}\ wxWindowID\ \textcolor{keywordtype}{id}\ =\ -\/1,}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{const}\ wxPoint\&\ pos\ =\ wxDefaultPosition,}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{const}\ wxSize\&\ size\ =\ wxDefaultSize,\ \textcolor{keywordtype}{long}\ style\ =\ 0,}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{const}\ wxString\&\ name\ =\ wxT(\textcolor{stringliteral}{"{}TGlCanvas"{}}));}
+\DoxyCodeLine{00040\ \ \ \string~TGlCanvas();}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{void}\ OnPaint(wxPaintEvent\&\ event);}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ OnEraseBackground(wxEraseEvent\&\ event);}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ OnMouse(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ XApp(\mbox{\hyperlink{classTGXApp}{TGXApp}}\ *XA);}
+\DoxyCodeLine{00046\ \ \ \mbox{\hyperlink{classTGXApp}{TGXApp}}\ *GetXApp()\ \{\ \textcolor{keywordflow}{return}\ FXApp;\ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{void}\ Render();}
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{/*\ If\ default\ is\ true\ -\/\ NULL\ is\ returned,}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ else\ if\ stereo\ is\ true\ -\/\ Olex2\ will\ try\ to\ initialise\ stereo\ buffers}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__array__ptr}{olx\_array\_ptr<int>}}\ GetGlAttributes(\textcolor{keywordtype}{bool}\ \_default,\ \textcolor{keywordtype}{bool}\ stereo,}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{bool}\ multisampling,\ \textcolor{keywordtype}{short}\ depth\_bits);}
+\DoxyCodeLine{00054\ \ \ DECLARE\_CLASS(wxGLCanvas)}
+\DoxyCodeLine{00055\ \};}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

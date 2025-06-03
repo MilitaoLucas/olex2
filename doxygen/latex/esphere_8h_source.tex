@@ -1,0 +1,141 @@
+\doxysection{esphere.\+h}
+\hypertarget{esphere_8h_source}{}\label{esphere_8h_source}\index{sdl/esphere.h@{sdl/esphere.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{/*\ Sphere\ triangulation\ routines\ */}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_esphere\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ \_\_olx\_esphere\_H}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ simple\ structure\ to\ contain\ three\ indeces\ to\ vertices}}
+\DoxyCodeLine{00018\ struct\ IndexTriangle\ \{}
+\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{classTVector3}{TVector3<size\_t>}}\ vertices;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{size\_t}\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ vertices[i];\ \}}
+\DoxyCodeLine{00021\ \ \ IndexTriangle()\ \{\}}
+\DoxyCodeLine{00022\ \ \ IndexTriangle(\textcolor{keywordtype}{size\_t}\ i1,\ \textcolor{keywordtype}{size\_t}\ i2,\ \textcolor{keywordtype}{size\_t}\ i3)\ :\ vertices(i1,i2,i3)\ \ \{\}}
+\DoxyCodeLine{00023\ \};}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ Octahedron\ face\ provider}}
+\DoxyCodeLine{00025\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec\_type>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structOctahedronFP}{OctahedronFP}}\ \ \{}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ vec\_type\ *vertices()\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{static}\ vec\_type\ v[6]\ =\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ vec\_type(0,0,1),\ \ vec\_type(1,0,0),\ \ vec\_type(0,1,0),}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ vec\_type(-\/1,0,0),\ vec\_type(0,-\/1,0),\ vec\_type(0,0,-\/1)}
+\DoxyCodeLine{00030\ \ \ \ \ \};}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{return}\ \&v[0];}
+\DoxyCodeLine{00032\ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ IndexTriangle\ *faces()\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{static}\ IndexTriangle\ f[8]\ =\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ IndexTriangle(0,\ 1,\ 2),\ IndexTriangle(0,\ 2,\ 3),}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ IndexTriangle(0,\ 3,\ 4),\ IndexTriangle(0,\ 4,\ 1),}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ IndexTriangle(5,\ 2,\ 1),\ IndexTriangle(5,\ 3,\ 2),}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ IndexTriangle(5,\ 4,\ 3),\ IndexTriangle(5,\ 1,\ 4)}
+\DoxyCodeLine{00039\ \ \ \ \ \};}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ \&f[0];}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ vertex\_count()\ \{\ \textcolor{keywordflow}{return}\ 6;\ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ face\_count()\ \{\ \textcolor{keywordflow}{return}\ 8;\ \}}
+\DoxyCodeLine{00044\ \};}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ tetrahedron\ face\ provider}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//\ vertices\ are\ as\ from\ http://en.wikipedia.org/wiki/Tetrahedron}}
+\DoxyCodeLine{00047\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec\_type>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTetrahedronFP}{TetrahedronFP}}\ \ \{}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ vec\_type\ *vertices()\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ vec\_type::number\_type\ FT;}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ FT\ k\ =\ (FT)1./sqrt((FT)3.0);}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{static}\ vec\_type\ v[4]\ =\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ vec\_type(k,\ k,\ k),\ vec\_type(-\/k,\ -\/k,\ k),\ vec\_type(-\/k,\ k,\ -\/k),}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ vec\_type(k,\ -\/k,\ -\/k)}
+\DoxyCodeLine{00054\ \ \ \ \ \};}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{return}\ \&v[0];}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ IndexTriangle\ *faces()\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{static}\ IndexTriangle\ f[4]\ =\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ IndexTriangle(0,\ 2,\ 1),\ IndexTriangle(0,\ 1,\ 3),}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ IndexTriangle(0,\ 3,\ 2),\ IndexTriangle(1,\ 2,\ 3)}
+\DoxyCodeLine{00061\ \ \ \ \ \};}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ \&f[0];}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ vertex\_count()\ \{\ \textcolor{keywordflow}{return}\ 4;\ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ face\_count()\ \{\ \textcolor{keywordflow}{return}\ 4;\ \}}
+\DoxyCodeLine{00066\ \};}
+\DoxyCodeLine{00067\ \textcolor{comment}{/*\ a\ class\ to\ build\ sphere\ by\ partitioning\ an\ octahedron.\ Alows\ custom\ masks\ to}}
+\DoxyCodeLine{00068\ \textcolor{comment}{be\ aplied\ when\ rendering\ the\ sphere\ in\ OpenGL\ or\ other\ rendering\ engine.\ All}}
+\DoxyCodeLine{00069\ \textcolor{comment}{methods\ and\ members\ can\ be\ made\ static...}}
+\DoxyCodeLine{00070\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00071\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{float}\_type,\ \textcolor{keyword}{class}\ FaceProv\textcolor{keywordtype}{id}er>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classOlxSphere}{OlxSphere}}\ \{}
+\DoxyCodeLine{00072\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{/*\ rad\ -\/\ radius\ of\ the\ sphere,\ ext\ -\/\ the\ generation\ to\ generate,\ vo\ -\/\ vector}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ \ output,\ to\ -\/\ triangles\ output,\ normals\ -\/\ the\ normals\ output\ (one\ a\ vertex,}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ \ not\ triangle).\ Since\ there\ is\ a\ huge\ redundancy,\ a\ unique\ set\ of\ vecteces\ is}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ \ generated\ and\ triangles\ contain\ inly\ indeces\ to\ the\ verteces\ they\ are\ based}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ \ on}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Generate(float\_type\ rad,\ \textcolor{keywordtype}{size\_t}\ ext,}
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{classTVector3}{TVector3<float\_type>}}\ >\&\ vo,}
+\DoxyCodeLine{00081\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<IndexTriangle>}}\&\ to,}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList}}<\mbox{\hyperlink{classTVector3}{TVector3<float\_type>}}\ >\&\ normals)}
+\DoxyCodeLine{00083\ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ Generate(rad,\ ext,\ vo,\ to,\ \&normals);}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Generate(float\_type\ rad,\ \textcolor{keywordtype}{size\_t}\ ext,}
+\DoxyCodeLine{00087\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{classTVector3}{TVector3<float\_type>}}\ >\&\ vo,}
+\DoxyCodeLine{00088\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<IndexTriangle>}}\&\ to,}
+\DoxyCodeLine{00089\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList}}<\mbox{\hyperlink{classTVector3}{TVector3<float\_type>}}\ >*\ \_normals=NULL)}
+\DoxyCodeLine{00090\ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ nc\ =\ FaceProvider::face\_count();}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ ext;\ i++\ )}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ nc\ +=\ nc*3;}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \ \ to.SetCapacity(nc+1);}
+\DoxyCodeLine{00096\ \ \ \ \ vo.SetCapacity(nc-\/1);}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ FaceProvider::vertex\_count();\ i++\ )}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ vo.AddNew(FaceProvider::vertices()[i]);}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ FaceProvider::face\_count();\ i++\ )}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ to.AddNew(FaceProvider::faces()[i]);}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ ext;\ i++\ )\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ t\_cnt\ =\ to.Count();}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ t\_cnt;\ j++\ )\ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ IndexTriangle\&\ t\ =\ to[j];}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ vo.AddNew(vo[t.vertices[0]]+vo[t.vertices[1]]).Normalise();}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ vo.AddNew(vo[t.vertices[0]]+vo[t.vertices[2]]).Normalise();}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ vo.AddNew(vo[t.vertices[1]]+vo[t.vertices[2]]).Normalise();}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ new\ triangle,\ (12,\ 23,\ 13)}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ to.AddNew(vo.Count()-\/3,\ vo.Count()-\/1,\ vo.Count()-\/2);}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ new\ tringles\ partially\ based\ on\ old\ vertices\ (new,\ 23,\ 12)}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ to.AddNew(t.vertices[1],\ vo.Count()-\/1,\ vo.Count()-\/3);}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ new\ tringles\ partially\ based\ on\ old\ vertices\ (new,\ 13,\ 23)}}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ to.AddNew(t.vertices[2],\ vo.Count()-\/2,\ vo.Count()-\/1);}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ modify\ the\ original\ triangle\ to\ take\ two\ new\ points}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ t.vertices[1]\ =\ vo.Count()-\/3;\ \ \textcolor{comment}{//\ 12}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ t.vertices[2]\ =\ vo.Count()-\/2;\ \ \textcolor{comment}{//\ 13}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{if}(\ \_normals\ !=\ NULL\ )\ \ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<TVector3<float\_type>}}\ >\&\ normals\ =\ *\_normals;}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ normals.SetCount(vo.Count());}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ vo.Count();\ i++\ )\ \ \{\ \textcolor{comment}{//\ normalise\ the\ vertices}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ normals[i]\ =\ vo[i];}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ vo[i]\ *=\ rad;}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ vo.Count();\ i++\ )}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ vo[i]\ *=\ rad;}
+\DoxyCodeLine{00130\ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \};}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ EndEsdlNamespace()}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

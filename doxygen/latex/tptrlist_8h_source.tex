@@ -1,0 +1,743 @@
+\doxysection{tptrlist.\+h}
+\hypertarget{tptrlist_8h_source}{}\label{tptrlist_8h_source}\index{sdl/tptrlist.h@{sdl/tptrlist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_ptrlist\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_ptrlist\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}shared.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}constlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}etraverse.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00016\ BeginEsdlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ template\ <typename>\ class\ \mbox{\hyperlink{classSharedPtrList}{SharedPtrList}};}
+\DoxyCodeLine{00019\ template\ <typename>\ class\ \mbox{\hyperlink{classConstPtrList}{ConstPtrList}};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ template\ <class\ T>\ class\ TPtrList\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{size\_t}\ FCount;}
+\DoxyCodeLine{00023\ \ \ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\ cap;}
+\DoxyCodeLine{00024\ \ \ T\ **Items;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{void}\ Allocate()\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{if}\ (cap.capacity\ ==\ 0)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ olx\_free(Items);}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ Items\ =\ 0;}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ Items\ =\ olx\_realloc<T*>(Items,\ cap.capacity);}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{void}\ init(\textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ FCount\ =\ size;}
+\DoxyCodeLine{00037\ \ \ \ \ cap.capacity\ =\ FCount;}
+\DoxyCodeLine{00038\ \ \ \ \ Items\ =\ 0;}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{if}\ (size\ !=\ 0)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ Allocate();}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ memset(Items,\ 0,\ cap.capacity\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ checkSize()\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{if}\ (cap.capacity\ ==\ FCount)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ SetCapacity(cap.new\_size(FCount));}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ init\_from\_array(\textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keyword}{const}\ T**\ array)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ init(size);}
+\DoxyCodeLine{00051\ \ \ \ \ memcpy(Items,\ array,\ size\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ creates\ a\ new\ empty\ objects}}
+\DoxyCodeLine{00055\ \ \ TPtrList()\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ init(0);}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{explicit}\ TPtrList(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\ \&cap)}
+\DoxyCodeLine{00059\ \ \ \ \ :\ cap(cap)}
+\DoxyCodeLine{00060\ \ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ init(cap.capacity);}
+\DoxyCodeLine{00062\ \ \ \ \ FCount\ =\ 0;}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{comment}{//\ allocates\ size\ elements}}
+\DoxyCodeLine{00065\ \ \ TPtrList(\textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ init(size);}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \ \ TPtrList(\textcolor{keywordtype}{int}\ size)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ init(size);}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00072\ \ \ TPtrList(\textcolor{keyword}{const}\ TPtrList\&\ list)\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ init(list.Count());}
+\DoxyCodeLine{00074\ \ \ \ \ memcpy(Items,\ list.Items,\ list.Count()\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00077\ \ \ TPtrList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classSharedPtrList}{SharedPtrList<T>}}\&\ list)\ :\ Items(0)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ TakeOver(list.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00081\ \ \ TPtrList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<T>}}\&\ list)\ :\ Items(0)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ TakeOver(list.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{/*\ copies\ values\ from\ an\ array\ of\ size\ elements\ \ */}}
+\DoxyCodeLine{00086\ \ \ TPtrList(\textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keyword}{const}\ T**\ array)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ init\_from\_array(size,\ array);}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ \ \ TPtrList(\textcolor{keywordtype}{int}\ size,\ \textcolor{keyword}{const}\ T**\ array)\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ init\_from\_array(size,\ array);}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00094\ \ \ TPtrList(\textcolor{keyword}{const}\ List\&\ list,\ \textcolor{keyword}{const}\ Accessor\&\ accessor)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ init(list.Count());}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ Set(i,\ accessor(list[i]));}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ TPtrList(\textcolor{keyword}{const}\ List\&\ list)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ init(list.Count());}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ Set(i,\ list[i]);}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{virtual}\ \string~TPtrList()\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ olx\_free(Items);}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{comment}{//deletes\ the\ objects\ and\ clears\ the\ list}}
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{if}\ (Items\ !=\ 0)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ free(Items);}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ Items\ =\ 0;}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ FCount\ =\ 0;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ cap.capacity\ =\ 0;}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{//\ calls\ delete\ on\ all\ items,\ by\ default\ values\ are\ not\ validated\ to\ be\ not\ null}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{const}\ TPtrList\&\ DeleteItems(\textcolor{keywordtype}{bool}\ validate\ =\ \textcolor{keyword}{false})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{if}\ (!validate)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Items[i];}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Items[i]\ !=\ 0)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Items[i];}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00139\ \ \ TPtrList\&\ DeleteItems(\textcolor{keywordtype}{bool}\ validate\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ ((\textcolor{keyword}{const}\ TPtrList*)\textcolor{keyword}{this})-\/>DeleteItems(validate);}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00144\ \ \ TPtrList\ \&TakeOver(TPtrList\&\ l,\ \textcolor{keywordtype}{bool}\ do\_delete\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ olx\_free(Items);}
+\DoxyCodeLine{00146\ \ \ \ \ FCount\ =\ l.FCount;}
+\DoxyCodeLine{00147\ \ \ \ \ cap\ =\ l.cap;}
+\DoxyCodeLine{00148\ \ \ \ \ Items\ =\ l.Items;}
+\DoxyCodeLine{00149\ \ \ \ \ l.FCount\ =\ l.cap.capacity\ =\ 0;}
+\DoxyCodeLine{00150\ \ \ \ \ l.Items\ =\ 0;}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_delete)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \&l;}
+\DoxyCodeLine{00153\ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00155\ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TPtrList(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00161\ \ \ TPtrList\&\ Assign(\textcolor{keyword}{const}\ TPtrList\&\ list)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{if}\ ((\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*)\textcolor{keyword}{this}\ ==\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*)\&list)\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \ \ SetCount(list.Count());}
+\DoxyCodeLine{00166\ \ \ \ \ memcpy(Items,\ list.Items,\ list.Count()\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00167\ \ \ \ \ FCount\ =\ list.Count();}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00169\ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ TPtrList\&\ Assign(\textcolor{keyword}{const}\ List\&\ l)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ SetCount(l.Count());}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ Set(i,\ l[i]);}
+\DoxyCodeLine{00175\ \ \ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00177\ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00180\ \ \ TPtrList\&\ Assign(\textcolor{keyword}{const}\ List\&\ l,\ \textcolor{keyword}{const}\ Accessor\&\ accessor)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ SetCount(l.Count());}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ Set(i,\ accessor(l[i]));}
+\DoxyCodeLine{00184\ \ \ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00186\ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00188\ \ \ TPtrList\&\ operator\ =\ (\textcolor{keyword}{const}\ TPtrList\&\ l)\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{return}\ Assign(l);}
+\DoxyCodeLine{00190\ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ TPtrList\&\ operator\ =\ (\textcolor{keyword}{const}\ List\&\ l)\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{return}\ Assign(l);}
+\DoxyCodeLine{00194\ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00196\ \ \ TPtrList\&\ operator\ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classSharedPtrList}{SharedPtrList<T>}}\&\ l)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordflow}{return}\ TakeOver(l.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00198\ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00200\ \ \ TPtrList\&\ operator\ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<T>}}\&\ l)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordflow}{return}\ TakeOver(l.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00202\ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00204\ \ \ TPtrList\&\ AddAll(\textcolor{keyword}{const}\ TPtrList\&\ list)\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ SetCapacity(list.Count()\ +\ FCount);}
+\DoxyCodeLine{00206\ \ \ \ \ memcpy(\&Items[FCount],\ list.Items,\ list.Count()\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00207\ \ \ \ \ FCount\ +=\ list.Count();}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00209\ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00211\ \ \ TPtrList\&\ AddAll(\textcolor{keyword}{const}\ \mbox{\hyperlink{classSharedPtrList}{SharedPtrList<T>}}\&\ list)\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{return}\ AddAll(list.obj());}
+\DoxyCodeLine{00213\ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00215\ \ \ TPtrList\&\ AddAll(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<T>}}\&\ list)\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{return}\ AddAll(list.obj());}
+\DoxyCodeLine{00217\ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ TPtrList\&\ AddAll(\textcolor{keyword}{const}\ List\&\ l)\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ off\ =\ FCount;}
+\DoxyCodeLine{00221\ \ \ \ \ SetCount(l.Count()\ +\ FCount);}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ Set(off\ +\ i,\ l[i]);}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00226\ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00228\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List,\ \textcolor{keyword}{class}\ Accessor>\ TPtrList\&\ AddAll(\textcolor{keyword}{const}\ List\&\ l,}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\&\ accessor)}
+\DoxyCodeLine{00230\ \ \ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ off\ =\ FCount;}
+\DoxyCodeLine{00232\ \ \ \ \ SetCount(l.Count()\ +\ FCount);}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ Set(off\ +\ i,\ accessor(l[i]));}
+\DoxyCodeLine{00235\ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00237\ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00239\ \ \ TPtrList\&\ operator\ +=\ (\textcolor{keyword}{const}\ TPtrList\&\ l)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{return}\ AddAll(l);}
+\DoxyCodeLine{00241\ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ TPtrList\&\ operator\ +=\ (\textcolor{keyword}{const}\ List\&\ l)\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{return}\ AddAll(l);}
+\DoxyCodeLine{00245\ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ obj\_t>\ obj\_t\ *\&Add(obj\_t*\ pObj\ =\ 0)\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ checkSize();}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ (obj\_t\ *\&)(Items[FCount++]\ =\ pObj);}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00252\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ obj\_t>\ obj\_t\ *\&Add(obj\_t\&\ Obj)\ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordflow}{return}\ Add(\&Obj);}
+\DoxyCodeLine{00254\ \ \ \}}
+\DoxyCodeLine{00255\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00256\ \ \ T\ *\&Add(T*\ pObj\ =\ 0)\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ checkSize();}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordflow}{return}\ (Items[FCount++]\ =\ pObj);}
+\DoxyCodeLine{00259\ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00261\ \ \ T\ *\&Add(T\&\ Obj)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordflow}{return}\ Add(\&Obj);}
+\DoxyCodeLine{00263\ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00265\ \ \ TPtrList\&\ operator\ <<\ (T\&\ o)\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ Add(o);}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00268\ \ \ \}}
+\DoxyCodeLine{00269\ \ \ TPtrList\&\ operator\ <<\ (T*\ o)\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ Add(o);}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00272\ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00274\ \ \ TPtrList\&\ operator\ <<\ (\textcolor{keyword}{const}\ TPtrList\&\ l)\ \{}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{return}\ AddAll(l);}
+\DoxyCodeLine{00276\ \ \ \}}
+\DoxyCodeLine{00277\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00278\ \ \ T*\&\ Set(\textcolor{keywordtype}{size\_t}\ i,\ T*\ pObj)\ \{}
+\DoxyCodeLine{00279\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00280\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ i,\ 0,\ FCount);}
+\DoxyCodeLine{00281\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordflow}{return}\ (Items[i]\ =\ pObj);}
+\DoxyCodeLine{00283\ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00285\ \ \ T*\&\ Set(\textcolor{keywordtype}{size\_t}\ i,\ T\&\ Obj)\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{return}\ Set(i,\ \&Obj);}
+\DoxyCodeLine{00287\ \ \ \}}
+\DoxyCodeLine{00288\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00289\ \ \ T*\&\ AddUnique(T*\ pObj)\ \{}
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ IndexOf(pObj);}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Items[ind];}
+\DoxyCodeLine{00293\ \ \ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keywordflow}{return}\ Add(pObj);}
+\DoxyCodeLine{00295\ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00297\ \ \ T*\&\ AddUnique(T\&\ Obj)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{keywordflow}{return}\ AddUnique(\&Obj);}
+\DoxyCodeLine{00299\ \ \ \}}
+\DoxyCodeLine{00300\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00301\ \ \ T*\&\ Insert(\textcolor{keywordtype}{size\_t}\ index,\ T*\ pObj\ =\ 0)\ \{}
+\DoxyCodeLine{00302\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00303\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ index,\ 0,\ FCount\ +\ 1);}
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00306\ \ \ \ \ checkSize();}
+\DoxyCodeLine{00307\ \ \ \ \ memmove(\&Items[index\ +\ 1],\ \&Items[index],\ (FCount\ -\/\ index)\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00308\ \ \ \ \ Items[index]\ =\ pObj;}
+\DoxyCodeLine{00309\ \ \ \ \ FCount++;}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keywordflow}{return}\ Items[index];}
+\DoxyCodeLine{00311\ \ \ \}}
+\DoxyCodeLine{00312\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00313\ \ \ T*\&\ Insert(\textcolor{keywordtype}{size\_t}\ index,\ T\&\ Obj)\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{return}\ Insert(index,\ \&Obj);}
+\DoxyCodeLine{00315\ \ \ \}}
+\DoxyCodeLine{00316\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00317\ \ \ TPtrList\&\ Insert(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keyword}{const}\ TPtrList\&\ list)\ \{}
+\DoxyCodeLine{00318\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00319\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ index,\ 0,\ FCount\ +\ 1);}
+\DoxyCodeLine{00321\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00322\ \ \ \ \ SetCapacity(FCount\ +\ cap.inc\ +\ list.Count());}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ lc\ =\ list.Count();}
+\DoxyCodeLine{00324\ \ \ \ \ memmove(\&Items[index\ +\ lc],\ \&Items[index],\ (FCount\ -\/\ index)\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00325\ \ \ \ \ memcpy(\&Items[index],\ list.Items,\ lc\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00326\ \ \ \ \ FCount\ +=\ lc;}
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00328\ \ \ \}}
+\DoxyCodeLine{00329\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00330\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ TPtrList\&\ Insert(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keyword}{const}\ List\&\ list)\ \{}
+\DoxyCodeLine{00331\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00332\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ index,\ 0,\ FCount\ +\ 1);}
+\DoxyCodeLine{00334\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00335\ \ \ \ \ SetCapacity(FCount\ +\ cap.inc\ +\ list.Count());}
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ lc\ =\ list.Count();}
+\DoxyCodeLine{00337\ \ \ \ \ memmove(\&Items[index\ +\ lc],\ \&Items[index],\ (FCount\ -\/\ index)\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00338\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ lc;\ i++)\ \{}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ Items[index\ +\ i]\ =\ list[i];}
+\DoxyCodeLine{00340\ \ \ \ \ \}}
+\DoxyCodeLine{00341\ \ \ \ \ FCount\ +=\ lc;}
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00343\ \ \ \}}
+\DoxyCodeLine{00344\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00345\ \ \ TPtrList\&\ Insert(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keywordtype}{size\_t}\ cnt)\ \{}
+\DoxyCodeLine{00346\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00347\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ index,\ 0,\ FCount\ +\ 1);}
+\DoxyCodeLine{00349\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00350\ \ \ \ \ SetCapacity(FCount\ +\ cap.inc\ +\ cnt);}
+\DoxyCodeLine{00351\ \ \ \ \ memmove(\&Items[index\ +\ cnt],\ \&Items[index],\ (FCount\ -\/\ index)\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00352\ \ \ \ \ FCount\ +=\ cnt;}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00354\ \ \ \}}
+\DoxyCodeLine{00355\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00356\ \ \ \textcolor{keywordtype}{void}\ NullItem(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00357\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00358\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ index,\ 0,\ FCount);}
+\DoxyCodeLine{00360\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00361\ \ \ \ \ Items[index]\ =\ 0;}
+\DoxyCodeLine{00362\ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00364\ \ \ T*\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00365\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00366\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ index,\ 0,\ FCount);}
+\DoxyCodeLine{00367\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00368\ \ \ \ \ \textcolor{keywordflow}{return}\ Items[index];}
+\DoxyCodeLine{00369\ \ \ \}}
+\DoxyCodeLine{00370\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00371\ \ \ T*\&\ GetItem(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00372\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00373\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ index,\ 0,\ FCount);}
+\DoxyCodeLine{00374\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{keywordflow}{return}\ Items[index];}
+\DoxyCodeLine{00376\ \ \ \}}
+\DoxyCodeLine{00377\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00378\ \ \ T*\&\ GetLast()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00379\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00380\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ FCount\ -\/\ 1,\ 0,\ FCount);}
+\DoxyCodeLine{00382\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00383\ \ \ \ \ \textcolor{keywordflow}{return}\ Items[FCount\ -\/\ 1];}
+\DoxyCodeLine{00384\ \ \ \}}
+\DoxyCodeLine{00385\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00386\ \ \ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ GetCapacity()\ \{\ \textcolor{keywordflow}{return}\ cap;\ \}}
+\DoxyCodeLine{00387\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ GetCapacity()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ cap;\ \}}
+\DoxyCodeLine{00388\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00389\ \ \ TPtrList\&\ SetCapacity(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\ \&c)\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ cap.inc\ =\ c.inc;}
+\DoxyCodeLine{00391\ \ \ \ \ cap.inc\_k\ =\ c.inc\_k;}
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keywordflow}{return}\ SetCapacity(c.capacity);}
+\DoxyCodeLine{00393\ \ \ \}}
+\DoxyCodeLine{00394\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00395\ \ \ TPtrList\&\ SetCapacity(\textcolor{keywordtype}{size\_t}\ v)\ \{}
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ <\ cap.capacity)\ \{}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00398\ \ \ \ \ \}}
+\DoxyCodeLine{00399\ \ \ \ \ cap.capacity\ =\ v;}
+\DoxyCodeLine{00400\ \ \ \ \ Allocate();}
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{comment}{//\ initialise\ the\ rest\ of\ items\ to\ NULL}}
+\DoxyCodeLine{00402\ \ \ \ \ memset(\&Items[FCount],\ 0,\ (cap.capacity\ -\/\ FCount)\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00404\ \ \ \}}
+\DoxyCodeLine{00405\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00406\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ index)\ \{}
+\DoxyCodeLine{00407\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00408\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ index,\ 0,\ FCount);}
+\DoxyCodeLine{00410\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00411\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ index\ +\ 1;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ Items[i\ -\/\ 1]\ =\ Items[i];}
+\DoxyCodeLine{00413\ \ \ \ \ \}}
+\DoxyCodeLine{00414\ \ \ \ \ FCount-\/-\/;}
+\DoxyCodeLine{00415\ \ \ \}}
+\DoxyCodeLine{00416\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00417\ \ \ \textcolor{keywordtype}{void}\ DeleteRange(\textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ count)\ \{}
+\DoxyCodeLine{00418\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00419\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ from,\ 0,\ FCount);}
+\DoxyCodeLine{00421\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ from\ +\ count,\ 0,\ FCount\ +\ 1);}
+\DoxyCodeLine{00423\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00424\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ copy\_cnt\ =\ FCount\ -\/\ from\ -\/\ count;}
+\DoxyCodeLine{00425\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ copy\_cnt;\ i++)\ \{}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ Items[from\ +\ i]\ =\ Items[from\ +\ count\ +\ i];}
+\DoxyCodeLine{00427\ \ \ \ \ \}}
+\DoxyCodeLine{00428\ \ \ \ \ FCount\ -\/=\ count;}
+\DoxyCodeLine{00429\ \ \ \}}
+\DoxyCodeLine{00430\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00431\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<T>}}\ SubList(\textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ count)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00432\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00433\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ from,\ 0,\ Count()\ +\ 1);}
+\DoxyCodeLine{00435\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ from\ +\ count,\ 0,\ Count()\ +\ 1);}
+\DoxyCodeLine{00437\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00438\ \ \ \ \ TPtrList\ rv(count);}
+\DoxyCodeLine{00439\ \ \ \ \ memcpy(rv.Items,\ \&Items[from],\ count\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00441\ \ \ \}}
+\DoxyCodeLine{00442\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00443\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<T>}}\ SubListFrom(\textcolor{keywordtype}{size\_t}\ start)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00444\ \ \ \ \ \textcolor{keywordflow}{return}\ SubList(start,\ FCount\ -\/\ start);}
+\DoxyCodeLine{00445\ \ \ \}}
+\DoxyCodeLine{00446\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00447\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<T>}}\ SubListTo(\textcolor{keywordtype}{size\_t}\ to)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00448\ \ \ \ \ \textcolor{keywordflow}{return}\ SubList(0,\ to);}
+\DoxyCodeLine{00449\ \ \ \}}
+\DoxyCodeLine{00450\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00451\ \ \ \ \ \textcolor{comment}{/*removes\ given\ item\ from\ the\ list,\ returns\ if\ the\ item\ existed.\ If\ there}}
+\DoxyCodeLine{00452\ \textcolor{comment}{\ \ \ \ are\ more\ than\ 1\ the\ same\ item\ in\ the\ list,\ only\ the\ first\ one\ will\ be\ removed}}
+\DoxyCodeLine{00453\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00454\ \ \ \textcolor{keywordtype}{bool}\ Remove(\textcolor{keyword}{const}\ T*\ pObj)\ \{}
+\DoxyCodeLine{00455\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i\ =\ IndexOf(pObj);}
+\DoxyCodeLine{00456\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00458\ \ \ \ \ \}}
+\DoxyCodeLine{00459\ \ \ \ \ Delete(i);}
+\DoxyCodeLine{00460\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00461\ \ \ \}}
+\DoxyCodeLine{00462\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00463\ \ \ \textcolor{keywordtype}{bool}\ Remove(\textcolor{keyword}{const}\ T\&\ Obj)\ \{}
+\DoxyCodeLine{00464\ \ \ \ \ \textcolor{keywordflow}{return}\ Remove(\&Obj);}
+\DoxyCodeLine{00465\ \ \ \}}
+\DoxyCodeLine{00466\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00467\ \ \ \ \ \textcolor{comment}{//\ cyclic\ shift\ to\ the\ left}}
+\DoxyCodeLine{00468\ \ \ TPtrList\&\ ShiftL(\textcolor{keywordtype}{size\_t}\ cnt)\ \{}
+\DoxyCodeLine{00469\ \ \ \ \ \textcolor{keywordflow}{if}\ (FCount\ ==\ 0)\ \{}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00471\ \ \ \ \ \}}
+\DoxyCodeLine{00472\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sv\ =\ cnt\%FCount;}
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{keywordflow}{if}\ (sv\ ==\ 0)\ \{}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00475\ \ \ \ \ \}}
+\DoxyCodeLine{00476\ \ \ \ \ \textcolor{keywordflow}{if}\ (sv\ ==\ 1)\ \{\ \ \textcolor{comment}{//\ special\ case}}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ T\ *D\ =\ Items[0];}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ Items[i\ -\/\ 1]\ =\ Items[i];}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ Items[FCount\ -\/\ 1]\ =\ D;}
+\DoxyCodeLine{00482\ \ \ \ \ \}}
+\DoxyCodeLine{00483\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ T**\ D\ =\ \textcolor{keyword}{new}\ T*[sv];}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ memcpy(D,\ Items,\ sv\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ sv;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ Items[i\ -\/\ sv]\ =\ Items[i];}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ memcpy(\&Items[FCount\ -\/\ sv],\ D,\ sv\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ D;}
+\DoxyCodeLine{00491\ \ \ \ \ \}}
+\DoxyCodeLine{00492\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00493\ \ \ \}}
+\DoxyCodeLine{00494\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00495\ \ \ \ \ \textcolor{comment}{//\ cyclic\ shift\ to\ the\ right}}
+\DoxyCodeLine{00496\ \ \ TPtrList\&\ ShiftR(\textcolor{keywordtype}{size\_t}\ cnt)\ \{}
+\DoxyCodeLine{00497\ \ \ \ \ \textcolor{keywordflow}{if}\ (FCount\ ==\ 0)\ \{}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00499\ \ \ \ \ \}}
+\DoxyCodeLine{00500\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sv\ =\ cnt\%FCount;}
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{keywordflow}{if}\ (sv\ ==\ 0)\ \{}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00503\ \ \ \ \ \}}
+\DoxyCodeLine{00504\ \ \ \ \ \textcolor{keywordflow}{if}\ (sv\ ==\ 1)\ \{\ \ \textcolor{comment}{//\ special\ case}}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ T*\ D\ =\ Items[FCount\ -\/\ 1];}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ Items[FCount\ -\/\ i]\ =\ Items[FCount\ -\/\ i\ -\/\ 1];}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ Items[0]\ =\ D;}
+\DoxyCodeLine{00510\ \ \ \ \ \}}
+\DoxyCodeLine{00511\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ T**\ D\ =\ \textcolor{keyword}{new}\ T*[sv];}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ memcpy(\&D[0],\ \&Items[FCount\ -\/\ sv],\ sv\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ diff\ =\ FCount\ -\/\ sv;}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <=\ diff;\ i++)\ \{}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ Items[FCount\ -\/\ i]\ =\ Items[diff\ -\/\ i];}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ memcpy(\&Items[0],\ \&D[0],\ sv\ *\ \textcolor{keyword}{sizeof}(T*));}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ D;}
+\DoxyCodeLine{00520\ \ \ \ \ \}}
+\DoxyCodeLine{00521\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00522\ \ \ \}}
+\DoxyCodeLine{00523\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00524\ \ \ \textcolor{keywordtype}{void}\ Swap(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00525\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00526\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ i,\ 0,\ FCount);}
+\DoxyCodeLine{00527\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ j,\ 0,\ FCount);}
+\DoxyCodeLine{00528\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00529\ \ \ \ \ T\ *D\ =\ Items[i];}
+\DoxyCodeLine{00530\ \ \ \ \ Items[i]\ =\ Items[j];}
+\DoxyCodeLine{00531\ \ \ \ \ Items[j]\ =\ D;}
+\DoxyCodeLine{00532\ \ \ \}}
+\DoxyCodeLine{00533\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00534\ \ \ \textcolor{keywordtype}{void}\ Move(\textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ to)\ \{}
+\DoxyCodeLine{00535\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00536\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ from,\ 0,\ FCount);}
+\DoxyCodeLine{00537\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ to,\ 0,\ FCount);}
+\DoxyCodeLine{00538\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00539\ \ \ \ \ T\ *D\ =\ Items[from];}
+\DoxyCodeLine{00540\ \ \ \ \ \textcolor{keywordflow}{if}\ (from\ >\ to)\ \{}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ diff\ =\ from\ -\/\ to;}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ diff;\ i++)\ \{}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \ \ Items[from\ -\/\ i]\ =\ Items[from\ -\/\ i\ -\/\ 1];}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00545\ \ \ \ \ \}}
+\DoxyCodeLine{00546\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from;\ i\ <\ to;\ i++)\ \{}
+\DoxyCodeLine{00548\ \ \ \ \ \ \ \ \ Items[i]\ =\ Items[i\ +\ 1];}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00550\ \ \ \ \ \}}
+\DoxyCodeLine{00551\ \ \ \ \ Items[to]\ =\ D;}
+\DoxyCodeLine{00552\ \ \ \}}
+\DoxyCodeLine{00553\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00554\ \ \ TPtrList\&\ Pack()\ \{}
+\DoxyCodeLine{00555\ \ \ \ \ \textcolor{keywordflow}{return}\ Pack(olx\_alg::olx\_eq((\textcolor{keyword}{const}\ T*)0));}
+\DoxyCodeLine{00556\ \ \ \}}
+\DoxyCodeLine{00557\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00558\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ PackAnalyser>\ TPtrList\&\ Pack(\textcolor{keyword}{const}\ PackAnalyser\&\ pa)\ \{}
+\DoxyCodeLine{00559\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ nc\ =\ 0;\ \ \textcolor{comment}{//\ count\ null\ pointers}}
+\DoxyCodeLine{00560\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++,\ nc++)\ \{}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pa.OnItem(Items[i],\ i))\ \{}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \ \ nc-\/-\/;}
+\DoxyCodeLine{00563\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ Items[nc]\ =\ Items[i];}
+\DoxyCodeLine{00566\ \ \ \ \ \}}
+\DoxyCodeLine{00567\ \ \ \ \ FCount\ =\ nc;}
+\DoxyCodeLine{00568\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00569\ \ \ \}}
+\DoxyCodeLine{00570\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00571\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Functor>\ \textcolor{keyword}{const}\ TPtrList\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00572\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ f.OnItem(Items[i],\ i);}
+\DoxyCodeLine{00574\ \ \ \ \ \}}
+\DoxyCodeLine{00575\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00576\ \ \ \}}
+\DoxyCodeLine{00577\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00578\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Functor>\ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<T>}}\ Filter(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00579\ \ \ \ \ TPtrList\ rv;}
+\DoxyCodeLine{00580\ \ \ \ \ rv.SetCapacity(Count());}
+\DoxyCodeLine{00581\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (f.OnItem(Items[i],\ i))\ \{}
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ rv.Add(Items[i]);}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00585\ \ \ \ \ \}}
+\DoxyCodeLine{00586\ \ \ \ \ \textcolor{keywordflow}{return}\ rv.Fit();}
+\DoxyCodeLine{00587\ \ \ \}}
+\DoxyCodeLine{00588\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00589\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Analyser>\ \textcolor{keywordtype}{size\_t}\ Count(\textcolor{keyword}{const}\ Analyser\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00590\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00591\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a.OnItem(Items[i],\ i))\ \{}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00595\ \ \ \ \ \}}
+\DoxyCodeLine{00596\ \ \ \ \ \textcolor{keywordflow}{return}\ cnt;}
+\DoxyCodeLine{00597\ \ \ \}}
+\DoxyCodeLine{00598\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00599\ \ \ \ \ \textcolor{comment}{//\ make\ list\ capacity\ equal\ to\ size}}
+\DoxyCodeLine{00600\ \ \ TPtrList\&\ Fit()\ \{}
+\DoxyCodeLine{00601\ \ \ \ \ cap.capacity\ =\ FCount;}
+\DoxyCodeLine{00602\ \ \ \ \ Allocate();}
+\DoxyCodeLine{00603\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00604\ \ \ \}}
+\DoxyCodeLine{00605\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00606\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00607\ \ \ \ \ \textcolor{keywordflow}{return}\ FCount;}
+\DoxyCodeLine{00608\ \ \ \}}
+\DoxyCodeLine{00609\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00610\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00611\ \ \ \ \ \textcolor{keywordflow}{return}\ (FCount\ ==\ 0);}
+\DoxyCodeLine{00612\ \ \ \}}
+\DoxyCodeLine{00613\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00614\ \ \ TPtrList\&\ SetCount(\textcolor{keywordtype}{size\_t}\ v,\ \textcolor{keywordtype}{bool}\ shrink\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00615\ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ ==\ FCount)\ \{}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00617\ \ \ \ \ \}}
+\DoxyCodeLine{00618\ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ >\ FCount)\ \{}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ >\ cap.capacity)\ \{}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ SetCapacity(v\ +\ (shrink\ ?\ 0\ :\ cap.inc));}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ FCount\ =\ v;}
+\DoxyCodeLine{00623\ \ \ \ \ \}}
+\DoxyCodeLine{00624\ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \ \textcolor{comment}{//\ shrinking\ to\ exact\ size\ if\ requested}}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ FCount\ =\ v;}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (shrink)\ \{}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ \ \ Fit();}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00629\ \ \ \ \ \}}
+\DoxyCodeLine{00630\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00631\ \ \ \}}
+\DoxyCodeLine{00632\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00633\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOf(\textcolor{keyword}{const}\ T*\ val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00634\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Items[i]\ ==\ val)\ \{}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00638\ \ \ \ \ \}}
+\DoxyCodeLine{00639\ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00640\ \ \ \}}
+\DoxyCodeLine{00641\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00642\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOf(\textcolor{keyword}{const}\ T\&\ val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00643\ \ \ \ \ \textcolor{keywordflow}{return}\ IndexOf(\&val);}
+\DoxyCodeLine{00644\ \ \ \}}
+\DoxyCodeLine{00645\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00646\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ AT>\ \textcolor{keywordtype}{bool}\ Contains(\textcolor{keyword}{const}\ AT\ \&v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00647\ \ \ \ \ \textcolor{keywordflow}{return}\ IndexOf(v)\ !=\ InvalidIndex;}
+\DoxyCodeLine{00648\ \ \ \}}
+\DoxyCodeLine{00649\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00650\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ \textcolor{keywordtype}{size\_t}\_list\_t>}
+\DoxyCodeLine{00651\ \ \ TPtrList\&\ Rearrange(\textcolor{keyword}{const}\ size\_t\_list\_t\ \&indices,\ \textcolor{keywordtype}{bool}\ inplace=\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00652\ \ \ \ \ \textcolor{keywordflow}{if}\ (FCount\ <\ 2)\ \{}
+\DoxyCodeLine{00653\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00654\ \ \ \ \ \}}
+\DoxyCodeLine{00655\ \ \ \ \ \textcolor{keywordflow}{if}\ (FCount\ !=\ indices.Count())\ \{}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}indices\ list\ size"{}});}
+\DoxyCodeLine{00658\ \ \ \ \ \}}
+\DoxyCodeLine{00659\ \ \ \ \ \textcolor{keywordflow}{if}\ (inplace)\ \{}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ olx\_list\_rearrange(*\textcolor{keyword}{this},\ indices);}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00662\ \ \ \ \ \}}
+\DoxyCodeLine{00663\ \ \ \ \ \textcolor{comment}{//\ allocate\ the\ list\ of\ NULLs}}
+\DoxyCodeLine{00664\ \ \ \ \ T**\ ni\ =\ olx\_malloc<T*>(cap.capacity\ =\ FCount);}
+\DoxyCodeLine{00665\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00666\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,}
+\DoxyCodeLine{00668\ \ \ \ \ \ \ \ \ indices[i],\ 0,\ FCount);}
+\DoxyCodeLine{00669\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ ni[i]\ =\ Items[indices[i]];}
+\DoxyCodeLine{00671\ \ \ \ \ \}}
+\DoxyCodeLine{00672\ \ \ \ \ olx\_free(Items);}
+\DoxyCodeLine{00673\ \ \ \ \ Items\ =\ ni;}
+\DoxyCodeLine{00674\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00675\ \ \ \}}
+\DoxyCodeLine{00676\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00677\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTListTraverser}{TListTraverser<TPtrList<T>}}\ >\ Traverser;}
+\DoxyCodeLine{00678\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00679\ \ \ \textcolor{keyword}{struct\ }InternalAccessor\ \{}
+\DoxyCodeLine{00680\ \ \ \ \ TPtrList\ \&list;}
+\DoxyCodeLine{00681\ \ \ \ \ InternalAccessor(TPtrList\ \&l)}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ :\ list(l)}
+\DoxyCodeLine{00683\ \ \ \ \ \{\}}
+\DoxyCodeLine{00684\ \ \ \ \ T\ *operator\ [](\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ list.Items[i];}
+\DoxyCodeLine{00686\ \ \ \ \ \}}
+\DoxyCodeLine{00687\ \ \ \ \ \textcolor{keyword}{const}\ T\ *operator\ [](\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ list.Items[i];}
+\DoxyCodeLine{00689\ \ \ \ \ \}}
+\DoxyCodeLine{00690\ \ \ \ \ \textcolor{keyword}{typedef}\ T*\ list\_item\_type;}
+\DoxyCodeLine{00691\ \ \ \};}
+\DoxyCodeLine{00692\ \ \ \textcolor{keyword}{typedef}\ T\ *list\_item\_type;}
+\DoxyCodeLine{00693\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<T>}}\ const\_list\_type;}
+\DoxyCodeLine{00694\ \ \ olx\_list\_2\_std;}
+\DoxyCodeLine{00695\ \};}
+\DoxyCodeLine{00696\ }
+\DoxyCodeLine{00697\ \textcolor{preprocessor}{\#ifndef\ \_\_BORLANDC\_\_}}
+\DoxyCodeLine{00698\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00699\ \ \ \mbox{\hyperlink{classTListTraverser}{TListTraverser<TPtrList<T>}}\ >\ TPtrList<T>::Traverser;}
+\DoxyCodeLine{00700\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00701\ }
+\DoxyCodeLine{00702\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00703\ \textcolor{keyword}{class\ }SharedPtrList\ :\ \textcolor{keyword}{public}\ shared\_ptr\_list<TPtrList<item\_t>,\ item\_t>\ \{}
+\DoxyCodeLine{00704\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<item\_t>}}\ lst\_t;}
+\DoxyCodeLine{00705\ \ \ \textcolor{keyword}{typedef}\ shared\_ptr\_list<lst\_t,\ item\_t>\ parent\_t;}
+\DoxyCodeLine{00706\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00707\ \ \ SharedPtrList()\ \{\}}
+\DoxyCodeLine{00708\ \ \ SharedPtrList(\textcolor{keyword}{const}\ SharedPtrList\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00709\ \ \ SharedPtrList(lst\_t\ *lst)\ :\ parent\_t(lst)\ \{\}}
+\DoxyCodeLine{00710\ \ \ SharedPtrList(lst\_t\ \&lst)\ :\ parent\_t(lst)\ \{\}}
+\DoxyCodeLine{00711\ \ \ SharedPtrList\ \&operator\ =\ (\textcolor{keyword}{const}\ SharedPtrList\ \&l)\ \{}
+\DoxyCodeLine{00712\ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00713\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00714\ \ \ \}}
+\DoxyCodeLine{00715\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00716\ \ \ \textcolor{keyword}{typedef}\ item\_t\ *list\_item\_type;}
+\DoxyCodeLine{00717\ \ \ olx\_list\_2\_std;}
+\DoxyCodeLine{00718\ \};}
+\DoxyCodeLine{00719\ }
+\DoxyCodeLine{00720\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00721\ \textcolor{keyword}{class\ }ConstPtrList\ :\ \textcolor{keyword}{public}\ const\_list<TPtrList<item\_t>\ >\ \{}
+\DoxyCodeLine{00722\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<item\_t>}}\ lst\_t;}
+\DoxyCodeLine{00723\ \ \ \textcolor{keyword}{typedef}\ const\_list<lst\_t>\ parent\_t;}
+\DoxyCodeLine{00724\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00725\ \ \ ConstPtrList(\textcolor{keyword}{const}\ ConstPtrList\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00726\ \ \ ConstPtrList(lst\_t\ *lst)\ :\ parent\_t(lst)\ \{\}}
+\DoxyCodeLine{00727\ \ \ ConstPtrList(lst\_t\ \&lst)\ :\ parent\_t(lst)\ \{\}}
+\DoxyCodeLine{00728\ \ \ ConstPtrList\ \&operator\ =\ (\textcolor{keyword}{const}\ ConstPtrList\ \&l)\ \{}
+\DoxyCodeLine{00729\ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00730\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00731\ \ \ \}}
+\DoxyCodeLine{00732\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00733\ \ \ \textcolor{keyword}{typedef}\ item\_t\ *list\_item\_type;}
+\DoxyCodeLine{00734\ \};}
+\DoxyCodeLine{00735\ }
+\DoxyCodeLine{00736\ EndEsdlNamespace()}
+\DoxyCodeLine{00737\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,91 @@
+\doxysection{cdsfs.\+h}
+\hypertarget{cdsfs_8h_source}{}\label{cdsfs_8h_source}\index{repository/cdsfs.h@{repository/cdsfs.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_socketfs\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_socketfs\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}httpfs.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}md5.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}eutf8.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ POSIX\ socket\ based\ file\ fetching\ utility}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }TSocketFS\ :\ \textcolor{keyword}{public}\ THttpFileSystem\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\&\ UseLocalFS()\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ use\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{return}\ use;}
+\DoxyCodeLine{00023\ \ \ \}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{static}\ olxstr\&\ Base()\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ base;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{return}\ base;}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{int}\ attempts,\ max\_attempts;}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{bool}\ BaseValid;}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<IInputStream>}}\ \_DoOpenFile(\textcolor{keyword}{const}\ olxstr\&\ src)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ attempts\ =\ max\_attempts;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{return}\ THttpFileSystem::\_DoOpenFile(src);}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_OnReadFailed(\textcolor{keyword}{const}\ \mbox{\hyperlink{structAnHttpFileSystem_1_1ResponseInfo}{ResponseInfo}}\&\ info,\ uint64\_t\ position);}
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//\ this\ will\ be\ useful\ when\ Olex2-\/CDS\ returns\ MD5\ digest\ in\ ETag...}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoValidate(\textcolor{keyword}{const}\ \mbox{\hyperlink{structAnHttpFileSystem_1_1ResponseInfo}{ResponseInfo}}\&\ info,\ \mbox{\hyperlink{classTEFile}{TEFile}}\&\ data)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structAnHttpFileSystem_1_1AllocationInfo}{AllocationInfo}}\ \_DoAllocateFile(\textcolor{keyword}{const}\ olxstr\&\ src);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structAnHttpFileSystem_1_1AllocationInfo}{AllocationInfo}}\&\ \_DoTruncateFile(\mbox{\hyperlink{structAnHttpFileSystem_1_1AllocationInfo}{AllocationInfo}}\&\ file);}
+\DoxyCodeLine{00039\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00040\ \ \ TSocketFS(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTUrl}{TUrl}}\&\ url,\ \textcolor{keywordtype}{int}\ \_max\_attempts\ =\ 100)\ :}
+\DoxyCodeLine{00041\ \ \ \ \ THttpFileSystem(url),\ max\_attempts(\_max\_attempts),\ BaseValid(\textcolor{keyword}{false})}
+\DoxyCodeLine{00042\ \ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{if}\ (Base().IsEmpty())}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ Base()\ =\ TBasicApp::GetInstanceDir()\ +\ \textcolor{stringliteral}{"{}.cds/"{}};}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{if}\ (UseLocalFS())\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!TEFile::Exists(Base()))\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TEFile::MakeDir(Base()))\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ BaseValid\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ BaseValid\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (...)\ \{\}}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{if}\ (max\_attempts\ <\ 0)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ max\_attempts\ =\ 0;}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (max\_attempts\ >\ 32000)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ max\_attempts\ =\ 32000;}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{virtual}\ \string~TSocketFS()\ \{\}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ CanUseLocalFS()\ \{\ \textcolor{keywordflow}{return}\ UseLocalFS();\ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{comment}{//\ allows\ creating\ temporary\ files\ in\ basedir/.cds/}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SetUseLocalFS(\textcolor{keywordtype}{bool}\ v)\ \{\ UseLocalFS()\ =\ v;\ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{comment}{/*\ sets\ the\ dir\ in\ which\ temporary\ files\ can\ be\ stores\ and\ enables}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ \ the\ use\ of\ it\ as\ in\ a\ call\ to\ SetUseLocalFS(true).\ If\ the\ folder}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ \ does\ not\ exists\ an\ attempt\ to\ create\ one\ will\ be\ made\ and\ in\ the\ case}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ of\ an\ error\ false\ will\ be\ return,\ tru\ return\ otherwise\ */}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ InitLocalFSBase(\textcolor{keyword}{const}\ olxstr\&\ base)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{if}\ (!TEFile::Exists(base))\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!TEFile::MakeDir(base))\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ Base()\ =\ base;}
+\DoxyCodeLine{00080\ \ \ \ \ SetUseLocalFS(\textcolor{keyword}{true});}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00082\ \ \ \}}
+\DoxyCodeLine{00083\ \};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

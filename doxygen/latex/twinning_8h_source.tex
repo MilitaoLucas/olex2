@@ -1,0 +1,234 @@
+\doxysection{twinning.\+h}
+\hypertarget{twinning_8h_source}{}\label{twinning_8h_source}\index{xlib/twinning.h@{xlib/twinning.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_twinning\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_twinning\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}reflection.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}refmodel.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}refutil.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginXlibNamespace()}
+\DoxyCodeLine{00018\ namespace\ twinning\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{struct\ }twin\_mate\_calc\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ compd\ fc;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{double}\ scale;}
+\DoxyCodeLine{00023\ \ \ \ \ twin\_mate\_calc(\textcolor{keyword}{const}\ compd\&\ \_fc,\ \textcolor{keywordtype}{double}\ \_scale)}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ :\ fc(\_fc),\ scale(\_scale)}
+\DoxyCodeLine{00025\ \ \ \ \ \{\}}
+\DoxyCodeLine{00026\ \ \ \ \ twin\_mate\_calc()}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ :\ scale(0)}
+\DoxyCodeLine{00028\ \ \ \ \ \{\}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{double}\ f\_sq\_calc()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ fc.qmod()\ *\ scale;\ \}}
+\DoxyCodeLine{00030\ \ \ \};}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{struct\ }twin\_mate\_obs\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{double}\ f\_obs\_sq,\ sig\_obs,\ scale;}
+\DoxyCodeLine{00033\ \ \ \ \ twin\_mate\_obs(\textcolor{keywordtype}{double}\ \_f\_obs\_sq,\ \textcolor{keywordtype}{double}\ \_sig\_obs,\ \textcolor{keywordtype}{double}\ \_scale)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ :\ f\_obs\_sq(\_f\_obs\_sq),\ sig\_obs(\_sig\_obs),\ scale(\_scale)}
+\DoxyCodeLine{00035\ \ \ \ \ \{\}}
+\DoxyCodeLine{00036\ \ \ \ \ twin\_mate\_obs()}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ :\ f\_obs\_sq(0),\ sig\_obs(0),\ scale(0)}
+\DoxyCodeLine{00038\ \ \ \ \ \{\}}
+\DoxyCodeLine{00039\ \ \ \};}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{struct\ }detwin\_result\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{double}\ f\_sq,\ sig;}
+\DoxyCodeLine{00042\ \ \ \ \ detwin\_result()\ :\ f\_sq(0),\ sig(0)}
+\DoxyCodeLine{00043\ \ \ \ \ \{\}}
+\DoxyCodeLine{00044\ \ \ \ \ detwin\_result(\textcolor{keywordtype}{double}\ \_f\_sq,\ \textcolor{keywordtype}{double}\ \_sig)}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ :\ f\_sq(\_f\_sq),\ sig(\_sig)}
+\DoxyCodeLine{00046\ \ \ \ \ \{\}}
+\DoxyCodeLine{00047\ \ \ \};}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{struct\ }twin\_mate\_full\ :\ \textcolor{keyword}{public}\ twin\_mate\_calc,\ \textcolor{keyword}{public}\ detwin\_result\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ twin\_mate\_full(\textcolor{keyword}{const}\ compd\&\ \_fc,\ \textcolor{keywordtype}{double}\ \_f\_sq,\ \textcolor{keywordtype}{double}\ \_sig,\ \textcolor{keywordtype}{double}\ \_scale)}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ :\ twin\_mate\_calc(\_fc,\ \_scale),\ detwin\_result(\_f\_sq,\ \_sig)}
+\DoxyCodeLine{00051\ \ \ \ \ \{\}}
+\DoxyCodeLine{00052\ \ \ \ \ twin\_mate\_full()}
+\DoxyCodeLine{00053\ \ \ \ \ \{\}}
+\DoxyCodeLine{00054\ \ \ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{class\ }handler\ \{}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{struct\ }iterator\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keyword}{const}\ handler\&\ obs;}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ h\_idx;}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{size\_t}\ current;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{double}\ scale;}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ iterator(\textcolor{keyword}{const}\ handler\&\ parent,\ \textcolor{keywordtype}{size\_t}\ h\_idx)}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ :\ obs(parent),\ h\_idx(h\_idx),}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ current(InvalidIndex),\ scale(0)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ has\_next()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ current\ ==\ InvalidIndex\ ||\ obs.components[h\_idx].Count()\ >\ current;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3i\&\ next\_index()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (++current\ ==\ 0)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ scale\ =\ obs.scales[olx\_abs(obs.measured[h\_idx].GetBatch())\ -\/\ 1].value;}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ obs.measured[h\_idx].GetHkl();}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ scale\ =\ obs.components[h\_idx][current\ -\/\ 1].scale.value;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ obs.components[h\_idx][current\ -\/\ 1].index;}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TReflection\&\ next\_obs()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ vec3i\ hkl\ =\ next\_index();}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ obs.measured[obs.find\_obs(hkl)];}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \ \ \};}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{struct\ }twin\_mate\_generator\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keyword}{const}\ iterator\&\ itr;}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TArrayList<compd>\&\ Fc;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ twin\_mate\_generator(\textcolor{keyword}{const}\ iterator\&\ \_itr,\ \textcolor{keyword}{const}\ TArrayList<compd>\&\ \_Fc)}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ :\ itr(\_itr),\ Fc(\_Fc)}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ has\_next()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ itr.has\_next();\ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ olx\_object\_ptr<twin\_mate\_full>\ next\_full()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ vec3i\ hkl\ =\ itr.next\_index();}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ map\_et\&\ r\ =\ itr.obs.hkl\_to\_ref\_map-\/>Value(hkl);}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ twin\_mate\_full(}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ Fc[r.a],}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ itr.obs.measured[itr.h\_idx].GetI(),}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ itr.obs.measured[itr.h\_idx].GetS(),}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ itr.scale);}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ twin\_mate\_calc\ next\_calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ vec3i\ hkl\ =\ itr.next\_index();}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ twin\_mate\_calc(Fc[itr.obs.find\_calc(hkl)],\ itr.scale);}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \};}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{comment}{//\ constructors}}
+\DoxyCodeLine{00107\ \ \ \ \ handler(\textcolor{keyword}{const}\ SymmSpace::InfoEx\&\ \_sym\_info,\ \textcolor{keyword}{const}\ TRefList\&\ refs,}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TDoubleList\&\ \_scales,}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keyword}{const}\ mat3d\&\ tm,\ \textcolor{keywordtype}{int}\ n);}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ handler(\textcolor{keyword}{const}\ SymmSpace::InfoEx\&\ \_sym\_info,\ \textcolor{keyword}{const}\ TRefList\&\ refs,}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keyword}{const}\ RefUtil::ResolutionAndSigmaFilter\&\ filter,}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TDoubleList\&\ \_scales);}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ iterator\ iterate(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ iterator(*\textcolor{keyword}{this},\ i);}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ find\_calc(\textcolor{keyword}{const}\ vec3i\&\ h)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ hkl\_to\_ref\_map-\/>Value(h).a;}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ find\_obs(\textcolor{keyword}{const}\ vec3i\&\ h)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ hkl\_to\_ref\_map-\/>Value(h).b;}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ detwinner\_t>}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{void}\ detwin(\textcolor{keyword}{const}\ detwinner\_t\&\ dt,\ TRefList\&\ out,}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TArrayList<compd>\&\ Fc)}
+\DoxyCodeLine{00130\ \ \ \ \ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ out\ =\ measured;}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ out.Count();\ i++)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ TReflection\&\ r\ =\ out[i];}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ detwin\_result\ res\ =\ dt.detwin(twin\_mate\_generator(iterate(i),\ Fc));}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ r.SetI(res.f\_sq);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ r.SetS(res.sig);}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ r.SetBatch(TReflection::NoBatchSet);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ detwinner\_t,\ \textcolor{keyword}{typename}\ merger\_t>}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordtype}{void}\ detwin\_and\_merge(\textcolor{keyword}{const}\ detwinner\_t\&\ dt,\ \textcolor{keyword}{const}\ merger\_t\&\ merger,}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ TRefList\&\ out,\ \textcolor{keyword}{const}\ TArrayList<compd>\&\ Fc,\ TArrayList<compd>*\ pF)}
+\DoxyCodeLine{00144\ \ \ \ \ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ detwin(dt,\ out,\ Fc);}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ TRefPList\ to\_merge(out);}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ out.ReleaseAll();}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ SymmSpace::InfoEx\ si\ =\ sym\_info;}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ si.centrosymmetric\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ RefMerger::Merge<merger\_t>(sym\_info,\ to\_merge,\ out,\ vec3i\_list());}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ to\_merge.DeleteItems(\textcolor{keyword}{false});}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pF\ !=\ 0)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ TArrayList<compd>\&\ F\ =\ *pF;}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ olx\_array::TArray3D<map\_et>\&\ map\ =\ *hkl\_to\_ref\_map;}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ F.SetCount(out.Count());}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ out.Count();\ i++)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ f\_i;}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!map.IsInRange(out[i].GetHkl())\ ||}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ (f\_i\ =\ map(out[i].GetHkl()).a)\ ==\ InvalidIndex)}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}merging\ does\ not\ match"{}});}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ F[i]\ =\ Fc[f\_i];}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordtype}{void}\ calc\_fsq(\textcolor{keyword}{const}\ TArrayList<compd>\&\ Fc,\ evecd\&\ Fsq)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ Fsq.Resize(measured.Count());}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ measured.Count();\ i++)\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ Fsq[i]\ =\ calc\_f\_sq\_1(twin\_mate\_generator(iterate(i),\ Fc));}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordtype}{double}\ calc\_f\_sq\_1(\textcolor{keyword}{const}\ twin\_mate\_generator\&\ itr)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ res\ =\ itr.next\_calc().f\_sq\_calc();}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (itr.has\_next())\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ res\ +=\ itr.next\_calc().f\_sq\_calc();}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00182\ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keyword}{struct\ }BASF\_p\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ value;}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ BASF\_p(\textcolor{keywordtype}{double}\ v)}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ :\ value(v)}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00188\ \ \ \ \ \};}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keyword}{struct\ }twin\_component\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ vec3i\ index;}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \textcolor{keyword}{const}\ BASF\_p\&\ scale;}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ twin\_component(\textcolor{keyword}{const}\ vec3i\&\ index,\ \textcolor{keyword}{const}\ BASF\_p\&\ scale)}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ :\ index(index),\ scale(scale)}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00195\ \ \ \ \ \};}
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordtype}{void}\ calc\_range();}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keyword}{const}\ SymmSpace::InfoEx\&\ sym\_info;}
+\DoxyCodeLine{00199\ \ \ \ \ TTypeList<TTypeList<twin\_component>\ >\ components;}
+\DoxyCodeLine{00200\ \ \ \ \ TTypeList<\ BASF\_p>\ scales;}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{typedef}\ olx\_pair\_t<size\_t,\ size\_t>\ map\_et;}
+\DoxyCodeLine{00202\ \ \ \ \ olx\_object\_ptr<olx\_array::TArray3D<map\_et>\ >\ hkl\_to\_ref\_map;}
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00204\ \ \ \ \ TRefList\ measured;}
+\DoxyCodeLine{00205\ \ \ \ \ vec3i\_list\ unique\_indices;}
+\DoxyCodeLine{00206\ \ \ \ \ RefinementModel::HklStat\ ms;}
+\DoxyCodeLine{00207\ \ \ \};}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \textcolor{comment}{//\ uses\ only\ scales\ and\ Fobs\ to\ deconvolute\ the\ intensities\ into\ components}}
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{struct\ }detwinner\_algebraic\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ ematd\ \_m;}
+\DoxyCodeLine{00213\ \ \ \ \ detwinner\_algebraic(\textcolor{keyword}{const}\ TDoubleList\&\ scales);}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordtype}{void}\ detwin(\textcolor{keyword}{const}\ handler::iterator\&\ itr,\ TTypeList<TReflection>\&\ res)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00215\ \ \ \};}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ \textcolor{comment}{//\ uses\ only\ Fc}}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{struct\ }detwinner\_shelx\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ detwin\_result\ detwin(\textcolor{keyword}{const}\ handler::twin\_mate\_generator\&\ itr)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00220\ \ \ \};}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ \textcolor{comment}{//\ uses\ both\ Fc\ and\ F\_obs}}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{struct\ }detwinner\_mixed\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ detwin\_result\ detwin(\textcolor{keyword}{const}\ handler::twin\_mate\_generator\&\ itr)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00225\ \ \ \};}
+\DoxyCodeLine{00226\ \};\ \textcolor{comment}{//end\ of\ the\ twinning\ namespace}}
+\DoxyCodeLine{00227\ EndXlibNamespace()}
+\DoxyCodeLine{00228\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

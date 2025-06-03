@@ -1,0 +1,284 @@
+\doxysection{Iso\+Surface.\+h}
+\hypertarget{IsoSurface_8h_source}{}\label{IsoSurface_8h_source}\index{repository/IsoSurface.h@{repository/IsoSurface.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_isosurface\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_isosurface\_H}}
+\DoxyCodeLine{00012\ \textcolor{comment}{/*\ Modified\ by\ O.\ Dolomanov,\ 2007.11\ to\ fit\ to\ Olex2\ development\ framework\ */}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ File\ Name:\ CIsoSurface.h}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ Last\ Modified:\ 5/8/2000}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ Author:\ Raghavendra\ Chandrashekara\ (basesd\ on\ source\ code}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ provided\ by\ Paul\ Bourke\ and\ Cory\ Gene\ Bloyd)}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ Email:\ rc99@doc.ic.ac.uk,\ rchandrashekara@hotmail.com}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ Description:\ This\ is\ the\ interface\ file\ for\ the\ CIsoSurface\ class.}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ CIsoSurface\ can\ be\ used\ to\ construct\ an\ isosurface\ from\ a\ scalar}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ field.}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}estlist.h"{}}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}eset.h"{}}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{using\ namespace\ }olx\_array;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structIsoTriangle}{IsoTriangle}}\ \{}
+\DoxyCodeLine{00031\ \ \ int64\_t\ pointID[3];}
+\DoxyCodeLine{00032\ \ \ int64\_t\ operator\ []\ (\textcolor{keywordtype}{int}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ pointID[i];\ \}}
+\DoxyCodeLine{00033\ \ \ int64\_t\&\ operator\ []\ (\textcolor{keywordtype}{int}\ i)\ \{\ \textcolor{keywordflow}{return}\ pointID[i];\ \}}
+\DoxyCodeLine{00034\ \};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{class\ }CIsoSurface\ \{}
+\DoxyCodeLine{00037\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ \ \ CIsoSurface(array\_3d<float>\&\ points,\ \textcolor{keyword}{const}\ array\_3d<int>*\ data=0);}
+\DoxyCodeLine{00039\ \ \ \string~CIsoSurface()\ \ \{\ \ DeleteSurface();\ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{comment}{/*Generates\ the\ isosurface\ from\ the\ scalar\ field\ contained\ in\ the\ buffer}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ ptScalarField[].}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ GenerateSurface(\textcolor{keywordtype}{float}\ tIsoLevel);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \textcolor{comment}{//\ Returns\ true\ if\ a\ valid\ surface\ has\ been\ generated}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsSurfaceValid()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ m\_bValidSurface;\ \ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//\ Deletes\ the\ isosurface.}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ DeleteSurface();}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}\&\ NormalList()\ \ \{\ \ \textcolor{keywordflow}{return}\ Normals;\ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classTArrayList}{TArrayList<IsoTriangle>}}\&\ TriangleList()\ \{\ \ \textcolor{keywordflow}{return}\ Triangles;\ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}\&\ VertexList()\ \ \{\ \ \textcolor{keywordflow}{return}\ Vertices;\ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{/*\ This\ list\ may\ be\ empty\ if\ no\ data\ was\ provided\ */}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classTArrayList}{TArrayList<int>}}\&\ GetVertexData()\ \{\ \textcolor{keywordflow}{return}\ VertexData;\ \}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{struct\ }IsoPoint\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ newID;}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{int}\ data;}
+\DoxyCodeLine{00062\ \ \ \ \ vec3f\ crd;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{bool}\ initialised;}
+\DoxyCodeLine{00064\ \ \ \ \ IsoPoint()}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ :\ initialised(\textcolor{keyword}{false}),\ data(-\/1)}
+\DoxyCodeLine{00066\ \ \ \ \ \{\}}
+\DoxyCodeLine{00067\ \ \ \};}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{class\ }T4DIndex\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{struct\ }Points3\ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \mbox{\hyperlink{structCIsoSurface_1_1IsoPoint}{IsoPoint}}\ ps[3];}
+\DoxyCodeLine{00071\ \ \ \ \ \};}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<int,\ Points3>}}\ IsoPointListZ;\ \ \textcolor{comment}{//x}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<int,\ IsoPointListZ*>}}\ IsoPointListY;\ \ \textcolor{comment}{//y}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<int,\ IsoPointListY*>}}\ IsoPointListX;\ \ \textcolor{comment}{//z}}
+\DoxyCodeLine{00075\ \ \ \ \ IsoPointListX\ Data;}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count;}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00078\ \ \ \ \ T4DIndex()\ :\ Count(0)\ \{\ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \string~T4DIndex()\ \ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{structCIsoSurface_1_1IsoPoint}{IsoPoint}}\ \&Add(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ z,\ \textcolor{keywordtype}{int}\ edgeId,}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ vx,\ \textcolor{keywordtype}{float}\ vy,\ \textcolor{keywordtype}{float}\ vz,\ \textcolor{keywordtype}{int}\ p\_data)}
+\DoxyCodeLine{00082\ \ \ \ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ adjust(x,\ y,\ z,\ edgeId);}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \mbox{\hyperlink{structCIsoSurface_1_1IsoPoint}{IsoPoint}}*\ ip;}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ yi\ =\ Data.IndexOf(x);}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (yi\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ ip\ =\ \&Data.Add(x,\ \textcolor{keyword}{new}\ IsoPointListY)-\/>Add(y,\ \textcolor{keyword}{new}\ IsoPointListZ)-\/>}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ Add(z,\ Points3()).ps[edgeId];}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ IsoPointListY*\ ly\ =\ Data.GetValue(yi);}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ zi\ =\ ly-\/>IndexOf(y);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (zi\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ ip\ =\ \&ly-\/>Add(y,\ \textcolor{keyword}{new}\ IsoPointListZ)-\/>Add(z,\ Points3()).ps[edgeId];}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ IsoPointListZ*\ lz\ =\ ly-\/>GetValue(zi);}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ pi\ =\ lz-\/>IndexOf(z);}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pi\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ ip\ =\ \&lz-\/>Add(z,\ Points3()).ps[edgeId];}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ ip\ =\ \&lz-\/>GetValue(pi).ps[edgeId];}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ ip-\/>crd[0]\ =\ vx;}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ ip-\/>crd[1]\ =\ vy;}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ ip-\/>crd[2]\ =\ vz;}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ ip-\/>data\ =\ p\_data;}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ ip-\/>initialised\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ Count++;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *ip;}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCIsoSurface_1_1IsoPoint}{IsoPoint}}\&\ Get(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ z,\ \textcolor{keywordtype}{int}\ extra)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Data.Get(x)-\/>Get(y)-\/>Get(z).ps[extra];}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCIsoSurface_1_1IsoPoint}{IsoPoint}}\&\ Get(uint64\_t\ crd)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ x,\ y,\ z,\ e;}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ decode(crd,\ x,\ y,\ z,\ e);}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Data.Get(x)-\/>Get(y)-\/>Get(z).ps[e];}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Data.Count();\ i++)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ IsoPointListY*\ ly\ =\ Data.GetValue(i);}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ ly-\/>Count();\ j++)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ ly-\/>GetValue(j);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ ly;}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ Data.Clear();}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ Count\ =\ 0;}
+\DoxyCodeLine{00133\ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{void}\ GetVertices(\mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}\&\ v,\ \mbox{\hyperlink{classTArrayList}{TArrayList<int>}}\ *d)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ v.SetCount(Count);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ !=\ 0)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ d-\/>SetCount(Count);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ 0;}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Data.Count();\ i++)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ IsoPointListY*\ ly\ =\ Data.GetValue(i);}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ ly-\/>Count();\ j++)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ IsoPointListZ*\ lz\ =\ ly-\/>GetValue(j);}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ lz-\/>Count();\ k++)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ Points3\&\ p\ =\ lz-\/>GetValue(k);}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ l\ =\ 0;\ l\ <\ 3;\ l++)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p.ps[l].initialised)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p.ps[l].newID\ =\ ind;}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v[ind]\ =\ p.ps[l].crd;}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ !=\ 0)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*d)[ind]\ =\ p.ps[l].data;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind++;}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p.ps[l].newID\ =\ ind;}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ adjust(\textcolor{keywordtype}{int}\&\ x,\ \textcolor{keywordtype}{int}\&\ y,\ \textcolor{keywordtype}{int}\&\ z,\ \textcolor{keywordtype}{int}\&\ edgeId)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ extra\ =\ 0;}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (edgeId)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 0:\ \ extra\ =\ 1;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//\ (x,y,z)\ +\ 1}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 1:\ \ y++;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//\ (x,y+1,z)}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 2:\ \ x++;\ \ extra\ =\ 1;\ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//\ (x+1,y,z)\ +\ 1;}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 3:\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//\ (x,y,z)}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 4:\ \ z++;\ \ extra\ =\ 1;\ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//\ (x,y,z+1)\ +\ 1}}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 5:\ \ y++;\ \ z++;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//(x,y+1,z+1)}}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 6:\ \ x++;\ \ z++;\ \ extra\ =\ 1;\ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x+1,y,z+1)\ +\ 1}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 7:\ \ z++;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x,y,z+1)}}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 8:\ \ extra\ =\ 2;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x,y,z)+2;}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 9:\ \ y++;\ \ extra\ =\ 2;\ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x,y+1,z)\ +\ 2;}}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 10:\ x++;\ \ y++;\ \ extra\ =\ 2;\ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x+1,y+1,z)\ +\ 2;}}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 11:\ x++;\ \ extra\ =\ 2;\ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x+1,y,z)\ +\ 2}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \textcolor{keywordflow}{break};\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ edge\ no.}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ edgeId\ =\ extra;}
+\DoxyCodeLine{00181\ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keyword}{static}\ uint64\_t\ encode(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ z,\ \textcolor{keywordtype}{int}\ edgeId)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ extra\ =\ 0;}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (edgeId)\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 0:\ \ extra\ =\ 1;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//\ (x,y,z)\ +\ 1}}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 1:\ \ y++;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//\ (x,y+1,z)}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 2:\ \ x++;\ \ extra\ =\ 1;\ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//\ (x+1,y,z)\ +\ 1;}}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 3:\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//\ (x,y,z)}}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 4:\ \ z++;\ \ extra\ =\ 1;\ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//\ (x,y,z+1)\ +\ 1}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 5:\ \ y++;\ \ z++;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//(x,y+1,z+1)}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 6:\ \ x++;\ \ z++;\ \ extra\ =\ 1;\ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x+1,y,z+1)\ +\ 1}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 7:\ \ z++;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x,y,z+1)}}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 8:\ \ extra\ =\ 2;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x,y,z)+2;}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 9:\ \ y++;\ \ extra\ =\ 2;\ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x,y+1,z)\ +\ 2;}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 10:\ x++;\ \ y++;\ \ extra\ =\ 2;\ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x+1,y+1,z)\ +\ 2;}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 11:\ x++;\ \ extra\ =\ 2;\ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \ \textcolor{comment}{//(x+1,y,z)\ +\ 2}}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \textcolor{keywordflow}{return}\ \string~0;\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Invalid\ edge\ no.}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \textcolor{comment}{//\ max\ grid\ size\ is\ 1024x1024x1022}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (uint64\_t)(((uint64\_t)extra)\ <<\ 60)\ \ \ \ |}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ ((((uint64\_t)x)\ <<\ 40)\ \&\ 0xFFFFF0000000000)\ |}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ ((((uint64\_t)y)\ <<\ 20)\ \&\ 0x00000FFFFF00000)\ |}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ (((uint64\_t)z)\ \&\ 0x0000000000FFFFF);}
+\DoxyCodeLine{00204\ \ \ \ \ \}}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ decode(uint64\_t\ code,\ \textcolor{keywordtype}{int}\&\ x,\ \textcolor{keywordtype}{int}\&\ y,\ \textcolor{keywordtype}{int}\&\ z,\ \textcolor{keywordtype}{int}\&\ extra)\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ extra\ =\ ((code\ \&\ 0xF000000000000000)\ >>\ 60);}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ z\ =\ \ \ \ \ ((code\ \&\ 0x0000000000FFFFF));}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ y\ =\ \ \ \ \ ((code\ \&\ 0x00000FFFFF00000)\ >>\ 20);}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ x\ =\ \ \ \ \ ((code\ \&\ 0xFFFFF0000000000)\ >>\ 40);}
+\DoxyCodeLine{00210\ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \};}
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ ZSlice;}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}\ Normals;}
+\DoxyCodeLine{00216\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}\ Vertices;}
+\DoxyCodeLine{00217\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<int>}}\ VertexData;}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ \textcolor{comment}{//\ List\ of\ POINT3Ds\ which\ form\ the\ isosurface.}}
+\DoxyCodeLine{00220\ \ \ \mbox{\hyperlink{classCIsoSurface_1_1T4DIndex}{T4DIndex}}\ IsoPoints;}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ \textcolor{comment}{//\ List\ of\ IsoTriangleS\ which\ form\ the\ triangulation\ of\ the\ isosurface.}}
+\DoxyCodeLine{00223\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<IsoTriangle>}}\ Triangles,\ AllTriangles;}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \ \ \textcolor{keywordtype}{void}\ AddSurfacePoint(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ nX,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ nY,}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ nZ,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ nEdgeNo);}
+\DoxyCodeLine{00227\ \ \ \textcolor{comment}{/*\ Renames\ vertices\ and\ triangles\ so\ that\ they\ can\ be\ accessed\ more}}
+\DoxyCodeLine{00228\ \textcolor{comment}{\ \ \ efficiently.}}
+\DoxyCodeLine{00229\ \textcolor{comment}{\ \ \ */}}
+\DoxyCodeLine{00230\ \ \ \textcolor{keywordtype}{void}\ RenameVerticesAndTriangles();}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ \textcolor{comment}{//\ Calculates\ the\ normals.}}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{void}\ CalculateNormals();}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \ \textcolor{comment}{/*\ The\ buffer\ holding\ the\ scalar\ field.\ */}}
+\DoxyCodeLine{00236\ \ \ array\_3d<float>\&\ Points;}
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{/*\ data\ associated\ with\ points\ */}}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{const}\ array\_3d<int>*\ PointData;}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//\ The\ isosurface\ value.}}
+\DoxyCodeLine{00241\ \ \ \textcolor{keywordtype}{float}\ m\_tIsoLevel;}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ \textcolor{comment}{//\ Indicates\ whether\ a\ valid\ surface\ is\ present.}}
+\DoxyCodeLine{00244\ \ \ \textcolor{keywordtype}{bool}\ m\_bValidSurface;}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \textcolor{comment}{//\ Lookup\ tables\ used\ in\ the\ construction\ of\ the\ isosurface.}}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ m\_edgeTable[256];}
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ m\_triTable[256][16];}
+\DoxyCodeLine{00249\ \};}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \textcolor{keyword}{namespace\ }olx\_grid\_util\ \{}
+\DoxyCodeLine{00252\ \ \ \textcolor{comment}{/*\ inspired\ by\ the\ JACGrid\ library\ */}}
+\DoxyCodeLine{00253\ \ \ \textcolor{keyword}{class\ }reducer\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<vec3f>}}\ \&vertices;}
+\DoxyCodeLine{00255\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<IsoTriangle>}}\ \&triangles;}
+\DoxyCodeLine{00256\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<olxset<size\_t,\ TPrimitiveComparator>}}\ >\ vt\_map;}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keywordtype}{void}\ reduce\_to\_line(\textcolor{keywordtype}{size\_t}\ a,\ \textcolor{keywordtype}{size\_t}\ b);}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordtype}{void}\ cut\_triangle(\textcolor{keywordtype}{size\_t}\ a,\ \textcolor{keywordtype}{size\_t}\ b,\ \textcolor{keywordtype}{size\_t}\ c);}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00260\ \ \ \ \ reducer(\mbox{\hyperlink{classTTypeList}{TTypeList<vec3f>}}\ \&vertices\_,}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<IsoTriangle>}}\ \&triangles\_);}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{comment}{/*\ eliminates\ triangles\ with\ sides\ smaller\ than\ the\ given\ threshold}}
+\DoxyCodeLine{00263\ \textcolor{comment}{\ \ \ \ and\ returns\ the\ new\ vertex\ index\ mapping}}
+\DoxyCodeLine{00264\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00265\ \ \ \ \ TArrayList<size\_t>::const\_list\_type\ reduce(\textcolor{keywordtype}{float}\ th\ =\ 0.03f);}
+\DoxyCodeLine{00266\ \ \ \};}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \textcolor{keyword}{class\ }smoother\ \{}
+\DoxyCodeLine{00269\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<vec3f>}}\ \&vertices;}
+\DoxyCodeLine{00270\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<olxset<size\_t,\ TPrimitiveComparator>}}\ >\ n\_map;}
+\DoxyCodeLine{00271\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00272\ \ \ \ \ smoother(\mbox{\hyperlink{classTTypeList}{TTypeList<vec3f>}}\ \&vertices,}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<IsoTriangle>}}\ \&triangles);}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{comment}{/*\ smooth\ the\ surface\ using\ a\ ratio\ contribution\ of\ any\ particular\ vertex}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ \ \ \ and\ 1-\/ratio\ contribution\ of\ neighbouring\ vertices}}
+\DoxyCodeLine{00276\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordtype}{void}\ smooth(\textcolor{keywordtype}{float}\ ratio=0.5f);}
+\DoxyCodeLine{00278\ \ \ \};}
+\DoxyCodeLine{00279\ \}\ \textcolor{comment}{//\ end\ namespace\ olx\_grid\_util}}
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ guard}}
+
+\end{DoxyCode}

@@ -1,0 +1,99 @@
+\doxysection{xline.\+h}
+\hypertarget{xline_8h_source}{}\label{xline_8h_source}\index{gxlib/xline.h@{gxlib/xline.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxl\_xline\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxl\_xline\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbond.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}xatom.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}glmousehandler.h"{}}}
+\DoxyCodeLine{00015\ BeginGxlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ TXLine\ :\ protected\ \mbox{\hyperlink{classTXBond}{TXBond}},\ \mbox{\hyperlink{classAGlMouseHandler}{AGlMouseHandler}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00019\ \ \ vec3d\ FBase,\ FEdge;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{void}\ Init(\textcolor{keywordtype}{bool}\ update\_label=\textcolor{keyword}{true});}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsMaskSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsStyleSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsRadiusSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoTranslate(\textcolor{keyword}{const}\ vec3d\&\ t);}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoRotate(\textcolor{keyword}{const}\ vec3d\&\ vec,\ \textcolor{keywordtype}{double}\ angle)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoZoom(\textcolor{keywordtype}{double}\ zoom,\ \textcolor{keywordtype}{bool}\ inc)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ DoGetRenderer()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ GetParent();}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{bool}\ OnMouseDown(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnMouseDown(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnMouseUp(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{bool}\ OnMouseMove(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnMouseMove(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{bool}\ OnDblClick(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnDblClick(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ \ \ TXLine(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Renderer,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName,}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ base,\ \textcolor{keyword}{const}\ vec3d\&\ edge);}
+\DoxyCodeLine{00051\ \ \ TXLine(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Renderer);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName\ =\ EmptyString());}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{virtual}\ \string~TXLine()\ \{\}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetBase()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FBase;\ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ setBase(\textcolor{keyword}{const}\ vec3d\ \&v)\ \{\ FBase\ =\ v;\ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetEdge()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FEdge;\ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{void}\ setEdge(\textcolor{keyword}{const}\ vec3d\ \&v)\ \{\ FEdge\ =\ v;\ \}}
+\DoxyCodeLine{00059\ \ \ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ vec3d\&\ GetFromCrd()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FBase;\ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ vec3d\&\ GetToCrd()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FEdge;\ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{bool}\ IsVisible()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TXBond::IsVisible();\ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{void}\ SetVisible(\textcolor{keywordtype}{bool}\ v)\ \{\ \ TXBond::SetVisible(v);\ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&\ Max,\ vec3d\&\ Min)\ \ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{void}\ SetRadius(\textcolor{keywordtype}{double}\ V)\ \ \{\ \ TXBond::SetRadius(V);\ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{double}\ GetRadius()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Params()[4];\ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ SetLength(\textcolor{keywordtype}{double}\ V);}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{double}\ GetLength()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Params()[3];\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di);}
+\DoxyCodeLine{00075\ \ \ const\_strlist\ ToPov(\mbox{\hyperlink{classolx__cdict}{olx\_cdict<TGlMaterial,\ olxstr>}}\ \&materials)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{return}\ TXBond::ToPov(materials);}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ const\_strlist\ ToWrl(\mbox{\hyperlink{classolx__cdict}{olx\_cdict<TGlMaterial,\ olxstr>}}\ \&materials)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ TXBond::ToWrl(materials);}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{void}\ UpdatePrimitives(int32\_t\ mask)\ \ \{}
+\DoxyCodeLine{00082\ \ \ \ \ TXBond::UpdatePrimitives(mask);}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \ \ uint32\_t\ GetPrimitiveMask()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TXBond::GetPrimitiveMask();\ \}}
+\DoxyCodeLine{00085\ \ \ \mbox{\hyperlink{classTGPCollection}{TGPCollection}}\&\ GetPrimitives()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TXBond::GetPrimitives();\ \ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{bool}\ IsDeleted()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ TXBond::IsDeleted();\ \}}
+\DoxyCodeLine{00087\ \ \ TXGlLabel\&\ GetGlLabel()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TXBond::GetGlLabel();\ \ \}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{void}\ UpdateLabel();}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{void}\ Update();}
+\DoxyCodeLine{00090\ \};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ EndGxlNamespace()}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

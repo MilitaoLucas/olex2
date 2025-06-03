@@ -1,0 +1,160 @@
+\doxysection{paramlist.\+h}
+\hypertarget{paramlist_8h_source}{}\label{paramlist_8h_source}\index{sdl/paramlist.h@{sdl/paramlist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_paramlist\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_paramlist\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}exparse/exptree.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#undef\ GetObject}}
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ TParamList:\ protected\ TStrStrList\ \ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ TParamList()\ \{\}}
+\DoxyCodeLine{00020\ \ \ TParamList(\textcolor{keyword}{const}\ TParamList\&\ v);}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{virtual}\ \string~TParamList()\ \{\}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \ \{\ \ TStrStrList::Clear();\ \}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TStrStrList::Count();\ \ \};}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TStrStrList::IsEmpty();\ \ \}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetValue(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GetObject(index);\ \ \}}
+\DoxyCodeLine{00026\ \ \ olxstr\&\ GetValue(\textcolor{keywordtype}{size\_t}\ index)\ \ \{\ \ \textcolor{keywordflow}{return}\ GetObject(index);\ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GetString(index);\ \ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{void}\ FromString(\textcolor{keyword}{const}\ olxstr\&\ S,\ \textcolor{keywordtype}{char}\ Sep);\ \textcolor{comment}{//\ -\/t=op}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}\ AddParam(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keyword}{const}\ olxstr\&\ Param,\ \textcolor{keywordtype}{bool}\ Check\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{bool}\ Contains(\textcolor{keyword}{const}\ T\&\ Name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{return}\ TStrStrList::IndexOf(Name)\ !=\ InvalidIndex;}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{const}\ olxstr\&\ FindValue(\textcolor{keyword}{const}\ T\&\ Name,}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ defval=EmptyString())\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00037\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ IndexOf(Name);}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ (i\ !=\ InvalidIndex)\ ?\ GetObject(i)\ :\ defval;}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{comment}{//\ special\ evaluation\ of\ a\ boolean\ option}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{bool}\ GetBoolOption(\textcolor{keyword}{const}\ T\&\ Name,}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{bool}\ if\_empty=\textcolor{keyword}{true},}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ if\_does\_not\_exist=\textcolor{keyword}{false})\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00046\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ IndexOf(Name);}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ InvalidIndex)\ \textcolor{keywordflow}{return}\ if\_does\_not\_exist;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&v\ =\ GetObject(i);}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ v.IsEmpty()\ ?\ if\_empty\ :\ v.ToBool();}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keyword}{const}\ T\&\ Name)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FindValue(Name);\ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ this\ function\ considers\ the\ folowing\ situations:\ '"{}',\ '('')'\ and\ '\(\backslash\)''}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ StrLst>}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ StrtokParams(\textcolor{keyword}{const}\ olxstr\&\ exp,\ olxch\ sep,\ StrLst\&\ out,}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{bool}\ do\_unquote=\textcolor{keyword}{true})}
+\DoxyCodeLine{00058\ \ \ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{using\ namespace\ }exparse::parser\_util;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}(\ is\_quote(sep)\ )}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}separator"{}});}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ pc\ =\ out.Count();}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\ =\ 0;}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ exp.Length();\ i++\ )\ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxch\ ch\ =\ exp.CharAt(i);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ is\_quote(ch)\ \&\&\ !is\_escaped(exp,\ i)\ )\ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !skip\_string(exp,\ i)\ )\ \ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ out.Add(exp.SubStringFrom(start).TrimWhiteChars());}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ start\ =\ exp.Length();}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (is\_bracket(ch)\ \&\&\ !is\_escaped(exp,\ i))\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !skip\_brackets(exp,\ i)\ )\ \ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ out.Add(exp.SubStringFrom(start).TrimWhiteChars());}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ start\ =\ exp.Length();}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ ch\ ==\ sep\ )\ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ white\ spaces\ cannot\ define\ empty\ args}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ sep\ ==\ \textcolor{charliteral}{'\ '}\ \&\&\ start\ ==\ i\ )\ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ start\ =\ i+1;}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ do\_unquote\ )}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ out.Add(unquote(exp.SubString(start,\ i-\/start).TrimWhiteChars()));}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ out.Add(exp.SubString(start,\ i-\/start).TrimWhiteChars());}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ start\ =\ i+1;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{if}(\ start\ <\ exp.Length()\ )\ \ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ do\_unquote\ )}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ out.Add(unquote(exp.SubStringFrom(start).TrimWhiteChars()));}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ out.Add(exp.SubStringFrom(start).TrimWhiteChars());}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ out.Count()\ -\/\ pc;}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{/*\ this\ function\ considers\ the\ folowing\ situations:\ '"{}',\ '('')'}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ \ to\ be\ used\ to\ tokenise\ strings\ like\ "{}cmd1>>if\ something\ then\ 'icmd1>>icmd2'"{}}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ \ in\ this\ case\ the\ quoted\ >>\ will\ not\ be\ a\ separator}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{static}\ const\_strlist\ StrtokLines(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keyword}{const}\ olxstr\ \&sep,}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{bool}\ do\_unquote=\textcolor{keyword}{true})}
+\DoxyCodeLine{00107\ \ \ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{using\ namespace\ }exparse::parser\_util;}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{if}\ (sep.IsEmpty()\ ||(sep.Length()\ ==\ 1\ \&\&\ is\_quote(sep[0])))}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}separator"{}});}
+\DoxyCodeLine{00111\ \ \ \ \ TStrList\ rv;}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\ =\ 0;}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ exp.Length();\ i++)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxch\ ch\ =\ exp.CharAt(i);}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_quote(ch)\ \&\&\ !is\_escaped(exp,\ i))\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!skip\_string(exp,\ i))\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ rv.Add(exp.SubStringFrom(start).TrimWhiteChars());}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ start\ =\ exp.Length();}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (is\_bracket(ch)\ \&\&\ !is\_escaped(exp,\ i))\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!skip\_brackets(exp,\ i)\ )\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ rv.Add(exp.SubStringFrom(start).TrimWhiteChars());}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ start\ =\ exp.Length();}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (exp.IsSubStringAt(sep,\ i))\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ white\ spaces\ cannot\ define\ empty\ args}}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sep\ ==\ \textcolor{charliteral}{'\ '}\ \&\&\ start\ ==\ i)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ start\ =\ i+1;}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_unquote)}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ rv.Add(unquote(exp.SubString(start,\ i-\/start).TrimWhiteChars()));}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ rv.Add(exp.SubString(start,\ i-\/start).TrimWhiteChars());}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ start\ =\ i+sep.Length();}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ i\ +=\ (sep.Length()-\/1);}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{if}\ (start\ <\ exp.Length())\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_unquote)}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ rv.Add(unquote(exp.SubStringFrom(start).TrimWhiteChars()));}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ rv.Add(exp.SubStringFrom(start).TrimWhiteChars());}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ \};}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ EndEsdlNamespace()}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

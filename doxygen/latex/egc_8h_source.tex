@@ -1,0 +1,125 @@
+\doxysection{egc.\+h}
+\hypertarget{egc_8h_source}{}\label{egc_8h_source}\index{sdl/egc.h@{sdl/egc.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_egc\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_egc\_H}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ atexit\ prototype}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ a\ very\ simple\ garbage\ collector\ class}}
+\DoxyCodeLine{00017\ \textcolor{comment}{simple\ objects\ are\ deleted\ when\ oOnIdle\ is\ called\ next\ time,\ whereas\ the}}
+\DoxyCodeLine{00018\ \textcolor{comment}{referencible\ objects\ are\ deleted\ only\ when\ reference\ count\ is\ zero}}
+\DoxyCodeLine{00019\ \textcolor{comment}{}}
+\DoxyCodeLine{00020\ \textcolor{comment}{there\ are\ two\ options\ for\ how\ to\ delete\ the\ object:\ atexit\ function\ can\ be}}
+\DoxyCodeLine{00021\ \textcolor{comment}{used\ or\ Delete\ property\ of\ the\ AActionHandler.\ In\ the\ latter\ case\ there\ is\ a}}
+\DoxyCodeLine{00022\ \textcolor{comment}{danger\ for\ asynchronous\ execution\ -\/\ the\ object\ will\ be\ deleted\ when\ TBasicApp}}
+\DoxyCodeLine{00023\ \textcolor{comment}{is\ deleted...}}
+\DoxyCodeLine{00024\ \textcolor{comment}{}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ \ \ if(\ atexit(\ \&AtExit\ )\ !=\ 0\ )}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ \ \ \ \ \ throw\ TFunctionFailedException(\_\_OlxSourceInfo,\ "{}atexit\ failed"{});}}
+\DoxyCodeLine{00027\ \textcolor{comment}{}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ \ static\ void\ AtExit()\ \ \{}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ \ \ \ if(\ Instance\ )\ \ \{}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ \ \ \ \ \ delete\ Instance;}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ \ \ \ \ \ Instance\ =\ NULL;}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ \ \ \ \}}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ \ \}}}
+\DoxyCodeLine{00034\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ BeginEsdlNamespace()}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ class\ TEGC\ :\ public\ \mbox{\hyperlink{classAActionHandler}{AActionHandler}}\ \{}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{struct\ }OEntry\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ OEntry*\ Next;}
+\DoxyCodeLine{00042\ \ \ \ \ IOlxObject*\ Object;}
+\DoxyCodeLine{00043\ \ \ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{static}\ TEGC\ *\&Instance\_()\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{static}\ TEGC\ *i\ =\ 0;}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\&\ RemovalManaged\_()\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ v\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{comment}{//\ to\ be\ deleted\ as\ soon\ as\ possible}}
+\DoxyCodeLine{00054\ \ \ OEntry\ \ ASAPOHead,\ *ASAPOTail;}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{//\ to\ be\ deleted\ at\ the\ end}}
+\DoxyCodeLine{00056\ \ \ OEntry\ \ ATEOHead,\ *ATEOTail;}
+\DoxyCodeLine{00057\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{bool}\ RemoveObject(OEntry\&\ head,\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ obj);}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ManageRemoval();}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ Destructing;}
+\DoxyCodeLine{00061\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Clear(OEntry\ *entry);}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Add(\mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ \textcolor{keywordtype}{object},\ OEntry\ \&head,\ OEntry\ *\&tail);}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{void}\ ClearASAP();}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ ClearATE();}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{void}\ \_AddASAP(\mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ \textcolor{keywordtype}{object});}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ \_AddATE(\mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ \textcolor{keywordtype}{object});}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ AtObjectDestruct(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ Instance\_()-\/>\_AtObjectDestruct(obj);}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{void}\ \_AtObjectDestruct(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj);}
+\DoxyCodeLine{00072\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00073\ \ \ TEGC();}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{virtual}\ \string~TEGC();}
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ add\ an\ object\ to\ be\ deleted\ ASAP}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{static}\ T\ \&Add(T*\ \textcolor{keywordtype}{object})\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ GetInstance().\_AddASAP(\textcolor{keywordtype}{object});}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ *object;}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{//\ add\ an\ object\ with\ postponed\ deletion\ (in\ the\ destructor)}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{static}\ T\ \&AddP(T*\ \textcolor{keywordtype}{object})\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ GetInstance().\_AddATE(\textcolor{keywordtype}{object});}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{return}\ *object;}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{comment}{/*\ call\ this\ before\ any\ API\ calls\ clike\ olxstr.c\_str()\ and\ u\_str(),\ once\ an}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ \ instance\ of\ TBasicAPP,\ or\ derived\ class\ is\ created\ the\ instance\ gets\ attached}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ \ and\ will\ be\ removde\ automatically}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{static}\ TEGC\ \&Initialise()\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{if}\ (Instance\_()\ ==\ NULL)\ \textcolor{keyword}{new}\ TEGC();}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{if}\ (!RemovalManaged\_())}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ ManageRemoval();}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{return}\ *Instance\_();}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{comment}{/*\ call\ this\ to\ manually\ Finalise\ (nothing\ will\ happen\ in\ case\ if\ TBasicApp}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ \ instance\ is\ active),\ should\ only\ be\ called\ when\ an\ instanve\ of\ TBasicApp\ is}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ \ never\ created}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Finalise()\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{if}\ (!RemovalManaged\_()\ \&\&\ Instance\_()\ !=\ NULL)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Instance\_();}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ Instance\_()\ =\ NULL;}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{static}\ TEGC\&\ GetInstance()\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{return}\ *(Instance\_()\ !=NULL\ ?\ Instance\_()\ :\ new\ TEGC);}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ ClearASAP();}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00116\ \};}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ EndEsdlNamespace()}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

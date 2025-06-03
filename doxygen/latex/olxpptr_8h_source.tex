@@ -1,0 +1,129 @@
+\doxysection{olxpptr.\+h}
+\hypertarget{olxpptr_8h_source}{}\label{olxpptr_8h_source}\index{sdl/olxpptr.h@{sdl/olxpptr.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2014\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_pptr\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_pptr\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxvptr.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{comment}{/*\ a\ virtual\ pointer\ implementation\ for\ perishable\ objects\ -\/\ objects\ which\ can}}
+\DoxyCodeLine{00015\ \textcolor{comment}{be\ deleted\ before\ this\ pointer\ container.\ Use\ is\_valid()\ to\ check\ if\ the}}
+\DoxyCodeLine{00016\ \textcolor{comment}{underlying\ object\ exists}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ptr>\ \textcolor{keyword}{struct\ }olx\_perishable\_ptr}
+\DoxyCodeLine{00019\ \ \ :\ \textcolor{keyword}{public}\ olx\_object\_ptr<olx\_virtual\_ptr<ptr>\ >,\ \textcolor{keyword}{public}\ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{typedef}\ olx\_object\_ptr<olx\_virtual\_ptr<ptr>\ >\ parent\_t;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<ptr>}}\ vptr\_t;}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{void}\ on\_object\_delete(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ o)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ parent\_t::operator\ =\ (0);}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{void}\ add\_handler(\mbox{\hyperlink{classAPerishable}{APerishable}}\&\ o)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ o.AddDestructionObserver(DestructionObserver::MakeNew(\textcolor{keyword}{this},}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \&olx\_perishable\_ptr::on\_object\_delete));}
+\DoxyCodeLine{00030\ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ remove\_handler()\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{if}\ (ok())\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ parent\_t::p-\/>p-\/>get().RemoveDestructionObserver(}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ DestructionObserver::Make(\textcolor{keyword}{this},\ \&olx\_perishable\_ptr::on\_object\_delete));}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ \ \ olx\_perishable\_ptr(ptr\ *\_p)}
+\DoxyCodeLine{00038\ \ \ \ \ :\ parent\_t(\textcolor{keyword}{new}\ \textcolor{keyword}{typename}\ vptr\_t::template\ actual\_ptr<ptr>(\_p))}
+\DoxyCodeLine{00039\ \ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_p\ !=\ 0)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ add\_handler(*\_p);}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ olx\_perishable\_ptr(\mbox{\hyperlink{structolx__virtual__ptr}{olx\_virtual\_ptr<ptr>}}\ *\_p)}
+\DoxyCodeLine{00045\ \ \ \ \ :\ parent\_t(\_p)}
+\DoxyCodeLine{00046\ \ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_p-\/>get\_ptr()\ !=\ 0)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ add\_handler(\_p-\/>get());}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ dptr>}
+\DoxyCodeLine{00052\ \ \ olx\_perishable\_ptr(\mbox{\hyperlink{structolx__virtual__ptr}{olx\_virtual\_ptr<dptr>}}\ *\_p)}
+\DoxyCodeLine{00053\ \ \ \ \ :\ parent\_t(\textcolor{keyword}{new}\ \textcolor{keyword}{typename}\ vptr\_t::\ template\ ptr\_proxy<dptr>(\_p))}
+\DoxyCodeLine{00054\ \ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_p-\/>get\_ptr()\ !=\ 0)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ add\_handler(\_p-\/>get());}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ olx\_perishable\_ptr(\textcolor{keyword}{const}\ olx\_perishable\_ptr\&\ \_p)}
+\DoxyCodeLine{00060\ \ \ \ \ :\ parent\_t(\_p)}
+\DoxyCodeLine{00061\ \ \ \{\}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{virtual}\ \string~olx\_perishable\_ptr()\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ remove\_handler();}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \ \ olx\_perishable\_ptr\&\ operator\ =\ (\textcolor{keyword}{const}\ olx\_perishable\_ptr\&\ \_p)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_p.self\_ptr()\ ==\ \textcolor{keyword}{this})\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{if}\ (parent\_t::p-\/>\textcolor{keyword}{template}\ dec\_ref<true,\ false>()\ !=\ 0)\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ remove\_handler();}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ parent\_t::p\ =\ \_p.p-\/>inc\_ref();}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{if}\ (ok())\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ add\_handler(parent\_t::p-\/>p-\/>get());}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ olx\_perishable\_ptr\&\ operator\ =\ (ptr\ *\_p)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ remove\_handler();}
+\DoxyCodeLine{00080\ \ \ \ \ parent\_t::operator\ =\ (\textcolor{keyword}{new}\ \textcolor{keyword}{typename}\ vptr\_t::\ template\ actual\_ptr<ptr>(\_p));}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{if}\ (ok())\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ add\_handler(parent\_t::p-\/>p-\/>get());}
+\DoxyCodeLine{00083\ \ \ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{bool}\ ok()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ (parent\_t::ok()\ \&\&\ parent\_t::p-\/>p-\/>get\_ptr()\ !=\ 0);}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{const}\ ptr*\ operator\ -\/>()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \&parent\_t::p-\/>p-\/>get();\ \}}
+\DoxyCodeLine{00092\ \ \ ptr*\ operator\ -\/>()\ \{\ \textcolor{keywordflow}{return}\ \&parent\_t::p-\/>p-\/>get();\ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{const}\ ptr*\ operator\ \&()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \&parent\_t::p-\/>p-\/>get();\ \}}
+\DoxyCodeLine{00095\ \ \ ptr*\ operator\ \&()\ \{\ \textcolor{keywordflow}{return}\ \&parent\_t::p-\/>p-\/>get();\ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{const}\ ptr\&\ operator\ *()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p-\/>get();\ \}}
+\DoxyCodeLine{00098\ \ \ ptr\&\ operator\ *()\ \{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p-\/>get();\ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{operator}\ \textcolor{keyword}{const}\ ptr\&\ ()\ \textcolor{keyword}{const}\ \{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p-\/>get();\ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{operator}\ ptr\&\ ()\ \{\ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p-\/>get();\ \}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ olx\_perishable\_ptr\ \&ap)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p-\/>get\_ptr()\ ==\ ap.p-\/>p-\/>get\_ptr();}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ ptr\ *p)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{return}\ parent\_t::p-\/>p-\/>get\_ptr()\ ==\ p;}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{comment}{//\ releases\ the\ object\ from\ ALL\ references}}
+\DoxyCodeLine{00110\ \ \ ptr\ *release()\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{if}\ (!ok())\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \ \ ptr\ \&p\_\ =\ parent\_t::p-\/>p-\/>get();}
+\DoxyCodeLine{00115\ \ \ \ \ remove\_handler();}
+\DoxyCodeLine{00116\ \ \ \ \ parent\_t::operator\ =\ (0);}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ \&p\_;}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{const}\ olx\_perishable\_ptr*\ self\_ptr()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00121\ \};}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

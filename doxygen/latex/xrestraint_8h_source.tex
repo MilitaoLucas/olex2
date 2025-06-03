@@ -1,0 +1,113 @@
+\doxysection{xrestraint.\+h}
+\hypertarget{xrestraint_8h_source}{}\label{xrestraint_8h_source}\index{gxlib/xrestraint.h@{gxlib/xrestraint.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ xrestraintH}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ xrestraintH}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxbase.h"{}}}
+\DoxyCodeLine{00013\ BeginGxlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00016\ \textcolor{comment}{class\ TXConsraint:\ public\ AGDrawObject\ \ \{\ //\ TGlMouseListener}}
+\DoxyCodeLine{00017\ \textcolor{comment}{private:}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ TSAtomPList\ Atoms;}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ double\ Value,\ Esd;}}
+\DoxyCodeLine{00020\ \textcolor{comment}{}}
+\DoxyCodeLine{00021\ \textcolor{comment}{protected:}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ TEStringList*\ FindPrimitiveParams(TGlPrimitive\ *P);}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ static\ TEList\ FPrimitiveParams;}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ void\ ValidateRadius(TGraphicsStyle\ *GS);}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ void\ ValidateDS(TGraphicsStyle\ *GS);}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ \ static\ void\ ValidateAtomParams();}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ \ static\ TXAtomStylesClear\ *FXAtomStylesClear;}}
+\DoxyCodeLine{00028\ \textcolor{comment}{protected:}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ \ static\ float\ FTelpProb,\ FQPeakScale;}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ \ static\ TGraphicsStyle\ *FAtomParams;}}
+\DoxyCodeLine{00031\ \textcolor{comment}{public:}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ \ TXAtom(const\ TEString\&\ collectionName,\ TSAtom\ *A,\ TGlRender\ *Render);}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ \ virtual\ \string~TXAtom();}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ \ void\ Create(const\ TEString\&\ cName\ =\ EmptyString);}}
+\DoxyCodeLine{00035\ \textcolor{comment}{}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ \ static\ TEStringList\ FStaticObjects;}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ \ void\ CreateStaticPrimitives();}}
+\DoxyCodeLine{00038\ \textcolor{comment}{}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ \ static\ TEString\ GetLegend(TSAtom\ *A,\ const\ short\ Level=2);\ //\ returns\ full\ legend\ with\ symm\ code}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ \ //\ returns\ level\ of\ the\ given\ legend\ (number\ of\ '.',\ basically)}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ static\ short\ LegendLevel(const\ TEString\&\ legend);}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ static\ TEString\ GetLabelLegend(TSAtom\ *A);}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ \ //\ returns\ full\ legend\ for\ the\ label.\ e.g.\ "{}Q.Q1"{}}}
+\DoxyCodeLine{00044\ \textcolor{comment}{}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ static\ void\ GetDefSphereMaterial(TSAtom\ *A,\ TGlMaterial\ \&M);}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ \ static\ void\ GetDefRimMaterial(TSAtom\ *A,\ TGlMaterial\ \&M);}}
+\DoxyCodeLine{00047\ \textcolor{comment}{}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ \ static\ void\ DefRad(short\ V);}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ static\ void\ DefDS(short\ V);}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ static\ void\ DefSphMask(int\ V);}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ \ static\ void\ DefElpMask(int\ V);}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ \ static\ void\ DefNpdMask(int\ V);}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ \ static\ void\ TelpProb(float\ V);}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ \ static\ void\ DefZoom(float\ V);}}
+\DoxyCodeLine{00055\ \textcolor{comment}{}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ \ static\ short\ DefRad();\ //\ default\ radius}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ \ static\ short\ DefDS();\ \ \ \ \ //\ default\ drawing\ style}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ \ static\ int\ \ \ DefSphMask();\ \ //\ default\ mask\ for\ spherical\ atoms}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ \ static\ int\ \ \ DefElpMask();\ \ //\ default\ mask\ for\ elliptical\ atoms}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ \ static\ int\ \ \ DefNpdMask();\ \ //\ default\ mas\ for\ elliptical\ atoms\ eith\ NPD\ ellipsoid}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ \ static\ float\ TelpProb();\ \ \ \ //\ to\ use\ with\ ellipsoids}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ \ static\ float\ DefZoom();\ \ \ \ //\ to\ use\ with\ ellipsoids}}
+\DoxyCodeLine{00063\ \textcolor{comment}{}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ \ static\ float\ QPeakScale();\ \ \ \ //\ to\ use\ with\ q-\/peaks}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ \ static\ void\ QPeakScale(float\ V);\ \ \ \ //\ to\ use\ with\ q-\/peaks}}
+\DoxyCodeLine{00066\ \textcolor{comment}{}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ \ void\ CalcRad(short\ DefAtomR);}}
+\DoxyCodeLine{00068\ \textcolor{comment}{}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ \ inline\ operator\ TSAtom*\ ()\ const\ \{\ \ return\ FAtom;\ \ \}}}
+\DoxyCodeLine{00070\ \textcolor{comment}{}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ \ inline\ TSAtom*\ Atom()\ const\ \ \{\ \ return\ FAtom;\ \}}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ void\ ApplyStyle(TGraphicsStyle\ *S);}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ \ void\ UpdateStyle(TGraphicsStyle\ *S);}}
+\DoxyCodeLine{00074\ \textcolor{comment}{}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ \ void\ Zoom(float\ Z);}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ \ inline\ double\ Zoom()\ \ \{\ \ return\ Params()[1];\ \}}}
+\DoxyCodeLine{00077\ \textcolor{comment}{}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ \ bool\ Orient(TGlPrimitive\ *P);}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ \ bool\ GetDimensions(TVPointD\ \&Max,\ TVPointD\ \&Min);}}
+\DoxyCodeLine{00080\ \textcolor{comment}{}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ \ void\ ListParams(TEStringList\ \&List,\ TGlPrimitive\ *Primitive);}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ \ //\ for\ parameters\ of\ a\ specific\ primitive}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ \ void\ ListParams(TEStringList\ \&List);}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ \ void\ ListPrimitives(TEStringList\ \&List)\ const;}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ //\ fills\ the\ list\ with\ proposal\ primitives\ to\ construct\ object}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ \ TGraphicsStyle*\ Style();}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ \ void\ UpdatePrimitives(\_\_int32\ Mask);}}
+\DoxyCodeLine{00088\ \textcolor{comment}{}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ \ bool\ OnMouseDown(const\ IOlxObject\ *Sender,\ const\ TMouseData\ *Data);}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ \ bool\ OnMouseUp(const\ IOlxObject\ *Sender,\ const\ TMouseData\ *Data);}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ \ bool\ OnMouseMove(const\ IOlxObject\ *Sender,\ const\ TMouseData\ *Data);}}
+\DoxyCodeLine{00092\ \textcolor{comment}{}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ inline\ bool\ Deleted()\ \ const\ \{\ \ return\ AGDrawObject::Deleted();\ \}}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ \ void\ Deleted(bool\ v)\ \ \ \ \ \ \ \ \ \{\ \ AGDrawObject::Deleted(v);\ \ FAtom-\/>Deleted(v);\ \}}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ \ void\ ListDrawingStyles(TEStringList\ \&List);}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ \ inline\ short\ DrawStyle()\ const\ \{\ \ return\ FDrawStyle;\ \}}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ void\ DrawStyle(short\ V);}}
+\DoxyCodeLine{00098\ \textcolor{comment}{}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ \ void\ UpdatePrimitiveParams(TGlPrimitive\ *GlP);}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ \ void\ OnPrimitivesCleared();}}
+\DoxyCodeLine{00101\ \textcolor{comment}{}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ \ void\ Quality(const\ short\ Val);}}
+\DoxyCodeLine{00103\ \textcolor{comment}{}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\};}}
+\DoxyCodeLine{00105\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00106\ EndGxlNamespace()}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

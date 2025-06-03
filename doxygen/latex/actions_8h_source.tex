@@ -1,0 +1,276 @@
+\doxysection{actions.\+h}
+\hypertarget{actions_8h_source}{}\label{actions_8h_source}\index{sdl/actions.h@{sdl/actions.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_actions\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_actions\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#undef\ GetObject}}
+\DoxyCodeLine{00017\ BeginEsdlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00020\ \ \ msiEnter\ \ \ \ \ \ =\ 0x0001,}
+\DoxyCodeLine{00021\ \ \ msiExecute\ \ \ \ =\ 0x0002,}
+\DoxyCodeLine{00022\ \ \ msiExit\ \ \ \ \ \ \ =\ 0x0004,}
+\DoxyCodeLine{00023\ \ \ msiUpdateData\ =\ 0x0008,}
+\DoxyCodeLine{00024\ \ \ msiAll\ \ \ \ \ \ \ \ =\ 0x000F;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ class\ \mbox{\hyperlink{classAActionHandler}{AActionHandler}};}
+\DoxyCodeLine{00027\ class\ \mbox{\hyperlink{classAEventsDispatcher}{AEventsDispatcher}};}
+\DoxyCodeLine{00028\ class\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}};}
+\DoxyCodeLine{00029\ class\ \mbox{\hyperlink{classTActionQList}{TActionQList}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ struct\ TDispatchInfo\ \{}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{int}\ MsgId;}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{int}\ MsgSubId;}
+\DoxyCodeLine{00034\ \ \ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<AEventsDispatcher>}}\ Dispatcher;}
+\DoxyCodeLine{00035\ \ \ TDispatchInfo(\textcolor{keywordtype}{int}\ msgid,\ \textcolor{keywordtype}{int}\ subid,}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<AEventsDispatcher>}}\ \&dispatcher)}
+\DoxyCodeLine{00037\ \ \ \ \ :\ MsgId(msgid),\ MsgSubId(subid),\ Dispatcher(dispatcher)}
+\DoxyCodeLine{00038\ \ \ \{\}}
+\DoxyCodeLine{00039\ \};}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ abstract\ class;\ \ an\ item\ of\ the\ actionqueue}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{class\ }AActionHandler\ :\ \textcolor{keyword}{public}\ ACollectionItem\ \{}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{bool}\ Enabled,\ \textcolor{comment}{//\ not\ executed\ if\ false}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ ToDelete;\ \ \textcolor{comment}{//\ default\ is\ true\ -\/\ the\ object\ will\ be\ deleted\ by\ the\ collection!!}}
+\DoxyCodeLine{00044\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00045\ \ \ AActionHandler()\ :\ Enabled(\textcolor{keyword}{true}),\ ToDelete(\textcolor{keyword}{true})\ \{\}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{virtual}\ \string~AActionHandler()\ \{\}}
+\DoxyCodeLine{00047\ \ \ \textcolor{comment}{//\ handler\ before\ the\ event:\ sender,\ data,\ parent\ queue}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Enter(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{comment}{//\ handler\ after\ the\ event:\ sender,\ data,\ parent\ queue}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Exit(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{/*\ handler\ during\ the\ event,\ does\ some\ operation\ when\ Obj\ is\ changed;}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ \ \ \ \ the\ action\ depends\ on\ the\ type\ of\ queue:\ sender,\ data,\ parent\ queue}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ UpdateData(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)}
+\DoxyCodeLine{00059\ \ \ \{\}}
+\DoxyCodeLine{00060\ \ \ \textcolor{comment}{//:\ sender,\ data,\ parent\ queue}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{comment}{//\ the\ function\ is\ called\ the\ object\ is\ removed\ from\ the\ queue}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnRemove(\mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)\ \{\}}
+\DoxyCodeLine{00066\ \ \ DefPropBIsSet(Enabled)}
+\DoxyCodeLine{00067\ \ \ \textcolor{comment}{/*\ beware\ that\ it\ is\ set\ to\ true\ by\ default,\ which\ means\ that\ the\ object\ will}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ \ \ \ be\ automatically\ deleted\ by\ the\ parent\ queue}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00070\ \ \ DefPropBIsSet(ToDelete)}
+\DoxyCodeLine{00071\ \};}
+\DoxyCodeLine{00072\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ AEventsDispatcher\ allows\ to\ do\ events/actions\ hanling\ within\ one\ loop}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ (AActionHandler\ is\ a\ single\ object\ ususally\ created\ \ for\ one\ event)}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ simply\ derive\ your\ class\ from\ this\ one\ and\ write\ the\ Dispartch\ method}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ Register\ it\ in\ an\ ActionQueue\ object\ (see\ below)}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00078\ \textcolor{keyword}{class\ }AEventsDispatcher:\ \textcolor{keyword}{public}\ ACollectionItem\ \{}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{bool}\ Enabled;}
+\DoxyCodeLine{00080\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00081\ \ \ AEventsDispatcher()\ :\ Enabled(\textcolor{keyword}{true})\ \{\}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{virtual}\ \string~AEventsDispatcher()\ \{\}}
+\DoxyCodeLine{00083\ \ \ \textcolor{comment}{/*\ dispatch\ is\ called\ all\ time\ an\ event\ occures,\ MsgId\ is\ the\ Id\ passed\ when}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ \ the\ object\ is\ registered\ in\ a\ queue,\ MsgSubId\ is\ one\ msiEnter,\ msiExecute,}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ msiExit\ or\ msiUpdateData\ (see\ the\ discription\ of\ cirtain\ events).\ Sender\ is}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ \ the\ object\ sending\ the\ message,\ Data\ -\/\ is\ the\ object\ being\ changed\ or\ some}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ \ data\ object}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)=0;}
+\DoxyCodeLine{00091\ \ \ DefPropBIsSet(Enabled)}
+\DoxyCodeLine{00092\ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{keyword}{class\ }TActionQueue:\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00095\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<olx\_vptr<AActionHandler>}}\ >\ Handlers;}
+\DoxyCodeLine{00096\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TDispatchInfo>}}\ Dispatchers;}
+\DoxyCodeLine{00097\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00098\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}*\ Parent;}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//\ set\ to\ true\ to\ stop\ on\ the\ first\ successful\ handler,\ false\ by\ default}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{bool}\ RunOnce;}
+\DoxyCodeLine{00101\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00102\ \ \ TActionQueue(\mbox{\hyperlink{classTActionQList}{TActionQList}}*\ Parent,\ \textcolor{keyword}{const}\ olxstr\&\ Name);}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{virtual}\ \string~TActionQueue()\ \{\}}
+\DoxyCodeLine{00104\ \ \ DefPropBIsSet(RunOnce)}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//\ copies\ handlers\ and\ dispatchers\ etc\ and\ clears\ the\ aq}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{void}\ TakeOver(TActionQueue\&\ aq);}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{size\_t}\ HandlerCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Handlers.Count();\ \};}
+\DoxyCodeLine{00109\ \ \ AActionHandler\&\ GetHandler(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Handlers[i];\ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordtype}{size\_t}\ DispatcherCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Dispatchers.Count();\ \};}
+\DoxyCodeLine{00112\ \ \ \mbox{\hyperlink{classAEventsDispatcher}{AEventsDispatcher}}\&\ GetDispatcher(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{return}\ Dispatchers[i].Dispatcher;}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{//\ adds\ new\ handler}}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordtype}{void}\ Add(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<AActionHandler>}}\ \&handler);}
+\DoxyCodeLine{00117\ \ \ \textcolor{comment}{/*\ inserts\ a\ new\ handler\ at\ the\ beginning\ of\ the\ list\ so\ that\ it\ will\ be}}
+\DoxyCodeLine{00118\ \textcolor{comment}{\ \ executed\ first\ of\ all}}
+\DoxyCodeLine{00119\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordtype}{void}\ InsertFirst(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<AActionHandler>}}\ \&handler);}
+\DoxyCodeLine{00121\ \ \ \textcolor{comment}{/*\ adds\ new\ dispatcher,\ no\ AddFirst\ -\/\ Handlers\ are\ executed\ before\ the}}
+\DoxyCodeLine{00122\ \textcolor{comment}{\ \ dispatchers...}}
+\DoxyCodeLine{00123\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordtype}{void}\ Add(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<AEventsDispatcher>}}\ \&dispatcher,}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId\ =\ msiAll);}
+\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//makes\ subsequent\ calls\ to\ the\ handlers\ stored\ in\ the\ list}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data=NULL,}
+\DoxyCodeLine{00128\ \ \ \ \ TActionQueue\ *caller=NULL);}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{bool}\ Enter(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data=NULL,}
+\DoxyCodeLine{00130\ \ \ \ \ TActionQueue\ *caller=NULL);}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{bool}\ Exit(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data=NULL,}
+\DoxyCodeLine{00132\ \ \ \ \ TActionQueue\ *caller=NULL);}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{void}\ UpdateData(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,}
+\DoxyCodeLine{00134\ \ \ \ \ TActionQueue\ *caller=NULL);}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnRemove(TActionQueue\ *caller=NULL)\ \{\}}
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{//\ empties\ the\ queue}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{//\ removes\ specified\ handler\ from\ the\ queue}}
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordtype}{void}\ Remove(AActionHandler*\ handler);}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordtype}{bool}\ Contains(AActionHandler\ *handler);}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{//\ removes\ specified\ dispatcher\ from\ the\ queue}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordtype}{void}\ Remove(\textcolor{keyword}{const}\ \mbox{\hyperlink{classAEventsDispatcher}{AEventsDispatcher}}*\ dispatcher);}
+\DoxyCodeLine{00144\ \ \ \textcolor{comment}{//\ returns\ true\ if\ a\ specified\ handler\ belongs\ to\ the\ queue}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{bool}\ Contains(\mbox{\hyperlink{classAEventsDispatcher}{AEventsDispatcher}}\ *dispatcher);}
+\DoxyCodeLine{00146\ \ \ \textcolor{comment}{//\ returns\ the\ name\ of\ the\ queue}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Name;\ \}}
+\DoxyCodeLine{00148\ \};}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{keyword}{class\ }TActionQList:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00151\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00152\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TActionQueue*>}}\ Queues;}
+\DoxyCodeLine{00153\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00154\ \ \ TActionQList()\ \ \{\}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{virtual}\ \string~TActionQList()\ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{/*\ Creates\ a\ new\ named\ actions\ queue}}
+\DoxyCodeLine{00157\ \textcolor{comment}{\ \ \ \ throws\ an\ exception\ if\ the\ queue\ already\ exists:\ use\ Exists\ to\ check}}
+\DoxyCodeLine{00158\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00159\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ New(\textcolor{keyword}{const}\ olxstr\&\ Name);}
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{/*\ Adds\ given\ queue\ to\ the\ list}}
+\DoxyCodeLine{00161\ \textcolor{comment}{\ \ \ \ throws\ an\ exception\ if\ the\ queue\ name\ is\ not\ unique:\ use\ Exists\ to\ check}}
+\DoxyCodeLine{00162\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00163\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ Add(\mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *queue);}
+\DoxyCodeLine{00164\ \ \ \textcolor{comment}{//\ executes\ a\ named\ queue}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data=NULL);}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \textcolor{keywordtype}{bool}\ Exists(\textcolor{keyword}{const}\ olxstr\&\ Name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{return}\ Queues.IndexOf(Name)\ !=\ InvalidIndex;}
+\DoxyCodeLine{00170\ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{/*\ find\ a\ queue\ by\ name,\ returns\ NULL\ if\ not\ found\ */}}
+\DoxyCodeLine{00172\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}*\ Find(\textcolor{keyword}{const}\ olxstr\&\ Name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ Queues.Find(Name,\ NULL);}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//\ queue\ by\ index}}
+\DoxyCodeLine{00176\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ Get(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{return}\ *Queues.GetValue(index);}
+\DoxyCodeLine{00178\ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ operator\ [](\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{return}\ *Queues.GetValue(index);}
+\DoxyCodeLine{00181\ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \textcolor{comment}{//\ returns\ the\ number\ of\ queues}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Queues.Count();\ \ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{comment}{//\ empties\ the\ list}}
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00186\ \};}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \textcolor{comment}{//\ action\ proxy\ object,\ allows\ synchronisation\ of\ two\ action\ queues}}
+\DoxyCodeLine{00189\ \textcolor{keyword}{class\ }TActionProxy\ :\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00190\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ queue;}
+\DoxyCodeLine{00191\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00192\ \ \ TActionProxy(\mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ q)\ :\ queue(q)\ \{\}}
+\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Enter(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,}
+\DoxyCodeLine{00194\ \ \ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *caller)}
+\DoxyCodeLine{00195\ \ \ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{return}\ queue.Enter(Sender,\ Data,\ caller);}
+\DoxyCodeLine{00197\ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Exit(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,}
+\DoxyCodeLine{00199\ \ \ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *caller)}
+\DoxyCodeLine{00200\ \ \ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordflow}{return}\ queue.Exit(Sender,\ Data,\ caller);}
+\DoxyCodeLine{00202\ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ UpdateData(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,}
+\DoxyCodeLine{00204\ \ \ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *caller)}
+\DoxyCodeLine{00205\ \ \ \{}
+\DoxyCodeLine{00206\ \ \ \ \ queue.UpdateData(Sender,\ Data,\ caller);}
+\DoxyCodeLine{00207\ \ \ \}}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,}
+\DoxyCodeLine{00209\ \ \ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *caller)}
+\DoxyCodeLine{00210\ \ \ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{return}\ queue.Execute(Sender,\ Data,\ caller);}
+\DoxyCodeLine{00212\ \ \ \}}
+\DoxyCodeLine{00213\ \};}
+\DoxyCodeLine{00214\ \textcolor{comment}{/*\ disabled\ the\ queue\ when\ created\ and\ restores\ the\ state\ (if\ was\ enabled!)}}
+\DoxyCodeLine{00215\ \textcolor{comment}{when\ destroyed}}
+\DoxyCodeLine{00216\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00217\ \textcolor{keyword}{class\ }TActionQueueLock\ \{}
+\DoxyCodeLine{00218\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}*\ queue;}
+\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{bool}\ changed;}
+\DoxyCodeLine{00220\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00221\ \ \ TActionQueueLock(\mbox{\hyperlink{classTActionQueue}{TActionQueue}}*\ \_queue)\ :\ queue(\_queue),\ changed(\textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{if}\ (queue\ !=\ NULL)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (queue-\/>IsEnabled())\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ changed\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ queue-\/>SetEnabled(\textcolor{keyword}{false});}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \ \ \}}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \string~TActionQueueLock()\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordflow}{if}\ (changed\ \&\&\ queue\ !=\ NULL)}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ queue-\/>SetEnabled(\textcolor{keyword}{true});}
+\DoxyCodeLine{00232\ \ \ \}}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{void}\ Unlock()\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordflow}{if}\ (changed)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (queue\ !=\ NULL)}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ queue-\/>SetEnabled(\textcolor{keyword}{true});}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ changed\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00238\ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ \};}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIOlxAction}{IOlxAction}}\ \{}
+\DoxyCodeLine{00243\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxAction}{\string~IOlxAction}}()\ \{\}}
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Run()\ =\ 0;}
+\DoxyCodeLine{00246\ \};}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \textcolor{comment}{//\ generic\ on\ progress\ data}}
+\DoxyCodeLine{00249\ \textcolor{keyword}{class\ }TOnProgress:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00250\ \ \ uint64\_t\ Max,\ Pos;}
+\DoxyCodeLine{00251\ \ \ olxstr\ Action;}
+\DoxyCodeLine{00252\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00253\ \ \ TOnProgress()\ :\ Max(0),\ Pos(0)\ \{\}}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{virtual}\ \string~TOnProgress()\ \{\}}
+\DoxyCodeLine{00255\ \ \ \textcolor{comment}{//\ set\ Max\ to\ a\ valid\ number\ before\ OnProgress\ is\ executed!}}
+\DoxyCodeLine{00256\ \ \ DefPropP(uint64\_t,\ Max)}
+\DoxyCodeLine{00257\ \ \ DefPropP(uint64\_t,\ Pos)}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{void}\ IncPos(uint64\_t\ v=1)\ \{\ Pos\ +=\ v;\ \}}
+\DoxyCodeLine{00259\ \ \ DefPropC(olxstr,\ Action)}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ TOnProgress\&\ operator\ =\ (\textcolor{keyword}{const}\ TOnProgress\&\ pg)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ Max\ =\ pg.Max;}
+\DoxyCodeLine{00263\ \ \ \ \ Pos\ =\ pg.Pos;}
+\DoxyCodeLine{00264\ \ \ \ \ Action\ =\ pg.Action;}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00266\ \ \ \}}
+\DoxyCodeLine{00267\ \};}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ EndEsdlNamespace()}
+\DoxyCodeLine{00270\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

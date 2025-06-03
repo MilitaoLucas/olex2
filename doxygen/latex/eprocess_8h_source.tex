@@ -1,0 +1,348 @@
+\doxysection{eprocess.\+h}
+\hypertarget{eprocess_8h_source}{}\label{eprocess_8h_source}\index{repository/eprocess.h@{repository/eprocess.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_process\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_process\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}edlist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}os\_util.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}sortedlist.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}olxth.h"{}}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\ \ \#include\ "{}wx/process.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{comment}{/*\ Windows\ specific\ implementation\ is\ inspired\ by\ the\ Python\ source\ code\ */}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\ \ \#include\ <winuser.h>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ \ \textcolor{comment}{//\ process\ flags}}
+\DoxyCodeLine{00031\ \ \ spfRedirected\ \ \ \ \ \ \ \ =\ 0x0001,}
+\DoxyCodeLine{00032\ \ \ spfSynchronised\ \ \ \ \ \ =\ 0x0002,}
+\DoxyCodeLine{00033\ \ \ spfTerminateOnDelete\ =\ 0x0004,}
+\DoxyCodeLine{00034\ \ \ spfQuiet\ \ \ \ \ \ \ \ \ \ \ \ \ =\ 0x0008,}
+\DoxyCodeLine{00035\ \ \ spfTerminated\ \ \ \ \ \ \ \ =\ 0x0010;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00038\ \ \ process\_manager\_timer,}
+\DoxyCodeLine{00039\ \ \ process\_manager\_kill}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIProcessOutput}{IProcessOutput}}\ \{}
+\DoxyCodeLine{00043\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIProcessOutput}{\string~IProcessOutput}}()\ \{\}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ write\_char(\textcolor{keywordtype}{char}\ ch)\ =\ 0;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ write\_array(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ bf,\ \textcolor{keywordtype}{size\_t}\ len)\ =\ 0;}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{virtual}\ olxstr\ readAll()\ =\ 0;}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ isEmpty()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{class\ }ProcessOutput\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIProcessOutput}{IProcessOutput}}\ \{}
+\DoxyCodeLine{00052\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00053\ \ \ \mbox{\hyperlink{classTDirectionalList}{TDirectionalList<char>}}\ data;}
+\DoxyCodeLine{00054\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00055\ \ \ ProcessOutput()\ \{\}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ write\_char(\textcolor{keywordtype}{char}\ ch)\ \{\ data.Write(ch);\ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{void}\ write\_array(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ bf,\ \textcolor{keywordtype}{size\_t}\ len)\ \{\ data.Write(bf,\ len);\ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{bool}\ isEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.IsEmpty();\ \}}
+\DoxyCodeLine{00059\ \ \ olxstr\ readAll()\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ olxstr\ rv;}
+\DoxyCodeLine{00061\ \ \ \ \ data.ToString(rv);}
+\DoxyCodeLine{00062\ \ \ \ \ data.Clear();}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{keyword}{class\ }SynchronisedProcessOutput\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIProcessOutput}{IProcessOutput}}\ \{}
+\DoxyCodeLine{00068\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00069\ \ \ \mbox{\hyperlink{classTDirectionalList}{TDirectionalList<char>}}\ data;}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ cs;}
+\DoxyCodeLine{00071\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00072\ \ \ SynchronisedProcessOutput()\ \{\}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ write\_char(\textcolor{keywordtype}{char}\ ch)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structolx__scope__cs}{olx\_scope\_cs}}\ \_cs(cs);}
+\DoxyCodeLine{00075\ \ \ \ \ data.Write(ch);}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ write\_array(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ bf,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structolx__scope__cs}{olx\_scope\_cs}}\ \_cs(cs);}
+\DoxyCodeLine{00079\ \ \ \ \ data.Write(bf,\ len);}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{bool}\ isEmpty()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structolx__scope__cs}{olx\_scope\_cs}}\ \_cs(cs);}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ data.IsEmpty();}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ olxstr\ readAll()\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structolx__scope__cs}{olx\_scope\_cs}}\ \_cs(cs);}
+\DoxyCodeLine{00087\ \ \ \ \ olxstr\ rv;}
+\DoxyCodeLine{00088\ \ \ \ \ data.ToString(rv);}
+\DoxyCodeLine{00089\ \ \ \ \ data.Clear();}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{keyword}{class\ }BufferedProcessOutput\ \{}
+\DoxyCodeLine{00095\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00096\ \ \ \mbox{\hyperlink{classIProcessOutput}{IProcessOutput}}\&\ data;}
+\DoxyCodeLine{00097\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00098\ \ \ BufferedProcessOutput(\textcolor{keywordtype}{bool}\ thread\_use)}
+\DoxyCodeLine{00099\ \ \ \ \ :\ data(*(thread\_use\ ?}
+\DoxyCodeLine{00100\ \ \ \ \ (\mbox{\hyperlink{classIProcessOutput}{IProcessOutput}}*)(\textcolor{keyword}{new}\ \mbox{\hyperlink{classSynchronisedProcessOutput}{SynchronisedProcessOutput}})}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ :\ (\mbox{\hyperlink{classIProcessOutput}{IProcessOutput}}*)(\textcolor{keyword}{new}\ \mbox{\hyperlink{classProcessOutput}{ProcessOutput}})))}
+\DoxyCodeLine{00102\ \ \ \{\}}
+\DoxyCodeLine{00103\ \ \ \string~BufferedProcessOutput()\ \{\ \textcolor{keyword}{delete}\ \&data;\ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ Write(\textcolor{keywordtype}{char}\ ch)\ \{\ data.write\_char(ch);\ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ Write(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ bf,\ \textcolor{keywordtype}{size\_t}\ len)\ \{\ data.write\_array(bf,\ len);\ \}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.isEmpty();\ \}}
+\DoxyCodeLine{00107\ \ \ olxstr\ ReadAll()\ \{\ \textcolor{keywordflow}{return}\ data.readAll();\ \}}
+\DoxyCodeLine{00108\ \};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{keyword}{class\ }AProcess\ :\ \textcolor{keyword}{public}\ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00111\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00112\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00113\ \ \ TStrList\ FOnTerminateCmds;}
+\DoxyCodeLine{00114\ \ \ \mbox{\hyperlink{classIOutputStream}{IOutputStream}}*\ DubOutput;}
+\DoxyCodeLine{00115\ \ \ \textcolor{keywordtype}{short}\ Flags;}
+\DoxyCodeLine{00116\ \ \ olxstr\ CmdLine;}
+\DoxyCodeLine{00117\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{int}\ ProcessId;\ \textcolor{comment}{//\ must\ be\ initialised\ for\ async\ execution\ in\ the\ execute\ method}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{bool}\ IsTerminateOnDelete()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (Flags\ \&\ spfTerminateOnDelete)\ !=\ 0;\ \}}
+\DoxyCodeLine{00120\ \ \ \mbox{\hyperlink{classBufferedProcessOutput}{BufferedProcessOutput}}\ Output;}
+\DoxyCodeLine{00121\ \ \ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ OutputLock;}
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordtype}{void}\ SetTerminated()\ \{\ Flags\ |=\ spfTerminated;\ \}}
+\DoxyCodeLine{00123\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00124\ \ \ AProcess(\textcolor{keywordtype}{bool}\ use\_threads,\ \textcolor{keyword}{const}\ olxstr\&\ cmdl,\ \textcolor{keywordtype}{short}\ flags);}
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{virtual}\ \string~AProcess();}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordtype}{bool}\ IsSynchronised()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (Flags\ \&\ spfSynchronised)\ !=\ 0;\ \}}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{bool}\ IsRedirected()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (Flags\ \&\ spfRedirected)\ !=\ 0;\ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{bool}\ IsOutputDub()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (Flags\ \&\ spfRedirected)\ !=\ 0;\ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{bool}\ IsQuite()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (Flags\ \&\ spfQuiet)\ !=\ 0;\ \}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{bool}\ IsTerminated()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (Flags\ \&\ spfTerminated)\ !=\ 0;\ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classBufferedProcessOutput}{BufferedProcessOutput}}\&\ GetOutput()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Output;\ \}}
+\DoxyCodeLine{00134\ \ \ \mbox{\hyperlink{classBufferedProcessOutput}{BufferedProcessOutput}}\&\ GetOutput()\ \{\ \textcolor{keywordflow}{return}\ Output;\ \}}
+\DoxyCodeLine{00135\ \ \ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ \&GetOutputLock()\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{return}\ OutputLock;}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{const}\ TStrList\&\ OnTerminateCmds()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FOnTerminateCmds;\ \}}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordtype}{void}\ SetOnTerminateCmds(\textcolor{keyword}{const}\ TStrList\&\ l)\ \{\ FOnTerminateCmds.Assign(l);\ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordtype}{int}\ GetProcessId()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ProcessId;\ \}}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{const}\ olxstr\&\ \ GetCmdLine()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CmdLine;\ \}}
+\DoxyCodeLine{00143\ \ \ \mbox{\hyperlink{classIOutputStream}{IOutputStream}}*\ GetDubStream()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ DubOutput;\ \}}
+\DoxyCodeLine{00144\ \ \ \textcolor{comment}{//\ sets\ stream\ to\ dublicate\ process\ output,\ will\ be\ deleted}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{void}\ SetDubStream(\mbox{\hyperlink{classIOutputStream}{IOutputStream}}*\ v)\ \{\ DubOutput\ =\ v;\ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Write(\textcolor{keyword}{const}\ olxstr\&\ Cmd)\ =\ 0;\ \textcolor{comment}{//\ writes\ to\ the\ process\ output}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Writenl()\ =\ 0;\ \textcolor{comment}{//\ writes\ to\ the\ process\ output}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Terminate()\ =\ 0;}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute()\ =\ 0;}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Detach()\ =\ 0;}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{static}\ olxstr\ PrepareArg(\textcolor{keyword}{const}\ olxstr\ \&p);}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnTerminate;}
+\DoxyCodeLine{00156\ \};}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00159\ \textcolor{keyword}{class\ }TWxProcess}
+\DoxyCodeLine{00160\ \ \ :\ \textcolor{keyword}{protected}\ wxProcess,\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAProcess}{AProcess}}}
+\DoxyCodeLine{00161\ \{}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//\ override\ to\ stop\ automatic\ deletion\ of\ the\ object}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnTerminate(\textcolor{keywordtype}{int}\ pid,\ \textcolor{keywordtype}{int}\ status);}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{class\ }OutputReaderThread\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAOlxThread}{AOlxThread}}\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ TWxProcess\ \&parent;}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ stop;}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00169\ \ \ \ \ OutputReaderThread(TWxProcess\ \&parent)}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ :\ parent(parent),}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ stop(false)}
+\DoxyCodeLine{00172\ \ \ \ \ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ Detached\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ Run();}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordtype}{void}\ DoStop()\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ stop\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00178\ \ \ \ \ \};}
+\DoxyCodeLine{00179\ \ \ \};}
+\DoxyCodeLine{00180\ \ \ OutputReaderThread\ outputReader;}
+\DoxyCodeLine{00181\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00182\ \ \ TWxProcess(\textcolor{keyword}{const}\ olxstr\&\ cmdl,\ \textcolor{keywordtype}{short}\ flags);}
+\DoxyCodeLine{00183\ \ \ \string~TWxProcess();}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Write(\textcolor{keyword}{const}\ olxstr\&\ Cmd);}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Writenl();}
+\DoxyCodeLine{00187\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute();}
+\DoxyCodeLine{00188\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Terminate();}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Detach();}
+\DoxyCodeLine{00190\ \};}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00194\ \textcolor{keyword}{class\ }TWinProcess:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAEventsDispatcher}{AEventsDispatcher}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAProcess}{AProcess}}\ \{}
+\DoxyCodeLine{00195\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00196\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00197\ \ \ \textcolor{keywordtype}{size\_t}\ CallsWasted;}
+\DoxyCodeLine{00198\ \ \ PROCESS\_INFORMATION\ ProcessInfo;}
+\DoxyCodeLine{00199\ \ \ HANDLE\ OutRead,\ InWrite;}
+\DoxyCodeLine{00200\ \ \ HANDLE\ InRead,\ OutWrite,\ ErrWrite;\ \ \textcolor{comment}{//\ initialised\ by\ InitStreams\ func}}
+\DoxyCodeLine{00201\ \ \ \textcolor{keywordtype}{bool}\ InitStreams();}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{void}\ CloseStreams();}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordtype}{void}\ CloseThreadStreams();}
+\DoxyCodeLine{00204\ \ \ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId,\ \textcolor{keyword}{const}\ IOlxObject\ *Sender,}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keyword}{const}\ IOlxObject\ *Data,\ TActionQueue\ *);}
+\DoxyCodeLine{00206\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00207\ \ \ TWinProcess(\textcolor{keyword}{const}\ olxstr\&\ cmdl,\ \textcolor{keywordtype}{short}\ flags);}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{virtual}\ \string~TWinProcess();}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute();}
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Write(\textcolor{keyword}{const}\ olxstr\&\ Str);}
+\DoxyCodeLine{00212\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Writenl();}
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Terminate();}
+\DoxyCodeLine{00214\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Detach();}
+\DoxyCodeLine{00215\ \};}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \textcolor{keyword}{class\ }TWinWinCmd\ \{}
+\DoxyCodeLine{00218\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ SendWindowCmd(\textcolor{keyword}{const}\ olxstr\&\ WndName,\ \textcolor{keyword}{const}\ olxstr\&\ Cmd);}
+\DoxyCodeLine{00220\ \};}
+\DoxyCodeLine{00221\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !\_\_WIN32\_\_}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \textcolor{keyword}{class\ }ProcessManager\ :\ \textcolor{keyword}{public}\ AEventsDispatcher\ \{}
+\DoxyCodeLine{00224\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classProcessManager_1_1IProcessHandler}{IProcessHandler}}\ \{}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classProcessManager_1_1IProcessHandler}{\string~IProcessHandler}}()\ \{\}}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ BeforePrint()\ \{\}}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Print(\textcolor{keyword}{const}\ olxstr\&\ line)\ =\ 0;}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ AfterPrint()\ \{\}}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnWait()\ \{\}}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnTerminate(\textcolor{keyword}{const}\ \mbox{\hyperlink{classAProcess}{AProcess}}\&\ p)\ =\ 0;}
+\DoxyCodeLine{00233\ \ \ \};}
+\DoxyCodeLine{00234\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00235\ \ \ \textcolor{comment}{/*\ there\ could\ be\ many\ processes\ running\ at\ the\ same\ time,\ however\ only\ one}}
+\DoxyCodeLine{00236\ \textcolor{comment}{\ \ \ *\ \ process\ a\ time\ can\ be\ redirected\ (i.e.\ get\ input)\ and\ only\ one\ process\ to}}
+\DoxyCodeLine{00237\ \textcolor{comment}{\ \ \ *\ \ wait\ for...\ */}}
+\DoxyCodeLine{00238\ \ \ \mbox{\hyperlink{classsorted_1_1PointerPointer}{sorted::PointerPointer<AProcess>}}\ Processes;}
+\DoxyCodeLine{00239\ \ \ \mbox{\hyperlink{classAProcess}{AProcess}}*\ Redirected,\ *Current,\ *Last;}
+\DoxyCodeLine{00240\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00241\ \ \ \mbox{\hyperlink{classProcessManager_1_1IProcessHandler}{IProcessHandler}}\&\ OutputHandler;}
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)}
+\DoxyCodeLine{00244\ \ \ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordflow}{if}\ (MsgSubId\ !=\ msiExecute)\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00247\ \ \ \ \ \}}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordflow}{if}\ (MsgId\ ==\ process\_manager\_timer)\ \{}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Processes.IsEmpty())\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ OutputHandler.BeforePrint();}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Processes.Count();\ i++)\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ \mbox{\hyperlink{structolx__scope__cs}{olx\_scope\_cs}}\ cs\_(Processes[i]-\/>GetOutputLock());}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Processes[i]-\/>GetOutput().IsEmpty())\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ olxstr\ rv\ =\ Processes[i]-\/>GetOutput().ReadAll();}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ OutputHandler.Print(rv);}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ OutputHandler.AfterPrint();}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \ \ \}}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (MsgId\ ==\ process\_manager\_kill)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ OnTerminate(\textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const\ }AProcess\&\textcolor{keyword}{>}(*Sender));}
+\DoxyCodeLine{00263\ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00266\ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00268\ \ \ \}}
+\DoxyCodeLine{00269\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00270\ \ \ ProcessManager(\mbox{\hyperlink{classProcessManager_1_1IProcessHandler}{IProcessHandler}}\&\ outputHandler)}
+\DoxyCodeLine{00271\ \ \ \ \ :\ Redirected(0),\ Current(0),\ Last(0),}
+\DoxyCodeLine{00272\ \ \ \ \ OutputHandler(outputHandler)}
+\DoxyCodeLine{00273\ \ \ \{}
+\DoxyCodeLine{00274\ \ \ \ \ TBasicApp::GetInstance().OnTimer.Add(\textcolor{keyword}{this},\ process\_manager\_timer);}
+\DoxyCodeLine{00275\ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00277\ \ \ \string~ProcessManager()\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ TBasicApp::GetInstance().OnTimer.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Processes.Count();\ i++)\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ Processes[i]-\/>OnTerminate.Clear();}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ Processes[i]-\/>Terminate();}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Processes[i];}
+\DoxyCodeLine{00283\ \ \ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \textcolor{keywordtype}{void}\ OnCreate(AProcess\&\ Process)\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ Process.OnTerminate.Add(\textcolor{keyword}{this},\ process\_manager\_kill);}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keywordflow}{while}\ (Current\ !=\ 0\ \&\&\ !Current-\/>IsTerminated())\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ OutputHandler.OnWait();}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ olx\_sleep(50);}
+\DoxyCodeLine{00290\ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ Current\ =\ 0;}
+\DoxyCodeLine{00292\ \ \ \ \ Processes.Add(\&Process);}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keywordflow}{if}\ (Process.IsRedirected())\ \{}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ Redirected\ =\ \&Process;}
+\DoxyCodeLine{00295\ \ \ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \ \ Last\ =\ \&Process;}
+\DoxyCodeLine{00297\ \ \ \}}
+\DoxyCodeLine{00298\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00299\ \ \ \textcolor{keywordtype}{void}\ OnTerminate(\textcolor{keyword}{const}\ AProcess\&\ \_process)\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ pi\ =\ Processes.IndexOf(\&\_process);}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordflow}{if}\ (pi\ ==\ InvalidIndex)\ \{\ \textcolor{comment}{//\ how\ come?}}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00303\ \ \ \ \ \}}
+\DoxyCodeLine{00304\ \ \ \ \ AProcess\&\ Process\ =\ *Processes[pi];}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keywordflow}{if}\ (\&Process\ ==\ Redirected)\ \{}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ Redirected\ =\ 0;}
+\DoxyCodeLine{00307\ \ \ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordflow}{if}\ (\&Process\ ==\ Current)\ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ Current\ =\ 0;}
+\DoxyCodeLine{00310\ \ \ \ \ \}}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keywordflow}{if}\ (\&Process\ ==\ Last)\ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ Last\ =\ 0;}
+\DoxyCodeLine{00313\ \ \ \ \ \}}
+\DoxyCodeLine{00314\ \ \ \ \ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \textcolor{keyword}{volatile}\ olx\_scope\_cs\ cs\_(Process.GetOutputLock());}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Process.GetOutput().IsEmpty())\ \{}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ OutputHandler.BeforePrint();}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ rv\ =\ Process.GetOutput().ReadAll();}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ OutputHandler.Print(rv);}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ OutputHandler.AfterPrint();}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00322\ \ \ \ \ \}}
+\DoxyCodeLine{00323\ \ \ \ \ OutputHandler.OnTerminate(\_process);}
+\DoxyCodeLine{00324\ \ \ \ \ TEGC::Add(Processes[pi]);}
+\DoxyCodeLine{00325\ \ \ \ \ Processes.Delete(pi);}
+\DoxyCodeLine{00326\ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00328\ \ \ \textcolor{keywordtype}{void}\ WaitForLast()\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ Current\ =\ Last;}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keywordflow}{while}\ (Current\ !=\ 0\ \&\&\ !Current-\/>IsTerminated())\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ OutputHandler.OnWait();}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ olx\_sleep(50);}
+\DoxyCodeLine{00333\ \ \ \ \ \}}
+\DoxyCodeLine{00334\ \ \ \ \ Current\ =\ 0;}
+\DoxyCodeLine{00335\ \ \ \}}
+\DoxyCodeLine{00336\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00337\ \ \ AProcess*\ GetCurrent()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Current;\ \}}
+\DoxyCodeLine{00338\ \ \ AProcess*\ GetLast()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Last;\ \}}
+\DoxyCodeLine{00339\ \ \ AProcess*\ GetRedirected()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Redirected;\ \}}
+\DoxyCodeLine{00340\ \};}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00342\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

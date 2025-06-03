@@ -1,0 +1,187 @@
+\doxysection{sorted.\+h}
+\hypertarget{sorted_8h_source}{}\label{sorted_8h_source}\index{sdl/sorted.h@{sdl/sorted.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_sorted\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_sorted\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ namespace\ sorted\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \textcolor{comment}{/*\ The\ function\ assumes\ that\ there\ are\ at\ least\ two\ elements\ in\ the\ list\ and}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ that\ the\ given\ entity\ is\ greater\ than\ the\ first\ and\ smaller\ than\ the\ last}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ entry.\ Returns\ index\ of\ the\ first\ entry\ that\ is\ greater\ than\ the\ reference.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListClass,\ \textcolor{keyword}{class}\ Comparator,\ \textcolor{keyword}{typename}\ TypeClass>}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{size\_t}\ FindInsertIndex(\textcolor{keyword}{const}\ ListClass\ \&list,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{const}\ TypeClass\ \&entity)}
+\DoxyCodeLine{00024\ \ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ to\ =\ list.Count()-\/1;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{while}\ ((to\ -\/\ from)\ !=\ 1)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ index\ =\ from\ +\ (to\ -\/\ from)\ /\ 2;}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ cr\ =\ cmp.Compare(list[index],\ entity);}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cr\ <\ 0)}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ from\ =\ index;}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (cr\ >\ 0)}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ to\ \ =\ index;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ index;}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{return}\ to;}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{comment}{/*\ The\ function\ assumes\ that\ there\ are\ at\ least\ two\ elements\ in\ the\ list\ and}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ \ that\ the\ given\ entity\ is\ greater\ than\ the\ first\ ans\ smaller\ than\ the\ last}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ entry.\ Returns\ index\ of\ the\ first\ entry\ that\ is\ greater\ or\ equal\ and\ true/false}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ if\ the\ value\ in\ the\ list\ (equal).}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListClass,\ \textcolor{keyword}{class}\ Comparator,\ \textcolor{keyword}{typename}\ TypeClass>}
+\DoxyCodeLine{00045\ \ \ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<size\_t,\ bool>}}\ FindInsertIndexEx(\textcolor{keyword}{const}\ ListClass\ \&list,}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ \textcolor{keyword}{const}\ TypeClass\ \&entity)}
+\DoxyCodeLine{00047\ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ to\ =\ list.Count()\ -\/\ 1;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{while}\ ((to\ -\/\ from)\ !=\ 1)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ index\ =\ from\ +\ (to\ -\/\ from)\ /\ 2;}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ cr\ =\ cmp.Compare(list[index],\ entity);}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cr\ <\ 0)}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ from\ =\ index;}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (cr\ >\ 0)}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ to\ \ =\ index;}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(index,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.Compare(list[from],\ entity)\ ==\ 0)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(from,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (cmp.Compare(list[to],\ entity)\ ==\ 0)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(to,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(to,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListClass,\ \textcolor{keyword}{class}\ Comparator,\ \textcolor{keyword}{typename}\ KeyC>}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{size\_t}\ FindIndexOf(\textcolor{keyword}{const}\ ListClass\ \&list,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{const}\ KeyC\ \&entity)}
+\DoxyCodeLine{00072\ \ \ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ lc\ =\ list.Count();}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{if}\ (lc\ ==\ 0)\ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{if}\ (lc\ ==\ 1)}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cmp.Compare(list[0],\ entity)\ ==\ 0\ ?\ 0\ :\ InvalidIndex;}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0,\ to\ =\ lc-\/1;}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ from\_cr\ =\ cmp.Compare(list[from],\ entity);}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{if}\ (from\_cr\ ==\ 0)\ \textcolor{keywordflow}{return}\ from;}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{if}\ (from\_cr\ >\ 0)\ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ to\_cr\ =\ cmp.Compare(list[to],\ entity);}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{if}\ (to\_cr\ ==\ 0)\ \textcolor{keywordflow}{return}\ to;}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{if}\ (to\_cr\ <\ 0)\ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{while}((to-\/from)\ >\ 1)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ index\ =\ from\ +\ (to\ -\/\ from)\ /\ 2;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ cr\ =\ cmp.Compare(list[index],\ entity);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cr\ <\ 0)}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ from\ =\ index;}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (cr\ >\ 0)}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ to\ \ =\ index;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ index;}
+\DoxyCodeLine{00093\ \ \ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListClass,\ \textcolor{keyword}{class}\ Comparator,\ \textcolor{keyword}{typename}\ TypeClass>}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{size\_t}\ Add(ListClass\ \&list,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,\ TypeClass\ entry)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ lc\ =\ list.Count();}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{if}\ (lc\ ==\ 0)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ list.Add(entry);}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ cmp\_val0\ =\ cmp.Compare(list[0],\ entry);}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{if}\ (lc\ ==\ 1)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp\_val0\ <\ 0)\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ list.Add(entry);}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (cmp\_val0\ >\ 0)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ list.Insert(0,\ entry);}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ list.Add(entry);}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{//\ smaller\ than\ the\ first}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp\_val0\ >=\ 0)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ list.Insert(0,\ entry);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ larger\ than\ the\ last}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.Compare(list.GetLast(),\ entry)\ <=0)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ list.Add(entry);}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ lc;}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{comment}{//\ an\ easy\ case\ then\ with\ two\ items}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{if}\ (lc\ ==\ 2)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ list.Insert(1,\ entry);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00133\ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ pos\ =\ FindInsertIndex(list,\ cmp,\ entry);}
+\DoxyCodeLine{00135\ \ \ \ \ list.Insert(pos,\ entry);}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{return}\ pos;}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListClass,\ \textcolor{keyword}{class}\ Comparator,\ \textcolor{keyword}{typename}\ TypeClass>}
+\DoxyCodeLine{00140\ \ \ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<size\_t,\ bool>}}\ AddUnique(ListClass\ \&list,\ \textcolor{keyword}{const}\ Comparator\ \&cmp,}
+\DoxyCodeLine{00141\ \ \ \ \ TypeClass\ entry)}
+\DoxyCodeLine{00142\ \ \ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ lc\ =\ list.Count();}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{if}\ (lc\ ==\ 0)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ list.Add(entry);}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(0,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ cmp\_val0\ =\ cmp.Compare(list[0],\ entry);}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{if}\ (lc\ ==\ 1)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp\_val0\ <\ 0)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ list.Add(entry);}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(1,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (cmp\_val0\ >\ 0)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ list.Insert(0,\ entry);}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(0,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(0,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp\_val0\ >\ 0)\ \{\ \ \textcolor{comment}{//\ smaller\ than\ the\ first}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ list.Insert(0,\ entry);}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(0,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00165\ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{comment}{//\ larger\ than\ the\ last}}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{if}\ (cmp.Compare(list.GetLast(),\ entry)\ <\ 0)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ list.Add(entry);}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(lc,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00170\ \ \ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \ \ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<size\_t,\ bool>}}\ ps\ =\ FindInsertIndexEx(list,\ cmp,\ entry);}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{if}\ (!(ps.b\ =\ !ps.b))\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ps;}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ list.Insert(ps.a,\ entry);}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{return}\ ps;}
+\DoxyCodeLine{00177\ \ \ \}}
+\DoxyCodeLine{00178\ \}\ \ \textcolor{comment}{//\ end\ namespace\ sorted}}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ EndEsdlNamespace()}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

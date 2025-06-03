@@ -1,0 +1,54 @@
+\doxysection{eshared.\+h}
+\hypertarget{eshared_8h_source}{}\label{eshared_8h_source}\index{sdl/eshared.h@{sdl/eshared.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_shared\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_shared\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ not\ synchronised,\ i.e.\ thread\ safe\ yet}}
+\DoxyCodeLine{00016\ template\ <class\ Data>\ class\ Shared\ \ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{struct\ }Share\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{int}\ ref\_cnt;}
+\DoxyCodeLine{00019\ \ \ \ \ Data\ data;}
+\DoxyCodeLine{00020\ \ \ \ \ Share()\ :\ ref\_cnt(0)\ \{\}}
+\DoxyCodeLine{00021\ \ \ \};}
+\DoxyCodeLine{00022\ \ \ Share*\ shared;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00024\ \ \ \textcolor{comment}{/*\ must\ be\ implementd\ in\ the\ derived\ classes\ if\ custom\ cleanuo}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ is\ required\ preceding\ the\ call\ to\ delete\ */}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ CleanUp()\ \ \{\}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ Shared()\ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ shared\ =\ \textcolor{keyword}{new}\ Share();}
+\DoxyCodeLine{00030\ \ \ \ \ shared-\/>ref\_cnt++;}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ \ \ Shared(\textcolor{keyword}{const}\ Shared\&\ s)\ :\ shared(s.shared)\ \ \{\ \ shared-\/>ref\_cnt++;\ \ \}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ \string~Shared()\ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{if}(\ -\/-\/shared-\/>ref\_cnt\ ==\ 0\ )}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ shared;}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ \ \ Shared\&\ operator\ =\ (\textcolor{keyword}{const}\ Shared\&\ s)\ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{if}(\ shared\ !=\ NULL\ \&\&\ -\/-\/shared-\/>ref\_cnt\ ==\ 0\ )}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ shared;}
+\DoxyCodeLine{00040\ \ \ \ \ shared\ =\ s.shared;}
+\DoxyCodeLine{00041\ \ \ \ \ shared-\/>ref\_cnt++;}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ Data\&\ GetData()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ share-\/>data;\ \ \}}
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ EndEsdlNamespace()}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

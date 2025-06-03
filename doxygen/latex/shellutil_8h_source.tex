@@ -1,0 +1,68 @@
+\doxysection{shellutil.\+h}
+\hypertarget{shellutil_8h_source}{}\label{shellutil_8h_source}\index{repository/shellutil.h@{repository/shellutil.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_shellutil\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_shellutil\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00017\ \ \ fiDesktop\ =\ 1,}
+\DoxyCodeLine{00018\ \ \ fiStartMenu,}
+\DoxyCodeLine{00019\ \ \ fiPrograms,}
+\DoxyCodeLine{00020\ \ \ fiStartup,}
+\DoxyCodeLine{00021\ \ \ fiControls,}
+\DoxyCodeLine{00022\ \ \ fiProgramFiles,\ \textcolor{comment}{//\ returns\ Program\ Files\ native\ to\ the\ process\ x32\ vs\ x64}}
+\DoxyCodeLine{00023\ \ \ fiSysProgramFiles,\ \ \textcolor{comment}{//\ returns\ Program\ Files\ folder\ native\ to\ the\ system}}
+\DoxyCodeLine{00024\ \ \ fiMyDocuments,}
+\DoxyCodeLine{00025\ \ \ fiAppData,\ \ \ \ \textcolor{comment}{//\ returns\ application\ data\ folder\ for\ specific\ user}}
+\DoxyCodeLine{00026\ \ \ fiCommonStartMenu,}
+\DoxyCodeLine{00027\ \ \ fiCommonAppData,}
+\DoxyCodeLine{00028\ \ \ fiCommonPrograms,}
+\DoxyCodeLine{00029\ \ \ fiCommonDesktop}
+\DoxyCodeLine{00030\ \};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTShellUtil}{TShellUtil}}\ \ \{}
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ CreateShortcut(\textcolor{keyword}{const}\ olxstr\&\ ShortcutPath,}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ ObjectPath,\ \textcolor{keyword}{const}\ olxstr\&\ description,\ \textcolor{keywordtype}{bool}\ AddRunAs);}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ olxstr\ GetSpecialFolderLocation(\textcolor{keywordtype}{short}\ folderId);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{static}\ olxstr\ PickFolder(\textcolor{keyword}{const}\ olxstr\&\ Title,\ \textcolor{keyword}{const}\ olxstr\&\ SelectedFolder,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ RootFolder);}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{static}\ olxstr\ PickFile(\textcolor{keyword}{const}\ olxstr\&\ Title,\ \textcolor{keyword}{const}\ olxstr\ \&Filter,}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{bool}\ open=\textcolor{keyword}{false},}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ DefFolder=EmptyString(),}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&DefFile=EmptyString());}
+\DoxyCodeLine{00044\ \ \ \textcolor{comment}{//\ lists\ all\ interface\ names\ and\ related\ MAC\ addresses}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ TArrayList<unsigned\ char>}}\ >\ MACInfo;}
+\DoxyCodeLine{00046\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \_MACFromArray(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ bf,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name,}
+\DoxyCodeLine{00048\ \ \ \ \ MACInfo\&\ mi,\ \textcolor{keywordtype}{size\_t}\ len=6,\ \textcolor{keywordtype}{bool}\ accept\_empty=\textcolor{keyword}{false});}
+\DoxyCodeLine{00049\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ListMACAddresses(MACInfo\&\ rv);}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{static}\ olxstr\ QuoteArg(\textcolor{keyword}{const}\ olxstr\ \&a);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{static}\ olxstr\ GetCmdLineArgs(\textcolor{keyword}{const}\ olxstr\ \&fn,}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{bool}\ args=\textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ options=\textcolor{keyword}{false});}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ VerifyEmbeddedSignature(\textcolor{keyword}{const}\ olxstr\ \&file\_name);}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ olxstr\ GetFileVersion(\textcolor{keyword}{const}\ olxstr\ \&fn,}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&lang=\textcolor{stringliteral}{"{}080904E4"{}});}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ RunElevated(\textcolor{keyword}{const}\ olxstr\ \&fn,\ \textcolor{keyword}{const}\ olxstr\ \&args=EmptyString());}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsAdmin();}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

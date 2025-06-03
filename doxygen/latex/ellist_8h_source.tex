@@ -1,0 +1,88 @@
+\doxysection{ellist.\+h}
+\hypertarget{ellist_8h_source}{}\label{ellist_8h_source}\index{sdl/ellist.h@{sdl/ellist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{/*\ primitive\ directional\ lists,\ optimised\ for\ sequential\ access,\ the\ right}}
+\DoxyCodeLine{00011\ \textcolor{comment}{cleanup\ class\ must\ be\ chosen\ to\ avoid\ memory\ leaks!}}
+\DoxyCodeLine{00012\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_linked\_indexable\_list\_H}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_linked\_indexable\_list\_H}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}linked\_list.h"{}}}
+\DoxyCodeLine{00016\ BeginEsdlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ template\ <typename\ T,\ class\ cleanupClass=\mbox{\hyperlink{classDummyCleanup}{DummyCleanup}}>}
+\DoxyCodeLine{00019\ class\ TUDTypeList\ :\ public\ \mbox{\hyperlink{classTLinkedList}{TLinkedList}}<T,\ cleanupClass>\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTLinkedList}{TLinkedList<T,\ cleanupClass>}}\ parent\_t;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{size\_t}\ pos;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keyword}{typename}\ parent\_t::Entry*\ cur;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ TUDTypeList()\ :\ pos(InvalidIndex),\ cur(0)\ \{\}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{virtual}\ \string~TUDTypeList()\ \{\ Clear();\ \}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ parent\_t::Clear();}
+\DoxyCodeLine{00028\ \ \ \ \ cur\ =\ 0;}
+\DoxyCodeLine{00029\ \ \ \ \ pos\ =\ InvalidIndex;}
+\DoxyCodeLine{00030\ \ \ \}}
+\DoxyCodeLine{00031\ \ \ TUDTypeList\&\ Reset()\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ cur\ =\ 0;}
+\DoxyCodeLine{00033\ \ \ \ \ pos\ =\ InvalidIndex;}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \ \ T\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ >=\ parent\_t::count)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ TExceptionBase::ThrowFunctionFailed(\_\_POlxSourceInfo,\ \textcolor{stringliteral}{"{}invalid\ index"{}});}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\ ==\ (ind\ -\/\ 1))\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Next();}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ind\ ==\ 0)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ cur\ =\ parent\_t::first;}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ pos\ =\ 0;}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cur-\/>data;}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ pos\ =\ 0;}
+\DoxyCodeLine{00049\ \ \ \ \ cur\ =\ parent\_t::first;}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{while}\ (ind-\/-\/\ !=\ 1)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ cur\ =\ cur-\/>next;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ pos++;}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{return}\ cur-\/>data;}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ \ \ T\&\ Add(T\ v)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ pos++;}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ parent\_t::Add(v);}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{bool}\ HasNext()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ (cur\ ==\ 0\ ?\ parent\_t::first\ :\ cur-\/>next)\ !=\ 0;}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ T\&\ Next()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{if}\ (cur\ !=\ 0)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ cur\ =\ cur-\/>next;}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ cur\ =\ parent\_t::first;}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{if}\ (cur\ ==\ 0)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ TExceptionBase::ThrowFunctionFailed(\_\_POlxSourceInfo,\ \textcolor{stringliteral}{"{}end\ of\ the\ list"{}});}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ pos++;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{return}\ cur-\/>data;}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{typedef}\ T\ list\_item\_type;}
+\DoxyCodeLine{00079\ \};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ EndEsdlNamespace()}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

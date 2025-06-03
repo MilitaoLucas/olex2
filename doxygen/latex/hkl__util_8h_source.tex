@@ -1,0 +1,97 @@
+\doxysection{hkl\+\_\+util.\+h}
+\hypertarget{hkl__util_8h_source}{}\label{hkl__util_8h_source}\index{repository/hkl\_util.h@{repository/hkl\_util.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }hkl\_util\ \{}
+\DoxyCodeLine{00014\ \ \ \textcolor{keyword}{struct\ }Ref\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ vec3i\ hkl;}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{double}\ I,\ S;}
+\DoxyCodeLine{00017\ \ \ \ \ Ref(\textcolor{keywordtype}{int}\ h,\ \textcolor{keywordtype}{int}\ k,\ \textcolor{keywordtype}{int}\ l,\ \textcolor{keywordtype}{double}\ I,\ \textcolor{keywordtype}{double}\ S)}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ :\ hkl(h,\ k,\ l),}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ I(I),\ S(S)}
+\DoxyCodeLine{00020\ \ \ \ \ \{\}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ Ref(\textcolor{keywordtype}{double}\ I)}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ :\ I(I),\ S(0)}
+\DoxyCodeLine{00024\ \ \ \ \ \{\}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\&\ GetHKL()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ hkl;\ \}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{double}\ GetI()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ I;\ \}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{double}\ GetS()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ S;\ \}}
+\DoxyCodeLine{00029\ \ \ \};}
+\DoxyCodeLine{00030\ \ \ }
+\DoxyCodeLine{00031\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<Ref>}}\ str2ref(\textcolor{keyword}{const}\ olxcstr\&\ s);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ TTypeList<Ref>::const\_list\_type\ lines2refs(\textcolor{keyword}{const}\ TCStrList\&\ lines,}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ l\_len);}
+\DoxyCodeLine{00035\ \ \ }
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<olx\_pair\_t<double,\ size\_t>}}\ >\ fingerprint\_t;}
+\DoxyCodeLine{00037\ \ \ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ref\_list\_t>}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{typename}\ fingerprint\_t::const\_list\_type\ calc\_fingerprint(\textcolor{keyword}{const}\ ref\_list\_t\&\ refs,}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ fp\_len\ =\ 10)}
+\DoxyCodeLine{00041\ \ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<olx\_pair\_t<double,\ size\_t>}}\ >\ rv(olx\_reserve(fp\_len));}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{double}\ minI\ =\ 1e3,\ maxI\ =\ -\/1e-\/3;}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ refs.Count();\ i++)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ olx\_update\_min\_max(refs[i].GetI(),\ minI,\ maxI);}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ max(I/N)\ =\ N\ (-\/1)}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ max\_v\ =\ (int)(fp\_len\ *\ fp\_len)\ -\/\ 1;}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{double}\ range\ =\ maxI\ -\/\ minI,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ scale\ =\ max\_v\ /\ range;}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ fp\_len;\ i++)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ rv.AddNew(0,\ 0);}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ refs.Count();\ i++)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ I\ =\ (int)((refs[i].GetI()\ -\/\ minI)\ *\ scale);}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (I\ <\ 0)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ I\ =\ 0;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (I\ >\ max\_v)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ I\ =\ max\_v;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ idx\ =\ I\ /\ (int)fp\_len;}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ rv[idx].a\ +=\ I;}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ rv[idx].b++;}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{double}\ cnt\_scale\ =\ 10000.0\ /\ refs.Count();}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ rv.Count();\ i++)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ rv[i].a\ /=\ rv[i].b;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ rv[i].b\ =\ olx\_round(rv[i].b\ *\ cnt\_scale);}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ rv[i].a\ *=\ rv[i].b;}
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ }
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ fingerprint\_t::const\_list\_type\ calc\_fingerprint(\textcolor{keyword}{const}\ TCStrList\&\ lines,}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ l\_len,\ \textcolor{keywordtype}{size\_t}\ fp\_len\ =\ 10)}
+\DoxyCodeLine{00080\ \ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{return}\ calc\_fingerprint(lines2refs(lines,\ l\_len),\ fp\_len);}
+\DoxyCodeLine{00082\ \ \ \}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \textcolor{comment}{//\ computes\ sum(abs(f1.a/f1.b-\/f2.a/f2.b))/N,\ should\ be\ \string~0\ for\ matching\ fps}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{double}\ corelate(\textcolor{keyword}{const}\ fingerprint\_t\&\ f1,\ \textcolor{keyword}{const}\ fingerprint\_t\&\ f2);}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \textcolor{comment}{//\ use\_N\ -\/\ if\ to\ report\ the\ bin\ sizes}}
+\DoxyCodeLine{00088\ \ \ olxcstr\ fingerprint2str(\textcolor{keyword}{const}\ fingerprint\_t\ \&fp,\ \textcolor{keywordtype}{bool}\ use\_N\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00089\ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ }
+
+\end{DoxyCode}

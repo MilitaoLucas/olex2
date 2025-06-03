@@ -1,0 +1,67 @@
+\doxysection{gllightmodel.\+h}
+\hypertarget{gllightmodel_8h_source}{}\label{gllightmodel_8h_source}\index{glib/gllightmodel.h@{glib/gllightmodel.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_lightmodel\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_lightmodel\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}gllight.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}gloption.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00016\ BeginGlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ const\ \textcolor{keywordtype}{char}}
+\DoxyCodeLine{00019\ \ \ cglmLocalViewer\ \ =\ 0x01,\ \ \ \ \ \textcolor{comment}{//\ light\ model\ properties}}
+\DoxyCodeLine{00020\ \ \ cglmSmoothShade\ \ =\ 0x02,}
+\DoxyCodeLine{00021\ \ \ cglmTwoSide\ \ \ \ \ \ =\ 0x04,}
+\DoxyCodeLine{00022\ \ \ cglBack\ \ \ \ \ \ \ \ \ \ =\ 0x01,}
+\DoxyCodeLine{00023\ \ \ cglFront\ \ \ \ \ \ \ \ \ =\ 0x02;}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ class\ TGlLightModel:\ public\ AActionHandler\ \ \{}
+\DoxyCodeLine{00026\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{char}\ Flags;}
+\DoxyCodeLine{00028\ \ \ TGlOption\ ClearColor,\ AmbientColor;}
+\DoxyCodeLine{00029\ \ \ TGlLight\ Lights[8];}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)\ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ Init();}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ TGlLightModel();}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ Init();}
+\DoxyCodeLine{00037\ \ \ TGlLight\&\ GetLight(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Lights[i];\ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{const}\ TGlLight\&\ GetLight(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Lights[i];\ \}}
+\DoxyCodeLine{00039\ \ \ DefPropC(TGlOption,\ ClearColor)}
+\DoxyCodeLine{00040\ \ \ DefPropC(TGlOption,\ AmbientColor)}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ GetFlags()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Flags;\ \}}
+\DoxyCodeLine{00042\ \ \ DefPropBFIsSet(LocalViewer,\ Flags,\ cglmLocalViewer)}
+\DoxyCodeLine{00043\ \ \ DefPropBFIsSet(SmoothShade,\ Flags,\ cglmSmoothShade)}
+\DoxyCodeLine{00044\ \ \ DefPropBFIsSet(TwoSides,\ Flags,\ cglmTwoSide)}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ TGlLightModel\&\ operator\ =\ (TGlLightModel\ \&M);}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{bool}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item);}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ LibClearColor(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{void}\ LibAmbientColor(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ LibLocalViewer(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ LibSmoothShade(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ LibTwoSides(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00056\ \ \ \mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name=EmptyString());}
+\DoxyCodeLine{00057\ \};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ EndGlNamespace()}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

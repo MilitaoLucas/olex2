@@ -1,0 +1,134 @@
+\doxysection{bitarray.\+h}
+\hypertarget{bitarray_8h_source}{}\label{bitarray_8h_source}\index{sdl/bitarray.h@{sdl/bitarray.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_bitarray\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_bitarray\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}istream.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}constlist.h"{}}}
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ \mbox{\hyperlink{classConstBitArray}{ConstBitArray}};}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ class\ TEBitArray\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ FData;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{size\_t}\ FCount,\ FCharCount;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ TEBitArray();}
+\DoxyCodeLine{00024\ \ \ TEBitArray(\textcolor{keyword}{const}\ TEBitArray\&\ arr);}
+\DoxyCodeLine{00025\ \ \ TEBitArray(\textcolor{keywordtype}{size\_t}\ size);}
+\DoxyCodeLine{00026\ \ \ \textcolor{comment}{//\ if\ own\ is\ true,\ data\ [created\ with\ new!]\ will\ be\ deleted\ automatically}}
+\DoxyCodeLine{00027\ \ \ TEBitArray(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keywordtype}{bool}\ own);}
+\DoxyCodeLine{00028\ \ \ TEBitArray(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstBitArray}{ConstBitArray}}\&\ a);}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \string~TEBitArray()\ \{\ olx\_del\_arr(FData);\ \}}
+\DoxyCodeLine{00030\ \ \ TEBitArray\&\ TakeOver(TEBitArray\&\ l,\ \textcolor{keywordtype}{bool}\ do\_delete\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{void}\ SetSize(\textcolor{keywordtype}{size\_t}\ newSize);}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FCount;\ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FCount\ ==\ 0;\ \}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ intIndex\ =\ index\ /\ 8;}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ bitIndex\ =\ (size\_t)1\ <<\ index\ \%\ 8;}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00039\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ intIndex,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ 0,\ FCharCount);}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ (FData[intIndex]\ \&\ bitIndex)\ !=\ 0;}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{bool}\ Get(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ intIndex\ =\ index\ /\ 8;}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ bitIndex\ =\ (size\_t)1\ <<\ index\ \%\ 8;}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00048\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ intIndex,}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ 0,\ FCharCount);}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ (FData[intIndex]\ \&\ bitIndex)\ !=\ 0;}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keywordtype}{bool}\ v)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ intIndex\ =\ index\ /\ 8;}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ bitIndex\ =\ (size\_t)1\ <<\ index\ \%\ 8;}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00057\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ intIndex,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ 0,\ FCharCount);}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (!v)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ FData[intIndex]\ \&=\ \string~bitIndex;}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ FData[intIndex]\ |=\ bitIndex;}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetTrue(\textcolor{keywordtype}{size\_t}\ index)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ intIndex\ =\ index\ /\ 8;}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ bitIndex\ =\ (size\_t)1\ <<\ index\ \%\ 8;}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00071\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ intIndex,}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ 0,\ FCharCount);}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00074\ \ \ \ \ FData[intIndex]\ |=\ bitIndex;}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetFalse(\textcolor{keywordtype}{size\_t}\ index)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ intIndex\ =\ index\ /\ 8;}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ bitIndex\ =\ (size\_t)1\ <<\ index\ \%\ 8;}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00080\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ intIndex,}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ 0,\ FCharCount);}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00083\ \ \ \ \ FData[intIndex]\ \&=\ \string~bitIndex;}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{void}\ Swap(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ i\_v\ =\ Get(i);}
+\DoxyCodeLine{00087\ \ \ \ \ Set(i,\ Get(j));}
+\DoxyCodeLine{00088\ \ \ \ \ Set(j,\ i\_v);}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{void}\ SetAll(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ GetData()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FData;\ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ CharCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FCharCount;\ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{void}\ operator\ <<\ (\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ in);}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{void}\ operator\ >>\ (\mbox{\hyperlink{classIOutputStream}{IOutputStream}}\&\ out)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ TEBitArray\&\ operator\ =\ (\textcolor{keyword}{const}\ TEBitArray\&\ arr);}
+\DoxyCodeLine{00098\ \ \ TEBitArray\&\ operator\ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstBitArray}{ConstBitArray}}\&\ a);}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TEBitArray\&\ arr)\ \ \textcolor{keyword}{const};}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ TEBitArray\&\ arr)\ \ \textcolor{keyword}{const};}
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//\ base64\ based\ string\ +\ one\ char\ \{'0'+size\%8\}}}
+\DoxyCodeLine{00102\ \ \ olxstr\ ToBase64String()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{void}\ FromBase64String(\textcolor{keyword}{const}\ olxstr\&\ str);}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{virtual}\ TIString\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00106\ \ \ olxstr\ FormatString(uint16\_t\ bitsInSegment)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{size\_t}\ CountTrue()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classConstBitArray}{ConstBitArray}}\ const\_type;}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{bool}\ list\_item\_type;}
+\DoxyCodeLine{00111\ \};}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{keyword}{class\ }ConstBitArray\ :\ \textcolor{keyword}{public}\ const\_list<TEBitArray>\ \{}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{typedef}\ const\_list<TEBitArray>\ parent\_t;}
+\DoxyCodeLine{00115\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00116\ \ \ ConstBitArray(\textcolor{keyword}{const}\ ConstBitArray\&\ l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00117\ \ \ ConstBitArray(\mbox{\hyperlink{classTEBitArray}{TEBitArray}}*\ arr)\ :\ parent\_t(arr)\ \{\}}
+\DoxyCodeLine{00118\ \ \ ConstBitArray(\mbox{\hyperlink{classTEBitArray}{TEBitArray}}\&\ arr)\ :\ parent\_t(arr)\ \{\}}
+\DoxyCodeLine{00119\ \ \ ConstBitArray\&\ operator\ =\ (\textcolor{keyword}{const}\ ConstBitArray\&\ l)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{bool}\ list\_item\_type;}
+\DoxyCodeLine{00125\ \};}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ EndEsdlNamespace()}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

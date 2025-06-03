@@ -1,0 +1,136 @@
+\doxysection{groupobj.\+h}
+\hypertarget{groupobj_8h_source}{}\label{groupobj_8h_source}\index{sdl/groupobj.h@{sdl/groupobj.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_groupobj\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_groupobj\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#undef\ GetObject}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#undef\ AddObject}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginEsdlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ class\ \mbox{\hyperlink{classAGroupObject}{AGroupObject}};}
+\DoxyCodeLine{00020\ class\ \mbox{\hyperlink{classTObjectGroup}{TObjectGroup}};}
+\DoxyCodeLine{00021\ class\ \mbox{\hyperlink{classAGOProperties}{AGOProperties}};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ class\ AGOProperties\ \ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{size\_t}\ ObjectGroupId;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{void}\ SetObjectGroupId(\textcolor{keywordtype}{size\_t}\ val)\ \{\ \ ObjectGroupId\ =\ val;\ \ \}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00027\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<AGroupObject>}}\ Objects;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{size\_t}\ GetObjectGroupId()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ObjectGroupId;\ \ \}}
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ AGOProperties()\ :\ ObjectGroupId(InvalidIndex)\ \{\}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{explicit}\ AGOProperties(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\ \&cap)}
+\DoxyCodeLine{00032\ \ \ \ \ :\ ObjectGroupId(InvalidIndex),}
+\DoxyCodeLine{00033\ \ \ \ \ Objects(cap)}
+\DoxyCodeLine{00034\ \ \ \{\}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \string~AGOProperties()\ \{\}}
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{//\ adds\ an\ object\ (reference\ or\ a\ pointer)\ to\ the\ group\ and\ returns\ it}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AGO>}
+\DoxyCodeLine{00038\ \ \ \mbox{\hyperlink{classAGroupObject}{AGroupObject}}\&\ AddObject(AGO\&\ O)\ \ \{\ \ \textcolor{keywordflow}{return}\ *Objects.Add(O);\ \}}
+\DoxyCodeLine{00039\ \ \ \mbox{\hyperlink{classAGroupObject}{AGroupObject}}\&\ GetObject(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ *Objects[index];}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{size\_t}\ ObjectCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Objects.Count();\ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//\ removes\ an\ object\ reference\ or\ a\ pointer}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AGO>\ \textcolor{keywordtype}{void}\ RemoveObject(\textcolor{keyword}{const}\ AGO\&\ GO)\ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index\ =\ Objects.IndexOf(GO);}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{if}(\ index\ !=\ InvalidIndex\ )}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ Objects.Delete(index);}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ ClearObjects()\ \ \{\ \ Objects.Clear();\ \ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ SetObjectCapacity(\textcolor{keywordtype}{size\_t}\ cap)\ \ \{\ \ Objects.SetCapacity(cap);\ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ SetObjectIncrement(\textcolor{keywordtype}{size\_t}\ inc)\ \{\ \ Objects.GetCapacity().inc\ =\ inc;\ \ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ AGOProperties\&\ C)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{virtual}\ AGOProperties\&\ operator\ =\ (\textcolor{keyword}{const}\ AGOProperties\&\ C)\ =\ 0;}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TObjectGroup;\ \textcolor{comment}{//\ to\ modify\ the\ ObjectGroupId}}
+\DoxyCodeLine{00057\ \};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{class\ }AGroupObject:\ \textcolor{keyword}{public}\ ACollectionItem\ \ \{}
+\DoxyCodeLine{00060\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00061\ \ \ TObjectGroup\&\ Parent;}
+\DoxyCodeLine{00062\ \ \ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}*\ Properties;}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TObjectGroup;}
+\DoxyCodeLine{00064\ \ \ \textcolor{comment}{//\ the\ function\ is\ used\ to\ create\ a\ new\ instance\ of\ the\ properties}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}*\ NewProperties()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00066\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00067\ \ \ AGroupObject(TObjectGroup\&\ parent)\ :\ Parent(parent),\ Properties(NULL)\ \{\ \}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{virtual}\ \string~AGroupObject()\ \ \{\ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{comment}{/*\ this\ should\ be\ used\ carefull\ -\/\ any\ change\ will\ affect\ all\ objects\ of\ the}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ \ group!}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00072\ \ \ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}\&\ GetProperties()\ \{\ \textcolor{keywordflow}{return}\ *Properties;\ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}\&\ GetProperties()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Properties;\ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{/*\ a\ copy\ of\ C\ is\ created\ and\ returned\ if\ the\ property\ does\ not\ exists}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ \ \ otherwise\ a\ pointer\ to\ existing\ property\ is\ returned}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}\&\ SetProperties(\textcolor{keyword}{const}\ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}\&\ C);}
+\DoxyCodeLine{00078\ \};}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{keyword}{class\ }TObjectGroup:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00081\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00082\ \ \ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}*\ FindProps(\textcolor{keyword}{const}\ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}\&\ C);}
+\DoxyCodeLine{00083\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<AGroupObject>}}\ Objects;}
+\DoxyCodeLine{00084\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<AGOProperties>}}\ Props;}
+\DoxyCodeLine{00085\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00086\ \ \ TObjectGroup();}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{virtual}\ \string~TObjectGroup()\ \{\ \}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AGO>}
+\DoxyCodeLine{00090\ \ \ \mbox{\hyperlink{classAGroupObject}{AGroupObject}}\&\ AddObject(AGO\ \textcolor{keyword}{const}\&\ O)\ \ \{\ \ \textcolor{keywordflow}{return}\ *Objects.Add(O);\ \ \}}
+\DoxyCodeLine{00091\ \ \ \mbox{\hyperlink{classAGroupObject}{AGroupObject}}\&\ GetObject(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Objects[index];\ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{comment}{//\ access\ to\ the\ lists}}
+\DoxyCodeLine{00093\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<AGroupObject>}}\&\ GetObjects()\ \ \{\ \ \textcolor{keywordflow}{return}\ Objects;\ \ \}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AGroupObject>}}\&\ GetObjects()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Objects;\ \ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AGOProperties>}}\&\ GetProperties()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Props;\ \ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{size\_t}\ ObjectCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Objects.Count();\ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AGO>\ \ \textcolor{keywordtype}{size\_t}\ IndexOfObject(\textcolor{keyword}{const}\ AGO\&\ G)\ \ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ Objects.IndexOf(G);}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{comment}{/*\ used\ to\ remove\ objects\ form\ the\ collection;\ if\ an\ object-\/>Tag\ ==Tag,\ it\ is}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ \ removed}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{void}\ RemoveObjectsByTag(\textcolor{keywordtype}{int}\ Tag);}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}\&\ GetProperties(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Props[index];\ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{size\_t}\ PropertiesCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Props.Count();\ \}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AGP>}
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOfProperties(\textcolor{keyword}{const}\ AGP\&\ P)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Props.IndexOf(P);\ \}}
+\DoxyCodeLine{00110\ \ \ \textcolor{comment}{//\ creates\ new\ properties\ if\ required,\ alwasy\ returns\ a\ valid\ pointer}}
+\DoxyCodeLine{00111\ \ \ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}*\ NewProps(\mbox{\hyperlink{classAGroupObject}{AGroupObject}}\&\ Sender,\ \textcolor{comment}{//\ the\ sender}}
+\DoxyCodeLine{00112\ \ \ \ \ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}\ *OldProps,\ \textcolor{comment}{//\ senders\ old\ properties}}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classAGOProperties}{AGOProperties}}\&\ NewProps);\ \ \textcolor{comment}{//the\ properties\ to\ set}}
+\DoxyCodeLine{00114\ \};}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{comment}{//\ helper\ class\ to\ avoid\ casts\ (well,\ too\ many\ of\ them)}}
+\DoxyCodeLine{00117\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ PC,\ \textcolor{keyword}{class}\ OC>\ \ \textcolor{comment}{//\ property\ class,\ object\ class}}
+\DoxyCodeLine{00118\ \textcolor{keyword}{class\ }ObjectGroup\ :\ \textcolor{keyword}{public}\ TObjectGroup\ \{}
+\DoxyCodeLine{00119\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00120\ \ \ ObjectGroup()\ \{\ \}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{virtual}\ \string~ObjectGroup()\ \{\ \}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AGO>\ OC\&\ AddObject(AGO\ \textcolor{keyword}{const}\&\ O)\ \ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{return}\ *(OC*)Objects.Add(O);}
+\DoxyCodeLine{00124\ \ \ \}}
+\DoxyCodeLine{00125\ \ \ OC\&\ GetObject(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *(OC*)Objects[index];\ \}}
+\DoxyCodeLine{00126\ \ \ PC\&\ GetProperties(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *(PC*)Props[index];\ \}}
+\DoxyCodeLine{00127\ \};}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ EndEsdlNamespace()}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

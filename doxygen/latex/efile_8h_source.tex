@@ -1,0 +1,390 @@
+\doxysection{efile.\+h}
+\hypertarget{efile_8h_source}{}\label{efile_8h_source}\index{sdl/efile.h@{sdl/efile.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_file\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_file\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}efilelist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}datastream.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}wildcard.h"{}}}
+\DoxyCodeLine{00017\ BeginEsdlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ search\ flags}}
+\DoxyCodeLine{00020\ const\ uint16\_t}
+\DoxyCodeLine{00021\ \ \ sefFile\ =\ 0x0001,}
+\DoxyCodeLine{00022\ \ \ sefDir\ \ \ \ \ \ \ =\ 0x0002,}
+\DoxyCodeLine{00023\ \ \ sefRelDir\ \ \ \ =\ 0x0004,\ \ \textcolor{comment}{//\ "{}."{}\ and\ "{}.."{}\ folders}}
+\DoxyCodeLine{00024\ \ \ sefAllDir\ \ \ \ =\ sefDir\ |\ sefRelDir,}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ sefReadOnly\ \ =\ 0x0100,}
+\DoxyCodeLine{00027\ \ \ sefWriteOnly\ =\ 0x0200,}
+\DoxyCodeLine{00028\ \ \ sefReadWrite\ =\ sefReadOnly\ |\ sefWriteOnly,}
+\DoxyCodeLine{00029\ \ \ sefExecute\ \ \ =\ 0x0400,}
+\DoxyCodeLine{00030\ \ \ sefHidden\ \ \ \ =\ 0x0800,}
+\DoxyCodeLine{00031\ \ \ sefSystem\ \ \ \ =\ 0x1000,}
+\DoxyCodeLine{00032\ \ \ sefRegular\ \ \ =\ sefReadWrite\ |\ sefExecute,}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ sefAll\ \ \ \ \ \ \ =\ 0xFFFF;}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ seek\ constants}}
+\DoxyCodeLine{00037\ const\ \textcolor{keywordtype}{int}}
+\DoxyCodeLine{00038\ \ \ sfStart\ \ \ =\ SEEK\_SET,}
+\DoxyCodeLine{00039\ \ \ sfCurrent\ =\ SEEK\_CUR,}
+\DoxyCodeLine{00040\ \ \ sfEnd\ \ \ \ \ =\ SEEK\_END;}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ file\ open\ attributes}}
+\DoxyCodeLine{00042\ const\ uint16\_t}
+\DoxyCodeLine{00043\ \ \ fofText\ \ \ =\ 0x0001,}
+\DoxyCodeLine{00044\ \ \ fofBinary\ =\ 0x0002,}
+\DoxyCodeLine{00045\ \ \ fofWrite\ \ =\ 0x0004,}
+\DoxyCodeLine{00046\ \ \ fofRead\ \ \ =\ 0x0008,}
+\DoxyCodeLine{00047\ \ \ fofAppend\ =\ 0x0010,}
+\DoxyCodeLine{00048\ \ \ fofCreate\ =\ 0x0020,}
+\DoxyCodeLine{00049\ \ \ fofReadWrite\ =\ 0x000C;}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ access\ check\ constants,\ POSIX\ values}}
+\DoxyCodeLine{00051\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00052\ \ \ accessExists\ =\ 0x0000,}
+\DoxyCodeLine{00053\ \ \ accessExec\ \ \ =\ 0x0001,}
+\DoxyCodeLine{00054\ \ \ accessWrite\ \ =\ 0x0002,}
+\DoxyCodeLine{00055\ \ \ accessRead\ \ \ =\ 0x0004;}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ class\ TEFile:\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}},\ public\ \mbox{\hyperlink{classIDataInputStream}{IDataInputStream}},}
+\DoxyCodeLine{00058\ \ \ public\ \mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}}
+\DoxyCodeLine{00059\ \{}
+\DoxyCodeLine{00060\ \ \ FILE\ *FHandle;}
+\DoxyCodeLine{00061\ \ \ olxstr\ FName;}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{bool}\ Temporary;\ \textcolor{comment}{//tmpnam\ or\ tmpfile\ to\ use}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ CheckHandle()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00064\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00065\ \ \ TEFile(\textcolor{keyword}{const}\ olxstr\&\ name,\ FILE*\ handle)\ \ \{\ \ \textcolor{comment}{//\ a\ temporary\ file}}
+\DoxyCodeLine{00066\ \ \ \ \ FName\ =\ name;}
+\DoxyCodeLine{00067\ \ \ \ \ FHandle\ =\ handle;}
+\DoxyCodeLine{00068\ \ \ \ \ Temporary\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//\ class\ for\ filtering\ files\ by\ mask.}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{class\ }TFileNameMask\ :\ \textcolor{keyword}{public}\ Wildcard\ \{}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00074\ \ \ \ \ TFileNameMask()\ \{\}}
+\DoxyCodeLine{00075\ \ \ \ \ TFileNameMask(\textcolor{keyword}{const}\ olxstr\&\ msk)\ :\ Wildcard(msk)\ \{\}}
+\DoxyCodeLine{00076\ \ \ \};}
+\DoxyCodeLine{00077\ \ \ \textcolor{comment}{//\ a\ simple\ file\ ID,\ validates\ file\ by\ modification\ time,\ name\ and\ the\ size..}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{struct\ }FileID\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ olxstr\ name;}
+\DoxyCodeLine{00080\ \ \ \ \ uint64\_t\ size;}
+\DoxyCodeLine{00081\ \ \ \ \ time\_t\ timestamp;}
+\DoxyCodeLine{00082\ \ \ \ \ FileID()\ :\ size(InvalidSize),\ timestamp(-\/1)\ \{\}}
+\DoxyCodeLine{00083\ \ \ \ \ FileID(\textcolor{keyword}{const}\ olxstr\&\ \_name,\ uint64\_t\ \_size,\ time\_t\ \_timestamp)}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ :\ name(\_name),\ size(\_size),\ timestamp(\_timestamp)\ \{\}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{comment}{//\ comparison\ operator}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ FileID\&\ fi)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (timestamp\ ==\ fi.timestamp\ \&\&\ size\ ==\ fi.size\ \&\&\ name\ ==\ fi.name);}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ comparison\ operator}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ FileID\&\ fi)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ fi);\ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{comment}{//\ assignment\ operator}}
+\DoxyCodeLine{00092\ \ \ \ \ FileID\&\ operator\ =\ (\textcolor{keyword}{const}\ FileID\&\ fi)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ name\ =\ fi.name;}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ size\ =\ fi.size;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ timestamp\ =\ fi.timestamp;}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \};}
+\DoxyCodeLine{00099\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{struct\ }MaskAssociation\ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \mbox{\hyperlink{classTEFile_1_1TFileNameMask}{TEFile::TFileNameMask}}\ ExtMask,\ NameMask;}
+\DoxyCodeLine{00102\ \ \ \ \ MaskAssociation(\textcolor{keyword}{const}\ olxstr\&\ fn)\ \ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{comment}{//\ yet\ another\ special\ case...}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ fn.Length()\ ==\ 1\ \&\&\ fn.CharAt(0)\ ==\ \textcolor{charliteral}{'*'}\ )\ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ ExtMask.Build(\textcolor{charliteral}{'*'});}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ NameMask.Build(\textcolor{charliteral}{'*'});}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ olxstr\ ext\ =\ TEFile::ExtractFileExt(\ fn\ );}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{comment}{//\ special\ case\ when\ "{}name*"{}\ is\ specified\ -\/\ the\ extension\ can\ be\ any...}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ext.IsEmpty()\ \&\&\ !fn.EndsWith(\textcolor{charliteral}{'.'})\ \&\&\ fn.EndsWith(\textcolor{charliteral}{'*'})\ )}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ ExtMask.Build(\textcolor{charliteral}{'*'});}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ ExtMask.Build(ext);}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ NameMask.Build(}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ fn.SubStringTo(fn.Length()\ -\/\ ext.Length()\ -\/\ (ext.IsEmpty()\ ?\ 0\ :\ 1)));}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \};}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<MaskAssociation>}}\ MaskList;}
+\DoxyCodeLine{00120\ \ \ \textcolor{comment}{/*\ validates\ if\ given\ file\ name\ matches\ any\ of\ the\ provided\ masks\ buidl\ by}}
+\DoxyCodeLine{00121\ \textcolor{comment}{\ \ BuildMaskList}}
+\DoxyCodeLine{00122\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DoesMatchMasks(\textcolor{keyword}{const}\ olxstr\&\ fn,\ \textcolor{keyword}{const}\ MaskList\&\ masks);}
+\DoxyCodeLine{00124\ \ \ \textcolor{comment}{/*\ used\ to\ build\ masks\ (\ ans\ association\ of\ mask\ by\ name\ and\ extension)\ from}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ \ a\ semicolon\ separated\ string\ of\ masks}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ BuildMaskList(\textcolor{keyword}{const}\ olxstr\&\ mask,\ MaskList\&\ out);}
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{//\ a\ convinience,\ const,\ function}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{void}\ \_seek(uint64\_t\ off,\ \textcolor{keywordtype}{int}\ origin)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00130\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00131\ \ \ TEFile();}
+\DoxyCodeLine{00132\ \ \ TEFile(\textcolor{keyword}{const}\ olxstr\&\ F,\ \textcolor{keyword}{const}\ olxstr\&\ Attribs);}
+\DoxyCodeLine{00133\ \ \ TEFile(\textcolor{keyword}{const}\ olxstr\&\ F,\ \textcolor{keywordtype}{short}\ Attribs);}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{virtual}\ \string~TEFile();}
+\DoxyCodeLine{00135\ \ \ \textcolor{keywordtype}{bool}\ Open(\textcolor{keyword}{const}\ olxstr\&\ F,\ \textcolor{keyword}{const}\ olxstr\&\ Attribs);}
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{/*\ closes\ the\ file,\ if\ was\ open\ -\/\ returns\ true,\ might\ throw\ an\ exception\ if}}
+\DoxyCodeLine{00137\ \textcolor{comment}{\ \ fclose\ failed}}
+\DoxyCodeLine{00138\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Close();}
+\DoxyCodeLine{00140\ \ \ uint64\_t\ Length()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Flush();}
+\DoxyCodeLine{00142\ \ \ FILE*\ Handle()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FHandle;\ \ \}}
+\DoxyCodeLine{00143\ \ \ FILE*\ ReleaseHandle()\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ FILE*\ rv\ =\ FHandle;}
+\DoxyCodeLine{00145\ \ \ \ \ FHandle\ =\ 0;}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keywordtype}{int}\ FileNo()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{if}\ (FHandle\ ==\ 0)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}NULL\ handle"{}});}
+\DoxyCodeLine{00151\ \ \ \ \ \}}
+\DoxyCodeLine{00152\ \textcolor{preprocessor}{\#ifdef\ \_MSC\_VER}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{return}\ \_fileno(FHandle);}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{return}\ fileno(FHandle);}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Read(\textcolor{keywordtype}{void}\ *Bf,\ \textcolor{keywordtype}{size\_t}\ count);}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *Bf,\ \textcolor{keywordtype}{size\_t}\ count);}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ T\&\ data)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{return}\ IDataOutputStream::Write(data);}
+\DoxyCodeLine{00162\ \ \ \}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{inline}\ uint64\_t\ GetSize()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Length();\ \ \}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetPosition(uint64\_t\ p);}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{virtual}\ uint64\_t\ GetPosition()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00167\ \ \ \textcolor{keywordtype}{size\_t}\ GetAvailableSizeT(\textcolor{keywordtype}{bool}\ do\_throw=\textcolor{keyword}{true})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordflow}{return}\ ((\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}*)\textcolor{keyword}{this})-\/>GetAvailableSizeT(do\_throw);}
+\DoxyCodeLine{00169\ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FName;\ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ closes\ the\ file\ handle\ and\ deletes\ the\ file}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordtype}{bool}\ Delete();}
+\DoxyCodeLine{00173\ \ \ \textcolor{comment}{/*\ temporary\ file\ will\ be\ deleted\ on\ close,\ if\ fails\ -\/\ exception\ will\ be}}
+\DoxyCodeLine{00174\ \textcolor{comment}{\ \ thrown}}
+\DoxyCodeLine{00175\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00176\ \ \ DefPropBIsSet(Temporary)}
+\DoxyCodeLine{00177\ \ \ \textcolor{comment}{//\ tests\ one\ or\ several\ of\ the\ accessXXXX\ flags}}
+\DoxyCodeLine{00178\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Access(\textcolor{keyword}{const}\ olxstr\&\ F,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ Flags);}
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{//\ uses\ access,\ so\ is\ case\ sensitive,\ works\ for\ both\ dirs\ and\ files}}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Exists(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00181\ \ \ \textcolor{comment}{//\ just\ a\ wrapper\ for\ chmod...}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Chmod(\textcolor{keyword}{const}\ olxstr\&\ f,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ Flags);}
+\DoxyCodeLine{00183\ \ \ \textcolor{comment}{/*\ a\ case\ insensitive\ alternative\ (for\ windows\ -\/\ same\ as\ above)}}
+\DoxyCodeLine{00184\ \textcolor{comment}{\ \ \ \ the\ case\ sensitive\ name\ is\ stored\ in\ res\ (the\ first\ one\ if\ there}}
+\DoxyCodeLine{00185\ \textcolor{comment}{\ \ \ \ are\ several\ file\ names\ matching}}
+\DoxyCodeLine{00186\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00187\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Existsi(\textcolor{keyword}{const}\ olxstr\&\ F,\ olxstr\&\ res);}
+\DoxyCodeLine{00188\ \ \ \textcolor{comment}{//\ deletes\ the\ file\ and\ returns\ true\ on\ success}}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DelFile(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//\ returns\ true\ if\ the\ name\ refers\ to\ a\ folder}}
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsDir(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00192\ \ \ \textcolor{comment}{//\ deletes\ the\ folder\ if\ empty\ and\ returns\ true\ on\ succsess}}
+\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ RmDir(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00194\ \ \ \textcolor{comment}{/*\ deletes\ the\ folder\ recursively,\ returns\ true\ on\ success,\ false\ if\ the\ name}}
+\DoxyCodeLine{00195\ \textcolor{comment}{\ \ is\ a\ file\ or\ the\ deletion\ was\ not\ successful.\ If\ ContentOnly\ is\ provided\ -\/}}
+\DoxyCodeLine{00196\ \textcolor{comment}{\ \ the\ top\ dir\ is\ not\ deleted.\ Returns\ true\ on\ success\ and\ false\ if\ an\ error\ has}}
+\DoxyCodeLine{00197\ \textcolor{comment}{\ \ occured.\ If\ rethrow\ is\ true\ and\ an\ exception\ occurs\ -\/\ it\ will\ be\ rethrown,}}
+\DoxyCodeLine{00198\ \textcolor{comment}{\ \ use\ this\ flag\ to\ get\ the\ details\ of\ the\ error}}
+\DoxyCodeLine{00199\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DeleteDir(\textcolor{keyword}{const}\ olxstr\&\ F,\ \textcolor{keywordtype}{bool}\ ContentOnly=\textcolor{keyword}{false},}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordtype}{bool}\ rethrow=\textcolor{keyword}{false});}
+\DoxyCodeLine{00202\ \ \ \textcolor{comment}{/*\ checks\ if\ the\ folder\ is\ empty,\ in\ case\ of\ error\ (non\ existing\ dir\ etc)}}
+\DoxyCodeLine{00203\ \textcolor{comment}{\ \ returns\ false}}
+\DoxyCodeLine{00204\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00205\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsEmptyDir(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00206\ \ \ \textcolor{comment}{//\ returns\ file\ drive\ on\ windows\ ans\ empty\ string\ for\ other\ platforms}}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{static}\ olxstr\ ExtractFileDrive(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{static}\ olxstr\ ExtractFilePath(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{static}\ olxstr\ ParentDir(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00210\ \ \ \textcolor{keyword}{static}\ olxstr\ ExtractFileExt(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{static}\ olxstr\ ExtractFileName(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00212\ \ \ \textcolor{keyword}{static}\ olxstr\ ChangeFileExt(\textcolor{keyword}{const}\ olxstr\&\ F,\ \textcolor{keyword}{const}\ olxstr\&\ Extension);}
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ListCurrentDirEx(TFileList\&\ Out,\ \textcolor{keyword}{const}\ olxstr\&\ Mask,}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ searchFlags);}
+\DoxyCodeLine{00215\ \ \ \textcolor{keyword}{static}\ TFileList::const\_list\_type\ ListCurrentDirEx(\textcolor{keyword}{const}\ olxstr\&\ Mask,}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ searchFlags)}
+\DoxyCodeLine{00217\ \ \ \{}
+\DoxyCodeLine{00218\ \ \ \ \ TFileList\ l;}
+\DoxyCodeLine{00219\ \ \ \ \ ListCurrentDirEx(l,\ Mask,\ searchFlags);}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{return}\ l;}
+\DoxyCodeLine{00221\ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ListDirEx(\textcolor{keyword}{const}\ olxstr\&\ dir,\ TFileList\&\ Out,\ \textcolor{keyword}{const}\ olxstr\&\ Mask,}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ searchFlags);}
+\DoxyCodeLine{00224\ \ \ \textcolor{keyword}{static}\ TFileList::const\_list\_type\ ListDirEx(\textcolor{keyword}{const}\ olxstr\&\ dir,}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ Mask,\ \textcolor{keyword}{const}\ uint16\_t\ searchFlags)}
+\DoxyCodeLine{00226\ \ \ \{}
+\DoxyCodeLine{00227\ \ \ \ \ TFileList\ l;}
+\DoxyCodeLine{00228\ \ \ \ \ ListDirEx(dir,\ l,\ Mask,\ searchFlags);}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordflow}{return}\ l;}
+\DoxyCodeLine{00230\ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ListCurrentDir(TStrList\&\ Out,\ \textcolor{keyword}{const}\ olxstr\&\ Mask,}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ searchFlags);}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{static}\ TStrList::const\_list\_type\ ListCurrentDir(\textcolor{keyword}{const}\ olxstr\&\ Mask,}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ searchFlags)}
+\DoxyCodeLine{00235\ \ \ \{}
+\DoxyCodeLine{00236\ \ \ \ \ TStrList\ l;}
+\DoxyCodeLine{00237\ \ \ \ \ ListCurrentDir(l,\ Mask,\ searchFlags);}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ l;}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ListDir(\textcolor{keyword}{const}\ olxstr\&\ dir,\ TStrList\&\ Out,\ \textcolor{keyword}{const}\ olxstr\&\ Mask,}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t\ searchFlags);}
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{static}\ TStrList::const\_list\_type\ ListDir(\textcolor{keyword}{const}\ olxstr\&\ dir,}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ Mask,\ \textcolor{keyword}{const}\ uint16\_t\ searchFlags)}
+\DoxyCodeLine{00244\ \ \ \{}
+\DoxyCodeLine{00245\ \ \ \ \ TStrList\ l;}
+\DoxyCodeLine{00246\ \ \ \ \ ListDir(dir,\ l,\ Mask,\ searchFlags);}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{return}\ l;}
+\DoxyCodeLine{00248\ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ChangeDir(\textcolor{keyword}{const}\ olxstr\&\ To);}
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ MakeDir(\textcolor{keyword}{const}\ olxstr\&\ Name);}
+\DoxyCodeLine{00251\ \ \ \textcolor{comment}{//\ the\ function\ forces\ the\ creation\ of\ all\ dirs\ upto\ the\ last\ one}}
+\DoxyCodeLine{00252\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ MakeDirs(\textcolor{keyword}{const}\ olxstr\&\ Name);}
+\DoxyCodeLine{00253\ \ \ \textcolor{keyword}{static}\ olxstr\ CurrentDir();}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{static}\ olxstr\ OSPath(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00255\ \ \ \textcolor{keyword}{static}\ olxstr\&\ OSPathI(olxstr\&\ F);}
+\DoxyCodeLine{00256\ \ \ \textcolor{keyword}{static}\ olxstr\ WinPath(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{static}\ olxstr\ UnixPath(\textcolor{keyword}{const}\ olxstr\&\ F);}
+\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{static}\ olxstr\&\ WinPathI(olxstr\&\ F);}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{static}\ olxstr\&\ UnixPathI(olxstr\&\ F);}
+\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{static}\ olxstr\ AddPathDelimeter(\textcolor{keyword}{const}\ olxstr\&\ Path);}
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{static}\ olxstr\&\ AddPathDelimeterI(olxstr\&\ Path);}
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{static}\ olxstr\ TrimPathDelimeter(\textcolor{keyword}{const}\ olxstr\&\ Path);}
+\DoxyCodeLine{00263\ \ \ \textcolor{keyword}{static}\ olxstr\&\ TrimPathDelimeterI(olxstr\&\ Path);}
+\DoxyCodeLine{00264\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsAbsolutePath(\textcolor{keyword}{const}\ olxstr\&\ Path);}
+\DoxyCodeLine{00265\ \ \ \textcolor{keyword}{static}\ olxstr\ JoinPath(\textcolor{keyword}{const}\ IStrList\ \&l);}
+\DoxyCodeLine{00266\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{char}\ GetPathDelimeter()\ \{}
+\DoxyCodeLine{00267\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{charliteral}{'\(\backslash\)\(\backslash\)'};}
+\DoxyCodeLine{00269\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{charliteral}{'/'};}
+\DoxyCodeLine{00271\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00272\ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \textcolor{comment}{/*\ copies\ a\ file,\ use\ overwrite\ option\ to\ modify\ the\ behaviour,\ if\ overwrite}}
+\DoxyCodeLine{00274\ \textcolor{comment}{\ \ is\ false\ and\ file\ exists\ the\ return\ value\ is\ false}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00276\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Copy(\textcolor{keyword}{const}\ olxstr\&\ From,\ \textcolor{keyword}{const}\ olxstr\&\ to,}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordtype}{bool}\ overwrite=\textcolor{keyword}{true});}
+\DoxyCodeLine{00278\ \ \ \textcolor{comment}{/*\ renames\ a\ file,\ if\ the\ file\ with\ 'to'\ name\ exists,\ behaves\ according\ to}}
+\DoxyCodeLine{00279\ \textcolor{comment}{\ \ the\ overwrite\ flag}}
+\DoxyCodeLine{00280\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00281\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Rename(\textcolor{keyword}{const}\ olxstr\&\ from,\ \textcolor{keyword}{const}\ olxstr\&\ to,}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordtype}{bool}\ overwrite=\textcolor{keyword}{true});}
+\DoxyCodeLine{00283\ \ \ \textcolor{comment}{/*\ works\ by\ creating\ a\ 'random'\ directory\ inside\ one\ folder\ and\ checking\ if}}
+\DoxyCodeLine{00284\ \textcolor{comment}{\ \ it\ is\ in\ the\ other...\ If\ the\ function\ fails\ to\ create\ the\ test\ folder\ it}}
+\DoxyCodeLine{00285\ \textcolor{comment}{\ \ returns\ false}}
+\DoxyCodeLine{00286\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00287\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsSameFolder(\textcolor{keyword}{const}\ olxstr\&\ f1,\ \textcolor{keyword}{const}\ olxstr\&\ f2);}
+\DoxyCodeLine{00288\ \ \ \textcolor{comment}{//\ a\ weak\ function\ -\/\ makes\ the\ decision\ only\ on\ the\ name...}}
+\DoxyCodeLine{00289\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsSubFolder(\textcolor{keyword}{const}\ olxstr\&\ which,\ \textcolor{keyword}{const}\ olxstr\&\ in\_what);}
+\DoxyCodeLine{00290\ \ \ \textcolor{comment}{/*\ works\ for\ windows\ only,\ for\ other\ operation\ systems\ return\ LocalFN}}
+\DoxyCodeLine{00291\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00292\ \ \ \textcolor{keyword}{static}\ olxstr\ UNCFileName(\textcolor{keyword}{const}\ olxstr\&\ LocalFN);}
+\DoxyCodeLine{00293\ \ \ \textcolor{comment}{/*\ return\ absolute\ path\ constructued\ from\ a\ relative\ path\ and\ a\ base\ so\ for}}
+\DoxyCodeLine{00294\ \textcolor{comment}{\ \ "{}.."{}\ and\ "{}c:/windows/win32"{}\ return\ "{}c:/windows"{}.\ If\ path\ does\ not\ start\ from}}
+\DoxyCodeLine{00295\ \textcolor{comment}{\ \ "{}."{}\ or\ "{}..\ "{}\ thr\ normalised\ original\ is\ returned.\ If\ base\ is\ empty,\ it\ is}}
+\DoxyCodeLine{00296\ \textcolor{comment}{\ \ assumed\ to\ be\ TBasicApp::GetBaseDir().\ Fro\ empty\ path\ path\ is\ returned}}
+\DoxyCodeLine{00297\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{static}\ olxstr\ ExpandRelativePath(\textcolor{keyword}{const}\ olxstr\&\ path,}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ base=EmptyString());}
+\DoxyCodeLine{00300\ \ \ \textcolor{comment}{/*\ return\ a\ string\ like\ '../win32'\ for\ path='c:/windows'\ and}}
+\DoxyCodeLine{00301\ \textcolor{comment}{\ \ base='c:/windows/win32'\ or\ the\ original\ path\ string\ if\ the\ paths\ do\ not\ share}}
+\DoxyCodeLine{00302\ \textcolor{comment}{\ \ a\ common\ base.\ \ If\ base\ is\ empty,\ it\ is\ assumed\ to\ be}}
+\DoxyCodeLine{00303\ \textcolor{comment}{\ \ TBasicApp::GetBaseDir().\ For\ empty\ path\ path\ is\ returned.}}
+\DoxyCodeLine{00304\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00305\ \ \ \textcolor{keyword}{static}\ olxstr\ CreateRelativePath(\textcolor{keyword}{const}\ olxstr\&\ path,}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ base=EmptyString());}
+\DoxyCodeLine{00307\ \ \ \textcolor{comment}{/*\ searches\ given\ file\ name\ in\ current\ folder\ and\ in\ path,\ if\ found\ returns}}
+\DoxyCodeLine{00308\ \textcolor{comment}{\ \ full\ path\ to\ the\ file\ inclusive\ the\ file\ name,\ otherwise\ returns\ empty}}
+\DoxyCodeLine{00309\ \textcolor{comment}{\ \ string.\ If\ the\ filename\ is\ absolute\ returns\ it\ straight\ away.}}
+\DoxyCodeLine{00310\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00311\ \ \ \textcolor{keyword}{static}\ olxstr\ Which(\textcolor{keyword}{const}\ olxstr\&\ filename);}
+\DoxyCodeLine{00312\ \ \ \textcolor{keyword}{static}\ olxstr\ Which(\textcolor{keyword}{const}\ olxstr\&\ filename,\ \textcolor{keyword}{const}\ TStrList\ \&paths);}
+\DoxyCodeLine{00313\ \ \ \textcolor{comment}{/*\ returns\ a\ new\ object\ created\ with\ new\ using\ tmpnam\ (on\ non-\/windows}}
+\DoxyCodeLine{00314\ \textcolor{comment}{\ \ systems),\ or\ properly\ named\ file\ object\ which\ is\ deleted\ upon\ the\ object}}
+\DoxyCodeLine{00315\ \textcolor{comment}{\ \ deletion}}
+\DoxyCodeLine{00316\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00317\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTEFile}{TEFile}}*\ TmpFile(\textcolor{keyword}{const}\ olxstr\&\ templ=EmptyString());}
+\DoxyCodeLine{00318\ \ \ \textcolor{comment}{//\ function\ is\ based\ on\ utime}}
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ SetFileTimes(\textcolor{keyword}{const}\ olxstr\&\ fileName,\ uint64\_t\ AccTime,}
+\DoxyCodeLine{00320\ \ \ \ \ uint64\_t\ ModTime);}
+\DoxyCodeLine{00321\ \ \ \textcolor{comment}{//\ function\ is\ based\ on\ stat;}}
+\DoxyCodeLine{00322\ \ \ \textcolor{keyword}{static}\ time\_t\ FileAge(\textcolor{keyword}{const}\ olxstr\&\ fileName);}
+\DoxyCodeLine{00323\ \ \ \textcolor{comment}{//\ function\ is\ based\ on\ stat;}}
+\DoxyCodeLine{00324\ \ \ \textcolor{keyword}{static}\ uint64\_t\ FileLength(\textcolor{keyword}{const}\ olxstr\&\ fileName);}
+\DoxyCodeLine{00325\ \ \ \textcolor{keyword}{static}\ FileID\ GetFileID(\textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00327\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ CheckFileExists(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ fileName);}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00329\ \ \ \textcolor{keyword}{static}\ olxstr\ QuotePath(\textcolor{keyword}{const}\ olxstr\ \&p);}
+\DoxyCodeLine{00330\ \ \ \textcolor{keyword}{static}\ olxstr\ UnquotePath(\textcolor{keyword}{const}\ olxstr\ \&p);}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ AllFilesMask()\ \{}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ m\ =\ \textcolor{stringliteral}{"{}*.*"{}};}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keywordflow}{return}\ m;}
+\DoxyCodeLine{00335\ \ \ \};}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \ \ \textcolor{keyword}{static}\ const\_cstrlist\ ReadCLines(\textcolor{keyword}{const}\ olxstr\ \&fn)\ \{}
+\DoxyCodeLine{00338\ \ \ \ \ TCStrList\ l;}
+\DoxyCodeLine{00339\ \ \ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ f(fn,\ \textcolor{stringliteral}{"{}rb"{}});}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keywordflow}{return}\ l.LoadFromTextStream(f);}
+\DoxyCodeLine{00341\ \ \ \}}
+\DoxyCodeLine{00342\ \ \ \textcolor{keyword}{static}\ const\_wstrlist\ ReadWLines(\textcolor{keyword}{const}\ olxstr\ \&fn)\ \{}
+\DoxyCodeLine{00343\ \ \ \ \ TWStrList\ l;}
+\DoxyCodeLine{00344\ \ \ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ f(fn,\ \textcolor{stringliteral}{"{}rb"{}});}
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keywordflow}{return}\ l.LoadFromTextStream(f);}
+\DoxyCodeLine{00346\ \ \ \}}
+\DoxyCodeLine{00347\ \ \ \textcolor{keyword}{static}\ const\_strlist\ ReadLines(\textcolor{keyword}{const}\ olxstr\ \&fn)\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ TStrList\ l;}
+\DoxyCodeLine{00349\ \ \ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ f(fn,\ \textcolor{stringliteral}{"{}rb"{}});}
+\DoxyCodeLine{00350\ \ \ \ \ \textcolor{keywordflow}{return}\ l.LoadFromTextStream(f);}
+\DoxyCodeLine{00351\ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00353\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ReadLines(\textcolor{keyword}{const}\ olxstr\ \&fn,\ list\_t\ \&l)\ \{}
+\DoxyCodeLine{00354\ \ \ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ f(fn,\ \textcolor{stringliteral}{"{}rb"{}});}
+\DoxyCodeLine{00355\ \ \ \ \ l.LoadFromTextStream(f);}
+\DoxyCodeLine{00356\ \ \ \}}
+\DoxyCodeLine{00357\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ str\_t>}
+\DoxyCodeLine{00358\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTStrList}{TTStrList<str\_t>}}\ \&\ WriteLines(\textcolor{keyword}{const}\ olxstr\ \&fn,}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTStrList}{TTStrList<str\_t>}}\ \&lines)}
+\DoxyCodeLine{00360\ \ \ \{}
+\DoxyCodeLine{00361\ \ \ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ out(fn,\ \textcolor{stringliteral}{"{}wb"{}});}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keywordflow}{return}\ lines.SaveToTextStream(out);}
+\DoxyCodeLine{00363\ \ \ \}}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00365\ \ \ \textcolor{keyword}{struct\ }Path:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00366\ \ \ \ \ Path(\textcolor{keyword}{const}\ Path\&\ p)}
+\DoxyCodeLine{00367\ \ \ \ \ :\ path(p.path)}
+\DoxyCodeLine{00368\ \ \ \ \ \{\}}
+\DoxyCodeLine{00369\ \ \ \ \ Path(\textcolor{keyword}{const}\ olxstr\&\ p)}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ :\ path(TEFile::OSPath(p))}
+\DoxyCodeLine{00371\ \ \ \ \ \{\}}
+\DoxyCodeLine{00372\ \ \ \ \ TStrList::const\_list\_type\ Split(\textcolor{keyword}{const}\ olxstr\&\ path);}
+\DoxyCodeLine{00373\ \ \ \ \ Path\ GetParent()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keywordtype}{bool}\ ChDir()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00375\ \ \ \ \ Path\&\ operator\ <<\ (\textcolor{keyword}{const}\ olxstr\&\ t);}
+\DoxyCodeLine{00376\ }
+\DoxyCodeLine{00377\ \ \ \ \ \textcolor{keyword}{virtual}\ TIString\ ToString()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ path;\ \}}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \ \ \ \ olxstr\ path;}
+\DoxyCodeLine{00380\ \ \ \};}
+\DoxyCodeLine{00381\ \};}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ EndEsdlNamespace()}
+\DoxyCodeLine{00384\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

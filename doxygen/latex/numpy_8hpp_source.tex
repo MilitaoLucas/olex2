@@ -1,0 +1,417 @@
+\doxysection{numpy.\+hpp}
+\hypertarget{numpy_8hpp_source}{}\label{numpy_8hpp_source}\index{xlib/numpy.hpp@{xlib/numpy.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2012\ Masaki\ Saito}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ furnished\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ all\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ IMPLIED,\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ AUTHORS\ OR\ COPYRIGHT\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00021\ \textcolor{comment}{}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ OVD\ modified\ -\/\ passing\ a\ stream\ instead\ of\ file\ name\ to\ allow\ skiping\ header}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <complex>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#if\ defined\ (\_\_GLIBC\_\_)}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#\ include\ <endian.h>}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#\ if\ (\_\_BYTE\_ORDER\ ==\ \_\_LITTLE\_ENDIAN)}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#\ \ define\ AOBA\_NUMPY\_LITTLE\_ENDIAN}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#\ elif\ (\_\_BYTE\_ORDER\ ==\ \_\_BIG\_ENDIAN)}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#\ \ define\ AOBA\_NUMPY\_BIG\_ENDIAN}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#\ elif\ (\_\_BYTE\_ORDER\ ==\ \_\_PDP\_ENDIAN)}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#\ \ define\ AOBA\_NUMPY\_PDP\_ENDIAN}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#\ else}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#\ \ error\ Unknown\ machine\ endianness\ detected.}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#\ endif}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#\ define\ AOBA\_NUMPY\_BYTE\_ORDER\ \_\_BYTE\_ORDER}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#elif\ defined(\_BIG\_ENDIAN)\ \&\&\ !defined(\_LITTLE\_ENDIAN)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\ \ \ \ defined(\_\_BIG\_ENDIAN\_\_)\ \&\&\ !defined(\_\_LITTLE\_ENDIAN\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\ \ \ \ defined(\_STLP\_BIG\_ENDIAN)\ \&\&\ !defined(\_STLP\_LITTLE\_ENDIAN)}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#\ define\ AOBA\_NUMPY\_BIG\_ENDIAN}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#\ define\ AOBA\_NUMPY\_BYTE\_ORDER\ 4321}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#elif\ defined(\_LITTLE\_ENDIAN)\ \&\&\ !defined(\_BIG\_ENDIAN)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\ \ \ \ defined(\_\_LITTLE\_ENDIAN\_\_)\ \&\&\ !defined(\_\_BIG\_ENDIAN\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\ \ \ \ defined(\_STLP\_LITTLE\_ENDIAN)\ \&\&\ !defined(\_STLP\_BIG\_ENDIAN)}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#\ define\ AOBA\_NUMPY\_LITTLE\_ENDIAN}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#\ define\ AOBA\_NUMPY\_BYTE\_ORDER\ 1234}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#elif\ defined(\_\_sparc)\ ||\ defined(\_\_sparc\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\ \ \ ||\ defined(\_POWER)\ ||\ defined(\_\_powerpc\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\ \ \ ||\ defined(\_\_ppc\_\_)\ ||\ defined(\_\_hpux)\ ||\ defined(\_\_hppa)\ \(\backslash\)}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\ \ \ ||\ defined(\_MIPSEB)\ ||\ defined(\_POWER)\ \(\backslash\)}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\ \ \ ||\ defined(\_\_s390\_\_)}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#\ define\ AOBA\_NUMPY\_BIG\_ENDIAN}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#\ define\ AOBA\_NUMPY\_BYTE\_ORDER\ 4321}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#elif\ defined(\_\_i386\_\_)\ ||\ defined(\_\_alpha\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\ \ \ ||\ defined(\_\_ia64)\ ||\ defined(\_\_ia64\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\ \ \ ||\ defined(\_M\_IX86)\ ||\ defined(\_M\_IA64)\ \(\backslash\)}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\ \ \ ||\ defined(\_M\_ALPHA)\ ||\ defined(\_\_amd64)\ \(\backslash\)}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\ \ \ ||\ defined(\_\_amd64\_\_)\ ||\ defined(\_M\_AMD64)\ \(\backslash\)}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\ \ \ ||\ defined(\_\_x86\_64)\ ||\ defined(\_\_x86\_64\_\_)\ \(\backslash\)}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\ \ \ ||\ defined(\_M\_X64)\ ||\ defined(\_\_bfin\_\_)}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#\ define\ AOBA\_NUMPY\_LITTLE\_ENDIAN}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#\ define\ AOBA\_NUMPY\_BYTE\_ORDER\ 1234}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#\ error\ The\ file\ aoba/IO/Numpy.hpp\ needs\ to\ be\ set\ up\ for\ your\ CPU\ type.}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{namespace\ }aoba\ \{}
+\DoxyCodeLine{00079\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{keyword}{inline}\ uint16\_t\ ReorderInteger(\textcolor{keyword}{const}\ uint16\_t\&\ x)\ \{}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#ifdef\ AOBA\_NUMPY\_BIG\_ENDIAN}}
+\DoxyCodeLine{00083\ \ \ \ \ uint16\_t\ y;}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ rx\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&x);}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{char}*\ ry\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&y);}
+\DoxyCodeLine{00086\ \ \ \ \ *ry\ =\ *(rx\ +\ 1);}
+\DoxyCodeLine{00087\ \ \ \ \ *(ry\ +\ 1)\ =\ *rx;}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ y;}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ x;}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00092\ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00095\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structaoba_1_1detail_1_1DescriptorDataType}{DescriptorDataType}}\ \{\};}
+\DoxyCodeLine{00096\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00097\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structaoba_1_1detail_1_1DescriptorDataType}{DescriptorDataType}}<double>\ \{\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ value\ =\ \textcolor{charliteral}{'f'};\ \};}
+\DoxyCodeLine{00098\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00099\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structaoba_1_1detail_1_1DescriptorDataType}{DescriptorDataType}}<float>\ \{\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ value\ =\ \textcolor{charliteral}{'f'};\ \};}
+\DoxyCodeLine{00100\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00101\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structaoba_1_1detail_1_1DescriptorDataType}{DescriptorDataType}}<int>\ \{\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ value\ =\ \textcolor{charliteral}{'i'};\ \};}
+\DoxyCodeLine{00102\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00103\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structaoba_1_1detail_1_1DescriptorDataType}{DescriptorDataType}}<std::complex<float>\ >\ \{\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ value\ =\ \textcolor{charliteral}{'c'};\ \};}
+\DoxyCodeLine{00104\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00105\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structaoba_1_1detail_1_1DescriptorDataType}{DescriptorDataType}}<std::complex<double>\ >\ \{\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ value\ =\ \textcolor{charliteral}{'c'};\ \};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00108\ \textcolor{keyword}{inline}\ std::string\ CreateDescriptor()\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ std::string\ descriptor;}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#ifdef\ AOBA\_NUMPY\_LITTLE\_ENDIAN}}
+\DoxyCodeLine{00111\ \ \ \ \ descriptor.push\_back(\textcolor{charliteral}{'<'});}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00113\ \ \ \ \ descriptor.push\_back(\textcolor{charliteral}{'>'});}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00115\ \ \ \ \ descriptor.push\_back(\mbox{\hyperlink{structaoba_1_1detail_1_1DescriptorDataType}{DescriptorDataType<Scalar>::value}});}
+\DoxyCodeLine{00116\ \ \ \ \ std::stringstream\ stream;}
+\DoxyCodeLine{00117\ \ \ \ \ stream\ <<\ \textcolor{keyword}{sizeof}(Scalar);}
+\DoxyCodeLine{00118\ \ \ \ \ descriptor.append(stream.str());}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{return}\ descriptor;}
+\DoxyCodeLine{00120\ \}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ CreateMetaData(}
+\DoxyCodeLine{00123\ \ \ \ \ std::string\&\ preamble,\ std::string\&\ header,}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ descriptor,\ \textcolor{keywordtype}{bool}\ fortran\_order,}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordtype}{int}\ n\_dims,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ shape[])}
+\DoxyCodeLine{00126\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ header\ =\ \textcolor{stringliteral}{"{}\{'descr':\ '"{}};}
+\DoxyCodeLine{00128\ \ \ \ \ header.append(descriptor);}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{if}(fortran\_order)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ header.append(\textcolor{stringliteral}{"{}',\ 'fortran\_order':\ True,\ "{}});}
+\DoxyCodeLine{00131\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ header.append(\textcolor{stringliteral}{"{}',\ 'fortran\_order':\ False,\ "{}});}
+\DoxyCodeLine{00133\ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ header.append(\textcolor{stringliteral}{"{}'shape':\ ("{}});}
+\DoxyCodeLine{00135\ \ \ \ \ std::stringstream\ shape\_stream;}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{if}(1\ <\ n\_dims)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ d=0;\ d<n\_dims;\ ++d)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ shape\_stream\ <<\ shape[d];}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(d\ +\ 1\ !=\ n\_dims)\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ shape\_stream\ <<\ \textcolor{stringliteral}{"{},"{}};}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ shape\_stream\ <<\ shape[0]\ <<\ \textcolor{stringliteral}{"{},"{}};}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ shape\_stream\ <<\ \textcolor{stringliteral}{"{}),\ \}"{}};}
+\DoxyCodeLine{00147\ \ \ \ \ header.append(shape\_stream.str());}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ to\_padding\ =\ 16\ -\/\ (10\ +\ header.size()\ +\ 1)\ \%\ 16;}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ m=0;\ m<to\_padding;\ ++m)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ header.push\_back(\textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00151\ \ \ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \ \ header.push\_back(\textcolor{charliteral}{'\(\backslash\)n'});}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \ \ preamble\ =\ \textcolor{stringliteral}{"{}\(\backslash\)x93NUMPY"{}};}
+\DoxyCodeLine{00155\ \ \ \ \ preamble.push\_back((\textcolor{keywordtype}{char})1);}
+\DoxyCodeLine{00156\ \ \ \ \ preamble.push\_back((\textcolor{keywordtype}{char})0);}
+\DoxyCodeLine{00157\ \ \ \ \ uint16\_t\ header\_length\ =\ detail::ReorderInteger((uint16\_t)header.size());}
+\DoxyCodeLine{00158\ \ \ \ \ preamble.append(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&header\_length),\ 2);}
+\DoxyCodeLine{00159\ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \}\ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00164\ \textcolor{keywordtype}{void}\ SaveArrayAsNumpy(}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,\ \textcolor{keywordtype}{bool}\ fortran\_order,}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordtype}{int}\ n\_dims,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ shape[],\ \textcolor{keyword}{const}\ Scalar*\ data)}
+\DoxyCodeLine{00167\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordflow}{if}(n\_dims\ <=\ 0)}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}received\ an\ invalid\ argument"{}});}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \ \ std::string\ preamble,\ header;}
+\DoxyCodeLine{00172\ \ \ \ \ std::string\ descriptor\ =\ detail::CreateDescriptor<Scalar>();}
+\DoxyCodeLine{00173\ \ \ \ \ detail::CreateMetaData(}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ preamble,\ header,\ descriptor,\ fortran\_order,\ n\_dims,\ shape);}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ metadata\_length\ =\ preamble.size()\ +\ header.size();}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{if}(metadata\_length\ \%\ 16\ !=\ 0)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}formatting\ error:\ metadata\ length\ is\ not\ divisible\ by\ 16."{}});}
+\DoxyCodeLine{00179\ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ std::ofstream\ stream(}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ filename.c\_str(),\ std::ios::out|std::ios::binary|std::ios::trunc);}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{if}(!stream)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}io\ error:\ failed\ to\ open\ a\ file."{}});}
+\DoxyCodeLine{00184\ \ \ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \ \ stream\ <<\ preamble\ <<\ header;}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordtype}{int}\ size\ =\ 1;}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;\ i<n\_dims;\ ++i)\ \{\ size\ *=\ shape[i];\ \}}
+\DoxyCodeLine{00188\ \ \ \ \ stream.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(data),\ \textcolor{keyword}{sizeof}(Scalar)*size);}
+\DoxyCodeLine{00189\ \}}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00192\ \textcolor{keywordtype}{void}\ SaveArrayAsNumpy(}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordtype}{int}\ n\_dims,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ shape[],\ \textcolor{keyword}{const}\ Scalar*\ data)}
+\DoxyCodeLine{00195\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ SaveArrayAsNumpy(}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ filename,\ \textcolor{keyword}{false},\ n\_dims,\ shape,\ data);}
+\DoxyCodeLine{00198\ \}}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00201\ \textcolor{keywordtype}{void}\ SaveArrayAsNumpy(}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,\ \textcolor{keyword}{const}\ std::vector<Scalar>\&\ data)\ }
+\DoxyCodeLine{00203\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ length\ =\ (int)data.size();}
+\DoxyCodeLine{00205\ \ \ \ \ SaveArrayAsNumpy(filename,\ \textcolor{keyword}{false},\ 1,\ \&length,\ \&data[0]);}
+\DoxyCodeLine{00206\ \}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00209\ \textcolor{keywordtype}{void}\ SaveArrayAsNumpy(}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,\ \textcolor{keywordtype}{int}\ x0,\ \textcolor{keyword}{const}\ Scalar*\ data)}
+\DoxyCodeLine{00211\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ SaveArrayAsNumpy(filename,\ \textcolor{keyword}{false},\ 1,\ \&x0,\ data);\ }
+\DoxyCodeLine{00213\ \}}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00216\ \textcolor{keywordtype}{void}\ SaveArrayAsNumpy(}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,\ \textcolor{keywordtype}{int}\ x0,\ \textcolor{keywordtype}{int}\ x1,\ \textcolor{keyword}{const}\ Scalar*\ data)}
+\DoxyCodeLine{00218\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ dim[2]\ =\ \{\ x0,\ x1\ \};}
+\DoxyCodeLine{00220\ \ \ \ \ SaveArrayAsNumpy(filename,\ \textcolor{keyword}{false},\ 2,\ dim,\ data);\ }
+\DoxyCodeLine{00221\ \}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00224\ \textcolor{keywordtype}{void}\ SaveArrayAsNumpy(}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,\ \textcolor{keywordtype}{int}\ x0,\ \textcolor{keywordtype}{int}\ x1,\ \textcolor{keywordtype}{int}\ x2,\ \textcolor{keyword}{const}\ Scalar*\ data)}
+\DoxyCodeLine{00226\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ dim[3]\ =\ \{\ x0,\ x1,\ x2\ \};}
+\DoxyCodeLine{00228\ \ \ \ \ SaveArrayAsNumpy(filename,\ \textcolor{keyword}{false},\ 3,\ dim,\ data);\ }
+\DoxyCodeLine{00229\ \}}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00232\ \textcolor{keywordtype}{void}\ SaveArrayAsNumpy(}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,\ \textcolor{keywordtype}{int}\ x0,\ \textcolor{keywordtype}{int}\ x1,\ \textcolor{keywordtype}{int}\ x2,\ \textcolor{keywordtype}{int}\ x3,\ \textcolor{keyword}{const}\ Scalar*\ data)}
+\DoxyCodeLine{00234\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ dim[4]\ =\ \{\ x0,\ x1,\ x2,\ x3\ \};}
+\DoxyCodeLine{00236\ \ \ \ \ SaveArrayAsNumpy(filename,\ \textcolor{keyword}{false},\ 4,\ dim,\ data);\ }
+\DoxyCodeLine{00237\ \}}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ stream\_t>}
+\DoxyCodeLine{00240\ \textcolor{keywordtype}{void}\ LoadArrayFromNumpy(}
+\DoxyCodeLine{00241\ \ \ stream\_t\ \&stream,\ std::vector<int>\&\ shape,}
+\DoxyCodeLine{00242\ \ \ \ \ std::vector<Scalar>\&\ data)}
+\DoxyCodeLine{00243\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{comment}{//\ check\ if\ this\ file\ is\ the\ valid\ .npy\ file}}
+\DoxyCodeLine{00245\ \ \ \ \ std::string\ valid\_preamble\ =\ \textcolor{stringliteral}{"{}\(\backslash\)x93NUMPY"{}};}
+\DoxyCodeLine{00246\ \ \ \ \ valid\_preamble.push\_back(\textcolor{keywordtype}{char}(1));}
+\DoxyCodeLine{00247\ \ \ \ \ valid\_preamble.push\_back(\textcolor{keywordtype}{char}(0));}
+\DoxyCodeLine{00248\ \ \ \ \ std::string\ preamble(8,\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00249\ \ \ \ \ stream.read(\&preamble[0],\ 8);}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordflow}{if}(valid\_preamble\ !=\ preamble)\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}io\ error:\ this\ file\ do\ not\ have\ a\ valid\ npy\ format."{}});}
+\DoxyCodeLine{00253\ \ \ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{comment}{//\ load\ header}}
+\DoxyCodeLine{00255\ \ \ \ \ uint16\_t\ header\_length;}
+\DoxyCodeLine{00256\ \ \ \ \ stream.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&header\_length),\ \textcolor{keyword}{sizeof}(uint16\_t));}
+\DoxyCodeLine{00257\ \ \ \ \ header\_length\ =\ detail::ReorderInteger(header\_length);}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordflow}{if}((header\_length\ +\ preamble.size()\ +\ \textcolor{keyword}{sizeof}(uint16\_t))\ \%\ 16\ !=\ 0)\ \{}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}formatting\ error:\ metadata\ length\ is\ not\ divisible\ by\ 16."{}});}
+\DoxyCodeLine{00261\ \ \ \ \ \}}
+\DoxyCodeLine{00262\ \ \ \ \ std::string\ header(header\_length,\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00263\ \ \ \ \ stream.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&header[0]),\ header\_length);}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{comment}{//\ load\ fortran\ order}}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keyword}{typedef}\ std::string::size\_type\ size\_type;}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keyword}{const}\ size\_type\ header\_loc\ =\ header.find(\textcolor{stringliteral}{"{}fortran\_order"{}})\ +\ 16;}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ fortran\_order\ =\ (header.substr(header\_loc,\ 4)\ ==\ \textcolor{stringliteral}{"{}True"{}});}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{comment}{//\ load\ shape}}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keyword}{const}\ size\_type\ shape\_loc1\ =\ header.find(\textcolor{stringliteral}{"{}("{}});}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keyword}{const}\ size\_type\ shape\_loc2\ =\ header.find(\textcolor{stringliteral}{"{})"{}});}
+\DoxyCodeLine{00273\ \ \ \ \ std::string\ shape\_str\ =\ header.substr(}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ shape\_loc1\ +\ 1,\ shape\_loc2\ -\/\ shape\_loc1\ -\/\ 1);}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{if}(shape\_str[shape\_str.size()\ -\/\ 1]\ ==\ \textcolor{charliteral}{','})\ shape.resize(1);}
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keywordflow}{else}\ shape.resize(std::count(shape\_str.begin(),\ shape\_str.end(),\ \textcolor{charliteral}{','})\ +\ 1);}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{size\_t}\ i=0;\ i<shape.size();\ ++i)\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ std::stringstream\ ss;}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ size\_type\ loc\ =\ shape\_str.find(\textcolor{stringliteral}{"{},"{}});}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ ss\ <<\ shape\_str.substr(0,\ loc);}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ ss\ >>\ shape[i];}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ shape\_str\ =\ shape\_str.substr(loc\ +\ 1);}
+\DoxyCodeLine{00283\ \ \ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \ \ \textcolor{keywordflow}{if}(fortran\_order)\ \{}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ std::reverse(shape.begin(),\ shape.end());}
+\DoxyCodeLine{00286\ \ \ \ \ \}}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{comment}{//\ load\ descriptor}}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keyword}{const}\ size\_type\ descr\_loc\ =\ header.find(\textcolor{stringliteral}{"{}descr"{}})\ +\ 9;}
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ endian\_str\ =\ header[descr\_loc];}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ little\_endian\ =\ (endian\_str\ ==\ \textcolor{charliteral}{'<'}\ ||\ endian\_str\ ==\ \textcolor{charliteral}{'|'});}
+\DoxyCodeLine{00292\ \textcolor{preprocessor}{\#ifdef\ AOBA\_NUMPY\_BIG\_ENDIAN}}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_same\_endian\ =\ !little\_endian;}
+\DoxyCodeLine{00294\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ is\_same\_endian\ =\ little\_endian;}
+\DoxyCodeLine{00296\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordflow}{if}(!is\_same\_endian)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}formatting\ error:\ difference\ endian\ is\ not\ supported."{}});}
+\DoxyCodeLine{00300\ \ \ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ data\_type\ =\ header[descr\_loc\ +\ 1];}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ word\_size;}
+\DoxyCodeLine{00303\ \ \ \ \ std::stringstream\ ss;}
+\DoxyCodeLine{00304\ \ \ \ \ ss\ <<\ header[descr\_loc\ +\ 2];}
+\DoxyCodeLine{00305\ \ \ \ \ ss\ >>\ word\_size;}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordflow}{if}(data\_type\ !=\ \mbox{\hyperlink{structaoba_1_1detail_1_1DescriptorDataType}{detail::DescriptorDataType<Scalar>::value}}\ ||}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ word\_size\ !=\ \textcolor{keyword}{sizeof}(Scalar))\ \{}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}formatting\ error:\ the\ type\ of\ .npy\ file\ is\ not\ equal\ to\ that\ of\ std::vector<T>"{}});}
+\DoxyCodeLine{00310\ \ \ \ \ \}}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{comment}{//\ load\ data}}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ total\ =\ 1;}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{size\_t}\ i=0;\ i<shape.size();\ ++i)\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ total\ *=\ shape[i];}
+\DoxyCodeLine{00316\ \ \ \ \ \}}
+\DoxyCodeLine{00317\ \ \ \ \ data.resize(total);}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keywordflow}{if}\ (total\ >\ 0)\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ stream.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&data[0]),\ word\_size\ *\ total);}
+\DoxyCodeLine{00320\ \ \ \ \ \}}
+\DoxyCodeLine{00321\ \}}
+\DoxyCodeLine{00322\ }
+\DoxyCodeLine{00323\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00324\ \textcolor{keywordtype}{void}\ LoadArrayFromNumpy(}
+\DoxyCodeLine{00325\ \ \ \textcolor{keyword}{const}\ std::string\ filename,\ std::vector<int>\&\ shape,}
+\DoxyCodeLine{00326\ \ \ std::vector<Scalar>\&\ data)}
+\DoxyCodeLine{00327\ \{}
+\DoxyCodeLine{00328\ \ \ std::ifstream\ stream(filename.c\_str(),\ std::ios::in\ |\ std::ios::binary);}
+\DoxyCodeLine{00329\ \ \ \textcolor{keywordflow}{if}\ (!stream)\ \{}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}io\ error:\ failed\ to\ open\ a\ file."{}});}
+\DoxyCodeLine{00331\ \ \ \}}
+\DoxyCodeLine{00332\ \ \ LoadArrayFromNumpy<Scalar,\ std::ifstream>(stream,\ shape,\ data);}
+\DoxyCodeLine{00333\ \}}
+\DoxyCodeLine{00334\ }
+\DoxyCodeLine{00335\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00336\ \textcolor{keywordtype}{void}\ LoadArrayFromNumpy(}
+\DoxyCodeLine{00337\ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,\ std::vector<Scalar>\&\ data)}
+\DoxyCodeLine{00338\ \{}
+\DoxyCodeLine{00339\ \ \ std::vector<int>\ tmp\_dim;}
+\DoxyCodeLine{00340\ \ \ LoadArrayFromNumpy(filename,\ tmp\_dim,\ data);}
+\DoxyCodeLine{00341\ \}}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00344\ \textcolor{keywordtype}{void}\ LoadArrayFromNumpy(}
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,\ \textcolor{keywordtype}{int}\ shape[],\ std::vector<Scalar>\&\ data)}
+\DoxyCodeLine{00346\ \{}
+\DoxyCodeLine{00347\ \ \ \ \ std::vector<int>\ tmp\_dim;}
+\DoxyCodeLine{00348\ \ \ \ \ LoadArrayFromNumpy(filename,\ tmp\_dim,\ data);}
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{size\_t}\ i=0;\ i<tmp\_dim.size();\ ++i)\ shape[i]\ =\ tmp\_dim[i];}
+\DoxyCodeLine{00350\ \}}
+\DoxyCodeLine{00351\ }
+\DoxyCodeLine{00352\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00353\ \textcolor{keywordtype}{void}\ LoadArrayFromNumpy(}
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,}
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{keywordtype}{int}\&\ x0,\ std::vector<Scalar>\&\ data)}
+\DoxyCodeLine{00356\ \{}
+\DoxyCodeLine{00357\ \ \ \ \ std::vector<int>\ tmp\_dim;}
+\DoxyCodeLine{00358\ \ \ \ \ LoadArrayFromNumpy(filename,\ tmp\_dim,\ data);}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keywordflow}{if}(tmp\_dim.size()\ !=\ 1)\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}io\ error:\ the\ dimension\ of\ array\ is\ different\ from\ the\ expected\ one."{}});}
+\DoxyCodeLine{00361\ \ \ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \ \ x0\ =\ tmp\_dim[0];}
+\DoxyCodeLine{00363\ \}}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00365\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00366\ \textcolor{keywordtype}{void}\ LoadArrayFromNumpy(}
+\DoxyCodeLine{00367\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,}
+\DoxyCodeLine{00368\ \ \ \ \ \textcolor{keywordtype}{int}\&\ x0,\ \textcolor{keywordtype}{int}\&\ x1,\ std::vector<Scalar>\&\ data)}
+\DoxyCodeLine{00369\ \{}
+\DoxyCodeLine{00370\ \ \ \ \ std::vector<int>\ tmp\_dim;}
+\DoxyCodeLine{00371\ \ \ \ \ LoadArrayFromNumpy(filename,\ tmp\_dim,\ data);}
+\DoxyCodeLine{00372\ \ \ \ \ \textcolor{keywordflow}{if}(tmp\_dim.size()\ !=\ 2)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}io\ error:\ the\ dimension\ of\ array\ is\ different\ from\ the\ expected\ one."{}});}
+\DoxyCodeLine{00374\ \ \ \ \ \}}
+\DoxyCodeLine{00375\ \ \ \ \ x0\ =\ tmp\_dim[0];}
+\DoxyCodeLine{00376\ \ \ \ \ x1\ =\ tmp\_dim[1];}
+\DoxyCodeLine{00377\ \}}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00380\ \textcolor{keywordtype}{void}\ LoadArrayFromNumpy(}
+\DoxyCodeLine{00381\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keywordtype}{int}\&\ x0,\ \textcolor{keywordtype}{int}\&\ x1,\ \textcolor{keywordtype}{int}\&\ x2,\ std::vector<Scalar>\&\ data)}
+\DoxyCodeLine{00383\ \{}
+\DoxyCodeLine{00384\ \ \ \ \ std::vector<int>\ tmp\_dim;}
+\DoxyCodeLine{00385\ \ \ \ \ LoadArrayFromNumpy(filename,\ tmp\_dim,\ data);}
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keywordflow}{if}(tmp\_dim.size()\ !=\ 3)\ \{}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}io\ error:\ the\ dimension\ of\ array\ is\ different\ from\ the\ expected\ one."{}});}
+\DoxyCodeLine{00388\ \ \ \ \ \}}
+\DoxyCodeLine{00389\ \ \ \ \ x0\ =\ tmp\_dim[0];}
+\DoxyCodeLine{00390\ \ \ \ \ x1\ =\ tmp\_dim[1];}
+\DoxyCodeLine{00391\ \ \ \ \ x2\ =\ tmp\_dim[2];}
+\DoxyCodeLine{00392\ \}}
+\DoxyCodeLine{00393\ }
+\DoxyCodeLine{00394\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00395\ \textcolor{keywordtype}{void}\ LoadArrayFromNumpy(}
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ filename,}
+\DoxyCodeLine{00397\ \ \ \ \ \textcolor{keywordtype}{int}\&\ x0,\ \textcolor{keywordtype}{int}\&\ x1,\ \textcolor{keywordtype}{int}\&\ x2,\ \textcolor{keywordtype}{int}\&\ x3,\ std::vector<Scalar>\&\ data)}
+\DoxyCodeLine{00398\ \{}
+\DoxyCodeLine{00399\ \ \ \ \ std::vector<int>\ tmp\_dim;}
+\DoxyCodeLine{00400\ \ \ \ \ LoadArrayFromNumpy(filename,\ tmp\_dim,\ data);}
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{keywordflow}{if}(tmp\_dim.size()\ !=\ 4)\ \{}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}io\ error:\ the\ dimension\ of\ array\ is\ different\ from\ the\ expected\ one."{}});}
+\DoxyCodeLine{00403\ \ \ \ \ \}}
+\DoxyCodeLine{00404\ \ \ \ \ x0\ =\ tmp\_dim[0];}
+\DoxyCodeLine{00405\ \ \ \ \ x1\ =\ tmp\_dim[1];}
+\DoxyCodeLine{00406\ \ \ \ \ x2\ =\ tmp\_dim[2];}
+\DoxyCodeLine{00407\ \ \ \ \ x3\ =\ tmp\_dim[3];}
+\DoxyCodeLine{00408\ \}}
+\DoxyCodeLine{00409\ }
+\DoxyCodeLine{00410\ \}\ \textcolor{comment}{//\ namespace\ aoba}}
+\DoxyCodeLine{00411\ }
+
+\end{DoxyCode}

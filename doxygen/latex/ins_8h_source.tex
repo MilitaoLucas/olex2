@@ -1,0 +1,269 @@
+\doxysection{ins.\+h}
+\hypertarget{ins_8h_source}{}\label{ins_8h_source}\index{xlib/ins.h@{xlib/ins.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_ins\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_ins\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}xfiles.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}catom.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}estlist.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}log.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}symmparser.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}atomref.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}residue.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}estack.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}lst.h"{}}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ BeginXlibNamespace()}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ typedef\ \mbox{\hyperlink{classTStringToList}{TStringToList}}<olxstr,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}*>\ TInsList;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ class\ TIns\ :\ public\ TBasicCFile\ \{}
+\DoxyCodeLine{00030\ \ \ \textcolor{comment}{//\ parsing\ context\ state\ and\ varables}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{struct\ }ParseContext\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm;}
+\DoxyCodeLine{00033\ \ \ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au;}
+\DoxyCodeLine{00034\ \ \ \ \ TStrList\ Symm,\ Extras;}
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TStrList>}}\ Sump;}
+\DoxyCodeLine{00036\ \ \ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ const\ cm\_Element*>}}\ \ BasicAtoms;\ \ \textcolor{comment}{//\ SFAC\ container}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{bool}\ CellFound,\ SetNextPivot,\ End;}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{int}\ Part,\ ToAnis;}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{comment}{//\ number\ of\ atoms\ (left),\ pivot,\ Hydrogens\ or\ not}}
+\DoxyCodeLine{00040\ \ \ \ \ esdl::TStack<\ AnAssociation3<int,\ TAfixGroup*,\ bool>\ >\ AfixGroups;}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{double}\ PartOccu,\ SPEC;}
+\DoxyCodeLine{00042\ \ \ \ \ TResidue*\ Resi;}
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ Last,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \textcolor{comment}{//\ this\ are\ used\ to\ evaluate\ riding\ H\ Uiso\ coded\ like\ -\/1.5}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ *LastWithU,\ *LastRideable;}
+\DoxyCodeLine{00046\ \ \ \ \ TIns*\ ins;}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{comment}{//\ SAME\ instructions\ and\ the\ first\ atom\ after\ it/them}}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<\ olx\_pair\_t<TStrList,\ TCAtom*>}}\ >\ Same;}
+\DoxyCodeLine{00049\ \ \ \ \ ParseContext(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ \_rm)}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ :\ rm(\_rm),\ au(\_rm.aunit),}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ Resi(0),\ Last(0),\ LastWithU(0),\ LastRideable(0)}
+\DoxyCodeLine{00052\ \ \ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ End\ =\ SetNextPivot\ =\ CellFound\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ SPEC\ =\ PartOccu\ =\ 0;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ ToAnis\ =\ Part\ =\ 0;}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ ins\ =\ 0;}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \};}
+\DoxyCodeLine{00059\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ bool>}}\ included;}
+\DoxyCodeLine{00060\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00061\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ TInsList*>}}\ Ins;\ \ \textcolor{comment}{//\ instructions}}
+\DoxyCodeLine{00062\ \ \ TStrList\ Skipped;}
+\DoxyCodeLine{00063\ \ \ \textcolor{comment}{//\ mean\ error\ of\ cell\ parameters.\ Can\ be\ used\ for\ estimation\ of\ other\ lengths}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{double}\ R1;}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{bool}\ LoadQPeaks;\textcolor{comment}{//\ true\ if\ Q-\/peaks\ should\ be\ loaded}}
+\DoxyCodeLine{00066\ \ \ \mbox{\hyperlink{classTLst}{TLst}}\ Lst;}
+\DoxyCodeLine{00067\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ \_ParseAtom(TStrList\&\ toks,\ ParseContext\&\ cx,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ atom\ =\ 0);}
+\DoxyCodeLine{00069\ \ \ olxstr\ \_CellToString();}
+\DoxyCodeLine{00070\ \ \ olxstr\ \_ZerrToString();}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \_SaveFVar(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ TStrList\&\ SL);}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{void}\ \_SaveSymm(TStrList\&\ SL);}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ \_SaveSizeTemp(TStrList\&\ SL);}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{void}\ \_ReadExtras(TStrList\ \&l,\ ParseContext\ \&cx);}
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ if\ solution\ specified,\ only\ OMIT's\ and\ HKLSrc\ are\ saved}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{void}\ \_SaveHklInfo(TStrList\&\ SL,\ \textcolor{keywordtype}{bool}\ solution);}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ \_SaveRefMethod(TStrList\&\ SL);}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \_ProcessAfix(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a,\ ParseContext\&\ cx);}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//\ validates\ existing\ AFIX'es\ and\ clears\ the\ stack}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \_ProcessAfix0(ParseContext\&\ cx);}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{//\ if\ atoms\ is\ saved,\ its\ Tag\ is\ added\ to\ the\ index\ (if\ not\ NULL)}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \_SaveAtom(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a,\ \textcolor{keywordtype}{int}\&\ part,\ \textcolor{keywordtype}{int}\&\ afix,}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{double}\ \&spec,\ TStrList*\ sfac,\ TStrList\&\ sl,}
+\DoxyCodeLine{00084\ \ \ \ \ TIndexList*\ index\ =\ 0,\ \textcolor{keywordtype}{bool}\ checkSame\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ checkResi\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \_DrySaveAtom(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a,\ TSizeList\ \&indices,}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{bool}\ checkSame\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ checkResi\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \_ProcessSame(ParseContext\&\ cx,\ \textcolor{keyword}{const}\ TIndexList\ *atomIndex\ =\ 0);}
+\DoxyCodeLine{00089\ \ \ \textcolor{comment}{//\ initialises\ the\ unparsed\ instruction\ list}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{void}\ \_FinishParsing(ParseContext\&\ cx,\ \textcolor{keywordtype}{bool}\ header\_only);}
+\DoxyCodeLine{00091\ \ \ \textcolor{comment}{//\ processes\ CONN,\ FREE\ and\ BIND,\ called\ from\ \_FinishParsing}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordtype}{void}\ \_\_ProcessConn(ParseContext\&\ cx);}
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ also\ updates\ the\ RM\ user\ content\ if\ any\ of\ the\ types\ missing}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{void}\ FixTypeListAndLabels();}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//\ deals\ with\ SFAC/DISP}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ProcessSFAC(ParseContext\&\ cx,\ \textcolor{keyword}{const}\ TStrList\ \&toks,\ \textcolor{keywordtype}{bool}\ update\_rm);}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{enum}\ InsType\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ insNone,}
+\DoxyCodeLine{00099\ \ \ \ \ insHeader,}
+\DoxyCodeLine{00100\ \ \ \ \ insFooter}
+\DoxyCodeLine{00101\ \ \ \};}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{/*\ determines\ if\ the\ instruction\ goes\ to\ the\ header\ or\ the\ footer}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ \ (after\ HKLF).\ Always\ returns\ insNone\ if\ params\ is\ null\ or\ the\ Ins\ is\ in}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\ \ (REM,\ NEUT).}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00106\ \ \ InsType\ GetInsType(\textcolor{keyword}{const}\ olxstr\ \&ins,\ \textcolor{keyword}{const}\ TInsList\ *params)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00107\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00108\ \ \ TIns();}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{virtual}\ \string~TIns();}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ DefPropBIsSet(LoadQPeaks)}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{comment}{//\ this\ is\ -\/1\ if\ not\ in\ the\ file\ like\ REM\ R1\ =\ ...}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{double}\ GetR1()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ R1;\ \}}
+\DoxyCodeLine{00117\ \ \ \mbox{\hyperlink{classTLst}{TLst}}\&\ GetLst()\ \{\ \textcolor{keywordflow}{return}\ Lst;\ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTLst}{TLst}}\&\ GetLst()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Lst;\ \}}
+\DoxyCodeLine{00119\ \ \ \textcolor{comment}{/*\ updates\ all\ instructions\ */}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordtype}{void}\ UpdateParams();}
+\DoxyCodeLine{00121\ \ \ \textcolor{keywordtype}{void}\ SaveForSolution(\textcolor{keyword}{const}\ olxstr\&\ FileName,\ \textcolor{keyword}{const}\ olxstr\&\ Method,}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ comments,\ \textcolor{keywordtype}{bool}\ rems\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ save\_atoms\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{void}\ SavePattSolution(\textcolor{keyword}{const}\ olxstr\&\ FileName,}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<class\ TPattAtom>}}\&\ atoms,\ \textcolor{keyword}{const}\ olxstr\&\ comments);}
+\DoxyCodeLine{00125\ \ \ \textcolor{comment}{/*\ reads\ a\ file\ containing\ just\ lines\ of\ atoms\ and\ updates\ the\ provided}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ \ \ Atoms\ by\ index\ in\ the\ AU.}}
+\DoxyCodeLine{00127\ \textcolor{comment}{\ \ \ Instructions\ are\ initialised\ with\ all\ unrecognised\ commands}}
+\DoxyCodeLine{00128\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{void}\ UpdateAtomsFromStrings(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keyword}{const}\ TIndexList\&\ index,\ TStrList\&\ SL,\ TStrList\&\ Instructions);}
+\DoxyCodeLine{00131\ \ \ \textcolor{comment}{/*\ saves\ some\ atoms\ to\ a\ plain\ ins\ format\ with\ no\ headers\ etc;\ to\ be\ used}}
+\DoxyCodeLine{00132\ \textcolor{comment}{\ \ with\ UpdateAtomsFromStrings.\ index\ is\ initialised\ with\ the\ order\ in\ which}}
+\DoxyCodeLine{00133\ \textcolor{comment}{\ \ atom\ Ids\ this\ must\ be\ passed\ to\ UpdateAtomsFromString}}
+\DoxyCodeLine{00134\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ SaveAtomsToStrings(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ TCAtomPList\&\ CAtoms,}
+\DoxyCodeLine{00136\ \ \ \ \ TIndexList\&\ index,\ TStrList\&\ SL,}
+\DoxyCodeLine{00137\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<AReleasable>}}*\ processed);}
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{/*\ returns\ atom\ Ids\ as\ they\ will\ be\ saved\ according\ to\ constraints\ */}}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{static}\ TSizeList::const\_list\_type\ DrySave(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au,}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordtype}{bool}\ expandSAME=\textcolor{keyword}{true});}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ValidateRestraintsAtomNames(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordtype}{bool}\ report\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ParseRestraint(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\ \&rm,}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ toks,\ \textcolor{keywordtype}{bool}\ warnings\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{size\_t}\ r\_position=InvalidIndex,}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTSimpleRestraint}{TSimpleRestraint}}**\ r=0);}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SaveRestraints(TStrList\&\ SL,\ \textcolor{keyword}{const}\ TCAtomPList*\ atoms,}
+\DoxyCodeLine{00147\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<AReleasable>}}*\ processed,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SaveExtras(TStrList\&\ SL,\ \textcolor{keyword}{const}\ TCAtomPList*\ atoms,}
+\DoxyCodeLine{00149\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<AReleasable>}}*\ processed,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordtype}{bool}\ hyphenate=\textcolor{keyword}{true});}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \textcolor{keywordtype}{void}\ ParseRestraints(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTStringToList}{TStringToList}}<olxstr,}
+\DoxyCodeLine{00153\ \ \ \ \ TInsList*>\&\ SL,\ \textcolor{keywordtype}{bool}\ warnings\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00154\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{comment}{/*\ parses\ a\ single\ line\ instruction,\ which\ does\ not\ depend\ on\ context}}
+\DoxyCodeLine{00156\ \textcolor{comment}{\ \ \ \ (as\ SYMM)\ this\ is\ used\ internally\ by\ ParseIns\ and\ AddIns}}
+\DoxyCodeLine{00157\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \_ParseIns(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ TStrList\&\ Toks);}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromFile(\textcolor{keyword}{const}\ olxstr\&\ fileName);}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SaveToStrings(TStrList\&\ Strings);}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromStrings(\textcolor{keyword}{const}\ TStrList\&\ Strings);}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Adopt(\mbox{\hyperlink{classTXFile}{TXFile}}\ \&,\ \textcolor{keywordtype}{int});}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ TInsList*\ FindIns(\textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordtype}{void}\ ClearIns();}
+\DoxyCodeLine{00167\ \ \ \textcolor{comment}{/*\ AddIns\ require\ refinement\ model\ as\ if\ the\ instruction\ is\ parsed,\ the}}
+\DoxyCodeLine{00168\ \textcolor{comment}{\ \ result\ goes\ to\ that\ RM,\ otherwise\ an\ un-\/parsed\ instruction\ will\ be\ added\ to}}
+\DoxyCodeLine{00169\ \textcolor{comment}{\ \ this\ file}}
+\DoxyCodeLine{00170\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keywordtype}{bool}\ AddIns(\textcolor{keyword}{const}\ olxstr\&\ ins,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00172\ \ \ \textcolor{comment}{//\ the\ instruction\ name\ is\ Toks[0]}}
+\DoxyCodeLine{00173\ \ \ \textcolor{keywordtype}{bool}\ AddIns(\textcolor{keyword}{const}\ TStrList\&\ Params,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keywordtype}{bool}\ CheckUniq\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ a\ convinience\ method}}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ StrLst>\ \textcolor{keywordtype}{bool}\ AddIns(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ StrLst\&\ Params,}
+\DoxyCodeLine{00176\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keywordtype}{bool}\ CheckUniq\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00177\ \ \ \{}
+\DoxyCodeLine{00178\ \ \ \ \ TStrList\ lst(Params);}
+\DoxyCodeLine{00179\ \ \ \ \ lst.Insert(0,\ name);}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{return}\ AddIns(lst,\ rm,\ CheckUniq);}
+\DoxyCodeLine{00181\ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \textcolor{comment}{//\ utility\ functions}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{static}\ olxstr\ AtomToString(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA,}
+\DoxyCodeLine{00184\ \ \ \ \ index\_t\ SfacIndex);}
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ HyphenateIns(\textcolor{keyword}{const}\ olxstr\ \&InsName,\ \textcolor{keyword}{const}\ olxstr\ \&Ins,}
+\DoxyCodeLine{00186\ \ \ \ \ TStrList\ \&Res,\ \textcolor{keywordtype}{int}\ sz\ =\ 79);}
+\DoxyCodeLine{00187\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ HyphenateIns(\textcolor{keyword}{const}\ olxstr\ \&Ins,\ TStrList\ \&Res,\ \textcolor{keywordtype}{int}\ sz\ =\ 79);}
+\DoxyCodeLine{00188\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00189\ \ \ \textcolor{comment}{//\ index\ will\ be\ automatically\ incremented\ if\ more\ then\ one\ line\ is\ parsed}}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ParseIns(\textcolor{keyword}{const}\ TStrList\&\ ins,\ \textcolor{keyword}{const}\ TStrList\&\ toks,}
+\DoxyCodeLine{00191\ \ \ \ \ ParseContext\&\ cx,\ \textcolor{keywordtype}{size\_t}\&\ index);}
+\DoxyCodeLine{00192\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00193\ \ \ \textcolor{comment}{//\ helper\ function...}}
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{static}\ TStrList::const\_list\_type\ SaveSfacUnit(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00195\ \ \ \ \ TStrList\&\ list,\ \textcolor{keywordtype}{size\_t}\ sfac\_pos,\ \textcolor{keywordtype}{bool}\ save\_disp);}
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{static}\ TStrList::const\_list\_type\ SaveSfacUnit(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00197\ \ \ \ \ TStrList\&\ list,\ \textcolor{keywordtype}{size\_t}\ sfac\_pos);}
+\DoxyCodeLine{00198\ \ \ TStrList\&\ Preprocess(TStrList\&\ l);}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \textcolor{comment}{/*\ spits\ out\ all\ instructions,\ including\ CELL,\ FVAR,\ but\ skipping\ "{}L\ N\ N\ N\ N"{}}}
+\DoxyCodeLine{00201\ \textcolor{comment}{\ \ lines,\ returns\ the\ list}}
+\DoxyCodeLine{00202\ \textcolor{comment}{\ \ of\ SFAC.}}
+\DoxyCodeLine{00203\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00204\ \ \ TStrList::const\_list\_type\ SaveHeader(TStrList\&\ out,}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keywordtype}{bool}\ ValidateRestraintNames);}
+\DoxyCodeLine{00206\ \ \ \textcolor{comment}{/*\ retursn\ the\ remaning\ "{}unknown"{}\ instructions\ that\ did\ not\ end\ up\ in\ the}}
+\DoxyCodeLine{00207\ \textcolor{comment}{\ \ header}}
+\DoxyCodeLine{00208\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00209\ \ \ TStrList::const\_list\_type\ GetFooter();}
+\DoxyCodeLine{00210\ \ \ \textcolor{comment}{//\ Parses\ all\ instructions,\ exclusing\ atoms,\ throws\ if\ fails}}
+\DoxyCodeLine{00211\ \ \ \textcolor{keywordtype}{void}\ ParseHeader(\textcolor{keyword}{const}\ TStrList\&\ in);}
+\DoxyCodeLine{00212\ \ \ \textcolor{comment}{//\ reads\ <olex2.extras>\ block.\ marks\ the\ start\ of\ the\ block\ and\ number\ of\ lines}}
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{static}\ TStrList::const\_list\_type\ ReadExtras(\textcolor{keyword}{const}\ TStrList\&\ l,}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ *start=0,\ \textcolor{keywordtype}{size\_t}\ *count=0);}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{/*\ parsed\ out\ from\ REMS\ if\ refined\ with\ Olex2,\ typically\ listed\ like:}}
+\DoxyCodeLine{00216\ \textcolor{comment}{\ \ REM\ R1\_all\ =\ 0.0509}}
+\DoxyCodeLine{00217\ \textcolor{comment}{\ \ REM\ R1\_gt\ =\ 0.0380}}
+\DoxyCodeLine{00218\ \textcolor{comment}{\ \ REM\ wR\_ref\ =\ 0.0946}}
+\DoxyCodeLine{00219\ \textcolor{comment}{\ \ REM\ GOOF\ =\ 0.9447}}
+\DoxyCodeLine{00220\ \textcolor{comment}{\ \ REM\ Shift\_max\ =\ 0.0014}}
+\DoxyCodeLine{00221\ \textcolor{comment}{\ \ REM\ Shift\_mean\ =\ 0.0001}}
+\DoxyCodeLine{00222\ \textcolor{comment}{\ \ REM\ Reflections\_all\ =\ 5404}}
+\DoxyCodeLine{00223\ \textcolor{comment}{\ \ REM\ Reflections\_gt\ =\ 4352}}
+\DoxyCodeLine{00224\ \textcolor{comment}{\ \ REM\ Parameters\ =\ 340}}
+\DoxyCodeLine{00225\ \textcolor{comment}{\ \ REM\ Hole\ =\ -\/0.2418}}
+\DoxyCodeLine{00226\ \textcolor{comment}{\ \ REM\ Peak\ =\ 0.3648}}
+\DoxyCodeLine{00227\ \textcolor{comment}{\ \ REM\ Flack\ =\ -\/0.2(4)}}
+\DoxyCodeLine{00228\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00229\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<olxstr>}}\ RefinementInfo;}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{struct\ }RCInfo\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordtype}{short}\ has\_value,\ \ \textcolor{comment}{//\ +1\ -\/\ true,\ goes\ first,\ -\/1\ -\/\ true,\ goes\ last,\ 0\ -\/\ false}}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ esd\_cnt,\ \textcolor{comment}{//\ 0,1,2}}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ atom\_limit;\ \textcolor{comment}{//\ -\/1,\ N,\ if\ atom\ count\ is\ fewer\ than\ value\ -\/\ skipped}}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordtype}{bool}\ full\_label;}
+\DoxyCodeLine{00236\ \ \ \ \ RCInfo(\textcolor{keywordtype}{short}\ \_has\_value,\ \textcolor{keywordtype}{short}\ \_esd\_cnt,\ \textcolor{keywordtype}{short}\ \_atom\_limit,}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \_full\_label\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ :\ has\_value(\_has\_value),\ esd\_cnt(\_esd\_cnt),\ atom\_limit(\_atom\_limit),}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ full\_label(\_full\_label)}
+\DoxyCodeLine{00240\ \ \ \ \ \{\}}
+\DoxyCodeLine{00241\ \ \ \};}
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{static}\ olxstr\ RestraintToString(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSimpleRestraint}{TSimpleRestraint}}\ \&r,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTIns_1_1RCInfo}{RCInfo}}\ \&ri,}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList\ *atoms\ =\ 0);}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \textcolor{keywordtype}{bool}\ InsExists(\textcolor{keyword}{const}\ olxstr\ \&Name);}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ InsCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Ins.Count();\ \}}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ olxstr\&\ InsName(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Ins[i];\ \}}
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ TInsList\&\ InsParams(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ *Ins.GetObject(i);\ \}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keywordtype}{void}\ DelIns(\textcolor{keywordtype}{size\_t}\ i);}
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DoPreserveInvalid()\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::GetInstance().GetOptions()}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ .FindValue(\textcolor{stringliteral}{"{}preserve\_invalid\_ins"{}},\ FalseString()).ToBool();}
+\DoxyCodeLine{00253\ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ bool>}}\&\ GetIncluded()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordflow}{return}\ included;}
+\DoxyCodeLine{00256\ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \textcolor{comment}{//\ updates\ olex2\_same\ file}}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{void}\ UpdateSameFile(\textcolor{keyword}{const}\ olxstr\&\ olex2\_same,\ \textcolor{keywordtype}{bool}\ include);}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTIns}{TIns}};\ \}}
+\DoxyCodeLine{00260\ \};}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ EndXlibNamespace()}
+\DoxyCodeLine{00263\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

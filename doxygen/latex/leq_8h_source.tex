@@ -1,0 +1,278 @@
+\doxysection{leq.\+h}
+\hypertarget{leq_8h_source}{}\label{leq_8h_source}\index{xlib/leq.h@{xlib/leq.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_liner\_eq\_h}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_liner\_eq\_h}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}evalue.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}eset.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}rm\_base.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\ \ \#include\ "{}pyext.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ BeginXlibNamespace()}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ const\ \textcolor{keywordtype}{short}\ \ \textcolor{comment}{//\ relation\ of\ parameters\ to\ variables}}
+\DoxyCodeLine{00025\ \ \ relation\_None\ \ \ \ \ \ \ \ \ \ =\ 0,\ \ \textcolor{comment}{//\ fixed\ param}}
+\DoxyCodeLine{00026\ \ \ relation\_AsVar\ \ \ \ \ \ \ \ \ =\ 1,}
+\DoxyCodeLine{00027\ \ \ relation\_AsOneMinusVar\ =\ 2,}
+\DoxyCodeLine{00028\ \ \ relation\_Last\ \ \ \ \ \ \ \ \ \ =\ 2;\ \ \textcolor{comment}{//\ for\ iterations}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{comment}{/*\ Any\ single\ variable\ can\ be\ shared\ by\ several\ atom\ parameters\ (to\ make\ them}}
+\DoxyCodeLine{00031\ \textcolor{comment}{equal)\ as\ well\ as\ by\ several\ linear\ equations}}
+\DoxyCodeLine{00032\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ class\ \mbox{\hyperlink{classXLEQ}{XLEQ}};}
+\DoxyCodeLine{00035\ class\ \mbox{\hyperlink{classXVar}{XVar}};}
+\DoxyCodeLine{00036\ class\ \mbox{\hyperlink{classXVarManager}{XVarManager}};}
+\DoxyCodeLine{00037\ struct\ \mbox{\hyperlink{structXVarReference}{XVarReference}};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{comment}{//class\ IXVar}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ struct\ XVarReference\ \{}
+\DoxyCodeLine{00042\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{size\_t}\ Id;}
+\DoxyCodeLine{00044\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00045\ \ \ \mbox{\hyperlink{classXVar}{XVar}}\&\ Parent;}
+\DoxyCodeLine{00046\ \ \ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ referencer;}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{short}\ var\_index;\ \ \textcolor{comment}{//\ one\ of\ the\ var\_name}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{short}\ relation\_type;\ \textcolor{comment}{//\ relationAsVar\ or\ relation\_AsOneMinusVar}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{double}\ coefficient;\ \textcolor{comment}{//\ like\ 0.25\ in\ 20.25}}
+\DoxyCodeLine{00050\ \ \ XVarReference(\mbox{\hyperlink{classXVar}{XVar}}\&\ parent,\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ r,\ \textcolor{keywordtype}{short}\ \_var\_index,}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{short}\ \_relation\_type,\ \textcolor{keywordtype}{double}\ coeff=1.0)\ :}
+\DoxyCodeLine{00052\ \ \ \ \ Parent(parent),}
+\DoxyCodeLine{00053\ \ \ \ \ referencer(r),}
+\DoxyCodeLine{00054\ \ \ \ \ var\_index(\_var\_index),}
+\DoxyCodeLine{00055\ \ \ \ \ relation\_type(\_relation\_type),}
+\DoxyCodeLine{00056\ \ \ \ \ coefficient(coeff)\ \{\}}
+\DoxyCodeLine{00057\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ Id)}
+\DoxyCodeLine{00058\ \ \ \textcolor{comment}{//\ returns\ the\ value\ of\ the\ atom\ parameter\ associated\ with\ this\ reference}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{double}\ GetActualValue()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ referencer.GetValue(var\_index);\ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00062\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ referrers);}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00064\ \ \ \textcolor{comment}{//\ returns\ a\ new\ instance\ created\ with\ new}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{static}\ XVarReference\&\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \mbox{\hyperlink{classXVar}{XVar}}\&\ parent);}
+\DoxyCodeLine{00066\ \};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{keyword}{class\ }XVar\ :\textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{double}\ Value,\ Esd;}
+\DoxyCodeLine{00070\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<XVarReference>}}\ References;\ \ \textcolor{comment}{//\ owed\ from\ the\ Parent}}
+\DoxyCodeLine{00071\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<XLEQ>}}\ Equations;\ \textcolor{comment}{//\ equations\ using\ this\ variable}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{size\_t}\ Id;}
+\DoxyCodeLine{00073\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00074\ \ \ \mbox{\hyperlink{classXVarManager}{XVarManager}}\&\ Parent;}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ XVar(\mbox{\hyperlink{classXVarManager}{XVarManager}}\&\ parent,\ \textcolor{keywordtype}{double}\ val=0.5,\ \textcolor{keywordtype}{double}\ esd=0)}
+\DoxyCodeLine{00077\ \ \ \ \ :\ Value(val),\ Esd(esd),\ Id(InvalidIndex),}
+\DoxyCodeLine{00078\ \ \ \ \ Parent(parent)}
+\DoxyCodeLine{00079\ \ \ \{\}}
+\DoxyCodeLine{00080\ \ \ \string~XVar();}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{//\ adds\ a\ new\ atom,\ referencing\ this\ variable,\ for\ internal\ use}}
+\DoxyCodeLine{00082\ \ \ \mbox{\hyperlink{structXVarReference}{XVarReference}}\&\ \_AddRef(\mbox{\hyperlink{structXVarReference}{XVarReference}}\&\ vr)\ \ \{\ \ \textcolor{keywordflow}{return}\ *References.Add(\&vr);\ \ \}}
+\DoxyCodeLine{00083\ \ \ \textcolor{comment}{//\ removes\ a\ refence,\ for\ internal\ use}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordtype}{void}\ \_RemRef(\mbox{\hyperlink{structXVarReference}{XVarReference}}\&\ vr)\ \ \{\ \ References.Remove(\&vr);\ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{size\_t}\ \_RefCount()\textcolor{keyword}{\ \ const\ }\{\ \ \textcolor{keywordflow}{return}\ References.Count();\ \ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{comment}{/*\ calculates\ the\ number\ of\ atoms\ (excluding\ the\ deleted\ ones)\ using\ this}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ \ variable}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{size\_t}\ RefCount()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00090\ \ \ \mbox{\hyperlink{structXVarReference}{XVarReference}}\&\ GetRef(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *References[i];\ \ \}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<XVarReference>}}\ \&\ GetRefs()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ References;\ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ adds\ a\ new\ equation,\ referencing\ this\ variable}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{void}\ \_AddLeq(\mbox{\hyperlink{classXLEQ}{XLEQ}}\&\ eq)\ \ \{\ \ Equations.Add(\&eq);\ \ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//\ removes\ an\ equation,\ referencing\ this\ variable}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{void}\ \_RemLeq(\mbox{\hyperlink{classXLEQ}{XLEQ}}\&\ eq)\ \ \{\ \ Equations.Remove(\&eq);\ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{comment}{//\ returns\ the\ number\ of\ equations,\ referencing\ this\ variable}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{size\_t}\ LeqCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Equations.Count();\ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<XLEQ>}}\ \&\ GetLEQs()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Equations;\ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{bool}\ IsUsed(\textcolor{keywordtype}{bool}\ consider\_single=\textcolor{keyword}{false})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00102\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Value)}
+\DoxyCodeLine{00103\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Esd)}
+\DoxyCodeLine{00104\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ Id)}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{bool}\ IsReserved()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00107\ \ \ TIString\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{void}\ Update(\textcolor{keyword}{const}\ TEValueD\ \&v);}
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00111\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms);}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{static}\ XVar\&\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \mbox{\hyperlink{classXVarManager}{XVarManager}}\&\ parent);}
+\DoxyCodeLine{00114\ \};}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{keyword}{class\ }XLEQ\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{double}\ Value,\ Sigma;}
+\DoxyCodeLine{00118\ \ \ TDoubleList\ Coefficients;}
+\DoxyCodeLine{00119\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<XVar>}}\ Vars;}
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordtype}{size\_t}\ Id;}
+\DoxyCodeLine{00121\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00122\ \ \ \mbox{\hyperlink{classXVarManager}{XVarManager}}\&\ Parent;}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ XLEQ(\mbox{\hyperlink{classXVarManager}{XVarManager}}\&\ parent,\ \textcolor{keywordtype}{double}\ val=1.0,\ \textcolor{keywordtype}{double}\ sig=0.01)}
+\DoxyCodeLine{00125\ \ \ \ \ :\ \ Value(val),\ Sigma(sig),\ Parent(parent)}
+\DoxyCodeLine{00126\ \ \ \{\}}
+\DoxyCodeLine{00127\ \ \ \string~XLEQ();}
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{//\ copies\ Coefficients\ and\ Vars,\ internal\ use}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{void}\ \_Assign(\textcolor{keyword}{const}\ XLEQ\&\ leq);}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{void}\ AddMember(\mbox{\hyperlink{classXVar}{XVar}}\&\ var,\ \textcolor{keywordtype}{double}\ coefficient\ =\ 1.0);}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Vars.Count();\ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classXVar}{XVar}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Vars[i];\ \ \}}
+\DoxyCodeLine{00133\ \ \ \mbox{\hyperlink{classXVar}{XVar}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \ \textcolor{keywordflow}{return}\ *Vars[i];\ \ \}}
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordtype}{double}\ GetCoefficient(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Coefficients[i];\ \ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{comment}{//\ validates\ that\ the\ equation\ is\ valid,\ if\ not\ -\/\ releases\ the\ variables}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keywordtype}{bool}\ Validate();}
+\DoxyCodeLine{00137\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Value)}
+\DoxyCodeLine{00138\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Sigma)}
+\DoxyCodeLine{00139\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ Id)}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00142\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ vars);}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{static}\ XLEQ\&\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \mbox{\hyperlink{classXVarManager}{XVarManager}}\&\ parent);}
+\DoxyCodeLine{00145\ \};}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \textcolor{keyword}{class\ }XVarManager\ \{}
+\DoxyCodeLine{00148\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<XVar>}}\ Vars,}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{comment}{/*\ [BASF\ 1...N]\ +\ EXTI\ -\/\ this\ are\ implict\ and\ not\ writtent\ to\ the\ FVAR\ line}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ \ \ \ but\ can\ be\ used\ with\ SUMP\ */}}
+\DoxyCodeLine{00151\ \ \ \ \ ReservedVars;}
+\DoxyCodeLine{00152\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<XLEQ>}}\ Equations;}
+\DoxyCodeLine{00153\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<XVarReference>}}\ References;}
+\DoxyCodeLine{00154\ \ \ uint16\_t\ NextVar;\ \ \textcolor{comment}{//\ this\ controls\ there\ variables\ go\ in\ sebsequent\ calls}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordtype}{void}\ UpdateIds();}
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordtype}{void}\ RemoveReservedVar(\mbox{\hyperlink{classXVar}{XVar}}\&\ v,}
+\DoxyCodeLine{00157\ \ \ \ \ \mbox{\hyperlink{classolxset}{olxset<XLEQ*,\ TPointerComparator>}}\&\ leq\_to\_remove,}
+\DoxyCodeLine{00158\ \ \ \ \ \mbox{\hyperlink{classolxset}{olxset<XVarReference*,\ TPointerComparator>}}\&\ ref\_to\_remove);}
+\DoxyCodeLine{00159\ \ \ \textcolor{keywordtype}{void}\ FinaliseReservedVarRemoval(}
+\DoxyCodeLine{00160\ \ \ \ \ \mbox{\hyperlink{classolxset}{olxset<XLEQ*,\ TPointerComparator>}}\&\ leq\_to\_remove,}
+\DoxyCodeLine{00161\ \ \ \ \ \mbox{\hyperlink{classolxset}{olxset<XVarReference*,\ TPointerComparator>}}\&\ ref\_to\_remove);}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//\ 1\ or\ 4\ in\ the\ case\ of\ LONE/BEDE}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keywordtype}{size\_t}\ min\_var\_count;}
+\DoxyCodeLine{00164\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ RM;}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ RelationName(\textcolor{keywordtype}{int}\ idx);}
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{short}\ RelationIndex(\textcolor{keyword}{const}\ olxstr\&\ rn);}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ XVarManager(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \mbox{\hyperlink{classXVar}{XVar}}\&\ NewVar(\textcolor{keywordtype}{double}\ val\ =\ 0.5,\ \textcolor{keywordtype}{bool}\ reindex\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{/*\ returns\ existing\ variable\ or\ creates\ a\ new\ one.\ Sets\ a\ limit\ of\ 1024}}
+\DoxyCodeLine{00175\ \textcolor{comment}{\ \ variables}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00177\ \ \ \mbox{\hyperlink{classXVar}{XVar}}\&\ GetReferencedVar(\textcolor{keywordtype}{size\_t}\ ind);}
+\DoxyCodeLine{00178\ \ \ \textcolor{keywordtype}{size\_t}\ VarCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Vars.Count();\ \}}
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classXVar}{XVar}}\&\ GetVar(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Vars[i];\ \}}
+\DoxyCodeLine{00180\ \ \ \mbox{\hyperlink{classXVar}{XVar}}\&\ GetVar(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ Vars[i];\ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \textcolor{comment}{/*\ For\ internal\ use\ -\/\ returns\ an\ instance\ form\ Vars\ or\ Reservedvars}}
+\DoxyCodeLine{00183\ \textcolor{comment}{\ \ according\ to\ the\ id}}
+\DoxyCodeLine{00184\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00185\ \ \ \mbox{\hyperlink{classXVar}{XVar}}\&\ GetVar\_(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{bool}\ IsReserved(\textcolor{keyword}{const}\ \mbox{\hyperlink{classXVar}{XVar}}\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{return}\ v.GetId()\ >=\ Vars.Count();}
+\DoxyCodeLine{00188\ \ \ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ olxstr\ GetReservedVarName(\textcolor{keywordtype}{size\_t}\ i)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \mbox{\hyperlink{classXLEQ}{XLEQ}}\&\ NewEquation(\textcolor{keywordtype}{double}\ val\ =\ 1.0,\ \textcolor{keywordtype}{double}\ sig\ =\ 0.01);}
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordtype}{size\_t}\ EquationCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Equations.Count();\ \}}
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classXLEQ}{XLEQ}}\&\ GetEquation(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Equations[i];\ \}}
+\DoxyCodeLine{00195\ \ \ \mbox{\hyperlink{classXLEQ}{XLEQ}}\&\ GetEquation(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ Equations[i];\ \}}
+\DoxyCodeLine{00196\ \ \ \mbox{\hyperlink{classXLEQ}{XLEQ}}\&\ ReleaseEquation(\textcolor{keywordtype}{size\_t}\ i);}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{size\_t}\ VarRefCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ References.Count();\ \}}
+\DoxyCodeLine{00199\ \ \ \mbox{\hyperlink{structXVarReference}{XVarReference}}\&\ GetVarRef(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ References[i];\ \}}
+\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structXVarReference}{XVarReference}}\&\ GetVarRef(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ References[i];\ \}}
+\DoxyCodeLine{00201\ \ \ \textcolor{comment}{//\ clears\ all\ the\ data\ and\ Nulls\ atoms'\ varrefs}}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{void}\ ClearAll();}
+\DoxyCodeLine{00203\ \ \ \textcolor{comment}{//\ does\ not\ clear\ the\ data,\ just\ resets\ the\ NextVar}}
+\DoxyCodeLine{00204\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00205\ \ \ \textcolor{comment}{/*\ sets\ a\ relation\ between\ an\ atom\ parameter\ and\ a\ variable,\ if\ the}}
+\DoxyCodeLine{00206\ \textcolor{comment}{\ \ coefficient\ is\ -\/10\ (default\ value),\ the\ position\ multiplicity\ is\ taken\ into}}
+\DoxyCodeLine{00207\ \textcolor{comment}{\ \ account}}
+\DoxyCodeLine{00208\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00209\ \ \ \mbox{\hyperlink{structXVarReference}{XVarReference}}\&\ AddVarRef(\mbox{\hyperlink{classXVar}{XVar}}\&\ var,\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ r,\ \textcolor{keywordtype}{short}\ var\_name,}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordtype}{short}\ relation,\ \textcolor{keywordtype}{double}\ coefficient);}
+\DoxyCodeLine{00211\ \ \ \textcolor{comment}{//\ for\ parsing...}}
+\DoxyCodeLine{00212\ \ \ \mbox{\hyperlink{structXVarReference}{XVarReference}}\&\ AddVarRef(\mbox{\hyperlink{structXVarReference}{XVarReference}}\&\ ref)\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ ref.SetId(References.Count());}
+\DoxyCodeLine{00214\ \ \ \ \ References.Add(ref);}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordflow}{return}\ ref;}
+\DoxyCodeLine{00216\ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \textcolor{comment}{//\ releases\ a\ reference\ to\ the\ variable,\ must\ be\ deleted,\ unless\ restored}}
+\DoxyCodeLine{00218\ \ \ \mbox{\hyperlink{structXVarReference}{XVarReference}}*\ ReleaseRef(\mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ r,\ \textcolor{keywordtype}{short}\ var\_name);}
+\DoxyCodeLine{00219\ \ \ \textcolor{comment}{//\ restrores\ previously\ released\ var\ reference}}
+\DoxyCodeLine{00220\ \ \ \textcolor{keywordtype}{void}\ RestoreRef(\mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ r,\ \textcolor{keywordtype}{short}\ var\_name,\ \mbox{\hyperlink{structXVarReference}{XVarReference}}*\ vr);}
+\DoxyCodeLine{00221\ \ \ \textcolor{comment}{//\ removes\ all\ unused\ variables\ and\ invalid/incomplete\ equations}}
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{void}\ Validate(\textcolor{keywordtype}{bool}\ remove\_single\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00223\ \ \ \textcolor{comment}{/*\ helps\ with\ parsing\ SHELX\ specific\ paramter\ representation,\ returns\ actual}}
+\DoxyCodeLine{00224\ \textcolor{comment}{\ \ value\ of\ the\ param}}
+\DoxyCodeLine{00225\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordtype}{double}\ SetParam(\mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ r,\ \textcolor{keywordtype}{short}\ param\_name,\ \textcolor{keywordtype}{double}\ val);}
+\DoxyCodeLine{00227\ \ \ \textcolor{keywordtype}{void}\ FixParam(\mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ r,\ \textcolor{keywordtype}{short}\ param\_name);}
+\DoxyCodeLine{00228\ \ \ \textcolor{keywordtype}{void}\ FreeParam(\mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ r,\ \textcolor{keywordtype}{short}\ param\_name);}
+\DoxyCodeLine{00229\ \ \ \textcolor{comment}{//\ retruns\ a\ SHELX\ specific\ value\ like\ 20.5\ or\ 11.0}}
+\DoxyCodeLine{00230\ \ \ \textcolor{keywordtype}{double}\ GetParam(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ r,\ \textcolor{keywordtype}{short}\ param\_name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordflow}{return}\ GetParam(r,\ param\_name,\ r.GetValue(param\_name));}
+\DoxyCodeLine{00232\ \ \ \}}
+\DoxyCodeLine{00233\ \ \ \textcolor{comment}{//\ uses\ the\ override\_val\ instead\ of\ the\ call\ to\ GetValue(param\_name)}}
+\DoxyCodeLine{00234\ \ \ \textcolor{keywordtype}{double}\ GetParam(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ r,\ \textcolor{keywordtype}{short}\ param\_name,}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordtype}{double}\ override\_val)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00236\ \ \ \textcolor{comment}{//\ parses\ FVAR\ and\ assignes\ variable\ values}}
+\DoxyCodeLine{00237\ \ \ \textcolor{keywordtype}{void}\ AddFVAR(\textcolor{keyword}{const}\ TStrList\&\ fvar);}
+\DoxyCodeLine{00238\ \ \ \textcolor{keywordtype}{bool}\ HasEXTI()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classXVar}{XVar}}\&\ GetEXTI()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00240\ \ \ \textcolor{keywordtype}{void}\ SetEXTI(\textcolor{keywordtype}{double}\ val,\ \textcolor{keywordtype}{double}\ esd);}
+\DoxyCodeLine{00241\ \ \ \mbox{\hyperlink{classXVar}{XVar}}\&\ GetEXTI();}
+\DoxyCodeLine{00242\ \ \ \textcolor{keywordtype}{void}\ ClearEXTI();}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ \textcolor{keywordtype}{void}\ SetBASF(\textcolor{keyword}{const}\ TStrList\&\ bs);}
+\DoxyCodeLine{00245\ \ \ \textcolor{keywordtype}{void}\ ClearBASF();}
+\DoxyCodeLine{00246\ \ \ \textcolor{keywordtype}{size\_t}\ GetBASFCount()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00247\ \ \ \textcolor{keywordtype}{bool}\ HasBASF()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetBASFCount()\ >\ 0;\ \}}
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classXVar}{XVar}}\&\ GetBASF(\textcolor{keywordtype}{size\_t}\ i)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00249\ \ \ \mbox{\hyperlink{classXVar}{XVar}}\&\ GetBASF(\textcolor{keywordtype}{size\_t}\ i);}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ olxstr\ GetFVARStr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00252\ \ \ \textcolor{keywordtype}{void}\ AddSUMP(\textcolor{keyword}{const}\ TStrList\&\ sump);}
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ Validate\ must\ be\ called\ first\ to\ get\ valid\ count\ of\ equations}}
+\DoxyCodeLine{00254\ \ \ olxstr\ GetSUMPStr(\textcolor{keywordtype}{size\_t}\ ind)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00255\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ XVarManager\&\ vm);}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \textcolor{keywordtype}{void}\ Describe(TStrList\&\ lst);}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00260\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00261\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms);}
+\DoxyCodeLine{00262\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00263\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \textcolor{keywordtype}{size\_t}\ GetMinVarCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ min\_var\_count;\ \}}
+\DoxyCodeLine{00266\ \ \ \textcolor{keywordtype}{void}\ SetMinVarCount(\textcolor{keywordtype}{size\_t}\ cnt)\ \{\ min\_var\_count\ =\ cnt;\ \}}
+\DoxyCodeLine{00267\ \};}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ EndXlibNamespace()}
+\DoxyCodeLine{00271\ }
+\DoxyCodeLine{00272\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

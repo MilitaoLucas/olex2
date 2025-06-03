@@ -1,0 +1,114 @@
+\doxysection{exyzgroup.\+h}
+\hypertarget{exyzgroup_8h_source}{}\label{exyzgroup_8h_source}\index{xlib/exyzgroup.h@{xlib/exyzgroup.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_exyz\_group\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_exyz\_group\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}catom.h"{}}}
+\DoxyCodeLine{00013\ BeginXlibNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ class\ TExyzGroup\ \{}
+\DoxyCodeLine{00016\ \ \ \mbox{\hyperlink{classTExyzGroups}{TExyzGroups}}\&\ Parent;}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{size\_t}\ Id;}
+\DoxyCodeLine{00018\ \ \ TCAtomPList\ Atoms;}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ TExyzGroup(\mbox{\hyperlink{classTExyzGroups}{TExyzGroups}}\&\ parent,\ \textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})}
+\DoxyCodeLine{00021\ \ \ \ \ :\ Parent(parent),\ Id(id)}
+\DoxyCodeLine{00022\ \ \ \{\}}
+\DoxyCodeLine{00023\ \ \ \string~TExyzGroup()\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ Atoms[i]-\/>SetExyzGroup(0);}
+\DoxyCodeLine{00026\ \ \ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ Id);}
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ Add(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{if}\ (ca.GetExyzGroup()\ !=\ 0)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ ca.GetExyzGroup()-\/>Remove(ca);}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \ \ ca.SetExyzGroup(\textcolor{keyword}{this});}
+\DoxyCodeLine{00034\ \ \ \ \ Atoms.Add(\&ca);}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ ca;}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ Remove(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ Atoms.Remove(\&ca);}
+\DoxyCodeLine{00039\ \ \ \ \ ca.SetExyzGroup(0);}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \ \textcolor{keywordflow}{return}\ *Atoms[i];\ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Atoms[i];\ \ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Atoms.Count();\ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ac\ =\ 0;}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Atoms[i]-\/>IsDeleted()\ \&\&\ Atoms[i]-\/>GetExyzGroup()\ ==\ \textcolor{keyword}{this})\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ ac++;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ (ac\ <\ 2);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TExyzGroup\&\ ags);}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00055\ \ \ olxstr\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00058\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms);}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00063\ \textcolor{keyword}{class\ }TExyzGroups\ \{}
+\DoxyCodeLine{00064\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TExyzGroup>}}\ Groups;}
+\DoxyCodeLine{00065\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ RM;}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ TExyzGroups(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ parent)\ :\ RM(parent)\ \{\}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ TExyzGroup\&\ New()\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}\ Groups.Add(\textcolor{keyword}{new}\ TExyzGroup(*\textcolor{keyword}{this},\ Groups.Count()));}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{\ \ Groups.Clear();\ \ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Groups.Count();\ \ \}}
+\DoxyCodeLine{00075\ \ \ TExyzGroup\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \ \textcolor{keywordflow}{return}\ Groups[i];\ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{const}\ TExyzGroup\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Groups[i];\ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ i)\ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ Groups.Delete(i);}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i;\ j\ <\ Groups.Count();\ j++)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ Groups[j].SetId(j);}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TExyzGroups\&\ ags)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ Clear();}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ags.Count();\ i++)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!ags[i].IsEmpty())\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ Groups.Add(\textcolor{keyword}{new}\ TExyzGroup(*\textcolor{keyword}{this},\ Groups.Count())).Assign(ags[i]);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordtype}{void}\ ValidateAll()\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Groups.Count();\ i++)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Groups[i].IsEmpty())\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ Groups.NullItem(i);}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ Groups.Pack();}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00102\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms);}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00105\ \};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ EndXlibNamespace()}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

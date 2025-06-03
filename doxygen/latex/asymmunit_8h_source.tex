@@ -1,0 +1,401 @@
+\doxysection{asymmunit.\+h}
+\hypertarget{asymmunit_8h_source}{}\label{asymmunit_8h_source}\index{xlib/asymmunit.h@{xlib/asymmunit.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_asymmunit\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_asymmunit\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}ematrix.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}macroerror.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}ellipsoid.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}conninfo.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}eset.h"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#undef\ GetObject}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ BeginXlibNamespace()}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ class\ TResidue;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ class\ TAsymmUnit\ :\ public\ \mbox{\hyperlink{classIXVarReferencerContainer}{IXVarReferencerContainer}}\ \{}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{size\_t}\ Id;\ \textcolor{comment}{//\ InvalidIndex,\ proper\ value\ only\ for\ files\ in\ TGXApp}}
+\DoxyCodeLine{00029\ \ \ TCAtomPList\ CAtoms;}
+\DoxyCodeLine{00030\ \ \ \textcolor{comment}{//\ list\ of\ unique\ SG\ matrices\ (no\ centering\ or\ inversion)}}
+\DoxyCodeLine{00031\ \ \ smatd\_list\ \ Matrices;}
+\DoxyCodeLine{00032\ \ \ TEllpPList\ Ellipsoids;}
+\DoxyCodeLine{00033\ \ \ mat3d}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//\ transformation\ from\ cell\ crd\ to\ cartesian}}
+\DoxyCodeLine{00035\ \ \ \ \ Cell2Cartesian,\ Cell2CartesianT,}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//\ transformation\ from\ cartesian\ crd\ to\ cell}}
+\DoxyCodeLine{00037\ \ \ \ \ Cartesian2Cell,\ Cartesian2CellT;}
+\DoxyCodeLine{00038\ \ \ \textcolor{comment}{//\ ADP\ transformation\ matrices}}
+\DoxyCodeLine{00039\ \ \ mat3d\ UcifToUxyz,\ UxyzToUcif,}
+\DoxyCodeLine{00040\ \ \ \ \ UcifToUxyzT,\ UxyzToUcifT;}
+\DoxyCodeLine{00041\ \ \ \textcolor{comment}{//\ transformation\ from\ Miller\ index\ to\ cartesian}}
+\DoxyCodeLine{00042\ \ \ mat3d\ Hkl2Cartesian;}
+\DoxyCodeLine{00043\ \ \ TCAtomPList\ Centroids;}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{double}\ MaxQPeak,}
+\DoxyCodeLine{00045\ \ \ \ \ MinQPeak;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{double}\ Z;}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{short}\ Latt;}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{/*\ this\ flag\ specifies\ that\ \_OnAtomTypeChange\ will\ do\ nothing,\ however}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ whatever\ called\ Assign\ must\ call\ \_UpdateConnInfo}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{bool}\ Assigning;}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLattice}{TLattice}}*\ Lattice;\ \ \textcolor{comment}{//\ parent\ lattice}}
+\DoxyCodeLine{00053\ \ \ vec3d\ Axes,\ AxisEsds;\ \ \ \ \ \textcolor{comment}{//\ axes\ and\ esds}}
+\DoxyCodeLine{00054\ \ \ vec3d\ Angles,\ AngleEsds;\ \ \textcolor{comment}{//\ angles\ and\ esds}}
+\DoxyCodeLine{00055\ \ \ vec3d\ RAxes;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ reciprical\ axes}}
+\DoxyCodeLine{00056\ \ \ vec3d\ RAngles;\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ reciprical\ angles}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00058\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00059\ \ \ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TResidue,\ IOlxObject>}}\ Residues;}
+\DoxyCodeLine{00060\ \ \ TResidue\&\ MainResidue;}
+\DoxyCodeLine{00061\ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<olxch,\ olx\_pdict<int,\ TResidue*>}}\ >\ ResidueRegistry;}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRefinementModel}{RefinementModel}}*\ RefMod;}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ IdName;}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{void}\ \_UpdateQPeaks();}
+\DoxyCodeLine{00065\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ TAsymmUnit(\mbox{\hyperlink{classTLattice}{TLattice}}*\ L);}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{virtual}\ \string~TAsymmUnit();}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ GetLattice()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Lattice;\ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{bool}\ HasLattice()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Lattice\ !=\ 0;\ \}}
+\DoxyCodeLine{00072\ \ \ vec3d\&\ GetAxes()\ \{\ \textcolor{keywordflow}{return}\ Axes;\ \}}
+\DoxyCodeLine{00073\ \ \ vec3d\&\ GetAxisEsds()\ \{\ \textcolor{keywordflow}{return}\ AxisEsds;\ \}}
+\DoxyCodeLine{00074\ \ \ vec3d\&\ GetAngles()\ \{\ \textcolor{keywordflow}{return}\ Angles;\ \}}
+\DoxyCodeLine{00075\ \ \ vec3d\&\ GetAngleEsds()\ \{\ \textcolor{keywordflow}{return}\ AngleEsds;\ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetAxes()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Axes;\ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetAxisEsds()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ AxisEsds;\ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetAngles()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Angles;\ \}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetAngleEsds()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ AngleEsds;\ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetRAxes()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RAxes;\ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetRAngles()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RAngles;\ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{double}\ CalcCellVolume()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00083\ \ \ \textcolor{comment}{/*\ estimates\ Z=Z'*sg.multiplicity\ according\ to\ 18.6A\ rule,\ partial\ occupancy}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ \ implied\ double...}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{double}\ EstimateZ(\textcolor{keywordtype}{double}\ atomCount)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{double}\ GetZPrime()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00088\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Z);}
+\DoxyCodeLine{00089\ \ \ DefPropP(\textcolor{keywordtype}{short},\ Latt);}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetCellToCartesian()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Cell2Cartesian;\ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetCartesianToCell()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Cartesian2Cell;\ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetHklToCartesian()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Hkl2Cartesian;\ \}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ CellToCartesian(\mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ crt)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00095\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00096\ \ \ \ \ crt[0]\ =\ (FT)(crt[0]\ *\ Cell2Cartesian[0][0]\ +\ crt[1]\ *\ Cell2Cartesian[1][0]\ +}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ crt[2]\ *\ Cell2Cartesian[2][0]);}
+\DoxyCodeLine{00098\ \ \ \ \ crt[1]\ =\ (FT)(crt[1]\ *\ Cell2Cartesian[1][1]\ +\ crt[2]\ *\ Cell2Cartesian[2][1]);}
+\DoxyCodeLine{00099\ \ \ \ \ crt[2]\ =\ (FT)(crt[2]\ *\ Cell2Cartesian[2][2]);}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{return}\ crt;}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{//crt\ *=\ Cell2Cartesian;}}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{00104\ \ \ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ Orthogonalise(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ crt)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}(}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ (FT)(crt[0]\ *\ Cell2Cartesian[0][0]\ +\ crt[1]\ *\ Cell2Cartesian[1][0]\ +}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ crt[2]\ *\ Cell2Cartesian[2][0]),}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ (FT)(crt[1]\ *\ Cell2Cartesian[1][1]\ +\ crt[2]\ *\ Cell2Cartesian[2][1]),}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ (FT)(crt[2]\ *\ Cell2Cartesian[2][2]));}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ CartesianToCell(\mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ cll)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00112\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00113\ \ \ \ \ cll[0]\ =\ (FT)(cll[0]\ *\ Cartesian2Cell[0][0]\ +\ cll[1]\ *\ Cartesian2Cell[1][0]\ +}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ cll[2]\ *\ Cartesian2Cell[2][0]);}
+\DoxyCodeLine{00115\ \ \ \ \ cll[1]\ =\ (FT)(cll[1]\ *\ Cartesian2Cell[1][1]\ +\ cll[2]\ *\ Cartesian2Cell[2][1]);}
+\DoxyCodeLine{00116\ \ \ \ \ cll[2]\ =\ (FT)(cll[2]\ *\ Cartesian2Cell[2][2]);}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ cll;}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{00120\ \ \ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\ Fractionalise(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}\&\ cll)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTVector3}{TVector3<FT>}}(}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ (FT)(cll[0]\ *\ Cartesian2Cell[0][0]\ +\ cll[1]\ *\ Cartesian2Cell[1][0]\ +}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ cll[2]\ *\ Cartesian2Cell[2][0]),}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ (FT)(cll[1]\ *\ Cartesian2Cell[1][1]\ +\ cll[2]\ *\ Cartesian2Cell[2][1]),}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ (FT)(cll[2]\ *\ Cartesian2Cell[2][2]));}
+\DoxyCodeLine{00126\ \ \ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{//\ J\ App\ Cryst\ 2002,\ 35,\ 477-\/480}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ T\&\ UcifToUcart(T\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00130\ \ \ \ \ mat3d\ M(v[0],\ v[5],\ v[4],\ v[1],\ v[3],\ v[2]);}
+\DoxyCodeLine{00131\ \ \ \ \ M\ =\ UcifToUxyz\ *\ M\ *\ UcifToUxyzT;}
+\DoxyCodeLine{00132\ \ \ \ \ v[0]\ =\ M[0][0];\ \ v[1]\ =\ M[1][1];\ \ v[2]\ =\ M[2][2];}
+\DoxyCodeLine{00133\ \ \ \ \ v[3]\ =\ M[1][2];\ \ v[4]\ =\ M[0][2];\ \ v[5]\ =\ M[0][1];}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ T\&\ UcartToUcif(T\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00137\ \ \ \ \ mat3d\ M(v[0],\ v[5],\ v[4],\ v[1],\ v[3],\ v[2]);}
+\DoxyCodeLine{00138\ \ \ \ \ M\ =\ UxyzToUcif\ *\ M\ *\ UxyzToUcifT;}
+\DoxyCodeLine{00139\ \ \ \ \ v[0]\ =\ M[0][0];\ \ v[1]\ =\ M[1][1];\ \ v[2]\ =\ M[2][2];}
+\DoxyCodeLine{00140\ \ \ \ \ v[3]\ =\ M[1][2];\ \ v[4]\ =\ M[0][2];\ \ v[5]\ =\ M[0][1];}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ T\&\ UstarToUcart(T\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00144\ \ \ \ \ mat3d\ M(v[0],\ v[5],\ v[4],\ v[1],\ v[3],\ v[2]);}
+\DoxyCodeLine{00145\ \ \ \ \ M\ =\ Cell2Cartesian\ *\ M\ *\ Cell2CartesianT;}
+\DoxyCodeLine{00146\ \ \ \ \ v[0]\ =\ M[0][0];\ \ v[1]\ =\ M[1][1];\ \ v[2]\ =\ M[2][2];}
+\DoxyCodeLine{00147\ \ \ \ \ v[3]\ =\ M[1][2];\ \ v[4]\ =\ M[0][2];\ \ v[5]\ =\ M[0][1];}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ T\&\ UcartToUstar(T\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00151\ \ \ \ \ mat3d\ M(v[0],\ v[5],\ v[4],\ v[1],\ v[3],\ v[2]);}
+\DoxyCodeLine{00152\ \ \ \ \ M\ =\ Cartesian2Cell\ *\ M\ *\ Cartesian2CellT;}
+\DoxyCodeLine{00153\ \ \ \ \ v[0]\ =\ M[0][0];\ \ v[1]\ =\ M[1][1];\ \ v[2]\ =\ M[2][2];}
+\DoxyCodeLine{00154\ \ \ \ \ v[3]\ =\ M[1][2];\ \ v[4]\ =\ M[0][2];\ \ v[5]\ =\ M[0][1];}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00156\ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keywordtype}{size\_t}\ GetId()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Id;\ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{comment}{//\ for\ internal\ use\ only}}
+\DoxyCodeLine{00159\ \ \ \textcolor{keywordtype}{void}\ SetId\_(\textcolor{keywordtype}{size\_t}\ v)\ \{\ Id\ =\ v;\ \}}
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{/*\ copies\ the\ atoms\ from\ another\ AU,\ \_UpdateConnInfo\ must\ be\ called\ after}}
+\DoxyCodeLine{00161\ \textcolor{comment}{\ \ this}}
+\DoxyCodeLine{00162\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TAsymmUnit\&\ C);}
+\DoxyCodeLine{00164\ \ \ \textcolor{keywordtype}{void}\ ChangeSpaceGroup(\textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ sg);}
+\DoxyCodeLine{00165\ \ \ \textcolor{comment}{//\ executed\ from\ the\ above\ function,\ Data\ is\ the\ new\ space\ group}}
+\DoxyCodeLine{00166\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnSGChange;}
+\DoxyCodeLine{00167\ \ \ \textcolor{comment}{/*\ initialises\ transofrmation\ matrices,\ called\ after\ axis\ and\ angles}}
+\DoxyCodeLine{00168\ \textcolor{comment}{\ \ initialised}}
+\DoxyCodeLine{00169\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keywordtype}{void}\ InitMatrices();}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{/*\ initialises\ data\ such\ as\ Q-\/peak\ heights,\ called\ after\ all\ atoms}}
+\DoxyCodeLine{00172\ \textcolor{comment}{\ \ initialised}}
+\DoxyCodeLine{00173\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00174\ \ \ \textcolor{keywordtype}{void}\ InitData();}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00177\ \ \ \textcolor{comment}{//creates\ a\ new\ residue}}
+\DoxyCodeLine{00178\ \ \ TResidue\&\ NewResidue(\textcolor{keyword}{const}\ olxstr\&\ RClass,\ \textcolor{keywordtype}{int}\ number,}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordtype}{int}\ alias,\ olxch\ chainId);}
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordtype}{size\_t}\ ResidueCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Residues.Count()\ +\ 1;\ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{comment}{/*\ 0\ -\/\ main\ residue\ */}}
+\DoxyCodeLine{00182\ \ \ TResidue\&\ GetResidue(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{return}\ (i\ ==\ 0)\ ?\ \textcolor{keyword}{const\_cast<}TAsymmUnit*\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>MainResidue\ :\ Residues[i\ -\/\ 1];}
+\DoxyCodeLine{00184\ \ \ \}}
+\DoxyCodeLine{00185\ \ \ TResidue*\ NextResidue(\textcolor{keyword}{const}\ TResidue\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00186\ \ \ TResidue*\ PrevResidue(\textcolor{keyword}{const}\ TResidue\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00187\ \ \ TResidue*\ FindResidue(olxch\ chainId,\ \textcolor{keywordtype}{int}\ num)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00188\ \ \ TResidue*\ FindResidue(\textcolor{keyword}{const}\ olxstr\&\ number)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00189\ \ \ \textcolor{comment}{//\ releases\ the\ given\ residues}}
+\DoxyCodeLine{00190\ \ \ \textcolor{keywordtype}{void}\ Release(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TResidue>}}\&\ rs);}
+\DoxyCodeLine{00191\ \ \ \textcolor{comment}{/*\ releases\ the\ given\ residues;\ after\ the\ residues\ restrored,\ they\ are\ sorted}}
+\DoxyCodeLine{00192\ \textcolor{comment}{\ \ by\ the\ number}}
+\DoxyCodeLine{00193\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordtype}{void}\ Restore(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TResidue>}}\&\ rs);}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordtype}{void}\ AssignResidues(\textcolor{keyword}{const}\ TAsymmUnit\&\ au);}
+\DoxyCodeLine{00196\ \ \ \textcolor{comment}{//\ changes\ the\ atom\ order\ as\ in\ residues}}
+\DoxyCodeLine{00197\ \ \ \textcolor{keywordtype}{void}\ ComplyToResidues();}
+\DoxyCodeLine{00198\ \ \ \textcolor{comment}{/*\ rearranges\ the\ atoms\ and\ updates\ the\ main\ residue\ atom\ order}}
+\DoxyCodeLine{00199\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00200\ \ \ \textcolor{keywordtype}{void}\ RearrangeAtoms(\textcolor{keyword}{const}\ TSizeList\&\ indices);}
+\DoxyCodeLine{00201\ \ \ \textcolor{comment}{//\ sorts\ residues\ by\ class\ and\ number}}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{void}\ SortResidues();}
+\DoxyCodeLine{00203\ \ \ \textcolor{comment}{/*\ if\ a\ number\ is\ provided,\ searches\ by\ Number\ otherwise\ -\/\ by\ ClassName}}
+\DoxyCodeLine{00204\ \textcolor{comment}{\ \ *\ when\ max\_n\ (>0)\ is\ provided\ the\ list\ will\ contain\ max\_n\ entries\ at\ max}}
+\DoxyCodeLine{00205\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00206\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TResidue>}}\ FindResidues(\textcolor{keyword}{const}\ olxstr\&\ resi,\ \textcolor{keywordtype}{size\_t}\ max\_n=InvalidIndex)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00207\ \ \ \textcolor{comment}{//\ this\ is\ called\ internally\ by\ the\ TCAtom,\ to\ sync\ connectivity\ info}}
+\DoxyCodeLine{00208\ \ \ \textcolor{keywordtype}{void}\ \_OnAtomTypeChanged(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ caller);}
+\DoxyCodeLine{00209\ \ \ \textcolor{comment}{//\ called\ by\ the\ ref\ model}}
+\DoxyCodeLine{00210\ \ \ \textcolor{keywordtype}{void}\ \_UpdateConnInfo();}
+\DoxyCodeLine{00211\ \ \ \textcolor{keywordtype}{void}\ \_UpdateAtomIds();}
+\DoxyCodeLine{00212\ \ \ \textcolor{comment}{//creates\ a\ new\ atom\ and\ puts\ it\ into\ the\ list}}
+\DoxyCodeLine{00213\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ NewAtom(TResidue*\ resi\ =\ 0);}
+\DoxyCodeLine{00214\ \ \ \textcolor{comment}{//creates\ a\ new\ atom\ and\ puts\ it\ into\ the\ list}}
+\DoxyCodeLine{00215\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ NewCentroid(\textcolor{keyword}{const}\ vec3d\&\ CCenter);}
+\DoxyCodeLine{00216\ \ \ \textcolor{comment}{/*\ returns\ an\ atom\ by\ label;\ if\ the\ label\ is\ not\ unique,\ returns\ the\ first}}
+\DoxyCodeLine{00217\ \textcolor{comment}{\ \ found}}
+\DoxyCodeLine{00218\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00219\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ FindCAtom(\textcolor{keyword}{const}\ olxstr\&\ Label,\ TResidue*\ resi\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00220\ \ \ \textcolor{comment}{/*\ direct\ label\ match\ search\ */}}
+\DoxyCodeLine{00221\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ FindCAtomDirect(\textcolor{keyword}{const}\ olxstr\&\ Label)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00222\ \ \ \textcolor{comment}{//returns\ an\ atom\ by\ Id}}
+\DoxyCodeLine{00223\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ FindCAtomById(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{id}\ >=\ CAtoms.Count())\ ?\ 0\ :\ CAtoms[id];}
+\DoxyCodeLine{00225\ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ FindCAtom(\textcolor{keyword}{const}\ \mbox{\hyperlink{structAtom3DId}{Atom3DId}}\&\ \textcolor{keywordtype}{id})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00227\ \ \ \textcolor{comment}{/*\ returned\ list\ size\ will\ match\ the\ input\ size\ but\ may\ contains\ nulls\ */}}
+\DoxyCodeLine{00228\ \ \ TCAtomPList::const\_list\_type\ FindCAtoms(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<Atom3DId>}}\ \&\ ids)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00229\ \ \ \textcolor{comment}{/*\ makes\ specified\ type\ detached\ or\ attached.\ When\ re-\/attaching\ the\ atoms\ they}}
+\DoxyCodeLine{00230\ \textcolor{comment}{\ \ could\ also\ be\ unmasked}}
+\DoxyCodeLine{00231\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keywordtype}{void}\ DetachAtomType(\textcolor{keywordtype}{short}\ type,\ \textcolor{keywordtype}{bool}\ detach,\ \textcolor{keywordtype}{bool}\ unmask=\textcolor{keyword}{false});}
+\DoxyCodeLine{00233\ \ \ \textcolor{comment}{/*\ removes\ all\ atoms\ marked\ as\ deleted\ */}}
+\DoxyCodeLine{00234\ \ \ \textcolor{keywordtype}{void}\ PackAtoms();}
+\DoxyCodeLine{00235\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ GetAtom(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *CAtoms[i];\ \}}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{const}\ TCAtomPList\&\ GetAtoms()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CAtoms;\ \}}
+\DoxyCodeLine{00237\ \ \ TCAtomPList\&\ GetAtoms()\ \{\ \textcolor{keywordflow}{return}\ CAtoms;\ \}}
+\DoxyCodeLine{00238\ \ \ \textcolor{keywordtype}{size\_t}\ AtomCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CAtoms.Count();\ \}}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{void}\ SetNonHAtomTags\_();}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \textcolor{keywordtype}{size\_t}\ MatrixCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Matrices.Count();\ \}}
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{const}\ smatd\&\ GetMatrix(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Matrices[i];\ \}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordtype}{void}\ ClearMatrices()\ \{\ Matrices.Clear();\ \}}
+\DoxyCodeLine{00244\ \ \ \textcolor{keywordtype}{void}\ AddMatrix(\textcolor{keyword}{const}\ smatd\&\ a);}
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{const}\ smatd\_list\&\ GetMatices()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Matrices;\ \}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \textcolor{keywordtype}{size\_t}\ EllpCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Ellipsoids.Count();\ \}}
+\DoxyCodeLine{00248\ \ \ \mbox{\hyperlink{classTEllipsoid}{TEllipsoid}}\&\ GetEllp(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Ellipsoids[i];\ \}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keywordtype}{void}\ NullEllp(\textcolor{keywordtype}{size\_t}\ i);}
+\DoxyCodeLine{00250\ \ \ \textcolor{keywordtype}{void}\ ClearEllps();}
+\DoxyCodeLine{00251\ \ \ \textcolor{keywordtype}{void}\ PackEllps();}
+\DoxyCodeLine{00252\ \ \ \textcolor{comment}{//\ Q\ -\/\ six\ values\ representing\ quadratic\ form\ of\ a\ thermal\ ellipsoid}}
+\DoxyCodeLine{00253\ \ \ \mbox{\hyperlink{classTEllipsoid}{TEllipsoid}}\&\ NewEllp();\ \ \textcolor{comment}{//\ initialisation\ performed\ manually\ !}}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \ \ vec3d\ GetOCenter(\textcolor{keywordtype}{bool}\ IncludeQ,\ \textcolor{keywordtype}{bool}\ IncludeH)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00256\ \ \ \textcolor{comment}{//\ returns\ properly\ sorted\ content\ list}}
+\DoxyCodeLine{00257\ \ \ ContentList::const\_list\_type\ GetContentList(\textcolor{keywordtype}{double}\ mult\ =\ 1.0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00258\ \ \ \textcolor{comment}{/*\ returns\ summarised\ formula\ of\ the\ asymmetric\ unit,\ use\ MutiplyZ\ to}}
+\DoxyCodeLine{00259\ \textcolor{comment}{\ \ multiply\ the\ content\ by\ Z}}
+\DoxyCodeLine{00260\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00261\ \ \ olxstr\ SummFormula(\textcolor{keyword}{const}\ olxstr\&\ sep,\ \textcolor{keywordtype}{bool}\ MultiplyZ\ =\ \textcolor{keyword}{true})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00262\ \ \ olxstr\ \_SummFormula(\textcolor{keyword}{const}\ olxstr\&\ sep,\ \textcolor{keywordtype}{double}\ mult)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00263\ \ \ \textcolor{comment}{/*\ returns\ molecular\ weight\ of\ the\ asymmetric\ unit\ */}}
+\DoxyCodeLine{00264\ \ \ \textcolor{keywordtype}{double}\ MolWeight()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00265\ \ \ \textcolor{comment}{//\ returns\ sum\ of\ occupancy\ of\ any\ given\ element}}
+\DoxyCodeLine{00266\ \ \ \textcolor{keywordtype}{double}\ CountElementOccupancy(\textcolor{keyword}{const}\ olxstr\&\ Element)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//\ sorts\ the\ content\ of\ the\ asymmetric\ unit\ or\ the\ list\ if\ provided}}
+\DoxyCodeLine{00269\ \ \ \textcolor{keywordtype}{void}\ Sort(TCAtomPList*\ list\ =\ NULL);}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \textcolor{comment}{/*\ finds\ labels\ duplicate\ for\ the\ given\ atom\ list}}
+\DoxyCodeLine{00272\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00273\ \ \ TCAtomPList::const\_list\_type\ FindDiplicateLabels(\textcolor{keyword}{const}\ TCAtomPList\&\ atoms,}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordtype}{bool}\ rename\_parts);}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \ \ olxset<TCAtom*,\ TPointerComparator>::const\_set\_type}
+\DoxyCodeLine{00277\ \ \ \ \ GetAtomsNeedingPartInLabel()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \textcolor{keywordtype}{bool}\ IsQPeakMinMaxInitialised()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MaxQPeak\ !=\ -\/1000;\ \}}
+\DoxyCodeLine{00280\ \ \ DefPropP(\textcolor{keywordtype}{double},\ MinQPeak)}
+\DoxyCodeLine{00281\ \ \ \ \ DefPropP(\textcolor{keywordtype}{double},\ MaxQPeak)}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{comment}{/*\ atoms\ should\ have\ at\ least\ three\ atoms\ for\ fitting.\ If\ the\ atoms.atom\ is}}
+\DoxyCodeLine{00283\ \textcolor{comment}{\ \ \ \ NULL,\ atoms.element\ must\ be\ provided,\ if\ atoms.bool\ is\ false,\ the\ atom\ is\ not}}
+\DoxyCodeLine{00284\ \textcolor{comment}{\ \ \ \ used\ in\ the\ fitting.\ The\ missing\ atoms\ will\ be\ initialised\ on\ successful}}
+\DoxyCodeLine{00285\ \textcolor{comment}{\ \ \ \ completion\ of\ the\ procedure.\ try\_invert\ -\/\ try\ the\ fitting\ of\ the\ inverted\ set}}
+\DoxyCodeLine{00286\ \textcolor{comment}{\ \ \ \ of\ coordinates}}
+\DoxyCodeLine{00287\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordtype}{void}\ FitAtoms(}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structAnAssociation3}{AnAssociation3<TCAtom*,\ const\ cm\_Element*,\ bool>}}\ >\&\ atoms,}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\_list\&\ crds,\ \textcolor{keywordtype}{bool}\ try\_invert);}
+\DoxyCodeLine{00291\ \ \ \textcolor{comment}{//\ returns\ next\ available\ positive/negative\ part}}
+\DoxyCodeLine{00292\ \ \ \textcolor{keywordtype}{int}\ GetNextPart(\textcolor{keywordtype}{bool}\ negative\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ DefPropP(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}*,\ RefMod)}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{comment}{//\ IXVarReferencerContainer\ implementation}}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ \_GetIdName()\ \{\ \textcolor{keywordflow}{return}\ IdName;\ \}}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetIdName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ IdName;\ \}}
+\DoxyCodeLine{00299\ \ \ \textcolor{comment}{//\ note\ -\/\ possibly\ unsafe,\ type\ is\ not\ checked}}
+\DoxyCodeLine{00300\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetIdOf(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ vr)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordflow}{if}\ (!vr.Is<\mbox{\hyperlink{classTCAtom}{TCAtom}}>())\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}referencer"{}});}
+\DoxyCodeLine{00303\ \ \ \ \ \}}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keywordflow}{return}\ ((\mbox{\hyperlink{classTCAtom}{TCAtom}}\&)vr).GetId();}
+\DoxyCodeLine{00305\ \ \ \}}
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetPersistentIdOf(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ vr)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keywordflow}{if}\ (!vr.Is<\mbox{\hyperlink{classTCAtom}{TCAtom}}>())\ \{}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}referencer"{}});}
+\DoxyCodeLine{00309\ \ \ \ \ \}}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keywordflow}{return}\ ((\mbox{\hyperlink{classTCAtom}{TCAtom}}\&)vr).GetTag();}
+\DoxyCodeLine{00311\ \ \ \}}
+\DoxyCodeLine{00312\ \ \ \textcolor{comment}{//\ note\ -\/\ possibly\ unsafe,\ range\ is\ unchecked}}
+\DoxyCodeLine{00313\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ GetReferencer(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{id}\ >=\ CAtoms.Count())\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}id"{}});}
+\DoxyCodeLine{00316\ \ \ \ \ \}}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keywordflow}{return}\ *CAtoms[id];}
+\DoxyCodeLine{00318\ \ \ \}}
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ ReferencerCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CAtoms.Count();\ \}}
+\DoxyCodeLine{00320\ \ \ \textcolor{comment}{//\ must\ be\ called\ before\ ToDataItem}}
+\DoxyCodeLine{00321\ \ \ \textcolor{keywordtype}{void}\ SetAtomTags\_();}
+\DoxyCodeLine{00322\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00323\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00324\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms,\ \textcolor{keywordtype}{bool}\ export\_conn);}
+\DoxyCodeLine{00325\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00326\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \textcolor{keywordtype}{void}\ LibGetAtomCount(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00329\ \ \ \textcolor{keywordtype}{void}\ LibNewAtom(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \ \ \textcolor{keywordtype}{void}\ LibGetAtomCrd(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00332\ \ \ \textcolor{keywordtype}{void}\ LibSetAtomCrd(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \ \ \textcolor{keywordtype}{void}\ LibGetAtomUiso(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00335\ \ \ \textcolor{keywordtype}{void}\ LibGetAtomU(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00336\ \ \ \textcolor{keywordtype}{void}\ LibSetAtomU(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00337\ }
+\DoxyCodeLine{00338\ \ \ \textcolor{keywordtype}{void}\ LibSetAtomOccu(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00339\ \ \ \textcolor{keywordtype}{void}\ LibGetAtomOccu(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \ \ \textcolor{keywordtype}{void}\ LibGetAtomPart(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00342\ \ \ \textcolor{keywordtype}{void}\ LibSetAtomPart(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00343\ }
+\DoxyCodeLine{00344\ \ \ \textcolor{keywordtype}{void}\ LibGetAtomName(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00345\ \ \ \textcolor{keywordtype}{void}\ LibGetAtomType(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00346\ \ \ \textcolor{keywordtype}{void}\ LibGetAtomAfix(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00347\ \ \ \textcolor{keywordtype}{void}\ LibGetPeak(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \ \ \textcolor{keywordtype}{void}\ LibGetCell(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00350\ \ \ \textcolor{keywordtype}{void}\ LibGetVolume(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00351\ \ \ \textcolor{keywordtype}{void}\ LibGetCellVolume(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \ \ \textcolor{keywordtype}{void}\ LibGetAtomLabel(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00354\ \ \ \textcolor{keywordtype}{void}\ LibSetAtomLabel(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00355\ \ \ \textcolor{comment}{//\ retruns\ label\ if\ +-\/num\ is\ used}}
+\DoxyCodeLine{00356\ \ \ \textcolor{keywordtype}{void}\ LibIsAtomDeleted(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00357\ \ \ \textcolor{keywordtype}{void}\ LibIsPeak(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \ \ \textcolor{keywordtype}{void}\ LibSetAtomDisp(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00360\ }
+\DoxyCodeLine{00361\ \ \ \textcolor{keywordtype}{void}\ LibNPDCount(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00362\ \ \ \textcolor{keywordtype}{void}\ LibGetSymm(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00363\ \ \ \textcolor{keywordtype}{void}\ LibGetZ(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00364\ \ \ \textcolor{keywordtype}{void}\ LibSetZ(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00365\ \ \ \textcolor{keywordtype}{void}\ LibGetZprime(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00366\ \ \ \textcolor{keywordtype}{void}\ LibSetZprime(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00367\ \ \ \textcolor{keywordtype}{void}\ LibFormula(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00368\ \ \ \textcolor{keywordtype}{void}\ LibWeight(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00369\ \ \ \textcolor{keywordtype}{void}\ LibOrthogonolise(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00370\ \ \ \textcolor{keywordtype}{void}\ LibFractionalise(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00371\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name\ =\ EmptyString());}
+\DoxyCodeLine{00372\ }
+\DoxyCodeLine{00373\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTAsymmUnit_1_1VPtr}{VPtr}}\ :\ \textcolor{keyword}{public}\ olx\_virtual\_ptr<TAsymmUnit>\ \{}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ get\_ptr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00375\ \ \ \};}
+\DoxyCodeLine{00376\ }
+\DoxyCodeLine{00377\ \ \ \textcolor{keyword}{struct\ }TLabelChecker\ \{}
+\DoxyCodeLine{00378\ \ \ \ \ \textcolor{keyword}{const}\ TAsymmUnit\&\ parent;}
+\DoxyCodeLine{00379\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<size\_t>}}\ label\_dict\_t;}
+\DoxyCodeLine{00380\ \ \ \ \ \mbox{\hyperlink{classolxdict}{olxdict<uint32\_t,\ label\_dict\_t,\ TPrimitiveComparator>}}}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ r\_labels;}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ max\_label\_length;}
+\DoxyCodeLine{00383\ \ \ \ \ TLabelChecker(\textcolor{keyword}{const}\ TAsymmUnit\&\ au);}
+\DoxyCodeLine{00384\ \ \ \ \ olxstr\ CheckLabel(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca,\ \textcolor{keyword}{const}\ olxstr\&\ Label,}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ new\_element,}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ check\_atom)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00387\ \ \ \ \ \textcolor{keywordtype}{void}\ SetLabel(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a,\ \textcolor{keyword}{const}\ olxstr\&\ label,\ \textcolor{keywordtype}{bool}\ update\_type\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00388\ \ \ \ \ \textcolor{comment}{//\ checks\ if\ the\ given\ labels\ exists\ globally}}
+\DoxyCodeLine{00389\ \ \ \ \ \textcolor{keywordtype}{bool}\ Exists(\textcolor{keyword}{const}\ olxstr\&\ label)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00390\ \ \ \};}
+\DoxyCodeLine{00391\ \};}
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00393\ }
+\DoxyCodeLine{00394\ EndXlibNamespace()}
+\DoxyCodeLine{00395\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

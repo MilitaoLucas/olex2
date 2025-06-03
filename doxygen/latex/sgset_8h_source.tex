@@ -1,0 +1,139 @@
+\doxysection{sgset.\+h}
+\hypertarget{sgset_8h_source}{}\label{sgset_8h_source}\index{xlib/sgset.h@{xlib/sgset.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olxs\_sg\_set\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olxs\_sg\_set\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}symmlib.h"{}}}
+\DoxyCodeLine{00013\ BeginXlibNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ class\ AxisInfo\ \ \{}
+\DoxyCodeLine{00016\ \ \ olxstr\ axis;}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ AxisInfo(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ sg,\ \textcolor{keyword}{const}\ olxstr\ \_axis=EmptyString())\ :\ axis(\_axis.IsEmpty()\ ?\ sg.GetAxis()\ :\ \_axis)\ \ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordflow}{if}(\ axis.IsEmpty()\ \&\&\ sg.GetBravaisLattice().GetName().Equalsi(\textcolor{stringliteral}{"{}Orthorhombic"{}})\ )}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ axis\ =\ \textcolor{stringliteral}{"{}abc"{}};}
+\DoxyCodeLine{00021\ \ \ \}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{bool}\ HasCellChoice()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{if}(\ axis.IsEmpty()\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00024\ \ \ \ \ olxch\ lc\ =\ axis.GetLast();}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{return}\ (lc\ >=\ \textcolor{charliteral}{'1'}\ \&\&\ lc\ <=\ \textcolor{charliteral}{'3'});}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{short}\ GetCellChoice()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordflow}{return}\ HasCellChoice()\ ?\ axis.GetLast()-\/\textcolor{charliteral}{'0'}\ :\ -\/1;}
+\DoxyCodeLine{00029\ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{void}\ ChangeCellChoice(\textcolor{keywordtype}{short}\ v)\ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{if}(\ HasCellChoice()\ )}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ axis[axis.Length()-\/1]\ =\ v+\textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ axis\ <<\ (olxch)(v+\textcolor{charliteral}{'0'});}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ ChangeMonoclinicAxis(\textcolor{keyword}{const}\ olxstr\&\ a)\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{if}(\ HasCellChoice()\ )\ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordtype}{short}\ cc\ =\ GetCellChoice();}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ axis\ =\ a;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ axis\ <<\ (olxch)(cc+\textcolor{charliteral}{'0'});}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ axis\ =\ a;}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{bool}\ HasMonoclinicAxis()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{if}(\ axis.IsEmpty()\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{if}(\ (axis.Length()\ ==\ 3\ \&\&\ axis.CharAt(0)\ ==\ \textcolor{charliteral}{'-\/'}\ \&\&\ olxstr::o\_islatin(axis.CharAt(1))\ )\ ||}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ (axis.Length()\ <\ 3\ \&\&\ olxstr::o\_islatin(axis.CharAt(0)))\ )}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ olxstr\ GetMonoclinicAxis()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ HasMonoclinicAxis()\ ?\ (HasCellChoice()\ ?\ axis.SubStringTo(axis.Length()-\/1)\ :\ axis)\ :\ EmptyString();}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{const}\ olxstr\ GetAxis()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ axis;\ \ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ olxstr\ ComposeAxisInfo(\textcolor{keyword}{const}\ olxstr\&\ mon\_axis,\ \textcolor{keywordtype}{short}\ cell\_choice=-\/1)\ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ olxstr\ rv(mon\_axis);}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ cell\_choice\ !=\ -\/1\ ?\ rv\ <<\ cell\_choice\ :\ rv;}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \};}
+\DoxyCodeLine{00061\ \textcolor{keyword}{class\ }SGSettings\ \ \{}
+\DoxyCodeLine{00062\ \ \ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ sg;}
+\DoxyCodeLine{00063\ \ \ olxch\ ExtractAxis(\textcolor{keyword}{const}\ olxstr\&\ axis)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{return}\ axis.Length()\ ==\ 2\ ?\ axis.CharAt(1)\ :\ axis.CharAt(0);}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00067\ \ \ SGSettings(\mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ \_sg)\ :\ sg(\_sg),\ axisInfo(\_sg)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{comment}{//static\ const\ mat3d\ I\_to\_P(-\/0.5,\ 0.5,\ 0.5,\ 0.5,\ -\/0.5,\ -\/0.5),\ P\_to\_I(0,\ 1,\ 1,\ 0,\ 1,\ 0);}}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//static\ const\ mat3d\ F\_to\_P(0,\ 0.5,\ 0.5,\ 0,\ 0.5,\ 0),\ P\_to\_F(-\/1,\ 1,\ 1,\ -\/1,\ 1,\ 1);}}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ \ \ AxisInfo\ axisInfo;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{bool}\ GetTrasformation(\textcolor{keyword}{const}\ AxisInfo\&\ ai,\ mat3d\&\ m)\ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ mat3d\ rv;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{if}(\ axisInfo.HasMonoclinicAxis()\ \&\&\ ai.HasMonoclinicAxis()\ )\ \ \{\ \ \textcolor{comment}{//\ is\ monoclinic}}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ rv.I();}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ olxstr\ a\_from(axisInfo.GetMonoclinicAxis()),}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ a\_to(ai.GetMonoclinicAxis());}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ olxch\ a\_f\ =\ ExtractAxis(a\_from),\ a\_t\ =\ ExtractAxis(a\_to);}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ a\_d\ =\ a\_t\ -\/\ a\_f;}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a\_d\ <\ 0\ )\ a\_d\ +=\ 3;}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a\_d\ <\ 0\ ||\ a\_d\ >\ 2\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a\_d\ >\ 0\ )\ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ mat3d\ a\_tm(0,\ 1,\ 0,\ 0,\ 0,\ 1,\ 1,\ 0,\ 0);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ a\_d;\ i++\ )}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ rv\ *=\ a\_tm;}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a\_from.Length()\ !=\ a\_to.Length()\ )\ \ \{\ \ \textcolor{comment}{//\ inversion\ of\ the\ axis}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ mat3d\ ai\_tm;}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a\_t\ ==\ \textcolor{charliteral}{'a'}\ )\ \ \ \ \ \ \ ai\_tm\ =\ mat3d(-\/1,\ 0,\ 0,\ 0,\ 0,\ 1,\ 0,\ 1,\ 0);}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ a\_t\ ==\ \textcolor{charliteral}{'b'}\ )\ \ ai\_tm\ =\ mat3d(0,\ 0,\ 1,\ 0,\ -\/1,\ 0,\ 1,\ 0,\ 0);}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ a\_t\ ==\ \textcolor{charliteral}{'c'}\ )\ \ ai\_tm\ =\ mat3d(0,\ 1,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ -\/1);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ rv\ *=\ ai\_tm;}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ axisInfo.HasCellChoice()\ \&\&\ ai.HasCellChoice()\ )\ \ \{\ \ \textcolor{comment}{//\ change\ cell\ choice}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ cc\_f\ =\ axisInfo.GetCellChoice(),\ cc\_t\ =\ ai.GetCellChoice();}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ cc\_d\ =\ cc\_t\ -\/\ cc\_f;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ cc\_d\ <\ 0\ )\ \ cc\_d\ +=\ 3;}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ cc\_d\ <\ 0\ ||\ cc\_d\ >\ 2\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ cc\_d\ >\ 0\ )\ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ mat3d\ c\_tm;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a\_t\ ==\ \textcolor{charliteral}{'a'}\ )\ \ \ \ \ \ \ c\_tm\ =\ mat3d(1,\ 0,\ 0,\ 0,\ 0,\ -\/1,\ 0,\ 1,\ -\/1);}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ a\_t\ ==\ \textcolor{charliteral}{'b'}\ )\ \ c\_tm\ =\ mat3d(-\/1,\ 0,\ 1,\ 0,\ 1,\ 0,\ -\/1,\ 0,\ 0);}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ a\_t\ ==\ \textcolor{charliteral}{'c'}\ )\ \ c\_tm\ =\ mat3d(0,\ -\/1,\ 0,\ 1,\ -\/1,\ 0,\ 0,\ 0,\ 1);}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ cc\_d;\ i++\ )}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ rv\ *=\ c\_tm;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ m\ =\ rv;}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !rv.IsI();}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{if}(\ ai.GetAxis().Equalsi(\textcolor{stringliteral}{"{}abc"{}})\ )\ \ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ sg.GetAxis()\ ==\ \textcolor{stringliteral}{"{}ba-\/c"{}}\ )}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ rv\ =\ mat3d(0,\ 1,\ 0,\ 1,\ 0,\ 0,\ 0,\ 0,\ -\/1);}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ sg.GetAxis()\ ==\ \textcolor{stringliteral}{"{}cab"{}}\ )}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ rv\ =\ mat3d(0,\ 0,\ 1,\ 1,\ 0,\ 0,\ 0,\ 1,\ 0);}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ sg.GetAxis()\ ==\ \textcolor{stringliteral}{"{}-\/cba"{}}\ )}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ rv\ =\ mat3d(0,\ 0,\ -\/1,\ 0,\ 1,\ 0,\ 1,\ 0,\ 0);}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ sg.GetAxis()\ ==\ \textcolor{stringliteral}{"{}bca"{}}\ )}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ rv\ =\ mat3d(0,\ 1,\ 0,\ 0,\ 0,\ 1,\ 1,\ 0,\ 0);}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ sg.GetAxis()\ ==\ \textcolor{stringliteral}{"{}a-\/cb"{}}\ )}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ rv\ =\ mat3d(1,\ 0,\ 0,\ 0,\ 0,\ -\/1,\ 0,\ 1,\ 0);}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ m\ =\ rv;}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \};}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ EndXlibNamespace()}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

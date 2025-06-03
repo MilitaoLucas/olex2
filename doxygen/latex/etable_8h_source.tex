@@ -1,0 +1,397 @@
+\doxysection{etable.\+h}
+\hypertarget{etable_8h_source}{}\label{etable_8h_source}\index{sdl/etable.h@{sdl/etable.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_etable\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_etable\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}evector.h"{}}}
+\DoxyCodeLine{00016\ BeginEsdlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ template\ <class\ T>\ class\ TTTable\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<T>}}\ Rows;}
+\DoxyCodeLine{00020\ \ \ TStrList\ ColNames,\ RowNames;}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ TTTable()\ \{\}}
+\DoxyCodeLine{00023\ \ \ TTTable(\textcolor{keyword}{const}\ TTTable\&\ t)}
+\DoxyCodeLine{00024\ \ \ \ \ :\ Rows(t.Rows),\ ColNames(t.ColNames),\ RowNames(t.RowNames)}
+\DoxyCodeLine{00025\ \ \ \{\}}
+\DoxyCodeLine{00026\ \ \ TTTable(\textcolor{keywordtype}{size\_t}\ RowCnt,\ \textcolor{keywordtype}{size\_t}\ ColCnt)}
+\DoxyCodeLine{00027\ \ \ :\ Rows(olx\_reserve(RowCnt))}
+\DoxyCodeLine{00028\ \ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ Resize(RowCnt,\ ColCnt);}
+\DoxyCodeLine{00030\ \ \ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \string~TTTable()\ \{\ Clear();\ \}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ Rows.Clear();}
+\DoxyCodeLine{00036\ \ \ \ \ ColNames.Clear();}
+\DoxyCodeLine{00037\ \ \ \ \ RowNames.Clear();}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T1>\ TTTable\&\ Assign(\textcolor{keyword}{const}\ TTTable<T1>\&\ Table)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ Resize(Table.RowCount(),\ Table.ColCount());}
+\DoxyCodeLine{00042\ \ \ \ \ ColNames.Assign(Table.GetColNames());}
+\DoxyCodeLine{00043\ \ \ \ \ RowNames.Assign(Table.GetRowNames());}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ RowCount();\ i++)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ Rows[i].Assign(Table[i]);}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ TTTable\&\ operator\ =\ (\textcolor{keyword}{const}\ TTTable\&\ Table)\ \{\ \textcolor{keywordflow}{return}\ Assign(Table);\ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T1>\ TTTable\&\ operator\ =\ (\textcolor{keyword}{const}\ TTTable<T1>\&\ Table)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ Assign(Table);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{const}\ TStrList\&\ GetColNames()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ColNames;\ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{const}\ TStrList\&\ GetRowNames()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RowNames;\ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{size\_t}\ RowCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Rows.Count();\ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{size\_t}\ ColCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ColNames.Count();\ \}}
+\DoxyCodeLine{00058\ \ \ olxstr\&\ ColName(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ColNames[index];\ \}}
+\DoxyCodeLine{00059\ \ \ olxstr\&\ RowName(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RowNames[index];\ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Str>\ \textcolor{keywordtype}{size\_t}\ ColIndex(\textcolor{keyword}{const}\ Str\&\ N)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ ColNames.IndexOf(N);}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Str>\ \textcolor{keywordtype}{size\_t}\ ColIndexi(\textcolor{keyword}{const}\ Str\&\ N)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{return}\ ColNames.IndexOfi(N);}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Str>\ \textcolor{keywordtype}{size\_t}\ RowIndex(\textcolor{keyword}{const}\ Str\&\ N)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ RowNames.IndexOf(N);}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Str>\ \textcolor{keywordtype}{size\_t}\ RowIndexi(\textcolor{keyword}{const}\ Str\&\ N)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{return}\ RowNames.IndexOfi(N);}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ Resize(\textcolor{keywordtype}{size\_t}\ RowCnt,\ \textcolor{keywordtype}{size\_t}\ ColCnt)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{if}\ (RowCnt\ !=\ Rows.Count())\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (RowCnt\ <\ Rows.Count())\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ Rows.Shrink(RowCnt);}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ RowNames.SetCount(RowCnt);}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ Rows.SetCapacity(RowCnt);}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ RowNames.SetCount(RowCnt);}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (Rows.Count()\ <\ RowCnt)}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ Rows.AddNew();}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{if}\ (ColCnt\ !=\ ColNames.Count())\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ ColNames.SetCount(ColCnt);}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Rows.Count();\ i++)\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ Rows[i].SetCount(ColCnt);}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{void}\ SetColCount(\textcolor{keywordtype}{size\_t}\ NCC)\ \{\ Resize(RowCount(),\ NCC);\ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{void}\ SetRowCount(\textcolor{keywordtype}{size\_t}\ NRC)\ \{\ Resize(NRC,\ ColNames.Count());\ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{comment}{/*\ sets\ capacity\ for\ rows\ */}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{void}\ SetRowCapacity(\textcolor{keywordtype}{size\_t}\ row\_cap)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ Rows.SetCapacity(row\_cap);}
+\DoxyCodeLine{00099\ \ \ \ \ RowNames.SetCapacity(row\_cap);}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{void}\ InsertCol(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keyword}{const}\ olxstr\&\ Caption\ =\ EmptyString())\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ RowCount();\ i++)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ Rows[i].Insert(index);}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ ColNames.Insert(index,\ Caption);}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ T\&\ InsertRow(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keyword}{const}\ olxstr\&\ Caption\ =\ EmptyString())\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ T\&\ SL\ =\ Rows.Insert(index,\ \textcolor{keyword}{new}\ T(olx\_reserve(ColNames.Count())));}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ColNames.Count();\ i++)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ SL.Add();}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ RowNames.Insert(index,\ Caption);}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{return}\ SL;}
+\DoxyCodeLine{00115\ \ \ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{void}\ AddCol(\textcolor{keyword}{const}\ olxstr\&\ Caption\ =\ EmptyString())\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ RowCount();\ i++)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ Rows[i].Add();}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ ColNames.Add(Caption);}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ T\&\ AddRow(\textcolor{keyword}{const}\ olxstr\&\ Caption\ =\ EmptyString())\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ T\&\ SL\ =\ Rows.Add(\textcolor{keyword}{new}\ T(olx\_reserve(ColNames.Count())));}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ColNames.Count();\ i++)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ SL.Add();}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ RowNames.Add(Caption);}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{return}\ SL;}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{void}\ DelRow(\textcolor{keywordtype}{size\_t}\ index)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ Rows.Delete(index);}
+\DoxyCodeLine{00135\ \ \ \ \ RowNames.Delete(index);}
+\DoxyCodeLine{00136\ \ \ \}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{void}\ DelCol(\textcolor{keywordtype}{size\_t}\ index)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ ColNames.Delete(index);}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ RowCount();\ i++)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ Rows[i].Delete(index);}
+\DoxyCodeLine{00142\ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{bool}\ Find(\textcolor{keyword}{const}\ olxstr\&\ What,\ \textcolor{keywordtype}{size\_t}\&\ row,\ \textcolor{keywordtype}{size\_t}\&\ col)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Rows.Count();\ i++)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ col\ =\ Rows[i].IndexOf(What);}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (col\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ row\ =\ i;}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00155\ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//\ finds\ a\ row\ for\ the\ column\ value}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keywordtype}{bool}\ FindCol(\textcolor{keyword}{const}\ olxstr\&\ What,\ \textcolor{keywordtype}{size\_t}\&\ col)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Rows.Count();\ i++)}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Rows[i][col]\ ==\ What)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ col\ =\ i;}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \textcolor{comment}{//\ finds\ a\ column\ in\ the\ row}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordtype}{bool}\ HasRow(\textcolor{keyword}{const}\ olxstr\&\ What,\ \textcolor{keywordtype}{size\_t}\ row)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ Rows[row].Contains(What);}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ TStrList::const\_list\_type\ CreateHTMLList(\textcolor{keyword}{const}\ olxstr\&\ Title,}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordtype}{bool}\ colNames,\ \textcolor{keywordtype}{bool}\ rowNames,}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordtype}{bool}\ Format\ =\ \textcolor{keyword}{true})\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00173\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00174\ \ \ \ \ TStrList\ l;}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordflow}{return}\ CreateHTMLList(l,\ Title,\ colNames,\ rowNames,\ Format);}
+\DoxyCodeLine{00176\ \ \ \}}
+\DoxyCodeLine{00177\ \ \ TStrList\&\ CreateHTMLList(TStrList\&\ L,\ \textcolor{keyword}{const}\ olxstr\&\ Title,}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordtype}{bool}\ colNames,\ \textcolor{keywordtype}{bool}\ rowNames,}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordtype}{bool}\ Format\ =\ \textcolor{keyword}{true})\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00180\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00181\ \ \ \ \ olxstr\ Tmp;}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{if}\ (!Title.IsEmpty())}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ L.Add(olxstr(\textcolor{stringliteral}{"{}<p><b>"{}})\ <<\ Title\ <<\ olxstr(\textcolor{stringliteral}{"{}</b></p>"{}}));}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{if}\ (Format)}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ L.Add(\textcolor{stringliteral}{"{}<table\ border=\(\backslash\)"{}1\(\backslash\)"{}\ width\ =\ \(\backslash\)"{}100\%\(\backslash\)"{}\ cellpadding=\(\backslash\)"{}0\(\backslash\)"{}\ "{}}}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}cellspacing=\(\backslash\)"{}0\(\backslash\)"{}\ style=\(\backslash\)"{}border-\/collapse:\ collapse\(\backslash\)"{}>"{}});}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{if}\ (colNames)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ L.Add(\textcolor{stringliteral}{"{}<tr>"{}});}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rowNames)\ \ Tmp\ =\ \textcolor{stringliteral}{"{}<td></td>"{}};}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ColNames.Count();\ i++)}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<td>"{}}\ <<\ ColNames[i]\ <<\ \textcolor{stringliteral}{"{}</td>"{}};}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ L.Add((Tmp\ <<\ \textcolor{stringliteral}{"{}</tr>"{}}));}
+\DoxyCodeLine{00193\ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Rows.Count();\ i++)\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ Tmp\ =\ \textcolor{stringliteral}{"{}<tr>"{}};}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rowNames)}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<td>"{}}\ <<\ RowNames[i]\ <<\ \textcolor{stringliteral}{"{}</td>"{}};}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ ColNames.Count();\ j++)}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<td>"{}}\ <<\ Rows[i][j]\ <<\ \textcolor{stringliteral}{"{}</td>"{}};}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ L.Add((Tmp\ <<\ \textcolor{stringliteral}{"{}</tr>"{}}));}
+\DoxyCodeLine{00201\ \ \ \ \ \}}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{if}\ (Format)\ \ L.Add(\textcolor{stringliteral}{"{}</table>"{}});}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordflow}{return}\ L;}
+\DoxyCodeLine{00204\ \ \ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ TStrList::const\_list\_type\ CreateHTMLList(\textcolor{keyword}{const}\ olxstr\ \&Title,}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ footer,}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordtype}{bool}\ colNames,\ \textcolor{keywordtype}{bool}\ rowNames,}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ titlePAttr,}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ footerPAttr,}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ tabAttr,}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ rowAttr,}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ thAttr,}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ clAttr,}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordtype}{bool}\ Format\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ colCount\ =\ 1,}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ colSepAttr\ =\ EmptyString())\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00218\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00219\ \ \ \ \ TStrList\ L;}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{return}\ CreateHTMLList(L,\ Title,\ footer,\ colNames,\ rowNames,\ titlePAttr,}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ footerPAttr,\ tabAttr,\ rowAttr,\ thAttr,\ clAttr,\ Format,\ colCount,}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ colSepAttr);}
+\DoxyCodeLine{00223\ \ \ \}}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \ \ TStrList\&\ CreateHTMLList(TStrList\ \&L,\ \textcolor{keyword}{const}\ olxstr\ \&Title,}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ footer,}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordtype}{bool}\ colNames,\ \textcolor{keywordtype}{bool}\ rowNames,}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ titlePAttr,}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ footerPAttr,}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ tabAttr,}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ rowAttr,}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ thAttr,}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ clAttr,}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordtype}{bool}\ Format\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ colCount\ =\ 1,}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ colSepAttr\ =\ EmptyString(),}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keywordtype}{bool}\ across\ =\ \textcolor{keyword}{false}\ \textcolor{comment}{//\ if\ colCount\ >\ 1\ -\/\ horisontal\ or\ vertical}}
+\DoxyCodeLine{00238\ \ \ )\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00239\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{if}\ (Format)\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ L.Add(\textcolor{stringliteral}{"{}<table\ "{}})\ <<\ tabAttr\ <<\ \textcolor{charliteral}{'>'};}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Title.IsEmpty())\ \{}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ L.Add(\textcolor{stringliteral}{"{}<caption\ "{}})\ <<\ titlePAttr\ <<\ \textcolor{charliteral}{'>'}\ <<\ Title\ <<\ \textcolor{stringliteral}{"{}</caption>"{}};}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00245\ \ \ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!Title.IsEmpty())\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ L.Add(\textcolor{stringliteral}{"{}<p\ "{}})\ <<\ titlePAttr\ <<\ \textcolor{charliteral}{'>'}\ <<\ Title\ <<\ \textcolor{stringliteral}{"{}</p>"{}};}
+\DoxyCodeLine{00248\ \ \ \ \ \}}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordflow}{if}\ (colNames)\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ olxstr\ Tmp\ =\ \textcolor{stringliteral}{"{}<thead><tr>"{}};}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rowNames)\ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<th>"{}}\ <<\ thAttr[0]\ <<\ \textcolor{stringliteral}{"{}</th>"{}};}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ colCount;\ i++)\ \{}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ ColNames.Count();\ j++)\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<th\ "{}}\ <<\ thAttr[j\ +\ 1]\ <<\ \textcolor{charliteral}{'>'}\ <<\ ColNames[j]\ <<\ \textcolor{stringliteral}{"{}</th>"{}};}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((i\ +\ 1)\ <\ colCount)\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<td\ "{}}\ <<\ colSepAttr\ <<\ \textcolor{stringliteral}{"{}>\&nbsp;</td>"{}};}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ L.Add(Tmp\ <<\ \textcolor{stringliteral}{"{}</tr></thead>"{}});}
+\DoxyCodeLine{00264\ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ inc\ =\ (Rows.Count()\ \%\ colCount)\ !=\ 0\ ?\ colCount\ :\ 0,}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ l\_l\ =\ (Rows.Count()\ +\ inc)\ /\ colCount;}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l\_l;\ i++)\ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ olxstr\ Tmp\ =\ \textcolor{stringliteral}{"{}<tr\ "{}};}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ Tmp\ <<\ rowAttr\ <<\ \textcolor{charliteral}{'>'};}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ colCount;\ j++)\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index\ =\ across\ ?\ i\ *\ colCount\ +\ j\ :\ i\ +\ j\ *\ l\_l;}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ >=\ RowCount())\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rowNames)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<td\ "{}}\ <<\ clAttr[0]\ <<\ \textcolor{stringliteral}{"{}>\&nbsp;</td>"{}};}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ ColNames.Count();\ k++)\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<td\ "{}}\ <<\ clAttr[k\ +\ 1]\ <<\ \textcolor{stringliteral}{"{}>\&nbsp;</td>"{}};}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rowNames)\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<td\ "{}}\ <<\ clAttr[0]\ <<\ \textcolor{charliteral}{'>'}\ <<\ RowNames[index]\ <<\ \textcolor{stringliteral}{"{}</td>"{}};}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ ColNames.Count();\ k++)\ \{}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<td\ "{}}\ <<\ clAttr[k\ +\ 1]\ <<\ \textcolor{charliteral}{'>'}\ <<\ Rows[index][k]\ <<\ \textcolor{stringliteral}{"{}</td>"{}};}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((j\ +\ 1)\ <\ colCount)\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ Tmp\ <<\ \textcolor{stringliteral}{"{}<td\ "{}}\ <<\ colSepAttr\ <<\ \textcolor{stringliteral}{"{}>\&nbsp;</td>"{}};}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ L.Add(Tmp\ <<\ \textcolor{stringliteral}{"{}</tr>"{}});}
+\DoxyCodeLine{00292\ \ \ \ \ \}}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keywordflow}{if}\ (Format)\ \{}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ L.Add(\textcolor{stringliteral}{"{}</table>"{}});}
+\DoxyCodeLine{00295\ \ \ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keywordflow}{if}\ (!footer.IsEmpty())\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ L.Add(\textcolor{stringliteral}{"{}<p\ "{}})\ <<\ footerPAttr\ <<\ \textcolor{charliteral}{'>'}\ <<\ footer\ <<\ \textcolor{stringliteral}{"{}</p>"{}};}
+\DoxyCodeLine{00298\ \ \ \ \ \}}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordflow}{return}\ L;}
+\DoxyCodeLine{00300\ \ \ \}}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \ \ TStrList::const\_list\_type\ CreateTXTList(\textcolor{keyword}{const}\ olxstr\ \&Title,\ \textcolor{keywordtype}{bool}\ colNames,}
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keywordtype}{bool}\ rowNames,\ \textcolor{keyword}{const}\ olxstr\&\ Sep)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00304\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00305\ \ \ \ \ TStrList\ L;}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordflow}{return}\ CreateTXTList(L,\ Title,\ colNames,\ rowNames,\ Sep);}
+\DoxyCodeLine{00307\ \ \ \}}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \ \ TStrList\&\ CreateTXTList(TStrList\ \&L,\ \textcolor{keyword}{const}\ olxstr\ \&Title,\ \textcolor{keywordtype}{bool}\ colNames,}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keywordtype}{bool}\ rowNames,\ \textcolor{keyword}{const}\ olxstr\&\ Sep)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00311\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00312\ \ \ \ \ evecsz\ rowV(ColCount()\ +\ 1);}
+\DoxyCodeLine{00313\ \ \ \ \ L.Add(Title);}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Rows.Count();\ i++)}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (RowNames[i].Length()\ >\ rowV[0])\ \{}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ rowV[0]\ =\ RowNames[i].Length();}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ColNames.Count();\ i++)\ \{}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ Rows.Count();\ j++)}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Rows[j][i].Length()\ >\ rowV[i\ +\ 1])\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ rowV[i\ +\ 1]\ =\ Rows[j][i].Length();}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ColNames[i].Length()\ >\ rowV[i\ +\ 1])\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ rowV[i\ +\ 1]\ =\ ColNames[i].Length();}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \ \ \}}
+\DoxyCodeLine{00328\ \ \ \ \ rowV\ +=\ Sep.Length();}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ColNames.Count();\ i++)\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ rowV[i\ +\ 1]\ +=\ rowV[i];}
+\DoxyCodeLine{00332\ \ \ \ \ \}}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keywordflow}{if}\ (colNames)\ \{}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ olxstr\ Tmp;}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rowNames)\ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ Tmp.RightPadding(rowV[0],\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ Tmp\ <<\ Sep;}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ColCount();\ i++)\ \{}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ Tmp\ <<\ ColNames[i];}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ Tmp.RightPadding(rowV[i\ +\ 1],\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((i\ +\ 1)\ <\ ColNames.Count())\ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ Tmp\ <<\ Sep;}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ L.Add(Tmp);}
+\DoxyCodeLine{00348\ \ \ \ \ \}}
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ RowCount();\ i++)\ \{}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ olxstr\ Tmp;}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rowNames)\ \{}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ Tmp\ =\ RowNames[i];}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ Tmp.RightPadding(rowV[0],\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ Tmp\ <<\ Sep;}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ ColCount();\ j++)\ \{}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ Tmp\ <<\ Rows[i][j];}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ Tmp.RightPadding(rowV[j\ +\ 1],\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((j\ +\ 1)\ <\ ColCount())\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ Tmp\ <<\ Sep;}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ L.Add(Tmp);}
+\DoxyCodeLine{00364\ \ \ \ \ \}}
+\DoxyCodeLine{00365\ \ \ \ \ \textcolor{keywordflow}{return}\ L;}
+\DoxyCodeLine{00366\ \ \ \}}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{inline}\ T\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ index)\ \{\ \textcolor{keywordflow}{return}\ Rows[index];\ \}}
+\DoxyCodeLine{00369\ \ \ \textcolor{keyword}{inline}\ T\ \textcolor{keyword}{const}\ \&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Rows[index];\ \}}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00371\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Comparator>\ \textcolor{keywordtype}{void}\ SortRows(\textcolor{keyword}{const}\ Comparator\&\ cmp)\ \{}
+\DoxyCodeLine{00372\ \ \ \ \ QuickSorter::Sort(Rows,\ cmp,\ SyncSortListener::MakeSingle(RowNames));}
+\DoxyCodeLine{00373\ \ \ \}}
+\DoxyCodeLine{00374\ \ \ \textcolor{keywordtype}{void}\ SwapRows(\textcolor{keywordtype}{size\_t}\ r1,\ \textcolor{keywordtype}{size\_t}\ r2)\ \{}
+\DoxyCodeLine{00375\ \ \ \ \ Rows.Swap(r1,\ r2);}
+\DoxyCodeLine{00376\ \ \ \ \ RowNames.Swap(r1,\ r2);}
+\DoxyCodeLine{00377\ \ \ \}}
+\DoxyCodeLine{00378\ \ \ \textcolor{comment}{//\ note\ that\ the\ void*\ passed\ to\ the\ functions}}
+\DoxyCodeLine{00379\ \ \ \textcolor{comment}{//\ are\ of\ the\ TEStrListData\ type\ !!\ String\ =\ Row(row)-\/>Col,\ Data\ =\ Row}}
+\DoxyCodeLine{00380\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ comparator>}
+\DoxyCodeLine{00381\ \ \ \textcolor{keywordtype}{void}\ SortCols(\textcolor{keywordtype}{int}\ row)\ \{}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00383\ \ \ \}}
+\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{typedef}\ T\ row\_t;}
+\DoxyCodeLine{00385\ \};}
+\DoxyCodeLine{00386\ }
+\DoxyCodeLine{00387\ \ \ \textcolor{keyword}{typedef}\ TTTable<TStrList>\ TTable;}
+\DoxyCodeLine{00388\ \ \ \textcolor{keyword}{typedef}\ TTTable<TStringToList<olxstr,void*>\ >\ TETable;}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ EndEsdlNamespace()}
+\DoxyCodeLine{00391\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,284 @@
+\doxysection{xgrid.\+h}
+\hypertarget{xgrid_8h_source}{}\label{xgrid_8h_source}\index{gxlib/xgrid.h@{gxlib/xgrid.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxl\_xgrid\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxl\_xgrid\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}gltextbox.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}macroerror.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}gltexture.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}glprimitive.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}wx/zipstrm.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}fracmask.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\#include\ "{}ps\_writer.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}xblob.h"{}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}symmat.h"{}}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}maputil.h"{}}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}glbitmap.h"{}}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}olxmps.h"{}}}
+\DoxyCodeLine{00028\ BeginGxlNamespace()}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00031\ \ \ planeDrawModeOriginal\ =\ 1,}
+\DoxyCodeLine{00032\ \ \ planeDrawModeGradient\ =\ 2;}
+\DoxyCodeLine{00033\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00034\ \ \ planeRenderModePlane\ \ \ =\ 0x0001,}
+\DoxyCodeLine{00035\ \ \ planeRenderModeContour\ =\ 0x0002,}
+\DoxyCodeLine{00036\ \ \ planeRenderModePoint\ \ \ =\ 0x0004,}
+\DoxyCodeLine{00037\ \ \ planeRenderModeFill\ \ \ \ =\ 0x0008,}
+\DoxyCodeLine{00038\ \ \ planeRenderModeLine\ \ \ \ =\ 0x0010;}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{comment}{//class\ TXGrid:\ public\ TGlMouseListener\ \ \{}}
+\DoxyCodeLine{00041\ class\ TXGrid\ :\ public\ AGDrawObject\ \{}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{class\ }TLegend\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAGlMouseHandlerImp}{AGlMouseHandlerImp}}\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{int}\ Width,\ Height;}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{int}\ Top,\ Left;}
+\DoxyCodeLine{00045\ \ \ \ \ GLuint\ TextureId;}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{double}\ Z;}
+\DoxyCodeLine{00047\ \ \ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\ GlM;}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00049\ \ \ \ \ vec3d\ Center;}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoTranslate(\textcolor{keyword}{const}\ vec3d\&\ t)\ \{\ Center\ +=\ t;\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoRotate(\textcolor{keyword}{const}\ vec3d\&,\ \textcolor{keywordtype}{double})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoZoom(\textcolor{keywordtype}{double}\ zoom,\ \textcolor{keywordtype}{bool}\ inc)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetCenter()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Center;\ \}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ Init(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ RGB,\ GLenum\ format);}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ \ \ \ \ TLegend(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName);}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ SetData(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ RGB,\ GLsizei\ width,\ GLsizei\ height,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ GLenum\ format);}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName\ =\ EmptyString());}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ SetMaterial(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\ \&m)\ \{\ GlM\ =\ m;\ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{void}\ Fit();}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\ \&,\ vec3d\ \&)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateLabel()\ \{\ Fit();\ \}}
+\DoxyCodeLine{00066\ \ \ \ \ TStrList\ text;}
+\DoxyCodeLine{00067\ \ \ \};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ TArray3D<float>*\ ED;}
+\DoxyCodeLine{00070\ \ \ TArray3D<int>*\ ColorData;}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//\ if\ mask\ is\ specified}}
+\DoxyCodeLine{00072\ \ \ \mbox{\hyperlink{classFractMask}{FractMask}}*\ Mask;}
+\DoxyCodeLine{00073\ \ \ GLuint\ PListId,\ NListId;}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{char}\ *TextData,\ *LegendData;}
+\DoxyCodeLine{00075\ \ \ array\_2d<float>\ ContourData;}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{float}\ *ContourCrds[2],\ *ContourLevels;}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{size\_t}\ ContourLevelCount;}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{bool}\ ReverseColors;}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGXApp}{TGXApp}}\ *\ XApp;}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ DeleteObjects();}
+\DoxyCodeLine{00081\ \ \ GLuint\ TextIndex;}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{static}\ TXGrid*\ Instance;}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ RescaleSurface(\textcolor{keywordtype}{bool}\ collect\_only);}
+\DoxyCodeLine{00084\ \ \ TGlTextBox\ *Info;}
+\DoxyCodeLine{00085\ \ \ TLegend\ *Legend;}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{short}\ RenderMode;}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{bool}\ Extended,\ Boxed,\ Loading\_;}
+\DoxyCodeLine{00088\ \ \ vec3f\ ExtMin,\ ExtMax;}
+\DoxyCodeLine{00089\ \ \ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}*\ glpP,\ *glpN,\ *glpC;}
+\DoxyCodeLine{00090\ \ \ \textcolor{comment}{//\ these\ will\ keep\ the\ masked\ objects}}
+\DoxyCodeLine{00091\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3f\_alist>}}\ vertices,\ normals;}
+\DoxyCodeLine{00092\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<TArrayList<IsoTriangle>}}\ >\ triangles;}
+\DoxyCodeLine{00093\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<TArrayList<int>}}\ >\ colors;}
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//\ used\ by\ RescaleSurface\ when\ collecting\ rather\ than\ rendering}}
+\DoxyCodeLine{00095\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TTypeList<vec3f>}}\ >\ cp\_vertices,\ cn\_vertices;}
+\DoxyCodeLine{00096\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{float}\ MaxVal,\ MinVal,\ Depth,\ Size,\ Scale;}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{float}\ box\_min,\ box\_step;}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{size\_t}\ MaxX,\ MaxY,\ MaxZ,\ MaxDim;}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{float}\ MinHole,\ MaxHole;\ \ \textcolor{comment}{//\ the\ values\ of\ scale\ to\ skip}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{int}\ LastMouseX,\ LastMouseY;}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{bool}\ MouseDown;}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{void}\ DoSmooth();}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ GlLine(\textcolor{keywordtype}{float}\ x1,\ \textcolor{keywordtype}{float}\ y1,\ \textcolor{keywordtype}{float}\ x2,\ \textcolor{keywordtype}{float}\ y2,\ \textcolor{keywordtype}{float}\ z);}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{int}\ GetPolygonMode()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{return}\ RenderMode\ ==\ planeRenderModeFill\ ?\ GL\_FILL\ :}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ (RenderMode\ ==\ planeRenderModeLine\ ?\ GL\_LINE\ :}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ (RenderMode\ ==\ planeRenderModePoint\ ?\ GL\_POINT\ :\ -\/1));}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \textcolor{keywordtype}{bool}\ Is3D()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{return}\ RenderMode\ ==\ planeRenderModeFill\ ||}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ RenderMode\ ==\ planeRenderModeLine\ ||}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ RenderMode\ ==\ planeRenderModePoint;}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{//\ updates\ the\ text\ information\ regarding\ current\ map}}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordtype}{void}\ UpdateInfo();}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{class\ }TContextClear\ :\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00118\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00119\ \ \ \ \ TContextClear(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render);}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~TContextClear()\ \{\}}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{bool}\ Enter(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{bool}\ Exit(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00123\ \ \ \};}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \_ResetLists()\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{if}\ (Instance\ !=\ 0)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ Instance-\/>PListId\ =\ Instance-\/>NListId\ =\ \string~0;}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00130\ \ \ \mbox{\hyperlink{classTXGrid}{TXGrid}}(\textcolor{keyword}{const}\ olxstr\&\ collectionName,\ \mbox{\hyperlink{classTGXApp}{TGXApp}}*\ xapp);}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTXGrid}{\string~TXGrid}}();}
+\DoxyCodeLine{00132\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00133\ \ \ TArray3D<float>*\ Data()\ \{\ \textcolor{keywordflow}{return}\ ED;\ \}}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{const}\ TArray3D<float>*\ Data()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ED;\ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keywordtype}{bool}\ LoadFromFile(\textcolor{keyword}{const}\ olxstr\&\ GridFile);}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{void}\ InitIso();}
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{void}\ InitGrid(\textcolor{keywordtype}{size\_t}\ maxX,\ \textcolor{keywordtype}{size\_t}\ maxY,\ \textcolor{keywordtype}{size\_t}\ MaxZ,\ \textcolor{keywordtype}{bool}\ colors=\textcolor{keyword}{false});}
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordtype}{void}\ InitGrid(\textcolor{keyword}{const}\ vec3s\&\ dim)\ \{\ InitGrid(dim[0],\ dim[1],\ dim[2]);\ \}}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordtype}{void}\ SetValue(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keywordtype}{size\_t}\ k,\ \textcolor{keywordtype}{float}\ v,}
+\DoxyCodeLine{00141\ \ \ \ \ uint32\_t\ cl\ =\ \string~0)}
+\DoxyCodeLine{00142\ \ \ \{}
+\DoxyCodeLine{00143\ \ \ \ \ ED-\/>Data[i][j][k]\ =\ v;}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{if}\ (ColorData\ !=\ 0)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ ColorData-\/>Data[i][j][k]\ =\ cl;}
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keywordtype}{double}\ GetValue(\textcolor{keywordtype}{int}\ i,\ \textcolor{keywordtype}{int}\ j,\ \textcolor{keywordtype}{int}\ k)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{return}\ ED-\/>Data[i][j][k];}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00152\ \ \ \textcolor{keywordtype}{void}\ SetValue(\textcolor{keyword}{const}\ T\&\ ind,\ \textcolor{keywordtype}{float}\ v,\ uint32\_t\ cl=\string~0)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ ED-\/>Data[(int)ind[0]][(\textcolor{keywordtype}{int})ind[1]][(int)ind[2]]\ =\ v;}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{if}\ (ColorData\ !=\ 0)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ ColorData-\/>Data[(int)ind[0]][(\textcolor{keywordtype}{int})ind[1]][(int)ind[2]]\ =\ cl;}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keywordtype}{float}\ GetValue(\textcolor{keyword}{const}\ T\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{return}\ ED-\/>Data[(int)v[0]][(\textcolor{keywordtype}{int})v[1]][(int)v[2]];}
+\DoxyCodeLine{00160\ \ \ \}}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//\ copies\ the\ 0yz\ x0z\ and\ xy0\ layers\ to\ Maxyz\ xMaxyz\ and\ xyMaxZ}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keywordtype}{void}\ AdjustMap();}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName\ =\ EmptyString());}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&\ Max,\ vec3d\&\ Min);}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keywordtype}{void}\ SetScale(\textcolor{keywordtype}{float}\ v);}
+\DoxyCodeLine{00170\ \ \ \textcolor{keywordtype}{double}\ GetScale()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Scale;\ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ this\ object\ will\ be\ deleted}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordtype}{void}\ SetMask(\mbox{\hyperlink{classFractMask}{FractMask}}\&\ fm)\ \{\ Mask\ =\ \&fm;\ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ extends\ the\ grid\ by\ +-\/1}}
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordtype}{bool}\ IsExtended()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Extended;\ \}}
+\DoxyCodeLine{00176\ \ \ \textcolor{keywordtype}{void}\ SetExtended(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \ \ \textcolor{keywordtype}{void}\ SetDepth(\textcolor{keywordtype}{float}\ v);}
+\DoxyCodeLine{00179\ \ \ \textcolor{keywordtype}{void}\ SetDepth(\textcolor{keyword}{const}\ vec3d\&\ v);}
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordtype}{float}\ GetDepth()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Depth;\ \}}
+\DoxyCodeLine{00181\ \ \ vec3s\ GetDimVec()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ vec3s(MaxX,\ MaxY,\ MaxZ);\ \}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keywordtype}{size\_t}\ GetPlaneSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MaxDim;\ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{comment}{/*\ v=2\string^n\ values\ are\ acepted\ only\ (64,\ 128,\ 256,\ etc\ to\ be\ compatible\ with}}
+\DoxyCodeLine{00184\ \textcolor{comment}{\ \ textures)}}
+\DoxyCodeLine{00185\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{void}\ SetPlaneSize(\textcolor{keywordtype}{size\_t}\ v);}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{float}\ GetSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Size;\ \}}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ DefPropP(\textcolor{keywordtype}{float},\ MinHole);}
+\DoxyCodeLine{00190\ \ \ DefPropP(\textcolor{keywordtype}{float},\ MaxHole);}
+\DoxyCodeLine{00191\ \ \ DefPropP(\textcolor{keywordtype}{float},\ MinVal);}
+\DoxyCodeLine{00192\ \ \ DefPropP(\textcolor{keywordtype}{float},\ MaxVal);}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ED\ ==\ 0;\ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordtype}{short}\ GetRenderMode()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RenderMode;\ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \textcolor{keywordtype}{size\_t}\ GetContourLevelCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ContourLevelCount;\ \}}
+\DoxyCodeLine{00198\ \ \ \textcolor{comment}{//\ sets\ new\ number\ of\ contours...}}
+\DoxyCodeLine{00199\ \ \ \textcolor{keywordtype}{void}\ SetContourLevelCount(\textcolor{keywordtype}{size\_t}\ v);}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetVisible(\textcolor{keywordtype}{bool}\ On)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ AGDrawObject::SetVisible(On);}
+\DoxyCodeLine{00203\ \ \ \ \ Info-\/>SetVisible(On);}
+\DoxyCodeLine{00204\ \ \ \ \ Legend-\/>SetVisible(On);}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keywordflow}{if}\ (!On)\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ Clear();}
+\DoxyCodeLine{00207\ \ \ \ \ \}}
+\DoxyCodeLine{00208\ \ \ \}}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \textcolor{keywordtype}{bool}\ OnMouseDown(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00211\ \ \ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00212\ \ \ \textcolor{keywordtype}{bool}\ OnMouseMove(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTXGrid}{TXGrid}}*\ GetInstance()\ \{\ \textcolor{keywordflow}{return}\ Instance;\ \}}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \ \ \textcolor{keywordtype}{void}\ LibScale(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00217\ \ \ \textcolor{keywordtype}{void}\ LibFix(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00218\ \ \ \textcolor{keywordtype}{void}\ LibExtended(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{void}\ LibSize(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00220\ \ \ \textcolor{keywordtype}{void}\ LibDepth(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00221\ \ \ \textcolor{keywordtype}{void}\ LibMaxDepth(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{void}\ LibContours(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00223\ \ \ \textcolor{keywordtype}{void}\ LibPlaneSize(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00224\ \ \ \textcolor{keywordtype}{void}\ LibGetMin(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00225\ \ \ \textcolor{keywordtype}{void}\ LibGetMax(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordtype}{void}\ LibRenderMode(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00227\ \ \ \textcolor{keywordtype}{void}\ LibIsvalid(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00228\ \ \ \textcolor{keywordtype}{void}\ LibSplit(TStrObjList\ \&Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options,}
+\DoxyCodeLine{00229\ \ \ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ \&Error);}
+\DoxyCodeLine{00230\ \ \ \textcolor{keywordtype}{void}\ LibProcess(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options,}
+\DoxyCodeLine{00231\ \ \ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ Error);}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLibrary}{TLibrary}}*\ \ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name\ =\ EmptyString());}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{void}\ LibReverseColors(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{static}\ olxcstr\ \&ModuleName();}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{static}\ PyObject\ *PyInit();}
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00238\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \mbox{\hyperlink{classIOutputStream}{IOutputStream}}\&\ zos)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ zis);}
+\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//\ splits\ this\ object\ into\ separate\ blobs\ (1\ -\/\ p,\ 2\ -\/\ n,\ 3\ -\/\ n+p)}}
+\DoxyCodeLine{00241\ \ \ TPtrList<TXBlob>::const\_list\_type\ CreateBlobs(\textcolor{keywordtype}{int}\ flag);}
+\DoxyCodeLine{00242\ \ \ const\_strlist\ ToPov(\mbox{\hyperlink{classolx__cdict}{olx\_cdict<TGlMaterial,\ olxstr>}}\ \&materials)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00243\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{struct\ }TPlaneCalculationTask\ :\ \textcolor{keyword}{public}\ TaskBase\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ TXGrid\&\ parent;}
+\DoxyCodeLine{00246\ \ \ \ \ olx\_array::array\_2d<float>\ \&data;}
+\DoxyCodeLine{00247\ \ \ \ \ olx\_array::array\_3d<float>\ \&src\_data;}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordtype}{char}\ *text\_data;}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keyword}{const}\ mat3f\ \&proj\_m,\ \&c2c;}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keyword}{const}\ vec3f\&\ center;}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordtype}{float}\ minVal,\ maxVal,\ size,\ depth,\ hh;}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ max\_dim;}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordtype}{short}\ mode;}
+\DoxyCodeLine{00254\ \ \ \ \ \mbox{\hyperlink{structMapUtil_1_1MapGetter}{MapUtil::MapGetter<float,\ 2>}}\ map\_getter;}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordtype}{void}\ Run(\textcolor{keywordtype}{size\_t}\ index);}
+\DoxyCodeLine{00256\ \ \ \ \ TPlaneCalculationTask(TXGrid\&\ \_parent,}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ olx\_array::array\_3d<float>\ \&\_src\_data,}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ olx\_array::array\_2d<float>\ \&\_data,}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ \_text\_data,\ \textcolor{keywordtype}{size\_t}\ \_max\_dim,\ \textcolor{keywordtype}{float}\ \_size,}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ \_depth,\ \textcolor{keyword}{const}\ mat3f\&\ \_proj\_m,\ \textcolor{keyword}{const}\ mat3f\&\ \_c2c,}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3f\&\ \_center,\ \textcolor{keywordtype}{short}\ \_mode)\ :}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ parent(\_parent),}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ data(\_data),\ src\_data(\_src\_data),\ text\_data(\_text\_data),}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ proj\_m(\_proj\_m),\ c2c(\_c2c),\ center(\_center),}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ minVal(1000),\ maxVal(-\/1000),}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ size(\_size),\ depth(\_depth),\ hh((\textcolor{keywordtype}{float})\_max\_dim\ /\ 2),\ max\_dim(\_max\_dim),}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ mode(\_mode),}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ map\_getter(src\_data)}
+\DoxyCodeLine{00269\ \ \ \ \ \{\}}
+\DoxyCodeLine{00270\ \ \ \ \ TPlaneCalculationTask*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TPlaneCalculationTask(parent,\ src\_data,\ data,\ text\_data,}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ max\_dim,\ size,\ depth,\ proj\_m,\ c2c,\ center,\ mode);}
+\DoxyCodeLine{00273\ \ \ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \};}
+\DoxyCodeLine{00275\ \};}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ EndGxlNamespace()}
+\DoxyCodeLine{00278\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

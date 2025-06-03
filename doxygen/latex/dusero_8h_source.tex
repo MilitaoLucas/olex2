@@ -1,0 +1,67 @@
+\doxysection{dusero.\+h}
+\hypertarget{dusero_8h_source}{}\label{dusero_8h_source}\index{gxlib/dusero.h@{gxlib/dusero.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_glx\_duserobj\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_glx\_duserobj\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glmousehandler.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}ematrix.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00016\ BeginGxlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ TDUserObj:\ public\ \mbox{\hyperlink{classAGlMouseHandlerImp}{AGlMouseHandlerImp}}\ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{short}\ Type;}
+\DoxyCodeLine{00020\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TArrayList<vec3f>}}\ >\ Vertices,\ Normals;}
+\DoxyCodeLine{00021\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TArrayList<uint32\_t>}}\ >\ Colors;}
+\DoxyCodeLine{00022\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\ GlM;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoTranslate(\textcolor{keyword}{const}\ vec3d\&\ t)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ Basis.Translate(t);\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoRotate(\textcolor{keyword}{const}\ vec3d\&\ vec,\ \textcolor{keywordtype}{double}\ angle)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ Basis.Rotate(vec,\ angle);\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00029\ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoZoom(\textcolor{keywordtype}{double}\ zoom,\ \textcolor{keywordtype}{bool}\ inc)\ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{if}\ (inc)\ Basis.SetZoom(ValidateZoom(Basis.GetZoom()\ +\ zoom));}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{else}\ Basis.SetZoom(ValidateZoom(zoom));}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ \ \ TDUserObj(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keywordtype}{short}\ type,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName);}
+\DoxyCodeLine{00037\ \ \ TDUserObj(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ \string~TDUserObj()\ \{\}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ SetVertices(\mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}*\ vertices)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ Vertices\ =\ vertices;}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{void}\ SetNormals(\mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}*\ normals)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ Normals\ =\ normals;}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ SetColors(\mbox{\hyperlink{classTArrayList}{TArrayList<uint32\_t>}}*\ colors)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ Colors\ =\ colors;}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{void}\ SetMaterial(\textcolor{keyword}{const}\ olxstr\&\ mat)\ \{\ GlM.FromString(mat);\ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ SetMaterial(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ glm)\ \{\ GlM\ =\ glm;\ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName=EmptyString());}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\ \&Max,\ vec3d\ \&Min)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di);}
+\DoxyCodeLine{00055\ \ \ const\_strlist\ ToPov(\mbox{\hyperlink{classolx__cdict}{olx\_cdict<TGlMaterial,\ olxstr>}}\ \&materials)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{short}\ GetType()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Type;\ \}}
+\DoxyCodeLine{00057\ \ \ TEBasis\ Basis;}
+\DoxyCodeLine{00058\ \};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ EndGxlNamespace()}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

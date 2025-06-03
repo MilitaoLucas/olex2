@@ -1,0 +1,1164 @@
+\doxysection{vcov.\+h}
+\hypertarget{vcov_8h_source}{}\label{vcov_8h_source}\index{xlib/vcov.h@{xlib/vcov.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olxs\_v\_co\_v\_h}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olxs\_v\_co\_v\_h}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}math/align.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}math/composite.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}evalue.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}asymmunit.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}lattice.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}log.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}symmcon.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#undef\ QLength}}
+\DoxyCodeLine{00022\ BeginXlibNamespace()}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ const\ \textcolor{keywordtype}{short}\ \textcolor{comment}{//\ constants\ decribing\ the\ stored\ values}}
+\DoxyCodeLine{00025\ \ \ vcoviX\ =\ 0x0001,}
+\DoxyCodeLine{00026\ \ \ vcoviY\ =\ 0x0002,}
+\DoxyCodeLine{00027\ \ \ vcoviZ\ =\ 0x0004,}
+\DoxyCodeLine{00028\ \ \ vcoviO\ =\ 0x0008;}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ stores\ X,Y,Z,SOF\ for\ each\ atom\ and\ their\ correlations}}
+\DoxyCodeLine{00030\ class\ VcoVMatrix\ \{}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{double}\ **data;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{size\_t}\ count;}
+\DoxyCodeLine{00033\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AnAssociation3<olxstr,\ short,\ size\_t>}}\ >\ Index;}
+\DoxyCodeLine{00034\ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<size\_t,\ size\_t>}}\ AtomIdIndex;}
+\DoxyCodeLine{00035\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<size\_t>}}\ AtomNameIndex;}
+\DoxyCodeLine{00036\ \ \ TStrList\ U\_annotations;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{bool}\ diagonal;}
+\DoxyCodeLine{00038\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ Allocate(\textcolor{keywordtype}{size\_t}\ w,\ \textcolor{keywordtype}{bool}\ diag=\textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ Clear();}
+\DoxyCodeLine{00041\ \ \ \ \ diagonal\ =\ diag;}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{if}\ (diagonal)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ count\ =\ 1;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ data\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}*[1];}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ data[0]\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[w];}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ memset(data[0],\ 0,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double})*w);}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ count\ =\ w;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ data\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}*[w];}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ w;\ i++\ )\ \{\ \textcolor{comment}{//\ bottom\ diagonal\ agrrangement}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ data[i]\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{double}[i+1];}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ memset(data[i],\ 0,\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double})*(i+1));}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{size\_t}\ FindAtomIndex(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ AtomIdIndex.Find(a.GetId(),\ InvalidIndex);}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{void}\ UpdateAtomIndex();}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ FromArray(\textcolor{keyword}{const}\ TStrList\ \&annotations,\ \textcolor{keyword}{const}\ std::vector<double>\ \&data,}
+\DoxyCodeLine{00062\ \ \ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00063\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00064\ \ \ VcoVMatrix();}
+\DoxyCodeLine{00065\ \ \ \string~VcoVMatrix()\ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ ==\ 0)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ Index.Clear();}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ count;\ i++)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ data[i];}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{delete}[]\ data;}
+\DoxyCodeLine{00075\ \ \ \ \ data\ =\ 0;}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{double}\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Get(i,j);\ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{double}\ Get(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{if}\ (diagonal)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (i\ ==\ j)\ ?\ data[0][i]\ :\ 0;}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{return}\ (j\ <=\ i\ )\ ?\ data[i][j]\ :\ data[j][i];}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{comment}{//\ reads\ the\ shelxl\ VcoV\ matrix}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{void}\ ReadShelxMat(\textcolor{keyword}{const}\ olxstr\&\ fileName,\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00086\ \ \ \textcolor{comment}{//\ reads\ the\ smtbx\ VcoV\ matrix}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{void}\ ReadSmtbxMat(\textcolor{keyword}{const}\ olxstr\&\ fileName,\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//\ reads\ the\ smtbx\ VcoV\ matrix\ in\ numpy\ format}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{void}\ ReadNpyMat(\textcolor{keyword}{const}\ olxstr\&\ fileName,\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{void}\ FromCIF(\mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au);}
+\DoxyCodeLine{00091\ \ \ \textcolor{comment}{//\ creates\ matrices\ AA,\ AB,\ ...\ AX,\ BA,\ BB,\ ...\ BX,\ ...}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list>\ \textcolor{keywordtype}{void}\ FindVcoV(\textcolor{keyword}{const}\ list\&\ atoms,\ mat3d\_list\&\ m)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00093\ \ \ \ \ TSizeList\ a\_indexes;}
+\DoxyCodeLine{00094\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TVector3<size\_t>}}\ >\ indexes;}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a\_indexes.Add(FindAtomIndex(atoms[i]-\/>CAtom()))\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structSiteSymmCon}{SiteSymmCon}}\ sc\ =\ atoms[i]-\/>CAtom().GetSiteConstraints();}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sc.map[6].param\ !=\ -\/2\ ||\ sc.map[7].param\ !=\ -\/2\ ||}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ sc.map[8].param\ !=\ -\/2)\ \textcolor{comment}{//\ is\ not\ constrained?}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry(logError)\ <<\ \textcolor{stringliteral}{"{}Unable\ to\ locate\ given\ atom:\ "{}}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ <<\ atoms[i]-\/>GetLabel();}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ indexes.AddNew(InvalidIndex,\ InvalidIndex,\ InvalidIndex);}
+\DoxyCodeLine{00106\ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ a\_indexes.Count();\ i++)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a\_indexes[i]\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ a\_indexes[i];}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ j\ <\ Index.Count()\ \&\&\ Index[j].GetC()\ ==\ atoms[i]-\/>CAtom().GetId();}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ j++)}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((Index[j].GetB()\ \&\ vcoviX)\ !=\ 0)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ indexes[i][0]\ =\ j;}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((Index[j].GetB()\ \&\ vcoviY)\ !=\ 0)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ indexes[i][1]\ =\ j;}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((Index[j].GetB()\ \&\ vcoviZ)\ !=\ 0)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ indexes[i][2]\ =\ j;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ m.SetCapacity(olx\_sqr(a\_indexes.Count()));}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ a\_indexes.Count();\ i++)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ a\_indexes.Count();\ j++)\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ mat3d\&\ a\ =\ m.AddNew();}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{short}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{short}\ l\ =\ 0;\ l\ <\ 3;\ l++)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (indexes[i][k]\ !=\ InvalidIndex\ \&\&}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ indexes[j][l]\ !=\ InvalidIndex)}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a[k][l]\ =\ Get(indexes[i][k],\ indexes[j][l]);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{//\ for\ tests}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordtype}{double}\ Find(\textcolor{keyword}{const}\ olxstr\&\ atom,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ va,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ vy)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\ ==\ 0;\ \}}
+\DoxyCodeLine{00145\ \};}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \textcolor{keyword}{class\ }VcoVContainer\ \{}
+\DoxyCodeLine{00148\ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au;}
+\DoxyCodeLine{00149\ \ \ \mbox{\hyperlink{classVcoVMatrix}{VcoVMatrix}}\ vcov;}
+\DoxyCodeLine{00150\ \ \ \textcolor{comment}{//\ celle\ can\ be\ extended\ to\ matrix\ once\ covariances\ are\ available}}
+\DoxyCodeLine{00151\ \ \ evecd\ cell,\ celle;}
+\DoxyCodeLine{00152\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ atom\_list>}
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordtype}{void}\ ProcessSymmetry(\textcolor{keyword}{const}\ atom\_list\&\ atoms,\ mat3d\_list\&\ ms)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ mat3d\_alist\ mt(atoms.Count());}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ mt[i]\ =\ atoms[i]-\/>GetMatrix().r.GetT();}
+\DoxyCodeLine{00158\ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ atoms.Count();\ j++)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ i*atoms.Count()\ +\ j;}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ ms[ind]\ =\ (mat3d(atoms[i]-\/>GetMatrix().r)*ms[ind])*mt[j];}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{comment}{//\ helper\ functions,\ matrices\ are\ in\ cartesian\ frame}}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ atom\_list>}
+\DoxyCodeLine{00168\ \ \ \textcolor{keywordtype}{void}\ GetVcoV(\textcolor{keyword}{const}\ atom\_list\&\ as,\ mat3d\_list\&\ m)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{if}\ (GetMatrix().IsEmpty())\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ sz\ =\ olx\_sqr(as.Count());}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ m.SetCapacity(sz);}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (m.Count()\ <\ sz)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ m.AddNew();}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00176\ \ \ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \ \ vcov.FindVcoV(as,\ m);}
+\DoxyCodeLine{00178\ \ \ \ \ ProcessSymmetry(as,\ m);}
+\DoxyCodeLine{00179\ \ \ \ \ mat3d\ c2f\ =\ as[0]-\/>CAtom().GetParent()-\/>GetCellToCartesian();}
+\DoxyCodeLine{00180\ \ \ \ \ mat3d\ c2f\_t\ =\ as[0]-\/>CAtom().GetParent()-\/>GetCellToCartesian().GetT();}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ m.Count();\ i++)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ m[i]\ =\ c2f\_t*m[i]\ *\ c2f;}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \textcolor{comment}{//\ helper\ functions,\ matrices\ are\ in\ fractional\ frame}}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ atom\_list>}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{void}\ GetVcoVF(\textcolor{keyword}{const}\ atom\_list\&\ as,\ mat3d\_list\&\ m)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ vcov.FindVcoV(as,\ m);}
+\DoxyCodeLine{00189\ \ \ \ \ ProcessSymmetry(as,\ m);}
+\DoxyCodeLine{00190\ \ \ \}}
+\DoxyCodeLine{00191\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{struct\ }CellEsd\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ VcoVContainer\&\ base;}
+\DoxyCodeLine{00194\ \ \ \ \ vec3d\_alist\ \&points,\ fcrds;}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Evaluator>\ \textcolor{keyword}{struct\ }Functor\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ CellEsd\&\ base;}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Evaluator\&\ eval;}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ Functor(CellEsd\&\ \_base,\ \textcolor{keyword}{const}\ Evaluator\&\ e)}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ :\ base(\_base),\ eval(e)}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ base.base.Orthogonalise(base.fcrds,\ base.points);}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ eval.calc();}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00205\ \ \ \ \ \};}
+\DoxyCodeLine{00206\ \ \ \ \ CellEsd(VcoVContainer\&\ \_base,\ vec3d\_alist\&\ \_ps)}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ :\ base(\_base),\ points(\_ps)}
+\DoxyCodeLine{00208\ \ \ \ \ \{\}}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Evaluator>\ \textcolor{keywordtype}{double}\ DoCalc(\textcolor{keyword}{const}\ Evaluator\&\ e)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ evecd\ df(6);}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ fcrds\ =\ base.Fractionalise(points);}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ Functor<Evaluator>\ f(*\textcolor{keyword}{this},\ e);}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ base.CalcDiff(base.cell,\ df,\ f);}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (base.celle*df).DotProd(df);}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \};}
+\DoxyCodeLine{00217\ \ \ vec3d\_alist\ Fractionalise(\textcolor{keyword}{const}\ vec3d\_alist\&\ l)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00218\ \ \ \ \ vec3d\_alist\ rv(l.Count());}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ rv[i]\ =\ au.Fractionalise(l[i]);}
+\DoxyCodeLine{00221\ \ \ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00223\ \ \ \}}
+\DoxyCodeLine{00224\ \ \ vec3d\_alist\&\ Orthogonalise(\textcolor{keyword}{const}\ vec3d\_alist\&\ l,\ vec3d\_alist\&\ rv)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ cA\ =\ cos(cell[3]),}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ cB\ =\ cos(cell[4]),}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ cG\ =\ cos(cell[5]),\ sG\ =\ sin(cell[5]),}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ m[5]\ =\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ cell[1]\ *\ cG,\ cell[2]\ *\ cB,\ cell[1]\ *\ sG,\ -\/cell[2]\ *\ (cB*cG\ -\/\ cA)\ /\ sG,}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ cell[2]\ *\ sqrt(1\ -\/\ cA*cA\ -\/\ cB*cB\ -\/\ cG*cG\ +\ 2\ *\ cA*cB*cG)\ /\ sG}
+\DoxyCodeLine{00232\ \ \ \ \ \};}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ rv[i][0]\ =\ l[i][0]\ *\ cell[0]\ +\ l[i][1]\ *\ m[0]\ +\ l[i][2]\ *\ m[1];}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ rv[i][1]\ =\ l[i][1]\ *\ m[2]\ +\ l[i][2]\ *\ m[3];}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ rv[i][2]\ =\ l[i][2]\ *\ m[4];}
+\DoxyCodeLine{00237\ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordtype}{double}\ rmsd,\ d;}
+\DoxyCodeLine{00243\ \ \ \ \ vec3d\ center,\ normal;}
+\DoxyCodeLine{00244\ \ \ \};}
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT,\ \textcolor{keyword}{class}\ WT>}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ CalcPlane(\textcolor{keyword}{const}\ VT\&\ points,\ \textcolor{keyword}{const}\ WT\&\ weights,\ \textcolor{keywordtype}{short}\ type\ =\ 0)\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ mat3d\ m,\ vecs;}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordtype}{double}\ mass\ =\ 0,\ qmass\ =\ 0;}
+\DoxyCodeLine{00249\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ rv;}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ points.Count();\ i++)\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ rv.center\ +=\ points[i]\ *\ weights[i];}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ mass\ +=\ weights[i];}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ qmass\ +=\ olx\_sqr(weights[i]);}
+\DoxyCodeLine{00254\ \ \ \ \ \}}
+\DoxyCodeLine{00255\ \ \ \ \ rv.center\ /=\ mass;}
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ points.Count();\ i++)\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ t\ =\ (points[i]\ -\/\ rv.center)*weights[i];}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ m[0][0]\ +=\ (t[0]\ *\ t[0]);}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ m[0][1]\ +=\ (t[0]\ *\ t[1]);}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ m[0][2]\ +=\ (t[0]\ *\ t[2]);}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ m[1][1]\ +=\ (t[1]\ *\ t[1]);}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ m[1][2]\ +=\ (t[1]\ *\ t[2]);}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ m[2][2]\ +=\ (t[2]\ *\ t[2]);}
+\DoxyCodeLine{00264\ \ \ \ \ \}\ \textcolor{comment}{//\ equ:\ d\ =\ s[0]*x\ +\ s[1]*y\ +\ s[2]*z}}
+\DoxyCodeLine{00265\ \ \ \ \ m[1][0]\ =\ m[0][1];}
+\DoxyCodeLine{00266\ \ \ \ \ m[2][0]\ =\ m[0][2];}
+\DoxyCodeLine{00267\ \ \ \ \ m[2][1]\ =\ m[1][2];}
+\DoxyCodeLine{00268\ \ \ \ \ mat3d::EigenValues(m\ /=\ qmass,\ vecs.I());}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordtype}{bool}\ swaps\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordflow}{while}\ (swaps)\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ swaps\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 2;\ i++)\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m[i][i]\ >\ m[i\ +\ 1][i\ +\ 1])\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ olx\_swap(vecs[i],\ vecs[i\ +\ 1]);}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ olx\_swap(m[i][i],\ m[i\ +\ 1][i\ +\ 1]);}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ swaps\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00279\ \ \ \ \ \}}
+\DoxyCodeLine{00280\ \ \ \ \ rv.d\ =\ vecs[type].DotProd(rv.center)\ /\ vecs[type].Length();}
+\DoxyCodeLine{00281\ \ \ \ \ rv.normal\ =\ vecs[type].Normalise();}
+\DoxyCodeLine{00282\ \ \ \ \ rv.rmsd\ =\ (m[type][type]\ <=\ 0\ ?\ 0\ :\ sqrt(m[type][type]));}
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00284\ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \textcolor{comment}{//\ plane\ to\ plane\ shift\ distance}}
+\DoxyCodeLine{00286\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ pT,\ \textcolor{keyword}{class}\ cT>\ \textcolor{keyword}{struct\ }Centroid2CentriodShiftDistance\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keyword}{const}\ pT\&\ p;}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keyword}{const}\ cT\&\ c;}
+\DoxyCodeLine{00289\ \ \ \ \ Centroid2CentriodShiftDistance(\textcolor{keyword}{const}\ pT\&\ \_p,\ \textcolor{keyword}{const}\ cT\&\ \_c)}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ :\ p(\_p),\ c(\_c)}
+\DoxyCodeLine{00291\ \ \ \ \ \{\}}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ pi\ =\ p.evaluate();}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ pc\ =\ c.evaluate();}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ pcd\ =\ pc.DotProd(pi.normal)\ -\/\ pi.d;}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ res\ =\ pc.QDistanceTo(pi.center)\ -\/\ pcd*pcd;}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \ res\ <=\ 0\ ?\ 0\ :\ sqrt(res);}
+\DoxyCodeLine{00298\ \ \ \ \ \}}
+\DoxyCodeLine{00299\ \ \ \};}
+\DoxyCodeLine{00300\ \ \ \textcolor{comment}{//\ alignment\ RMSD}}
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{struct\ }AlignmentRMSD\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\_alist\&\ points;}
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keyword}{const}\ TDoubleList\&\ weights;}
+\DoxyCodeLine{00304\ \ \ \ \ AlignmentRMSD(\textcolor{keyword}{const}\ vec3d\_alist\&\ pts,\ \textcolor{keyword}{const}\ TDoubleList\&\ wghts)}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ :\ points(pts),\ weights(wghts)}
+\DoxyCodeLine{00306\ \ \ \ \ \{\}}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ align::ListsToPairAdaptorVW<vec3d\_alist,\ TDoubleList>}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ l2p(points,\ weights);}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ align::out\ ao\ =\ align::FindAlignmentQuaternions(l2p);}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ align::CalcRMSD(l2p,\ ao);}
+\DoxyCodeLine{00312\ \ \ \ \ \}}
+\DoxyCodeLine{00313\ \ \ \};}
+\DoxyCodeLine{00314\ \ \ \textcolor{comment}{//\ plane\ to\ atom\ distance}}
+\DoxyCodeLine{00315\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ planeT,\ \textcolor{keyword}{class}\ po\textcolor{keywordtype}{int}T>\ \textcolor{keyword}{struct\ }PlaneToPointDistance\ \{}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keyword}{const}\ planeT\&\ plane;}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keyword}{const}\ pointT\&\ point;}
+\DoxyCodeLine{00318\ \ \ \ \ PlaneToPointDistance(\textcolor{keyword}{const}\ planeT\&\ \_plane,\ \textcolor{keyword}{const}\ pointT\&\ \_point)}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ :\ plane(\_plane),\ point(\_point)}
+\DoxyCodeLine{00320\ \ \ \ \ \{\}}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ pi\ =\ plane.evaluate();}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ point.evaluate().DotProd(pi.normal)\ -\/\ pi.d;}
+\DoxyCodeLine{00324\ \ \ \ \ \}}
+\DoxyCodeLine{00325\ \ \ \};}
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT,\ \textcolor{keyword}{class}\ WT>\ \textcolor{keyword}{struct\ }PlaneEvaluator\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keyword}{const}\ VT\&\ values;}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keyword}{const}\ WT\&\ weights;}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{keywordtype}{bool}\ inverse;}
+\DoxyCodeLine{00330\ \ \ \ \ PlaneEvaluator(\textcolor{keyword}{const}\ VT\&\ \_v,\ \textcolor{keyword}{const}\ WT\&\ \_w)}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ :\ values(\_v),\ weights(\_w),\ inverse(\textcolor{keyword}{false})}
+\DoxyCodeLine{00332\ \ \ \ \ \{\}}
+\DoxyCodeLine{00333\ \ \ \ \ PlaneEvaluator(\textcolor{keyword}{const}\ VT\&\ \_v,\ \textcolor{keyword}{const}\ WT\&\ \_w,\ \textcolor{keyword}{const}\ vec3d\ \&n)}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ :\ values(\_v),\ weights(\_w),\ inverse(\textcolor{keyword}{false})}
+\DoxyCodeLine{00335\ \ \ \ \ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ pi\ =\ CalcPlane(values,\ weights);}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pi.normal.DotProd(n)\ <\ 0)\ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ inverse\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00340\ \ \ \ \ \}}
+\DoxyCodeLine{00341\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ pi\ =\ CalcPlane(values,\ weights);}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (inverse)\ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ pi.normal\ *=\ -\/1;}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pi;}
+\DoxyCodeLine{00347\ \ \ \ \ \}}
+\DoxyCodeLine{00348\ \ \ \};}
+\DoxyCodeLine{00349\ \ \ \textcolor{comment}{//\ plane\ centroid\ to\ plane\ centroid\ distance}}
+\DoxyCodeLine{00350\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT,\ \textcolor{keyword}{class}\ WT>\ \textcolor{keyword}{struct\ }CentroidEvaluator\ \{}
+\DoxyCodeLine{00351\ \ \ \ \ \textcolor{keyword}{const}\ VT\&\ values;}
+\DoxyCodeLine{00352\ \ \ \ \ \textcolor{keyword}{const}\ WT\&\ weights;}
+\DoxyCodeLine{00353\ \ \ \ \ CentroidEvaluator(\textcolor{keyword}{const}\ VT\&\ \_v,\ \textcolor{keyword}{const}\ WT\&\ \_w)}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ :\ values(\_v),\ weights(\_w)}
+\DoxyCodeLine{00355\ \ \ \ \ \{\}}
+\DoxyCodeLine{00356\ \ \ \ \ vec3d\ evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ weight\ =\ 0;}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ vec3d\ point;}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ values.Count();\ i++)\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ point\ +=\ values[i];}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ weight\ +=\ weights[i];}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (point\ /=\ weight);}
+\DoxyCodeLine{00364\ \ \ \ \ \}}
+\DoxyCodeLine{00365\ \ \ \};}
+\DoxyCodeLine{00366\ \ \ \textcolor{keyword}{struct\ }PointProxy\ \{}
+\DoxyCodeLine{00367\ \ \ \ \ vec3d\&\ point;}
+\DoxyCodeLine{00368\ \ \ \ \ PointProxy(vec3d\&\ v)}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ :\ point(v)}
+\DoxyCodeLine{00370\ \ \ \ \ \{\}}
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ evaluate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ point;\ \}}
+\DoxyCodeLine{00372\ \ \ \};}
+\DoxyCodeLine{00373\ \ \ \textcolor{keyword}{struct\ }VectorProxy\ \{}
+\DoxyCodeLine{00374\ \ \ \ \ vec3d\ \&a,\ \&b;}
+\DoxyCodeLine{00375\ \ \ \ \ VectorProxy(vec3d\&\ \_a,\ vec3d\&\ \_b)}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ :\ a(\_a),\ b(\_b)}
+\DoxyCodeLine{00377\ \ \ \ \ \{\}}
+\DoxyCodeLine{00378\ \ \ \ \ vec3d\ evaluate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ b\ -\/\ a;\ \}}
+\DoxyCodeLine{00379\ \ \ \};}
+\DoxyCodeLine{00380\ \ \ \textcolor{comment}{/*\ Calculates\ the\ right-\/handed\ normal\ */}}
+\DoxyCodeLine{00381\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT,\ \textcolor{keyword}{class}\ WT>\ \textcolor{keyword}{struct\ }PlaneNormalEvaluator\ \{}
+\DoxyCodeLine{00382\ \ \ \ \ VT\ values;}
+\DoxyCodeLine{00383\ \ \ \ \ WT\ weights;}
+\DoxyCodeLine{00384\ \ \ \ \ \textcolor{keywordtype}{bool}\ inverse;}
+\DoxyCodeLine{00385\ \ \ \ \ PlaneNormalEvaluator(\textcolor{keyword}{const}\ VT\&\ \_v,\ \textcolor{keyword}{const}\ WT\&\ \_w,\ \textcolor{keyword}{const}\ vec3d\ \&n)}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ :\ values(\_v),\ weights(\_w),\ inverse(\textcolor{keyword}{false})}
+\DoxyCodeLine{00387\ \ \ \ \ \{}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ pi\ =\ CalcPlane(values,\ weights);}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pi.normal.DotProd(n)\ <\ 0)\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ inverse\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00392\ \ \ \ \ \}}
+\DoxyCodeLine{00393\ \ \ \ \ vec3d\ evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ pi\ =\ CalcPlane(values,\ weights);}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ inverse\ ?\ -\/pi.normal\ :\ pi.normal;}
+\DoxyCodeLine{00396\ \ \ \ \ \}}
+\DoxyCodeLine{00397\ \ \ \};}
+\DoxyCodeLine{00398\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT,\ \textcolor{keyword}{class}\ WT>\ \textcolor{keyword}{struct\ }LineEvaluator\ \{}
+\DoxyCodeLine{00399\ \ \ \ \ VT\ values;}
+\DoxyCodeLine{00400\ \ \ \ \ WT\ weights;}
+\DoxyCodeLine{00401\ \ \ \ \ LineEvaluator(\textcolor{keyword}{const}\ VT\&\ \_v,\ \textcolor{keyword}{const}\ WT\&\ \_w)}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ :\ values(\_v),\ weights(\_w)}
+\DoxyCodeLine{00403\ \ \ \ \ \{}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (values.Count()\ <\ 2)\ \{}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}point\ count"{}});}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00407\ \ \ \ \ \}}
+\DoxyCodeLine{00408\ \ \ \ \ vec3d\ evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (values.Count()\ ==\ 2)\ \{}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ values[1]\ -\/\ values[0];}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ CalcPlane(values,\ weights,\ 2).normal;}
+\DoxyCodeLine{00413\ \ \ \ \ \}}
+\DoxyCodeLine{00414\ \ \ \};}
+\DoxyCodeLine{00415\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT,\ \textcolor{keyword}{class}\ WT>\ \textcolor{keyword}{struct\ }Plane\ \{}
+\DoxyCodeLine{00416\ \ \ \ \ VT\ values;}
+\DoxyCodeLine{00417\ \ \ \ \ WT\ weights;}
+\DoxyCodeLine{00418\ \ \ \ \ Plane(\textcolor{keyword}{const}\ VT\&\ \_v,\ \textcolor{keyword}{const}\ WT\&\ \_w)\ :\ values(\_v),\ weights(\_w)\ \{\}}
+\DoxyCodeLine{00419\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CalcPlane(values,\ weights).rmsd;\ \}}
+\DoxyCodeLine{00420\ \ \ \};}
+\DoxyCodeLine{00421\ \ \ \textcolor{comment}{//\ torsion\ angle}}
+\DoxyCodeLine{00422\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ aT,\ \textcolor{keyword}{class}\ bT,\ \textcolor{keyword}{class}\ cT,\ \textcolor{keyword}{class}\ dT>\ \textcolor{keyword}{struct\ }TorsionAngle\ \{}
+\DoxyCodeLine{00423\ \ \ \ \ aT\ a;}
+\DoxyCodeLine{00424\ \ \ \ \ bT\ b;}
+\DoxyCodeLine{00425\ \ \ \ \ cT\ c;}
+\DoxyCodeLine{00426\ \ \ \ \ dT\ d;}
+\DoxyCodeLine{00427\ \ \ \ \ TorsionAngle(\textcolor{keyword}{const}\ aT\&\ \_a,\ \textcolor{keyword}{const}\ bT\&\ \_b,\ \textcolor{keyword}{const}\ cT\&\ \_c,\ \textcolor{keyword}{const}\ dT\&\ \_d)}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ :\ a(\_a),\ b(\_b),\ c(\_c),\ d(\_d)}
+\DoxyCodeLine{00429\ \ \ \ \ \{\}}
+\DoxyCodeLine{00430\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_dihedral\_angle(a.evaluate(),\ b.evaluate(),\ c.evaluate(),}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ d.evaluate());}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \textcolor{comment}{//return\ olx\_dihedral\_angle\_signed(a.evaluate(),\ b.evaluate(),}}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \textcolor{comment}{//\ \ c.evaluate(),\ d.evaluate());}}
+\DoxyCodeLine{00435\ \ \ \ \ \}}
+\DoxyCodeLine{00436\ \ \ \ \ \textcolor{keywordtype}{double}\ calc\_signed()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_dihedral\_angle\_signed(a.evaluate(),\ b.evaluate(),}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ c.evaluate(),\ d.evaluate());}
+\DoxyCodeLine{00439\ \ \ \ \ \}}
+\DoxyCodeLine{00440\ \ \ \};}
+\DoxyCodeLine{00441\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ PT>\ \textcolor{keyword}{struct\ }TwistAngle\ \{}
+\DoxyCodeLine{00442\ \ \ \ \ PT\ a,\ b;}
+\DoxyCodeLine{00443\ \ \ \ \ TwistAngle(\textcolor{keyword}{const}\ PT\ \&a\_,\ \textcolor{keyword}{const}\ PT\ \&b\_)}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ :\ a(a\_),\ b(b\_)}
+\DoxyCodeLine{00445\ \ \ \ \ \{\}}
+\DoxyCodeLine{00446\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ ai\ =\ a.evaluate(),\ bi\ =\ b.evaluate();}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_dihedral\_angle(ai.center\ +\ ai.normal,}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ ai.center,\ bi.center,\ bi.center\ +\ bi.normal);}
+\DoxyCodeLine{00450\ \ \ \ \ \}}
+\DoxyCodeLine{00451\ \ \ \};}
+\DoxyCodeLine{00452\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ PT>\ \textcolor{keyword}{struct\ }FoldAngle\ \{}
+\DoxyCodeLine{00453\ \ \ \ \ PT\ a,\ b;}
+\DoxyCodeLine{00454\ \ \ \ \ FoldAngle(\textcolor{keyword}{const}\ PT\ \&a\_,\ \textcolor{keyword}{const}\ PT\ \&b\_)}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ :\ a(a\_),\ b(b\_)}
+\DoxyCodeLine{00456\ \ \ \ \ \{\}}
+\DoxyCodeLine{00457\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1PlaneInfo}{PlaneInfo}}\ ai\ =\ a.evaluate(),\ bi\ =\ b.evaluate();}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ vec3d\ dv\ =\ (bi.center\ -\/\ ai.center);}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ olxch\ a\_sig\ =\ olx\_sign\_char(dv.DotProd(ai.normal));}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \textcolor{comment}{//\ make\ sure\ normals\ look\ on\ opposite\ sides\ of\ dv}}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_sign\_char(dv.DotProd(bi.normal))\ ==\ a\_sig)\ \{}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ bi.normal\ *=\ -\/1;}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ a\_sig\ =\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ vec3d\ n\_c\ =\ dv.XProdVec(ai.normal\ +\ bi.normal).Normalise();}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ vec3d\ p\_a\ =\ ai.normal\ -\/\ n\_c*n\_c.DotProd(ai.normal);}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ vec3d\ p\_b\ =\ bi.normal\ -\/\ n\_c*n\_c.DotProd(bi.normal);}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ a\ =\ acos(p\_a.CAngle(p\_b));}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a\_sig\ ==\ \textcolor{charliteral}{'\ '})\ \{\ \textcolor{comment}{//\ one\ of\ the\ normals\ has\ been\ inverted}}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ a\ =\ M\_PI\ -\/\ a;}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (a\ *\ 180\ /\ M\_PI);}
+\DoxyCodeLine{00474\ \ \ \ \ \}}
+\DoxyCodeLine{00475\ \ \ \};}
+\DoxyCodeLine{00476\ \ \ \textcolor{comment}{//\ tetrahedron\ volume}}
+\DoxyCodeLine{00477\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ aT,\ \textcolor{keyword}{class}\ bT,\ \textcolor{keyword}{class}\ cT,\ \textcolor{keyword}{class}\ dT>\ \textcolor{keyword}{struct\ }TetrahedronVolume\ \{}
+\DoxyCodeLine{00478\ \ \ \ \ aT\ a;}
+\DoxyCodeLine{00479\ \ \ \ \ bT\ b;}
+\DoxyCodeLine{00480\ \ \ \ \ cT\ c;}
+\DoxyCodeLine{00481\ \ \ \ \ dT\ d;}
+\DoxyCodeLine{00482\ \ \ \ \ TetrahedronVolume(\textcolor{keyword}{const}\ aT\&\ \_a,\ \textcolor{keyword}{const}\ bT\&\ \_b,\ \textcolor{keyword}{const}\ cT\&\ \_c,\ \textcolor{keyword}{const}\ dT\&\ \_d)}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ :\ a(\_a),\ b(\_b),\ c(\_c),\ d(\_d)}
+\DoxyCodeLine{00484\ \ \ \ \ \{\}}
+\DoxyCodeLine{00485\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_tetrahedron\_volume(a.evaluate(),\ b.evaluate(),\ c.evaluate(),}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ d.evaluate());}
+\DoxyCodeLine{00488\ \ \ \ \ \}}
+\DoxyCodeLine{00489\ \ \ \};}
+\DoxyCodeLine{00490\ \ \ \textcolor{comment}{//\ angle\ between\ 3\ points}}
+\DoxyCodeLine{00491\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ aT,\ \textcolor{keyword}{class}\ bT,\ \textcolor{keyword}{class}\ cT>\ \textcolor{keyword}{struct\ }Angle3\ \{}
+\DoxyCodeLine{00492\ \ \ \ \ aT\ a;}
+\DoxyCodeLine{00493\ \ \ \ \ bT\ b;}
+\DoxyCodeLine{00494\ \ \ \ \ cT\ c;}
+\DoxyCodeLine{00495\ \ \ \ \ Angle3(\textcolor{keyword}{const}\ aT\&\ \_a,\ \textcolor{keyword}{const}\ bT\&\ \_b,\ \textcolor{keyword}{const}\ cT\&\ \_c)}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ :\ a(\_a),\ b(\_b),\ c(\_c)}
+\DoxyCodeLine{00497\ \ \ \ \ \{\}}
+\DoxyCodeLine{00498\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ c2\ =\ b.evaluate();}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ ca\ =\ (a.evaluate()\ -\/\ c2).CAngle(c.evaluate()\ -\/\ c2);}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(ca)\ >=\ 1.0\ -\/\ 1e-\/16)\ \{}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ca\ <\ 0\ ?\ 180.0\ :\ 0.0;}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ acos(ca)*180.0\ /\ M\_PI;}
+\DoxyCodeLine{00505\ \ \ \ \ \}}
+\DoxyCodeLine{00506\ \ \ \};}
+\DoxyCodeLine{00507\ \ \ \textcolor{comment}{//\ angle\ between\ 2\ vectors}}
+\DoxyCodeLine{00508\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ aT,\ \textcolor{keyword}{class}\ bT>\ \textcolor{keyword}{struct\ }Angle2\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ aT\ a;}
+\DoxyCodeLine{00510\ \ \ \ \ bT\ b;}
+\DoxyCodeLine{00511\ \ \ \ \ Angle2(\textcolor{keyword}{const}\ aT\&\ \_a,\ \textcolor{keyword}{const}\ bT\&\ \_b)}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ :\ a(\_a),\ b(\_b)}
+\DoxyCodeLine{00513\ \ \ \ \ \{\}}
+\DoxyCodeLine{00514\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ ca\ =\ a.evaluate().CAngle(b.evaluate());}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(ca)\ >=\ 1.0\ -\/\ 1e-\/16)\ \{}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ca\ <\ 0\ ?\ 180.0\ :\ 0.0;}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ acos(ca)*180.0\ /\ M\_PI;}
+\DoxyCodeLine{00520\ \ \ \ \ \}}
+\DoxyCodeLine{00521\ \ \ \};}
+\DoxyCodeLine{00522\ \ \ \textcolor{comment}{//\ point\ to\ point\ distance}}
+\DoxyCodeLine{00523\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ aT,\ \textcolor{keyword}{class}\ bT>\ \textcolor{keyword}{struct\ }Distance\ \{}
+\DoxyCodeLine{00524\ \ \ \ \ aT\ a;}
+\DoxyCodeLine{00525\ \ \ \ \ bT\ b;}
+\DoxyCodeLine{00526\ \ \ \ \ Distance(\textcolor{keyword}{const}\ aT\&\ \_a,\ \textcolor{keyword}{const}\ bT\&\ \_b)}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ :\ a(\_a),\ b(\_b)}
+\DoxyCodeLine{00528\ \ \ \ \ \{\}}
+\DoxyCodeLine{00529\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ a.evaluate().DistanceTo(b.evaluate());\ \}}
+\DoxyCodeLine{00530\ \ \ \};}
+\DoxyCodeLine{00531\ \ \ \textcolor{comment}{//\ point\ to\ vector\ distance}}
+\DoxyCodeLine{00532\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ aT,\ \textcolor{keyword}{class}\ bT,\ \textcolor{keyword}{class}\ cT>\ \textcolor{keyword}{struct\ }PointToVectorDistance\ \{}
+\DoxyCodeLine{00533\ \ \ \ \ aT\ p;}
+\DoxyCodeLine{00534\ \ \ \ \ bT\ a;}
+\DoxyCodeLine{00535\ \ \ \ \ cT\ b;}
+\DoxyCodeLine{00536\ \ \ \ \ PointToVectorDistance(\textcolor{keyword}{const}\ aT\&\ \_p,\ \textcolor{keyword}{const}\ bT\&\ \_a,\ \textcolor{keyword}{const}\ cT\&\ \_b)}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ :\ p(\_p),\ a(\_a),\ b(\_b)}
+\DoxyCodeLine{00538\ \ \ \ \ \{\}}
+\DoxyCodeLine{00539\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ vec3d\ ap\ =\ a.evaluate(),}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \ \ av\ =\ p.evaluate()\ -\/\ ap,}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ bv\ =\ (b.evaluate()\ -\/\ ap).Normalise();}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (av\ -\/\ (bv*bv.DotProd(av))).Length();}
+\DoxyCodeLine{00544\ \ \ \ \ \}}
+\DoxyCodeLine{00545\ \ \ \};}
+\DoxyCodeLine{00546\ \ \ \textcolor{comment}{//\ octahedral\ distortion\ (in\ degrees),\ using\ best\ plane\ approach}}
+\DoxyCodeLine{00547\ \ \ \textcolor{keyword}{struct\ }OctahedralDistortionBP\ \{}
+\DoxyCodeLine{00548\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\_alist\&\ points;}
+\DoxyCodeLine{00549\ \ \ \ \ vec3d\_alist\ pl;}
+\DoxyCodeLine{00550\ \ \ \ \ TDoubleList\ weights;}
+\DoxyCodeLine{00551\ \ \ \ \ OctahedralDistortionBP(\textcolor{keyword}{const}\ vec3d\_alist\&\ \_points)}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ :\ points(\_points),\ pl(6),\ weights(6,\ olx\_list\_init::value(1.0))}
+\DoxyCodeLine{00553\ \ \ \ \ \{\}}
+\DoxyCodeLine{00554\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00555\ \ \ \};}
+\DoxyCodeLine{00556\ \ \ \textcolor{keyword}{struct\ }OctahedralDistortion\ \{}
+\DoxyCodeLine{00557\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\_alist\&\ points;}
+\DoxyCodeLine{00558\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AnAssociation3<size\_t,\ size\_t,\ size\_t>}}\ >\ angles;}
+\DoxyCodeLine{00559\ \ \ \ \ OctahedralDistortion(\textcolor{keyword}{const}\ vec3d\_alist\&\ \_points);}
+\DoxyCodeLine{00560\ \ \ \ \ \textcolor{comment}{//\ octahedral\ anngle\ distortion\ (in\ degrees,\ deviation\ from\ 90)}}
+\DoxyCodeLine{00561\ \ \ \ \ \textcolor{keywordtype}{double}\ calc\_angle()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00562\ \ \ \ \ \textcolor{comment}{//\ distacne\ between\ the\ metal\ and\ the\ centroid}}
+\DoxyCodeLine{00563\ \ \ \ \ \textcolor{keywordtype}{double}\ calc\_d\_cent()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00564\ \ \ \ \ \textcolor{comment}{//\ length\ distrortion\ (deviation\ from\ the\ mean)}}
+\DoxyCodeLine{00565\ \ \ \ \ \textcolor{keywordtype}{double}\ calc\_d\_len()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00566\ \ \ \ \ \textcolor{comment}{//\ octahedral\ distortion\ (in\ degrees),\ using\ best\ plane\ approach}}
+\DoxyCodeLine{00567\ \ \ \ \ \textcolor{keywordtype}{double}\ calc\_distortion()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00568\ \ \ \};}
+\DoxyCodeLine{00569\ }
+\DoxyCodeLine{00570\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structVcoVContainer_1_1CalcWrapper}{CalcWrapper}}\ \{}
+\DoxyCodeLine{00571\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ calc\_t>}
+\DoxyCodeLine{00572\ \ \ \ \ \textcolor{keyword}{struct\ }CalcWrapper\_\ \{}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \textcolor{keyword}{const}\ calc\_t\ \&cl;}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ double\ (calc\_t::*func)()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00575\ \ \ \ \ \ \ CalcWrapper\_(\textcolor{keyword}{const}\ calc\_t\ \&cl,\ \textcolor{keywordtype}{double}\ (calc\_t::*func)()\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00576\ \ \ \ \ \ \ \ \ :\ cl(cl),\ func(func)}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (cl.*func)();}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00581\ \ \ \ \ \};}
+\DoxyCodeLine{00582\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ calc\_t>}
+\DoxyCodeLine{00583\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structVcoVContainer_1_1CalcWrapper_1_1CalcWrapper__}{CalcWrapper\_<calc\_t>}}\ Make(\textcolor{keyword}{const}\ calc\_t\ \&b,}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ (calc\_t::*func)()\ \textcolor{keyword}{const})}
+\DoxyCodeLine{00585\ \ \ \ \ \{}
+\DoxyCodeLine{00586\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structVcoVContainer_1_1CalcWrapper_1_1CalcWrapper__}{CalcWrapper\_<calc\_t>}}(b,\ func);}
+\DoxyCodeLine{00587\ \ \ \ \ \}}
+\DoxyCodeLine{00588\ \ \ \};}
+\DoxyCodeLine{00589\ \ \ \textcolor{comment}{//\ triangle\ twist\ (in\ degrees),\ using\ best\ plane\ approach}}
+\DoxyCodeLine{00590\ \ \ \textcolor{keyword}{struct\ }TriangleTwistBP\ \{}
+\DoxyCodeLine{00591\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\_alist\&\ points;}
+\DoxyCodeLine{00592\ \ \ \ \ vec3d\_alist\ pl;}
+\DoxyCodeLine{00593\ \ \ \ \ TDoubleList\ weights;}
+\DoxyCodeLine{00594\ \ \ \ \ \textcolor{keyword}{mutable}\ evecd\ angles;}
+\DoxyCodeLine{00595\ \ \ \ \ TriangleTwistBP(\textcolor{keyword}{const}\ vec3d\_alist\&\ \_points)}
+\DoxyCodeLine{00596\ \ \ \ \ \ \ :\ points(\_points),\ pl(6),\ weights(6,\ olx\_list\_init::value(1.0)),}
+\DoxyCodeLine{00597\ \ \ \ \ \ \ angles(3)}
+\DoxyCodeLine{00598\ \ \ \ \ \{\}}
+\DoxyCodeLine{00599\ \ \ \ \ \textcolor{keywordtype}{double}\ calc()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00600\ \ \ \};}
+\DoxyCodeLine{00601\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00602\ \ \ \textcolor{comment}{//\ helper\ functions}}
+\DoxyCodeLine{00603\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00604\ \ \ \textcolor{keywordtype}{double}\ CalcEsd(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sz,\ \textcolor{keyword}{const}\ mat3d\_list\&\ m,\ \textcolor{keyword}{const}\ VC\&\ df)\ \{}
+\DoxyCodeLine{00605\ \ \ \ \ \textcolor{keywordtype}{double}\ esd\ =\ 0;}
+\DoxyCodeLine{00606\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sz;\ i++)\ \{}
+\DoxyCodeLine{00607\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ sz;\ j++)\ \{}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ m\_ind\ =\ i*sz\ +\ j;}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{short}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ \{}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{short}\ l\ =\ 0;\ l\ <\ 3;\ l++)\ \{}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \ \ \ \ \ \ esd\ +=\ m[m\_ind].Get(k,\ l)*df[i\ *\ 3\ +\ k]\ *\ df[j\ *\ 3\ +\ l];}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00614\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00615\ \ \ \ \ \}}
+\DoxyCodeLine{00616\ \ \ \ \ \textcolor{keywordflow}{return}\ esd\ <\ 0\ ?\ 0\ :\ esd;}
+\DoxyCodeLine{00617\ \ \ \}}
+\DoxyCodeLine{00618\ \ \ \textcolor{comment}{//\ helper\ functions}}
+\DoxyCodeLine{00619\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list>\ \textcolor{keywordtype}{void}\ AtomsToPoints(\textcolor{keyword}{const}\ list\&\ atoms,\ vec3d\_alist\&\ r)\ \{}
+\DoxyCodeLine{00620\ \ \ \ \ r.SetCount(atoms.Count());}
+\DoxyCodeLine{00621\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ r[i]\ =\ atoms[i]-\/>crd();}
+\DoxyCodeLine{00623\ \ \ \}}
+\DoxyCodeLine{00624\ \ \ \textcolor{comment}{//http://en.wikipedia.org/wiki/Numerical\_differentiation}}
+\DoxyCodeLine{00625\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VecT,\ \textcolor{keyword}{class}\ OutVecT,\ \textcolor{keyword}{class}\ Evaluator>}
+\DoxyCodeLine{00626\ \ \ \textcolor{keywordtype}{void}\ CalcDiff(VecT\&\ vars,\ OutVecT\&\ df,\ \textcolor{keyword}{const}\ Evaluator\&\ e)\ \{}
+\DoxyCodeLine{00627\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ delta\ =\ sqrt(2.2e-\/16);}
+\DoxyCodeLine{00628\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ vars.Count();\ i++)\ \{}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ vars[i]\ +=\ 2\ *\ delta;}
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ v1\ =\ e.calc();}
+\DoxyCodeLine{00631\ \ \ \ \ \ \ vars[i]\ -\/=\ delta;}
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ v2\ =\ e.calc();}
+\DoxyCodeLine{00633\ \ \ \ \ \ \ vars[i]\ -\/=\ 2\ *\ delta;}
+\DoxyCodeLine{00634\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ v3\ =\ e.calc();}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ vars[i]\ -\/=\ delta;}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ v4\ =\ e.calc();}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ df[i]\ =\ (-\/v1\ +\ 8\ *\ v2\ -\/\ 8\ *\ v3\ +\ v4)\ /\ (12\ *\ delta);}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ vars[i]\ +=\ 2\ *\ delta;}
+\DoxyCodeLine{00639\ \ \ \ \ \}}
+\DoxyCodeLine{00640\ \ \ \}}
+\DoxyCodeLine{00641\ }
+\DoxyCodeLine{00642\ \ \ \textcolor{keyword}{struct\ }CalcHelper\ \{}
+\DoxyCodeLine{00643\ \ \ \ \ VcoVContainer\&\ base;}
+\DoxyCodeLine{00644\ \ \ \ \ vec3d\_alist\ points;}
+\DoxyCodeLine{00645\ \ \ \ \ mat3d\_list\ m;}
+\DoxyCodeLine{00646\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list>\ CalcHelper(VcoVContainer\&\ \_base,\ \textcolor{keyword}{const}\ list\&\ atoms)}
+\DoxyCodeLine{00647\ \ \ \ \ \ \ :\ base(\_base),\ points(atoms.Count())}
+\DoxyCodeLine{00648\ \ \ \ \ \{}
+\DoxyCodeLine{00649\ \ \ \ \ \ \ base.GetVcoV(atoms,\ m);}
+\DoxyCodeLine{00650\ \ \ \ \ \ \ base.AtomsToPoints(atoms,\ points);}
+\DoxyCodeLine{00651\ \ \ \ \ \}}
+\DoxyCodeLine{00652\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ a\_list,\ \textcolor{keyword}{class}\ p\_list>\ CalcHelper(VcoVContainer\&\ \_base,}
+\DoxyCodeLine{00653\ \ \ \ \ \ \ \textcolor{keyword}{const}\ a\_list\&\ atoms,\ \textcolor{keyword}{const}\ p\_list\&\ pts)}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ :\ base(\_base),\ points(atoms.Count())}
+\DoxyCodeLine{00655\ \ \ \ \ \{}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ mat3d\_list\ m1;}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ base.GetVcoV(atoms,\ m1);}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ base.AtomsToPoints(atoms,\ points);}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ac\ =\ atoms.Count(),}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \ \ total\ =\ ac\ +\ pts.Count();}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ points.SetCount(total);}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ m.SetCount(olx\_sqr(total));}
+\DoxyCodeLine{00663\ \ \ \ \ \ \ \textcolor{comment}{//\ pad\ with\ 0}}
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ total;\ i++)\ \{}
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >=\ ac)\ \{}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \ \ points[i]\ =\ pts[i\ -\/\ ac];}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00668\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ total;\ j++)\ \{}
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ ac\ \&\&\ j\ <\ ac)\ \{}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ \ \ \ \ \ \ m[i\ *\ total\ +\ j]\ =\ m1[i\ *\ ac\ +\ j];}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00674\ \ \ \ \ \}}
+\DoxyCodeLine{00675\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Eval>\ \mbox{\hyperlink{classTEValue}{TEValue<double>}}\ DoCalc(\textcolor{keyword}{const}\ Eval\&\ e)\ \{}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ base.DoCalcForPoints(points,\ m,\ e);}
+\DoxyCodeLine{00677\ \ \ \ \ \}}
+\DoxyCodeLine{00678\ \ \ \};}
+\DoxyCodeLine{00679\ }
+\DoxyCodeLine{00680\ \ \ \textcolor{keyword}{struct\ }CalcWHelper\ :\ \textcolor{keyword}{public}\ CalcHelper\ \{}
+\DoxyCodeLine{00681\ \ \ \ \ TDoubleList\ weights;}
+\DoxyCodeLine{00682\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list>\ CalcWHelper(VcoVContainer\&\ \_base,\ \textcolor{keyword}{const}\ list\&\ atms)}
+\DoxyCodeLine{00683\ \ \ \ \ \ \ :\ CalcHelper(\_base,\ atms),}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ weights(atms.Count(),\ olx\_list\_init::value(1.0))}
+\DoxyCodeLine{00685\ \ \ \ \ \{\}}
+\DoxyCodeLine{00686\ }
+\DoxyCodeLine{00687\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ a\_list,\ \textcolor{keyword}{class}\ p\_list>\ CalcWHelper(VcoVContainer\ \&\ \_base,}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \textcolor{keyword}{const}\ a\_list\&\ atms,\ \textcolor{keyword}{const}\ p\_list\&\ pts)}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ :\ CalcHelper(\_base,\ atms,\ pts),}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ weights(atms.Count()\ +\ pts.Count(),\ olx\_list\_init::value(1.0))}
+\DoxyCodeLine{00691\ \ \ \ \ \{\}}
+\DoxyCodeLine{00692\ \ \ \};}
+\DoxyCodeLine{00693\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list,\ \textcolor{keyword}{typename}\ eval>}
+\DoxyCodeLine{00694\ \ \ \mbox{\hyperlink{classTEValue}{TEValue<double>}}\ DoCalcForPoints(list\&\ points,\ \textcolor{keyword}{const}\ mat3d\_list\&\ vcov,}
+\DoxyCodeLine{00695\ \ \ \ \ \textcolor{keyword}{const}\ eval\&\ e)}
+\DoxyCodeLine{00696\ \ \ \{}
+\DoxyCodeLine{00697\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CellEsd}{CellEsd}}\ ced(*\textcolor{keyword}{this},\ points);}
+\DoxyCodeLine{00698\ \ \ \ \ \textcolor{keywordflow}{if}\ (GetMatrix().IsEmpty())\ \{}
+\DoxyCodeLine{00699\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTEValue}{TEValue<double>}}(e.calc(),\ sqrt(ced.DoCalc(e)));}
+\DoxyCodeLine{00700\ \ \ \ \ \}}
+\DoxyCodeLine{00701\ \ \ \ \ TDoubleList\ df(points.Count()\ *\ 3);}
+\DoxyCodeLine{00702\ \ \ \ \ CompositeVector<list>\ pts(points);}
+\DoxyCodeLine{00703\ \ \ \ \ CalcDiff(pts,\ df,\ e);}
+\DoxyCodeLine{00704\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classTEValue}{TEValue<double>}}(e.calc(),}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ sqrt(CalcEsd(points.Count(),\ vcov,\ df)\ +\ ced.DoCalc(e)));}
+\DoxyCodeLine{00706\ \ \ \}}
+\DoxyCodeLine{00707\ \ \ \textcolor{keyword}{typedef}\ ConstSlice<vec3d\_alist>\ crd\_slice;}
+\DoxyCodeLine{00708\ \ \ \textcolor{keyword}{typedef}\ ConstSlice<TDoubleList>\ weight\_slice;}
+\DoxyCodeLine{00709\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structVcoVContainer_1_1CentroidEvaluator}{CentroidEvaluator<crd\_slice,\ weight\_slice>}}\ cnt\_et;}
+\DoxyCodeLine{00710\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structVcoVContainer_1_1PointProxy}{PointProxy}}\ pnt\_pt;}
+\DoxyCodeLine{00711\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structVcoVContainer_1_1PlaneEvaluator}{PlaneEvaluator<crd\_slice,\ weight\_slice>}}\ pln\_et;}
+\DoxyCodeLine{00712\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structVcoVContainer_1_1PlaneNormalEvaluator}{PlaneNormalEvaluator<crd\_slice,\ weight\_slice>}}\ plnn\_et;}
+\DoxyCodeLine{00713\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structVcoVContainer_1_1LineEvaluator}{LineEvaluator<crd\_slice,\ weight\_slice>}}\ ln\_et;}
+\DoxyCodeLine{00714\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00715\ \ \ VcoVContainer(TAsymmUnit\&\ \_au)\ :\ au(\_au),\ cell(6),\ celle(6)\ \{}
+\DoxyCodeLine{00716\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ a2r\ =\ M\_PI\ /\ 180;}
+\DoxyCodeLine{00717\ \ \ \ \ cell[0]\ =\ au.GetAxes()[0];\ \ celle[0]\ =\ olx\_sqr(au.GetAxisEsds()[0]);}
+\DoxyCodeLine{00718\ \ \ \ \ cell[1]\ =\ au.GetAxes()[1];\ \ celle[1]\ =\ olx\_sqr(au.GetAxisEsds()[1]);}
+\DoxyCodeLine{00719\ \ \ \ \ cell[2]\ =\ au.GetAxes()[2];\ \ celle[2]\ =\ olx\_sqr(au.GetAxisEsds()[2]);}
+\DoxyCodeLine{00720\ \ \ \ \ cell[3]\ =\ au.GetAngles()[0]\ *\ a2r;}
+\DoxyCodeLine{00721\ \ \ \ \ celle[3]\ =\ olx\_sqr(au.GetAngleEsds()[0]\ *\ a2r);}
+\DoxyCodeLine{00722\ \ \ \ \ cell[4]\ =\ au.GetAngles()[1]\ *\ a2r;}
+\DoxyCodeLine{00723\ \ \ \ \ celle[4]\ =\ olx\_sqr(au.GetAngleEsds()[1]\ *\ a2r);}
+\DoxyCodeLine{00724\ \ \ \ \ cell[5]\ =\ au.GetAngles()[2]\ *\ a2r;}
+\DoxyCodeLine{00725\ \ \ \ \ celle[5]\ =\ olx\_sqr(au.GetAngleEsds()[2]\ *\ a2r);}
+\DoxyCodeLine{00726\ \ \ \}}
+\DoxyCodeLine{00727\ \ \ \textcolor{keywordtype}{void}\ ReadShelxMat(\textcolor{keyword}{const}\ olxstr\&\ fileName)\ \{}
+\DoxyCodeLine{00728\ \ \ \ \ vcov.ReadShelxMat(fileName,\ au);}
+\DoxyCodeLine{00729\ \ \ \}}
+\DoxyCodeLine{00730\ \ \ \textcolor{keywordtype}{void}\ ReadSmtbxMat(\textcolor{keyword}{const}\ olxstr\&\ fileName)\ \{}
+\DoxyCodeLine{00731\ \ \ \ \ vcov.ReadSmtbxMat(fileName,\ au);}
+\DoxyCodeLine{00732\ \ \ \}}
+\DoxyCodeLine{00733\ \ \ \textcolor{keywordtype}{void}\ ReadNpyMat(\textcolor{keyword}{const}\ olxstr\&\ fileName)\ \{}
+\DoxyCodeLine{00734\ \ \ \ \ vcov.ReadNpyMat(fileName,\ au);}
+\DoxyCodeLine{00735\ \ \ \}}
+\DoxyCodeLine{00736\ \ \ \textcolor{keywordtype}{void}\ FromCIF()\ \{\ vcov.FromCIF(au);\ \}}
+\DoxyCodeLine{00737\ \ \ \textcolor{comment}{//\ precise\ calculation}}
+\DoxyCodeLine{00738\ \ \ TEValue<double>\ CalcDistance(\textcolor{keyword}{const}\ TSAtom\&\ a1,\ \textcolor{keyword}{const}\ TSAtom\&\ a2)\ \{}
+\DoxyCodeLine{00739\ \ \ \ \ TSAtom\ \textcolor{keyword}{const}*\ as[]\ =\ \{\ \&a1,\&a2\ \};}
+\DoxyCodeLine{00740\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ Composite::ConstPlainVector(as,\ 2));}
+\DoxyCodeLine{00741\ \ \ \ \ mat3d\ vcov\ =\ ch.m[0]\ -\/\ ch.m[1]\ -\/\ ch.m[2]\ +\ ch.m[3];}
+\DoxyCodeLine{00742\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ v\ =\ ch.points[0]\ -\/\ ch.points[1];}
+\DoxyCodeLine{00743\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ val\ =\ v.Length();}
+\DoxyCodeLine{00744\ \ \ \ \ \textcolor{keywordtype}{double}\ qesd\ =\ (vcov*v).DotProd(v)\ /\ olx\_sqr(val);}
+\DoxyCodeLine{00745\ \ \ \ \ qesd\ +=\ \mbox{\hyperlink{structVcoVContainer_1_1CellEsd}{CellEsd}}(*\textcolor{keyword}{this},\ ch.points).DoCalc(}
+\DoxyCodeLine{00746\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Distance}{Distance<pnt\_pt,\ pnt\_pt>}}(pnt\_pt(ch.points[0]),\ pnt\_pt(ch.points[1])));}
+\DoxyCodeLine{00747\ \ \ \ \ \textcolor{keywordflow}{return}\ TEValue<double>(val,\ sqrt(qesd));}
+\DoxyCodeLine{00748\ \ \ \}}
+\DoxyCodeLine{00749\ \ \ \textcolor{comment}{//\ cartesian\ centroid}}
+\DoxyCodeLine{00750\ \ \ TEPoint3<double>\ CalcCentroid(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms)\ \{}
+\DoxyCodeLine{00751\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ atoms);}
+\DoxyCodeLine{00752\ \ \ \ \ mat3d\ vcov;}
+\DoxyCodeLine{00753\ \ \ \ \ vec3d\ cnt;}
+\DoxyCodeLine{00754\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00755\ \ \ \ \ \ \ cnt\ +=\ atoms[i]-\/>crd();}
+\DoxyCodeLine{00756\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ atoms.Count();\ j++)\ \{}
+\DoxyCodeLine{00757\ \ \ \ \ \ \ \ \ vcov\ +=\ ch.m[i*atoms.Count()\ +\ j];}
+\DoxyCodeLine{00758\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00759\ \ \ \ \ \}}
+\DoxyCodeLine{00760\ \ \ \ \ vcov\ *=\ 1.\ /\ olx\_sqr(atoms.Count());}
+\DoxyCodeLine{00761\ \ \ \ \ cnt\ /=\ atoms.Count();}
+\DoxyCodeLine{00762\ \ \ \ \ \textcolor{keywordflow}{return}\ TEPoint3<double>(}
+\DoxyCodeLine{00763\ \ \ \ \ \ \ TEValueD(cnt[0],\ sqrt(vcov[0][0])),}
+\DoxyCodeLine{00764\ \ \ \ \ \ \ TEValueD(cnt[1],\ sqrt(vcov[1][1])),}
+\DoxyCodeLine{00765\ \ \ \ \ \ \ TEValueD(cnt[2],\ sqrt(vcov[2][2])));}
+\DoxyCodeLine{00766\ \ \ \}}
+\DoxyCodeLine{00767\ \ \ \textcolor{comment}{//\ fractional\ centroid}}
+\DoxyCodeLine{00768\ \ \ TEPoint3<double>\ CalcCentroidF(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms)\ \{}
+\DoxyCodeLine{00769\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ atoms);}
+\DoxyCodeLine{00770\ \ \ \ \ mat3d\ vcov;}
+\DoxyCodeLine{00771\ \ \ \ \ vec3d\ cnt;}
+\DoxyCodeLine{00772\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00773\ \ \ \ \ \ \ cnt\ +=\ atoms[i]-\/>ccrd();}
+\DoxyCodeLine{00774\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ atoms.Count();\ j++)\ \{}
+\DoxyCodeLine{00775\ \ \ \ \ \ \ \ \ vcov\ +=\ ch.m[i*atoms.Count()\ +\ j];}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00777\ \ \ \ \ \}}
+\DoxyCodeLine{00778\ \ \ \ \ vcov\ *=\ 1.\ /\ olx\_sqr(atoms.Count());}
+\DoxyCodeLine{00779\ \ \ \ \ cnt\ /=\ atoms.Count();}
+\DoxyCodeLine{00780\ \ \ \ \ \textcolor{keywordflow}{return}\ TEPoint3<double>(}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ TEValueD(cnt[0],\ sqrt(vcov[0][0])),}
+\DoxyCodeLine{00782\ \ \ \ \ \ \ TEValueD(cnt[1],\ sqrt(vcov[1][1])),}
+\DoxyCodeLine{00783\ \ \ \ \ \ \ TEValueD(cnt[2],\ sqrt(vcov[2][2])));}
+\DoxyCodeLine{00784\ \ \ \}}
+\DoxyCodeLine{00785\ \ \ \textcolor{comment}{//\ analytical,\ http://salilab.org/modeller/8v0/manual/node248.html}}
+\DoxyCodeLine{00786\ \ \ TEValue<double>\ CalcAngleA(\textcolor{keyword}{const}\ TSAtom\&\ a1,\ \textcolor{keyword}{const}\ TSAtom\&\ a2,}
+\DoxyCodeLine{00787\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ a3)}
+\DoxyCodeLine{00788\ \ \ \{}
+\DoxyCodeLine{00789\ \ \ \ \ TSAtom\ \textcolor{keyword}{const}\ *\ as[]\ =\ \{\ \&a1,\&a2,\&a3\ \};}
+\DoxyCodeLine{00790\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ Composite::ConstPlainVector(as,\ 3));}
+\DoxyCodeLine{00791\ \ \ \ \ vec3d\ ij\ =\ (ch.points[0]\ -\/\ ch.points[1]);}
+\DoxyCodeLine{00792\ \ \ \ \ vec3d\ kj\ =\ (ch.points[2]\ -\/\ ch.points[1]);}
+\DoxyCodeLine{00793\ \ \ \ \ vec3d\_alist\ grad(3);}
+\DoxyCodeLine{00794\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ ca\ =\ ij.CAngle(kj);}
+\DoxyCodeLine{00795\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ cell\_esd\ =\ \mbox{\hyperlink{structVcoVContainer_1_1CellEsd}{CellEsd}}(*\textcolor{keyword}{this},\ ch.points).DoCalc(}
+\DoxyCodeLine{00796\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle3}{Angle3<pnt\_pt,\ pnt\_pt,\ pnt\_pt>}}(}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[0]),\ pnt\_pt(ch.points[1]),}
+\DoxyCodeLine{00798\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[2])))\ /\ olx\_sqr(180\ /\ M\_PI);}
+\DoxyCodeLine{00799\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(ca)\ >=\ 1.0\ -\/\ 1e-\/16)\ \{}
+\DoxyCodeLine{00800\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ TEValue<double>(ca\ <\ 0\ ?\ 180.0\ :\ 0.0,\ sqrt(cell\_esd)\ *\ 180\ /\ M\_PI);}
+\DoxyCodeLine{00801\ \ \ \ \ \}}
+\DoxyCodeLine{00802\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ oos\ =\ 1.\ /\ sqrt(1\ -\/\ ca*ca);}
+\DoxyCodeLine{00803\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ ij\_l\ =\ ij.Length(),\ kj\_l\ =\ kj.Length();}
+\DoxyCodeLine{00804\ \ \ \ \ ij.Normalise();}
+\DoxyCodeLine{00805\ \ \ \ \ kj.Normalise();}
+\DoxyCodeLine{00806\ \ \ \ \ grad[0]\ =\ (ij*ca\ -\/\ kj)*oos\ /\ ij\_l;}
+\DoxyCodeLine{00807\ \ \ \ \ grad[2]\ =\ (kj*ca\ -\/\ ij)*oos\ /\ kj\_l;}
+\DoxyCodeLine{00808\ \ \ \ \ grad[1]\ =\ -\/(grad[0]\ +\ grad[2]);}
+\DoxyCodeLine{00809\ \ \ \ \ \textcolor{keywordtype}{double}\ qesd\ =\ CalcEsd(3,\ ch.m,\ Composite::Vector(grad));}
+\DoxyCodeLine{00810\ \ \ \ \ qesd\ +=\ cell\_esd;}
+\DoxyCodeLine{00811\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ a\ =\ acos(ca);}
+\DoxyCodeLine{00812\ \ \ \ \ \textcolor{keywordflow}{return}\ TEValue<double>(a,\ (qesd\ <\ 1e-\/15\ ?\ 0\ :\ sqrt(qesd)))\ *=\ 180\ /\ M\_PI;}
+\DoxyCodeLine{00813\ \ \ \}}
+\DoxyCodeLine{00814\ \ \ TEValue<double>\ CalcAngle(\textcolor{keyword}{const}\ TSAtom\&\ a1,\ \textcolor{keyword}{const}\ TSAtom\&\ a2,}
+\DoxyCodeLine{00815\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ a3)}
+\DoxyCodeLine{00816\ \ \ \{}
+\DoxyCodeLine{00817\ \ \ \ \ TSAtom\ \textcolor{keyword}{const}\ *\ as[]\ =\ \{\ \&a1,\&a2,\&a3\ \};}
+\DoxyCodeLine{00818\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ Composite::ConstPlainVector(as,\ 3));}
+\DoxyCodeLine{00819\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{00820\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle3}{Angle3<pnt\_pt,\ pnt\_pt,\ pnt\_pt>}}(pnt\_pt(ch.points[0]),\ pnt\_pt(ch.points[1]),}
+\DoxyCodeLine{00821\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[2])));}
+\DoxyCodeLine{00822\ \ \ \}}
+\DoxyCodeLine{00823\ \ \ TEValue<double>\ CalcAngle(\textcolor{keyword}{const}\ TSAtomCPList\&\ a1,\ \textcolor{keyword}{const}\ TSAtomCPList\&\ a2,}
+\DoxyCodeLine{00824\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomCPList\&\ a3)}
+\DoxyCodeLine{00825\ \ \ \{}
+\DoxyCodeLine{00826\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(a1)\ <<\ a2\ <<\ a3);}
+\DoxyCodeLine{00827\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{00828\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle3}{Angle3<cnt\_et,\ cnt\_et,\ cnt\_et>}}(}
+\DoxyCodeLine{00829\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ 0,\ a1.Count()),}
+\DoxyCodeLine{00830\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ a1.Count())),}
+\DoxyCodeLine{00831\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ a1.Count(),\ a2.Count()),}
+\DoxyCodeLine{00832\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ a1.Count(),\ a2.Count())),}
+\DoxyCodeLine{00833\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ a1.Count()\ +\ a2.Count(),\ a3.Count()),}
+\DoxyCodeLine{00834\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ a1.Count()\ +\ a2.Count(),\ a3.Count()))}
+\DoxyCodeLine{00835\ \ \ \ \ \ \ \ \ ));}
+\DoxyCodeLine{00836\ \ \ \}}
+\DoxyCodeLine{00837\ \ \ \textcolor{comment}{//\ analytical,http://salilab.org/modeller/8v0/manual/node248.html}}
+\DoxyCodeLine{00838\ \ \ TEValue<double>\ CalcTAngleA(\textcolor{keyword}{const}\ TSAtom\&\ a1,\ \textcolor{keyword}{const}\ TSAtom\&\ a2,}
+\DoxyCodeLine{00839\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ a3,\ \textcolor{keyword}{const}\ TSAtom\&\ a4)}
+\DoxyCodeLine{00840\ \ \ \{}
+\DoxyCodeLine{00841\ \ \ \ \ TSAtom\ \textcolor{keyword}{const}\ *\ as[]\ =\ \{\ \&a1,\&a2,\&a3,\&a4\ \};}
+\DoxyCodeLine{00842\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ Composite::ConstPlainVector(as,\ 4));}
+\DoxyCodeLine{00843\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ ij\ =\ a1.crd()\ -\/\ a2.crd();}
+\DoxyCodeLine{00844\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ kj\ =\ a3.crd()\ -\/\ a2.crd();}
+\DoxyCodeLine{00845\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ kl\ =\ a4.crd()\ -\/\ a3.crd();}
+\DoxyCodeLine{00846\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ mj\ =\ ij.XProdVec(kj);}
+\DoxyCodeLine{00847\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ nk\ =\ kj.XProdVec(kl);}
+\DoxyCodeLine{00848\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ kj\_ql\ =\ kj.QLength();}
+\DoxyCodeLine{00849\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ kj\_l\ =\ sqrt(kj\_ql);}
+\DoxyCodeLine{00850\ \ \ \ \ vec3d\_alist\ grad(4);}
+\DoxyCodeLine{00851\ \ \ \ \ grad[0]\ =\ mj*(kj\_l\ /\ mj.QLength());}
+\DoxyCodeLine{00852\ \ \ \ \ grad[3]\ =\ -\/(nk*(kj\_l\ /\ nk.QLength()));}
+\DoxyCodeLine{00853\ \ \ \ \ grad[1]\ =}
+\DoxyCodeLine{00854\ \ \ \ \ \ \ grad[0]\ *\ (ij.DotProd(kj)\ /\ kj\_ql\ -\/\ 1.0)\ -\/\ grad[3]\ *\ (kl.DotProd(kj)\ /\ kj\_ql);}
+\DoxyCodeLine{00855\ \ \ \ \ grad[2]\ =}
+\DoxyCodeLine{00856\ \ \ \ \ \ \ grad[3]\ *\ (kl.DotProd(kj)\ /\ kj\_ql\ -\/\ 1.0)\ -\/\ grad[0]\ *\ (ij.DotProd(kj)\ /\ kj\_ql);}
+\DoxyCodeLine{00857\ \ \ \ \ \textcolor{keywordtype}{double}\ esd\ =\ CalcEsd(4,\ ch.m,\ Composite::Vector(grad));}
+\DoxyCodeLine{00858\ \ \ \ \ esd\ +=\ \mbox{\hyperlink{structVcoVContainer_1_1CellEsd}{CellEsd}}(*\textcolor{keyword}{this},\ ch.points).DoCalc(}
+\DoxyCodeLine{00859\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1TorsionAngle}{TorsionAngle<pnt\_pt,\ pnt\_pt,\ pnt\_pt,\ pnt\_pt>}}(}
+\DoxyCodeLine{00860\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[0]),\ pnt\_pt(ch.points[1]),}
+\DoxyCodeLine{00861\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[2]),\ pnt\_pt(ch.points[3])))\ /\ olx\_sqr(180.0\ /\ M\_PI);}
+\DoxyCodeLine{00862\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ a\ =}
+\DoxyCodeLine{00863\ \ \ \ \ \ \ olx\_dihedral\_angle\_signed(a1.crd(),\ a2.crd(),\ a3.crd(),\ a4.crd());}
+\DoxyCodeLine{00864\ \ \ \ \ \textcolor{keywordflow}{return}\ TEValue<double>(a,\ (esd\ <\ 1e-\/15\ ?\ 0\ :\ sqrt(esd))\ *\ 180\ /\ M\_PI);}
+\DoxyCodeLine{00865\ \ \ \}}
+\DoxyCodeLine{00866\ \ \ \textcolor{comment}{//\ torsion\ angle}}
+\DoxyCodeLine{00867\ \ \ TEValue<double>\ CalcTAngle(\textcolor{keyword}{const}\ TSAtom\&\ a1,\ \textcolor{keyword}{const}\ TSAtom\&\ a2,}
+\DoxyCodeLine{00868\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ a3,\ \textcolor{keyword}{const}\ TSAtom\&\ a4)}
+\DoxyCodeLine{00869\ \ \ \{}
+\DoxyCodeLine{00870\ \ \ \ \ TSAtom\ \textcolor{keyword}{const}\ *\ as[]\ =\ \{\ \&a1,\&a2,\&a3,\&a4\ \};}
+\DoxyCodeLine{00871\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ Composite::ConstPlainVector(as,\ 4));}
+\DoxyCodeLine{00872\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1TorsionAngle}{TorsionAngle<pnt\_pt,\ pnt\_pt,\ pnt\_pt,\ pnt\_pt>}}\ tha(}
+\DoxyCodeLine{00873\ \ \ \ \ \ \ pnt\_pt(ch.points[0]),\ pnt\_pt(ch.points[1]),\ pnt\_pt(ch.points[2]),}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ pnt\_pt(ch.points[3]));}
+\DoxyCodeLine{00875\ \ \ \ \ TEValueD\ rv\ =\ ch.DoCalc(tha);}
+\DoxyCodeLine{00876\ \ \ \ \ rv.V()\ =\ tha.calc\_signed();}
+\DoxyCodeLine{00877\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00878\ \ \ \}}
+\DoxyCodeLine{00879\ \ \ \textcolor{comment}{//\ bond\ to\ bond\ angle}}
+\DoxyCodeLine{00880\ \ \ TEValue<double>\ CalcB2BAngle(\textcolor{keyword}{const}\ TSAtom\&\ a1,\ \textcolor{keyword}{const}\ TSAtom\&\ a2,}
+\DoxyCodeLine{00881\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ a3,\ \textcolor{keyword}{const}\ TSAtom\&\ a4)}
+\DoxyCodeLine{00882\ \ \ \{}
+\DoxyCodeLine{00883\ \ \ \ \ TSAtom\ \textcolor{keyword}{const}\ *\ as[]\ =\ \{\ \&a1,\&a2,\&a3,\&a4\ \};}
+\DoxyCodeLine{00884\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ Composite::ConstPlainVector(as,\ 4));}
+\DoxyCodeLine{00885\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{00886\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle2}{Angle2<VectorProxy,\ VectorProxy>}}(}
+\DoxyCodeLine{00887\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1VectorProxy}{VectorProxy}}(ch.points[0],\ ch.points[1]),}
+\DoxyCodeLine{00888\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1VectorProxy}{VectorProxy}}(ch.points[2],\ ch.points[3])));}
+\DoxyCodeLine{00889\ \ \ \}}
+\DoxyCodeLine{00890\ \ \ \textcolor{comment}{//\ returns\ rmsd\ for\ the\ best\ plane}}
+\DoxyCodeLine{00891\ \ \ TEValue<double>\ CalcPlane(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms)\ \{}
+\DoxyCodeLine{00892\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ atoms);}
+\DoxyCodeLine{00893\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(\mbox{\hyperlink{structVcoVContainer_1_1Plane}{Plane<vec3d\_alist,\ TDoubleList>}}(ch.points,\ ch.weights));}
+\DoxyCodeLine{00894\ \ \ \}}
+\DoxyCodeLine{00895\ \ \ \textcolor{comment}{//\ plane\ to\ atom\ distance}}
+\DoxyCodeLine{00896\ \ \ TEValue<double>\ CalcP2ADistance(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms,\ \textcolor{keyword}{const}\ TSAtom\&\ a)\ \{}
+\DoxyCodeLine{00897\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(atoms)\ <<\ a);}
+\DoxyCodeLine{00898\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{00899\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1PlaneToPointDistance}{PlaneToPointDistance<pln\_et,\ pnt\_pt>}}(}
+\DoxyCodeLine{00900\ \ \ \ \ \ \ \ \ pln\_et(crd\_slice(ch.points,\ 0,\ atoms.Count()),}
+\DoxyCodeLine{00901\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ atoms.Count())),}
+\DoxyCodeLine{00902\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points.GetLast())));}
+\DoxyCodeLine{00903\ \ \ \}}
+\DoxyCodeLine{00904\ \ \ \textcolor{comment}{//\ plane\ centroid\ to\ atom\ distance}}
+\DoxyCodeLine{00905\ \ \ TEValue<double>\ CalcPC2ADistance(\textcolor{keyword}{const}\ TSAtomCPList\&\ plane,}
+\DoxyCodeLine{00906\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ a)}
+\DoxyCodeLine{00907\ \ \ \{}
+\DoxyCodeLine{00908\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(plane)\ <<\ a);}
+\DoxyCodeLine{00909\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{00910\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Distance}{Distance<cnt\_et,\ pnt\_pt>}}(}
+\DoxyCodeLine{00911\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ 0,\ plane.Count()),}
+\DoxyCodeLine{00912\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ plane.Count())),}
+\DoxyCodeLine{00913\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points.GetLast())));}
+\DoxyCodeLine{00914\ \ \ \}}
+\DoxyCodeLine{00915\ \ \ \textcolor{comment}{//\ centroid\ to\ centroid}}
+\DoxyCodeLine{00916\ \ \ TEValue<double>\ CalcC2CDistance(\textcolor{keyword}{const}\ TSAtomCPList\&\ c1,}
+\DoxyCodeLine{00917\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomCPList\&\ c2)}
+\DoxyCodeLine{00918\ \ \ \{}
+\DoxyCodeLine{00919\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(c1)\ <<\ c2);}
+\DoxyCodeLine{00920\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{00921\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Distance}{Distance<cnt\_et,\ cnt\_et>}}(}
+\DoxyCodeLine{00922\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ 0,\ c1.Count()),}
+\DoxyCodeLine{00923\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ c1.Count())),}
+\DoxyCodeLine{00924\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ c1.Count(),\ c2.Count()),}
+\DoxyCodeLine{00925\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ c1.Count(),\ c2.Count()))));}
+\DoxyCodeLine{00926\ \ \ \}}
+\DoxyCodeLine{00927\ \ \ \textcolor{comment}{//\ plane\ to\ a\ vector\ angle}}
+\DoxyCodeLine{00928\ \ \ TEValue<double>\ CalcP2VAngle(\textcolor{keyword}{const}\ TSAtomCPList\&\ plane,\ \textcolor{keyword}{const}\ vec3d\ \&pn,}
+\DoxyCodeLine{00929\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ a1,\ \textcolor{keyword}{const}\ TSAtom\&\ a2)}
+\DoxyCodeLine{00930\ \ \ \{}
+\DoxyCodeLine{00931\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(plane)\ <<\ a1\ <<\ a2);}
+\DoxyCodeLine{00932\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{00933\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle2}{Angle2<plnn\_et,\ VectorProxy>}}(}
+\DoxyCodeLine{00934\ \ \ \ \ \ \ \ \ plnn\_et(crd\_slice(ch.points,\ 0,\ plane.Count()),\ weight\_slice(ch.weights,}
+\DoxyCodeLine{00935\ \ \ \ \ \ \ \ \ \ \ 0,\ plane.Count()),\ pn),}
+\DoxyCodeLine{00936\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1VectorProxy}{VectorProxy}}(ch.points[plane.Count()],\ ch.points[plane.Count()\ +\ 1])));}
+\DoxyCodeLine{00937\ \ \ \}}
+\DoxyCodeLine{00938\ \ \ TEValue<double>\ CalcP2VAngle(\textcolor{keyword}{const}\ TSAtomCPList\&\ plane,\ \textcolor{keyword}{const}\ vec3d\&\ pn,}
+\DoxyCodeLine{00939\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ a1,\ \textcolor{keyword}{const}\ vec3d\&\ a2)}
+\DoxyCodeLine{00940\ \ \ \{}
+\DoxyCodeLine{00941\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(plane),\ vec3d\_list()\ <<\ a1\ <<\ a2);}
+\DoxyCodeLine{00942\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{00943\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle2}{Angle2<plnn\_et,\ VectorProxy>}}(}
+\DoxyCodeLine{00944\ \ \ \ \ \ \ \ \ plnn\_et(crd\_slice(ch.points,\ 0,\ plane.Count()),\ weight\_slice(ch.weights,}
+\DoxyCodeLine{00945\ \ \ \ \ \ \ \ \ \ \ 0,\ plane.Count()),\ pn),}
+\DoxyCodeLine{00946\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1VectorProxy}{VectorProxy}}(ch.points[plane.Count()],\ ch.points[plane.Count()\ +\ 1])));}
+\DoxyCodeLine{00947\ \ \ \}}
+\DoxyCodeLine{00948\ \ \ \textcolor{comment}{//\ plane\ centroid,\ atom,\ atom\ angle}}
+\DoxyCodeLine{00949\ \ \ TEValue<double>\ CalcPCAngle(\textcolor{keyword}{const}\ TSAtomCPList\&\ plane,\ \textcolor{keyword}{const}\ TSAtom\&\ a1,}
+\DoxyCodeLine{00950\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ a2)}
+\DoxyCodeLine{00951\ \ \ \{}
+\DoxyCodeLine{00952\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(plane)\ <<\ a1\ <<\ a2);}
+\DoxyCodeLine{00953\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{00954\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle3}{Angle3<cnt\_et,\ pnt\_pt,\ pnt\_pt>}}(}
+\DoxyCodeLine{00955\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ 0,\ plane.Count()),\ weight\_slice(ch.weights,}
+\DoxyCodeLine{00956\ \ \ \ \ \ \ \ \ \ \ 0,\ plane.Count())),}
+\DoxyCodeLine{00957\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[plane.Count()]),}
+\DoxyCodeLine{00958\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[plane.Count()\ +\ 1])));}
+\DoxyCodeLine{00959\ \ \ \}}
+\DoxyCodeLine{00960\ \ \ \textcolor{comment}{//\ atom,\ plane\ centroid,\ atom\ angle}}
+\DoxyCodeLine{00961\ \ \ TEValue<double>\ CalcPCAngle(\textcolor{keyword}{const}\ TSAtom\&\ a1,\ \textcolor{keyword}{const}\ TSAtomCPList\&\ plane,}
+\DoxyCodeLine{00962\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ a2)}
+\DoxyCodeLine{00963\ \ \ \{}
+\DoxyCodeLine{00964\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList()\ <<\ a1\ <<\ plane\ <<\ a2);}
+\DoxyCodeLine{00965\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{00966\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle3}{Angle3<pnt\_pt,\ cnt\_et,\ pnt\_pt>}}(}
+\DoxyCodeLine{00967\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[0]),}
+\DoxyCodeLine{00968\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ 1,\ plane.Count()),\ weight\_slice(ch.weights,}
+\DoxyCodeLine{00969\ \ \ \ \ \ \ \ \ \ \ 0,\ plane.Count())),}
+\DoxyCodeLine{00970\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[plane.Count()\ +\ 1])));}
+\DoxyCodeLine{00971\ \ \ \}}
+\DoxyCodeLine{00972\ \ \ TEValue<double>\ CalcP2VAngle(\textcolor{keyword}{const}\ TSAtomCPList\&\ plane,}
+\DoxyCodeLine{00973\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ \&pn,\ \textcolor{keyword}{const}\ TSAtomCPList\ \&ln)}
+\DoxyCodeLine{00974\ \ \ \{}
+\DoxyCodeLine{00975\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(plane)\ <<\ ln);}
+\DoxyCodeLine{00976\ \ \ \ \ TEValue<double>\ r\ =\ ch.DoCalc(}
+\DoxyCodeLine{00977\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle2}{Angle2<plnn\_et,\ ln\_et>}}(}
+\DoxyCodeLine{00978\ \ \ \ \ \ \ \ \ plnn\_et(crd\_slice(ch.points,\ 0,\ plane.Count()),}
+\DoxyCodeLine{00979\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ plane.Count()),\ pn),}
+\DoxyCodeLine{00980\ \ \ \ \ \ \ \ \ ln\_et(crd\_slice(ch.points,\ plane.Count(),\ ln.Count()),}
+\DoxyCodeLine{00981\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ plane.Count(),\ ln.Count()))));}
+\DoxyCodeLine{00982\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00983\ \ \ \}}
+\DoxyCodeLine{00984\ \ \ \textcolor{comment}{//\ plane\ to\ plane\ angle}}
+\DoxyCodeLine{00985\ \ \ TEValue<double>\ CalcP2PAngle(\textcolor{keyword}{const}\ TSAtomCPList\&\ p1,\ \textcolor{keyword}{const}\ vec3d\ \&pn1,}
+\DoxyCodeLine{00986\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomCPList\&\ p2,\ \textcolor{keyword}{const}\ vec3d\ \&pn2)}
+\DoxyCodeLine{00987\ \ \ \{}
+\DoxyCodeLine{00988\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(p1)\ <<\ p2);}
+\DoxyCodeLine{00989\ \ \ \ \ TEValueD\ r\ =\ ch.DoCalc(}
+\DoxyCodeLine{00990\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle2}{Angle2<plnn\_et,\ plnn\_et>}}(}
+\DoxyCodeLine{00991\ \ \ \ \ \ \ \ \ plnn\_et(crd\_slice(ch.points,\ 0,\ p1.Count()),}
+\DoxyCodeLine{00992\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ p1.Count()),\ pn1),}
+\DoxyCodeLine{00993\ \ \ \ \ \ \ \ \ plnn\_et(crd\_slice(ch.points,\ p1.Count(),\ p2.Count()),}
+\DoxyCodeLine{00994\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ p1.Count(),\ p2.Count()),\ pn2)));}
+\DoxyCodeLine{00995\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00996\ \ \ \}}
+\DoxyCodeLine{00997\ \ \ \textcolor{comment}{//\ plane\ to\ plane\ twisting\ angle}}
+\DoxyCodeLine{00998\ \ \ TEValue<double>\ CalcP2PTAngle(\textcolor{keyword}{const}\ TSAtomCPList\&\ p1,\ \textcolor{keyword}{const}\ vec3d\ \&pn1,}
+\DoxyCodeLine{00999\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomCPList\&\ p2,\ \textcolor{keyword}{const}\ vec3d\ \&pn2)}
+\DoxyCodeLine{01000\ \ \ \{}
+\DoxyCodeLine{01001\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(p1)\ <<\ p2);}
+\DoxyCodeLine{01002\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{01003\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1TwistAngle}{TwistAngle<pln\_et>}}(}
+\DoxyCodeLine{01004\ \ \ \ \ \ \ \ \ pln\_et(crd\_slice(ch.points,\ 0,\ p1.Count()),}
+\DoxyCodeLine{01005\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ p1.Count()),\ pn1),}
+\DoxyCodeLine{01006\ \ \ \ \ \ \ \ \ pln\_et(crd\_slice(ch.points,\ p1.Count(),\ p2.Count()),}
+\DoxyCodeLine{01007\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ p1.Count(),\ p2.Count()),\ pn2)));}
+\DoxyCodeLine{01008\ \ \ \}}
+\DoxyCodeLine{01009\ \ \ \textcolor{comment}{//\ plane\ to\ plane\ folding\ angle}}
+\DoxyCodeLine{01010\ \ \ TEValue<double>\ CalcP2PFAngle(\textcolor{keyword}{const}\ TSAtomCPList\&\ p1,\ \textcolor{keyword}{const}\ vec3d\ \&pn1,}
+\DoxyCodeLine{01011\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomCPList\&\ p2,\ \textcolor{keyword}{const}\ vec3d\ \&pn2)}
+\DoxyCodeLine{01012\ \ \ \{}
+\DoxyCodeLine{01013\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(p1)\ <<\ p2);}
+\DoxyCodeLine{01014\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{01015\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1FoldAngle}{FoldAngle<pln\_et>}}(}
+\DoxyCodeLine{01016\ \ \ \ \ \ \ \ \ pln\_et(crd\_slice(ch.points,\ 0,\ p1.Count()),}
+\DoxyCodeLine{01017\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ p1.Count()),\ pn1),}
+\DoxyCodeLine{01018\ \ \ \ \ \ \ \ \ pln\_et(crd\_slice(ch.points,\ p1.Count(),\ p2.Count()),}
+\DoxyCodeLine{01019\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ p1.Count(),\ p2.Count()),\ pn2)));}
+\DoxyCodeLine{01020\ \ \ \}}
+\DoxyCodeLine{01021\ \ \ \textcolor{comment}{//plane\ centroid\ to\ plane\ centroid\ distance}}
+\DoxyCodeLine{01022\ \ \ TEValue<double>\ CalcPC2PCDistance(\textcolor{keyword}{const}\ TSAtomCPList\&\ p1,}
+\DoxyCodeLine{01023\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomCPList\&\ p2)}
+\DoxyCodeLine{01024\ \ \ \{}
+\DoxyCodeLine{01025\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(p1)\ <<\ p2);}
+\DoxyCodeLine{01026\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{01027\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Distance}{Distance<cnt\_et,\ cnt\_et>}}(}
+\DoxyCodeLine{01028\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ 0,\ p1.Count()),\ weight\_slice(ch.weights,}
+\DoxyCodeLine{01029\ \ \ \ \ \ \ \ \ \ \ 0,\ p1.Count())),}
+\DoxyCodeLine{01030\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ p1.Count(),\ p2.Count()),}
+\DoxyCodeLine{01031\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ p1.Count(),\ p2.Count()))));}
+\DoxyCodeLine{01032\ \ \ \}}
+\DoxyCodeLine{01033\ \ \ \textcolor{comment}{//\ angle\ between\ 3\ plane\ centroids}}
+\DoxyCodeLine{01034\ \ \ TEValue<double>\ Calc3PCAngle(\textcolor{keyword}{const}\ TSAtomCPList\&\ p1,\ \textcolor{keyword}{const}\ TSAtomCPList\&\ p2,}
+\DoxyCodeLine{01035\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomCPList\&\ p3)}
+\DoxyCodeLine{01036\ \ \ \{}
+\DoxyCodeLine{01037\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(p1)\ <<\ p2\ <<\ p3);}
+\DoxyCodeLine{01038\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{01039\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle3}{Angle3<cnt\_et,\ cnt\_et,\ cnt\_et>}}(}
+\DoxyCodeLine{01040\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ 0,\ p1.Count()),}
+\DoxyCodeLine{01041\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ p1.Count())),}
+\DoxyCodeLine{01042\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ p1.Count(),\ p2.Count()),}
+\DoxyCodeLine{01043\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ p1.Count(),\ p2.Count())),}
+\DoxyCodeLine{01044\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ p1.Count()\ +\ p2.Count(),\ p3.Count()),}
+\DoxyCodeLine{01045\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ p1.Count()\ +\ p2.Count(),\ p3.Count()))));}
+\DoxyCodeLine{01046\ \ \ \}}
+\DoxyCodeLine{01047\ \ \ \textcolor{comment}{//\ angle\ between\ plane\ centroid,\ atom,\ plane\ centroid}}
+\DoxyCodeLine{01048\ \ \ TEValue<double>\ CalcPCAPCAngle(\textcolor{keyword}{const}\ TSAtomCPList\&\ p1,\ \textcolor{keyword}{const}\ TSAtom\ \&a,}
+\DoxyCodeLine{01049\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomCPList\&\ p2)}
+\DoxyCodeLine{01050\ \ \ \{}
+\DoxyCodeLine{01051\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(p1)\ <<\ p2\ <<\ a);}
+\DoxyCodeLine{01052\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{01053\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Angle3}{Angle3<cnt\_et,\ pnt\_pt,\ cnt\_et>}}(}
+\DoxyCodeLine{01054\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ 0,\ p1.Count()),}
+\DoxyCodeLine{01055\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ p1.Count())),}
+\DoxyCodeLine{01056\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points.GetLast()),}
+\DoxyCodeLine{01057\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ p1.Count(),\ p2.Count()),}
+\DoxyCodeLine{01058\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ p1.Count(),\ p2.Count()))));}
+\DoxyCodeLine{01059\ \ \ \}}
+\DoxyCodeLine{01060\ \ \ \textcolor{comment}{//plane\ to\ another\ plane\ centroid\ distance}}
+\DoxyCodeLine{01061\ \ \ TEValue<double>\ CalcP2PCDistance(\textcolor{keyword}{const}\ TSAtomCPList\&\ p1,}
+\DoxyCodeLine{01062\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomCPList\&\ p2)}
+\DoxyCodeLine{01063\ \ \ \{}
+\DoxyCodeLine{01064\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(p1)\ <<\ p2);}
+\DoxyCodeLine{01065\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{01066\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1PlaneToPointDistance}{PlaneToPointDistance<pln\_et,\ cnt\_et>}}(}
+\DoxyCodeLine{01067\ \ \ \ \ \ \ \ \ pln\_et(crd\_slice(ch.points,\ 0,\ p1.Count()),}
+\DoxyCodeLine{01068\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ p1.Count())),}
+\DoxyCodeLine{01069\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ p1.Count(),\ p2.Count()),}
+\DoxyCodeLine{01070\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ p1.Count(),\ p2.Count()))));}
+\DoxyCodeLine{01071\ \ \ \}}
+\DoxyCodeLine{01072\ \ \ \textcolor{comment}{//plane\ to\ another\ plane\ shift\ distance}}
+\DoxyCodeLine{01073\ \ \ TEValue<double>\ CalcP2PShiftDistance(\textcolor{keyword}{const}\ TSAtomCPList\&\ p1,}
+\DoxyCodeLine{01074\ \ \ \ \ \textcolor{keyword}{const}\ TSAtomCPList\&\ p2)}
+\DoxyCodeLine{01075\ \ \ \{}
+\DoxyCodeLine{01076\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ TSAtomCPList(p1)\ <<\ p2);}
+\DoxyCodeLine{01077\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{01078\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1Centroid2CentriodShiftDistance}{Centroid2CentriodShiftDistance<pln\_et,\ cnt\_et>}}(}
+\DoxyCodeLine{01079\ \ \ \ \ \ \ \ \ pln\_et(crd\_slice(ch.points,\ 0,\ p1.Count()),}
+\DoxyCodeLine{01080\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ 0,\ p1.Count())),}
+\DoxyCodeLine{01081\ \ \ \ \ \ \ \ \ cnt\_et(crd\_slice(ch.points,\ p1.Count(),\ p2.Count()),}
+\DoxyCodeLine{01082\ \ \ \ \ \ \ \ \ \ \ weight\_slice(ch.weights,\ p1.Count(),\ p2.Count()))));}
+\DoxyCodeLine{01083\ \ \ \}}
+\DoxyCodeLine{01084\ \ \ \textcolor{comment}{//\ tetrahedron\ volume}}
+\DoxyCodeLine{01085\ \ \ TEValue<double>\ CalcTetrahedronVolume(\textcolor{keyword}{const}\ TSAtom\&\ a1,\ \textcolor{keyword}{const}\ TSAtom\&\ a2,}
+\DoxyCodeLine{01086\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ a3,\ \textcolor{keyword}{const}\ TSAtom\&\ a4)}
+\DoxyCodeLine{01087\ \ \ \{}
+\DoxyCodeLine{01088\ \ \ \ \ TSAtom\ \textcolor{keyword}{const}\ *\ as[]\ =\ \{\ \&a1,\&a2,\&a3,\&a4\ \};}
+\DoxyCodeLine{01089\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ Composite::ConstPlainVector(as,\ 4));}
+\DoxyCodeLine{01090\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{01091\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1TetrahedronVolume}{TetrahedronVolume<pnt\_pt,\ pnt\_pt,\ pnt\_pt,\ pnt\_pt>}}(}
+\DoxyCodeLine{01092\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[0]),\ pnt\_pt(ch.points[1]),\ pnt\_pt(ch.points[2]),}
+\DoxyCodeLine{01093\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[3])));}
+\DoxyCodeLine{01094\ \ \ \}}
+\DoxyCodeLine{01095\ \ \ \textcolor{comment}{//\ tetrahedron\ volume\ defined\ by\ centroid\ of\ atoms\ and\ 3\ other\ atoms}}
+\DoxyCodeLine{01096\ \ \ TEValue<double>\ CalcTetrahedronVolume(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms,}
+\DoxyCodeLine{01097\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keywordtype}{size\_t}\ k)}
+\DoxyCodeLine{01098\ \ \ \{}
+\DoxyCodeLine{01099\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcWHelper}{CalcWHelper}}\ ch(*\textcolor{keyword}{this},\ atoms);}
+\DoxyCodeLine{01100\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structVcoVContainer_1_1CentroidEvaluator}{CentroidEvaluator<vec3d\_list,\ TDoubleList>}}\ cnt\_t;}
+\DoxyCodeLine{01101\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{01102\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1TetrahedronVolume}{TetrahedronVolume<cnt\_t,\ pnt\_pt,\ pnt\_pt,\ pnt\_pt>}}(}
+\DoxyCodeLine{01103\ \ \ \ \ \ \ \ \ cnt\_t(ch.points,\ ch.weights),}
+\DoxyCodeLine{01104\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[i]),}
+\DoxyCodeLine{01105\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[j]),\ pnt\_pt(ch.points[k])));}
+\DoxyCodeLine{01106\ \ \ \}}
+\DoxyCodeLine{01107\ \ \ \textcolor{comment}{//\ alignment\ RMSD\ crds\ should\ be\ prepeared,\ i.e.\ inverted}}
+\DoxyCodeLine{01108\ \ \ TEValue<double>\ CalcAlignmentRMSD(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms,}
+\DoxyCodeLine{01109\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\_alist\&\ crds,\ \textcolor{keyword}{const}\ TDoubleList\&\ weights)}
+\DoxyCodeLine{01110\ \ \ \{}
+\DoxyCodeLine{01111\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ atoms);}
+\DoxyCodeLine{01112\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(\mbox{\hyperlink{structVcoVContainer_1_1AlignmentRMSD}{AlignmentRMSD}}(ch.points,\ weights));}
+\DoxyCodeLine{01113\ \ \ \}}
+\DoxyCodeLine{01114\ \ \ \textcolor{comment}{/*\ octahedral\ distortion,\ takes\ \{Central\ Atom,\ a1,\ b1,\ a2,\ b2,\ a3,\ b3\},}}
+\DoxyCodeLine{01115\ \textcolor{comment}{\ \ returns\ mean\ value\ in\ degrees.\ This\ function\ uses\ mean\ plane\ defined\ by}}
+\DoxyCodeLine{01116\ \textcolor{comment}{\ \ the\ 6\ points\ arranged\ around\ the\ origin}}
+\DoxyCodeLine{01117\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{01118\ \ \ TEValue<double>\ CalcOHDistortionBP(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms)\ \{}
+\DoxyCodeLine{01119\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ atoms);}
+\DoxyCodeLine{01120\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(\mbox{\hyperlink{structVcoVContainer_1_1OctahedralDistortionBP}{OctahedralDistortionBP}}(ch.points));}
+\DoxyCodeLine{01121\ \ \ \}}
+\DoxyCodeLine{01122\ \ \ \textcolor{comment}{/*\ twist\ between\ trianglua\ planes.\ This\ function\ uses\ mean\ plane\ defined\ by}}
+\DoxyCodeLine{01123\ \textcolor{comment}{\ \ the\ 6\ points\ arranged\ around\ the\ origin}}
+\DoxyCodeLine{01124\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{01125\ \ \ TEValue<double>\ CalcTraingluarTwist(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms)\ \{}
+\DoxyCodeLine{01126\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ atoms);}
+\DoxyCodeLine{01127\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(\mbox{\hyperlink{structVcoVContainer_1_1TriangleTwistBP}{TriangleTwistBP}}(ch.points));}
+\DoxyCodeLine{01128\ \ \ \}}
+\DoxyCodeLine{01129\ \ \ olxstr\_dict<TEValue<double>\ >::const\_dict\_type}
+\DoxyCodeLine{01130\ \ \ \ \ CalcOctahedralDistortion(\textcolor{keyword}{const}\ TSAtomCPList\&\ atoms)}
+\DoxyCodeLine{01131\ \ \ \{}
+\DoxyCodeLine{01132\ \ \ \ \ olxstr\_dict<TEValue<double>\ >\ rv;}
+\DoxyCodeLine{01133\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ atoms);}
+\DoxyCodeLine{01134\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1OctahedralDistortion}{OctahedralDistortion}}\ od(ch.points);}
+\DoxyCodeLine{01135\ \ \ \ \ rv.Add(\textcolor{stringliteral}{"{}Octohedral\ angle\ deviation\ from\ 90\ (for\ 12\ S-\/M-\/S\ angles)"{}},}
+\DoxyCodeLine{01136\ \ \ \ \ \ \ ch.DoCalc(CalcWrapper::Make(od,\ \&OctahedralDistortion::calc\_angle)));}
+\DoxyCodeLine{01137\ \ \ \ \ rv.Add(\textcolor{stringliteral}{"{}Octohedral\ length\ deviation\ from\ mean"{}},}
+\DoxyCodeLine{01138\ \ \ \ \ \ \ ch.DoCalc(CalcWrapper::Make(od,\ \&OctahedralDistortion::calc\_d\_len)));}
+\DoxyCodeLine{01139\ \ \ \ \ rv.Add(\textcolor{stringliteral}{"{}Octohedral\ metal\ to\ centroid\ deviation"{}},}
+\DoxyCodeLine{01140\ \ \ \ \ \ \ ch.DoCalc(CalcWrapper::Make(od,\ \&OctahedralDistortion::calc\_d\_cent)));}
+\DoxyCodeLine{01141\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{01142\ \ \ \}}
+\DoxyCodeLine{01143\ \ \ \textcolor{comment}{//atom\ to\ vector\ distance}}
+\DoxyCodeLine{01144\ \ \ TEValue<double>\ CalcAtomToVectorDistance(\textcolor{keyword}{const}\ TSAtom\&\ p,\ \textcolor{keyword}{const}\ TSAtom\&\ a,}
+\DoxyCodeLine{01145\ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ b)}
+\DoxyCodeLine{01146\ \ \ \{}
+\DoxyCodeLine{01147\ \ \ \ \ TSAtom\ \textcolor{keyword}{const}\ *\ as[]\ =\ \{\ \&p,\ \&a,\ \&b\ \};}
+\DoxyCodeLine{01148\ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1CalcHelper}{CalcHelper}}\ ch(*\textcolor{keyword}{this},\ Composite::ConstPlainVector(as,\ 3));}
+\DoxyCodeLine{01149\ \ \ \ \ \textcolor{keywordflow}{return}\ ch.DoCalc(}
+\DoxyCodeLine{01150\ \ \ \ \ \ \ \mbox{\hyperlink{structVcoVContainer_1_1PointToVectorDistance}{PointToVectorDistance<pnt\_pt,\ pnt\_pt,\ pnt\_pt>}}(}
+\DoxyCodeLine{01151\ \ \ \ \ \ \ \ \ pnt\_pt(ch.points[0]),\ pnt\_pt(ch.points[1]),\ pnt\_pt(ch.points[2])));}
+\DoxyCodeLine{01152\ \ \ \}}
+\DoxyCodeLine{01153\ }
+\DoxyCodeLine{01154\ \ \ \textcolor{keyword}{const}\ VcoVMatrix\&\ GetMatrix()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ vcov;\ \}}
+\DoxyCodeLine{01155\ \};}
+\DoxyCodeLine{01156\ }
+\DoxyCodeLine{01157\ EndXlibNamespace()}
+\DoxyCodeLine{01158\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

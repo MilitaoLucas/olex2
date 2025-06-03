@@ -1,0 +1,281 @@
+\doxysection{network.\+h}
+\hypertarget{network_8h_source}{}\label{network_8h_source}\index{xlib/network.h@{xlib/network.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_network\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_network\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}math/align.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}evalue.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}satom.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}sbond.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}conninfo.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}atomregistry.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}linked\_list.h"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ BeginXlibNamespace()}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ const\ \textcolor{keywordtype}{int}\ DefNoPart\ =\ -\/100;}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ typedef\ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt}}<class\ \mbox{\hyperlink{classTNetwork}{TNetwork}},\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}>\ TNetList;}
+\DoxyCodeLine{00026\ typedef\ \mbox{\hyperlink{classTPtrList}{TPtrList}}<class\ \mbox{\hyperlink{classTNetwork}{TNetwork}}>\ TNetPList;}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ class\ TNetwork\ :\ public\ TBasicNode<TNetwork,\ \mbox{\hyperlink{classTSAtom}{TSAtom}},\ \mbox{\hyperlink{classTSBond}{TSBond}}>\ \{}
+\DoxyCodeLine{00029\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLattice}{TLattice}}\ \ *Lattice;}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ sorts\ atoms\ by\ distance\ from\ 0,\ must\ be\ called\ before\ search\ for\ Hbonds}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{void}\ SortNodes();}
+\DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ TNetwork(\mbox{\hyperlink{classTLattice}{TLattice}}*\ P,\ TNetwork\ *N);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \string~TNetwork()\ \{\}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ GetLattice()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Lattice;\ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{comment}{//\ empties\ the\ content\ of\ the\ network}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ adds\ a\ node\ to\ the\ network\ and\ assigns\ its\ NetId}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ AddNode(\mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ N);}
+\DoxyCodeLine{00042\ \ \ \textcolor{comment}{//\ adds\ a\ bond\ to\ the\ network\ and\ assigns\ its\ NetId}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ AddBond(\mbox{\hyperlink{classTSBond}{TSBond}}\&\ B);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{comment}{//\ copies\ the\ content\ of\ S\ to\ the\ net}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ Assign(TNetwork\&\ S);}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{/*\ disassembles\ the\ list\ of\ Atoms\ into\ the\ fragments;\ does\ not\ affect\ current}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ net}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ Disassemble(\mbox{\hyperlink{structASObjectProvider}{ASObjectProvider}}\&\ objects,\ TNetPList\&\ Frags);}
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{/*\ creates\ bonds\ and\ fragments\ for\ atoms\ initialised\ by\ Disassemble}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ CreateBondsAndFragments(\mbox{\hyperlink{structASObjectProvider}{ASObjectProvider}}\&\ objects,\ TNetPList\&\ Frags);}
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{//\ returns\ true\ if\ the\ two\ atoms\ share\ a\ matrix}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HaveSharedMatrix(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sb);}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsBondAllowed(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sb);}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsBondAllowed(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ cb,}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ sm);}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsBondAllowed(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ cb,}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ sm);}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsBondAllowed(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ cb);}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{bool}\ CBondExists(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ A1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ CA2,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ D)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00067\ \ \ \textcolor{comment}{//\ considers\ quadratic\ distance}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{bool}\ CBondExistsQ(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ A1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ CA2,}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ qD)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{bool}\ CBondExists(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA2,}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ sm,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ D)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{//\ compares\ the\ quadratic\ distances}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{bool}\ CBondExistsQ(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA2,}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ sm,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ qD)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{bool}\ HBondExists(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA2,}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ sm,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ D)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//\ compares\ the\ quadratic\ distances}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{bool}\ HBondExistsQ(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ CA2,}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ sm,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ qD)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ BondExists(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a2,\ \textcolor{keywordtype}{double}\ D,}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{double}\ delta)}
+\DoxyCodeLine{00085\ \ \ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{if}\ (D\ <\ (a1.CAtom().GetConnInfo().r\ +\ a2.CAtom().GetConnInfo().r\ +\ delta))\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IsBondAllowed(a1,\ a2);}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00090\ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ BondExistsQ(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a2,\ \textcolor{keywordtype}{double}\ qD,}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{double}\ delta)}
+\DoxyCodeLine{00093\ \ \ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{if}\ (qD\ <\ olx\_sqr(}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ a1.CAtom().GetConnInfo().r\ +\ a2.CAtom().GetConnInfo().r\ +\ delta))}
+\DoxyCodeLine{00096\ \ \ \ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IsBondAllowed(a1,\ a2);}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ BondExists(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ smatd\&\ m,}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{double}\ D,\ \textcolor{keywordtype}{double}\ delta)}
+\DoxyCodeLine{00103\ \ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{if}\ (D\ <\ (a1.CAtom().GetConnInfo().r\ +\ a2.GetConnInfo().r\ +\ delta))\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IsBondAllowed(a1,\ a2,\ m);}
+\DoxyCodeLine{00106\ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ BondExistsQ(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ smatd\&\ m,}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordtype}{double}\ qD,\ \textcolor{keywordtype}{double}\ delta)}
+\DoxyCodeLine{00111\ \ \ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{if}\ (qD\ <\ olx\_sqr(}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ a1.CAtom().GetConnInfo().r\ +\ a2.GetConnInfo().r\ +\ delta))}
+\DoxyCodeLine{00114\ \ \ \ \ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IsBondAllowed(a1,\ a2,\ m);}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ BondExists(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ smatd\&\ m,}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{double}\ D,\ \textcolor{keywordtype}{double}\ delta)}
+\DoxyCodeLine{00121\ \ \ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{if}\ (D\ <\ (a1.GetConnInfo().r\ +\ a2.GetConnInfo().r\ +\ delta))}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IsBondAllowed(a1,\ a2,\ m);}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ BondExistsQ(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ smatd\&\ m,}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{double}\ qD,\ \textcolor{keywordtype}{double}\ delta)}
+\DoxyCodeLine{00128\ \ \ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{if}\ (qD\ <\ olx\_sqr(a1.GetConnInfo().r\ +\ a2.GetConnInfo().r\ +\ delta))}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IsBondAllowed(a1,\ a2,\ m);}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ BondExists(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keywordtype}{double}\ D,}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{double}\ delta)}
+\DoxyCodeLine{00135\ \ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{if}\ (D\ <\ (a1.GetConnInfo().r\ +\ a2.GetConnInfo().r\ +\ delta))}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IsBondAllowed(a1,\ a2);}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00139\ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ BondExistsQ(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keywordtype}{double}\ qD,}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordtype}{double}\ delta)}
+\DoxyCodeLine{00142\ \ \ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{if}\ (qD\ <\ olx\_sqr(a1.GetConnInfo().r\ +\ a2.GetConnInfo().r\ +\ delta))}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IsBondAllowed(a1,\ a2);}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00146\ \ \ \}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \textcolor{comment}{//\ only\ pointers\ are\ compared!!}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TNetwork\&\ n)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this}\ ==\ \&n;\ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TNetwork*\ n)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this}\ ==\ n;\ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ TNetwork\&\ n)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this}\ !=\ \&n;\ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ TNetwork*\ n)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this}\ !=\ n;\ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \textcolor{comment}{//\ returns\ true\ if\ the\ ring\ is\ regular\ (distances\ from\ centroid\ and\ angles)}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsRingRegular(\textcolor{keyword}{const}\ TSAtomPList\&\ ring);}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsRingPrimitive(\textcolor{keyword}{const}\ TSAtomPList\&\ ring);}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{//\ invertion\ must\ be\ specified\ for\ the\ permutational\ graph\ match}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordtype}{bool}\ DoMatch(TNetwork\&\ net,\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<size\_t,\ size\_t>}}\ >\&\ res,}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordtype}{bool}\ Invert,}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordtype}{double}(*weight\_calculator)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&));}
+\DoxyCodeLine{00161\ \ \ \textcolor{keywordtype}{bool}\ IsSubgraphOf(TNetwork\&\ net,}
+\DoxyCodeLine{00162\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<size\_t,\ size\_t>}}\ >\&\ res,}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{const}\ TSizeList\&\ rootsToSkip);}
+\DoxyCodeLine{00164\ \ \ \textcolor{keywordtype}{bool}\ ProximityMatch(\textcolor{keyword}{const}\ TNetwork\&\ net,}
+\DoxyCodeLine{00165\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<size\_t,\ size\_t>}}\ >\&\ res,}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordtype}{bool}\ check\_atom\_types=\textcolor{keyword}{true},}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordtype}{bool}\ check\_connectivity=\textcolor{keyword}{true},}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordtype}{double}\ delta=0.5);}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ TNetwork\_SortRingAtoms(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&b)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{int})(a.GetTag()\ -\/\ b.GetTag());}
+\DoxyCodeLine{00173\ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{static}\ index\_t\ ShortestDistance(\mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&a,\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&b);}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ TryRing(\mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa,\ TSAtomPList\&\ ring,}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keyword}{const}\ ElementPList\&\ ringContent,\ \textcolor{keywordtype}{size\_t}\ level\ =\ 1);}
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ TryRing(\mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa,\ TSAtomPList\&\ ring,\ \textcolor{keywordtype}{size\_t}\ level\ =\ 1);}
+\DoxyCodeLine{00178\ \ \ \textcolor{comment}{//\ tries\ to\ find\ the\ ring\ in\ given\ direction}}
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ TryRing(\mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa,\ \textcolor{keywordtype}{size\_t}\ node,\ TSAtomPList\&\ ring,}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keyword}{const}\ ElementPList\&\ ringContent);}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ TryRing(\mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa,\ \textcolor{keywordtype}{size\_t}\ node,\ TSAtomPList\&\ ring);}
+\DoxyCodeLine{00182\ \ \ \textcolor{keywordtype}{void}\ UnifyRings(\mbox{\hyperlink{classTTypeList}{TTypeList<TSAtomPList>}}\&\ rings);}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00185\ \ \ \textcolor{comment}{//\ finds\ only\ primitive\ rings}}
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{void}\ FindRings(\textcolor{keyword}{const}\ ElementPList\&\ ringContent,\ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtomPList>}}\&\ res);}
+\DoxyCodeLine{00187\ \ \ \textcolor{comment}{//\ returns\ a\ content\ of\ this\ fragment}}
+\DoxyCodeLine{00188\ \ \ ContentList\ GetContentList()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00189\ \ \ olxstr\ GetFormula()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00190\ \ \ \textcolor{keywordtype}{void}\ FindAtomRings(\mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ ringAtom,\ \textcolor{keyword}{const}\ ElementPList\&\ ringContent,}
+\DoxyCodeLine{00191\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtomPList>}}\&\ res);}
+\DoxyCodeLine{00192\ \ \ \textcolor{comment}{//\ finds\ all\ rings}}
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordtype}{void}\ FindAtomRings(\mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ ringAtom,\ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtomPList>}}\&\ res);}
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{struct\ }RingInfo\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ HeaviestSubsType;}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ MaxSubsANode,\ HeaviestSubsIndex;}
+\DoxyCodeLine{00197\ \ \ \ \ TSizeList\ Ternary,\ \textcolor{comment}{//\ three\ bond\ inside\ the\ ring}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ Substituted,\ \ \ \ \textcolor{comment}{//\ more\ than\ two\ connections,\ two\ belong\ to\ the\ ring}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ Alpha;\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ susbtituted\ next\ to\ a\ ternary\ atom}}
+\DoxyCodeLine{00200\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtomPList>}}\ Substituents;}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordtype}{bool}\ HasAfix;}
+\DoxyCodeLine{00202\ \ \ \ \ RingInfo()}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ :\ HeaviestSubsType(NULL),\ MaxSubsANode(0),}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ HeaviestSubsIndex(InvalidIndex),\ HasAfix(\textcolor{keyword}{false})\ \{\}}
+\DoxyCodeLine{00205\ \ \ \ \ RingInfo\&\ Clear()\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ MaxSubsANode\ =\ 0;}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ HeaviestSubsIndex\ =\ InvalidIndex;}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ HasAfix\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ Ternary.Clear();}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ Substituted.Clear();}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ Alpha.Clear();}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ Substituents.Clear();}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00214\ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{comment}{//\ returns\ true\ if\ all\ substituents\ are\ single\ CHn\ groups}}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsSingleCSubstituted()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00217\ \ \ \};}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTNetwork_1_1RingInfo}{RingInfo}}\&\ AnalyseRing(\textcolor{keyword}{const}\ TSAtomPList\&\ ring,\ \mbox{\hyperlink{structTNetwork_1_1RingInfo}{RingInfo}}\&\ ri);}
+\DoxyCodeLine{00219\ \ \ \textcolor{comment}{/*\ returns\ true\ of\ the\ fragment\ has\ enough\ nodes\ to\ be\ matched/aligned\ to}}
+\DoxyCodeLine{00220\ \textcolor{comment}{\ \ others}}
+\DoxyCodeLine{00221\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{bool}\ IsSuitableForMatching()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ NodeCount();\ i++)\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Node(i).CAtom().IsAvailable()\ \&\&\ ++cnt\ >\ 3)\ \{}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00228\ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00230\ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTNetwork_1_1AlignInfo}{AlignInfo}}\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ align::out\ align\_out;}
+\DoxyCodeLine{00233\ \ \ \ \ TEValueD\ rmsd;\ \ \textcolor{comment}{//\ unweighted\ rmsd}}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordtype}{bool}\ inverted;}
+\DoxyCodeLine{00235\ \ \ \};}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTNetwork_1_1AlignInfo}{AlignInfo}}\ GetAlignmentRMSD(}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TSAtom*,\ TSAtom*>}}\ >\&\ atoms,}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordtype}{bool}\ invert,}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordtype}{double}(*weight\_calculator)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&),}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordtype}{bool}\ reset\_crd\ =\ \textcolor{keyword}{true}}
+\DoxyCodeLine{00241\ \ \ );}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{//\ prepares\ a\ list\ of\ atoms,\ coordinates\ and\ weights\ for\ VcoV\ calculations}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ PrepareESDCalc(}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TSAtom*,\ TSAtom*>}}\ >\&\ atoms,}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordtype}{bool}\ TryInversion,}
+\DoxyCodeLine{00246\ \ \ \ \ TSAtomPList\&\ atoms\_out,}
+\DoxyCodeLine{00247\ \ \ \ \ vec3d\_alist\&\ crd\_out,}
+\DoxyCodeLine{00248\ \ \ \ \ TDoubleList\&\ wght\_out,}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordtype}{double}(*weight\_calculator)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&));}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DoAlignAtoms(\textcolor{keyword}{const}\ TSAtomPList\&\ atomsToTransform,}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTNetwork_1_1AlignInfo}{AlignInfo}}\&\ align\_info);}
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ new\ =\ (old-\/center)*m\ +\ shift}}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DoAlignAtoms(\textcolor{keyword}{const}\ TSAtomPList\&\ atomsToTransform,}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ \&center,}
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keyword}{const}\ mat3d\ \&m,\ \textcolor{keyword}{const}\ vec3d\ \&shift);}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTArrayList}{TArrayList<align::pair>}}\&\ AtomsToPairs(}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TSAtom*,\ TSAtom*>}}\ >\&\ atoms,}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keywordtype}{bool}\ invert,}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordtype}{double}(*weight\_calculator)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&),}
+\DoxyCodeLine{00262\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<align::pair>}}\&\ pairs,}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordtype}{bool}\ reset\_crd\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \textcolor{keyword}{static}\ align::out\ GetAlignmentInfo(}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<TSAtom*,\ TSAtom*>}}\ >\&\ atoms,}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordtype}{bool}\ invert,}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keywordtype}{double}(*weight\_calculator)(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&),}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordtype}{bool}\ reset\_crd\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00270\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00271\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00272\ \};}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00274\ EndXlibNamespace()}
+\DoxyCodeLine{00275\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

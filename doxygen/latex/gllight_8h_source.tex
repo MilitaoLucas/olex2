@@ -1,0 +1,70 @@
+\doxysection{gllight.\+h}
+\hypertarget{gllight_8h_source}{}\label{gllight_8h_source}\index{glib/gllight.h@{glib/gllight.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_light\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_light\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}datafile.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}gloption.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00016\ BeginGlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ TGlLight\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00019\ \ \ TGlOption\ Ambient;}
+\DoxyCodeLine{00020\ \ \ TGlOption\ Diffuse;}
+\DoxyCodeLine{00021\ \ \ TGlOption\ Specular;}
+\DoxyCodeLine{00022\ \ \ TGlOption\ Position;}
+\DoxyCodeLine{00023\ \ \ TGlOption\ SpotDirection;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{short}\ SpotCutoff;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{short}\ SpotExponent;}
+\DoxyCodeLine{00026\ \ \ TGlOption\ Attenuation;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{bool}\ Enabled;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{short}\ Index;}
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ actions;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ TGlLight();}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \string~TGlLight()\ \{\}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ DefPropP(\textcolor{keywordtype}{short},\ Index)}
+\DoxyCodeLine{00035\ \ \ DefPropBIsSet(Enabled)}
+\DoxyCodeLine{00036\ \ \ DefPropP(\textcolor{keywordtype}{short},\ SpotCutoff)}
+\DoxyCodeLine{00037\ \ \ DefPropP(\textcolor{keywordtype}{short},\ SpotExponent)}
+\DoxyCodeLine{00038\ \ \ DefPropC(TGlOption,\ Ambient)}
+\DoxyCodeLine{00039\ \ \ DefPropC(TGlOption,\ Diffuse)}
+\DoxyCodeLine{00040\ \ \ DefPropC(TGlOption,\ Specular)}
+\DoxyCodeLine{00041\ \ \ DefPropC(TGlOption,\ Position)}
+\DoxyCodeLine{00042\ \ \ DefPropC(TGlOption,\ SpotDirection)}
+\DoxyCodeLine{00043\ \ \ DefPropC(TGlOption,\ Attenuation)}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ TGlLight\&\ operator\ =\ (\textcolor{keyword}{const}\ TGlLight\ \&S\ );}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{bool}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item);}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnLibChange;}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ LibEnabled(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{void}\ LibSpotCutoff(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ LibSpotExponent(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ LibAmbient(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ LibDiffuse(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ LibSpecular(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{void}\ LibPosition(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{void}\ LibSpotDirection(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{void}\ LibAttenuation(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00060\ \ \ \mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ EndGlNamespace()}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

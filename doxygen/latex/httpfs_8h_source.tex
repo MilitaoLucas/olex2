@@ -1,0 +1,282 @@
+\doxysection{httpfs.\+h}
+\hypertarget{httpfs_8h_source}{}\label{httpfs_8h_source}\index{repository/httpfs.h@{repository/httpfs.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_httpfs\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_httpfs\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#if\ !defined(\_\_WIN32\_\_)}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\ \ \#include\ <sys/socket.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \#include\ <netinet/in.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \#include\ <netdb.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \#include\ <unistd.h>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\ \ \#include\ <WinInet.h>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\ \ \#pragma\ comment\ (lib,\ "{}Wininet.lib"{})}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}filesystem.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}url.h"{}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}efile.h"{}}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#ifdef\ \_OPENSSL}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\ \ \#include\ <openssl/bio.h>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\ \ \#include\ <openssl/ssl.h>}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\ \ \#include\ <openssl/err.h>}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{/*\ POSIX\ HTTP\ file\ fetching\ utility,}}
+\DoxyCodeLine{00033\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{const}\ uint16\_t\ \ \textcolor{comment}{//\ extra\ request\ headers}}
+\DoxyCodeLine{00036\ \ \ httpHeaderESession\ =\ 0x0001,}
+\DoxyCodeLine{00037\ \ \ httpHeaderPlatform\ =\ 0x0002;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{class\ }AnHttpFileSystem\ :\ \textcolor{keyword}{public}\ AFileSystem\ \{}
+\DoxyCodeLine{00040\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{static}\ olxcstr\&\ SessionInfo\_()\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ s;}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ \ \ uint16\_t\ ExtraHeaders;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{bool}\ Connected;}
+\DoxyCodeLine{00047\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00048\ \ \ \mbox{\hyperlink{classTUrl}{TUrl}}\ Url;}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Connect()\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ (Connected\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Disconnect()\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ Connected\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoDelFile(\textcolor{keyword}{const}\ olxstr\&\ f)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoDelDir(\textcolor{keyword}{const}\ olxstr\&\ f)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoNewDir(\textcolor{keyword}{const}\ olxstr\&\ f)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoAdoptFile(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTFSItem}{TFSItem}}\&\ Source)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoAdoptStream(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ file,\ \textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoesExist(\textcolor{keyword}{const}\ olxstr\&\ df,\ \textcolor{keywordtype}{bool});}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolxdict}{olxdict<olxcstr,\ olxcstr,\ olxstrComparator<false>}}\ >\ HeadersDict;}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{struct\ }ResponseInfo\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ HeadersDict\ headers;}
+\DoxyCodeLine{00067\ \ \ \ \ olxcstr\ status,\ contentMD5;}
+\DoxyCodeLine{00068\ \ \ \ \ olxstr\ source;}
+\DoxyCodeLine{00069\ \ \ \ \ uint64\_t\ contentLength;}
+\DoxyCodeLine{00070\ \ \ \ \ ResponseInfo()\ :\ contentLength(\string~0)\ \{\}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsOK()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ status.EndsWithi(\textcolor{stringliteral}{"{}200\ OK"{}});\ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//\ note\ that\ only\ length\ and\ digest\ are\ compared}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ ResponseInfo\&\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ contentLength\ ==\ i.contentLength\ \&\&}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ contentMD5\ ==\ i.contentMD5;}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ ResponseInfo\&\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(this-\/>operator\ ==\ (i));}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{comment}{//\ does\ basic\ checks\ to\ identify\ if\ any\ data\ is\ attached}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{bool}\ HasData()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (contentLength\ !=\ InvalidSize\ \&\&\ IsOK()\ \&\&\ headers.HasKey(\textcolor{stringliteral}{"{}ETag"{}}));}
+\DoxyCodeLine{00083\ \ \ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \};}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{struct\ }AllocationInfo\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TEFile>}}\ file;}
+\DoxyCodeLine{00087\ \ \ \ \ olxcstr\ digest;}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{bool}\ truncated;}
+\DoxyCodeLine{00089\ \ \ \ \ AllocationInfo(\mbox{\hyperlink{classTEFile}{TEFile}}*\ \_file,\ \textcolor{keyword}{const}\ olxcstr\&\ \_digest,\ \textcolor{keywordtype}{bool}\ \_truncated)}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ :\ file(\_file),\ digest(\_digest),\ truncated(\_truncated)}
+\DoxyCodeLine{00091\ \ \ \ \ \{\}}
+\DoxyCodeLine{00092\ \ \ \};}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structAnHttpFileSystem_1_1ResponseInfo}{ResponseInfo}}\ ParseResponseInfo(\textcolor{keyword}{const}\ olxcstr\&\ str,\ \textcolor{keyword}{const}\ olxcstr\&\ sep,}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ src);}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{/*\ if\ position\ is\ valid\ and\ not\ 0\ it\ is\ appended\ to\ the\ file\ name\ like}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ \ +\ ('\#'+pos)}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{static}\ olxcstr\ GenerateRequest(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTUrl}{TUrl}}\&\ Url,\ uint16\_t\ ExtraHeaders,}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keyword}{const}\ olxcstr\&\ cmd,\ \textcolor{keyword}{const}\ olxstr\&\ file\_name,\ uint64\_t\ position\ =\ 0);}
+\DoxyCodeLine{00100\ \ \ olxcstr\ GenerateRequest(\textcolor{keyword}{const}\ olxcstr\&\ cmd,\ \textcolor{keyword}{const}\ olxstr\&\ file\_name,}
+\DoxyCodeLine{00101\ \ \ \ \ uint64\_t\ position\ =\ 0)}
+\DoxyCodeLine{00102\ \ \ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{return}\ GenerateRequest(Url,\ ExtraHeaders,\ cmd,\ file\_name,\ position);}
+\DoxyCodeLine{00104\ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{size\_t}\ GetDataOffset(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ bf,\ \textcolor{keywordtype}{size\_t}\ len)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \textcolor{comment}{/*\ does\ the\ file\ allocation,\ always\ new\ or\ 'truncated'.\ the\ truncated\ is}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ \ false\ for\ the\ first\ time\ file\ allocation\ and\ true\ if\ the\ download\ restarts}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ \ due\ to\ the\ file\ changed}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{virtual}\ AllocationInfo\ \_DoAllocateFile(\textcolor{keyword}{const}\ olxstr\&\ fileName)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{return}\ AllocationInfo(TEFile::TmpFile(),\ CEmptyString(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structAnHttpFileSystem_1_1AllocationInfo}{AllocationInfo}}\&\ \_DoTruncateFile(\mbox{\hyperlink{structAnHttpFileSystem_1_1AllocationInfo}{AllocationInfo}}\&\ file)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{if}\ (!file.file.ok())\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}file"{}});}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ file.file-\/>SetTemporary(\textcolor{keyword}{true});}
+\DoxyCodeLine{00119\ \ \ \ \ file.file\ =\ TEFile::TmpFile();}
+\DoxyCodeLine{00120\ \ \ \ \ file.digest.SetLength(0);}
+\DoxyCodeLine{00121\ \ \ \ \ file.truncated\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{return}\ file;}
+\DoxyCodeLine{00123\ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \textcolor{comment}{/*\ version\ 1.0\ of\ CDS\ returns\ Content-\/MD5,\ however\ the\ MD5\ checks\ are\ done\ in}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ \ the\ OSFS,\ when\ a\ foreign\ item\ is\ adopted}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoValidate(\textcolor{keyword}{const}\ \mbox{\hyperlink{structAnHttpFileSystem_1_1ResponseInfo}{ResponseInfo}}\&\ info,\ TEFile\&\ data)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ data.Length()\ ==\ info.contentLength;}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{comment}{/*\ if\ false\ returned,\ the\ procedure\ is\ terminated,\ true\ means\ the\ the}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ \ connection\ was\ re-\/established}}
+\DoxyCodeLine{00132\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_OnReadFailed(\textcolor{keyword}{const}\ \mbox{\hyperlink{structAnHttpFileSystem_1_1ResponseInfo}{ResponseInfo}}\&\ info,}
+\DoxyCodeLine{00134\ \ \ \ \ uint64\_t\ position)}
+\DoxyCodeLine{00135\ \ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{virtual}\ olx\_object\_ptr<IInputStream>\ \_DoOpenFile(\textcolor{keyword}{const}\ olxstr\&\ src);}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ http\_read(\textcolor{keywordtype}{char}*\ dest,\ \textcolor{keywordtype}{size\_t}\ dest\_sz)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ http\_write(\textcolor{keyword}{const}\ olxcstr\&\ str)\ =\ 0;}
+\DoxyCodeLine{00141\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00142\ \ \ AnHttpFileSystem()}
+\DoxyCodeLine{00143\ \ \ \ \ :\ ExtraHeaders(0),}
+\DoxyCodeLine{00144\ \ \ \ \ Connected(false)}
+\DoxyCodeLine{00145\ \ \ \{\}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ DefPropP(uint16\_t,\ ExtraHeaders);}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{const}\ TUrl\&\ GetUrl()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Url;\ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keywordtype}{void}\ SetUrl(\textcolor{keyword}{const}\ TUrl\&\ url);}
+\DoxyCodeLine{00150\ \ \ \textcolor{keywordtype}{bool}\ IsConnected()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Connected;\ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \textcolor{comment}{//\ intialises\ if\ empty}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxcstr\&\ GetSessionInfo();}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SetSessionInfo(\textcolor{keyword}{const}\ olxcstr\&\ si)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ SessionInfo\_()\ =\ si;}
+\DoxyCodeLine{00156\ \ \ \}}
+\DoxyCodeLine{00157\ \};}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \textcolor{keyword}{class\ }THttpFileSystem\ :\ \textcolor{keyword}{public}\ AnHttpFileSystem\ \{}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\&\ Initialised\_()\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ i\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00166\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00168\ \ \ SOCKET\ Socket;}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keywordtype}{int}\ Socket;}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00172\ \ \ \textcolor{comment}{//\ intitialise/finalise\ functionality}}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Initialise();}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ should\ not\ be\ called\ directly,\ look\ below}}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Finalise();}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTHttpFileSystem_1_1Finaliser}{Finaliser}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00178\ \ \ \ \ \mbox{\hyperlink{classTHttpFileSystem_1_1Finaliser}{\string~Finaliser}}()\ \{\ THttpFileSystem::Finalise();\ \}}
+\DoxyCodeLine{00179\ \ \ \};}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \ \ \textcolor{comment}{//\ reads\ as\ many\ bytes\ as\ available\ within\ [0..dest\_sz)}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keywordtype}{int}\ http\_read(\textcolor{keywordtype}{char}*\ dest,\ \textcolor{keywordtype}{size\_t}\ dest\_sz)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{int}\ http\_write(\textcolor{keyword}{const}\ olxcstr\&\ str);}
+\DoxyCodeLine{00184\ \ \ \textcolor{keywordtype}{void}\ GetAddress(\textcolor{keyword}{struct}\ sockaddr*\ Result);}
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordtype}{bool}\ Connect();}
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{void}\ Disconnect();}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{void}\ Init();}
+\DoxyCodeLine{00188\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00189\ \ \ THttpFileSystem()\ \{\ Init();\ \}}
+\DoxyCodeLine{00190\ \ \ \mbox{\hyperlink{classTHttpFileSystem}{THttpFileSystem}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTUrl}{TUrl}}\&\ url)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ Init();}
+\DoxyCodeLine{00192\ \ \ \ \ SetUrl(url);}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \string~THttpFileSystem();}
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{/*\ returns\ temporary\ file,\ which\ gets\ deleted\ when\ object\ is\ deleted,\ use}}
+\DoxyCodeLine{00196\ \textcolor{comment}{\ \ SetTemporary\ to\ change\ it}}
+\DoxyCodeLine{00197\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00198\ \ \ olx\_object\_ptr<TEFile>\ OpenFileAsFile(\textcolor{keyword}{const}\ olxstr\&\ Source)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keywordflow}{return}\ (TEFile*)OpenFile(Source).release();}
+\DoxyCodeLine{00200\ \ \ \}}
+\DoxyCodeLine{00201\ \};}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00204\ \textcolor{comment}{//\ a\ simple\ WinINet\ based\ implementation}}
+\DoxyCodeLine{00205\ \textcolor{keyword}{class\ }TWinHttpFileSystem\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFileSystem}{AFileSystem}}\ \{}
+\DoxyCodeLine{00206\ \ \ TUrl\ Url;}
+\DoxyCodeLine{00207\ \ \ uint16\_t\ ExtraHeaders;}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{struct\ }INET\_CLOSE\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ HINTERNET\ handle;}
+\DoxyCodeLine{00210\ \ \ \ \ INET\_CLOSE(HINTERNET\ handle)}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ :\ handle(handle)}
+\DoxyCodeLine{00212\ \ \ \ \ \{\}}
+\DoxyCodeLine{00213\ \ \ \ \ \string~INET\_CLOSE()\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (handle\ !=\ 0)\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ InternetCloseHandle(handle);}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \};}
+\DoxyCodeLine{00219\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{const}\ TUrl\&\ GetUrl()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Url;\ \}}
+\DoxyCodeLine{00221\ \ \ \textcolor{comment}{/*\ if\ false\ returned,\ the\ procedure\ is\ terminated,\ true\ means\ the\ the}}
+\DoxyCodeLine{00222\ \textcolor{comment}{\ \ connection\ was\ re-\/established}}
+\DoxyCodeLine{00223\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00224\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoDelFile(\textcolor{keyword}{const}\ olxstr\&\ f)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoDelDir(\textcolor{keyword}{const}\ olxstr\&\ f)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoNewDir(\textcolor{keyword}{const}\ olxstr\&\ f)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoAdoptFile(\textcolor{keyword}{const}\ TFSItem\&\ Source)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00228\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoesExist(\textcolor{keyword}{const}\ olxstr\&\ df,\ \textcolor{keywordtype}{bool});}
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{virtual}\ olx\_object\_ptr<IInputStream>\ \_DoOpenFile(\textcolor{keyword}{const}\ olxstr\&\ src);}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoAdoptStream(IInputStream\&\ file,\ \textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00232\ \ \ \}}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{void}\ Init();}
+\DoxyCodeLine{00234\ \ \ \textcolor{keywordtype}{void}\ SetUrl(\textcolor{keyword}{const}\ TUrl\&\ url);}
+\DoxyCodeLine{00235\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00236\ \ \ TWinHttpFileSystem()\ \{\ Init();\ \}}
+\DoxyCodeLine{00237\ \ \ TWinHttpFileSystem(\textcolor{keyword}{const}\ TUrl\&\ url)\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ Init();}
+\DoxyCodeLine{00239\ \ \ \ \ SetUrl(url);}
+\DoxyCodeLine{00240\ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \string~TWinHttpFileSystem();}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{/*\ returns\ temporary\ file,\ which\ gets\ deleted\ when\ object\ is\ deleted,\ use}}
+\DoxyCodeLine{00243\ \textcolor{comment}{\ \ SetTemporary\ to\ change\ it}}
+\DoxyCodeLine{00244\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00245\ \ \ olx\_object\_ptr<TEFile>\ OpenFileAsFile(\textcolor{keyword}{const}\ olxstr\&\ Source)\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{return}\ (TEFile*)OpenFile(Source).release();}
+\DoxyCodeLine{00247\ \ \ \}}
+\DoxyCodeLine{00248\ \ \ DefPropP(uint16\_t,\ ExtraHeaders);}
+\DoxyCodeLine{00249\ \};}
+\DoxyCodeLine{00250\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#ifdef\ \_OPENSSL}}
+\DoxyCodeLine{00253\ \textcolor{keyword}{class\ }TSSLHttpFileSystem\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAnHttpFileSystem}{AnHttpFileSystem}}\ \{}
+\DoxyCodeLine{00254\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00255\ \ \ SSL\_CTX*\ ctx;}
+\DoxyCodeLine{00256\ \ \ SSL*\ ssl;}
+\DoxyCodeLine{00257\ \ \ \textcolor{keywordtype}{void}\ cleanup();}
+\DoxyCodeLine{00258\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Connect();}
+\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Disconnect();}
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ http\_read(\textcolor{keywordtype}{char}*\ dest,\ \textcolor{keywordtype}{size\_t}\ dest\_sz)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ http\_write(\textcolor{keyword}{const}\ olxcstr\&\ str);}
+\DoxyCodeLine{00263\ \ \ \textcolor{keywordtype}{void}\ Init();}
+\DoxyCodeLine{00264\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00265\ \ \ TSSLHttpFileSystem()\ \{\ Init();\ \}}
+\DoxyCodeLine{00266\ \ \ TSSLHttpFileSystem(\textcolor{keyword}{const}\ TUrl\&\ url)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ Init();}
+\DoxyCodeLine{00268\ \ \ \ \ SetUrl(url);}
+\DoxyCodeLine{00269\ \ \ \}}
+\DoxyCodeLine{00270\ \ \ \string~TSSLHttpFileSystem();}
+\DoxyCodeLine{00271\ \};}
+\DoxyCodeLine{00272\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\_OPENSSL}}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00274\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AFileSystem>}}\ HttpFSFromURL(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTUrl}{TUrl}}\ \&url);}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

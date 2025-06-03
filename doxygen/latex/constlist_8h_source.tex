@@ -1,0 +1,177 @@
+\doxysection{constlist.\+h}
+\hypertarget{constlist_8h_source}{}\label{constlist_8h_source}\index{sdl/constlist.h@{sdl/constlist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_constlist\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_constlist\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#undef\ GetObject}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ olx\_list\_2\_std\(\backslash\)}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ size\_t\ size()\ const\ \{\ return\ this-\/>Count();\ \}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ BeginEsdlNamespace()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ template\ <class\ obj\_t>}
+\DoxyCodeLine{00021\ class\ const\_obj\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_<obj\_t>}}*\ p;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ throw\_invalid(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,\ \textcolor{keywordtype}{int}\ line)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ TExceptionBase::ThrowFunctionFailed(file,\ function,\ line,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}uninitialised\ object"{}});}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ const\_obj(\textcolor{keyword}{const}\ const\_obj\&\ l)}
+\DoxyCodeLine{00030\ \ \ \ \ :\ p(l.p\ ==\ 0\ ?\ 0\ :\ l.p-\/>inc\_ref())}
+\DoxyCodeLine{00031\ \ \ \{\}}
+\DoxyCodeLine{00032\ \ \ const\_obj(obj\_t*\ l)}
+\DoxyCodeLine{00033\ \ \ \ \ :\ p(new\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_}}<obj\_t>(l))}
+\DoxyCodeLine{00034\ \ \ \{\}}
+\DoxyCodeLine{00035\ \ \ const\_obj(obj\_t\&\ l)}
+\DoxyCodeLine{00036\ \ \ \ \ :\ p(new\ \mbox{\hyperlink{structolx__ptr__}{olx\_ptr\_}}<obj\_t>(new\ obj\_t))}
+\DoxyCodeLine{00037\ \ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ p-\/>p-\/>TakeOver(l);}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{virtual}\ \string~const\_obj()\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{if}\ (p\ !=\ 0\ \&\&\ -\/-\/p-\/>ref\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p-\/>p;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p;}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{const}\ obj\_t\&\ obj()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{if}\ (p\ ==\ 0)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ throw\_invalid(\_\_POlxSourceInfo);}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ *p-\/>p;}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ const\_obj\&\ operator\ =\ (\textcolor{keyword}{const}\ const\_obj\&\ a)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{if}\ (p\ !=\ 0\ \&\&\ -\/-\/p-\/>ref\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p-\/>p;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p;}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ p\ =\ a.p-\/>inc\_ref();}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{comment}{//\ the\ caller\ must\ delete\ the\ container\ after\ this\ call}}
+\DoxyCodeLine{00061\ \ \ obj\_t\&\ Release()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{if}\ (p\ ==\ 0)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ throw\_invalid(\_\_POlxSourceInfo);}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ obj\_t*\ rv;}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{if}\ (-\/-\/p-\/>ref\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ rv\ =\ p-\/>p;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ p;}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ rv\ =\ \textcolor{keyword}{new}\ obj\_t(*p-\/>p);}
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ p\ =\ 0;}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ *rv;}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ p\ !=\ 0;\ \}}
+\DoxyCodeLine{00077\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{typedef}\ obj\_t\ list\_item\_type;}
+\DoxyCodeLine{00079\ \};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ cont\_t>}
+\DoxyCodeLine{00082\ \textcolor{keyword}{class\ }const\_list}
+\DoxyCodeLine{00083\ \ \ :\ \textcolor{keyword}{public}\ const\_obj<cont\_t>}
+\DoxyCodeLine{00084\ \{}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{typedef}\ const\_obj<cont\_t>\ \_parent\_t;}
+\DoxyCodeLine{00086\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ cont\_t::list\_item\_type\ list\_item\_type;}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ const\_list(\textcolor{keyword}{const}\ const\_list\ \&l)}
+\DoxyCodeLine{00090\ \ \ \ \ :\ \_parent\_t(l)}
+\DoxyCodeLine{00091\ \ \ \{\}}
+\DoxyCodeLine{00092\ \ \ const\_list(cont\_t\ *l)}
+\DoxyCodeLine{00093\ \ \ \ \ :\ \_parent\_t(l)}
+\DoxyCodeLine{00094\ \ \ \{\}}
+\DoxyCodeLine{00095\ \ \ const\_list(cont\_t\ \&l)}
+\DoxyCodeLine{00096\ \ \ \ \ :\ \_parent\_t(l)}
+\DoxyCodeLine{00097\ \ \ \{\}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{const}\ list\_item\_type\ \&operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\_parent\_t::p-\/>p)[i];}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{const}\ list\_item\_type\ \&operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\_parent\_t::p-\/>p)[i];}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ \_parent\_t::p\ ==\ 0\ ?\ 0\ :\ \_parent\_t::p-\/>p-\/>Count();}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Count()\ ==\ 0;\ \}}
+\DoxyCodeLine{00108\ \ \ const\_list\&\ operator\ =\ (\textcolor{keyword}{const}\ const\_list\ \&a)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \_parent\_t::\ operator\ =\ (a);}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ \};}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ dict\_t>}
+\DoxyCodeLine{00115\ \textcolor{keyword}{class\ }const\_dict\ :\ \textcolor{keyword}{public}\ const\_obj<dict\_t>\ \{}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{typedef}\ const\_obj<dict\_t>\ \_parent\_t;}
+\DoxyCodeLine{00117\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00118\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ dict\_t::key\_item\_type\ key\_item\_type;}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ dict\_t::value\_item\_type\ value\_item\_type;}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ const\_dict(\textcolor{keyword}{const}\ const\_dict\ \&l)}
+\DoxyCodeLine{00122\ \ \ \ \ :\ \_parent\_t(l)}
+\DoxyCodeLine{00123\ \ \ \{\}}
+\DoxyCodeLine{00124\ \ \ const\_dict(dict\_t\ *l)}
+\DoxyCodeLine{00125\ \ \ \ \ :\ \_parent\_t(l)}
+\DoxyCodeLine{00126\ \ \ \{\}}
+\DoxyCodeLine{00127\ \ \ const\_dict(dict\_t\ \&l)}
+\DoxyCodeLine{00128\ \ \ \ \ :\ \_parent\_t(l)}
+\DoxyCodeLine{00129\ \ \ \{\}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{const}\ key\_item\_type\ \&GetKey(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ \_parent\_t::p-\/>p-\/>GetKey(i);}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{const}\ value\_item\_type\ \&GetValue(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ \_parent\_t::p-\/>p-\/>GetValue(i);}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{return}\ \_parent\_t::p\ ==\ 0\ ?\ 0\ :\ \_parent\_t::p-\/>p-\/>Count();}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Count()\ ==\ 0;\ \ \}}
+\DoxyCodeLine{00140\ \ \ const\_dict\&\ operator\ =\ (\textcolor{keyword}{const}\ const\_dict\ \&a)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \_parent\_t::\ operator\ =\ (a);}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \};}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ cont\_t>}
+\DoxyCodeLine{00147\ \textcolor{keyword}{class\ }const\_mat\ :\ \textcolor{keyword}{public}\ const\_obj<cont\_t>\ \{}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{typedef}\ const\_obj<cont\_t>\ \_parent\_t;}
+\DoxyCodeLine{00149\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ cont\_t::number\_type\ number\_type;}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ const\_mat(\textcolor{keyword}{const}\ const\_mat\ \&l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00153\ \ \ const\_mat(cont\_t\ *l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00154\ \ \ const\_mat(cont\_t\ \&l)\ :\ \_parent\_t(l)\ \{\}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{const}\ number\_type\ \&operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\_parent\_t::p-\/>p)(i,\ j);}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordtype}{size\_t}\ ColCount()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{return}\ \_parent\_t::p\ ==\ 0\ ?\ 0\ :\ \_parent\_t::p-\/>p-\/>ColCount();}
+\DoxyCodeLine{00160\ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \textcolor{keywordtype}{size\_t}\ RowCount()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{return}\ \_parent\_t::p\ ==\ 0\ ?\ 0\ :\ \_parent\_t::p-\/>p-\/>RowCount();}
+\DoxyCodeLine{00163\ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ColCount()\ ==\ 0\ ||\ RowCount()\ ==\ 0;\ \ \}}
+\DoxyCodeLine{00165\ \ \ const\_mat\&\ operator\ =\ (\textcolor{keyword}{const}\ const\_mat\ \&a)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \_parent\_t::\ operator\ =\ (a);}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ \};}
+\DoxyCodeLine{00170\ EndEsdlNamespace()}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

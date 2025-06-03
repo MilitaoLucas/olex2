@@ -1,0 +1,316 @@
+\doxysection{ortdraw.\+h}
+\hypertarget{ortdraw_8h_source}{}\label{ortdraw_8h_source}\index{gxlib/ortdraw.h@{gxlib/ortdraw.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ort\_Draw\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ort\_Draw\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxapp.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}ps\_writer.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint16\_t}
+\DoxyCodeLine{00016\ \ \ ortep\_color\_lines\ \ =\ 0x0001,}
+\DoxyCodeLine{00017\ \ \ ortep\_color\_fill\ \ \ =\ 0x0002,}
+\DoxyCodeLine{00018\ \ \ ortep\_color\_bonds\ \ =\ 0x0004,}
+\DoxyCodeLine{00019\ \ \ ortep\_atom\_rims\ \ \ \ =\ 0x0008,}
+\DoxyCodeLine{00020\ \ \ ortep\_atom\_quads\ \ \ =\ 0x0010,}
+\DoxyCodeLine{00021\ \ \ ortep\_color\_planes\ =\ 0x0020}
+\DoxyCodeLine{00022\ \ \ ;}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classOrtDraw}{OrtDraw}};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ vec3f\ NullVec;}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{struct\ }a\_ort\_object\ \{}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classOrtDraw}{OrtDraw}}\&\ parent;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ a\_ort\_object(\textcolor{keyword}{const}\ \mbox{\hyperlink{classOrtDraw}{OrtDraw}}\&\ \_parent)\ :\ parent(\_parent)\ \{\}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \string~a\_ort\_object()\{\}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ render(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{float}\ get\_z()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ update\_size(evecf\ \&size)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return};\ \ \}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ update\_min\_max(evecf\ \&size,\ \textcolor{keyword}{const}\ vec3f\&\ crd)\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{if}(\ size[0]\ >\ crd[0]\ )\ \ size[0]\ =\ crd[0];}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{if}(\ size[2]\ <\ crd[0]\ )\ \ size[2]\ =\ crd[0];}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{if}(\ size[1]\ >\ crd[1]\ )\ \ size[1]\ =\ crd[1];}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{if}(\ size[3]\ <\ crd[1]\ )\ \ size[3]\ =\ crd[1];}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{struct\ }ort\_atom\ :\ \textcolor{keyword}{public}\ a\_ort\_object\ \{}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ atom;}
+\DoxyCodeLine{00046\ \ \ vec3f\ crd;}
+\DoxyCodeLine{00047\ \ \ mat3f\ *p\_elpm,\ *p\_ielpm,\ *elpm;}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{float}\ draw\_rad;}
+\DoxyCodeLine{00049\ \ \ uint16\_t\ draw\_style;}
+\DoxyCodeLine{00050\ \ \ uint32\_t\ sphere\_color,\ rim\_color,\ mask;}
+\DoxyCodeLine{00051\ \ \ ort\_atom(\textcolor{keyword}{const}\ \mbox{\hyperlink{classOrtDraw}{OrtDraw}}\&\ parent,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ a);}
+\DoxyCodeLine{00052\ \ \ \string~ort\_atom()\ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ olx\_del\_obj(p\_elpm);}
+\DoxyCodeLine{00054\ \ \ \ \ olx\_del\_obj(p\_ielpm);}
+\DoxyCodeLine{00055\ \ \ \ \ olx\_del\_obj(elpm);}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ render(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{float}\ get\_z()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ crd[2];\ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ update\_size(evecf\ \&size)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{bool}\ IsSpherical()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{bool}\ IsSolid()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ mask\ !=\ 0\ \&\&\ mask\ !=\ 16;\ \ \}}
+\DoxyCodeLine{00062\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ render\_rims(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{void}\ render\_elp(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ render\_sph(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{void}\ render\_standalone(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00067\ \};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ draw\_t>}
+\DoxyCodeLine{00071\ \textcolor{keyword}{struct\ }ort\_bond\ :\ \textcolor{keyword}{public}\ a\_ort\_object\ \ \{}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{const}\ draw\_t\ \&object;}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structort__atom}{ort\_atom}}\ \&atom\_a,\ \&atom\_b;}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ swapped;}
+\DoxyCodeLine{00075\ \ \ uint16\_t\ draw\_style;}
+\DoxyCodeLine{00076\ \ \ ort\_bond(\textcolor{keyword}{const}\ \mbox{\hyperlink{classOrtDraw}{OrtDraw}}\&\ parent,\ \textcolor{keyword}{const}\ draw\_t\ \&\textcolor{keywordtype}{object},}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structort__atom}{ort\_atom}}\&\ a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structort__atom}{ort\_atom}}\&\ a2);}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ render(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//virtual\ float\ get\_z()\ const\ \{\ \ return\ (atom\_a.crd[2]+atom\_b.crd[2])/2;\ \ \}}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{float}\ get\_z()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_min(atom\_a.crd[2],\ atom\_b.crd[2])\ +}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ (olx\_abs(atom\_a.crd[2]-\/atom\_b.crd[2])\ <\ 1e-\/3f\ ?\ -\/0.01f\ :\ +0.01f);}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{void}\ \_render(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&,\ \textcolor{keywordtype}{float}\ scalex,\ uint32\_t\ mask)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00086\ \ \ uint32\_t\ get\_color(\textcolor{keywordtype}{int}\ primitive,\ uint32\_t\ def)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{keyword}{struct\ }ort\_bond\_line\ :\ \textcolor{keyword}{public}\ a\_ort\_object\ \ \{}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{const}\ TXLine\ \&line;}
+\DoxyCodeLine{00091\ \ \ \mbox{\hyperlink{structort__atom}{ort\_atom}}\ *a1,\ *a2;}
+\DoxyCodeLine{00092\ \ \ vec3f\ from,\ to,\ p\_from,\ p\_to;}
+\DoxyCodeLine{00093\ \ \ uint16\_t\ draw\_style;}
+\DoxyCodeLine{00094\ \ \ ort\_bond\_line(\textcolor{keyword}{const}\ \mbox{\hyperlink{classOrtDraw}{OrtDraw}}\&\ parent,\ \textcolor{keyword}{const}\ TXLine\&\ line,}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{const}\ vec3f\&\ from,\ \textcolor{keyword}{const}\ vec3f\&\ to);}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ render(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00097\ \ \ \textcolor{comment}{//virtual\ float\ get\_z()\ const\ \{\ return\ (p\_from[2]\ +\ p\_to[2])\ /\ 2;\ \}}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{float}\ get\_z()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ olx\_min(p\_from[2],\ p\_to[2]);\ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ update\_size(evecf\ \&sz)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00100\ \ \ \ \ a\_ort\_object::update\_min\_max(sz,\ p\_from);}
+\DoxyCodeLine{00101\ \ \ \ \ a\_ort\_object::update\_min\_max(sz,\ p\_to);}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ \_render(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&,\ \textcolor{keywordtype}{float}\ scalex,\ uint32\_t\ mask)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00105\ \ \ uint32\_t\ get\_color(\textcolor{keywordtype}{int}\ primitive,\ uint32\_t\ def=0xFF)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00106\ \};}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{keyword}{struct\ }ort\_line\ :\ \textcolor{keyword}{public}\ a\_ort\_object\ \ \{}
+\DoxyCodeLine{00109\ \ \ vec3f\ from,\ to;}
+\DoxyCodeLine{00110\ \ \ uint32\_t\ color;}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordtype}{float}\ width;}
+\DoxyCodeLine{00112\ \ \ ort\_line(\textcolor{keyword}{const}\ \mbox{\hyperlink{classOrtDraw}{OrtDraw}}\&\ parent,\ \textcolor{keyword}{const}\ vec3f\&\ \_from,\ \textcolor{keyword}{const}\ vec3f\ \_to,}
+\DoxyCodeLine{00113\ \ \ \ \ uint32\_t\ \_color\ =\ 0,\ \textcolor{keywordtype}{float}\ width\ =\ 0.1f)}
+\DoxyCodeLine{00114\ \ \ \ \ :\ \ a\_ort\_object(parent),\ from(\_from),\ to(\_to),}
+\DoxyCodeLine{00115\ \ \ \ \ color(\_color),\ width(width)}
+\DoxyCodeLine{00116\ \ \ \{\}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ render(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00118\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{float}\ get\_z()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{void}\ update\_size(evecf\ \&sz)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00120\ \ \ \ \ a\_ort\_object::update\_min\_max(sz,\ from);}
+\DoxyCodeLine{00121\ \ \ \ \ a\_ort\_object::update\_min\_max(sz,\ to);}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \};}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{keyword}{struct\ }ort\_poly\ :\ \textcolor{keyword}{public}\ a\_ort\_object\ \ \{}
+\DoxyCodeLine{00126\ \ \ vec3f\_list\ points;}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordtype}{bool}\ fill;}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{float}\ line\_width;}
+\DoxyCodeLine{00129\ \ \ uint32\_t\ color;}
+\DoxyCodeLine{00130\ \ \ ort\_poly(\textcolor{keyword}{const}\ \mbox{\hyperlink{classOrtDraw}{OrtDraw}}\&\ parent,\ \textcolor{keywordtype}{bool}\ \_fill)\ :}
+\DoxyCodeLine{00131\ \ \ \ \ a\_ort\_object(parent),}
+\DoxyCodeLine{00132\ \ \ \ \ fill(\_fill),}
+\DoxyCodeLine{00133\ \ \ \ \ line\_width(1.0f),}
+\DoxyCodeLine{00134\ \ \ \ \ color(0x0)\ \{\ \ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ render(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{float}\ get\_z()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{void}\ update\_size(evecf\ \&sz)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ points.Count();\ i++)}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ a\_ort\_object::update\_min\_max(sz,\ points[i]);}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \};}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{keyword}{struct\ }ort\_circle\ :\ \textcolor{keyword}{public}\ a\_ort\_object\ \{}
+\DoxyCodeLine{00144\ \ \ vec3f\ center;}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{bool}\ fill;}
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{float}\ line\_width,\ r;}
+\DoxyCodeLine{00147\ \ \ mat3f*\ basis;}
+\DoxyCodeLine{00148\ \ \ uint32\_t\ color;}
+\DoxyCodeLine{00149\ \ \ ort\_circle(\textcolor{keyword}{const}\ \mbox{\hyperlink{classOrtDraw}{OrtDraw}}\&\ parent,\ \textcolor{keyword}{const}\ vec3f\&\ \_center,\ \textcolor{keywordtype}{float}\ \_r,\ \textcolor{keywordtype}{bool}\ \_fill)}
+\DoxyCodeLine{00150\ \ \ \ \ :\ a\_ort\_object(parent),}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ center(\_center),}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ fill(\_fill),}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ line\_width(1.0f),}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ r(\_r),}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ basis(NULL),}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ color(0)\ \{\}}
+\DoxyCodeLine{00157\ \ \ \string~ort\_circle()\ \ \{}
+\DoxyCodeLine{00158\ \ \ \ \ olx\_del\_obj(basis);}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ render(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{float}\ get\_z()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ center[2];\ \ \}}
+\DoxyCodeLine{00162\ \ \ \textcolor{keywordtype}{void}\ update\_size(evecf\ \&sz)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00163\ \};}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \textcolor{keyword}{struct\ }ort\_cone\ :\ \textcolor{keyword}{public}\ a\_ort\_object\ \ \{}
+\DoxyCodeLine{00166\ \ \ vec3f\ bottom,\ top;}
+\DoxyCodeLine{00167\ \ \ \textcolor{keywordtype}{float}\ bottom\_r,\ top\_r;}
+\DoxyCodeLine{00168\ \ \ uint32\_t\ color;}
+\DoxyCodeLine{00169\ \ \ uint16\_t\ divs;}
+\DoxyCodeLine{00170\ \ \ ort\_cone(\textcolor{keyword}{const}\ \mbox{\hyperlink{classOrtDraw}{OrtDraw}}\&\ parent,\ \textcolor{keyword}{const}\ vec3f\&\ \_b,\ \textcolor{keyword}{const}\ vec3f\ \_t,\ \textcolor{keywordtype}{float}\ br,}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ tr,\ uint32\_t\ cl)}
+\DoxyCodeLine{00172\ \ \ \ \ :\ a\_ort\_object(parent),}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ bottom(\_b),}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ top(\_t),}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ bottom\_r(br),}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ top\_r(tr),}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ color(cl),}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ divs(5)\ \{\}}
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ render(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{float}\ get\_z()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (bottom[2]+top[2])/2;\ \ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keywordtype}{void}\ update\_size(evecf\ \&sz)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00182\ \};}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \textcolor{keyword}{class\ }OrtDraw\ \ \{}
+\DoxyCodeLine{00185\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ OrtObjectsZSort(\textcolor{keyword}{const}\ \mbox{\hyperlink{structa__ort__object}{a\_ort\_object}}\ \&a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structa__ort__object}{a\_ort\_object}}\ \&a2)\ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp\_float(a1.get\_z(),\ a2.get\_z(),\ 1e-\/3f);}
+\DoxyCodeLine{00188\ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \textcolor{keywordtype}{float}\ DrawScale,\ BondRad,\ LinearScale,\ YOffset;}
+\DoxyCodeLine{00190\ \ \ mat3f\ ProjMatr,\ UnProjMatr;}
+\DoxyCodeLine{00191\ \ \ vec3f\ DrawOrigin,\ SceneOrigin;}
+\DoxyCodeLine{00192\ \ \ \mbox{\hyperlink{classTGXApp}{TGXApp}}\&\ app;}
+\DoxyCodeLine{00193\ \ \ uint16\_t\ ColorMode;}
+\DoxyCodeLine{00194\ \ \ uint32\_t\ BondOutlineColor,\ AtomOutlineColor;}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordtype}{float}\ BondOutlineSize,\ AtomOutlineSize;}
+\DoxyCodeLine{00196\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00197\ \ \ \textcolor{keywordtype}{float}\ PieLineWidth,}
+\DoxyCodeLine{00198\ \ \ \ \ ElpLineWidth,}
+\DoxyCodeLine{00199\ \ \ \ \ QuadLineWidth,}
+\DoxyCodeLine{00200\ \ \ \ \ FontLineWidth,}
+\DoxyCodeLine{00201\ \ \ \ \ HBondScale,\ MultipleBondsWidth;}
+\DoxyCodeLine{00202\ \ \ \textcolor{keyword}{const}\ TEBasis\&\ basis;}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordtype}{bool}\ Perspective,\ AutoStippleDisorder;}
+\DoxyCodeLine{00204\ \ \ uint16\_t\ ElpDiv,\ PieDiv,\ BondDiv;}
+\DoxyCodeLine{00205\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}\ ElpCrd,\ PieCrd,\ Arc,\ BondCrd,\ BondProjF,\ BondProjT,}
+\DoxyCodeLine{00206\ \ \ \ \ BondProjM;}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{classTPtrList}{TPtrList<const\ vec3f>}}\ FilteredArc;}
+\DoxyCodeLine{00208\ \ \ \textcolor{keywordtype}{size\_t}\ PrepareArc(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}\&\ in,\ \mbox{\hyperlink{classTPtrList}{TPtrList<const\ vec3f>}}\&\ out,}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{const}\ vec3f\&\ normal)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00210\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ draw\_t>}
+\DoxyCodeLine{00211\ \ \ \textcolor{keywordtype}{float}\ GetBondRad(\textcolor{keyword}{const}\ \mbox{\hyperlink{structort__bond}{ort\_bond<draw\_t>}}\&\ b,\ uint32\_t\ mask)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordtype}{float}\ r\ =\ (b.atom\_a.atom.GetType()\ ==\ iHydrogenZ\ ||}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ b.atom\_b.atom.GetType()\ ==\ iHydrogenZ)\ ?\ BondRad*HBondScale\ :\ BondRad;}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordflow}{if}\ ((mask\&((1<<13)|(1<<12)|(1<<11)|(1<<7)|(1<<6)))\ !=\ 0)}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ r\ /=\ 4;}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((mask\&((1\ <<\ 14)\ |\ (1\ <<\ 15)))\ !=\ 0)}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ r\ *=\ 1.25;}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((mask\&((1\ <<\ 16)\ |\ (1\ <<\ 17)))\ !=\ 0)}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ r\ *=\ 1.5;}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00221\ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{float}\ GetLineRad(\textcolor{keyword}{const}\ ort\_bond\_line\&\ b,\ uint32\_t\ mask)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00223\ \ \ vec3f\ ProjectPoint(\textcolor{keyword}{const}\ vec3f\&\ p)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{return}\ (p\ +\ SceneOrigin)*ProjMatr+DrawOrigin;}
+\DoxyCodeLine{00225\ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordtype}{void}\ RenderRims(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&\ pw,\ \textcolor{keyword}{const}\ mat3f\&\ pm,\ \textcolor{keyword}{const}\ vec3f\&\ normal)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00227\ \ \ \textcolor{keywordtype}{void}\ RenderQuads(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&\ pw,\ \textcolor{keyword}{const}\ mat3f\&\ pm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00228\ \ \ \textcolor{keywordtype}{void}\ \_process\_points(\mbox{\hyperlink{classTPtrList}{TPtrList<vec3f>}}\&\ points,\ ort\_poly\&\ otp)\ \ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ otp.points.Count();\ i++\ )}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ points.Add(otp.points[i]);}
+\DoxyCodeLine{00231\ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{struct\ }ContourDrawer\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{const}\ OrtDraw\&\ parent;}
+\DoxyCodeLine{00234\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<a\_ort\_object>}}\&\ objects;}
+\DoxyCodeLine{00235\ \ \ \ \ uint32\_t\ color;}
+\DoxyCodeLine{00236\ \ \ \ \ ContourDrawer(\textcolor{keyword}{const}\ OrtDraw\&\ \_parent,\ \mbox{\hyperlink{classTTypeList}{TTypeList<a\_ort\_object>}}\&\ \_objects,}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ uint32\_t\ \_color)}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ :\ parent(\_parent),\ objects(\_objects),\ color(\_color)\ \ \{\}}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordtype}{void}\ draw(\textcolor{keywordtype}{float}\ x1,\ \textcolor{keywordtype}{float}\ y1,\ \textcolor{keywordtype}{float}\ x2,\ \textcolor{keywordtype}{float}\ y2,\ \textcolor{keywordtype}{float}\ z);}
+\DoxyCodeLine{00240\ \ \ \};}
+\DoxyCodeLine{00241\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<ort\_atom>}}\ atoms;}
+\DoxyCodeLine{00242\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00243\ \ \ OrtDraw()\ :\ app(\mbox{\hyperlink{classTGXApp}{TGXApp}}::GetInstance()),\ basis(app.GetRenderer().GetBasis())\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ ElpDiv\ =\ 36;}
+\DoxyCodeLine{00245\ \ \ \ \ BondDiv\ =\ 12;}
+\DoxyCodeLine{00246\ \ \ \ \ PieDiv\ =\ 4;}
+\DoxyCodeLine{00247\ \ \ \ \ QuadLineWidth\ =\ PieLineWidth\ =\ 0.5;}
+\DoxyCodeLine{00248\ \ \ \ \ ElpLineWidth\ =\ FontLineWidth\ =\ 1;}
+\DoxyCodeLine{00249\ \ \ \ \ BondRad\ =\ 1;}
+\DoxyCodeLine{00250\ \ \ \ \ ColorMode\ =\ 0;}
+\DoxyCodeLine{00251\ \ \ \ \ HBondScale\ =\ 0.5;}
+\DoxyCodeLine{00252\ \ \ \ \ AtomOutlineColor\ =\ BondOutlineColor\ =\ \string~0;}
+\DoxyCodeLine{00253\ \ \ \ \ BondOutlineSize\ =\ 0.1;}
+\DoxyCodeLine{00254\ \ \ \ \ AtomOutlineSize\ =\ 0.05;}
+\DoxyCodeLine{00255\ \ \ \ \ Perspective\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00256\ \ \ \ \ AutoStippleDisorder\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00257\ \ \ \ \ MultipleBondsWidth\ =\ 0;}
+\DoxyCodeLine{00258\ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \textcolor{comment}{//\ create\ ellipse\ and\ pie\ coordinates}}
+\DoxyCodeLine{00260\ \ \ \textcolor{keywordtype}{void}\ Init(\mbox{\hyperlink{classPSWriter}{PSWriter}}\&\ pw);}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \textcolor{keywordtype}{void}\ Render(\textcolor{keyword}{const}\ olxstr\&\ fileName);}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ stipples\_for\_mask(uint32\_t\ mask,\ \textcolor{keywordtype}{bool}\ half)\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ rv\ =\ 0;}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordflow}{if}\ ((mask\ \&((1\ <<\ 13)\ |\ (1\ <<\ 11)\ |\ (1\ <<\ 10)\ |\ (1\ <<\ 9)\ |\ (1\ <<\ 8)))\ !=\ 0)}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ half\ ?\ 6\ :\ 12;}
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00269\ \ \ \}}
+\DoxyCodeLine{00270\ \ \ \textcolor{keywordtype}{size\_t}\ GetStippleCount(\textcolor{keyword}{const}\ ort\_bond<TXBond>\ \&b,\ \textcolor{keywordtype}{bool}\ half)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsAutoStippleDisorder())\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00272\ \ \ \ \ int8\_t\ pa\ =\ b.object.A().CAtom().GetPart(),}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ pb\ =\ b.object.B().CAtom().GetPart();}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordflow}{if}\ ((pa\ !=\ 0\ \&\&\ pa\ !=\ 1)\ ||\ (pb\ !=\ 0\ \&\&\ pb\ !=\ 1))}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (half\ ?\ 6\ :12);}
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keywordflow}{return}\ stipples\_for\_mask(b.object.GetPrimitiveMask(),\ half);}
+\DoxyCodeLine{00277\ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ draw\_t>}
+\DoxyCodeLine{00279\ \ \ \textcolor{keywordtype}{size\_t}\ GetStippleCount(\textcolor{keyword}{const}\ ort\_bond<draw\_t>\ \&b,\ \textcolor{keywordtype}{bool}\ half)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keywordflow}{return}\ stipples\_for\_mask(b.object.GetPrimitiveMask(),\ half);}
+\DoxyCodeLine{00281\ \ \ \}}
+\DoxyCodeLine{00282\ \ \ \textcolor{keywordtype}{size\_t}\ GetStippleCount(\textcolor{keyword}{const}\ ort\_bond\_line\ \&l,\ \textcolor{keywordtype}{bool}\ half)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00284\ \ \ DefPropP(uint16\_t,\ ElpDiv)}
+\DoxyCodeLine{00285\ \ \ DefPropP(uint16\_t,\ PieDiv)}
+\DoxyCodeLine{00286\ \ \ DefPropP(uint16\_t,\ BondDiv)}
+\DoxyCodeLine{00287\ \ \ DefPropP(uint16\_t,\ ColorMode)}
+\DoxyCodeLine{00288\ \ \ DefPropP(uint32\_t,\ BondOutlineColor)}
+\DoxyCodeLine{00289\ \ \ DefPropP(uint32\_t,\ AtomOutlineColor)}
+\DoxyCodeLine{00290\ \ \ DefPropP(\textcolor{keywordtype}{float},\ BondOutlineSize)}
+\DoxyCodeLine{00291\ \ \ DefPropP(\textcolor{keywordtype}{float},\ AtomOutlineSize)}
+\DoxyCodeLine{00292\ \ \ DefPropP(\textcolor{keywordtype}{float},\ HBondScale)}
+\DoxyCodeLine{00293\ \ \ DefPropP(\textcolor{keywordtype}{float},\ FontLineWidth)}
+\DoxyCodeLine{00294\ \ \ DefPropP(\textcolor{keywordtype}{float},\ QuadLineWidth)}
+\DoxyCodeLine{00295\ \ \ DefPropP(\textcolor{keywordtype}{float},\ PieLineWidth)}
+\DoxyCodeLine{00296\ \ \ DefPropP(\textcolor{keywordtype}{float},\ ElpLineWidth)}
+\DoxyCodeLine{00297\ \ \ DefPropP(\textcolor{keywordtype}{float},\ MultipleBondsWidth)}
+\DoxyCodeLine{00298\ \ \ DefPropBIsSet(Perspective)}
+\DoxyCodeLine{00299\ \ \ DefPropBIsSet(AutoStippleDisorder)}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{struct\ }ort\_bond\_base;}
+\DoxyCodeLine{00302\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{struct\ }ort\_bond<TXBond>;}
+\DoxyCodeLine{00303\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{struct\ }ort\_bond<TXLine>;}
+\DoxyCodeLine{00304\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{struct\ }ort\_bond\_line;}
+\DoxyCodeLine{00305\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{struct\ }ort\_atom;}
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{struct\ }ort\_poly;}
+\DoxyCodeLine{00307\ \};}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

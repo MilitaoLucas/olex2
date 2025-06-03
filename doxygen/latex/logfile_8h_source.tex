@@ -1,0 +1,91 @@
+\doxysection{logfile.\+h}
+\hypertarget{logfile_8h_source}{}\label{logfile_8h_source}\index{sdl/logfile.h@{sdl/logfile.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}log.h"{}}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}utf8file.h"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{namespace\ }esdl\ \{\ \textcolor{keyword}{namespace\ }log\ \{}
+\DoxyCodeLine{00006\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00007\ \ \ \ \ EVT\_INFO,}
+\DoxyCodeLine{00008\ \ \ \ \ EVT\_WARNING,}
+\DoxyCodeLine{00009\ \ \ \ \ EVT\_ERROR,}
+\DoxyCodeLine{00010\ \ \ \ \ EVT\_EXCEPTION,}
+\DoxyCodeLine{00011\ \ \ \ \ EVT\_POST,}
+\DoxyCodeLine{00012\ \ \ \};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \textcolor{keyword}{class\ }FileLog\ :\ \textcolor{keyword}{public}\ AEventsDispatcher\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{class\ }LogFile\ :\ \textcolor{keyword}{public}\ TUtf8File\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ LogFile(\textcolor{keyword}{const}\ olxstr\&\ fn)\ :}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ TUtf8File(fn,\ \textcolor{stringliteral}{"{}wb"{}},\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ Data,\ \textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ r\ =\ TUtf8File::Write(Data,\ size);}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ TUtf8File::Flush();}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00025\ \ \ \ \ \};}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<LogFile>}}\ out;}
+\DoxyCodeLine{00027\ \ \ \ \ olxstr\ last\_marker;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \ \ FileLog(\textcolor{keyword}{const}\ olxstr\&\ file\_name)}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ :\ out(\textcolor{keyword}{new}\ LogFile(file\_name))}
+\DoxyCodeLine{00031\ \ \ \ \ \{\}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ Register(\mbox{\hyperlink{classTLog}{TLog}}\&\ l)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordtype}{short}\ flags\ =\ msiEnter\ |\ msiExit;}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ l.OnInfo.Add(\textcolor{keyword}{this},\ EVT\_INFO,\ flags);}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ l.OnWarning.Add(\textcolor{keyword}{this},\ EVT\_WARNING,\ flags);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ l.OnError.Add(\textcolor{keyword}{this},\ EVT\_ERROR,\ flags);}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ l.OnException.Add(\textcolor{keyword}{this},\ EVT\_EXCEPTION,\ flags);}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ l.OnPost.Add(\textcolor{keyword}{this},\ EVT\_POST,\ flags);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ l.AddStream(\&out,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{void}\ Unregister(\mbox{\hyperlink{classTLog}{TLog}}\&\ l)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ l.OnInfo.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ l.OnWarning.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ l.OnError.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ l.OnException.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ l.OnPost.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ l.RemoveStream(\&out);}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}*)}
+\DoxyCodeLine{00054\ \ \ \ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (MsgSubId\ ==\ msiEnter)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ olxstr\ marker;}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (MsgId)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ EVT\_INFO:}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ marker\ =\ \textcolor{stringliteral}{"{}info"{}};}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ EVT\_WARNING:}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ marker\ =\ \textcolor{stringliteral}{"{}warning"{}};}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ EVT\_ERROR:}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ marker\ =\ \textcolor{stringliteral}{"{}error"{}};}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ EVT\_EXCEPTION:}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ marker\ =\ \textcolor{stringliteral}{"{}exception"{}};}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ marker\ =\ \textcolor{stringliteral}{"{}post"{}};}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ last\_marker\ =\ marker;}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ out-\/>Writeln(olxstr(\textcolor{stringliteral}{"{}>>>"{}})\ <<\ last\_marker\ <<\ \textcolor{stringliteral}{"{}<<<"{}});}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (MsgSubId\ ==\ msiExit)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ out-\/>Writeln(olxstr(\textcolor{stringliteral}{"{}<<<"{}})\ <<\ last\_marker\ <<\ \textcolor{stringliteral}{"{}>>>"{}});}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ out-\/>Flush();}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \}\}\ \textcolor{comment}{//\ esdl::log}}
+
+\end{DoxyCode}

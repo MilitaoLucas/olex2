@@ -1,0 +1,88 @@
+\doxysection{settingsfile.\+h}
+\hypertarget{settingsfile_8h_source}{}\label{settingsfile_8h_source}\index{sdl/settingsfile.h@{sdl/settingsfile.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_settingsfile\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_settingsfile\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ reads\ settings\ file,\ considering\ lines\ having\ no\ assignment\ operator\ or}}
+\DoxyCodeLine{00017\ \textcolor{comment}{lines\ starting\ from\ '\#'\ as\ comments.\ The\ white\ spaces\ will\ be\ trimmed\ for}}
+\DoxyCodeLine{00018\ \textcolor{comment}{parameter\ names\ and\ values.\ The\ file\ structure\ will\ be\ peserved\ upon\ saving}}
+\DoxyCodeLine{00019\ \textcolor{comment}{(besides\ white\ spaces\ for\ param\ name/value).\ If\ there\ are\ duplicate\ entries,}}
+\DoxyCodeLine{00020\ \textcolor{comment}{the\ most\ recent\ value\ will\ be\ kept}}
+\DoxyCodeLine{00021\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00022\ class\ TSettingsFile:\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00023\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<olxstr,\ true>}}\ Params;}
+\DoxyCodeLine{00024\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ bool>}}\ Lines;}
+\DoxyCodeLine{00025\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \ \{}
+\DoxyCodeLine{00027\ \ \ \ \ Params.Clear();}
+\DoxyCodeLine{00028\ \ \ \ \ Lines.Clear();}
+\DoxyCodeLine{00029\ \ \ \}}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ TSettingsFile()\{\}}
+\DoxyCodeLine{00032\ \ \ TSettingsFile(\textcolor{keyword}{const}\ olxstr\&\ fileName)\ \ \{\ \ LoadSettings(fileName);\ \ \}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{void}\ LoadSettings(\textcolor{keyword}{const}\ olxstr\&\ fileName);}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ SaveSettings(\textcolor{keyword}{const}\ olxstr\&\ fileName);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \string~TSettingsFile()\ \{\}}
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{//\ iteration\ functions}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ ParamCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Params.Count();\ \ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{const}\ olxstr\&\ ParamName(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Params.GetKey(i);\ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{const}\ olxstr\&\ ParamValue(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Params.GetValue(i);\ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SC>}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ olxstr\&\ GetParam(\textcolor{keyword}{const}\ SC\&\ paramName,}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ defVal=EmptyString())\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00044\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{return}\ Params.Find(paramName,\ defVal);}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{comment}{//\ convinience\ operator,\ same\ as\ GetParam}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SC>}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keyword}{const}\ SC\&\ pn)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ GetParam(pn);}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{//\ creates\ a\ param\ if\ does\ not\ exist}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SC>}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{inline}\ olxstr\&\ operator\ []\ (\textcolor{keyword}{const}\ SC\&\ paramName)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index\ =\ Params.IndexOf(paramName);}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{if}(\ index\ !=\ InvalidIndex\ )}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Params.GetValue(index);}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ Lines.Add(paramName,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Params.Add(paramName,\ EmptyString());}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SC>}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ HasParam(\textcolor{keyword}{const}\ SC\&\ paramName)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ Params.HasKey(paramName);}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \textcolor{comment}{//\ updates\ or\ creates\ new\ parameter}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SC>}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ SetParam(\textcolor{keyword}{const}\ SC\&\ paramName,\ \textcolor{keyword}{const}\ olxstr\&\ val)\ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index\ =\ Params.IndexOf(paramName);}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{if}(\ index\ !=\ InvalidIndex\ )}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ Params.GetValue(index)\ =\ val;}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ Lines.Add(paramName,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ Params.Add(paramName,\ val);}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \}}
+\DoxyCodeLine{00079\ \};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ EndEsdlNamespace()}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

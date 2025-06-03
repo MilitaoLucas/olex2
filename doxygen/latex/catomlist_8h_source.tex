@@ -1,0 +1,288 @@
+\doxysection{catomlist.\+h}
+\hypertarget{catomlist_8h_source}{}\label{catomlist_8h_source}\index{xlib/catomlist.h@{xlib/catomlist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_catom\_list\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_catom\_list\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}residue.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}eset.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00015\ \textcolor{comment}{Atom\ list\ to\ handle\ list\ of\ explicit\ (by\ label),\ implicit\ (last,\ first)\ and}}
+\DoxyCodeLine{00016\ \textcolor{comment}{expandable\ atom\ labels\ (C1\_*,\ \$C\ etc)}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ BeginXlibNamespace()}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ class\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}};}
+\DoxyCodeLine{00022\ class\ \mbox{\hyperlink{classExplicitCAtomRef}{ExplicitCAtomRef}};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ typedef\ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt}}<\mbox{\hyperlink{classExplicitCAtomRef}{ExplicitCAtomRef}},\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}>\ TAtomRefList;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ class\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ :\ public\ ACollectionItem\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAAtomRef}{\string~AAtomRef}}()\ \{\}}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//\ returns\ either\ an\ atom\ label\ or\ a\ string\ of\ C1\_tol\ kind\ or\ \$C}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetExpression(TResidue\ *r=0)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsExpandable()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsExplicit()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Expand(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ TAtomRefList\&\ res,}
+\DoxyCodeLine{00034\ \ \ \ \ TResidue\&\ resi)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}*\ Clone(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ *ToImplicit(\textcolor{keyword}{const}\ olxstr\ \&resi)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ \&FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ C1,\ C1\_\$2,\ C1\_2\ expressions\ handling}}
+\DoxyCodeLine{00043\ \textcolor{keyword}{class\ }ExplicitCAtomRef\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ \ \{}
+\DoxyCodeLine{00044\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ *atom;}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{const}\ smatd*\ matrix;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ DealWithSymm(\textcolor{keyword}{const}\ smatd*\ m);}
+\DoxyCodeLine{00047\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00048\ \ \ ExplicitCAtomRef(\textcolor{keyword}{const}\ ExplicitCAtomRef\&\ ar)\ :}
+\DoxyCodeLine{00049\ \ \ \ \ atom(ar.atom)}
+\DoxyCodeLine{00050\ \ \ \{}
+\DoxyCodeLine{00051\ \ \ \ \ DealWithSymm(ar.matrix);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ ExplicitCAtomRef(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_atom,\ \textcolor{keyword}{const}\ smatd*\ \_matrix=0)\ :}
+\DoxyCodeLine{00054\ \ \ \ \ atom(\&\_atom)}
+\DoxyCodeLine{00055\ \ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ DealWithSymm(\_matrix);}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ ExplicitCAtomRef(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&\ di,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00059\ \ \ \string~ExplicitCAtomRef();}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetExpression(TResidue\ *)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsExpandable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsExplicit()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsValid()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Expand(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\ \&,\ TAtomRefList\&\ res,}
+\DoxyCodeLine{00065\ \ \ \ \ TResidue\ \&)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00066\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ res.Add(\textcolor{keyword}{new}\ ExplicitCAtomRef(*\textcolor{keyword}{this}));}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ *ToImplicit(\textcolor{keyword}{const}\ olxstr\ \&resi)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00071\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ GetAtom()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *atom;\ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{const}\ smatd*\ GetMatrix()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ matrix;\ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ UpdateMatrix(\textcolor{keyword}{const}\ smatd\ *m);}
+\DoxyCodeLine{00074\ \ \ vec3d\ GetCCrd()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{return}\ matrix\ ==\ 0\ ?\ atom-\/>ccrd()\ :\ *matrix\ *atom-\/>ccrd();}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{comment}{//\ works\ correctly\ only\ if\ the\ atom\ Id\ is\ smaller\ than\ 32\ bit}}
+\DoxyCodeLine{00078\ \ \ uint64\_t\ GetHash()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ ((uint64\_t)atom-\/>GetId()\ <<\ 32)\ |}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ (uint64\_t)(matrix\ ==\ 0\ ?\ 0\ :\ matrix-\/>GetId());}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{/*\ builds\ instance\ from\ C1\ or\ C1\_\$1\ expression\ for\ given\ residue,\ may\ return}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ \ NULL}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{static}\ ExplicitCAtomRef*\ NewInstance(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ exp,\ TResidue*\ resi);}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}*\ Clone(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ ExplicitCAtomRef\ \&r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&GetTypeId()\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ t\ =\ \textcolor{stringliteral}{"{}explicit"{}};}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{return}\ t;}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structExplicitCAtomRef_1_1AtomAccessor}{AtomAccessor}}\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ operator()\ (ExplicitCAtomRef\&\ r)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ r.GetAtom();\ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ operator()\ (\textcolor{keyword}{const}\ ExplicitCAtomRef\&\ r)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ r.GetAtom();\ \}}
+\DoxyCodeLine{00098\ \ \ \};}
+\DoxyCodeLine{00099\ \};}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00102\ \textcolor{comment}{Last\ -\/\ last\ atom\ of\ a\ residue,}}
+\DoxyCodeLine{00103\ \textcolor{comment}{First\ -\/\ first\ atom\ of\ a\ residue,}}
+\DoxyCodeLine{00104\ \textcolor{comment}{*\ -\/\ all\ non\ H\ atoms\ of\ a\ residue}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\$Type\ -\/\ all\ Type\ atoms}}
+\DoxyCodeLine{00106\ \textcolor{comment}{\$Type\_tol\ -\/\ all\ Type\ atoms\ of\ a\ residue}}
+\DoxyCodeLine{00107\ \textcolor{comment}{C1\_tol\ -\/\ all\ explicit\ atoms\ of\ a\ residue}}
+\DoxyCodeLine{00108\ \textcolor{comment}{C1\_+\ -\/\ an\ explicit\ atom\ of\ next\ residue}}
+\DoxyCodeLine{00109\ \textcolor{comment}{C1\_-\/\ -\/\ an\ explicit\ atom\ of\ previous\ residue}}
+\DoxyCodeLine{00110\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00111\ \textcolor{keyword}{class\ }ImplicitCAtomRef\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ \ \{}
+\DoxyCodeLine{00112\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00113\ \ \ \mbox{\hyperlink{classExplicitCAtomRef}{ExplicitCAtomRef}}*\ ref;}
+\DoxyCodeLine{00114\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00115\ \ \ ImplicitCAtomRef(\textcolor{keyword}{const}\ olxstr\&\ \_Name)}
+\DoxyCodeLine{00116\ \ \ \ \ :\ Name(\_Name),}
+\DoxyCodeLine{00117\ \ \ \ \ ref(0)}
+\DoxyCodeLine{00118\ \ \ \{\}}
+\DoxyCodeLine{00119\ \ \ \textcolor{comment}{//\ IntRef\ must\ be\ called\ after}}
+\DoxyCodeLine{00120\ \ \ ImplicitCAtomRef(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di);}
+\DoxyCodeLine{00121\ \ \ \string~ImplicitCAtomRef()\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ olx\_del\_obj(ref);}
+\DoxyCodeLine{00123\ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \textcolor{comment}{//\ *\ is\ special\ char}}
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetExpression(TResidue\ *)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{return}\ Name\ ==\ \textcolor{charliteral}{'*'}\ ?\ EmptyString()\ :\ Name;}
+\DoxyCodeLine{00127\ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsExpandable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsExplicit()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Expand(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ TAtomRefList\&\ res,}
+\DoxyCodeLine{00131\ \ \ \ \ TResidue\&\ resi)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00132\ \ \ \textcolor{keywordtype}{void}\ InitRef(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ olxstr\&\ rname,}
+\DoxyCodeLine{00133\ \ \ \ \ TResidue\ *resi=0);}
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordtype}{void}\ Update(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00135\ \ \ \textcolor{comment}{//\ may\ return\ 0}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}*\ NewInstance(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ olxstr\&\ exp,}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ resi,\ TResidue*\ \_resi);}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}*\ Clone(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ *ToImplicit(\textcolor{keyword}{const}\ olxstr\ \&resi)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&GetTypeId()\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ t\ =\ \textcolor{stringliteral}{"{}implicit"{}};}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{return}\ t;}
+\DoxyCodeLine{00144\ \ \ \}}
+\DoxyCodeLine{00145\ \};}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \textcolor{comment}{//manages\ C1\ >\ C5\ and\ C5\ <\ C1\ expressions}}
+\DoxyCodeLine{00148\ \textcolor{keyword}{class\ }ListAtomRef\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ \{}
+\DoxyCodeLine{00149\ \ \ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ \&start,\ \&end;}
+\DoxyCodeLine{00150\ \ \ olxstr\ op;}
+\DoxyCodeLine{00151\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00152\ \ \ ListAtomRef(\mbox{\hyperlink{classAAtomRef}{AAtomRef}}\&\ \_start,\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\&\ \_end,\ \textcolor{keyword}{const}\ olxstr\&\ \_op)\ :}
+\DoxyCodeLine{00153\ \ \ \ \ start(\_start),\ end(\_end),\ op(\_op)}
+\DoxyCodeLine{00154\ \ \ \{\}}
+\DoxyCodeLine{00155\ \ \ ListAtomRef(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{virtual}\ \string~ListAtomRef()\ \ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keyword}{delete}\ \&start;}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keyword}{delete}\ \&end;}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ \&GetStart()\ \{\ \textcolor{keywordflow}{return}\ start;\ \ \}}
+\DoxyCodeLine{00161\ \ \ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ \&GetEnd()\ \{\ \textcolor{keywordflow}{return}\ end;\ \}}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsExpandable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsExplicit()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{return}\ start.IsExplicit()\ \&\&\ end.IsExplicit();}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ start.IsValid()\ \&\&\ end.IsValid();}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{//\ *\ is\ special\ char}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetExpression(TResidue\ *r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Expand(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ TAtomRefList\&\ res,}
+\DoxyCodeLine{00172\ \ \ \ \ TResidue\&\ resi)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}*\ Clone(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ ListAtomRef(*start.Clone(rm),\ *end.Clone(rm),\ op);}
+\DoxyCodeLine{00175\ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00177\ \ \ \mbox{\hyperlink{classAAtomRef}{AAtomRef}}\ *ToImplicit(\textcolor{keyword}{const}\ olxstr\ \&resi)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ ListAtomRef(*start.ToImplicit(resi),}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ *end.ToImplicit(resi),\ op);}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&GetTypeId()\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ t\ =\ \textcolor{stringliteral}{"{}list"{}};}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{return}\ t;}
+\DoxyCodeLine{00184\ \ \ \}}
+\DoxyCodeLine{00185\ \};}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \textcolor{keyword}{class\ }AtomRefList\ \{}
+\DoxyCodeLine{00188\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AAtomRef>}}\ refs;}
+\DoxyCodeLine{00189\ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm;}
+\DoxyCodeLine{00190\ \ \ olxstr\ residue;}
+\DoxyCodeLine{00191\ \ \ olxstr\ expression;}
+\DoxyCodeLine{00192\ \ \ \textcolor{keywordtype}{bool}\ ContainsImplicitAtoms;}
+\DoxyCodeLine{00193\ \ \ olxstr\ BuildExpression(TResidue*\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordtype}{void}\ EnsureAtomGroups(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ TAtomRefList\&\ al,}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ groups\_size)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00196\ \ \ \textcolor{keywordtype}{void}\ EnsureAtomGroups(\textcolor{keywordtype}{size\_t}\ group\_size);}
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ RefIdCmp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classExplicitCAtomRef}{ExplicitCAtomRef}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classExplicitCAtomRef}{ExplicitCAtomRef}}\&\ b)\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a.GetAtom().GetId(),\ b.GetAtom().GetId());}
+\DoxyCodeLine{00199\ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AAtomRef>}}\&\ GetRefs()\ \{\ \textcolor{keywordflow}{return}\ refs;\ \}}
+\DoxyCodeLine{00201\ \ \ TPtrList<ImplicitCAtomRef>::const\_list\_type\ ExtractImplicit();}
+\DoxyCodeLine{00202\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00203\ \ \ \textcolor{comment}{/*\ creates\ an\ instance\ of\ the\ object\ from\ given\ expression\ for\ given\ residue}}
+\DoxyCodeLine{00204\ \textcolor{comment}{\ \ class,\ number\ or\ alias.\ Empty\ residue\ specifies\ the\ main\ residue.}}
+\DoxyCodeLine{00205\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00206\ \ \ AtomRefList(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ olxstr\&\ exp,}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ resi\ =\ EmptyString());}
+\DoxyCodeLine{00208\ \ \ AtomRefList(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)}
+\DoxyCodeLine{00209\ \ \ \ \ :\ rm(rm),\ ContainsImplicitAtoms(\textcolor{keyword}{false})}
+\DoxyCodeLine{00210\ \ \ \{\}}
+\DoxyCodeLine{00211\ \ \ \textcolor{comment}{/*\ expands\ the\ underlying\ expressions\ into\ a\ list.\ If\ the\ residue\ name\ is\ a}}
+\DoxyCodeLine{00212\ \textcolor{comment}{\ \ class\ name\ (and\ there\ are\ several\ residues\ of\ the\ kind),\ there\ will\ be\ more}}
+\DoxyCodeLine{00213\ \textcolor{comment}{\ \ than\ one\ entry\ in\ the\ res\ with\ each\ entry\ corresponding\ to\ any\ particular}}
+\DoxyCodeLine{00214\ \textcolor{comment}{\ \ residue.\ One\ of\ the\ list\ type\ constants\ can\ be\ provided\ to\ validate\ the\ lists}}
+\DoxyCodeLine{00215\ \textcolor{comment}{\ \ content\ to\ have\ pairs\ or\ triplets\ of\ atoms}}
+\DoxyCodeLine{00216\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00217\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TAtomRefList>}}\&\ Expand(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00218\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TAtomRefList>}}\&\ res,\ \textcolor{keywordtype}{size\_t}\ group\_size\ =\ InvalidSize)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00219\ \ \ TTypeList<TAtomRefList>::const\_list\_type\ Expand(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ group\_size\ =\ InvalidSize)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00221\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00222\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TAtomRefList>}}\ res;}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordflow}{return}\ Expand(rm,\ res,\ group\_size);}
+\DoxyCodeLine{00224\ \ \ \}}
+\DoxyCodeLine{00225\ \ \ TAtomRefList::const\_list\_type\ ExpandList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ group\_size\ =\ InvalidSize)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00227\ \ \ \textcolor{comment}{/*\ parses\ the\ expression\ into\ a\ list\ */}}
+\DoxyCodeLine{00228\ \ \ \textcolor{keywordtype}{void}\ Build(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keyword}{const}\ olxstr\&\ resi\ =\ EmptyString());}
+\DoxyCodeLine{00229\ \ \ \textcolor{comment}{/*\ if\ implicit\ is\ true\ -\/\ the\ residue\ class\ of\ the\ atoms\ is\ used\ to\ build\ an}}
+\DoxyCodeLine{00230\ \textcolor{comment}{\ \ implicit\ atom\ list.}}
+\DoxyCodeLine{00231\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keywordtype}{void}\ Build(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<class\ TSAtom>}}\&\ atoms,\ \textcolor{keywordtype}{bool}\ implicit\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00233\ \ \ \textcolor{comment}{/*\ recreates\ the\ expression\ for\ the\ object.\ If\ there\ are\ any\ explicit\ atom}}
+\DoxyCodeLine{00234\ \textcolor{comment}{\ \ names\ -\/\ the\ new\ names\ will\ come\ from\ the\ updated\ model.\ Implicit\ atoms\ will}}
+\DoxyCodeLine{00235\ \textcolor{comment}{\ \ stay\ as\ provided\ in\ the\ constructor}}
+\DoxyCodeLine{00236\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00237\ \ \ olxstr\ GetExpression()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetResi()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ residue;\ \}}
+\DoxyCodeLine{00239\ \ \ \textcolor{comment}{/*\ checks\ if\ any\ of\ the\ references\ are\ expandable\ */}}
+\DoxyCodeLine{00240\ \ \ \textcolor{keywordtype}{bool}\ IsExpandable()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00241\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{/*\ this\ can\ be\ used\ to\ decide\ if\ the\ atom\ list\ is\ valid\ */}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsExplicit()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00244\ \ \ \textcolor{comment}{/*\ converts\ this\ list\ to\ list\ of\ exlicit\ references\ */}}
+\DoxyCodeLine{00245\ \ \ AtomRefList\&\ ConvertToExplicit();}
+\DoxyCodeLine{00246\ \ \ \textcolor{comment}{/*\ converts\ this\ list\ to\ list\ of\ implicit\ references\ */}}
+\DoxyCodeLine{00247\ \ \ AtomRefList\&\ ConvertToImplicit();}
+\DoxyCodeLine{00248\ \ \ \textcolor{keywordtype}{void}\ AddExplicit(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a,\ \textcolor{keyword}{const}\ smatd*\ m\ =\ 0)\ \{}
+\DoxyCodeLine{00249\ \ \ \ \ refs.Add(\textcolor{keyword}{new}\ \mbox{\hyperlink{classExplicitCAtomRef}{ExplicitCAtomRef}}(a,\ m));}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \textcolor{keywordtype}{void}\ AddAll(\textcolor{keyword}{const}\ TAtomRefList\&\ list,\ \textcolor{keywordtype}{bool}\ same\_rm);}
+\DoxyCodeLine{00252\ \ \ \textcolor{keywordtype}{void}\ AddExplicit(\textcolor{keyword}{class}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ a);}
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ checks\ if\ all\ atoms\ are\ in\ the\ same\ RESI}}
+\DoxyCodeLine{00254\ \ \ \textcolor{keywordtype}{void}\ UpdateResi();}
+\DoxyCodeLine{00255\ \ \ \textcolor{keywordtype}{void}\ InitImplicitRefs();}
+\DoxyCodeLine{00256\ \ \ \textcolor{keywordtype}{void}\ UpdateImplicitRefs();}
+\DoxyCodeLine{00257\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ refs.IsEmpty();\ \}}
+\DoxyCodeLine{00259\ \ \ \textcolor{keywordtype}{size\_t}\ RefCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ refs.Count();\ \}}
+\DoxyCodeLine{00260\ \ \ AtomRefList\&\ Validate(\textcolor{keywordtype}{size\_t}\ group\_size\ =\ InvalidSize);}
+\DoxyCodeLine{00261\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ AtomRefList\&\ arl);}
+\DoxyCodeLine{00262\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00263\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di);}
+\DoxyCodeLine{00264\ \ \ \textcolor{comment}{/*\ returns\ all\ explicit\ references\ */}}
+\DoxyCodeLine{00265\ \ \ TPtrList<ExplicitCAtomRef>::const\_list\_type\ GetExplicit()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00266\ \ \ \textcolor{keywordtype}{void}\ OnAUUpdate();}
+\DoxyCodeLine{00267\ \ \ \textcolor{comment}{/*\ sorts\ the\ references\ by\ atom\ tag\ */}}
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordtype}{void}\ SortByTag(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AtomRefList>}}\&\ sync);}
+\DoxyCodeLine{00269\ \ \ \textcolor{keywordtype}{void}\ BeginAUSort();}
+\DoxyCodeLine{00270\ \ \ \textcolor{keywordtype}{void}\ EndAUSort(\textcolor{keywordtype}{bool}\ allow\_implicit);}
+\DoxyCodeLine{00271\ \ \ \textcolor{comment}{/*\ sorts\ explicit\ refs\ according\ to\ atom\ tags,\ calls\ to\ ConvertToExplicit}}
+\DoxyCodeLine{00272\ \textcolor{comment}{\ \ if\ needed}}
+\DoxyCodeLine{00273\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00274\ \ \ \textcolor{keywordtype}{void}\ SortExplicitRefs();}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ RefTagCmp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classExplicitCAtomRef}{ExplicitCAtomRef}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classExplicitCAtomRef}{ExplicitCAtomRef}}\&\ b)\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a.GetAtom().GetTag(),\ b.GetAtom().GetTag());}
+\DoxyCodeLine{00278\ \ \ \}}
+\DoxyCodeLine{00279\ \};}
+\DoxyCodeLine{00280\ EndXlibNamespace()}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

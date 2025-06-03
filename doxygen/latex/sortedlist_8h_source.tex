@@ -1,0 +1,486 @@
+\doxysection{sortedlist.\+h}
+\hypertarget{sortedlist_8h_source}{}\label{sortedlist_8h_source}\index{sdl/sortedlist.h@{sdl/sortedlist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_sortedlist\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_sortedlist\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}sorted.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}esort.h"{}}}
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ template\ <typename,\ typename>\ class\ \mbox{\hyperlink{classConstSortedObjectList}{ConstSortedObjectList}};}
+\DoxyCodeLine{00018\ template\ <typename,\ typename>\ class\ \mbox{\hyperlink{classConstSortedPointerList}{ConstSortedPointerList}};}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ generic\ sorted\ list}}
+\DoxyCodeLine{00020\ template\ <class\ ListClass,\ class\ Comparator,\ typename\ TypeClass>}
+\DoxyCodeLine{00021\ class\ TTSortedListBase\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00023\ \ \ ListClass\ list;}
+\DoxyCodeLine{00024\ \ \ Comparator\ cmp;}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ TTSortedListBase()\ \{\}}
+\DoxyCodeLine{00027\ \ \ TTSortedListBase(\textcolor{keyword}{const}\ Comparator\ \&cmp)}
+\DoxyCodeLine{00028\ \ \ \ \ :\ cmp(cmp)}
+\DoxyCodeLine{00029\ \ \ \{\}}
+\DoxyCodeLine{00030\ \ \ TTSortedListBase(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\ \&cap)}
+\DoxyCodeLine{00031\ \ \ \ \ :\ list(cap)}
+\DoxyCodeLine{00032\ \ \ \{\}}
+\DoxyCodeLine{00033\ \ \ TTSortedListBase(\textcolor{keyword}{const}\ Comparator\&\ cmp,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ cap)}
+\DoxyCodeLine{00034\ \ \ \ \ :\ list(cap),\ cmp(cmp)}
+\DoxyCodeLine{00035\ \ \ \{\}}
+\DoxyCodeLine{00036\ \ \ TTSortedListBase(\textcolor{keyword}{const}\ TTSortedListBase\&\ l)}
+\DoxyCodeLine{00037\ \ \ \ \ :\ list(l.list),\ cmp(l.cmp)}
+\DoxyCodeLine{00038\ \ \ \{\}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ TakeOver(TTSortedListBase\ \&l,\ \textcolor{keywordtype}{bool}\ do\_delete=\textcolor{keyword}{false})\ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ list.TakeOver(l.list);}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_delete)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \&l;}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ list.IsEmpty();\ \ \}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ list.Count();\ \ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{const}\ TypeClass\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ list[i];\ \ \}}
+\DoxyCodeLine{00047\ \ \ TTSortedListBase\&\ operator\ =\ (\textcolor{keyword}{const}\ TTSortedListBase\&\ \_list)\ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ list\ =\ \_list.list;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ KeyC>}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOf(\textcolor{keyword}{const}\ KeyC\&\ entity)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ sorted::FindIndexOf(list,\ cmp,\ entity);}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ KeyC>}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{bool}\ Contains(\textcolor{keyword}{const}\ KeyC\&\ entity)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ IndexOf(entity)\ !=\ InvalidIndex;}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{comment}{/*\ removes\ specified\ entry\ from\ the\ list\ and\ returns\ true\ if\ the\ entry\ was}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ \ in\ the\ list}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{bool}\ Remove(\textcolor{keyword}{const}\ TypeClass\&\ entity)\ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ IndexOf(entity);}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{if}(\ ind\ ==\ InvalidIndex\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00065\ \ \ \ \ list.Delete(ind);}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ ind)\ \ \{\ \ list.Delete(ind);\ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \ \{\ \ list.Clear();\ \ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\ \&cap)\ \{\ list.SetCapacity(cap);\ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keywordtype}{size\_t}\ cap)\ \ \{\ \ list.SetCapacity(cap);\ \ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{void}\ SetIncrement(\textcolor{keywordtype}{size\_t}\ incr)\ \ \{\ \ list.SetIncrement(incr);\ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{//\ may\ be\ useful\ for\ copy\ constructors,\ etc}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{const}\ ListClass\&\ GetList()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ list;\ \ \}}
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ allows\ to\ remove\ multiple\ items\ using\ a\ condition}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ PackAnalyser>}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ Pack(\textcolor{keyword}{const}\ PackAnalyser\&\ pa)\ \ \{\ \ list.Pack(pa);\ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Functor>}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{void}\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{\ \ list.ForEach(f);\ \ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Analyser>\ \textcolor{keywordtype}{size\_t}\ Count(\textcolor{keyword}{const}\ Analyser\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{return}\ list.Count(a);}
+\DoxyCodeLine{00082\ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00084\ \};}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListClass,\ \textcolor{keyword}{class}\ Comparator,\ \textcolor{keyword}{typename}\ TypeClass>}
+\DoxyCodeLine{00087\ \textcolor{keyword}{class\ }TTSortedList}
+\DoxyCodeLine{00088\ \ \ :\ \textcolor{keyword}{public}\ TTSortedListBase<ListClass,\ Comparator,\ TypeClass>}
+\DoxyCodeLine{00089\ \{}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{typedef}\ TTSortedListBase<ListClass,\ Comparator,\ TypeClass>\ \_\_parent\_t;}
+\DoxyCodeLine{00091\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00092\ \ \ TTSortedList()\ \{\}}
+\DoxyCodeLine{00093\ \ \ TTSortedList(\textcolor{keyword}{const}\ Comparator\ \&cmp)}
+\DoxyCodeLine{00094\ \ \ \ \ :\ \_\_parent\_t(cmp)}
+\DoxyCodeLine{00095\ \ \ \{\}}
+\DoxyCodeLine{00096\ \ \ TTSortedList(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ cap)}
+\DoxyCodeLine{00097\ \ \ \ \ :\ \_\_parent\_t(cap)}
+\DoxyCodeLine{00098\ \ \ \{\}}
+\DoxyCodeLine{00099\ \ \ TTSortedList(\textcolor{keyword}{const}\ Comparator\&\ cmp,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ cap)}
+\DoxyCodeLine{00100\ \ \ \ \ :\ \_\_parent\_t(cmp,\ cap)}
+\DoxyCodeLine{00101\ \ \ \{\}}
+\DoxyCodeLine{00102\ \ \ TTSortedList(\textcolor{keyword}{const}\ TTSortedList\&\ l)}
+\DoxyCodeLine{00103\ \ \ \ \ :\ \_\_parent\_t(l)}
+\DoxyCodeLine{00104\ \ \ \{\}}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//\ adds\ an\ item\ to\ the\ list\ and\ returns\ it's\ index}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{size\_t}\ Add(\textcolor{keyword}{const}\ TypeClass\&\ entry)\ \ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{return}\ sorted::Add(\_\_parent\_t::list,\ \_\_parent\_t::cmp,\ entry);}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{comment}{/*\ adds\ an\ item\ only\ if\ not\ already\ in\ the\ list,\ returns\ index\ of\ the\ item}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\ \ and\ if\ the\ new\ one\ was\ added}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00112\ \ \ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<size\_t,\ bool>}}\ AddUnique(\textcolor{keyword}{const}\ TypeClass\&\ entry)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{return}\ sorted::AddUnique(\_\_parent\_t::list,\ \_\_parent\_t::cmp,\ entry);}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \ \ TTSortedList\&\ operator\ =\ (\textcolor{keyword}{const}\ TTSortedList\&\ \_list)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \_\_parent\_t::operator\ =\ (\_list);}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ \};}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ TypeClass,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00122\ \textcolor{keyword}{class\ }SortedTypeList}
+\DoxyCodeLine{00123\ \ \ :\ \textcolor{keyword}{public}\ TTSortedListBase<TTypeList<TypeClass>,\ Comparator,\ TypeClass>\ \{}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{typedef}\ TTSortedListBase<TTypeList<TypeClass>,\ Comparator,\ TypeClass>}
+\DoxyCodeLine{00125\ \ \ \ \ \_parent\_t;}
+\DoxyCodeLine{00126\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00127\ \ \ SortedTypeList()\ \{\}}
+\DoxyCodeLine{00128\ \ \ SortedTypeList(\textcolor{keyword}{const}\ Comparator\ \&\ cmp)}
+\DoxyCodeLine{00129\ \ \ \ \ :\ \_parent\_t(cmp)}
+\DoxyCodeLine{00130\ \ \ \{\}}
+\DoxyCodeLine{00131\ \ \ SortedTypeList(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ cap)}
+\DoxyCodeLine{00132\ \ \ \ \ :\_parent\_t(cap)}
+\DoxyCodeLine{00133\ \ \ \{\}}
+\DoxyCodeLine{00134\ \ \ SortedTypeList(\textcolor{keyword}{const}\ Comparator\&\ cmp,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ cap)}
+\DoxyCodeLine{00135\ \ \ \ \ :\ \_parent\_t(cmp,\ cap)}
+\DoxyCodeLine{00136\ \ \ \{\}}
+\DoxyCodeLine{00137\ \ \ SortedTypeList(\textcolor{keyword}{const}\ SortedTypeList\&\ l)}
+\DoxyCodeLine{00138\ \ \ \ \ :\ \_parent\_t(l)}
+\DoxyCodeLine{00139\ \ \ \{\}}
+\DoxyCodeLine{00140\ \ \ \textcolor{comment}{//\ adds\ an\ item\ to\ the\ list\ and\ returns\ it's\ index}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordtype}{size\_t}\ Add(TypeClass*\ entry)\ \ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ sorted::Add(\_parent\_t::list,\ \_parent\_t::cmp,\ *entry);}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordtype}{size\_t}\ Add(TypeClass\&\ entry)\ \ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordflow}{return}\ sorted::Add(\_parent\_t::list,\ \_parent\_t::cmp,\ entry);}
+\DoxyCodeLine{00146\ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \textcolor{comment}{/*\ adds\ an\ item\ only\ if\ not\ already\ in\ the\ list,\ returns\ true\ if\ the\ item\ is}}
+\DoxyCodeLine{00148\ \textcolor{comment}{\ \ added,\ pos\ is\ is\ initialised\ with\ the\ item\ index,\ if\ item\ is\ already\ in\ the}}
+\DoxyCodeLine{00149\ \textcolor{comment}{\ \ list\ -\/\ it\ is\ deleted\ and\ the\ list\ will\ not\ be\ modified}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordtype}{bool}\ AddUnique(TypeClass*\ entry,\ \textcolor{keywordtype}{size\_t}*\ pos\ =\ 0)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ AddUnique(*entry,\ pos);}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordtype}{bool}\ AddUnique(TypeClass\&\ entry,\ \textcolor{keywordtype}{size\_t}*\ pos\ =\ 0)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{if}\ (sorted::AddUnique(\_parent\_t::list,\ \_parent\_t::cmp,\ entry,\ pos))\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00157\ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keyword}{delete}\ \&entry;}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00160\ \ \ \}}
+\DoxyCodeLine{00161\ \ \ SortedTypeList\&\ operator\ =\ (\textcolor{keyword}{const}\ SortedTypeList\&\ \_list)\ \ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \_parent\_t::operator\ =\ (\_list);}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ \};}
+\DoxyCodeLine{00166\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00167\ \textcolor{comment}{//\ a\ simple\ object\ list\ to\ use\ with\ sorted\ list}}
+\DoxyCodeLine{00168\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00169\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ObjectClass>\ \textcolor{keyword}{class\ }TObjectList\ \{}
+\DoxyCodeLine{00170\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<ObjectClass>}}\ list;}
+\DoxyCodeLine{00171\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00172\ \ \ TObjectList()\ \{\}}
+\DoxyCodeLine{00173\ \ \ TObjectList(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\ \&cap)}
+\DoxyCodeLine{00174\ \ \ \ \ :\ list(cap)}
+\DoxyCodeLine{00175\ \ \ \{\}}
+\DoxyCodeLine{00176\ \ \ TObjectList(\textcolor{keyword}{const}\ TObjectList\&\ li)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ SetCapacity(li.Count());}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ li.Count();\ i++)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ Add(li[i]);}
+\DoxyCodeLine{00180\ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \string~TObjectList()\ \ \{\ \ list.DeleteItems();\ \ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{void}\ TakeOver(TObjectList\ \&l,\ \textcolor{keywordtype}{bool}\ do\_delete=\textcolor{keyword}{false})\ \ \{}
+\DoxyCodeLine{00184\ \ \ \ \ list.TakeOver(l.list);}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_delete)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \textcolor{keyword}{delete}\&\ l;}
+\DoxyCodeLine{00187\ \ \ \ \ \}}
+\DoxyCodeLine{00188\ \ \ \}}
+\DoxyCodeLine{00189\ \ \ ObjectClass\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *list[i];\ \ \}}
+\DoxyCodeLine{00190\ \ \ ObjectClass\&\ GetLast()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *list.GetLast();\ \ \}}
+\DoxyCodeLine{00191\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ list.Count();\ \ \}}
+\DoxyCodeLine{00192\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ list.IsEmpty();\ \ \}}
+\DoxyCodeLine{00193\ \ \ TObjectList\&\ operator\ =\ (\textcolor{keyword}{const}\ TObjectList<ObjectClass>\&\ li)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ Clear();}
+\DoxyCodeLine{00195\ \ \ \ \ SetCapacity(li.Count());}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ li.Count();\ i++)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ Add(li[i]);}
+\DoxyCodeLine{00198\ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00200\ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \textcolor{keywordtype}{void}\ Add(\textcolor{keyword}{const}\ ObjectClass\&\ obj)\ \ \{\ \ list.Add(\textcolor{keyword}{new}\ ObjectClass(obj));\ \ \}}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{void}\ Insert(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keyword}{const}\ ObjectClass\&\ obj)\ \ \{}
+\DoxyCodeLine{00203\ \ \ \ \ list.Insert(index,\ \textcolor{keyword}{new}\ ObjectClass(obj));}
+\DoxyCodeLine{00204\ \ \ \}}
+\DoxyCodeLine{00205\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \ \{}
+\DoxyCodeLine{00206\ \ \ \ \ list.DeleteItems();}
+\DoxyCodeLine{00207\ \ \ \ \ list.Clear();}
+\DoxyCodeLine{00208\ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ ind)\ \ \{}
+\DoxyCodeLine{00210\ \ \ \ \ olx\_del\_obj(list[ind]);}
+\DoxyCodeLine{00211\ \ \ \ \ list.Delete(ind);}
+\DoxyCodeLine{00212\ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\ \&cap)\ \{\ list.SetCapacity(cap);\ \}}
+\DoxyCodeLine{00214\ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keywordtype}{size\_t}\ cap)\ \ \{\ \ list.SetCapacity(cap);\ \ \}}
+\DoxyCodeLine{00215\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{typedef}\ ObjectClass\ list\_item\_type;}
+\DoxyCodeLine{00217\ \};}
+\DoxyCodeLine{00218\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00219\ \textcolor{comment}{/*\ A\ choice\ of\ comprators\ is\ provided:}}
+\DoxyCodeLine{00220\ \textcolor{comment}{\ \ TPrimitiveComparator\ -\/\ for\ objects\ having\ <\ and\ >\ operators\ only}}
+\DoxyCodeLine{00221\ \textcolor{comment}{\ \ TComparableComparator\ -\/\ for\ objects\ having\ Compare\ method\ returning\ -\/,+,0}}
+\DoxyCodeLine{00222\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00223\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ObjectClass,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00224\ \textcolor{keyword}{class\ }SortedObjectList}
+\DoxyCodeLine{00225\ \ \ :\ \textcolor{keyword}{public}\ TTSortedList<TObjectList<ObjectClass>,\ Comparator,\ ObjectClass>\ \{}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{typedef}\ TTSortedList<TObjectList<ObjectClass>,\ Comparator,\ ObjectClass>}
+\DoxyCodeLine{00227\ \ \ \ \ \_parent\_t;}
+\DoxyCodeLine{00228\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00229\ \ \ SortedObjectList()\ \{\}}
+\DoxyCodeLine{00230\ \ \ SortedObjectList(\textcolor{keyword}{const}\ Comparator\ \&cmp)\ :}
+\DoxyCodeLine{00231\ \ \ \ \ \_parent\_t(cmp)}
+\DoxyCodeLine{00232\ \ \ \{\}}
+\DoxyCodeLine{00233\ \ \ SortedObjectList(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ cap)}
+\DoxyCodeLine{00234\ \ \ :\ \_parent\_t(cap)}
+\DoxyCodeLine{00235\ \ \ \{\}}
+\DoxyCodeLine{00236\ \ \ SortedObjectList(\textcolor{keyword}{const}\ Comparator\&\ cmp,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ cap)\ :}
+\DoxyCodeLine{00237\ \ \ \ \ \_parent\_t(cmp,\ cap)}
+\DoxyCodeLine{00238\ \ \ \{\}}
+\DoxyCodeLine{00239\ \ \ SortedObjectList(\textcolor{keyword}{const}\ SortedObjectList\&\ l)}
+\DoxyCodeLine{00240\ \ \ \ \ :\ \_parent\_t(l)}
+\DoxyCodeLine{00241\ \ \ \{\}}
+\DoxyCodeLine{00242\ \ \ SortedObjectList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstSortedObjectList}{ConstSortedObjectList<ObjectClass,Comparator>}}\&\ l)}
+\DoxyCodeLine{00243\ \ \ \ \ :\ \_parent\_t(l.obj().cmp)}
+\DoxyCodeLine{00244\ \ \ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \_parent\_t::TakeOver(l.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00246\ \ \ \}}
+\DoxyCodeLine{00247\ \ \ SortedObjectList\&\ operator\ =\ (\textcolor{keyword}{const}\ SortedObjectList\&\ l)\ \ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \_parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ \ \ SortedObjectList\&\ operator\ =\ (}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classConstSortedObjectList}{ConstSortedObjectList<ObjectClass,Comparator>}}\&\ l)}
+\DoxyCodeLine{00253\ \ \ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \_parent\_t::TakeOver(l.Release,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00256\ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ LT>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00258\ \ \ \ \ \mbox{\hyperlink{classConstSortedObjectList}{ConstSortedObjectList<ObjectClass,\ Comparator>}}\ FromList(\textcolor{keyword}{const}\ LT\ \&l)}
+\DoxyCodeLine{00259\ \ \ \{}
+\DoxyCodeLine{00260\ \ \ \ \ SortedObjectList\ rv;}
+\DoxyCodeLine{00261\ \ \ \ \ rv.SetCapacity(l.Count());}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ l.Count();\ i++)\ rv.Add(l[i]);}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00264\ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ LT,\ \textcolor{keyword}{class}\ accessor\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00266\ \ \ \ \ \mbox{\hyperlink{classConstSortedObjectList}{ConstSortedObjectList<ObjectClass,\ Comparator>}}\ FromList(\textcolor{keyword}{const}\ LT\ \&l,}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keyword}{const}\ accessor\_t\ \&accessor)}
+\DoxyCodeLine{00268\ \ \ \{}
+\DoxyCodeLine{00269\ \ \ \ \ SortedObjectList\ rv;}
+\DoxyCodeLine{00270\ \ \ \ \ rv.SetCapacity(l.Count());}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ l.Count();\ i++)\ rv.Add(accessor(l[i]));}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00273\ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstSortedObjectList}{ConstSortedObjectList<ObjectClass,\ Comparator>}}}
+\DoxyCodeLine{00275\ \ \ \ \ FromArray(\textcolor{keyword}{const}\ ObjectClass\ *a,\ \textcolor{keywordtype}{size\_t}\ sz)}
+\DoxyCodeLine{00276\ \ \ \{}
+\DoxyCodeLine{00277\ \ \ \ \ SortedObjectList\ rv;}
+\DoxyCodeLine{00278\ \ \ \ \ rv.SetCapacity(sz);}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ sz;\ i++)\ rv.Add(a[i]);}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00281\ \ \ \}}
+\DoxyCodeLine{00282\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00283\ \ \ \textcolor{keyword}{typedef}\ ObjectClass\ list\_item\_type;}
+\DoxyCodeLine{00284\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classConstSortedObjectList}{ConstSortedObjectList<ObjectClass,\ Comparator>}}\ cons\_list\_type;}
+\DoxyCodeLine{00285\ \};}
+\DoxyCodeLine{00286\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00287\ \textcolor{comment}{/*\ A\ choice\ of\ comprators\ is\ provided:}}
+\DoxyCodeLine{00288\ \textcolor{comment}{\ \ TPrimitiveComparator\ -\/\ for\ sorting\ Objects}}
+\DoxyCodeLine{00289\ \textcolor{comment}{\ \ TComparableComparator\ -\/\ for\ sorting\ objects\ having\ Compare\ method\ returning}}
+\DoxyCodeLine{00290\ \textcolor{comment}{\ \ -\/,+,0}}
+\DoxyCodeLine{00291\ \textcolor{comment}{\ \ TPointerComparator\ -\/\ for\ sorting\ pointer\ adresses}}
+\DoxyCodeLine{00292\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00293\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ObjectClass,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00294\ \textcolor{keyword}{class\ }SortedPointerList}
+\DoxyCodeLine{00295\ \ \ :\ \textcolor{keyword}{public}\ TTSortedList<TPtrList<ObjectClass>,\ Comparator,\ ObjectClass*>\ \{}
+\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{typedef}\ TTSortedList<TPtrList<ObjectClass>,\ Comparator,\ ObjectClass*>}
+\DoxyCodeLine{00297\ \ \ \ \ \_parent\_t;}
+\DoxyCodeLine{00298\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00299\ \ \ SortedPointerList()\ \{\}}
+\DoxyCodeLine{00300\ \ \ SortedPointerList(\textcolor{keyword}{const}\ Comparator\ \&cmp)}
+\DoxyCodeLine{00301\ \ \ \ \ :\ \_parent\_t(cmp)}
+\DoxyCodeLine{00302\ \ \ \{\}}
+\DoxyCodeLine{00303\ \ \ SortedPointerList(\textcolor{keyword}{const}\ SortedPointerList\&\ l)}
+\DoxyCodeLine{00304\ \ \ \ \ :\ \_parent\_t(l)}
+\DoxyCodeLine{00305\ \ \ \{\}}
+\DoxyCodeLine{00306\ \ \ SortedPointerList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstSortedPointerList}{ConstSortedPointerList<ObjectClass,Comparator>}}\&\ l)}
+\DoxyCodeLine{00307\ \ \ :\ \_parent\_t(l.obj().cmp)}
+\DoxyCodeLine{00308\ \ \ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \_parent\_t::TakeOver(l.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00310\ \ \ \}}
+\DoxyCodeLine{00311\ \ \ SortedPointerList\&\ operator\ =\ (\textcolor{keyword}{const}\ SortedPointerList\&\ l)\ \ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \_parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00314\ \ \ \}}
+\DoxyCodeLine{00315\ \ \ SortedPointerList\&\ operator\ =\ (}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classConstSortedPointerList}{ConstSortedPointerList<ObjectClass,Comparator>}}\&\ l)}
+\DoxyCodeLine{00317\ \ \ \{}
+\DoxyCodeLine{00318\ \ \ \ \ \_parent\_t::TakeOver(l.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00320\ \ \ \}}
+\DoxyCodeLine{00321\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ LT>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00322\ \ \ \ \ \mbox{\hyperlink{classConstSortedPointerList}{ConstSortedPointerList<ObjectClass,\ Comparator>}}\ FromList(\textcolor{keyword}{const}\ LT\ \&l)}
+\DoxyCodeLine{00323\ \ \ \{}
+\DoxyCodeLine{00324\ \ \ \ \ SortedPointerList\ rv;}
+\DoxyCodeLine{00325\ \ \ \ \ rv.SetCapacity(l.Count());}
+\DoxyCodeLine{00326\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ rv.Add(l[i]);}
+\DoxyCodeLine{00328\ \ \ \ \ \}}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00330\ \ \ \}}
+\DoxyCodeLine{00331\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ LT,\ \textcolor{keyword}{class}\ accessor\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00332\ \ \ \ \ \mbox{\hyperlink{classConstSortedPointerList}{ConstSortedPointerList<ObjectClass,\ Comparator>}}\ FromList(\textcolor{keyword}{const}\ LT\ \&l,}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keyword}{const}\ accessor\_t\ \&accessor,\ \textcolor{keyword}{const}\ Comparator\ \&cmp)}
+\DoxyCodeLine{00334\ \ \ \{}
+\DoxyCodeLine{00335\ \ \ \ \ SortedPointerList\ rv(cmp);}
+\DoxyCodeLine{00336\ \ \ \ \ rv.SetCapacity(l.Count());}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ rv.Add(accessor(l[i]));}
+\DoxyCodeLine{00339\ \ \ \ \ \}}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00341\ \ \ \}}
+\DoxyCodeLine{00342\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ LT,\ \textcolor{keyword}{class}\ accessor\_t>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00343\ \ \ \ \ \mbox{\hyperlink{classConstSortedPointerList}{ConstSortedPointerList<ObjectClass,\ Comparator>}}\ FromList(\textcolor{keyword}{const}\ LT\ \&l,}
+\DoxyCodeLine{00344\ \ \ \ \ \textcolor{keyword}{const}\ accessor\_t\ \&accessor)}
+\DoxyCodeLine{00345\ \ \ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ SortedPointerList\ rv;}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ rv.SetCapacity(l.Count());}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ rv.Add(accessor(l[i]));}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00352\ \ \ \ \ \}}
+\DoxyCodeLine{00353\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00354\ \ \ \textcolor{keyword}{typedef}\ ObjectClass\ *list\_item\_type;}
+\DoxyCodeLine{00355\ \};}
+\DoxyCodeLine{00356\ }
+\DoxyCodeLine{00357\ \textcolor{comment}{//\ ConstSortedObjectList}}
+\DoxyCodeLine{00358\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ obj\_t,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00359\ \textcolor{keyword}{class\ }ConstSortedObjectList}
+\DoxyCodeLine{00360\ \ \ :\ \textcolor{keyword}{public}\ const\_list<SortedObjectList<obj\_t,Comparator>\ >}
+\DoxyCodeLine{00361\ \{}
+\DoxyCodeLine{00362\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classSortedObjectList}{SortedObjectList<obj\_t,Comparator>}}\ list\_t;}
+\DoxyCodeLine{00363\ \ \ \textcolor{keyword}{typedef}\ const\_list<list\_t>\ parent\_t;}
+\DoxyCodeLine{00364\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00365\ \ \ ConstSortedObjectList(\textcolor{keyword}{const}\ ConstSortedObjectList\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00366\ \ \ ConstSortedObjectList(list\_t\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00367\ \ \ ConstSortedObjectList(list\_t\ *l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00368\ \ \ ConstSortedObjectList\ \&operator\ =\ (\textcolor{keyword}{const}\ ConstSortedObjectList\ \&l)\ \{}
+\DoxyCodeLine{00369\ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00371\ \ \ \}}
+\DoxyCodeLine{00372\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00373\ \ \ \textcolor{keyword}{typedef}\ obj\_t\ list\_item\_type;}
+\DoxyCodeLine{00374\ \};}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ \textcolor{comment}{//\ ConstSortedPointerList}}
+\DoxyCodeLine{00377\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ obj\_t,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00378\ \textcolor{keyword}{class\ }ConstSortedPointerList}
+\DoxyCodeLine{00379\ \ \ :\ \textcolor{keyword}{public}\ const\_list<SortedPointerList<obj\_t,Comparator>\ >}
+\DoxyCodeLine{00380\ \{}
+\DoxyCodeLine{00381\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classSortedPointerList}{SortedPointerList<obj\_t,Comparator>}}\ list\_t;}
+\DoxyCodeLine{00382\ \ \ \textcolor{keyword}{typedef}\ const\_list<list\_t>\ parent\_t;}
+\DoxyCodeLine{00383\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00384\ \ \ ConstSortedPointerList(\textcolor{keyword}{const}\ ConstSortedPointerList\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00385\ \ \ ConstSortedPointerList(list\_t\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00386\ \ \ ConstSortedPointerList(list\_t\ *l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00387\ \ \ ConstSortedPointerList\ \&operator\ =\ (\textcolor{keyword}{const}\ ConstSortedPointerList\ \&l)\ \{}
+\DoxyCodeLine{00388\ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00389\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00390\ \ \ \}}
+\DoxyCodeLine{00391\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00392\ \ \ \textcolor{keyword}{typedef}\ obj\_t\ list\_item\_type;}
+\DoxyCodeLine{00393\ \};}
+\DoxyCodeLine{00394\ }
+\DoxyCodeLine{00395\ \textcolor{keyword}{namespace\ }sorted\ \{}
+\DoxyCodeLine{00396\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ obj\_t>}
+\DoxyCodeLine{00397\ \ \ \textcolor{keyword}{class\ }ObjectPrimitive\ :\ \textcolor{keyword}{public}\ SortedObjectList<obj\_t,\ TPrimitiveComparator>}
+\DoxyCodeLine{00398\ \ \ \{}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keyword}{typedef}\ SortedObjectList<obj\_t,\ TPrimitiveComparator>\ parent\_t;}
+\DoxyCodeLine{00400\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00401\ \ \ \ \ ObjectPrimitive()\ \{\}}
+\DoxyCodeLine{00402\ \ \ \ \ ObjectPrimitive(\textcolor{keyword}{const}\ ObjectPrimitive\ \&l)}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ :\ parent\_t(l)}
+\DoxyCodeLine{00404\ \ \ \ \ \{\}}
+\DoxyCodeLine{00405\ \ \ \ \ ObjectPrimitive(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstSortedObjectList}{ConstSortedObjectList<obj\_t,\ TPrimitiveComparator>}}\ \&l)}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ :\ parent\_t(l)}
+\DoxyCodeLine{00407\ \ \ \ \ \{\}}
+\DoxyCodeLine{00408\ \ \ \ \ ObjectPrimitive\ \&\ operator\ =\ (\textcolor{keyword}{const}\ ObjectPrimitive\ \&l)\ \{}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00411\ \ \ \ \ \}}
+\DoxyCodeLine{00412\ \ \ \};}
+\DoxyCodeLine{00413\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ obj\_t>}
+\DoxyCodeLine{00414\ \ \ \textcolor{keyword}{class\ }ObjectComparable\ :\ \textcolor{keyword}{public}\ SortedObjectList<obj\_t,\ TComparableComparator>}
+\DoxyCodeLine{00415\ \ \ \{}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keyword}{typedef}\ SortedObjectList<obj\_t,\ TComparableComparator>\ parent\_t;}
+\DoxyCodeLine{00417\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00418\ \ \ \ \ ObjectComparable()\ \{\}}
+\DoxyCodeLine{00419\ \ \ \ \ ObjectComparable(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstSortedObjectList}{ConstSortedObjectList<obj\_t,\ TComparableComparator>}}\ \&l)}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ :\ parent\_t(l)}
+\DoxyCodeLine{00421\ \ \ \ \ \{\}}
+\DoxyCodeLine{00422\ \ \ \ \ ObjectComparable(\textcolor{keyword}{const}\ ObjectComparable\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00423\ \ \ \ \ ObjectComparable\ \&\ operator\ =\ (\textcolor{keyword}{const}\ ObjectComparable\ \&l)\ \{}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00426\ \ \ \ \ \}}
+\DoxyCodeLine{00427\ \ \ \};}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ptr\_t>}
+\DoxyCodeLine{00430\ \ \ \textcolor{keyword}{class\ }PointerPointer\ :\ \textcolor{keyword}{public}\ SortedPointerList<ptr\_t,\ TPointerComparator>}
+\DoxyCodeLine{00431\ \ \ \{}
+\DoxyCodeLine{00432\ \ \ \ \ \textcolor{keyword}{typedef}\ SortedPointerList<ptr\_t,\ TPointerComparator>\ parent\_t;}
+\DoxyCodeLine{00433\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00434\ \ \ \ \ PointerPointer()\ \{\}}
+\DoxyCodeLine{00435\ \ \ \ \ PointerPointer(\textcolor{keyword}{const}\ PointerPointer\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00436\ \ \ \ \ PointerPointer(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstSortedPointerList}{ConstSortedPointerList<ptr\_t,\ TPointerComparator>}}\ \&l)}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ :\ parent\_t(l)}
+\DoxyCodeLine{00438\ \ \ \ \ \{\}}
+\DoxyCodeLine{00439\ \ \ \ \ PointerPointer\ \&\ operator\ =\ (\textcolor{keyword}{const}\ PointerPointer\ \&l)\ \{}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00442\ \ \ \ \ \}}
+\DoxyCodeLine{00443\ \ \ \};}
+\DoxyCodeLine{00444\ }
+\DoxyCodeLine{00445\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ptr\_t>}
+\DoxyCodeLine{00446\ \ \ \textcolor{keyword}{class\ }PointerComparable\ :\ \textcolor{keyword}{public}\ SortedPointerList<ptr\_t,\ TComparableComparator>}
+\DoxyCodeLine{00447\ \ \ \{}
+\DoxyCodeLine{00448\ \ \ \ \ \textcolor{keyword}{typedef}\ SortedPointerList<ptr\_t,\ TComparableComparator>\ parent\_t;}
+\DoxyCodeLine{00449\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00450\ \ \ \ \ PointerComparable()\ \{\}}
+\DoxyCodeLine{00451\ \ \ \ \ PointerComparable(\textcolor{keyword}{const}\ PointerComparable\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00452\ \ \ \ \ PointerComparable(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstSortedPointerList}{ConstSortedPointerList<ptr\_t,\ TComparableComparator>}}\ \&l)}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ :\ parent\_t(l)}
+\DoxyCodeLine{00454\ \ \ \ \ \{\}}
+\DoxyCodeLine{00455\ \ \ \ \ PointerComparable\ \&\ operator\ =\ (\textcolor{keyword}{const}\ PointerComparable\ \&l)\ \{}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00458\ \ \ \ \ \}}
+\DoxyCodeLine{00459\ \ \ \};}
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00461\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ptr\_t>}
+\DoxyCodeLine{00462\ \ \ \textcolor{keyword}{class\ }PointerPrimitive\ :\ \textcolor{keyword}{public}\ SortedPointerList<ptr\_t,\ TPrimitiveComparator>}
+\DoxyCodeLine{00463\ \ \ \{}
+\DoxyCodeLine{00464\ \ \ \ \ \textcolor{keyword}{typedef}\ SortedPointerList<ptr\_t,\ TPrimitiveComparator>\ parent\_t;}
+\DoxyCodeLine{00465\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00466\ \ \ \ \ PointerPrimitive()\ \{\}}
+\DoxyCodeLine{00467\ \ \ \ \ PointerPrimitive(\textcolor{keyword}{const}\ PointerPrimitive\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00468\ \ \ \ \ PointerPrimitive(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstSortedPointerList}{ConstSortedPointerList<ptr\_t,\ TPrimitiveComparator>}}\ \&l)}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ :\ parent\_t(l)}
+\DoxyCodeLine{00470\ \ \ \ \ \{\}}
+\DoxyCodeLine{00471\ \ \ \ \ PointerPrimitive\ \&\ operator\ =\ (\textcolor{keyword}{const}\ PointerPrimitive\ \&l)\ \{}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00474\ \ \ \ \ \}}
+\DoxyCodeLine{00475\ \ \ \};}
+\DoxyCodeLine{00476\ }
+\DoxyCodeLine{00477\ \}}
+\DoxyCodeLine{00478\ }
+\DoxyCodeLine{00479\ EndEsdlNamespace()}
+\DoxyCodeLine{00480\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

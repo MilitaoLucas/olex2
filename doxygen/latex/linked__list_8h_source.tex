@@ -1,0 +1,125 @@
+\doxysection{linked\+\_\+list.\+h}
+\hypertarget{linked__list_8h_source}{}\label{linked__list_8h_source}\index{sdl/linked\_list.h@{sdl/linked\_list.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{/*\ primitive\ directional\ lists,\ the\ right\ cleanup\ class\ must\ be\ chosen\ to}}
+\DoxyCodeLine{00011\ \textcolor{comment}{avoid\ memory\ leaks!}}
+\DoxyCodeLine{00012\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_linked\_list\_H}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_linked\_list\_H}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00016\ BeginEsdlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ NewCleanup\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DoCleanup(T*\ v)\ \{\ \textcolor{keyword}{delete}\ v;\ \}}
+\DoxyCodeLine{00022\ \};}
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classFreeCleanup}{FreeCleanup}}\ \{}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DoCleanup(T*\ v)\ \{\ free(v);\ \}}
+\DoxyCodeLine{00027\ \};}
+\DoxyCodeLine{00028\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDummyCleanup}{DummyCleanup}}\ \{}
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DoCleanup(T\&\ v)\ \{\}}
+\DoxyCodeLine{00032\ \};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ primitive\ linked\ list}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{class}\ cleanupClass=DummyCleanup>}
+\DoxyCodeLine{00036\ \textcolor{keyword}{class\ }TLinkedList\ \{}
+\DoxyCodeLine{00037\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{struct\ }Entry\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ T\ data;}
+\DoxyCodeLine{00040\ \ \ \ \ Entry*\ next;}
+\DoxyCodeLine{00041\ \ \ \ \ Entry(T\&\ d)\ :\ data(d),\ next(0)\ \{\}}
+\DoxyCodeLine{00042\ \ \ \ \ \string~Entry()\ \{\ cleanupClass::DoCleanup(data);\ \}}
+\DoxyCodeLine{00043\ \ \ \};}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{size\_t}\ count;}
+\DoxyCodeLine{00045\ \ \ \mbox{\hyperlink{structTLinkedList_1_1Entry}{Entry}}\ *first,\ *last;}
+\DoxyCodeLine{00046\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00047\ \ \ TLinkedList()\ :\ count(0),\ first(0),\ last(0)\ \{\}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTLinkedList}{\string~TLinkedList}}()\ \{\ Clear();\ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (first\ ==\ 0)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \mbox{\hyperlink{structTLinkedList_1_1Entry}{Entry}}\ *cur\ =\ first-\/>next;}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{while}\ (cur\ !=\ 0)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ last\ =\ cur-\/>next;}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ cur;}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ cur\ =\ last;}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{delete}\ first;}
+\DoxyCodeLine{00060\ \ \ \ \ first\ =\ last\ =\ 0;}
+\DoxyCodeLine{00061\ \ \ \ \ count\ =\ 0;}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ \ \ T\&\ Add(T\ v)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{if}\ (first\ ==\ 0)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ last\ =\ first\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTLinkedList_1_1Entry}{Entry}}(v);}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ last-\/>next\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTLinkedList_1_1Entry}{Entry}}(v);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ last\ =\ last-\/>next;}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ count++;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{return}\ last-\/>data;}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T1>}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{void}\ AddAll(\textcolor{keyword}{const}\ T1\ *all,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sz;\ i++)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ Add(all[i]);}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ AddAll(\textcolor{keyword}{const}\ list\_t\ \&all)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ all.Count();\ i++)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ Add(all[i]);}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{struct\ }Iterator\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{const}\ TLinkedList\ \&parent;}
+\DoxyCodeLine{00091\ \ \ \ \ \mbox{\hyperlink{structTLinkedList_1_1Entry}{Entry}}\ *cur;}
+\DoxyCodeLine{00092\ \ \ \ \ Iterator(\textcolor{keyword}{const}\ TLinkedList\ \&\_parent)\ :\ parent(\_parent),\ cur(0)\ \{\}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{bool}\ HasNext()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (cur\ ==\ 0\ ?\ parent.first\ :\ cur-\/>next)\ !=\ 0;}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ cur\ ==\ 0;\ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent.count;\ \}}
+\DoxyCodeLine{00098\ \ \ \ \ T\&\ Next()\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cur\ !=\ 0)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ cur\ =\ cur-\/>next;}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ cur\ =\ parent.first;}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cur\ ==\ 0)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ TExceptionBase::ThrowFunctionFailed(\_\_POlxSourceInfo,}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}end\ of\ the\ list"{}});}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cur-\/>data;}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \};}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \mbox{\hyperlink{structTLinkedList_1_1Iterator}{Iterator}}\ GetIterator()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structTLinkedList_1_1Iterator}{Iterator}}(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00114\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{typedef}\ T\ list\_item\_type;}
+\DoxyCodeLine{00116\ \};}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ EndEsdlNamespace()}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

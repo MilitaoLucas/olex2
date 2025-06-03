@@ -1,0 +1,108 @@
+\doxysection{integration.\+h}
+\hypertarget{integration_8h_source}{}\label{integration_8h_source}\index{sdl/integration.h@{sdl/integration.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sld\_integration\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sld\_integration\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#ifdef\ HAVE\_GCCVISIBILITYPATCH}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\ \ \#define\ DllExport\ \_\_attribute\_\_\ ((visibility("{}default"{})))}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \#ifdef\ \_MSC\_VER}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \ \ \#define\ DllImport\ \ \ \_\_declspec(\ dllimport\ )}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\ \ \ \ \#define\ DllExport\ \ \ \_\_declspec(\ dllexport\ )}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\ \ \#ifdef\ \_\_BORLANDC\_\_}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\ \ \ \ \#define\ DllExport\ \_\_export}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\ \ \#ifdef\ \_\_GNUC\_\_}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\ \ \ \ \#define\ DllExport}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }olex2\ \{}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \textcolor{comment}{//\ this\ can\ be\ safelly\ used\ in\ DLLs}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classolex2_1_1IDllOlex2}{IDllOlex2}}\ \{}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structolx__dll__ptr}{olx\_dll\_ptr<olxch>}}\ process\_function(\textcolor{keyword}{const}\ olxch\ *f)\ =\ 0;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ process\_macro(\textcolor{keyword}{const}\ olxch\ *m)\ =\ 0;}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ log\_message(\textcolor{keyword}{const}\ olxch\ *m,\ \textcolor{keywordtype}{int}\ level)\ =\ 0;}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ extend\_macros(\textcolor{keyword}{const}\ olxch\ *name,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ (*func)(uint32\_t,\ \textcolor{keyword}{const}\ olxch\ **,\ \textcolor{keywordtype}{void}\ *),}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *instance)\ =\ 0;}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ extend\_functions(\textcolor{keyword}{const}\ olxch\ *name,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \mbox{\hyperlink{structolx__dll__ptr}{olx\_dll\_ptr<olxch>}}\ (*func)(uint32\_t,\ \textcolor{keyword}{const}\ olxch\ **,\ \textcolor{keywordtype}{void}\ *),}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *instance)\ =\ 0;}
+\DoxyCodeLine{00044\ \ \ \};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{class\ }IOlex2Processor\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classolex2_1_1IDllOlex2}{IDllOlex2}}\ \{}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00048\ \ \ \ \ IOlex2Processor()\ \{\ GetInstance()\ =\ \textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~IOlex2Processor()\ \{\}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ uses\ custom\ macro\ error\ to\ set\ args,\ get\ rv}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ processMacro(\textcolor{keyword}{const}\ olxstr\&\ cmdLine,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&location=EmptyString(),\ \textcolor{keywordtype}{bool}\ quiet=\textcolor{keyword}{false})\ =\ 0;}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ processMacroEx(\textcolor{keyword}{const}\ olxstr\&\ cmdLine,}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ err,\ \textcolor{keyword}{const}\ olxstr\ \&location=EmptyString(),}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ quiet=\textcolor{keyword}{false})\ =\ 0;}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ processMacroExt(\textcolor{keyword}{const}\ olxstr\&\ cmd,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ TStrObjList\&\ args,\ \textcolor{keyword}{const}\ TParamList\&\ options,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ me,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ location\ =\ EmptyString(),\ \textcolor{keywordtype}{bool}\ quiet\ =\ \textcolor{keyword}{false})\ =\ 0;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ processFunction(olxstr\&\ cmdl,}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&location=EmptyString(),\ \textcolor{keywordtype}{bool}\ quiet=\textcolor{keyword}{false})\ =\ 0;}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ registerCallbackFunc(\textcolor{keyword}{const}\ olxstr\&\ cbEvent,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \mbox{\hyperlink{classABasicFunction}{ABasicFunction}}*\ fn)\ =\ 0;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ unregisterCallbackFunc(\textcolor{keyword}{const}\ olxstr\&\ cbEvent,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ funcName)\ =\ 0;}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ callCallbackFunc(\textcolor{keyword}{const}\ olxstr\&\ cbEvent,}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ params)\ =\ 0;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTLibrary}{TLibrary}}\&\ \ GetLibrary()\ =\ 0;}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//IDllOlex2\ implementation}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structolx__dll__ptr}{olx\_dll\_ptr<olxch>}}\ process\_function(\textcolor{keyword}{const}\ olxch\ *f);}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ process\_macro(\textcolor{keyword}{const}\ olxch\ *m);}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{comment}{//\ lvele\ is\ onr\ of\ logInfo/logWarning/logError/logException/logDefault}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ log\_message(\textcolor{keyword}{const}\ olxch\ *m,\ \textcolor{keywordtype}{int}\ level=logDefault);}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ extend\_macros(\textcolor{keyword}{const}\ olxch\ *name,}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ (*func)(uint32\_t,\ \textcolor{keyword}{const}\ olxch\ **,\ \textcolor{keywordtype}{void}\ *),}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *instance);}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ extend\_functions(\textcolor{keyword}{const}\ olxch\ *name,}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \mbox{\hyperlink{structolx__dll__ptr}{olx\_dll\_ptr<olxch>}}\ (*func)(uint32\_t,\ \textcolor{keyword}{const}\ olxch\ **,\ \textcolor{keywordtype}{void}\ *),}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *instance);}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{static}\ IOlex2Processor\ *\&GetInstance()\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keyword}{static}\ IOlex2Processor*\ Instance=0;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Instance;}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{class\ }IOlex2Runnable\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00092\ \ \ \ \ IOlex2Runnable()}
+\DoxyCodeLine{00093\ \ \ \ \ \{\}}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{comment}{/*\ if\ run\ returns\ true\ -\/\ the\ library\ can\ be\ unloaded,\ otherwise\ */}}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Initialise(\mbox{\hyperlink{classolex2_1_1IDllOlex2}{IDllOlex2}}\ *dll\_olex2\_inst)\ =\ 0;}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Finalise()\ =\ 0;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \};}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//............................................................................}}
+\DoxyCodeLine{00100\ \};\ \ \textcolor{comment}{//\ end\ namespace\ olex}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

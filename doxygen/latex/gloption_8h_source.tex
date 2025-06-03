@@ -1,0 +1,204 @@
+\doxysection{gloption.\+h}
+\hypertarget{gloption_8h_source}{}\label{gloption_8h_source}\index{glib/gloption.h@{glib/gloption.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_option\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_option\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <wx/colour.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00017\ BeginGlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ class\ TGlOption\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{float}\ data[4];}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ TGlOption()\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ data[0]\ =\ data[1]\ =\ data[2]\ =\ 0;}
+\DoxyCodeLine{00024\ \ \ \ \ data[3]\ =\ 1;}
+\DoxyCodeLine{00025\ \ \ \}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ft>\ TGlOption(ft\ r,\ ft\ g,\ ft\ b,\ ft\ a\ =\ 1.0)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ data[0]\ =\ (float)r;}
+\DoxyCodeLine{00028\ \ \ \ \ data[1]\ =\ (float)g;}
+\DoxyCodeLine{00029\ \ \ \ \ data[2]\ =\ (float)b;}
+\DoxyCodeLine{00030\ \ \ \ \ data[3]\ =\ (float)a;}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ \ \ TGlOption(\textcolor{keyword}{const}\ TGlOption\&\ o)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ *\textcolor{keyword}{this}\ =\ o;}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ \ \ TGlOption(uint32\_t\ rgba)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ *\textcolor{keyword}{this}\ =\ rgba;}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00040\ \ \ TGlOption(\textcolor{keyword}{const}\ wxColour\ \&cl)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ *\textcolor{keyword}{this}\ =\ cl.GetRGBA();}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{operator}\ wxColor\ ()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{return}\ wx();}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ TGlOption\&\ operator\ =\ (\textcolor{keyword}{const}\ wxColor\ \&cl)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ this-\/>operator\ =\ (cl.GetRGBA());}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ TGlOption\&\ operator\ =\ (\textcolor{keyword}{const}\ TGlOption\&\ o)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ memcpy(\&data[0],\ \&o.data[0],\ 4\ *\ \textcolor{keyword}{sizeof}(data[0]));}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ TGlOption\&\ operator\ =\ (uint32\_t\ c)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ data[0]\ =\ (float)OLX\_GetRValue(c)\ /\ 255;}
+\DoxyCodeLine{00061\ \ \ \ \ data[1]\ =\ (float)OLX\_GetGValue(c)\ /\ 255;}
+\DoxyCodeLine{00062\ \ \ \ \ data[2]\ =\ (float)OLX\_GetBValue(c)\ /\ 255;}
+\DoxyCodeLine{00063\ \ \ \ \ data[3]\ =\ (float)OLX\_GetAValue(c)\ /\ 255;}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ft>\ TGlOption\&\ operator\ =\ (\textcolor{keyword}{const}\ ft*\ c)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ data[0]\ =\ (float)c[0];}
+\DoxyCodeLine{00069\ \ \ \ \ data[1]\ =\ (float)c[1];}
+\DoxyCodeLine{00070\ \ \ \ \ data[2]\ =\ (float)c[2];}
+\DoxyCodeLine{00071\ \ \ \ \ data[3]\ =\ (float)c[3];}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ use\ the\ FromString\ instead\ if\ error\ handling\ is\ needed}}
+\DoxyCodeLine{00076\ \ \ TGlOption\&\ operator\ =\ (\textcolor{keyword}{const}\ olxstr\&\ v)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ FromString(v);}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ft>\ TGlOption\&\ operator\ *=\ (ft\ v)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ data[0]\ =\ (float)(data[0]\ *\ v);}
+\DoxyCodeLine{00083\ \ \ \ \ data[1]\ =\ (float)(data[1]\ *\ v);}
+\DoxyCodeLine{00084\ \ \ \ \ data[2]\ =\ (float)(data[2]\ *\ v);}
+\DoxyCodeLine{00085\ \ \ \ \ data[3]\ =\ (float)(data[3]\ *\ v);}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ft>\ TGlOption\ operator\ *\ (ft\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ TGlOption(data[0]\ *\ v,\ data[1]\ *\ v,\ data[2]\ *\ v,\ data[3]\ *\ v);}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ TGlOption\ operator\ +\ (\textcolor{keyword}{const}\ TGlOption\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ TGlOption(data[0]\ +\ v[0],}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ data[1]\ +\ v[1],}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ data[2]\ +\ v[2],}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ data[3]\ +\ v[3]);}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ TGlOption\&\ operator\ -\/=\ (\textcolor{keyword}{const}\ TGlOption\&\ v)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ data[0]\ -\/=\ v[0];}
+\DoxyCodeLine{00102\ \ \ \ \ data[1]\ -\/=\ v[1];}
+\DoxyCodeLine{00103\ \ \ \ \ data[2]\ -\/=\ v[2];}
+\DoxyCodeLine{00104\ \ \ \ \ data[3]\ -\/=\ v[3];}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ TGlOption\&\ operator\ +=\ (\textcolor{keyword}{const}\ TGlOption\&\ v)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ data[0]\ +=\ v[0];}
+\DoxyCodeLine{00110\ \ \ \ \ data[1]\ +=\ v[1];}
+\DoxyCodeLine{00111\ \ \ \ \ data[2]\ +=\ v[2];}
+\DoxyCodeLine{00112\ \ \ \ \ data[3]\ +=\ v[3];}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ uint32\_t\ GetRGB()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ (uint32\_t)OLX\_RGBA(}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ 255\ *\ data[0],}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ 255\ *\ data[1],}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ 255\ *\ data[2],}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ 255\ *\ data[3]);}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ Data()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data;\ \}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{float}*\ \_Data()\ \{\ \textcolor{keywordflow}{return}\ data;\ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{bool}\ IsBlack()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ (data[0]\ ==\ 0\ \&\&\ data[1]\ ==\ 0\ \&\&\ data[2]\ ==\ 0);}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ \ \ }
+\DoxyCodeLine{00132\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ data[0]\ =\ data[1]\ =\ data[2]\ =\ data[3]\ =\ 0;}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \textcolor{keywordtype}{float}\&\ operator[]\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\&\ operator[]\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TGlOption\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{return}\ EqualsRGBA(v);}
+\DoxyCodeLine{00141\ \ \ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ TGlOption\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{return}\ !EqualsRGBA(v);}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{bool}\ EqualsRGBA(\textcolor{keyword}{const}\ TGlOption\&\ v,\ \textcolor{keywordtype}{float}\ eps=3.0e-\/3f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{return}\ EqualsRGB(v)\ \&\&\ olx\_abs(data[3]\ -\/\ v[3])\ <\ eps;}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordtype}{bool}\ EqualsRGB(\textcolor{keyword}{const}\ TGlOption\&\ v,\ \textcolor{keywordtype}{float}\ eps=3.0e-\/3f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ olx\_abs(data[0]\ -\/\ v[0])\ <\ eps\ \&\&}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ olx\_abs(data[1]\ -\/\ v[1])\ <\ eps\ \&\&}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ olx\_abs(data[2]\ -\/\ v[2])\ <\ eps;}
+\DoxyCodeLine{00156\ \ \ \}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ TGlOption\ \&o)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ v\ =\ olx\_cmp\_float(data[i],\ o.data[i],\ 3.0e-\/3f);}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ !=\ 0)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00166\ \ \ \}}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \textcolor{keywordtype}{bool}\ IsGrey()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_abs(data[0]\ -\/\ data[1])\ <\ 3e-\/3f\ \&\&}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ olx\_abs(data[0]\ -\/\ data[2])\ <\ 3e-\/3f;}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \textcolor{keywordtype}{float}\ GetMean()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (data[0]\ +\ data[1]\ +\ data[2])\ /\ 3.0f;\ \}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//\ scales\ the\ values\ to\ max\ of\ 1}}
+\DoxyCodeLine{00176\ \ \ TGlOption\ \&Scale()\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordtype}{float}\ mx\ =\ olx\_max(data[0],\ data[1]);}
+\DoxyCodeLine{00178\ \ \ \ \ mx\ =\ olx\_max(data[2],\ mx);}
+\DoxyCodeLine{00179\ \ \ \ \ mx\ =\ olx\_max(data[3],\ mx);}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{if}\ (mx\ !=\ 0)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ data[0]\ /=\ mx;\ data[1]\ /=\ mx;\ data[2]\ /=\ mx;\ data[3]\ /=\ mx;}
+\DoxyCodeLine{00182\ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00184\ \ \ \}}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ TIString\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{bool}\ FromString(\textcolor{keyword}{const}\ olxstr\&\ S);}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00190\ \ \ wxColour\ wx()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{return}\ wxColour(GetRGB());}
+\DoxyCodeLine{00192\ \ \ \}}
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \};}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ EndGlNamespace()}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

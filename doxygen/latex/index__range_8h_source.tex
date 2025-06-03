@@ -1,0 +1,171 @@
+\doxysection{index\+\_\+range.\+h}
+\hypertarget{index__range_8h_source}{}\label{index__range_8h_source}\index{sdl/index\_range.h@{sdl/index\_range.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_index\_range\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_index\_range\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}citem.h"{}}}
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{/*\ a\ class\ to\ represent\ a\ list\ of\ (partly)\ sequential\ indices\ with\ sequences}}
+\DoxyCodeLine{00018\ \textcolor{comment}{presented\ only\ by\ the\ boundary\ indices.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00020\ struct\ IndexRange\ \ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{struct\ }RangeItr\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ TStrList\ toks;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i,\ start,\ end;}
+\DoxyCodeLine{00024\ \ \ \ \ RangeItr(\textcolor{keyword}{const}\ olxstr\&\ r)\ :\ toks(r,\ \textcolor{stringliteral}{','}),\ i(0),\ start(1),\ end(0)\ \ \{\}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{bool}\ HasNext()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (toks.Count()\ >\ i\ ||\ start\ <=\ end);\ \ \}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Next()\ \ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ start\ <=\ end\ )\ \ \{\ \ \textcolor{keywordflow}{return}\ start++;\ \ \}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ s\ =\ toks[i++];}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ hp\ =\ s.FirstIndexOf(\textcolor{charliteral}{'-\/'});}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ hp\ !=\ InvalidIndex\ )\ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ start\ =\ s.SubStringTo(hp).ToSizeT();}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ end\ =\ s.SubStringFrom(hp+1).ToSizeT();}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ start\ >=\ end\ )}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}start>=end"{}});}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ start++;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ s.ToSizeT();}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ CalcSize()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ sz\ =\ 0;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ \_i=0;\ \_i\ <\ toks.Count();\ \_i++\ )\ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ pos\ =\ toks[\_i].FirstIndexOf(\textcolor{charliteral}{'-\/'});}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ pos\ !=\ InvalidIndex\ )}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ sz\ +=\ (toks[\_i].SubStringFrom(pos+1).ToSizeT()-\/toks[\_i].SubStringTo(pos).ToSizeT()+1);}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ sz++;}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sz;}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \};}
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{//\ preferred\ way\ -\/\ no\ intermediate\ index\ storage\ is\ required}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{static}\ RangeItr\ GetIterator(\textcolor{keyword}{const}\ olxstr\&\ r)\ \ \{\ \ \textcolor{keywordflow}{return}\ RangeItr(r);\ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{static}\ TSizeList\&\ FromString(\textcolor{keyword}{const}\ olxstr\&\ range,\ TSizeList\&\ list)\ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ TStrList\ toks(range,\ \textcolor{charliteral}{','});}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ toks.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ pos\ =\ toks[i].FirstIndexOf(\textcolor{charliteral}{'-\/'});}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ pos\ !=\ InvalidIndex\ )\ \ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ start\ =\ toks[i].SubStringTo(pos).ToSizeT();}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ end\ =\ toks[i].SubStringFrom(pos+1).ToSizeT();}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ list.SetCapacity(list.Count()+end-\/start+(toks.Count()-\/i));}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=start;\ j\ <=\ end;\ j++\ )}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ list.Add(j);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ list.Add(toks[i].ToSizeT());}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{return}\ list;}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{static}\ TSizeList::const\_list\_type\ FromString(\textcolor{keyword}{const}\ olxstr\&\ range)\ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ TSizeList\ l;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{return}\ FromString(range,\ l);}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{static}\ olxstr\ ToString(\textcolor{keyword}{const}\ TSizeList\&\ list)\ \ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{return}\ ToString(list,\ ListAccessor(list));}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{class\ }Builder\ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ olxstr\ range;}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ last;}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{bool}\ last\_written;}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{bool}\ check\_last(\textcolor{keywordtype}{size\_t}\ v)\ \ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ last\ !=\ InvalidIndex\ )\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ last+1\ ==\ v\ )\ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ last\ =\ v;}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ last\_written\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ last\_written\ )\ \ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ v\ !=\ InvalidIndex\ )}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ range\ <<\ \textcolor{charliteral}{','}\ <<\ v;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ last\ =\ v;}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ range\ <<\ \textcolor{charliteral}{'-\/'}\ <<\ last;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ v\ !=\ InvalidIndex\ )}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ range\ <<\ \textcolor{charliteral}{','}\ <<\ v;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ last\ =\ v;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ last\_written\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00106\ \ \ \ \ Builder()\ :\ last(InvalidIndex),\ last\_written(false)\ \ \{\}}
+\DoxyCodeLine{00107\ \ \ \ \ Builder\&\ operator\ <<\ (\textcolor{keywordtype}{size\_t}\ v)\ \ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !check\_last(v)\ )\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !range.IsEmpty()\ )}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ range\ <<\ \textcolor{charliteral}{','};}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ range\ <<\ v;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ last\ =\ v;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ last\_written\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ olxstr\ GetString(\textcolor{keywordtype}{bool}\ reset=\textcolor{keyword}{false})\ \ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ check\_last(InvalidIndex);}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ olxstr\ rv\ =\ range;}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ reset\ )}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ Reset();}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{/*\ resets\ the\ object\ and\ returns\ the\ accumulated\ result}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00126\ \ \ \ \ olxstr\ Reset()\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ olxstr\ rv\ =\ range;}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ range.SetLength(0);}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ last\ =\ InvalidIndex;}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ last\_written\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00132\ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \};}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{static}\ olxstr\ ToString(\textcolor{keyword}{const}\ list\_t\&\ list,\ \textcolor{keyword}{const}\ accessor\_t\&\ acc)\ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ olxstr\ rv;}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ list.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i+1\ ==\ list.Count()\ )}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (rv\ <<\ acc(list[i]));}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ j\ =\ 1;}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ list[i]\ ==\ (acc(list[i+j])-\/j)\ )\ \ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ j++;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (j\ +\ i)\ >=\ (list.Count()-\/1)\ )\ \ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ !=\ (j+i-\/1)\ )}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (rv\ <<\ acc(list[i])\ <<\ \textcolor{charliteral}{'-\/'}\ <<\ acc(list[j+i]));}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (rv\ <<\ acc(list[i]));}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ j\ ==\ 1\ )}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ rv\ <<\ acc(list[i]);}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ rv\ <<\ acc(list[i])\ <<\ \ \textcolor{charliteral}{'-\/'};}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ i\ +=\ (j\ -\/\ 1);}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ rv\ <<\ acc(list[i]);}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i+1\ <\ list.Count()\ )}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ rv\ <<\ \textcolor{charliteral}{','};}
+\DoxyCodeLine{00159\ \ \ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00161\ \ \ \}}
+\DoxyCodeLine{00162\ \};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ EndEsdlNamespace()}
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

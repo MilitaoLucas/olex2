@@ -1,0 +1,86 @@
+\doxysection{xplane.\+h}
+\hypertarget{xplane_8h_source}{}\label{xplane_8h_source}\index{gxlib/xplane.h@{gxlib/xplane.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxl\_xplane\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxl\_xplane\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glrender.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}gdrawobject.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}splane.h"{}}}
+\DoxyCodeLine{00016\ BeginGxlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ TXPlane\ :\ public\ \mbox{\hyperlink{classTSPlane}{TSPlane}},\ public\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00020\ \ \ mat3d\ RM;}
+\DoxyCodeLine{00021\ \ \ vec3d\ MaxV;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{double}\ normalScale;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ TXPlane(\mbox{\hyperlink{classTNetwork}{TNetwork}}*\ net,\ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName)}
+\DoxyCodeLine{00025\ \ \ \ \ :\ \mbox{\hyperlink{classTSPlane}{TSPlane}}(net),}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}(Render,\ collectionName),}
+\DoxyCodeLine{00027\ \ \ \ \ normalScale(1.5)}
+\DoxyCodeLine{00028\ \ \ \{\}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \string~TXPlane()\ \{\}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName\ =\ EmptyString());}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\ \&,\ vec3d\ \&)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ ListPrimitives(TStrList\&\ List)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{/*\ Inverts\ the\ plane\ normal\ */}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ Invert();}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{bool}\ OnMouseDown(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\ \&)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\ \&)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{bool}\ OnMouseMove(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\ \&)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{bool}\ v)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ TSPlane::SetDeleted(v);}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{if}\ (v)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ SetVisible(\textcolor{keyword}{false});}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{virtual}\ vec3d\ CalcCenter()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetCenter();\ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ const\_strlist\ ToPov(\mbox{\hyperlink{classolx__cdict}{olx\_cdict<TGlMaterial,\ olxstr>}}\ \&materials)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ const\_strlist\ PovDeclare();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ const\_strlist\ ToWrl(\mbox{\hyperlink{classolx__cdict}{olx\_cdict<TGlMaterial,\ olxstr>}}\ \&materials)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{static}\ const\_strlist\ WrlDeclare(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\ \&);}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<size\_t,\ olxstr>}}\ \&NamesRegistry()\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<size\_t,\ olxstr>}}\ nr;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ nr;}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{double}\ GetNormalScale()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ normalScale;}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ SetNormalScale(\textcolor{keywordtype}{double}\ sn);}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app);}
+\DoxyCodeLine{00074\ \};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TXPlane>}}\ TXPlaneList;}
+\DoxyCodeLine{00077\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TXPlane>}}\ TXPlanePList;}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ EndGxlNamespace()}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,91 @@
+\doxysection{dunitcell.\+h}
+\hypertarget{dunitcell_8h_source}{}\label{dunitcell_8h_source}\index{gxlib/dunitcell.h@{gxlib/dunitcell.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxl\_dunitcell\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxl\_dunitcell\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}gllabel.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}glprimitive.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}asymmunit.h"{}}}
+\DoxyCodeLine{00016\ BeginGxlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ TDUnitCell:\ public\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{bool}\ Reciprocal;}
+\DoxyCodeLine{00020\ \ \ mat3d\ CellToCartesian,\ HklToCartesian;}
+\DoxyCodeLine{00021\ \ \ TXGlLabel*\ Labels[4];}
+\DoxyCodeLine{00022\ \ \ vec3d\_alist\ Edges;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{double}\ Thickness;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{void}\ ExpandEdges();}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ TDUnitCell(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName);}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{virtual}\ \string~TDUnitCell();}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ 6\ parameters\ are\ expected}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}\ Init(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ *cell\_params);}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{void}\ Init(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au);}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ UpdateLabel();}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{size\_t}\ LabelCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ 4;\ \ \}}
+\DoxyCodeLine{00033\ \ \ TXGlLabel\&\ GetLabel(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Labels[i];\ \ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName=EmptyString());}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\ \&Max,\ vec3d\ \&Min);}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ ListPrimitives(TStrList\ \&List)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{void}\ UpdatePrimitives(int32\_t\ Mask);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{size\_t}\ VertexCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Edges.IsEmpty()\ ?\ 0\ :\ 8;\ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetVertex(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{if}\ (Edges.IsEmpty())}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}uninitialised\ object"{}});}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{switch}(i)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 0:\ \ \textcolor{keywordflow}{return}\ Edges[0];\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 1:\ \ \textcolor{keywordflow}{return}\ Edges[1];\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 2:\ \ \textcolor{keywordflow}{return}\ Edges[3];\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 3:\ \ \textcolor{keywordflow}{return}\ Edges[5];\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 4:\ \ \textcolor{keywordflow}{return}\ Edges[7];\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 5:\ \ \textcolor{keywordflow}{return}\ Edges[9];\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 6:\ \ \textcolor{keywordflow}{return}\ Edges[13];\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 7:\ \ \textcolor{keywordflow}{return}\ Edges[19];\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}vertex\ index"{}});}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{size\_t}\ EdgeCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Edges.Count();\ \}}
+\DoxyCodeLine{00058\ \ \ vec3d\&\ GetEdge(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ Edges[i];\ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetEdge(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Edges[i];\ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{void}\ Translate(\textcolor{keyword}{const}\ vec3d\ \&t)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Edges.Count();\ i++)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ Edges[i]\ +=\ t;}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ Update();}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{void}\ Update();}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{bool}\ IsReciprocal()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Reciprocal;\ \}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{void}\ SetReciprocal(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keywordtype}{double}\ scale=1);}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetCellToCartesian()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ CellToCartesian;\ \ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetHklToCartesian()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ HklToCartesian;\ \ \}}
+\DoxyCodeLine{00072\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Thickness)}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di);}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{void}\ funThickness(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ funDrawstyle(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00078\ \ \ \mbox{\hyperlink{classTLibrary}{TLibrary}}\ *ExportLibrary(\textcolor{keyword}{const}\ olxstr\ \&name\ =\ EmptyString());}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ const\_strlist\ ToPov(\mbox{\hyperlink{classolx__cdict}{olx\_cdict<TGlMaterial,\ olxstr>}}\ \&materials)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00081\ \ \ const\_strlist\ ToWrl(\mbox{\hyperlink{classolx__cdict}{olx\_cdict<TGlMaterial,\ olxstr>}}\ \&materials)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00082\ \};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ EndGxlNamespace()}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

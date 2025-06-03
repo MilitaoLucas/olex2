@@ -1,0 +1,380 @@
+\doxysection{sfutil.\+h}
+\hypertarget{sfutil_8h_source}{}\label{sfutil_8h_source}\index{xlib/sfutil.h@{xlib/sfutil.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_structure\_factor\_h}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_structure\_factor\_h}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xapp.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}fastsymm.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}symmlib.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}chemdata.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}xscatterer.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}olxmps.h"{}}}
+\DoxyCodeLine{00019\ BeginXlibNamespace()}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ namespace\ SFUtil\ \{}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ mapTypeDiff\ =\ 0,\ \ \textcolor{comment}{//\ map\ type}}
+\DoxyCodeLine{00024\ \ \ \ \ mapTypeObs\ =\ 1,}
+\DoxyCodeLine{00025\ \ \ \ \ mapTypeCalc\ =\ 2,}
+\DoxyCodeLine{00026\ \ \ \ \ mapType2OmC\ =\ 3;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ scaleSigma\ =\ 0,\ \ \textcolor{comment}{//\ scale\ for\ difference\ map}}
+\DoxyCodeLine{00028\ \ \ \ \ scaleShelx\ =\ 1,}
+\DoxyCodeLine{00029\ \ \ \ \ scaleExternal\ =\ 2,}
+\DoxyCodeLine{00030\ \ \ \ \ scaleExternalForced\ =\ 3;}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ sfOriginFcf\ =\ 0,\ \ \textcolor{comment}{//\ structure\ factor\ origin}}
+\DoxyCodeLine{00032\ \ \ \ \ sfOriginOlex2\ =\ 1;}
+\DoxyCodeLine{00033\ \ \ \textcolor{comment}{//\ merge\ Friedel\ pairs}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ fpDefault\ =\ 0,\ \ \textcolor{comment}{//\ depending\ on\ SG}}
+\DoxyCodeLine{00035\ \ \ \ \ fpMerge\ =\ 1,}
+\DoxyCodeLine{00036\ \ \ \ \ fpDoNotMerge\ =\ 2;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ T\_PI\ =\ M\_PI\ *\ 2;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ MT\_PI\ =\ -\/M\_PI\ *\ 2;}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ EQ\_PI\ =\ 8\ *\ M\_PI*M\_PI;}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ TQ\_PI\ =\ 2\ *\ M\_PI*M\_PI;}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{struct\ }StructureFactor\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ vec3i\ hkl;\ \ \textcolor{comment}{//\ hkl\ indexes}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{double}\ ps;\ \ \textcolor{comment}{//\ phase\ shift}}
+\DoxyCodeLine{00045\ \ \ \ \ compd\ val;\ \textcolor{comment}{//\ value}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ StructureFactor\ \&sf)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ hkl.Compare(sf.hkl);}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \};}
+\DoxyCodeLine{00050\ \ \ \textcolor{comment}{//\ interface\ description...}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{class\ }ISF\_Util\ \{}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~ISF\_Util()\ \{\}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ expands\ indexes\ to\ P1}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Expand(\textcolor{keyword}{const}\ TArrayList<vec3i>\&\ hkl,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TArrayList<compd>\&\ F,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ TArrayList<StructureFactor>\&\ out)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{/*\ atoms[i]-\/>Tag()\ must\ be\ index\ of\ the\ corresponding\ scatterer.\ U\ has\ 6}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ \ \ \ elements\ of\ Ucif\ or\ Uiso\ for\ each\ atom}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Calculate(\textcolor{keyword}{const}\ IMillerIndexList\&\ refs,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keyword}{const}\ mat3d\&\ hkl2c,\ TArrayList<compd>\&\ F,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TTypeList<XScatterer>\&\ scatterers,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList\&\ atoms,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ U,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ anom\_only\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetSGOrder()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00068\ \ \ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//\ for\ internal\ use}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{void}\ PrepareCalcSF(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au,\ \textcolor{keywordtype}{double}*\ U,}
+\DoxyCodeLine{00073\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<XScatterer>}}\&\ scatterers,}
+\DoxyCodeLine{00074\ \ \ \ \ ElementPList\ \&types,}
+\DoxyCodeLine{00075\ \ \ \ \ TCAtomPList\&\ alist);}
+\DoxyCodeLine{00076\ \ \ \textcolor{comment}{//\ expands\ structure\ factors\ to\ P1\ for\ given\ space\ group}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{void}\ ExpandToP1(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3i>}}\&\ hkl,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<compd>}}\&\ F,}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ sg,\ \mbox{\hyperlink{classTArrayList}{TArrayList<StructureFactor>}}\&\ out);}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefList,\ \textcolor{keyword}{class}\ MatList>}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ ExpandToP1(\textcolor{keyword}{const}\ RefList\&\ hkl\_list,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<compd>}}\&\ F,}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{const}\ MatList\&\ ml,}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<StructureFactor>}}\&\ out\_)}
+\DoxyCodeLine{00083\ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ml\_cnt\ =\ ml.Count();}
+\DoxyCodeLine{00085\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<StructureFactor>}}\ tmp(ml\_cnt\ *\ hkl\_list.Count());}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ hkl\_list.Count();\ i++)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ off\ =\ i*ml\_cnt;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ ml\_cnt;\ j++)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ m\ =\ ml[j];}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ off\ +\ j;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ vec3i\ hkl\ =\ TReflection::GetHkl(hkl\_list[i]);}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ tmp[ind].hkl\ =\ hkl*m.r;}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ tmp[ind].ps\ =\ m.t.DotProd(hkl);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tmp[ind].ps\ !=\ 0)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ca\ =\ 1,\ sa\ =\ 0;}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ olx\_sincos(-\/T\_PI*tmp[ind].ps,\ \&sa,\ \&ca);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ tmp[ind].val\ =\ F[i]\ *\ compd(ca,\ sa);}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ tmp[ind].val\ =\ F[i];}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ QuickSorter::Sort(tmp,\ \mbox{\hyperlink{classTComparableComparator}{TComparableComparator}}());}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ tmp.Count();\ i++)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ j\ =\ i;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (++j\ <\ tmp.Count()\ \&\&\ tmp[i].hkl\ ==\ tmp[j].hkl)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ tmp.NullItem(j);}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ i\ =\ j\ -\/\ 1;}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ tmp.Pack();}
+\DoxyCodeLine{00113\ \ \ \ \ out\_\ =\ tmp;}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{/*\ find\ minimum\ and\ maximum\ values\ of\ the\ miller\ indexes\ of\ the\ structure}}
+\DoxyCodeLine{00116\ \textcolor{comment}{\ factor}}
+\DoxyCodeLine{00117\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{void}\ FindMinMax(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<StructureFactor>}}\&\ F,}
+\DoxyCodeLine{00119\ \ \ \ \ vec3i\&\ min,\ vec3i\&\ max);}
+\DoxyCodeLine{00120\ \ \ \textcolor{comment}{/*\ prepares\ the\ list\ of\ hkl\ and\ structure\ factors,\ return\ error\ message\ or}}
+\DoxyCodeLine{00121\ \textcolor{comment}{\ empty\ string}}
+\DoxyCodeLine{00122\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00123\ \ \ olxstr\ GetSF(TRefList\&\ refs,\ \mbox{\hyperlink{classTArrayList}{TArrayList<compd>}}\&\ F,}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordtype}{short}\ mapType,\ \textcolor{keywordtype}{short}\ sfOrigin\ =\ sfOriginOlex2,}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordtype}{short}\ scaleType\ =\ scaleShelx,}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{double}\ scale\ =\ 0,}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{short}\ friedelPairs\ =\ fpDefault,}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{bool}\ anom\_only\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00129\ \ \ \textcolor{comment}{//\ calculates\ the\ structure\ factors\ for\ given\ reflections}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{void}\ \_CalcSF(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTXFile}{TXFile}}\&\ xfile,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIMillerIndexList}{IMillerIndexList}}\&\ refs,}
+\DoxyCodeLine{00131\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<compd>}}\&\ F,\ \textcolor{keywordtype}{bool}\ UseFpFdp,\ \textcolor{keywordtype}{bool}\ anom\_only\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ IndexList>}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{void}\ CalcSF(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTXFile}{TXFile}}\&\ xfile,\ \textcolor{keyword}{const}\ IndexList\&\ refs,}
+\DoxyCodeLine{00134\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<compd>}}\&\ F,\ \textcolor{keywordtype}{bool}\ UseFdp\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ anom\_only\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00135\ \ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \_CalcSF(xfile,\ \mbox{\hyperlink{classMillerIndexList}{MillerIndexList<IndexList>}}(refs),\ F,\ UseFdp,\ anom\_only);}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{/*\ returns\ an\ instance\ according\ to\ \_\_OLX\_USE\_FASTSYMM,\ must\ be\ deleted\ with}}
+\DoxyCodeLine{00139\ \textcolor{comment}{\ delete}}
+\DoxyCodeLine{00140\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00141\ \ \ ISF\_Util*\ GetSF\_Util\_Instance(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ sg);}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#ifdef\ \_\_OLX\_USE\_FASTSYMM}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ sg>\ \textcolor{keyword}{class\ }SF\_Util\ :\ \textcolor{keyword}{public}\ ISF\_Util\ \{}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{struct\ }SG\_Impl\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ size,\ u\_size;}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{const}\ smatd\_list\ matrices,\ u\_matrices;}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordtype}{double}\ u\_multiplier;}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ centro;}
+\DoxyCodeLine{00151\ \ \ \ \ SG\_Impl(\textcolor{keyword}{const}\ smatd\_list\&\ all\_matrices,\ \textcolor{keyword}{const}\ smatd\_list\&\ u\_matrices,}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \_centro)}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ :\ size(all\_matrices.Count()),\ u\_size(u\_matrices.Count()),}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ matrices(all\_matrices),\ u\_matrices(u\_matrices),}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ u\_multiplier(double(size)\ /\ u\_size),\ centro(\_centro)\ \{\}}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordtype}{void}\ GenHkl(\textcolor{keyword}{const}\ vec3i\&\ hkl,\ TArrayList<vec3i>\&\ out,}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ TArrayList<double>\&\ ps)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00158\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ size;\ i++)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ out[i]\ =\ hkl*matrices[i].r;}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ ps[i]\ =\ matrices[i].t.DotProd(hkl);}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordtype}{void}\ GenUniqueHkl(\textcolor{keyword}{const}\ vec3i\&\ hkl,\ TArrayList<vec3i>\&\ out,}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ TArrayList<double>\&\ ps)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00166\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ u\_matrices.Count();\ i++)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ out[i]\ =\ hkl*u\_matrices[i].r;}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ ps[i]\ =\ u\_matrices[i].t.DotProd(hkl);}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \};}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ sg>\ \textcolor{keyword}{class\ }SF\_Util\ :\ \textcolor{keyword}{public}\ ISF\_Util,\ \textcolor{keyword}{public}\ sg\ \{}
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordtype}{bool}\ centrosymmetric;}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{comment}{//\ proxying\ functions}}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ \_getusize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sg::u\_size;\ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ \_getumult()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sg::u\_multiplier;\ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \_generateu(\textcolor{keyword}{const}\ vec3i\&\ hkl,\ TArrayList<vec3i>\&\ out,}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ TArrayList<double>\&\ ps)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00182\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ sg::GenUniqueHkl(hkl,\ out,\ ps);}
+\DoxyCodeLine{00184\ \ \ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefList,\ \textcolor{keywordtype}{bool}\ centro,\ \textcolor{keywordtype}{bool}\ anom\_only>\ \textcolor{keyword}{struct\ }SFCalculateTask}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ :\ \textcolor{keyword}{public}\ TaskBase}
+\DoxyCodeLine{00187\ \ \ \ \ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \textcolor{keyword}{const}\ SF\_Util\&\ parent;}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \textcolor{keyword}{const}\ IMillerIndexList\&\ refs;}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{keyword}{const}\ mat3d\&\ hkl2c;}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ TArrayList<compd>\&\ F;}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TTypeList<XScatterer>\&\ scatterers;}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList\&\ atoms;}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ U;}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ TArrayList<vec3i>\ rv;}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ TArrayList<double>\ ps;}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ TArrayList<compd>\ fo;}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ SFCalculateTask(\textcolor{keyword}{const}\ SF\_Util\&\ \_parent,\ \textcolor{keyword}{const}\ IMillerIndexList\&\ \_refs,}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mat3d\&\ \_hkl2c,}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ TArrayList<compd>\&\ \_F,}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ TTypeList<XScatterer>\&\ \_scatterers,}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList\&\ \_atoms,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ \_U)}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ :\ parent(\_parent),\ refs(\_refs),\ hkl2c(\_hkl2c),\ F(\_F),}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ scatterers(\_scatterers),\ atoms(\_atoms),\ U(\_U),}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ rv(\_parent.\_getusize()),\ ps(\_parent.\_getusize()),}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ fo(\_scatterers.Count())}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \string~SFCalculateTask()\ \{\}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ calc\_B(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ Q,\ \textcolor{keyword}{const}\ vec3i\ \&h)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ exp(}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ (Q[0]\ *\ h[0]\ +\ Q[4]\ *\ h[2]\ +\ Q[5]\ *\ h[1])*h[0]\ +}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ (Q[1]\ *\ h[1]\ +\ Q[3]\ *\ h[2])*h[1]\ +}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ (Q[2]\ *\ h[2])*h[2]);}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Run(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ hkl\ =\ refs[i];\ \ \textcolor{comment}{//make\ a\ copy,\ safer}}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ d\_s2\ =\ TReflection::ToCart(hkl,\ hkl2c).QLength()*0.25;}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ parent.\_generateu(hkl,\ rv,\ ps);}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!anom\_only)\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ scatterers.Count();\ j++)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ fo[j]\ =\ scatterers[j].calc\_sq(d\_s2);}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (centro)\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ compd\ ir\ =\ 0;}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ atoms.Count();\ j++)\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ l\ =\ 0;}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ parent.\_getusize();\ k++)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ scattering\ vector\ +\ phase\ shift}}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ tv\ =\ SFUtil::T\_PI*(atoms[j]-\/>ccrd().DotProd(rv[k])\ +\ ps[k]);}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ca,\ sa;}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ olx\_sincos(tv,\ \&sa,\ \&ca);}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_is\_valid\_index(atoms[j]-\/>GetEllpId()))\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ B\ =\ calc\_B(\&U[j\ *\ 6],\ rv[k]);}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms[j]-\/>GetEllipsoid()-\/>IsAnharmonic())\ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ l\ +=\ (atoms[j]-\/>GetEllipsoid()-\/>}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ GetAnharmonicPart()-\/>Calculate(rv[k])*compd(ca*B,\ sa*B)).GetRe();}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ l\ +=\ ca\ *\ B;}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ l\ +=\ ca;}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Disp*\ disp\ =\ \&atoms[j]-\/>GetDisp();}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ compd\ scv\ =\ fo[atoms[j]-\/>GetTag()]\ +}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (disp\ ==\ 0\ ?\ scatterers[atoms[j]-\/>GetTag()].GetFpFdp()\ :\ disp-\/>value);}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!olx\_is\_valid\_index(atoms[j]-\/>GetEllpId()))\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ scv\ *=\ exp(U[j\ *\ 6]\ *\ d\_s2);}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ scv\ *=\ atoms[j]-\/>GetOccu();}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ scv\ *=\ l;}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ ir\ +=\ scv;}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ F[i]\ =\ ir*parent.\_getumult();}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ compd\ ir\ =\ 0;}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ atoms.Count();\ j++)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ compd\ l\ =\ 0;}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ parent.\_getusize();\ k++)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ scattering\ vector\ +\ phase\ shift}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ tv\ =\ SFUtil::T\_PI*(atoms[j]-\/>ccrd().DotProd(rv[k])\ +\ ps[k]);}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ca,\ sa;}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ olx\_sincos(tv,\ \&sa,\ \&ca);}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_is\_valid\_index(atoms[j]-\/>GetEllpId()))\ \{}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ B\ =\ calc\_B(\&U[j\ *\ 6],\ rv[k]);}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms[j]-\/>GetEllipsoid()-\/>IsAnharmonic())\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ l\ +=\ atoms[j]-\/>GetEllipsoid()-\/>}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ GetAnharmonicPart()-\/>Calculate(rv[k])*compd(ca*B,\ sa*B);}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ l.Re()\ +=\ ca\ *\ B;}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ l.Im()\ +=\ sa\ *\ B;}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ l.Re()\ +=\ ca;}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ l.Im()\ +=\ sa;}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Disp*\ disp\ =\ \&atoms[j]-\/>GetDisp();}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ compd\ scv\ =\ fo[atoms[j]-\/>GetTag()]\ +}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (disp\ ==\ 0\ ?\ scatterers[atoms[j]-\/>GetTag()].GetFpFdp()\ :\ disp-\/>value);}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!olx\_is\_valid\_index(atoms[j]-\/>GetEllpId()))\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ scv\ *=\ exp(U[j\ *\ 6]\ *\ d\_s2);}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ scv\ *=\ atoms[j]-\/>GetOccu();}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ scv\ *=\ l;}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ ir\ +=\ scv;}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ F[i]\ =\ ir*parent.\_getumult();}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ SFCalculateTask*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ SFCalculateTask(parent,\ refs,\ hkl2c,\ F,\ scatterers,\ atoms,\ U);}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00300\ \ \ \ \ \};}
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00302\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_USE\_FASTSYMM}}
+\DoxyCodeLine{00303\ \ \ \ \ SF\_Util(\textcolor{keyword}{const}\ smatd\_list\&\ all\_mat,\ \textcolor{keyword}{const}\ smatd\_list\&\ unq\_mat,\ \textcolor{keywordtype}{bool}\ centro)\ :}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ sg(all\_mat,\ unq\_mat,\ centro),\ centrosymmetric(centro)\ \{\}}
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Expand(\textcolor{keyword}{const}\ TArrayList<vec3i>\&\ hkl,\ \textcolor{keyword}{const}\ TArrayList<compd>\&\ F,}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ TArrayList<SFUtil::StructureFactor>\&\ out)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00308\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ TArrayList<vec3i>\ rv(sg::size);}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ TArrayList<double>\ ps(sg::size);}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ hkl\_cnt\ =\ hkl.Count();}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ hkl\_cnt;\ i++)\ \{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ sg::GenHkl(hkl[i],\ rv,\ ps);}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ off\ =\ i*sg::size;}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ sg::size;\ j++)\ \{}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ j\ +\ off;}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ out[ind].hkl\ =\ rv[j];}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ out[ind].ps\ =\ ps[j];}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ca\ =\ 1,\ sa\ =\ 0;}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ps[j]\ !=\ 0)\ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ olx\_sincos(-\/SFUtil::T\_PI*ps[j],\ \&sa,\ \&ca);}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ out[ind].val\ =\ F[i]\ *\ compd(ca,\ sa);}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \ \ out[ind].val\ =\ F[i];}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ QuickSorter::Sort(out,\ TComparableComparator());}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ out.Count();\ i++)\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ j\ =\ i;}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (++j\ <\ out.Count()\ \&\&\ out[i].hkl\ ==\ out[j].hkl)\ \{}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ out.Delete(j-\/-\/);}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00336\ \ \ \ \ \}}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Calculate(\textcolor{keyword}{const}\ IMillerIndexList\&\ refs,}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \textcolor{keyword}{const}\ mat3d\&\ hkl2c,\ TArrayList<compd>\&\ F,}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TTypeList<XScatterer>\&\ scatterers,\ \textcolor{keyword}{const}\ TCAtomPList\&\ atoms,}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}*\ U,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ anom\_only\ =\ \textcolor{keyword}{false})\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00341\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (centrosymmetric)\ \{}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(anom\_only)\{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ SFCalculateTask<TRefList,\ true,\ true>\ task(*\textcolor{keyword}{this},\ refs,\ hkl2c,\ F,\ scatterers,}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ atoms,\ U);}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ OlxListTask::Run(task,\ refs.Count(),\ tLinearTask,\ 50);}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ SFCalculateTask<TRefList,\ true,\ false>\ task(*\textcolor{keyword}{this},\ refs,\ hkl2c,\ F,\ scatterers,}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ atoms,\ U);}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ OlxListTask::Run(task,\ refs.Count(),\ tLinearTask,\ 50);}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (anom\_only)\{}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ SFCalculateTask<TRefList,\ false,\ true>\ task(*\textcolor{keyword}{this},\ refs,\ hkl2c,\ F,}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ scatterers,\ atoms,\ U);}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ OlxListTask::Run(task,\ refs.Count(),\ tLinearTask,\ 50);}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ \ SFCalculateTask<TRefList,\ false,\ false>\ task(*\textcolor{keyword}{this},\ refs,\ hkl2c,\ F,}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ scatterers,\ atoms,\ U);}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ OlxListTask::Run(task,\ refs.Count(),\ tLinearTask,\ 50);}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00367\ \ \ \ \ \}}
+\DoxyCodeLine{00368\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetSGOrder()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sg::size;\ \}}
+\DoxyCodeLine{00369\ \ \ \};}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00371\ \};\ \textcolor{comment}{//\ SFUtil\ namespace}}
+\DoxyCodeLine{00372\ }
+\DoxyCodeLine{00373\ EndXlibNamespace()}
+\DoxyCodeLine{00374\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

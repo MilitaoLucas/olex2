@@ -1,0 +1,191 @@
+\doxysection{utf8file.\+h}
+\hypertarget{utf8file_8h_source}{}\label{utf8file_8h_source}\index{sdl/utf8file.h@{sdl/utf8file.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_utf8file\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_utf8file\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}efile.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}eutf8.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ TUtf8File\ :\ public\ \mbox{\hyperlink{classTEFile}{TEFile}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ validate\_stream(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ io,\ \textcolor{keywordtype}{bool}\ check\_header)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ io.SetPosition(0);}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordflow}{if}\ (io.GetSize()\ >=\ 3)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ uint32\_t\ header\ =\ 0;}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ io.Read(\&header,\ 3);}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (header\ !=\ TUtf8::GetFileSignature())\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (check\_header)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ io.SetPosition(0);}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ \ \ TUtf8File(\textcolor{keyword}{const}\ olxstr\&\ fn,\ \textcolor{keyword}{const}\ olxstr\&\ attr,\ \textcolor{keywordtype}{bool}\ CheckHeader\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00033\ \ \ \ \ :\ \mbox{\hyperlink{classTEFile}{TEFile}}(fn,\ attr)}
+\DoxyCodeLine{00034\ \ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{if}\ (!validate\_stream(*\textcolor{keyword}{this},\ CheckHeader))\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}invalid\ UTF8\ file\ signature"{}});}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ WritelnFor(\textcolor{keyword}{const}\ TIWString\&)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{return}\ Write(CNewLineSequence());}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ WritelnFor(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{return}\ Write(CNewLineSequence());}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ WritelnFor(\textcolor{keyword}{const}\ TICString\&)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ Write(CNewLineSequence());}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ WritelnFor(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ Write(CNewLineSequence());}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{static}\ olxcstr\ GetlnFor(\textcolor{keyword}{const}\ TICString\&\ l)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{return}\ CNewLineSequence();}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ olxcstr\ GetlnFor(\textcolor{keyword}{const}\ TIWString\&\ l)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ WNewLineSequence();}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00061\ \ \ \textcolor{comment}{//\ pointer\ must\ be\ deleted}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{static}\ TUtf8File*\ Create(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{bool}\ write\_header\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ TUtf8File*\ file\ =\ \textcolor{keyword}{new}\ TUtf8File(name,\ \textcolor{stringliteral}{"{}w+b"{}});}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{if}\ (write\_header)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ ((\mbox{\hyperlink{classTEFile}{TEFile}}*)file)-\/>Write(\&TUtf8::GetFileSignature(),\ 3);}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ file;}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{comment}{//\ creates/opens,\ positioned\ at\ the\ begining}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TUtf8File>}}\ Open(}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ olxstr\&\ attr,\ \textcolor{keywordtype}{bool}\ CheckHeader)}
+\DoxyCodeLine{00073\ \ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ TUtf8File*\ file\ =\ \textcolor{keyword}{new}\ TUtf8File(name,\ attr,\ CheckHeader);}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{return}\ file;}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \textcolor{comment}{//\ creates\ a\ file\ and\ writes\ data\ to\ it,\ closes\ it}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ TIString\&\ data,}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{bool}\ write\_header\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00080\ \ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ TUtf8File\ file(name,\ \textcolor{stringliteral}{"{}w+b"{}});}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{if}\ (write\_header)}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ ((\mbox{\hyperlink{classTEFile}{TEFile}}\&)file).Write(\&TUtf8::GetFileSignature(),\ 3);}
+\DoxyCodeLine{00084\ \ \ \ \ file.Write(data);}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsUtf8File(\textcolor{keyword}{const}\ olxstr\&\ fn)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ file(fn,\ \textcolor{stringliteral}{"{}rb"{}});}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ validate\_stream(file,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{catch}\ (...)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ olxwstr\&\ S)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ uint64\_t\ p\ =\ GetPosition();}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(TUtf8::Encode(S,\ *\textcolor{keyword}{this}).GetPosition()\ -\/\ p);}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ TIWString\&\ S)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ uint64\_t\ p\ =\ GetPosition();}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(TUtf8::Encode(S,\ *\textcolor{keyword}{this}).GetPosition()\ -\/\ p);}
+\DoxyCodeLine{00104\ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ bf,\ \textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ uint64\_t\ p\ =\ GetPosition();}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(TUtf8::Encode(bf,\ *\textcolor{keyword}{this},\ size).GetPosition()\ -\/\ p);}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ bf,\ \textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ TEFile::Write(bf,\ size);}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{static}\ const\_strlist\ ReadLines(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ io,\ \textcolor{keywordtype}{bool}\ CheckHeader\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{if}\ (!validate\_stream(io,\ CheckHeader))\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}invalid\ UTF8\ stream"{}});}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ fl\ =\ io.GetAvailableSizeT();}
+\DoxyCodeLine{00119\ \ \ \ \ \mbox{\hyperlink{structolx__array__ptr}{olx\_array\_ptr<char>}}\ bf(\textcolor{keyword}{new}\ \textcolor{keywordtype}{char}[fl\ +\ 1]);}
+\DoxyCodeLine{00120\ \ \ \ \ io.Read(bf,\ fl);}
+\DoxyCodeLine{00121\ \ \ \ \ TStrList\ list;}
+\DoxyCodeLine{00122\ \ \ \ \ list.Strtok(TUtf8::Decode(bf,\ fl),\ \textcolor{charliteral}{'\(\backslash\)n'},\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list[i].EndsWith(\textcolor{charliteral}{'\(\backslash\)r'}))\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ list[i].SetLength(list[i].Length()\ -\/\ 1);}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ list;}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{static}\ const\_strlist\ ReadLines(\textcolor{keyword}{const}\ olxstr\&\ fn,\ \textcolor{keywordtype}{bool}\ CheckHeader\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ file(fn,\ \textcolor{stringliteral}{"{}rb"{}});}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{return}\ ReadLines(file,\ CheckHeader);}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{//\ returns\ one\ long\ string}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{static}\ olxwstr\ ReadAsString(\mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ io,\ \textcolor{keywordtype}{bool}\ CheckHeader\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{if}\ (!validate\_stream(io,\ CheckHeader))\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}invalid\ UTF8\ stream"{}});}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ fl\ =\ io.GetAvailableSizeT();}
+\DoxyCodeLine{00143\ \ \ \ \ \mbox{\hyperlink{structolx__array__ptr}{olx\_array\_ptr<char>}}\ bf(fl\ +\ 1);}
+\DoxyCodeLine{00144\ \ \ \ \ io.Read(bf,\ fl);}
+\DoxyCodeLine{00145\ \ \ \ \ olxwstr\ rv\ =\ TUtf8::Decode(bf,\ fl);}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static}\ olxwstr\ ReadAsString(\textcolor{keyword}{const}\ olxstr\&\ fn,\ \textcolor{keywordtype}{bool}\ CheckHeader\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ file(fn,\ \textcolor{stringliteral}{"{}rb"{}});}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{return}\ ReadAsString(file,\ CheckHeader);}
+\DoxyCodeLine{00151\ \ \ \}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ WriteLines(\textcolor{keyword}{const}\ olxstr\&\ fn,\ \textcolor{keyword}{const}\ T\&\ list,}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordtype}{bool}\ WriteHeader\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00156\ \ \ \{}
+\DoxyCodeLine{00157\ \ \ \ \ TUtf8File\ file(fn,\ \textcolor{stringliteral}{"{}w+b"{}});}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{if}\ (WriteHeader)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ ((\mbox{\hyperlink{classTEFile}{TEFile}}\&)file).Write(\&TUtf8::GetFileSignature(),\ 3);}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{if}\ (list.IsEmpty())\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00163\ \ \ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sz\ =\ 16\ *\ 1024;}
+\DoxyCodeLine{00165\ \ \ \ \ TEMemoryStream\ ms(sz);}
+\DoxyCodeLine{00166\ \ \ \ \ olxcstr\ ln\ =\ GetlnFor(list[0]);}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ TUtf8::Encode(list[i],\ ms);}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ ms.Write(ln.c\_str(),\ ln.Length());}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ms.GetSize()\ >\ sz)\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ ms.SetPosition(0);}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ file\ <<\ ms;}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ ms.Clear();}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{if}\ (ms.GetSize()\ >\ 0)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ ms.SetPosition(0);}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ file\ <<\ ms;}
+\DoxyCodeLine{00179\ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \};}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ EndEsdlNamespace()}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

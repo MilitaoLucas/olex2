@@ -1,0 +1,64 @@
+\doxysection{matprop.\+h}
+\hypertarget{matprop_8h_source}{}\label{matprop_8h_source}\index{olex/matprop.h@{olex/matprop.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_dlg\_matprop\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_dlg\_matprop\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ctrls.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}gxapp.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }TdlgMatProp:\ \textcolor{keyword}{public}\ TDialog,\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00017\ \ \ wxCheckBox\ *cbAmbF,\ *cbAmbB,\ *cbDiffF,\ *cbDiffB,\ *cbEmmF,\ *cbEmmB,}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ *cbSpecF,\ *cbSpecB,\ *cbShnF,\ *cbShnB,\ *cbTrans,\ *cbIDraw,}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ *cbBlend;}
+\DoxyCodeLine{00020\ \ \ TColorCtrl\ *tcAmbF,\ *tcAmbB,\ *tcDiffF,\ *tcDiffB,\ *tcEmmF,\ *tcEmmB,}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ *tcSpecF,\ *tcSpecB;}
+\DoxyCodeLine{00022\ \ \ TTextEdit\ *tcShnF,\ *tcShnB;}
+\DoxyCodeLine{00023\ \ \ TSpinCtrl\ *scBlend,\ *scTrans;}
+\DoxyCodeLine{00024\ \ \ wxButton*\ bEditFont;}
+\DoxyCodeLine{00025\ \ \ wxComboBox\ *cbApplyTo;}
+\DoxyCodeLine{00026\ \ \ TChoice\ *cbPrimitives;}
+\DoxyCodeLine{00027\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{void}\ OnOK(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00030\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TGlMaterial>}}\ Materials;}
+\DoxyCodeLine{00031\ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}*\ Object;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{int}\ FCurrentMaterial;}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{void}\ Init(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ GlM);}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ Update(\mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ GlM);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{void}\ Update()\ \ \{\ \ wxWindow::Update();\ \ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\ \&MaterialCopy\_()\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\ mc;}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ mc;}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ OnCopy(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{void}\ OnPaste(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ OnEditFont(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ Init();}
+\DoxyCodeLine{00045\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00046\ \ \ TdlgMatProp(TMainFrame\ *ParentFrame,\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \&GPC);}
+\DoxyCodeLine{00047\ \ \ TdlgMatProp(TMainFrame\ *ParentFrame,\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ mat);}
+\DoxyCodeLine{00048\ \ \ \string~TdlgMatProp();}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ GetCurrent()\textcolor{keyword}{\ \ const\ }\{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ Materials[FCurrentMaterial];}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{void}\ SetCurrent(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\&\ m)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ Materials[FCurrentMaterial]\ =\ m;}
+\DoxyCodeLine{00054\ \ \ \ \ Init(m);}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

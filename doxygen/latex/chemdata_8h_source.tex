@@ -1,0 +1,475 @@
+\doxysection{chemdata.\+h}
+\hypertarget{chemdata_8h_source}{}\label{chemdata_8h_source}\index{xlib/chemdata.h@{xlib/chemdata.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_chem\_lib\_data}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_chem\_lib\_data}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}ecomplex.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}henke.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ atomic\ number\ of\ some\ atoms}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00019\ \ \ iHydrogenZ\ \ \ =\ 1,}
+\DoxyCodeLine{00020\ \ \ iBoronZ\ \ \ \ \ \ =\ 5,}
+\DoxyCodeLine{00021\ \ \ iCarbonZ\ \ \ \ \ =\ 6,}
+\DoxyCodeLine{00022\ \ \ iNitrogenZ\ \ \ =\ 7,}
+\DoxyCodeLine{00023\ \ \ iOxygenZ\ \ \ \ \ =\ 8,}
+\DoxyCodeLine{00024\ \ \ iFluorineZ\ \ \ =\ 9,}
+\DoxyCodeLine{00025\ \ \ iSodumZ\ \ \ \ \ \ =\ 11,}
+\DoxyCodeLine{00026\ \ \ iMagnesiumZ\ \ =\ 12,}
+\DoxyCodeLine{00027\ \ \ iSiliconZ\ \ \ \ =\ 14,}
+\DoxyCodeLine{00028\ \ \ iPhosphorusZ\ =\ 15,}
+\DoxyCodeLine{00029\ \ \ iSulphurZ\ \ \ \ =\ 16,}
+\DoxyCodeLine{00030\ \ \ iChlorineZ\ \ \ =\ 17,}
+\DoxyCodeLine{00031\ \ \ iPotassiumZ\ \ =\ 19,}
+\DoxyCodeLine{00032\ \ \ iCalciumZ\ \ \ \ =\ 20,}
+\DoxyCodeLine{00033\ \ \ iSeleniumZ\ \ \ =\ 34,}
+\DoxyCodeLine{00034\ \ \ iBromineZ\ \ \ \ =\ 35,}
+\DoxyCodeLine{00035\ \ \ iQPeakZ\ \ \ \ \ \ =\ -\/1;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{const}\ \ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00038\ \ \ iHydrogenIndex\ \ \ \ =\ 0,}
+\DoxyCodeLine{00039\ \ \ iBoronIndex\ \ \ \ \ \ \ =\ 4,}
+\DoxyCodeLine{00040\ \ \ iCarbonIndex\ \ \ \ \ \ =\ 5,}
+\DoxyCodeLine{00041\ \ \ iNitrogenIndex\ \ \ \ =\ 6,}
+\DoxyCodeLine{00042\ \ \ iOxygenIndex\ \ \ \ \ \ =\ 7,}
+\DoxyCodeLine{00043\ \ \ iFluorineIndex\ \ \ \ =\ 8,}
+\DoxyCodeLine{00044\ \ \ iSodiumIndex\ \ \ \ \ \ =\ 10,}
+\DoxyCodeLine{00045\ \ \ iMagnesiumIndex\ \ \ =\ 11,}
+\DoxyCodeLine{00046\ \ \ iSiliconIndex\ \ \ \ \ =\ 13,}
+\DoxyCodeLine{00047\ \ \ iPhosphorusIndex\ \ =\ 14,}
+\DoxyCodeLine{00048\ \ \ iSulphurIndex\ \ \ \ \ =\ 15,}
+\DoxyCodeLine{00049\ \ \ iChlorineIndex\ \ \ \ =\ 16,}
+\DoxyCodeLine{00050\ \ \ iPotassiumIndex\ \ \ =\ 18,}
+\DoxyCodeLine{00051\ \ \ iCalciumIndex\ \ \ \ \ =\ 19,}
+\DoxyCodeLine{00052\ \ \ iQPeakIndex\ \ \ \ \ \ \ =\ 104,}
+\DoxyCodeLine{00053\ \ \ iDeuteriumIndex\ \ \ =\ 105,}
+\DoxyCodeLine{00054\ \ \ iMaxElementIndex\ =\ 105;\ \ \textcolor{comment}{//\ for\ iterations}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ \ the\ source\ of\ data\ for\ Henke\ tables\ and\ scattering\ data\ is\ cctbx}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ \ neutron\ scattering\ data\ was\ downloaded\ from\ this\ website:}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ \ http://www.ncnr.nist.gov/resources/n-\/lengths/index.html}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ \ Note\ from\ cctbx:}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ \ The\ original\ data\ can\ be\ found\ at:}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ \ \ \ ftp://grace.lbl.gov/pub/sf/}}
+\DoxyCodeLine{00063\ \textcolor{comment}{}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ \ From\ ftp://grace.lbl.gov/pub/sf/read.me:}}
+\DoxyCodeLine{00065\ \textcolor{comment}{}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Low-\/Energy\ X-\/ray\ Interaction\ Coefficients:}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Photoabsorption,\ Scattering,\ and\ Reflection}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ E\ =\ 30-\/30,000\ eV,\ Z\ =\ 1-\/92}}
+\DoxyCodeLine{00069\ \textcolor{comment}{}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ B.\ L.\ Henke,\ E.\ M.\ Gullikson,\ and\ J.\ C.\ Davis}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Center\ for\ X-\/Ray\ Optics,\ 2-\/400}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Lawrence\ Berkeley\ Laboratory}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Berkeley,\ California\ 94720}}
+\DoxyCodeLine{00074\ \textcolor{comment}{}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ \ Reference:\ B.\ L.\ Henke,\ E.\ M.\ Gullikson,\ and\ J.\ C.\ Davis,}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ \ Atomic\ Data\ and\ Nuclear\ Data\ Tables\ Vol.\ 54\ No.\ 2\ (July\ 1993).}}
+\DoxyCodeLine{00077\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ BeginXlibNamespace()}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ struct\ cm\_Neutron\_Scattering\ \{}
+\DoxyCodeLine{00082\ \ \ compd\ coh;}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{double}\ xs;}
+\DoxyCodeLine{00084\ \ \ cm\_Neutron\_Scattering(\textcolor{keywordtype}{double}\ \_coh\_re,\ \textcolor{keywordtype}{double}\ \_coh\_im,\ \textcolor{keywordtype}{double}\ \_xs)\ :}
+\DoxyCodeLine{00085\ \ \ \ \ coh(\_coh\_re,\ \_coh\_im),\ xs(\_xs)}
+\DoxyCodeLine{00086\ \ \ \{\}}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcm__Isotope}{cm\_Isotope}}\ \{}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{double}\ Mr,\ W;}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{const}\ cm\_Neutron\_Scattering*\ neutron\_scattering;}
+\DoxyCodeLine{00091\ \};}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{keyword}{struct\ }cm\_Gaussians\ \{}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{double}\ a1,\ a2,\ a3,\ a4,\ b1,\ b2,\ b3,\ b4,\ c;}
+\DoxyCodeLine{00095\ \ \ cm\_Gaussians()\ :\ a1(0),\ a2(0),\ a3(0),\ a4(0),\ b1(0),\ b2(0),\ b3(0),\ b4(0),\ c(0)}
+\DoxyCodeLine{00096\ \ \ \{\}}
+\DoxyCodeLine{00097\ \ \ \textcolor{comment}{//\ constructor,\ note\ that\ b\ values\ are\ inverted!}}
+\DoxyCodeLine{00098\ \ \ cm\_Gaussians(\textcolor{keywordtype}{double}\ \_a1,\ \textcolor{keywordtype}{double}\ \_a2,\ \textcolor{keywordtype}{double}\ \_a3,\ \textcolor{keywordtype}{double}\ \_a4,}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{double}\ \_b1,\ \textcolor{keywordtype}{double}\ \_b2,\ \textcolor{keywordtype}{double}\ \_b3,\ \textcolor{keywordtype}{double}\ \_b4,\ \textcolor{keywordtype}{double}\ \_c)\ :}
+\DoxyCodeLine{00100\ \ \ \ \ a1(\_a1),\ a2(\_a2),\ a3(\_a3),\ a4(\_a4),}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ b1(-\/\_b1),\ b2(-\/\_b2),\ b3(-\/\_b3),\ b4(-\/\_b4),\ c(\_c)}
+\DoxyCodeLine{00102\ \ \ \{\}}
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//\ copy\ constructor}}
+\DoxyCodeLine{00104\ \ \ cm\_Gaussians(\textcolor{keyword}{const}\ cm\_Gaussians\&\ g)\ :}
+\DoxyCodeLine{00105\ \ \ \ \ a1(g.a1),\ a2(g.a2),\ a3(g.a3),\ a4(g.a4),}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ b1(g.b1),\ b2(g.b2),\ b3(g.b3),\ b4(g.b4),\ c(g.c)}
+\DoxyCodeLine{00107\ \ \ \{\}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordtype}{double}\ calc\_sq(\textcolor{keywordtype}{double}\ sqv)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ a1*exp(b1*sqv)\ +\ a2*exp(b2*sqv)\ +\ a3*exp(b3*sqv)\ +\ a4*exp(b4*sqv)\ +\ c;}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ \ \ cm\_Gaussians\&\ operator\ =\ (\textcolor{keyword}{const}\ cm\_Gaussians\&\ g)\ \ \{}
+\DoxyCodeLine{00113\ \ \ \ \ a1\ =\ g.a1;\ \ a2\ =\ g.a2;\ \ a3\ =\ g.a3;\ \ a4\ =\ g.a4;}
+\DoxyCodeLine{00114\ \ \ \ \ b1\ =\ g.b1;\ \ b2\ =\ g.b2;\ \ b3\ =\ g.b3;\ \ b4\ =\ g.b4;}
+\DoxyCodeLine{00115\ \ \ \ \ c\ =\ g.c;}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ cm\_Gaussians\&\ g)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{return}\ (a1\ ==\ g.a1\ \&\&\ a2\ ==\ g.a2\ \&\&\ a3\ ==\ g.a3\ \&\&\ a4\ ==\ g.a4\ \&\&}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ b1\ ==\ g.b1\ \&\&\ b2\ ==\ g.b2\ \&\&\ b3\ ==\ g.b3\ \&\&\ b4\ ==\ g.b4\ \&\&}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ c\ ==\ g.c);}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ cm\_Gaussians\&\ g)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ g);\ \ \}}
+\DoxyCodeLine{00124\ \};}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{keyword}{struct\ }cm\_Element\ \{}
+\DoxyCodeLine{00127\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{double}\ Mr;}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{short}\ index;}
+\DoxyCodeLine{00130\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{const}\ olxstr\ symbol,\ name;}
+\DoxyCodeLine{00132\ \ \ uint32\_t\ def\_color;}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ z,\ isotope\_count,\ henke\_count;}
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordtype}{double}\ r\_pers,\ r\_cov,\ r\_vdw,\ r\_bonding,\ r\_sfil;}
+\DoxyCodeLine{00135\ \ \ \textcolor{comment}{//\ custom\ radii\ are\ to\ be\ used\ by\ procedure\ which\ require\ custom\ radii...}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{double}\ r\_custom;}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Gaussians}{cm\_Gaussians}}*\ gaussians;\ \ \textcolor{comment}{//\ 9\ elements\ =\ 4\ gaussians\ +\ const}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Isotope}{cm\_Isotope}}*\ isotopes;}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{const}\ cm\_Anomalous\_Henke*\ henke\_data;}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{const}\ cm\_Neutron\_Scattering*\ neutron\_scattering;}
+\DoxyCodeLine{00141\ \ \ cm\_Element(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_symbol,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \_name,}
+\DoxyCodeLine{00142\ \ \ \ \ uint32\_t\ \_def\_color,\ \textcolor{keywordtype}{short}\ \_z,\ \textcolor{keywordtype}{double}\ \_r\_vdw,\ \textcolor{keywordtype}{double}\ \_r\_cov,\ \textcolor{keywordtype}{double}\ \_r\_pers,}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordtype}{double}\ \_r\_bonding,\ \textcolor{keywordtype}{double}\ \_r\_sfil,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Gaussians}{cm\_Gaussians}}*\ \_gaussians,}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Isotope}{cm\_Isotope}}*\ \_isotopes,\ \textcolor{keywordtype}{short}\ \_isotope\_count,}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keyword}{const}\ cm\_Anomalous\_Henke*\ \_henke\_data,\ \textcolor{keywordtype}{short}\ \_henke\_count,}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keyword}{const}\ cm\_Neutron\_Scattering*\ \_neutron\_scattering)\ :}
+\DoxyCodeLine{00147\ \ \ \ \ Mr(0),\ index(-\/1),}
+\DoxyCodeLine{00148\ \ \ \ \ symbol(\_symbol),\ name(\_name),\ def\_color(\_def\_color),\ z(\_z),}
+\DoxyCodeLine{00149\ \ \ \ \ isotope\_count(\_isotope\_count),\ henke\_count(\_henke\_count),\ r\_pers(\_r\_pers),}
+\DoxyCodeLine{00150\ \ \ \ \ r\_cov(\_r\_cov),\ r\_vdw(\_r\_vdw),\ r\_bonding(\_r\_bonding),\ r\_sfil(\_r\_sfil),}
+\DoxyCodeLine{00151\ \ \ \ \ r\_custom(0),\ gaussians(\_gaussians),\ isotopes(\_isotopes),}
+\DoxyCodeLine{00152\ \ \ \ \ henke\_data(\_henke\_data),\ neutron\_scattering(\_neutron\_scattering)}
+\DoxyCodeLine{00153\ \ \ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{if}\ (z\ ==\ 1\ \&\&\ symbol.CharAt(0)\ ==\ \textcolor{charliteral}{'D'})\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ Mr\ =\ isotopes[1].Mr;}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ isotope\_count;\ i++)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ Mr\ +=\ isotopes[i].Mr\ *\ isotopes[i].W;}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ compd\ CalcFpFdp(\textcolor{keywordtype}{double}\ eV)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{if}\ (henke\_data\ ==\ NULL)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}undefined\ f\(\backslash\)'\ f\(\backslash\)"{}\ data"{}});}
+\DoxyCodeLine{00168\ \ \ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{if}\ (eV\ <\ henke\_data[0].energy\ ||\ eV\ >\ henke\_data[henke\_count\ -\/\ 1].energy)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}energy\ is\ out\ of\ range"{}});}
+\DoxyCodeLine{00172\ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ henke\_count;\ i++)\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (henke\_data[i].energy\ ==\ eV)}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ compd(henke\_data[i].fp,\ henke\_data[i].fdp);}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (henke\_data[i].energy\ >\ eV)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ k\ =\ (eV\ -\/\ henke\_data[i\ -\/\ 1].energy)\ /}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ (henke\_data[i].energy\ -\/\ henke\_data[i\ -\/\ 1].energy);}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fp\ =\ cm\_Anomalous\_Henke::Undefined;}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fdp\ =\ cm\_Anomalous\_Henke::Undefined;}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (henke\_data[i\ -\/\ 1].fp\ !=\ cm\_Anomalous\_Henke::Undefined\ \&\&}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ henke\_data[i].fp\ !=\ cm\_Anomalous\_Henke::Undefined)}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ fp\ =\ henke\_data[i\ -\/\ 1].fp\ +\ k*(henke\_data[i].fp\ -\/\ henke\_data[i\ -\/\ 1].fp);}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (henke\_data[i\ -\/\ 1].fdp\ !=\ cm\_Anomalous\_Henke::Undefined\ \&\&}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ henke\_data[i].fdp\ !=\ cm\_Anomalous\_Henke::Undefined)}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ fdp\ =\ henke\_data[i\ -\/\ 1].fdp\ +\ k*(henke\_data[i].fdp\ -\/\ henke\_data[i\ -\/\ 1].fdp);}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ compd(fp,\ fdp);}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{return}\ compd();}
+\DoxyCodeLine{00196\ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \textcolor{keywordtype}{double}\ GetMr()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Mr;\ \ \}}
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{bool}\ operator\ >\ \ (\textcolor{keyword}{const}\ cm\_Element\&\ ce)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ >\ \ ce.z;\ \ \}}
+\DoxyCodeLine{00199\ \ \ \textcolor{keywordtype}{bool}\ operator\ >=\ (\textcolor{keyword}{const}\ cm\_Element\&\ ce)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ >=\ ce.z;\ \ \}}
+\DoxyCodeLine{00200\ \ \ \textcolor{keywordtype}{bool}\ operator\ <\ \ (\textcolor{keyword}{const}\ cm\_Element\&\ ce)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ <\ \ ce.z;\ \ \}}
+\DoxyCodeLine{00201\ \ \ \textcolor{keywordtype}{bool}\ operator\ <=\ (\textcolor{keyword}{const}\ cm\_Element\&\ ce)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ <=\ ce.z;\ \ \}}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ cm\_Element\&\ ce)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ ==\ ce.z;\ \ \}}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ cm\_Element\&\ ce)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ !=\ ce.z;\ \ \}}
+\DoxyCodeLine{00204\ \ \ \textcolor{keywordtype}{bool}\ operator\ >\ \ (\textcolor{keywordtype}{short}\ \_z)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ >\ \ \_z;\ \ \}}
+\DoxyCodeLine{00205\ \ \ \textcolor{keywordtype}{bool}\ operator\ >=\ (\textcolor{keywordtype}{short}\ \_z)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ >=\ \_z;\ \ \}}
+\DoxyCodeLine{00206\ \ \ \textcolor{keywordtype}{bool}\ operator\ <\ \ (\textcolor{keywordtype}{short}\ \_z)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ <\ \ \_z;\ \ \}}
+\DoxyCodeLine{00207\ \ \ \textcolor{keywordtype}{bool}\ operator\ <=\ (\textcolor{keywordtype}{short}\ \_z)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ <=\ \_z;\ \ \}}
+\DoxyCodeLine{00208\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keywordtype}{short}\ \_z)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ ==\ \_z;\ \ \}}
+\DoxyCodeLine{00209\ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keywordtype}{short}\ \_z)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ z\ !=\ \_z;\ \ \}}
+\DoxyCodeLine{00210\ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ cm\_Element\ \&e)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ z\ -\/\ e.z;\ \}}
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{const}\ olxstr\ \&GetSymbol()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ symbol;\ \}}
+\DoxyCodeLine{00212\ \ \ }
+\DoxyCodeLine{00213\ \ \ olxstr\ GetChargedLabel(\textcolor{keywordtype}{int}\ charge)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordflow}{if}\ (charge\ ==\ 0)\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ symbol;}
+\DoxyCodeLine{00216\ \ \ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \ \ olxstr\ rv\ =\ symbol;}
+\DoxyCodeLine{00218\ \ \ \ \ rv\ <<\ olx\_sign\_char(charge);}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(charge)\ >\ 1)\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ rv\ <<\ olx\_abs(charge);}
+\DoxyCodeLine{00221\ \ \ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00223\ \ \ \}}
+\DoxyCodeLine{00224\ \ \ }
+\DoxyCodeLine{00225\ \ \ \textcolor{keywordtype}{short}\ GetIndex()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ index;\ \}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }XElementLib;}
+\DoxyCodeLine{00227\ \};}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \textcolor{keyword}{struct\ }ElementCount\ \{}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ element;}
+\DoxyCodeLine{00231\ \ \ \textcolor{keywordtype}{double}\ count;}
+\DoxyCodeLine{00232\ \ \ \textcolor{keywordtype}{int}\ charge;}
+\DoxyCodeLine{00233\ \ \ ElementCount()}
+\DoxyCodeLine{00234\ \ \ \ \ :\ element(0),\ count(0),\ charge(0)}
+\DoxyCodeLine{00235\ \ \ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00237\ \ \ \}}
+\DoxyCodeLine{00238\ \ \ ElementCount(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ \_e,\ \textcolor{keywordtype}{double}\ \_c,\ \textcolor{keywordtype}{int}\ ch)}
+\DoxyCodeLine{00239\ \ \ \ \ :\ element(\&\_e),\ count(\_c),\ charge(ch)}
+\DoxyCodeLine{00240\ \ \ \{\}}
+\DoxyCodeLine{00241\ \ \ ElementCount(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ \_e,\ \textcolor{keywordtype}{double}\ \_c)}
+\DoxyCodeLine{00242\ \ \ \ \ :\ element(\&\_e),\ count(\_c),\ charge(0)}
+\DoxyCodeLine{00243\ \ \ \{\}}
+\DoxyCodeLine{00244\ \ \ ElementCount(\textcolor{keyword}{const}\ ElementCount\&\ e)}
+\DoxyCodeLine{00245\ \ \ \ \ :\ element(e.element),\ count(e.count),\ charge(e.charge)}
+\DoxyCodeLine{00246\ \ \ \{\}}
+\DoxyCodeLine{00247\ \ \ ElementCount\&\ operator\ +=\ (\textcolor{keywordtype}{double}\ v)\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ count\ +=\ v;}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ \ \ ElementCount\&\ operator\ +=\ (\textcolor{keyword}{const}\ ElementCount\&\ v)\ \{}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#ifdef\ \_DEBUG}}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordflow}{if}\ (element\ !=\ v.element\ ||\ v.charge\ !=\ charge)\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}elements\ must\ match"{}});}
+\DoxyCodeLine{00255\ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00257\ \ \ \ \ count\ +=\ v.count;}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00259\ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ ElementCount\&\ e)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{return}\ element\ ==\ e.element\ \&\&\ charge\ ==\ e.charge;}
+\DoxyCodeLine{00262\ \ \ \}}
+\DoxyCodeLine{00263\ \ \ }
+\DoxyCodeLine{00264\ \ \ \textcolor{keywordtype}{int}\ hashCode()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordflow}{return}\ element-\/>GetIndex()\ +\ charge\ *\ 200;}
+\DoxyCodeLine{00266\ \ \ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ olxstr\ ToString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{return}\ ToString(*element,\ count,\ charge);}
+\DoxyCodeLine{00270\ \ \ \}}
+\DoxyCodeLine{00271\ }
+\DoxyCodeLine{00272\ \ \ \textcolor{keyword}{static}\ olxstr\ ToString(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&element,\ \textcolor{keywordtype}{double}\ count,\ \textcolor{keywordtype}{int}\ charge)\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ olxstr\ rv;}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordflow}{if}\ (charge\ !=\ 0)\ \{}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ rv\ <<\ \textcolor{charliteral}{'('}\ <<\ element.symbol\ <<\ olx\_sign\_char(charge);}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ch\ =\ olx\_abs(charge);}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ >\ 1)\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ rv\ <<\ ch;}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ rv\ <<\ \textcolor{charliteral}{')'};}
+\DoxyCodeLine{00281\ \ \ \ \ \}}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ rv\ =\ element.symbol;}
+\DoxyCodeLine{00284\ \ \ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keywordflow}{return}\ rv\ <<\ olxstr::FormatFloat(3,\ count).TrimFloat();}
+\DoxyCodeLine{00286\ \ \ \}}
+\DoxyCodeLine{00287\ \};}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<const\ cm\_Element>}}\ ElementPList;}
+\DoxyCodeLine{00290\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classsorted_1_1PointerComparable}{sorted::PointerComparable<const\ cm\_Element>}}}
+\DoxyCodeLine{00291\ \ \ SortedElementPList;}
+\DoxyCodeLine{00292\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classConstSortedPointerList}{ConstSortedPointerList<const\ cm\_Element,\ TComparableComparator>}}}
+\DoxyCodeLine{00293\ \ \ ConstSortedElementPList;}
+\DoxyCodeLine{00294\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<ElementCount>}}\ ContentList;}
+\DoxyCodeLine{00295\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolxdict}{olxdict<const\ cm\_Element*,\ double,\ TPointerComparator>}}\ ElementRadii;}
+\DoxyCodeLine{00296\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolxdict}{olxdict<const\ cm\_Element*,\ double,\ TPointerComparator>}}\ ElementDict;}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \textcolor{comment}{//\ sorts\ element\ by\ Z\ descending}}
+\DoxyCodeLine{00299\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structElementZSorter}{ElementZSorter}}\ \ \{}
+\DoxyCodeLine{00300\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>}
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_t\ \&s1,\ \textcolor{keyword}{const}\ item\_t\ \&s2)\ \ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(s2).z\ -\/\ olx\_ref::get(s1).z;}
+\DoxyCodeLine{00303\ \ \ \}}
+\DoxyCodeLine{00304\ \};}
+\DoxyCodeLine{00305\ \textcolor{comment}{//\ sorts\ element\ by\ symbol\ ascending}}
+\DoxyCodeLine{00306\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structElementSymbolSorter}{ElementSymbolSorter}}\ \{}
+\DoxyCodeLine{00307\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>}
+\DoxyCodeLine{00308\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ item\_t\ \&s1,\ \textcolor{keyword}{const}\ item\_t\ \&s2)\ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(s1).symbol.Compare(olx\_ref::get(s2).symbol);}
+\DoxyCodeLine{00310\ \ \ \}}
+\DoxyCodeLine{00311\ \};}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classXElementLib}{XElementLib}}\ \{}
+\DoxyCodeLine{00315\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ParseSimpleElementStr(\textcolor{keyword}{const}\ olxstr\&\ str,\ TStrList\&\ toks);}
+\DoxyCodeLine{00316\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ExpandShortcut(\textcolor{keyword}{const}\ olxstr\&\ sh,\ ContentList\&\ res,\ \textcolor{keywordtype}{double}\ cnt=1.0);}
+\DoxyCodeLine{00317\ \ \ \textcolor{comment}{//\ checks\ if\ p\ is\ an\ element\ symbol,\ will\ correctly\ distinguis\ "{}C\ "{}\ and\ "{}Cd"{}}}
+\DoxyCodeLine{00318\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsShortcut(\textcolor{keyword}{const}\ olxstr\&\ c)\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{keywordflow}{return}\ c.Equalsi(\textcolor{stringliteral}{"{}Ph"{}})\ ||\ c.Equalsi(\textcolor{stringliteral}{"{}Cp"{}})\ ||\ c.Equalsi(\textcolor{stringliteral}{"{}Me"{}})\ ||}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ c.Equalsi(\textcolor{stringliteral}{"{}Et"{}})\ ||\ c.Equalsi(\textcolor{stringliteral}{"{}Bu"{}})\ ||}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ c.Equalsi(\textcolor{stringliteral}{"{}Py"{}})\ ||\ c.Equalsi(\textcolor{stringliteral}{"{}Tf"{}});}
+\DoxyCodeLine{00322\ \ \ \}}
+\DoxyCodeLine{00323\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTPtrList}{TPtrList<cm\_Element>}}\ \&GetElementList();}
+\DoxyCodeLine{00324\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<cm\_Element\ *,\ true>}}\ \&GetElementDict();}
+\DoxyCodeLine{00325\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ Wavelength2eV(\textcolor{keywordtype}{double}\ lambda)\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ ev\_angstrom\ \ =\ 6626.0755\ *\ 2.99792458\ /\ 1.60217733;}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordflow}{return}\ ev\_angstrom/lambda;}
+\DoxyCodeLine{00329\ \ \ \}}
+\DoxyCodeLine{00330\ \ \ \textcolor{comment}{//\ and\ exact\ symbol\ as\ C\ or\ Cr\ is\ expected}}
+\DoxyCodeLine{00331\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ FindBySymbol(\textcolor{keyword}{const}\ olxstr\&\ symbol,\ \textcolor{keywordtype}{int}\ *charge=0);}
+\DoxyCodeLine{00332\ \ \ \textcolor{comment}{//\ for\ compatibility\ with\ old\ routines...}}
+\DoxyCodeLine{00333\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ GetByIndex(\textcolor{keywordtype}{short});}
+\DoxyCodeLine{00334\ \ \ \textcolor{comment}{//\ finds\ an\ element\ by\ Z}}
+\DoxyCodeLine{00335\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ FindByZ(\textcolor{keywordtype}{short});}
+\DoxyCodeLine{00336\ \ \ \textcolor{comment}{//\ a\ label\ might\ be\ passed\ as\ C1\ or\ Cr2}}
+\DoxyCodeLine{00337\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ FindBySymbolEx(\textcolor{keyword}{const}\ olxstr\&\ symbol);}
+\DoxyCodeLine{00338\ \ \ \textcolor{comment}{//\ returns\ element\ with\ Z+1}}
+\DoxyCodeLine{00339\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ NextZ(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ elm);}
+\DoxyCodeLine{00340\ \ \ \textcolor{comment}{//\ returns\ element\ with\ Z-\/1}}
+\DoxyCodeLine{00341\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ PrevZ(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ elm);}
+\DoxyCodeLine{00342\ \ \ \textcolor{comment}{//\ extracts\ symbol\ from\ a\ label,\ like\ C\ for\ C1\ or\ Cr\ for\ Cr2}}
+\DoxyCodeLine{00343\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ ExtractSymbol(\textcolor{keyword}{const}\ olxstr\&\ label)\ \ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ type\ =\ FindBySymbolEx(label);}
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keywordflow}{return}\ type\ ==\ 0\ ?\ EmptyString()\ :\ type-\/>symbol;}
+\DoxyCodeLine{00346\ \ \ \}}
+\DoxyCodeLine{00347\ \ \ \textcolor{comment}{//\ returns\ true\ if\ labels\ is\ a\ symbol}}
+\DoxyCodeLine{00348\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsElement(\textcolor{keyword}{const}\ olxstr\&\ label,\ \textcolor{keywordtype}{int}\ *charge=0)\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keywordflow}{return}\ FindBySymbol(label,\ charge)\ !=\ 0;}
+\DoxyCodeLine{00350\ \ \ \}}
+\DoxyCodeLine{00351\ \ \ \textcolor{comment}{//\ checks\ if\ p\ is\ a\ label\ starting\ from\ an\ element\ symbol}}
+\DoxyCodeLine{00352\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsAtom(\textcolor{keyword}{const}\ olxstr\&\ label)\ \ \{}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keywordflow}{return}\ (FindBySymbolEx(label)\ !=\ 0);}
+\DoxyCodeLine{00354\ \ \ \}}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \ \ \textcolor{comment}{/*\ parses\ a\ string\ like\ C37H41P2BRhClO\ into\ a\ list\ of\ element\ names\ and\ their}}
+\DoxyCodeLine{00357\ \textcolor{comment}{\ \ count,\ the\ provided\ list\ is\ being\ appended\ to\ and\ not\ cleared;\ returns\ a}}
+\DoxyCodeLine{00358\ \textcolor{comment}{\ \ reference\ to\ provided\ ContentList}}
+\DoxyCodeLine{00359\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00360\ \ \ \textcolor{keyword}{static}\ ContentList\&\ ParseElementString(\textcolor{keyword}{const}\ olxstr\&\ su,\ ContentList\&\ cl);}
+\DoxyCodeLine{00361\ \ \ \textcolor{keyword}{static}\ ContentList::const\_list\_type\ ParseElementString(\textcolor{keyword}{const}\ olxstr\&\ su)\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ ContentList\ cl;}
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{keywordflow}{return}\ ParseElementString(su,\ cl);}
+\DoxyCodeLine{00364\ \ \ \}}
+\DoxyCodeLine{00365\ \ \ \textcolor{comment}{/*\ sorts\ the\ content\ list,\ so\ that\ C\ comes\ first,\ then\ H\ and\ then\ by\ Z}}
+\DoxyCodeLine{00366\ \textcolor{comment}{\ \ descending;\ returns\ a\ reference\ to\ th\ provide\ ContentList}}
+\DoxyCodeLine{00367\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{static}\ ContentList\&\ SortContentList(ContentList\&\ cl);}
+\DoxyCodeLine{00369\ \ \ \textcolor{comment}{/*\ merges\ charges\ charged\ entities,\ as\ the\ resuls\ the\ charge\ becomes}}
+\DoxyCodeLine{00370\ \textcolor{comment}{\ \ meaningless}}
+\DoxyCodeLine{00371\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00372\ \ \ \textcolor{keyword}{static}\ ContentList\&\ MergeCharges(ContentList\&\ cl);}
+\DoxyCodeLine{00373\ }
+\DoxyCodeLine{00374\ \ \ \textcolor{comment}{//\ checks\ if\ a\ string\ is\ a\ shortcut\ for\ element\ group}}
+\DoxyCodeLine{00375\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsElementShortcut(\textcolor{keyword}{const}\ olxstr\&\ c)\ \ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \textcolor{keywordflow}{return}\ c.Equalsi(\textcolor{charliteral}{'M'})\ ||\ c.Equalsi(\textcolor{charliteral}{'X'});}
+\DoxyCodeLine{00377\ \ \ \}}
+\DoxyCodeLine{00378\ \ \ \textcolor{comment}{//\ checks\ if\ given\ element\ is\ in\ main\ group\ 1-\/8}}
+\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsGroup(\textcolor{keywordtype}{int}\ group,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \ \{}
+\DoxyCodeLine{00380\ \ \ \ \ \textcolor{keywordflow}{if}(\ group\ <\ 3\ )\ \ \{}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e.z\ ==\ (group+2)\ ||\ e.z\ ==\ (group+10)\ ||\ e.z\ ==\ (group+18)\ ||}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ e.z\ ==\ (group+36)\ ||\ e.z\ ==\ (group+54)\ ||\ e.z\ ==\ (group+86);}
+\DoxyCodeLine{00383\ \ \ \ \ \}}
+\DoxyCodeLine{00384\ \ \ \ \ \textcolor{keywordflow}{if}(\ group\ ==\ 8\ \&\&\ e.z\ ==\ 2\ )}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keywordflow}{return}\ e.z\ ==\ (group+2)\ ||\ e.z\ ==\ (group+10)\ ||\ e.z\ ==\ (group+28)\ ||}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ e.z\ ==\ (group+46)\ ||\ e.z\ ==\ (group+78)\ ||\ e.z\ ==\ (group+110);}
+\DoxyCodeLine{00388\ \ \ \}}
+\DoxyCodeLine{00389\ \ \ \textcolor{comment}{/*\ checks\ if\ given\ element\ is\ in\ sub-\/group\ 1-\/10,\ Lanthanised\ are}}
+\DoxyCodeLine{00390\ \textcolor{comment}{\ \ considered\ to\ be\ in\ group\ \#3\ */}}
+\DoxyCodeLine{00391\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsTtransitionalGroup(\textcolor{keywordtype}{int}\ group,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{}
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keywordflow}{if}(\ e.z\ >=\ 21\ \&\&\ e.z\ <=\ 30\ )\ \ \{\ \textcolor{comment}{//\ Sc-\/>Zn}}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ z\ =\ e.z\ >\ 28\ ?\ e.z-\/10\ :\ e.z;}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ z\ ==\ (group+18);}
+\DoxyCodeLine{00395\ \ \ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ e.z\ >=\ 39\ \&\&\ e.z\ <=\ 48\ )\ \ \{\ \textcolor{comment}{//Y-\/>Cd}}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ z\ =\ e.z\ >\ 46\ ?\ e.z-\/10\ :\ e.z;}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ z\ ==\ (group+36);}
+\DoxyCodeLine{00399\ \ \ \ \ \}}
+\DoxyCodeLine{00400\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ e.z\ >=\ 57\ \&\&\ e.z\ <=\ 80\ )\ \ \{\ \textcolor{comment}{//La-\/>Hg}}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ e.z\ <\ 72\ )\ \textcolor{comment}{//\ Lanthanides}}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ group\ ==\ 3;}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ z\ =\ e.z\ >\ 78\ ?\ e.z-\/10\ :\ e.z;}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ z\ ==\ (group+68);}
+\DoxyCodeLine{00405\ \ \ \ \ \}}
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00407\ \ \ \}}
+\DoxyCodeLine{00408\ \ \ \textcolor{comment}{//\ Sc-\/>Zn,\ Y-\/>Cd,\ Hf-\/>Hg,\ lanthanides\ excluded}}
+\DoxyCodeLine{00409\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsTransitionalMetal(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \ \{}
+\DoxyCodeLine{00410\ \ \ \ \ \textcolor{keywordflow}{return}\ (e.z\ >=\ 21\ \&\&\ e.z\ <=\ 30)\ ||}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ (e.z\ >=\ 39\ \&\&\ e.z\ <=\ 48)\ ||}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ (e.z\ >=\ 72\ \&\&\ e.z\ <=\ 80);}
+\DoxyCodeLine{00413\ \ \ \}}
+\DoxyCodeLine{00414\ \ \ \textcolor{comment}{//\ Al,\ Ga,\ In,\ Sn,\ Tl,\ Pb,\ Bi}}
+\DoxyCodeLine{00415\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsPostTransitionalMetal(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \ \{}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keywordflow}{return}\ e.z\ ==\ 13\ ||\ e.z\ ==\ 31\ ||\ e.z\ ==\ 49\ ||\ e.z\ ==\ 50\ ||}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ e.z\ ==\ 81\ ||\ e.z\ ==\ 82\ ||\ e.z\ ==\ 83;}
+\DoxyCodeLine{00418\ \ \ \}}
+\DoxyCodeLine{00419\ \ \ \textcolor{comment}{//\ B,\ Si,\ Ge,\ As,\ Sb,\ Te}}
+\DoxyCodeLine{00420\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsMetalloid(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \ \{}
+\DoxyCodeLine{00421\ \ \ \ \ \textcolor{keywordflow}{return}\ e.z\ ==\ 5\ ||\ e.z\ ==\ 14\ ||\ e.z\ ==\ 32\ ||\ e.z\ ==\ 33\ ||}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ e.z\ ==\ 51\ ||\ e.z\ ==\ 52;}
+\DoxyCodeLine{00423\ \ \ \}}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \ \ \textcolor{comment}{//\ finds\ next\ element\ which\ belongs\ to\ the\ given\ group}}
+\DoxyCodeLine{00426\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ *NextGroup(\textcolor{keywordtype}{int}\ group,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ *e);}
+\DoxyCodeLine{00427\ \ \ \textcolor{comment}{//\ finds\ previous\ element\ which\ belongs\ to\ the\ given\ group}}
+\DoxyCodeLine{00428\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ *PrevGroup(\textcolor{keywordtype}{int}\ group,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ *e);}
+\DoxyCodeLine{00429\ }
+\DoxyCodeLine{00430\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsMetal(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{}
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ IsTransitionalMetal(e)\ ||}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ IsPostTransitionalMetal(e)\ ||}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ IsLanthanide(e)\ ||}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ IsActinide(e)\ ||}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ IsGroup1(e)\ ||\ IsGroup2(e)\ ||}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ (e.z\ >\ 5\ \&\&\ IsGroup3(e));\ \textcolor{comment}{//\ after\ B}}
+\DoxyCodeLine{00438\ \ \ \}}
+\DoxyCodeLine{00439\ \ \ \textcolor{comment}{//\ Li-\/>Fr}}
+\DoxyCodeLine{00440\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsGroup1(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{\ \ \textcolor{keywordflow}{return}\ IsGroup(1,\ e);\ \ \}}
+\DoxyCodeLine{00441\ \ \ \textcolor{comment}{//\ Be-\/>Ra}}
+\DoxyCodeLine{00442\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsGroup2(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{\ \ \textcolor{keywordflow}{return}\ IsGroup(2,\ e);\ \ \}}
+\DoxyCodeLine{00443\ \ \ \textcolor{comment}{//\ B-\/>Tl}}
+\DoxyCodeLine{00444\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsGroup3(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{\ \ \textcolor{keywordflow}{return}\ IsGroup(3,\ e);\ \ \}}
+\DoxyCodeLine{00445\ \ \ \textcolor{comment}{//\ C-\/>Pb}}
+\DoxyCodeLine{00446\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsGroup4(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{\ \ \textcolor{keywordflow}{return}\ IsGroup(4,\ e);\ \ \}}
+\DoxyCodeLine{00447\ \ \ \textcolor{comment}{//\ N-\/>Bi}}
+\DoxyCodeLine{00448\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsGroup5(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{\ \ \textcolor{keywordflow}{return}\ IsGroup(5,\ e);\ \ \}}
+\DoxyCodeLine{00449\ \ \ \textcolor{comment}{//\ O-\/>Po}}
+\DoxyCodeLine{00450\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsGroup6(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{\ \ \textcolor{keywordflow}{return}\ IsGroup(6,\ e);\ \ \}}
+\DoxyCodeLine{00451\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsChalcogen(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \ \{\ \ \textcolor{keywordflow}{return}\ IsGroup6(e);\ \ \}}
+\DoxyCodeLine{00452\ \ \ \textcolor{comment}{//\ F-\/>At}}
+\DoxyCodeLine{00453\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsGroup7(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{\ \ \textcolor{keywordflow}{return}\ IsGroup(7,\ e);\ \ \}}
+\DoxyCodeLine{00454\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsHalogen(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \ \{\ \ \textcolor{keywordflow}{return}\ IsGroup7(e);\ \ \}}
+\DoxyCodeLine{00455\ \ \ \textcolor{comment}{//\ La-\/>Lu}}
+\DoxyCodeLine{00456\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsLanthanide(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \ \{}
+\DoxyCodeLine{00457\ \ \ \ \ \textcolor{keywordflow}{return}\ e.z\ >=\ 57\ \&\&\ e.z\ <=\ 71;}
+\DoxyCodeLine{00458\ \ \ \}}
+\DoxyCodeLine{00459\ \ \ \textcolor{comment}{//\ Ac-\/>Lr}}
+\DoxyCodeLine{00460\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsActinide(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \ \{}
+\DoxyCodeLine{00461\ \ \ \ \ \textcolor{keywordflow}{return}\ e.z\ >=\ 89\ \&\&\ e.z\ <=\ 103;}
+\DoxyCodeLine{00462\ \ \ \}}
+\DoxyCodeLine{00463\ \ \ \textcolor{comment}{//\ He-\/>Rn}}
+\DoxyCodeLine{00464\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsGroup8(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\ \&e)\ \{\ \ \textcolor{keywordflow}{return}\ IsGroup(8,\ e);\ \ \}}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00466\ \};}
+\DoxyCodeLine{00467\ }
+\DoxyCodeLine{00468\ EndXlibNamespace()}
+\DoxyCodeLine{00469\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

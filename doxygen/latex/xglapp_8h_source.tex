@@ -1,0 +1,51 @@
+\doxysection{xglapp.\+h}
+\hypertarget{xglapp_8h_source}{}\label{xglapp_8h_source}\index{olex/xglapp.h@{olex/xglapp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xglApp\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xglApp\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxapp.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}olex2app\_imp.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}ctrls.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }TGlXApp:\ \textcolor{keyword}{public}\ wxApp\ \ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{bool}\ OnInit();}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{int}\ OnExit();}
+\DoxyCodeLine{00020\ \ \ \mbox{\hyperlink{classOlex2App}{Olex2App}}*\ XApp;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTMainForm}{TMainForm}}*\ MainForm;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ TGlXApp\ *\&Instance()\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{static}\ TGlXApp*\ Instance=NULL;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{return}\ Instance;}
+\DoxyCodeLine{00025\ \ \ \}}
+\DoxyCodeLine{00026\ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}*\ pid\_file;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{void}\ OnChar(wxKeyEvent\&\ event);}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{void}\ OnKeyDown(wxKeyEvent\&\ event);}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}\ OnNavigation(wxNavigationKeyEvent\&\ event);}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{void}\ OnIdle(wxIdleEvent\&\ event);}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ OnCmd(\mbox{\hyperlink{classolxCommandEvent}{olxCommandEvent}}\ \&evt);}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{void}\ MacOpenFile(\textcolor{keyword}{const}\ wxString\ \&fileName);}
+\DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ TGlXApp()\ :\ pid\_file(NULL)\ \ \{\}}
+\DoxyCodeLine{00035\ \ \ \string~TGlXApp();}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{bool}\ Dispatch();}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ \ int\ MainLoop();}}
+\DoxyCodeLine{00038\ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ *GetPIDFile()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ pid\_file;\ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{static}\ TGlXApp*\ GetInstance()\ \{\ \textcolor{keywordflow}{return}\ Instance();\ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTMainForm}{TMainForm}}*\ GetMainForm()\ \{\ \textcolor{keywordflow}{return}\ GetInstance()-\/>MainForm;\ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTGXApp}{TGXApp}}*\ GetGXApp()\ \{\ \textcolor{keywordflow}{return}\ GetInstance()-\/>XApp;\ \}}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ DECLARE\_APP(\mbox{\hyperlink{classTGlXApp}{TGlXApp}});}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

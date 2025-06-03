@@ -1,0 +1,184 @@
+\doxysection{olxmps.\+h}
+\hypertarget{olxmps_8h_source}{}\label{olxmps_8h_source}\index{sdl/olxmps.h@{sdl/olxmps.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_mps\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_mps\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}evector.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}olxthpool.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}etime.h"{}}}
+\DoxyCodeLine{00018\ BeginEsdlNamespace()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00021\ \ \ tLinearTask\ =\ 0x0000,}
+\DoxyCodeLine{00022\ \ \ tQuadraticTask\ =\ 0x0001;}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ template\ <typename>\ class\ \mbox{\hyperlink{classTListIteratorManager}{TListIteratorManager}};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ class\ TaskBase\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00028\ \ \ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ *critical\_section\_;}
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ TaskBase()\ :\ critical\_section\_(NULL)\ \{\}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ SetCriticalSection(\mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ \&cs)\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ critical\_section\_\ =\ \&cs;}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ *GetCriticalSection()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ critical\_section\_;}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ TaskClass>\ \textcolor{keyword}{class\ }TArrayIterationItem\ :\ \textcolor{keyword}{public}\ ITask\ \{}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{size\_t}\ StartIndex,\ EndIndex,\ current;}
+\DoxyCodeLine{00041\ \ \ uint16\_t\ Id;}
+\DoxyCodeLine{00042\ \ \ TaskClass\&\ Task;}
+\DoxyCodeLine{00043\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00044\ \ \ TArrayIterationItem(TaskClass\&\ task,\ \textcolor{keywordtype}{size\_t}\ startIndex,\ \textcolor{keywordtype}{size\_t}\ endIndex)}
+\DoxyCodeLine{00045\ \ \ \ \ :\ Task(task)}
+\DoxyCodeLine{00046\ \ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ current\ =\ StartIndex\ =\ startIndex;}
+\DoxyCodeLine{00048\ \ \ \ \ EndIndex\ =\ endIndex;}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{comment}{//\ always\ starts\ from\ the\ start}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Run()\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ current\ =\ StartIndex;}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{while}\ (current\ <\ EndIndex)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ Task.Run(current++);}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ StartIndex);}
+\DoxyCodeLine{00058\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ EndIndex);}
+\DoxyCodeLine{00059\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ current)}
+\DoxyCodeLine{00060\ \ \ DefPropP(uint16\_t,\ Id)}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ TaskClass>\ \textcolor{keyword}{class\ }TListIteratorManager\ \{}
+\DoxyCodeLine{00065\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TArrayIterationItem<TaskClass>}}\ >\ Items;}
+\DoxyCodeLine{00066\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TaskClass>}}\ Tasks;}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{size\_t}\ ListSize,\ MinSize;}
+\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ cs;}
+\DoxyCodeLine{00069\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ CalculateRatios(eveci\&\ res,\ \textcolor{keywordtype}{size\_t}\ ListSize,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ TaskType)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{if}\ (TaskType\ ==\ tLinearTask)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ mt\ =\ TBasicApp::GetInstance().GetMaxThreadCount();}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ res.Resize(mt);\ \ \textcolor{comment}{//\ max\ 4\ threads\ to\ support}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ res[0]\ =\ (int)(ListSize\ /\ mt);}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{short}\ i\ =\ 1;\ i\ <\ mt\ -\/\ 1;\ i++)\ res[i]\ =\ res[0];}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mt\ >\ 1)}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ res[mt\ -\/\ 1]\ =\ (int)(ListSize\ -\/\ (\textcolor{keywordtype}{int})((mt\ -\/\ 1)*res[0]));}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (TaskType\ ==\ tQuadraticTask)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ mt\ =\ olx\_min(4,}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ TBasicApp::GetInstance().GetMaxThreadCount());}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ res.Resize(mt);\ \ \textcolor{comment}{//\ max\ 4\ threads\ to\ support}}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (mt)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 1:}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ res[0]\ =\ (int)ListSize;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 2:}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ res[0]\ =\ (int)(ListSize*(2\ -\/\ sqrt(2.0))\ /\ 2);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ res[1]\ =\ (int)(ListSize\ -\/\ res[0]);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 3:}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ res[0]\ =\ (int)(ListSize*(2\ -\/\ sqrt(8.0\ /\ 3))\ /\ 2);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ res[1]\ =\ (int)(ListSize*(2\ -\/\ sqrt(4.0\ /\ 3))\ /\ 2\ -\/\ res[0]);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ res[2]\ =\ (int)(ListSize\ -\/\ (res[0]\ +\ res[1]));}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 4:}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ res[0]\ =\ (int)(ListSize*(2\ -\/\ sqrt(3.0))\ /\ 2);}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ res[1]\ =\ (int)(ListSize*(2\ -\/\ sqrt(2.0))\ /\ 2\ -\/\ res[0]);}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ res[2]\ =\ (int)((ListSize\ -\/\ (res[0]\ +\ res[1]))*(2\ -\/\ sqrt(2.0))\ /\ 2);}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ res[3]\ =\ (int)(ListSize\ -\/\ (res[0]\ +\ res[1]\ +\ res[2]));}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}thread\ count"{}});}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}unknown\ task\ complexity"{}});}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00112\ \ \ TListIteratorManager(TaskClass\&\ task,\ \textcolor{keywordtype}{size\_t}\ ListSize,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ TaskType,}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ MinSize)}
+\DoxyCodeLine{00114\ \ \ \ \ :}
+\DoxyCodeLine{00115\ \ \ \ \ ListSize(ListSize),}
+\DoxyCodeLine{00116\ \ \ \ \ MinSize(MinSize)}
+\DoxyCodeLine{00117\ \ \ \{}
+\DoxyCodeLine{00118\ \ \ \ \ Tasks.Add(\&task);\ \ \textcolor{comment}{//\ must\ not\ delete\ it!!!}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{//\ should\ we\ create\ parallel\ tasks\ then\ at\ all?}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (ListSize\ <\ MinSize\ ||\ TThreadPool::GetSlotsCount()\ ==\ 1)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ListSize;\ i++)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ Tasks[0]-\/>Run(i);}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ eveci\ ratios;}
+\DoxyCodeLine{00127\ \ \ \ \ CalculateRatios(ratios,\ ListSize,\ TaskType);}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ startIndex\ =\ 0;}
+\DoxyCodeLine{00129\ \ \ \ \ TaskClass*\ taskInstance\ =\ \&task;}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ratios.Count();\ i++)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ 0)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ taskInstance\ =\ task.Replicate();}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ Tasks.Add(*taskInstance);}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ Tasks[i]-\/>SetCriticalSection(cs);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \mbox{\hyperlink{classTArrayIterationItem}{TArrayIterationItem<TaskClass>}}\&\ item\ =\ Items.Add(}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTArrayIterationItem}{TArrayIterationItem<TaskClass>}}(*taskInstance,}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ startIndex,\ startIndex\ +\ ratios[i]));}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ startIndex\ +=\ ratios[i];}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ item.SetId((uint16\_t)(Items.Count()\ -\/\ 1));}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ TThreadPool::AllocateTask(item);}
+\DoxyCodeLine{00142\ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ TThreadPool::DoRun();}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\&\ e)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ e);}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \string~TListIteratorManager()\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ Tasks.Delete(0);}
+\DoxyCodeLine{00152\ \ \ \ \ Tasks.DeleteItems(\textcolor{keyword}{false});}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordtype}{void}\ ReRun()\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{if}\ (ListSize\ <\ MinSize\ ||\ TThreadPool::GetSlotsCount()\ ==\ 1)\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ListSize;\ i++)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ Tasks[0]-\/>Run(i);}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Items.Count();\ i++)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ TThreadPool::AllocateTask(Items[i]);}
+\DoxyCodeLine{00163\ \ \ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \ \ TThreadPool::DoRun();}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\ \{\ \textcolor{keywordflow}{return}\ Tasks.Count();\ \}}
+\DoxyCodeLine{00167\ \ \ TaskClass\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ *Tasks[i];\ \}}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{const}\ TaskClass\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Tasks[i];\ \}}
+\DoxyCodeLine{00169\ \};}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structOlxListTask}{OlxListTask}}\ \{}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ task\_t>}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Run(task\_t\ \&task,\ \textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keywordtype}{short}\ type,\ \textcolor{keywordtype}{size\_t}\ limit)\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \mbox{\hyperlink{classTListIteratorManager}{TListIteratorManager<task\_t>}}(task,\ size,\ type,\ limit);}
+\DoxyCodeLine{00175\ \ \ \}}
+\DoxyCodeLine{00176\ \};}
+\DoxyCodeLine{00177\ EndEsdlNamespace()}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

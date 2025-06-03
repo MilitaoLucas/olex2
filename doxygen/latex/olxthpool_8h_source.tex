@@ -1,0 +1,80 @@
+\doxysection{olxthpool.\+h}
+\hypertarget{olxthpool_8h_source}{}\label{olxthpool_8h_source}\index{sdl/olxthpool.h@{sdl/olxthpool.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_thread\_pool\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_thread\_pool\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxth.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ a\ Task\ interface}}
+\DoxyCodeLine{00016\ class\ ITask\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ ITask()\ \ \{\}}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{virtual}\ \string~ITask()\ \ \{\}}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Run()\ =\ 0;}
+\DoxyCodeLine{00021\ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{/*\ Instances\ of\ this\ class\ are\ supposed\ to\ be\ in\ a\ 'pool'\ and\ can\ be\ reused}}
+\DoxyCodeLine{00024\ \textcolor{comment}{without\ the\ need\ to\ create\ new\ threads.\ This\ allows\ to\ vectorise\ little\ tasks,}}
+\DoxyCodeLine{00025\ \textcolor{comment}{where\ thread\ creation\ time\ is\ longer\ that\ the\ actual\ task\ execution}}
+\DoxyCodeLine{00026\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{class\ }TThreadSlot\ :\ \textcolor{keyword}{public}\ AOlxThread\ \ \{}
+\DoxyCodeLine{00028\ \ \ ITask*\ task;}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ suspended;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ TThreadSlot();}
+\DoxyCodeLine{00032\ \ \ \string~TThreadSlot();}
+\DoxyCodeLine{00033\ \ \ \textcolor{comment}{/*\ the\ thread\ automatically\ becomes\ suspended\ when\ the\ task\ is\ completed,}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ \ and\ even\ if\ a\ mnew\ task\ is\ set,\ it\ will\ remain\ suspended\ until\ Resume\ is}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ \ called}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ Run();}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{void}\ SetTask(ITask\&\ \_task);}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{bool}\ IsSuspended()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ has\ no\ effect\ on\ already\ suspended\ task}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ Suspend();}
+\DoxyCodeLine{00042\ \ \ \textcolor{comment}{//\ has\ no\ effect\ on\ running\ thread}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ Resume();}
+\DoxyCodeLine{00044\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TExceptionBase>}}\ exception;}
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ a\ singleton\ class}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTThreadPool}{TThreadPool}}\ \{}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TThreadSlot>}}\ tasks;}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \_checkThreadCount();}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ current\_task;}
+\DoxyCodeLine{00052\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\&\ GetCriticalSection()\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ crit\_sect;}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{return}\ crit\_sect;}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ GetSlotsCount()\ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \_checkThreadCount();}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{return}\ tasks.Count();}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ AllocateTask(ITask\&\ task);}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DoRun();}
+\DoxyCodeLine{00063\ \ \ \textcolor{comment}{/*\ In\ general\ this\ is\ not\ needed\ to\ be\ called,\ however\ to\ avoid\ cleaning\ up}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ \ problems,\ in\ particular\ when\ this\ is\ used\ from\ a\ DLL,\ it\ is\ recommended\ to}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ \ call\ this\ function.}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Finalise()\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ tasks.Clear();}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{comment}{//static\ void\ AllocateTasks(}}
+\DoxyCodeLine{00071\ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ EndEsdlNamespace()}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

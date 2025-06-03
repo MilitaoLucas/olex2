@@ -1,0 +1,51 @@
+\doxysection{rm\+\_\+base.\+h}
+\hypertarget{rm__base_8h_source}{}\label{rm__base_8h_source}\index{xlib/rm\_base.h@{xlib/rm\_base.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ need\ this\ file\ to\ resolve\ includes\ and\ dependencies...\ not\ to\ be\ included\ first\ :)}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_rm\_base\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ \_\_olx\_rm\_base\_H}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00014\ BeginXlibNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ class\ \mbox{\hyperlink{classIXVarReferencerContainer}{IXVarReferencerContainer}};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\ :\ public\ virtual\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ VarCount()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structXVarReference}{XVarReference}}*\ GetVarRef(\textcolor{keywordtype}{size\_t}\ i)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetVarName(\textcolor{keywordtype}{size\_t}\ i)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetVarRef(\textcolor{keywordtype}{size\_t}\ i,\ \mbox{\hyperlink{structXVarReference}{XVarReference}}*\ var\_ref)\ =\ 0;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ GetValue(\textcolor{keywordtype}{size\_t}\ var\_index)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetValue(\textcolor{keywordtype}{size\_t}\ var\_index,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ val)\ =\ 0;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIXVarReferencerContainer}{IXVarReferencerContainer}}\&\ GetParentContainer()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsValid()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetReferencerId()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetPersistentId()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetIdName()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{bool}\ AreAllFixed(\textcolor{keywordtype}{size\_t}\ start,\ \textcolor{keywordtype}{size\_t}\ sz)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00032\ \};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIXVarReferencerContainer}{IXVarReferencerContainer}}\ :\ \textcolor{keyword}{public}\ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00035\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{//\ returns\ an\ object\ id\ and\ the\ name\ of\ id,\ like\ 'atom',\ 'dfix',\ 'basf',\ etc}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetIdName()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetIdOf(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ vr)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetPersistentIdOf(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ vr)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ ReferencerCount()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIXVarReferencer}{IXVarReferencer}}\&\ GetReferencer(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ EndXlibNamespace()}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

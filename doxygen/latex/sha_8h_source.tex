@@ -1,0 +1,75 @@
+\doxysection{sha.\+h}
+\hypertarget{sha_8h_source}{}\label{sha_8h_source}\index{sdl/sha.h@{sdl/sha.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_sha\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_sha\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}hashing.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{/*\ SHA-\/1\ message\ digest\ implementation,\ for\ reference\ look\ at:}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ http://en.wikipedia.org/wiki/SHA\_hash\_functions}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ class\ SHA1Impl\ \ \{}
+\DoxyCodeLine{00019\ \ \ uint8\_t\ digest[20];}
+\DoxyCodeLine{00020\ \ \ uint32\_t\ state[5],\ bf[80];}
+\DoxyCodeLine{00021\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00022\ \ \ SHA1Impl();}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{void}\ digest64(\textcolor{keyword}{const}\ uint32\_t*\ msg);}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{const}\ uint8\_t\ *GetDigest()\ \{\ \textcolor{keywordflow}{return}\ \&digest[0];\ \}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{size\_t}\ DigestSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 20;\ \}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ finalise()\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ HashingUtilsBE::hs\_copy(state,\ digest,\ 5);}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \ \ olxcstr\ formatDigest();}
+\DoxyCodeLine{00030\ \};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Impl>}
+\DoxyCodeLine{00033\ \textcolor{keyword}{class\ }SHA2\ \{}
+\DoxyCodeLine{00034\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint32\_t\ *table\_();}
+\DoxyCodeLine{00036\ \ \ uint8\_t\ digest[32];}
+\DoxyCodeLine{00037\ \ \ uint32\_t\ state[8],\ bf[64];}
+\DoxyCodeLine{00038\ \ \ SHA2()\ \{\}}
+\DoxyCodeLine{00039\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ digest64(\textcolor{keyword}{const}\ uint32\_t*\ msg);}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{const}\ uint8\_t\ *GetDigest()\ \{\ \textcolor{keywordflow}{return}\ \&digest[0];\ \}}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{class\ }SHA256Impl\ :\ \textcolor{keyword}{public}\ SHA2<SHA256Impl>\ \{}
+\DoxyCodeLine{00045\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00046\ \ \ SHA256Impl();}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ finalise()\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ HashingUtilsBE::hs\_copy(state,\ digest,\ 8);}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{size\_t}\ DigestSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 32;\ \}}
+\DoxyCodeLine{00051\ \ \ olxcstr\ formatDigest();}
+\DoxyCodeLine{00052\ \};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{class\ }SHA224Impl\ :\ \textcolor{keyword}{public}\ SHA2<SHA224Impl>\ \{}
+\DoxyCodeLine{00055\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00056\ \ \ SHA224Impl();}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{void}\ finalise()\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ HashingUtilsBE::hs\_copy(state,\ digest,\ 7);}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{size\_t}\ DigestSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 28;\ \}}
+\DoxyCodeLine{00061\ \ \ olxcstr\ formatDigest();}
+\DoxyCodeLine{00062\ \};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classHashingBase}{HashingBase<SHA1Impl,\ HashingUtilsBE>}}\ SHA1;}
+\DoxyCodeLine{00065\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classHashingBase}{HashingBase<SHA256Impl,\ HashingUtilsBE>}}\ SHA256;}
+\DoxyCodeLine{00066\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classHashingBase}{HashingBase<SHA224Impl,\ HashingUtilsBE>}}\ SHA224;}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ EndEsdlNamespace()}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
