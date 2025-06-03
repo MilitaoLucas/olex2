@@ -1,0 +1,164 @@
+\doxysection{tagholder.\+h}
+\hypertarget{tagholder_8h_source}{}\label{tagholder_8h_source}\index{sdl/tagholder.h@{sdl/tagholder.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}talist.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{comment}{/*\ Use\ this\ in\ complex\ code\ when\ tags\ may\ be\ modified\ by\ one\ of\ the\ above\ functions}}
+\DoxyCodeLine{00015\ \textcolor{comment}{*\ The\ lists\ passed\ to\ the\ stack\ must\ outlive\ it\ or\ poped\ out\ before\ getting\ destructed.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{They\ also\ must\ not\ get\ modified\ by\ themselves}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ BeginEsdlNamespace()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ struct\ ItemTagHolder\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{struct\ }ACIList\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ TArrayList<index\_t>\ tags;}
+\DoxyCodeLine{00023\ \ \ \ \ ACIList(\textcolor{keywordtype}{size\_t}\ sz)\ :\ tags(sz)\ \{\}}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ ptr()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ restore()\ =\ 0;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ have\_changed()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00027\ \ \ \};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<const\ void*,\ struct\ ACIList*>}}\ data;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ ItemTagHolder()\ \{\}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00034\ \ \ ItemTagHolder(\textcolor{keyword}{const}\ list\_t\&\ l)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ store(l);}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00039\ \ \ ItemTagHolder(\textcolor{keyword}{const}\ list\_t\&\ l,\ \textcolor{keyword}{const}\ accessor\_t\&\ acc)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ store(l,\ acc);}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \string~ItemTagHolder()\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ restore\_all();}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00048\ \ \ ItemTagHolder\&\ store(\textcolor{keyword}{const}\ list\_t\&\ l,\ \textcolor{keyword}{const}\ accessor\_t\&\ acc)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ ACIList*\ al\ =\ \textcolor{keyword}{new}\ CIList<list\_t,\ accessor\_t>(l,\ acc);}
+\DoxyCodeLine{00050\ \ \ \ \ data.Add(al-\/>ptr(),\ al);}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00055\ \ \ ItemTagHolder\&\ store(\textcolor{keyword}{const}\ list\_t\&\ l)\ \{\ \textcolor{keywordflow}{return}\ store(l,\ \mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}());\ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00058\ \ \ ItemTagHolder\&\ restore(\textcolor{keyword}{const}\ list\_t\&\ l,\ \textcolor{keywordtype}{bool}\ clear=\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ data.IndexOf((\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*)\&l);}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ data.GetValue(i)-\/>restore();}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (clear)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ data.GetValue(i);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ data.Delete(i);}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSrcInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{bool}\ have\_changed(\textcolor{keyword}{const}\ list\_t\&\ l)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ data.IndexOf((\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*)\&l);}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data.GetValue(i)-\/>have\_changed();}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSrcInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00085\ \ \ ItemTagHolder\&\ copy\_to(\textcolor{keyword}{const}\ list\_t\&\ src,\ list\_t\&\ dest,\ \textcolor{keyword}{const}\ accessor\_t\ \&acc)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ data.IndexOf((\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*)\&src);}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ ACIList\&\ tl\ =\ *data.GetValue(i);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dest.Count()\ !=\ tl.tags.Count())\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSrcInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ tl.tags.Count();\ i++)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ olx\_ref::get(acc(dest[i])).SetTag(tl.tags[i]);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSrcInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00103\ \ \ ItemTagHolder\&\ copy\_to(\textcolor{keyword}{const}\ list\_t\&\ src,\ list\_t\&\ dest)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ copy\_to(src,\ dest,\ \mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}());}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{void}\ restore\_all()\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ data.Count();\ i++)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ data.GetValue(i)-\/>restore();}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ data.GetValue(i);}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ data.Clear();}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{//\ empties\ store\ without\ restoring\ tags}}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordtype}{void}\ clear()\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ data.Count();\ i++)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ data.GetValue(i);}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ data.Clear();}
+\DoxyCodeLine{00121\ \ \ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{struct\ }CIList\ :\ \textcolor{keyword}{public}\ ACIList\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{const}\ list\_t\&\ list;}
+\DoxyCodeLine{00126\ \ \ \ \ accessor\_t\ acc;}
+\DoxyCodeLine{00127\ \ \ \ \ CIList(\textcolor{keyword}{const}\ list\_t\&\ l,\ \textcolor{keyword}{const}\ accessor\_t\&\ acc)}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ :\ ACIList(l.Count()),\ list(l),\ acc(acc)}
+\DoxyCodeLine{00129\ \ \ \ \ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ this-\/>tags[i]\ =\ olx\_ref::get(acc(l[i])).GetTag();}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{void}\ restore()\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list.Count()\ !=\ this-\/>tags.Count())\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSrcInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ olx\_ref::get(acc(list[i])).SetTag(this-\/>tags[i]);}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordtype}{bool}\ have\_changed()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list.Count()\ !=\ this-\/>tags.Count())\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSrcInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_ref::get(acc(list[i])).GetTag()\ !=\ this-\/>tags[i])\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ ptr()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*)\&list;}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \};}
+\DoxyCodeLine{00157\ \};}
+\DoxyCodeLine{00158\ EndEsdlNamespace()}
+
+\end{DoxyCode}

@@ -1,0 +1,83 @@
+\doxysection{url.\+h}
+\hypertarget{url_8h_source}{}\label{url_8h_source}\index{repository/url.h@{repository/url.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_urlH}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_urlH}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }TUrl\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ Port;}
+\DoxyCodeLine{00016\ \ \ olxstr\ Protocol,\ Host,\ Path,\ User,\ Password;}
+\DoxyCodeLine{00017\ \ \ TUrl*\ Proxy;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \textcolor{comment}{//\ default\ constructor,\ sets\ Port\ to\ 80}}
+\DoxyCodeLine{00020\ \ \ TUrl()\ :\ Port(80),\ Proxy(NULL)\ \{\}}
+\DoxyCodeLine{00021\ \ \ \textcolor{comment}{//\ parsers\ a\ valid\ url}}
+\DoxyCodeLine{00022\ \ \ TUrl(\textcolor{keyword}{const}\ olxstr\&\ url);}
+\DoxyCodeLine{00023\ \ \ \textcolor{comment}{//\ copy\ constructor}}
+\DoxyCodeLine{00024\ \ \ TUrl(\textcolor{keyword}{const}\ TUrl\&\ url)\ :\ Proxy(NULL)\ \ \{\ \ *\textcolor{keyword}{this}\ =\ url;\ \}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{virtual}\ \string~TUrl()\ \ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{if}(\ Proxy\ !=\ NULL\ )}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Proxy;}
+\DoxyCodeLine{00029\ \ \ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ TUrl\&\ operator\ =\ (\textcolor{keyword}{const}\ TUrl\&\ url);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ olxstr\ GetFullAddress()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//\ for\ http://www.dur.ac.uk:8080/index.html\ returns\ www.dur.ac.uk}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetHost()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Host;\ \ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ SetHost(\ \textcolor{keyword}{const}\ olxstr\&\ host\ );}
+\DoxyCodeLine{00038\ \ \ olxstr\ GetFullHost()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{bool}\ HasProxy()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Proxy\ !=\ NULL;\ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ SetProxy(\ \textcolor{keyword}{const}\ TUrl\&\ proxy\_url)\ \ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{if}(\ Proxy\ !=\ NULL\ )\ \ \textcolor{keyword}{delete}\ Proxy;}
+\DoxyCodeLine{00042\ \ \ \ \ Proxy\ =\ \textcolor{keyword}{new}\ TUrl(proxy\_url);}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ SetProxy(\ \textcolor{keyword}{const}\ olxstr\&\ proxy\_str)\ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{if}(\ Proxy\ !=\ NULL\ )\ \ \textcolor{keyword}{delete}\ Proxy;}
+\DoxyCodeLine{00046\ \ \ \ \ Proxy\ =\ \textcolor{keyword}{new}\ TUrl(proxy\_str);}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ \ \ TUrl\&\ GetProxy()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Proxy;\ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{comment}{//\ for\ http://www.dur.ac.uk:8080/index.html\ returns\ index.html}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetPath()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Path;\ \ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{void}\ SetPath(\ \textcolor{keyword}{const}\ olxstr\&\ path\ );}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ for\ http://www.dur.ac.uk:8080/index.html\ returns\ http}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetProtocol()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Protocol;\ \ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ SetProtocol(\ \textcolor{keyword}{const}\ olxstr\&\ protocol\ );}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{comment}{//\ for\ http://www.dur.ac.uk:8080/index.html\ returns\ 8080}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ GetPort()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Port;\ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{void}\ SetPort(\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ port\ )\ \ \{\ \ Port\ =\ port;\ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{class\ }TInvalidUrlException:\ \textcolor{keyword}{public}\ TBasicException\ \ \{}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00064\ \ \ \ \ TInvalidUrlException(\textcolor{keyword}{const}\ olxstr\&\ location)\ :}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ TBasicException(location,\ EmptyString())\ \ \{\ \}}
+\DoxyCodeLine{00066\ \ \ \};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ DefPropC(olxstr,\ User)}
+\DoxyCodeLine{00069\ \ \ DefPropC(olxstr,\ Password)}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{static}\ olxcstr\ GenerateHTTPAuthString(\textcolor{keyword}{const}\ olxstr\&\ user,}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{const}\ olxstr\&\ pass);}
+\DoxyCodeLine{00073\ \ \ olxcstr\ GenerateHTTPAuthString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ GenerateHTTPAuthString(User,\ Password);}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \};}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

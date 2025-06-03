@@ -1,0 +1,44 @@
+\doxysection{md5.\+h}
+\hypertarget{md5_8h_source}{}\label{md5_8h_source}\index{sdl/md5.h@{sdl/md5.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_md5\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_md5\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}hashing.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{/*\ MD5\ message\ digest\ implementation,\ for\ reference\ look\ at:}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ http://en.wikipedia.org/wiki/MD5}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ class\ MD5Impl\ \ \{}
+\DoxyCodeLine{00019\ \ \ uint8\_t\ digest[16];}
+\DoxyCodeLine{00020\ \ \ uint32\_t\ state[4],\ bf[16];}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint32\_t\ *consts\_();}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *rotations();}
+\DoxyCodeLine{00023\ \ \ \textcolor{comment}{//\ digest\ 64\ byte\ message\ updating\ current\ stat}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ MD5Impl();}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ digest64(\textcolor{keyword}{const}\ uint32\_t*\ msg);}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{const}\ uint8\_t\ *GetDigest()\ \{\ \textcolor{keywordflow}{return}\ \&digest[0];\ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{size\_t}\ DigestSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 16;\ \}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}\ finalise()\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ HashingUtilsLE::hs\_copy(state,\ digest,\ 4);}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ \ \ olxcstr\ formatDigest();}
+\DoxyCodeLine{00033\ \};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classHashingBase}{HashingBase<MD5Impl,\ HashingUtilsLE>}}\ MD5;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ EndEsdlNamespace()}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

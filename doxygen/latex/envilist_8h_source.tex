@@ -1,0 +1,124 @@
+\doxysection{envilist.\+h}
+\hypertarget{envilist_8h_source}{}\label{envilist_8h_source}\index{xlib/envilist.h@{xlib/envilist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_envilist\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_envilist\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}symmat.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}satom.h"{}}}
+\DoxyCodeLine{00017\ BeginXlibNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ class\ \mbox{\hyperlink{classTUnitCell}{TUnitCell}};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ class\ TAtomEnvi\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structAnAssociation3}{AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ elm\_t;}
+\DoxyCodeLine{00023\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<elm\_t>}}\ \ Envi;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ *Base;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{int}\ \_SortByDistance(\textcolor{keyword}{const}\ elm\_t\ \&i1,\ \textcolor{keyword}{const}\ elm\_t\ \&i2)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(i1.GetC().QDistanceTo(Base-\/>crd()),}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ i2.GetC().QDistanceTo(Base-\/>crd()));}
+\DoxyCodeLine{00029\ \ \ \}}
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ TAtomEnvi(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&base)}
+\DoxyCodeLine{00032\ \ \ \ \ :\ Base(\&base)}
+\DoxyCodeLine{00033\ \ \ \{\}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ TAtomEnvi(\textcolor{keyword}{const}\ TAtomEnvi\ \&e)}
+\DoxyCodeLine{00036\ \ \ \ \ :\ Envi(e.Envi),}
+\DoxyCodeLine{00037\ \ \ \ \ Base(e.Base)}
+\DoxyCodeLine{00038\ \ \ \{\}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ Add(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca,\ \textcolor{keyword}{const}\ smatd\&\ matr,\ \textcolor{keyword}{const}\ vec3d\&\ crd)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ Envi.AddNew(\&ca,\ matr,\ crd);}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ GetBase()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Base;\ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Envi.Count();\ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Envi.IsEmpty();\ \}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&GetAU()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTUnitCell}{TUnitCell}}\ \&GetUC()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTLattice}{TLattice}}\ \&GetLatt()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetLabel(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ Envi[ind].a-\/>GetLabel();}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ GetType(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{return}\ Envi[ind].a-\/>GetType();}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ GetCAtom(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Envi[ind].a;\ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetCrd(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Envi[ind].GetC();\ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{const}\ vec3d\&\ crd()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Base-\/>crd();\ \}}
+\DoxyCodeLine{00061\ \ \ vec3d\ GetVec(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ Envi[ind].GetC()\ -\/\ Base-\/>crd();}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{const}\ smatd\&\ GetMatrix(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Envi[ind].GetB();\ \}}
+\DoxyCodeLine{00065\ \ \ }
+\DoxyCodeLine{00066\ \ \ \textcolor{comment}{//\ returns\ distance\ to\ the\ given\ atom\ index\ in\ Angstrems}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{double}\ Distance(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{return}\ GetCrd(i).DistanceTo(Base-\/>crd());}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{comment}{//\ returns\ cosine\ of\ the\ angle\ between\ two\ vertices}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{double}\ CAngle(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{return}\ (GetCrd(i)\ -\/\ Base-\/>crd()).CAngle(GetCrd(j)\ -\/\ Base-\/>crd());}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//\ returns\ angle\ between\ two\ vertices\ in\ degrees}}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{double}\ Angle(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{return}\ acos(CAngle(i,\ j))\ *\ M\_PI\ /\ 180;}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{comment}{//\ counts\ number\ of\ atoms\ with\ particular\ Z}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{size\_t}\ CountZ(\textcolor{keywordtype}{int}\ z)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{//\ returns\ indices\ of\ the\ atoms\ with\ specified\ Z}}
+\DoxyCodeLine{00081\ \ \ TSizeList::const\_list\_type\ GetZIndices(\textcolor{keywordtype}{int}\ z)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ i)\ \{\ Envi.Delete(i);\ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordtype}{void}\ SortByDistance()\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ QuickSorter::SortMF(Envi,\ *\textcolor{keyword}{this},\ \&TAtomEnvi::\_SortByDistance);}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{comment}{/*\ beware\ as\ this\ may\ cause\ problems\ with\ symmetry\ equivalents\ -\/\ only}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ \ the\ first\ instance\ will\ be\ removed!}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{void}\ Exclude(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca);}
+\DoxyCodeLine{00091\ \ \ \textcolor{comment}{//\ excludes\ given\ indices}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordtype}{void}\ ExcludeIndices(\textcolor{keyword}{const}\ TSizeList\ \&indices);}
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//removes\ all\ but\ the\ given\ indices}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{void}\ LeaveIndices(\textcolor{keyword}{const}\ TSizeList\ \&indices);}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{/*\ counts\ covalent\ bonds\ only.\ The\ list\ may\ have\ mixed\ bonds\ if\ modified}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ \ externally,\ like\ in\ the\ case\ of\ placing\ H\ atoms\ on\ O}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{size\_t}\ CountCovalent()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{/*\ applies\ a\ symmetry\ operation\ to\ all\ matrices\ and\ recalculates\ the}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ \ coordinates}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ ApplySymm(\textcolor{keyword}{const}\ smatd\&\ sym);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ TAtomEnvi\ \&operator\ =\ (\textcolor{keyword}{const}\ TAtomEnvi\ \&e)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ Base\ =\ e.Base;}
+\DoxyCodeLine{00106\ \ \ \ \ Envi\ =\ e.Envi;}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00110\ \ \ PyObject*\ PyExport(\mbox{\hyperlink{classTPtrList}{TPtrList<PyObject>}}\&\ atoms);}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00112\ \};}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TAtomEnvi>}}\ TAtomEnviPList;}
+\DoxyCodeLine{00115\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TAtomEnvi>}}\ TAtomEnviList;}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ EndXlibNamespace()}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,318 @@
+\doxysection{beevers-\/lipson.h}
+\hypertarget{beevers-lipson_8h_source}{}\label{beevers-lipson_8h_source}\index{xlib/beevers-\/lipson.h@{xlib/beevers-\/lipson.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{/*\ Beevers-\/Lipson\ Fourier\ summation}}
+\DoxyCodeLine{00011\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#ifndef\ \_\_beevers\_lipson\_h}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ \_\_beevers\_lipson\_h}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}ecomplex.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}sfutil.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}olxmps.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}estopwatch.h"{}}}
+\DoxyCodeLine{00021\ BeginXlibNamespace()}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ using\ namespace\ olx\_array;}
+\DoxyCodeLine{00024\ class\ \mbox{\hyperlink{classBVFourier}{BVFourier}}\ \{}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structBVFourier_1_1MapInfo}{MapInfo}}\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{double}\ sigma,\ minVal,\ maxVal;}
+\DoxyCodeLine{00028\ \ \ \};}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<SFUtil::StructureFactor>}}\ SFList;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ FloatT>}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structBVFourier_1_1MapInfo}{MapInfo}}\ CalcEDM(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<SFUtil::StructureFactor>}}\&\ F,}
+\DoxyCodeLine{00033\ \ \ \ \ array\_3d<FloatT>\ \&map,\ \textcolor{keywordtype}{double}\ vol)}
+\DoxyCodeLine{00034\ \ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ Calculate<FloatT,\ BVFourier::TCalcEDMTask<FloatT>\ >(}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ F,\ map,\ vol);}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ FloatT>}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{static}\ MapInfo\ CalcPatt(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<SFUtil::StructureFactor>}}\&\ F,}
+\DoxyCodeLine{00041\ \ \ \ \ array\_3d<FloatT>\ \&map,\ \textcolor{keywordtype}{double}\ vol)}
+\DoxyCodeLine{00042\ \ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{return}\ Calculate<FloatT,\ BVFourier::TCalcPattTask<FloatT>\ >(}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ F,\ map,\ vol);}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatT,\ \textcolor{keyword}{class}\ Task>\ \textcolor{keyword}{static}\ MapInfo\ Calculate(}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<SFUtil::StructureFactor>}}\&\ F,}
+\DoxyCodeLine{00050\ \ \ \ \ array\_3d<FloatT>\ \&map,\ \textcolor{keywordtype}{double}\ vol)}
+\DoxyCodeLine{00051\ \ \ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \mbox{\hyperlink{classTStopWatch}{TStopWatch}}\ st(olxstr(\_\_FUNC\_\_)\ <<\ \textcolor{charliteral}{'<'}\ <<\ \textcolor{keyword}{typeid}(Task).name()\ <<\ \textcolor{charliteral}{'>'});}
+\DoxyCodeLine{00053\ \ \ \ \ st.start(\textcolor{stringliteral}{"{}Initialising"{}});}
+\DoxyCodeLine{00054\ \ \ \ \ vec3i\ mini,\ maxi;}
+\DoxyCodeLine{00055\ \ \ \ \ SFUtil::FindMinMax(F,\ mini,\ maxi);}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ T\_PI\ =\ 2\ *\ M\_PI;}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ precalculations}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ minInd\ =\ olx\_min(mini[2],\ olx\_min(mini[0],\ mini[1]));}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ maxInd\ =\ olx\_max(maxi[2],\ olx\_max(maxi[0],\ maxi[1]));}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ iLen\ =\ maxInd\ -\/\ minInd\ +\ 1;}
+\DoxyCodeLine{00061\ \ \ \ \ vec3s\ dim\ =\ map.dim();}
+\DoxyCodeLine{00062\ \ \ \ \ compd**\ sin\_cosX\ =\ \textcolor{keyword}{new}\ compd*[dim[0]],}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ **sin\_cosY,\ **sin\_cosZ;}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ dim[0];\ i++)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ sin\_cosX[i]\ =\ \textcolor{keyword}{new}\ compd[iLen];}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ minInd;\ j\ <=\ maxInd;\ j++)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ rv\ =\ (double)i*j\ /\ (\textcolor{keywordtype}{double})dim[0],\ ca,\ sa;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ rv\ *=\ T\_PI;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ olx\_sincos(-\/rv,\ \&sa,\ \&ca);}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ sin\_cosX[i][j\ -\/\ minInd].SetRe(ca);}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ sin\_cosX[i][j\ -\/\ minInd].SetIm(sa);}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{if}\ (dim[0]\ ==\ dim[1])\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ sin\_cosY\ =\ sin\_cosX;}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ sin\_cosY\ =\ \textcolor{keyword}{new}\ compd*[dim[1]];}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ dim[1];\ i++)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ sin\_cosY[i]\ =\ \textcolor{keyword}{new}\ compd[iLen];}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ mini[1];\ j\ <=\ maxi[1];\ j++)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ rv\ =\ (double)i*j\ /\ (\textcolor{keywordtype}{double})dim[1],\ ca,\ sa;}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ rv\ *=\ T\_PI;}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ olx\_sincos(-\/rv,\ \&sa,\ \&ca);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ sin\_cosY[i][j\ -\/\ minInd].SetRe(ca);}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ sin\_cosY[i][j\ -\/\ minInd].SetIm(sa);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{if}\ (dim[0]\ ==\ dim[2])\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ sin\_cosZ\ =\ sin\_cosX;}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (dim[1]\ ==\ dim[2])\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ sin\_cosZ\ =\ sin\_cosY;}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ sin\_cosZ\ =\ \textcolor{keyword}{new}\ compd*[dim[2]];}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ dim[2];\ i++)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ sin\_cosZ[i]\ =\ \textcolor{keyword}{new}\ compd[iLen];}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ mini[2];\ j\ <=\ maxi[2];\ j++)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ rv\ =\ (double)i*j\ /\ (\textcolor{keywordtype}{double})dim[2],\ ca,\ sa;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ rv\ *=\ T\_PI;}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ olx\_sincos(-\/rv,\ \&sa,\ \&ca);}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ sin\_cosZ[i][j\ -\/\ minInd].SetRe(ca);}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ sin\_cosZ[i][j\ -\/\ minInd].SetIm(sa);}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{comment}{/*\ http://smallcode.weblogs.us/2006/11/27/calculate-\/standard-\/deviation-\/in-\/one-\/pass/}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\ \ \ \ *\ https://www.strchr.com/standard\_deviation\_in\_one\_pass}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\ \ \ \ for\ one\ pass\ calculation\ of\ the\ variance}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00113\ \ \ \ \ MapInfo\ mi\ =\ \{\ 0,\ 1000,\ -\/1000\ \};}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{double}\ sum\ =\ 0,\ sq\_sum\ =\ 0;}
+\DoxyCodeLine{00115\ \ \ \ \ st.start(\textcolor{stringliteral}{"{}Calculating"{}});}
+\DoxyCodeLine{00116\ \ \ \ \ Task\ xtask(map.data,\ dim,\ vol,\ F,\ mini,\ maxi,\ sin\_cosX,\ sin\_cosY,\ sin\_cosZ,\ minInd);}
+\DoxyCodeLine{00117\ \ \ \ \ \mbox{\hyperlink{classTListIteratorManager}{TListIteratorManager<Task>}}\ tasks(xtask,\ dim[0],\ tLinearTask,\ 50);}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ tasks.Count();\ i++)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ sum\ +=\ tasks[i].sum;}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ sq\_sum\ +=\ tasks[i].sq\_sum;}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tasks[i].minVal\ <\ mi.minVal)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ mi.minVal\ =\ tasks[i].minVal;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tasks[i].maxVal\ >\ mi.maxVal)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ mi.maxVal\ =\ tasks[i].maxVal;}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{comment}{//\ sum\ should\ be\ \string~0,\ but\ just\ in\ case...}}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordtype}{double}\ map\_mean\ =\ sum\ /\ dim.Prod();}
+\DoxyCodeLine{00130\ \ \ \ \ mi.sigma\ =\ sqrt(sq\_sum\ /\ dim.Prod()\ -\/\ map\_mean*map\_mean);}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{comment}{//\ clean\ up\ of\ allocated\ data}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{if}\ (sin\_cosY\ ==\ sin\_cosX)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ sin\_cosY\ =\ 0;}
+\DoxyCodeLine{00134\ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{if}\ (sin\_cosZ\ ==\ sin\_cosX\ ||\ sin\_cosZ\ ==\ sin\_cosY)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ sin\_cosZ\ =\ 0;}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ dim[0];\ i++)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ sin\_cosX[i];}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{delete}[]\ sin\_cosX;}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{if}\ (sin\_cosY\ !=\ 0)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ dim[1];\ i++)\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ sin\_cosY[i];}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ sin\_cosY;}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{if}\ (sin\_cosZ\ !=\ 0)\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ dim[2];\ i++)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ sin\_cosZ[i];}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ sin\_cosZ;}
+\DoxyCodeLine{00153\ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{return}\ mi;}
+\DoxyCodeLine{00155\ \ \ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatT>\textcolor{keyword}{struct\ }TCalcEDMTask\ :\ \textcolor{keyword}{public}\ TaskBase\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ FloatT***\ map;}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keyword}{const}\ SFList\&\ F;}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keyword}{const}\ vec3s\&\ dim;}
+\DoxyCodeLine{00161\ \ \ \ \ compd\ \ **sin\_cosX,\ **sin\_cosY,\ **sin\_cosZ;}
+\DoxyCodeLine{00162\ \ \ \ \ compd\ **\ S,\ *T;}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ \&mini,\ \&maxi;}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ kLen,\ lLen;}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordtype}{int}\ minInd;}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordtype}{double}\ sum,\ sq\_sum,\ vol;}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordtype}{double}\ maxVal,\ minVal;}
+\DoxyCodeLine{00168\ \ \ \ \ TCalcEDMTask(FloatT***\ \_map,\ \textcolor{keyword}{const}\ vec3s\&\ \_dim,\ \textcolor{keywordtype}{double}\ \_volume,}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \textcolor{keyword}{const}\ SFList\&\ \_F,\ \textcolor{keyword}{const}\ vec3i\&\ \_min,\ \textcolor{keyword}{const}\ vec3i\&\ \_max,}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ compd**\ \_scX,\ compd**\ \_scY,\ compd**\ \_scZ,\ \textcolor{keywordtype}{int}\ \_minInd)\ :}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ map(\_map),\ F(\_F),\ dim(\_dim),}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ sin\_cosX(\_scX),\ sin\_cosY(\_scY),\ sin\_cosZ(\_scZ),}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ mini(\_min),\ maxi(\_max),}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ kLen(\_max[1]\ -\/\ \_min[1]\ +\ 1),\ lLen(\_max[2]\ -\/\ \_min[2]\ +\ 1),\ minInd(\_minInd),}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ sum(0),\ sq\_sum(0),\ vol(\_volume),}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ maxVal(-\/1000),\ minVal(1000)}
+\DoxyCodeLine{00177\ \ \ \ \ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ S\ =\ \textcolor{keyword}{new}\ compd*[kLen];}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ kLen;\ i++)\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ S[i]\ =\ \textcolor{keyword}{new}\ compd[lLen];}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ T\ =\ \textcolor{keyword}{new}\ compd[lLen];}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \ \ \string~TCalcEDMTask()\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ kLen;\ i++)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ S[i];}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ S;}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ T;}
+\DoxyCodeLine{00190\ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordtype}{void}\ Run(\textcolor{keywordtype}{size\_t}\ ix)\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ f\_count\ =\ F.Count();}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ f\_count;\ i++)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ SFUtil::StructureFactor\&\ sf\ =\ F[i];}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ S[sf.hkl[1]\ -\/\ mini[1]][sf.hkl[2]\ -\/\ mini[2]]\ +=}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ sf.val*sin\_cosX[ix][sf.hkl[0]\ -\/\ minInd];}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ iy\ =\ 0;\ iy\ <\ dim[1];\ iy++)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ kLen;\ i++)\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ idxi\ =\ (int)i\ +\ mini[1]\ -\/\ minInd;}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ lLen;\ j\ ++)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ T[j]\ +=\ S[i][j]\ *\ sin\_cosY[iy][idxi];}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ d2\ =\ mini[2]\ -\/\ minInd;}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ iz\ =\ 0;\ iz\ <\ dim[2];\ iz++)\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ compd\ R;}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ lLen;\ i++)\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ R\ +=\ T[i]\ *\ sin\_cosZ[iz][i\ +\ d2];}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ val\ =\ R.Re()\ /\ vol;}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ sum\ +=\ val;}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ sq\_sum\ +=\ val*val;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val\ >\ maxVal)\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ maxVal\ =\ val;}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val\ <\ minVal)\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ minVal\ =\ val;}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ map[ix][iy][iz]\ =\ (FloatT)val;}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ lLen;\ i++)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ T[i].Null();}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ kLen;\ i++)\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ lLen;\ j++)\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ S[i][j].Null();}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \ \ TCalcEDMTask*\ Replicate()\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TCalcEDMTask(map,\ dim,\ vol,}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ F,\ mini,\ maxi,\ sin\_cosX,\ sin\_cosY,\ sin\_cosZ,\ minInd);}
+\DoxyCodeLine{00235\ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \};}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatT>\textcolor{keyword}{struct\ }TCalcPattTask\ :\ \textcolor{keyword}{public}\ TaskBase\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ FloatT***\ map;}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keyword}{const}\ SFList\&\ F;}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keyword}{const}\ vec3s\&\ dim;}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ \&mini,\ \&maxi;}
+\DoxyCodeLine{00243\ \ \ \ \ compd\ \ **sin\_cosX,\ **sin\_cosY,\ **sin\_cosZ;}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ kLen,\ lLen;}
+\DoxyCodeLine{00245\ \ \ \ \ compd\ **\ S,\ *T;}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordtype}{int}\ minInd;}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordtype}{double}\ sum,\ sq\_sum,\ vol;}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordtype}{double}\ maxVal,\ minVal;}
+\DoxyCodeLine{00249\ \ \ \ \ TCalcPattTask(FloatT***\ \_map,\ \textcolor{keyword}{const}\ vec3s\&\ \_dim,\ \textcolor{keywordtype}{double}\ \_volume,}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \textcolor{keyword}{const}\ SFList\&\ \_F,\ \textcolor{keyword}{const}\ vec3i\&\ \_min,\ \textcolor{keyword}{const}\ vec3i\&\ \_max,}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ compd**\ \_scX,\ compd**\ \_scY,\ compd**\ \_scZ,\ \textcolor{keywordtype}{int}\ \_minInd)\ :}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ map(\_map),\ F(\_F),\ dim(\_dim),}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ mini(\_min),\ maxi(\_max),}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ sin\_cosX(\_scX),\ sin\_cosY(\_scY),\ sin\_cosZ(\_scZ),}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ kLen(\_max[1]\ -\/\ \_min[1]\ +\ 1),\ lLen(\_max[2]\ -\/\ \_min[2]\ +\ 1),\ minInd(\_minInd),}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ sum(0),\ sq\_sum(0),\ vol(\_volume),\ maxVal(-\/1000),\ minVal(1000)}
+\DoxyCodeLine{00257\ \ \ \ \ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ S\ =\ \textcolor{keyword}{new}\ compd*[kLen];}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ kLen;\ i++)\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ S[i]\ =\ \textcolor{keyword}{new}\ compd[lLen];}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ T\ =\ \textcolor{keyword}{new}\ compd[lLen];}
+\DoxyCodeLine{00263\ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \string~TCalcPattTask()\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ kLen;\ i++)\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ S[i];}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ S;}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ T;}
+\DoxyCodeLine{00270\ \ \ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keywordtype}{void}\ Run(\textcolor{keywordtype}{size\_t}\ ix)\ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ f\_count\ =\ F.Count();}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ f\_count;\ i++)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ SFUtil::StructureFactor\&\ sf\ =\ F[i];}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ S[sf.hkl[1]\ -\/\ mini[1]][sf.hkl[2]\ -\/\ mini[2]]\ +=\ sf.val*sin\_cosX[ix][sf.hkl[0]\ -\/\ minInd];}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ iy\ =\ 0;\ iy\ <\ dim[1];\ iy++)\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ mini[1];\ i\ <=\ maxi[1];\ i++)\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ mini[2];\ j\ <=\ maxi[2];\ j++)\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ T[j\ -\/\ mini[2]]\ +=\ S[i\ -\/\ mini[1]][j\ -\/\ mini[2]]\ *\ sin\_cosY[iy][i\ -\/\ minInd];}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ iz\ =\ 0;\ iz\ <\ dim[2];\ iz++)\ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ compd\ R;}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ mini[2];\ i\ <=\ maxi[2];\ i++)\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ R\ +=\ T[i\ -\/\ mini[2]]\ *\ sin\_cosZ[iz][i\ -\/\ minInd];}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ val\ =\ R.mod()\ /\ vol;}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ sum\ +=\ val;}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ sq\_sum\ +=\ val*val;}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ olx\_update\_min\_max(val,\ minVal,\ maxVal);}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ map[ix][iy][iz]\ =\ (FloatT)val;}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ lLen;\ i++)\ \{}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \ \ T[i].Null();}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ kLen;\ i++)\ \{}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ lLen;\ j++)\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ S[i][j].Null();}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00303\ \ \ \ \ \}}
+\DoxyCodeLine{00304\ \ \ \ \ TCalcPattTask*\ Replicate()\ \{}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TCalcPattTask(map,\ dim,\ vol,}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ F,\ mini,\ maxi,\ sin\_cosX,\ sin\_cosY,\ sin\_cosZ,\ minInd);}
+\DoxyCodeLine{00307\ \ \ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \};}
+\DoxyCodeLine{00309\ \};}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ EndXlibNamespace()}
+\DoxyCodeLine{00312\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

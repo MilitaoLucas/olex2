@@ -1,0 +1,690 @@
+\doxysection{mainform.\+h}
+\hypertarget{mainform_8h_source}{}\label{mainform_8h_source}\index{olex/mainform.h@{olex/mainform.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_xl\_mainformH}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_xl\_mainformH}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}olex2app\_imp.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}ctrls.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}eprocess.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}glconsole.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}datafile.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}gltextbox.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}ipimp.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}macroerror.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}eaccell.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}estlist.h"{}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}updateth.h"{}}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}macrolib.h"{}}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}exparse/exptree.h"{}}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}nui/nui.h"{}}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ "{}tasks.h"{}}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ "{}olxstate.h"{}}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ "{}wx/wx.h"{}}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ "{}wx/dnd.h"{}}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ "{}wx/process.h"{}}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}wx/thread.h"{}}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{enum}\ \ \{}
+\DoxyCodeLine{00037\ \ \ ID\_HtmlPanel=wxID\_HIGHEST,\ \ \textcolor{comment}{//\ view\ menu}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ ID\_StrGenerate,\ \ \textcolor{comment}{//\ structure\ menu}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ ID\_MenuTang,\ \ \textcolor{comment}{//\ menu\ item\ ids}}
+\DoxyCodeLine{00042\ \ \ ID\_MenuBang,}
+\DoxyCodeLine{00043\ \ \ ID\_MenuGraphics,}
+\DoxyCodeLine{00044\ \ \ ID\_MenuModel,}
+\DoxyCodeLine{00045\ \ \ ID\_MenuView,}
+\DoxyCodeLine{00046\ \ \ ID\_MenuFragment,}
+\DoxyCodeLine{00047\ \ \ ID\_MenuDrawStyle,}
+\DoxyCodeLine{00048\ \ \ ID\_MenuDrawQ,}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ ID\_DSBS,\ \ \textcolor{comment}{//\ drawing\ style,\ balls\ and\ sticks}}
+\DoxyCodeLine{00051\ \ \ ID\_DSES,\ \ \textcolor{comment}{//\ ellipsoids\ and\ sticks}}
+\DoxyCodeLine{00052\ \ \ ID\_DSSP,\ \ \textcolor{comment}{//\ sphere\ packing}}
+\DoxyCodeLine{00053\ \ \ ID\_DSWF,\ \ \textcolor{comment}{//\ wireframe}}
+\DoxyCodeLine{00054\ \ \ ID\_DSST,\ \ \ \textcolor{comment}{//\ sticks}}
+\DoxyCodeLine{00055\ \ \ ID\_SceneProps,}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ ID\_DQH,\ \ \textcolor{comment}{//\ drawing\ quality}}
+\DoxyCodeLine{00058\ \ \ ID\_DQM,}
+\DoxyCodeLine{00059\ \ \ ID\_DQL,}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ ID\_CellVisible,\ \ \textcolor{comment}{//\ model\ menu}}
+\DoxyCodeLine{00062\ \ \ ID\_BasisVisible,}
+\DoxyCodeLine{00063\ \ \ ID\_ShowAll,}
+\DoxyCodeLine{00064\ \ \ ID\_ModelCenter,}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ ID\_BondInfo,}
+\DoxyCodeLine{00067\ \ \ ID\_BondRadius,}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ ID\_AtomInfo,}
+\DoxyCodeLine{00070\ \ \ ID\_MenuAtomType,}
+\DoxyCodeLine{00071\ \ \ ID\_AtomTypeChange,}
+\DoxyCodeLine{00072\ \ \ ID\_AtomTypeChangeLast\ =\ ID\_AtomTypeChange+120,\ \textcolor{comment}{//\ reserve\ some}}
+\DoxyCodeLine{00073\ \ \ ID\_AtomGrow,}
+\DoxyCodeLine{00074\ \ \ ID\_AtomCenter,}
+\DoxyCodeLine{00075\ \ \ ID\_AtomSelRings,}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ ID\_PlaneActivate,}
+\DoxyCodeLine{00078\ \ \ ID\_BondViewAlong,}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ ID\_FragmentHide,\ \ \textcolor{comment}{//\ fragment\ menu}}
+\DoxyCodeLine{00081\ \ \ ID\_FragmentShowOnly,}
+\DoxyCodeLine{00082\ \ \ ID\_FragmentSelectAtoms,}
+\DoxyCodeLine{00083\ \ \ ID\_FragmentSelectBonds,}
+\DoxyCodeLine{00084\ \ \ ID\_FragmentSelectAll,}
+\DoxyCodeLine{00085\ \ \ ID\_FileLoad,}
+\DoxyCodeLine{00086\ \ \ ID\_FileClose,}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ ID\_ViewAlong,\ \ \ \textcolor{comment}{//\ view\ menu}}
+\DoxyCodeLine{00089\ \ \ ID\_ViewAlongLast\ =\ ID\_ViewAlong\ +\ 6,}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ ID\_MenuAtomOccu,}
+\DoxyCodeLine{00092\ \ \ ID\_AtomOccuCustom,}
+\DoxyCodeLine{00093\ \ \ ID\_AtomOccu1,}
+\DoxyCodeLine{00094\ \ \ ID\_AtomOccu34,}
+\DoxyCodeLine{00095\ \ \ ID\_AtomOccu12,}
+\DoxyCodeLine{00096\ \ \ ID\_AtomOccu13,}
+\DoxyCodeLine{00097\ \ \ ID\_AtomOccu14,}
+\DoxyCodeLine{00098\ \ \ ID\_AtomOccuFix,}
+\DoxyCodeLine{00099\ \ \ ID\_AtomOccuFixCurrent,}
+\DoxyCodeLine{00100\ \ \ ID\_AtomOccuFree,}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ ID\_MenuAtomConn,}
+\DoxyCodeLine{00103\ \ \ ID\_AtomConnChange,}
+\DoxyCodeLine{00104\ \ \ ID\_AtomConnChangeLast\ =\ ID\_AtomConnChange\ +\ 8,}
+\DoxyCodeLine{00105\ \ \ ID\_AtomBind,}
+\DoxyCodeLine{00106\ \ \ ID\_AtomFree,}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ ID\_MenuAtomUiso,}
+\DoxyCodeLine{00109\ \ \ ID\_AtomUisoCustom,}
+\DoxyCodeLine{00110\ \ \ ID\_AtomUiso15,}
+\DoxyCodeLine{00111\ \ \ ID\_AtomUiso12,}
+\DoxyCodeLine{00112\ \ \ ID\_AtomUisoFree,}
+\DoxyCodeLine{00113\ \ \ ID\_AtomUisoFix,}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ ID\_MenuAtomPart,}
+\DoxyCodeLine{00116\ \ \ ID\_AtomPartChange,}
+\DoxyCodeLine{00117\ \ \ ID\_AtomPartChangeLast\ =\ ID\_AtomPartChange\ +\ 6,}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ ID\_MenuAtomPoly,}
+\DoxyCodeLine{00120\ \ \ ID\_AtomPolyNone,}
+\DoxyCodeLine{00121\ \ \ ID\_AtomPolyAuto,}
+\DoxyCodeLine{00122\ \ \ ID\_AtomPolyRegular,}
+\DoxyCodeLine{00123\ \ \ ID\_AtomPolyPyramid,}
+\DoxyCodeLine{00124\ \ \ ID\_AtomPolyBipyramid,}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ ID\_AtomExploreEnvi,}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ ID\_Selection,}
+\DoxyCodeLine{00129\ \ \ ID\_SelGroup,}
+\DoxyCodeLine{00130\ \ \ ID\_SelUnGroup,}
+\DoxyCodeLine{00131\ \ \ ID\_SelLabel,}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ ID\_GridMenu,}
+\DoxyCodeLine{00134\ \ \ ID\_GridMenuCreateBlob,}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ ID\_GraphicsKill,}
+\DoxyCodeLine{00137\ \ \ ID\_GraphicsHide,}
+\DoxyCodeLine{00138\ \ \ ID\_GraphicsDS,}
+\DoxyCodeLine{00139\ \ \ ID\_GraphicsP,}
+\DoxyCodeLine{00140\ \ \ ID\_GraphicsEdit,}
+\DoxyCodeLine{00141\ \ \ ID\_GraphicsSelect,}
+\DoxyCodeLine{00142\ \ \ ID\_GraphicsCollectivise,}
+\DoxyCodeLine{00143\ \ \ ID\_GraphicsIndividualise,}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ ID\_GStyleSave,}
+\DoxyCodeLine{00146\ \ \ ID\_GStyleOpen,}
+\DoxyCodeLine{00147\ \ \ ID\_FixLattice,}
+\DoxyCodeLine{00148\ \ \ ID\_FreeLattice,}
+\DoxyCodeLine{00149\ \ \ ID\_DELINS,}
+\DoxyCodeLine{00150\ \ \ ID\_ADDINS,}
+\DoxyCodeLine{00151\ \ \ ID\_VarChange,}
+\DoxyCodeLine{00152\ \ \ ID\_BadReflectionSet,}
+\DoxyCodeLine{00153\ \ \ ID\_CellChanged,}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ ID\_UpdateThreadTerminate,}
+\DoxyCodeLine{00156\ \ \ ID\_UpdateThreadDownload,}
+\DoxyCodeLine{00157\ \ \ ID\_UpdateThreadAction,}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ ID\_FILE0,}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ ID\_GLDRAW\ =\ ID\_FILE0+100,}
+\DoxyCodeLine{00162\ \ \ ID\_TIMER,}
+\DoxyCodeLine{00163\ \ \ ID\_INFO,}
+\DoxyCodeLine{00164\ \ \ ID\_WARNING,}
+\DoxyCodeLine{00165\ \ \ ID\_ERROR,}
+\DoxyCodeLine{00166\ \ \ ID\_EXCEPTION,}
+\DoxyCodeLine{00167\ \ \ ID\_LOG,}
+\DoxyCodeLine{00168\ \ \ ID\_ONLINK,}
+\DoxyCodeLine{00169\ \ \ ID\_HTMLKEY,}
+\DoxyCodeLine{00170\ \ \ ID\_COMMAND,}
+\DoxyCodeLine{00171\ \ \ ID\_XOBJECTSDESTROY,}
+\DoxyCodeLine{00172\ \ \ ID\_CMDLINECHAR,}
+\DoxyCodeLine{00173\ \ \ ID\_CMDLINEKEYDOWN,}
+\DoxyCodeLine{00174\ \ \ ID\_TEXTPOST,}
+\DoxyCodeLine{00175\ \ \ ID\_UPDATE\_GUI}
+\DoxyCodeLine{00176\ \};}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \textcolor{comment}{//............................................................................//}}
+\DoxyCodeLine{00179\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00180\ \ \ mListen\ =\ 0x0001,\ \ \ \ \textcolor{comment}{//\ modes}}
+\DoxyCodeLine{00181\ \ \ mSilent\ =\ 0x0002,\ \ \textcolor{comment}{//\ silent\ mode}}
+\DoxyCodeLine{00182\ \ \ mPick\ \ \ =\ 0x0020,\ \ \textcolor{comment}{//\ pick\ mode,\ for\ a\ future\ use}}
+\DoxyCodeLine{00183\ \ \ mFade\ \ \ =\ 0x0080,\ \ \textcolor{comment}{//\ structure\ fading\ ..}}
+\DoxyCodeLine{00184\ \ \ mRota\ \ \ =\ 0x0100,\ \ \textcolor{comment}{//\ rotation}}
+\DoxyCodeLine{00185\ \ \ mSolve\ \ =\ 0x0200,\ \ \textcolor{comment}{//\ structure\ solution}}
+\DoxyCodeLine{00186\ \ \ mSGDet\ \ =\ 0x0400;\ \ \textcolor{comment}{//\ space\ group\ determination}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \textcolor{comment}{//\ persistence\ level}}
+\DoxyCodeLine{00189\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00190\ \ \ plNone\ \ \ \ \ \ =\ 0x0000,\ \ \textcolor{comment}{//\ runtime\ data\ only\ -\/\ not\ saved\ at\ any\ moment}}
+\DoxyCodeLine{00191\ \ \ plStructure\ =\ 0x0001,\ \ \textcolor{comment}{//\ data\ saved/loaded\ when\ structure\ is\ un/loaded}}
+\DoxyCodeLine{00192\ \ \ plGlobal\ \ \ \ =\ 0x0002;\ \ \textcolor{comment}{//\ data\ saved/loaded\ when\ olex\ is\ closed/executed}}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTMainForm}{TMainForm}};}
+\DoxyCodeLine{00195\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGlXApp}{TGlXApp}};}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \textcolor{comment}{//............................................................................//}}
+\DoxyCodeLine{00198\ \textcolor{keyword}{class\ }TMainForm:\ \textcolor{keyword}{public}\ TMainFrame,\ \textcolor{keyword}{public}\ AEventsDispatcher,}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classolex2_1_1OlexProcessorImp}{olex2::OlexProcessorImp}}}
+\DoxyCodeLine{00200\ \{}
+\DoxyCodeLine{00201\ \ \ \textcolor{comment}{//TFrameMaker\ FrameMaker;}}
+\DoxyCodeLine{00202\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordtype}{bool}\ Destroying;}
+\DoxyCodeLine{00204\ \ \ TStack<olx\_pair\_t<wxCursor,wxString>\ >\ CursorStack;}
+\DoxyCodeLine{00205\ \ \ \mbox{\hyperlink{classUpdateThread}{UpdateThread}}*\ \_UpdateThread;}
+\DoxyCodeLine{00206\ \ \ \mbox{\hyperlink{classTOnProgress}{TOnProgress}}*\ UpdateProgress,\ *ActionProgress;}
+\DoxyCodeLine{00207\ \ \ TStack<TEFile\ *>\ LogFiles;}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{static}\ olxcstr\ \&ModuleName();}
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{static}\ PyObject\ *PyInit();}
+\DoxyCodeLine{00210\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Action;}
+\DoxyCodeLine{00211\ \ \ \mbox{\hyperlink{classTGlXApp}{TGlXApp}}*\ FParent;}
+\DoxyCodeLine{00212\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<\ olx\_pair\_t<TDUnitCell*,\ TSpaceGroup*>}}\ >\ UserCells;}
+\DoxyCodeLine{00213\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<olxstr>}}\ StoredParams;}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TScheduledTask>}}\ Tasks;}
+\DoxyCodeLine{00216\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<IOlxTask>}}\ RunWhenVisibleTasks;}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGlCanvas}{TGlCanvas}}\ *FGlCanvas;}
+\DoxyCodeLine{00219\ \ \ \mbox{\hyperlink{classOlex2App}{Olex2App}}*\ FXApp;}
+\DoxyCodeLine{00220\ \ \ TDataFile\ FHelpFile,\ FMacroFile;}
+\DoxyCodeLine{00221\ \ \ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ *FHelpItem;}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ olxstr\ GradientPicture;}
+\DoxyCodeLine{00224\ \ \ \mbox{\hyperlink{classTGlConsole}{TGlConsole}}\ *FGlConsole;}
+\DoxyCodeLine{00225\ \ \ TGlTextBox\ *FHelpWindow,\ *FInfoBox,\ *GlTooltip;}
+\DoxyCodeLine{00226\ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ MacroError;}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \ \ \textcolor{keywordtype}{void}\ PreviewHelp(\textcolor{keyword}{const}\ olxstr\&\ Cmd);}
+\DoxyCodeLine{00229\ \ \ olxstr\ ExpandCommand(\textcolor{keyword}{const}\ olxstr\ \&Cmd,\ \textcolor{keywordtype}{bool}\ inc\_files);}
+\DoxyCodeLine{00230\ \ \ \textcolor{keywordtype}{int}\ MouseMoveTimeElapsed,\ MousePositionX,\ MousePositionY;}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ \mbox{\hyperlink{classTModeRegistry}{TModeRegistry}}\ *Modes;}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{size\_t}}
+\DoxyCodeLine{00234\ \ \ \ \ stateHtmlVisible,}
+\DoxyCodeLine{00235\ \ \ \ \ stateInfoWidnowVisible,}
+\DoxyCodeLine{00236\ \ \ \ \ stateHelpWindowVisible,}
+\DoxyCodeLine{00237\ \ \ \ \ stateCmdLineVisible,}
+\DoxyCodeLine{00238\ \ \ \ \ stateGlTooltips;}
+\DoxyCodeLine{00239\ \ \ \ \textcolor{comment}{//\ solution\ mode\ variables}}
+\DoxyCodeLine{00240\ \ \ TIntList\ Solutions;}
+\DoxyCodeLine{00241\ \ \ \textcolor{keywordtype}{int}\ CurrentSolution;}
+\DoxyCodeLine{00242\ \ \ olxstr\ SolutionFolder;}
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordtype}{void}\ ChangeSolution(\textcolor{keywordtype}{int}\ sol);}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \textcolor{comment}{//\ helper\ functions\ ...}}
+\DoxyCodeLine{00246\ \ \ \textcolor{keywordtype}{void}\ CallMatchCallbacks(\mbox{\hyperlink{classTNetwork}{TNetwork}}\&\ netA,\ \mbox{\hyperlink{classTNetwork}{TNetwork}}\&\ netB,\ \textcolor{keywordtype}{double}\ RMS);}
+\DoxyCodeLine{00247\ \ \ \textcolor{keywordtype}{void}\ UpdateInfoBox();}
+\DoxyCodeLine{00248\ \ \ olx\_nui::INUI\ *nui\_interface;}
+\DoxyCodeLine{00249\ \ \ \textcolor{keyword}{class\ }THtmlManager\ \&HtmlManager;}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ beforeCall(\textcolor{keyword}{const}\ olxstr\ \&cmd);}
+\DoxyCodeLine{00252\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ afterCall(\textcolor{keyword}{const}\ olxstr\ \&cmd);}
+\DoxyCodeLine{00253\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<olex2::IOlex2Runnable>}}\ loadedDll;}
+\DoxyCodeLine{00254\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00255\ \ \ \textcolor{keywordtype}{void}\ OnMouseMove(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y);}
+\DoxyCodeLine{00256\ \ \ \textcolor{keywordtype}{void}\ OnMouseWheel(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{double}\ delta);}
+\DoxyCodeLine{00257\ \ \ \textcolor{keywordtype}{bool}\ OnMouseDown(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{short}\ Flags,\ \textcolor{keywordtype}{short}\ Buttons);}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{short}\ Flags,\ \textcolor{keywordtype}{short}\ Buttons);}
+\DoxyCodeLine{00259\ \ \ \textcolor{keywordtype}{bool}\ OnMouseDblClick(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{short}\ Flags,\ \textcolor{keywordtype}{short}\ Buttons);}
+\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Show(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \textcolor{keywordtype}{void}\ SetUserCursor(\textcolor{keyword}{const}\ olxstr\&\ param,\ \textcolor{keyword}{const}\ olxstr\&\ mode);}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTModeRegistry}{TModeRegistry}}\&\ GetModes()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Modes;\ \ \}}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \ \ \textcolor{keywordtype}{bool}\ CheckMode(\textcolor{keywordtype}{size\_t}\ mode,\ \textcolor{keyword}{const}\ olxstr\&\ modeData);}
+\DoxyCodeLine{00267\ \ \ \textcolor{keywordtype}{bool}\ CheckState(\textcolor{keywordtype}{size\_t}\ state,\ \textcolor{keyword}{const}\ olxstr\&\ stateData)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordtype}{bool}\ PopupMenu(wxMenu*\ menu,\ \textcolor{keyword}{const}\ wxPoint\&\ p=wxDefaultPosition);}
+\DoxyCodeLine{00269\ \ \ \textcolor{keywordtype}{bool}\ PopupMenu(wxMenu*\ menu,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y)\ \ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordflow}{return}\ PopupMenu(menu,\ wxPoint(x,y));}
+\DoxyCodeLine{00271\ \ \ \}}
+\DoxyCodeLine{00272\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00273\ \ \ \textcolor{keywordtype}{void}\ PostCmdHelp(\textcolor{keyword}{const}\ olxstr\ \&Cmd,\ \textcolor{keywordtype}{bool}\ Full=\textcolor{keyword}{false});}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \textcolor{keywordtype}{void}\ OnSize(wxSizeEvent\&\ event);}
+\DoxyCodeLine{00276\ \ \ \textcolor{keywordtype}{void}\ OnMove(wxMoveEvent\&\ event);}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \ \ \textcolor{keywordtype}{void}\ OnQuit(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00279\ \ \ \textcolor{keywordtype}{void}\ OnFileOpen(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00280\ \ \ \textcolor{keywordtype}{void}\ OnGenerate(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00281\ \ \ \textcolor{keywordtype}{void}\ OnDrawStyleChange(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00282\ \ \ \textcolor{keywordtype}{void}\ OnDrawQChange(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00283\ \ \ \textcolor{keywordtype}{void}\ OnViewAlong(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00284\ \ \ \textcolor{keywordtype}{void}\ OnCloseWindow(wxCloseEvent\ \&evt);}
+\DoxyCodeLine{00285\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TObjectVisibilityChange;}
+\DoxyCodeLine{00286\ \ \ \textcolor{keywordtype}{void}\ BasisVChange();}
+\DoxyCodeLine{00287\ \ \ \textcolor{keywordtype}{void}\ CellVChange();}
+\DoxyCodeLine{00288\ \ \ \textcolor{keywordtype}{void}\ GridVChange();}
+\DoxyCodeLine{00289\ \ \ \textcolor{keywordtype}{void}\ FrameVChange();}
+\DoxyCodeLine{00290\ \ \ \textcolor{keywordtype}{void}\ OnBasisVisible(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00291\ \ \ \textcolor{keywordtype}{void}\ OnCellVisible(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00293\ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ *FObjectUnderMouse;\ \ \textcolor{comment}{//initialised\ when\ mouse\ clicked\ on\ an\ object\ on\ screen}}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \ \ \textcolor{keywordtype}{void}\ OnGraphics(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00296\ \ \ \textcolor{keywordtype}{void}\ OnFragmentHide(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00297\ \ \ \textcolor{keywordtype}{void}\ OnShowAll(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00298\ \ \ \textcolor{keywordtype}{void}\ OnModelCenter(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00299\ \ \ \textcolor{keywordtype}{void}\ OnFragmentShowOnly(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00300\ \ \ \textcolor{keywordtype}{void}\ OnFragmentSelectAtoms(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00301\ \ \ \textcolor{keywordtype}{void}\ OnFragmentSelectBonds(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00302\ \ \ \textcolor{keywordtype}{void}\ OnFragmentSelectAll(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00303\ \ \ \textcolor{comment}{//\ helper\ function\ to\ get\ the\ list\ of\ fragments\ (if\ several\ selected)}}
+\DoxyCodeLine{00304\ \ \ \textcolor{keywordtype}{size\_t}\ GetFragmentList(TNetPList\&\ res);}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \textcolor{keywordtype}{void}\ OnAtomTypeChange(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordtype}{void}\ OnAtomOccuChange(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00308\ \ \ \textcolor{keywordtype}{void}\ OnAtomConnChange(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00309\ \ \ \textcolor{keywordtype}{void}\ OnAtomPartChange(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00310\ \ \ \textcolor{keywordtype}{void}\ OnAtomUisoChange(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00311\ \ \ \textcolor{keywordtype}{void}\ OnAtomPolyChange(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00312\ \ \ \textcolor{keywordtype}{void}\ OnAtom(wxCommandEvent\&\ event);\ \textcolor{comment}{//\ general\ handler}}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \textcolor{keywordtype}{void}\ OnBond(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00315\ \ \ \textcolor{keywordtype}{void}\ OnPlane(wxCommandEvent\&\ event);\ \textcolor{comment}{//\ general\ handler}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \textcolor{keywordtype}{void}\ OnSelection(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00318\ \ \ \textcolor{keywordtype}{void}\ OnGraphicsStyle(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \ \ \textcolor{comment}{//\ view\ menu}}
+\DoxyCodeLine{00321\ \ \ \textcolor{keywordtype}{void}\ OnHtmlPanel(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00322\ \ \ \textcolor{keywordtype}{bool}\ ImportFrag(\textcolor{keyword}{const}\ olxstr\&\ line);}
+\DoxyCodeLine{00323\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ DownloadFiles(\textcolor{keyword}{const}\ TStrList\ \&files,\ \textcolor{keyword}{const}\ olxstr\ \&dest);}
+\DoxyCodeLine{00324\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ DownloadFile(\textcolor{keyword}{const}\ olxstr\ \&url,\ \textcolor{keyword}{const}\ olxstr\ \&dest)\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{keywordflow}{return}\ DownloadFiles(TStrList()\ <<\ url,\ dest)\ !=\ 0;}
+\DoxyCodeLine{00326\ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \textcolor{comment}{//\ tries\ to\ expand\ the\ command\ and\ returns\ the\ success\ status}}
+\DoxyCodeLine{00328\ \ \ \textcolor{keywordtype}{bool}\ ProcessTab();}
+\DoxyCodeLine{00329\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<olxCommandEvent>}}\ PostponedEvents;}
+\DoxyCodeLine{00330\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00331\ \ \ \textcolor{comment}{//\ macro\ functions}}
+\DoxyCodeLine{00332\ \ \ DefMacro(Reap)}
+\DoxyCodeLine{00333\ \ \ DefMacro(Pict)}
+\DoxyCodeLine{00334\ \ \ DefMacro(Picta)}
+\DoxyCodeLine{00335\ \ \ DefMacro(PictPS)}
+\DoxyCodeLine{00336\ \ \ DefMacro(PictTEX)}
+\DoxyCodeLine{00337\ \ \ DefMacro(PictS)}
+\DoxyCodeLine{00338\ \ \ DefMacro(PictPR)}
+\DoxyCodeLine{00339\ \ \ DefMacro(Group)}
+\DoxyCodeLine{00340\ \ \ DefMacro(Clear)}
+\DoxyCodeLine{00341\ \ \ DefMacro(Rota)}
+\DoxyCodeLine{00342\ \ \ DefMacro(Listen)}
+\DoxyCodeLine{00343\ \ \ DefMacro(WindowCmd)}
+\DoxyCodeLine{00344\ \ \ DefMacro(ProcessCmd)}
+\DoxyCodeLine{00345\ \ \ DefMacro(Wait)}
+\DoxyCodeLine{00346\ \ \ DefMacro(SwapBg)}
+\DoxyCodeLine{00347\ \ \ DefMacro(Silent)}
+\DoxyCodeLine{00348\ \ \ DefMacro(Stop)}
+\DoxyCodeLine{00349\ \ \ DefMacro(Echo)}
+\DoxyCodeLine{00350\ \ \ DefMacro(Post)}
+\DoxyCodeLine{00351\ \ \ DefMacro(Exit)}
+\DoxyCodeLine{00352\ \ \ DefMacro(SetEnv)}
+\DoxyCodeLine{00353\ \ \ DefMacro(Help)}
+\DoxyCodeLine{00354\ \ \ DefMacro(AddLabel)}
+\DoxyCodeLine{00355\ \ \ DefMacro(Hide)}
+\DoxyCodeLine{00356\ \ \ DefMacro(Exec)}
+\DoxyCodeLine{00357\ \ \ DefMacro(Shell)}
+\DoxyCodeLine{00358\ \ \ DefMacro(Save)}
+\DoxyCodeLine{00359\ \ \ DefMacro(Load)}
+\DoxyCodeLine{00360\ \ \ DefMacro(Link)}
+\DoxyCodeLine{00361\ \ \ DefMacro(Style)}
+\DoxyCodeLine{00362\ \ \ DefMacro(Scene)}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00364\ \ \ DefMacro(Lines)}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \ \ DefMacro(Ceiling)}
+\DoxyCodeLine{00367\ \ \ DefMacro(Fade)}
+\DoxyCodeLine{00368\ \ \ DefMacro(WaitFor)}
+\DoxyCodeLine{00369\ }
+\DoxyCodeLine{00370\ \ \ DefMacro(HtmlPanelSwap)}
+\DoxyCodeLine{00371\ \ \ DefMacro(HtmlPanelWidth)}
+\DoxyCodeLine{00372\ \ \ DefMacro(HtmlPanelVisible)}
+\DoxyCodeLine{00373\ \ \ DefMacro(QPeakScale)}
+\DoxyCodeLine{00374\ \ \ DefMacro(QPeakSizeScale)}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ \ \ DefMacro(Focus)}
+\DoxyCodeLine{00377\ \ \ DefMacro(Refresh)}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \ \ DefMacro(Mode)}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00381\ \ \ DefMacro(Flush)}
+\DoxyCodeLine{00382\ \ \ DefMacro(ShowStr)}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \ \ DefMacro(Bind)}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ DefMacro(Grad)}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \ \ DefMacro(EditAtom)}
+\DoxyCodeLine{00389\ \ \ DefMacro(EditIns)}
+\DoxyCodeLine{00390\ \ \ DefMacro(HklEdit)}
+\DoxyCodeLine{00391\ \ \ DefMacro(HklView)}
+\DoxyCodeLine{00392\ \ \ DefMacro(HklExtract)}
+\DoxyCodeLine{00393\ }
+\DoxyCodeLine{00394\ \ \ DefMacro(ViewGrid)}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \ \ DefMacro(Popup)}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00398\ \ \ DefMacro(Python)}
+\DoxyCodeLine{00399\ }
+\DoxyCodeLine{00400\ \ \ DefMacro(CreateMenu)}
+\DoxyCodeLine{00401\ \ \ DefMacro(DeleteMenu)}
+\DoxyCodeLine{00402\ \ \ DefMacro(EnableMenu)}
+\DoxyCodeLine{00403\ \ \ DefMacro(DisableMenu)}
+\DoxyCodeLine{00404\ \ \ DefMacro(CheckMenu)}
+\DoxyCodeLine{00405\ \ \ DefMacro(UncheckMenu)}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00407\ \ \ DefMacro(CreateShortcut)}
+\DoxyCodeLine{00408\ \ \ DefMacro(SetCmd)}
+\DoxyCodeLine{00409\ }
+\DoxyCodeLine{00410\ \ \ DefMacro(UpdateOptions)}
+\DoxyCodeLine{00411\ \ \ DefMacro(Update)}
+\DoxyCodeLine{00412\ \ \ DefMacro(Reload)}
+\DoxyCodeLine{00413\ \ \ DefMacro(StoreParam)}
+\DoxyCodeLine{00414\ \ \ DefMacro(SelBack)}
+\DoxyCodeLine{00415\ }
+\DoxyCodeLine{00416\ \ \ DefMacro(CreateBitmap)}
+\DoxyCodeLine{00417\ \ \ DefMacro(DeleteBitmap)}
+\DoxyCodeLine{00418\ \ \ DefMacro(Tref)}
+\DoxyCodeLine{00419\ \ \ DefMacro(Patt)}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \ \ DefMacro(InstallPlugin)}
+\DoxyCodeLine{00422\ \ \ DefMacro(SignPlugin)}
+\DoxyCodeLine{00423\ \ \ DefMacro(UninstallPlugin)}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \ \ DefMacro(UpdateFile)}
+\DoxyCodeLine{00426\ \ \ DefMacro(NextSolution)}
+\DoxyCodeLine{00427\ }
+\DoxyCodeLine{00428\ \ \ DefMacro(ShowWindow)}
+\DoxyCodeLine{00429\ }
+\DoxyCodeLine{00430\ \ \ DefMacro(Schedule)}
+\DoxyCodeLine{00431\ \ \ DefMacro(Test)}
+\DoxyCodeLine{00432\ }
+\DoxyCodeLine{00433\ \ \ DefMacro(IT)}
+\DoxyCodeLine{00434\ \ \ DefMacro(StartLogging)}
+\DoxyCodeLine{00435\ \ \ DefMacro(ViewLattice)}
+\DoxyCodeLine{00436\ \ \ DefMacro(AddObject)}
+\DoxyCodeLine{00437\ \ \ DefMacro(DelObject)}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00439\ \ \ DefMacro(ImportFrag)}
+\DoxyCodeLine{00440\ \ \ DefMacro(ExportFrag)}
+\DoxyCodeLine{00441\ }
+\DoxyCodeLine{00442\ \ \ DefMacro(OnRefine)}
+\DoxyCodeLine{00443\ \ \ DefMacro(TestMT)}
+\DoxyCodeLine{00444\ \ \ DefMacro(SetFont)}
+\DoxyCodeLine{00445\ \ \ DefMacro(EditMaterial)}
+\DoxyCodeLine{00446\ \ \ DefMacro(SetMaterial)}
+\DoxyCodeLine{00447\ \ \ DefMacro(ShowSymm)}
+\DoxyCodeLine{00448\ \ \ DefMacro(Textm)}
+\DoxyCodeLine{00449\ \ \ DefMacro(TestStat)}
+\DoxyCodeLine{00450\ \ \ DefMacro(ExportFont)}
+\DoxyCodeLine{00451\ \ \ DefMacro(ImportFont)}
+\DoxyCodeLine{00452\ \ \ DefMacro(UpdateQPeakTable)}
+\DoxyCodeLine{00453\ \ \ DefMacro(Capitalise)}
+\DoxyCodeLine{00454\ \ \ DefMacro(FlushFS)}
+\DoxyCodeLine{00455\ \ \ DefMacro(Elevate)}
+\DoxyCodeLine{00456\ \ \ DefMacro(Restart)}
+\DoxyCodeLine{00457\ \ \ DefMacro(ADPDisp)}
+\DoxyCodeLine{00458\ \ \ DefMacro(RegisterFonts)}
+\DoxyCodeLine{00461\ \ \ DefFunc(FileLast)}
+\DoxyCodeLine{00462\ \ \ DefFunc(FileSave)}
+\DoxyCodeLine{00463\ \ \ DefFunc(FileOpen)}
+\DoxyCodeLine{00464\ \ \ DefFunc(ChooseDir)}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00466\ \ \ DefFunc(Strcat)}
+\DoxyCodeLine{00467\ \ \ DefFunc(Strcmp)}
+\DoxyCodeLine{00468\ \ \ DefFunc(GetEnv)}
+\DoxyCodeLine{00469\ }
+\DoxyCodeLine{00470\ \ \ DefFunc(Sel)}
+\DoxyCodeLine{00471\ \ \ DefFunc(Atoms)}
+\DoxyCodeLine{00472\ \ \ DefFunc(FPS)}
+\DoxyCodeLine{00473\ }
+\DoxyCodeLine{00474\ \ \ DefFunc(Cursor)}
+\DoxyCodeLine{00475\ \ \ DefFunc(RGB)}
+\DoxyCodeLine{00476\ \ \ DefFunc(Color)}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00478\ \ \ DefFunc(HtmlPanelWidth)}
+\DoxyCodeLine{00479\ \ \ DefFunc(LoadDll)}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \ \ DefFunc(Alert)}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \ \ DefFunc(ValidatePlugin)}
+\DoxyCodeLine{00484\ \ \ DefFunc(IsPluginInstalled)}
+\DoxyCodeLine{00485\ \ \ DefFunc(GetUserInput)}
+\DoxyCodeLine{00486\ \ \ DefFunc(TranslatePhrase)}
+\DoxyCodeLine{00487\ \ \ DefFunc(IsCurrentLanguage)}
+\DoxyCodeLine{00488\ \ \ DefFunc(CurrentLanguageEncoding)}
+\DoxyCodeLine{00489\ }
+\DoxyCodeLine{00490\ \ \ DefFunc(ChooseElement)}
+\DoxyCodeLine{00491\ \ \ DefFunc(ChooseFont)}
+\DoxyCodeLine{00492\ \ \ DefFunc(GetFont)}
+\DoxyCodeLine{00493\ \ \ DefFunc(ChooseMaterial)}
+\DoxyCodeLine{00494\ \ \ DefFunc(GetMaterial)}
+\DoxyCodeLine{00495\ \ \ DefFunc(GetMouseX)}
+\DoxyCodeLine{00496\ \ \ DefFunc(GetMouseY)}
+\DoxyCodeLine{00497\ \ \ DefFunc(GetWindowSize)}
+\DoxyCodeLine{00498\ \ \ DefFunc(IsOS)}
+\DoxyCodeLine{00499\ \ \ DefFunc(HasGUI)}
+\DoxyCodeLine{00500\ \ \ DefFunc(CheckState)}
+\DoxyCodeLine{00501\ \ \ DefFunc(GlTooltip)}
+\DoxyCodeLine{00502\ \ \ DefFunc(CurrentLanguage)}
+\DoxyCodeLine{00503\ \ \ DefFunc(GetMAC)}
+\DoxyCodeLine{00504\ \ \ DefFunc(ThreadCount)}
+\DoxyCodeLine{00505\ \ \ DefFunc(FullScreen)}
+\DoxyCodeLine{00506\ \ \ DefFunc(Freeze)}
+\DoxyCodeLine{00507\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00508\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00509\ \ \ \textcolor{keywordtype}{bool}\ IsControl(\textcolor{keyword}{const}\ olxstr\&\ cname)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00510\ \ \ \textcolor{comment}{//............................................................................}}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00512\ \ \ \textcolor{keywordtype}{void}\ OnKeyUp(wxKeyEvent\&\ event);}
+\DoxyCodeLine{00513\ \ \ \textcolor{keywordtype}{void}\ OnKeyDown(wxKeyEvent\&\ event);}
+\DoxyCodeLine{00514\ \ \ \textcolor{keywordtype}{void}\ OnChar(wxKeyEvent\&\ event);}
+\DoxyCodeLine{00515\ \ \ \textcolor{keywordtype}{void}\ OnNavigation(wxNavigationKeyEvent\&\ event);}
+\DoxyCodeLine{00516\ \ \ \textcolor{keywordtype}{void}\ OnIdle();}
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00518\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ ProcessEvent(wxEvent\&\ evt);}
+\DoxyCodeLine{00519\ \ \ \textcolor{keywordtype}{void}\ OnResize();}
+\DoxyCodeLine{00520\ \ \ olxstr\ StylesDir,\ \textcolor{comment}{//\ styles\ folder}}
+\DoxyCodeLine{00521\ \ \ \ \ ScenesDir,}
+\DoxyCodeLine{00522\ \ \ \ \ DefStyle,\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ default\ style\ file}}
+\DoxyCodeLine{00523\ \ \ \ \ DefSceneP,\ \ \ \ \ \ \ \ \textcolor{comment}{//\ default\ scene\ parameters\ file}}
+\DoxyCodeLine{00524\ \ \ \ \ TutorialDir;}
+\DoxyCodeLine{00525\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}}
+\DoxyCodeLine{00526\ \ \ \ \ HelpFontColorCmd,\ HelpFontColorTxt,}
+\DoxyCodeLine{00527\ \ \ \ \ ExecFontColor,\ InfoFontColor,}
+\DoxyCodeLine{00528\ \ \ \ \ WarningFontColor,\ ErrorFontColor,\ ExceptionFontColor;}
+\DoxyCodeLine{00529\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00530\ \ \ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,}
+\DoxyCodeLine{00531\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00532\ \ \ olxstr\ FLastSettingsFile;}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ \ \ \textcolor{keyword}{class\ }ProcessHandler\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classProcessManager_1_1IProcessHandler}{ProcessManager::IProcessHandler}}\ \ \{}
+\DoxyCodeLine{00535\ \ \ \ \ TMainForm\&\ parent;}
+\DoxyCodeLine{00536\ \ \ \ \ \textcolor{keywordtype}{bool}\ printed;}
+\DoxyCodeLine{00537\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00538\ \ \ \ \ ProcessHandler(TMainForm\&\ \_parent)\ :\ parent(\_parent),\ printed(\textcolor{keyword}{false})\ \ \{\}}
+\DoxyCodeLine{00539\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ BeforePrint();}
+\DoxyCodeLine{00540\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Print(\textcolor{keyword}{const}\ olxstr\&\ line);}
+\DoxyCodeLine{00541\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ AfterPrint();}
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnWait();}
+\DoxyCodeLine{00543\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnTerminate(\textcolor{keyword}{const}\ \mbox{\hyperlink{classAProcess}{AProcess}}\&\ p);}
+\DoxyCodeLine{00544\ \ \ \};}
+\DoxyCodeLine{00545\ \ \ ProcessHandler\ \_ProcessHandler;}
+\DoxyCodeLine{00546\ \ \ \mbox{\hyperlink{classProcessManager}{ProcessManager}}*\ \_ProcessManager;}
+\DoxyCodeLine{00547\ \ \ \textcolor{comment}{//\ class\ TIOExt*\ FIOExt;}}
+\DoxyCodeLine{00548\ \ \ \mbox{\hyperlink{classctrl__ext_1_1TTimer}{TTimer}}\ *FTimer;}
+\DoxyCodeLine{00549\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ FMode;}
+\DoxyCodeLine{00550\ \ \ uint64\_t\ TimePerFrame,\ \ \ \ \textcolor{comment}{//\ this\ is\ evaluated\ by\ FXApp-\/>Draw()}}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \ \ \ DrawSceneTimer;\ \ \textcolor{comment}{//\ this\ is\ set\ for\ onTimer\ to\ check\ when\ the\ scene\ has\ to\ be\ drawn}}
+\DoxyCodeLine{00552\ }
+\DoxyCodeLine{00553\ \ \ \textcolor{keywordtype}{double}\ FRotationIncrement,\ FRotationAngle;}
+\DoxyCodeLine{00554\ \ \ vec3d\ FRotationVector;}
+\DoxyCodeLine{00555\ }
+\DoxyCodeLine{00556\ \ \ vec3d\ FFadeVector;\ \textcolor{comment}{//\ stores:\ current\ position,\ end\ and\ increment}}
+\DoxyCodeLine{00557\ }
+\DoxyCodeLine{00558\ \ \ olxstr\ FListenFile;}
+\DoxyCodeLine{00559\ }
+\DoxyCodeLine{00560\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,wxMenuItem*>}}\ FRecentFiles;}
+\DoxyCodeLine{00561\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<olxstr,true>}}\ Bindings;}
+\DoxyCodeLine{00562\ \ \ uint16\_t\ FRecentFilesToShow;}
+\DoxyCodeLine{00563\ \ \ \textcolor{keywordtype}{void}\ UpdateRecentFile(\textcolor{keyword}{const}\ olxstr\&\ FN);}
+\DoxyCodeLine{00564\ \ \ TGlOption\ FBgColor;}
+\DoxyCodeLine{00565\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTCmdLine}{TCmdLine}}*\ FCmdLine;}
+\DoxyCodeLine{00566\ \ \ olxstr\ FHtmlIndexFile;}
+\DoxyCodeLine{00567\ }
+\DoxyCodeLine{00568\ \ \ \textcolor{keywordtype}{bool}\ FHtmlMinimized,\ FHtmlOnLeft,\ FBitmapDraw,\ FHtmlWidthFixed,}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ RunOnceProcessed,}
+\DoxyCodeLine{00570\ \ \ \ \ \ \ \ StartupInitialised;}
+\DoxyCodeLine{00571\ \ \ \textcolor{keywordtype}{bool}\ InfoWindowVisible,\ HelpWindowVisible,\ CmdLineVisible,\ \_UseGlTooltip;}
+\DoxyCodeLine{00572\ }
+\DoxyCodeLine{00573\ \ \ \textcolor{keywordtype}{float}\ FHtmlPanelWidth;}
+\DoxyCodeLine{00574\ }
+\DoxyCodeLine{00575\ \ \ \textcolor{keywordtype}{bool}\ UpdateRecentFilesTable(\textcolor{keywordtype}{bool}\ TableDef=\textcolor{keyword}{true});}
+\DoxyCodeLine{00576\ \ \ \textcolor{keywordtype}{void}\ QPeakTable(\textcolor{keywordtype}{bool}\ TableDef=\textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ Create=\textcolor{keyword}{true});}
+\DoxyCodeLine{00577\ \ \ \textcolor{keywordtype}{void}\ BadReflectionsTable(\textcolor{keywordtype}{bool}\ TableDef=\textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ Create=\textcolor{keyword}{true});}
+\DoxyCodeLine{00578\ \ \ \textcolor{keywordtype}{void}\ RefineDataTable(\textcolor{keywordtype}{bool}\ TableDef=\textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ Create=\textcolor{keyword}{true});}
+\DoxyCodeLine{00579\ }
+\DoxyCodeLine{00580\ \ \ \mbox{\hyperlink{classTAccellList}{TAccellList<olxstr>}}\ AccShortcuts;}
+\DoxyCodeLine{00581\ \ \ \mbox{\hyperlink{classTAccellList}{TAccellList<TMenuItem*>}}\ AccMenus;}
+\DoxyCodeLine{00582\ }
+\DoxyCodeLine{00583\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TMenu*,\ false>}}\ Menus;}
+\DoxyCodeLine{00584\ \ \ int32\_t\ TranslateShortcut(\textcolor{keyword}{const}\ olxstr\&\ sk);}
+\DoxyCodeLine{00585\ \ \ \textcolor{keywordtype}{void}\ SaveVFS(\textcolor{keywordtype}{short}\ persistenceId);}
+\DoxyCodeLine{00586\ \ \ \textcolor{keywordtype}{void}\ LoadVFS(\textcolor{keywordtype}{short}\ persistenceId);}
+\DoxyCodeLine{00587\ \ \ \textcolor{comment}{//\ this\ must\ be\ called\ at\ different\ times\ on\ GTK\ and\ windows}}
+\DoxyCodeLine{00588\ \ \ \textcolor{keywordtype}{void}\ StartupInit();}
+\DoxyCodeLine{00589\ \ \ \textcolor{keywordtype}{bool}\ SkipSizing;\ \textcolor{comment}{//\ when\ size\ changed\ from\ the\ LoadSettings}}
+\DoxyCodeLine{00590\ \ \ \textcolor{keywordtype}{void}\ DoUpdateFiles();}
+\DoxyCodeLine{00591\ \ \ \textcolor{comment}{//\ returns\ true\ if\ the\ thread\ is\ created}}
+\DoxyCodeLine{00592\ \ \ \textcolor{keywordtype}{bool}\ CreateUpdateThread(\textcolor{keywordtype}{bool}\ force,\ \textcolor{keywordtype}{bool}\ reinstall,\ \textcolor{keywordtype}{bool}\ cleanup);}
+\DoxyCodeLine{00593\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00594\ \ \ TMainForm(\mbox{\hyperlink{classTGlXApp}{TGlXApp}}\ *Parent);}
+\DoxyCodeLine{00595\ \ \ \textcolor{keyword}{virtual}\ \string~TMainForm();}
+\DoxyCodeLine{00596\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Destroy();}
+\DoxyCodeLine{00597\ \ \ \textcolor{keywordtype}{void}\ LoadSettings(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00598\ \ \ \textcolor{keywordtype}{void}\ SaveSettings(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00599\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetScenesFolder()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ScenesDir;\ \ \}}
+\DoxyCodeLine{00600\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetScenesFolder(\textcolor{keyword}{const}\ olxstr\ \&sf)\ \ \{\ \ ScenesDir\ =\ sf;\ \ \}}
+\DoxyCodeLine{00601\ \ \ \textcolor{keywordtype}{void}\ UpdateUserOptions(\textcolor{keyword}{const}\ olxstr\ \&option,\ \textcolor{keyword}{const}\ olxstr\ \&value);}
+\DoxyCodeLine{00602\ }
+\DoxyCodeLine{00603\ \ \ \textcolor{comment}{//\ fires\ the\ state\ change\ as\ well}}
+\DoxyCodeLine{00604\ \ \ \textcolor{keywordtype}{void}\ UseGlTooltip(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00605\ }
+\DoxyCodeLine{00606\ \ \ \textcolor{keywordtype}{float}\ GetHtmlPanelWidth()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FHtmlPanelWidth;\ \ \}}
+\DoxyCodeLine{00607\ \ \ time\_t\ idle\_time,\ idle\_start;}
+\DoxyCodeLine{00608\ \ \ \textcolor{keywordtype}{void}\ OnNonIdle();}
+\DoxyCodeLine{00609\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00610\ \textcolor{comment}{//\ properties}}
+\DoxyCodeLine{00611\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00612\ \ \ wxToolBar\ \ \ *ToolBar;}
+\DoxyCodeLine{00613\ \ \ wxStatusBar\ *StatusBar;}
+\DoxyCodeLine{00614\ \ \ wxMenuBar\ \ \ *MenuBar;}
+\DoxyCodeLine{00615\ \ \ \textcolor{comment}{//\ file\ menu}}
+\DoxyCodeLine{00616\ \ \ TMenu\ *MenuFile;}
+\DoxyCodeLine{00617\ \ \ \textcolor{comment}{//\ view\ menu}}
+\DoxyCodeLine{00618\ \ \ wxMenuItem\ *miHtmlPanel;}
+\DoxyCodeLine{00619\ \ \ \textcolor{comment}{//popup\ menu}}
+\DoxyCodeLine{00620\ \ \ TMenu\ \ \ \ \ \ *pmMenu;}
+\DoxyCodeLine{00621\ \ \ \ \ TMenu\ \ \ \ \ \ *pmDrawStyle,\ \ \textcolor{comment}{//\ submenues}}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *pmModel,}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *pmDrawQ;}
+\DoxyCodeLine{00624\ \ \ TMenu\ \ \ \ *pmAtom;}
+\DoxyCodeLine{00625\ \ \ \ \ TMenu\ \ \ \ *pmBang;\ \ \textcolor{comment}{//\ bonds\ angles}}
+\DoxyCodeLine{00626\ \ \ \ \ TMenu\ \ \ \ *pmAtomType;}
+\DoxyCodeLine{00627\ \ \ \ \ TMenu\ \ \ \ *pmAtomOccu,}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \ \ \ \ \ *pmAtomConn,}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ \ \ \ \ \ \ \ *pmAtomPoly,}
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \ \ \ \ \ \ \ *pmAtomPart,}
+\DoxyCodeLine{00631\ \ \ \ \ \ \ \ \ \ \ \ \ \ *pmAtomUiso}
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \ \ \ \ \ \ \ ;}
+\DoxyCodeLine{00633\ \ \ TMenu\ \ \ \ *pmBond;}
+\DoxyCodeLine{00634\ \ \ \ \ TMenu\ \ \ \ *pmTang;\ \ \textcolor{comment}{//\ torsion\ angles}}
+\DoxyCodeLine{00635\ \ \ TMenu\ \ \ \ *pmFragment;}
+\DoxyCodeLine{00636\ \ \ TMenu\ \ \ \ *pmSelection;}
+\DoxyCodeLine{00637\ \ \ TMenu\ \ \ \ *pmView;}
+\DoxyCodeLine{00638\ \ \ TMenu\ \ \ \ *pmPlane;}
+\DoxyCodeLine{00639\ \ \ TMenu\ \ \ \ *pmGraphics;\ \ \textcolor{comment}{//\ generic\ menu\ for\ graphics}}
+\DoxyCodeLine{00640\ \ \ TMenu\ \ \ \ *pmGrid,\ *pmBlob;}
+\DoxyCodeLine{00641\ \ \ TMenu\ \ \ \ *pmLabel;}
+\DoxyCodeLine{00642\ \ \ TMenu\ \ \ \ *pmLattice;}
+\DoxyCodeLine{00643\ \ \ \textcolor{keyword}{class\ }TXGlLabel*\ LabelToEdit;}
+\DoxyCodeLine{00644\ \ \ wxMenu\ \ *FCurrentPopup;}
+\DoxyCodeLine{00645\ }
+\DoxyCodeLine{00646\ \ \ \textcolor{keyword}{class\ }FileDropTarget\ :\ \textcolor{keyword}{public}\ wxFileDropTarget\ \{}
+\DoxyCodeLine{00647\ \ \ \ \ TMainForm\&\ parent;}
+\DoxyCodeLine{00648\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00649\ \ \ \ \ FileDropTarget(TMainForm\&\ \_parent)\ :\ parent(\_parent)\ \ \{\}}
+\DoxyCodeLine{00650\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnDropFiles(wxCoord\ x,\ wxCoord\ y,\ \textcolor{keyword}{const}\ wxArrayString\&\ filenames);}
+\DoxyCodeLine{00651\ \ \ \ \ \textcolor{keyword}{virtual}\ wxDragResult\ OnDragOver(wxCoord\ x,\ wxCoord\ y,\ wxDragResult\ def)\ \ \{}
+\DoxyCodeLine{00652\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ wxFileDropTarget::OnDragOver(x,y,wxDragCopy);}
+\DoxyCodeLine{00653\ \ \ \ \ \}}
+\DoxyCodeLine{00654\ \ \ \};}
+\DoxyCodeLine{00655\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00656\ \ \ wxMenu*\ CurrentPopupMenu()\ \ \ \ \{\ \ \textcolor{keywordflow}{return}\ FCurrentPopup;\ \}}
+\DoxyCodeLine{00657\ \ \ wxMenu*\ DefaultPopup()\ \ \ \ \ \ \ \ \{\ \ \textcolor{keywordflow}{return}\ pmGraphics;\ \}}
+\DoxyCodeLine{00658\ \ \ wxMenu*\ GeneralPopup()\ \ \ \ \ \ \ \ \{\ \ \textcolor{keywordflow}{return}\ pmMenu;\ \}}
+\DoxyCodeLine{00659\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00660\ \textcolor{comment}{//\ TMainForm\ interface}}
+\DoxyCodeLine{00661\ \ \ \textcolor{keywordtype}{void}\ GlCanvas(TGlCanvas\ *GC)\ \ \{\ \ FGlCanvas\ =\ GC;\ \ \}}
+\DoxyCodeLine{00662\ \ \ TGlCanvas\ *\ GlCanvas()\ \ \{\ \ \textcolor{keywordflow}{return}\ FGlCanvas;\ \ \}}
+\DoxyCodeLine{00663\ \ \ \textcolor{keywordtype}{void}\ XApp(Olex2App\ *XA);}
+\DoxyCodeLine{00664\ \ \ Olex2App\ *XApp()\ \ \{\ \ \textcolor{keywordflow}{return}\ FXApp;\ \}}
+\DoxyCodeLine{00665\ \ \ \textcolor{keywordtype}{bool}\ FindXAtoms(\textcolor{keyword}{const}\ TStrObjList\ \&Cmds,\ TXAtomPList\&\ xatoms,\ \textcolor{keywordtype}{bool}\ GetAll,\ \textcolor{keywordtype}{bool}\ unselect);}
+\DoxyCodeLine{00666\ \ \ ConstPtrList<TXAtom>\ FindXAtoms(\textcolor{keyword}{const}\ TStrObjList\ \&Cmds,\textcolor{keywordtype}{bool}\ GetAll,\ \textcolor{keywordtype}{bool}\ unselect)\ \ \{}
+\DoxyCodeLine{00667\ \ \ \ \ TXAtomPList\ atoms;}
+\DoxyCodeLine{00668\ \ \ \ \ FindXAtoms(Cmds,\ atoms,\ GetAll,\ unselect);}
+\DoxyCodeLine{00669\ \ \ \ \ \textcolor{keywordflow}{return}\ atoms;}
+\DoxyCodeLine{00670\ \ \ \}}
+\DoxyCodeLine{00671\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00672\ \textcolor{comment}{//\ General\ interface}}
+\DoxyCodeLine{00673\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00674\ \ \ \textcolor{keyword}{static}\ TMainForm\ *\&GetInstance()\ \{}
+\DoxyCodeLine{00675\ \ \ \ \ \textcolor{keyword}{static}\ TMainForm\ *i\ =\ 0;}
+\DoxyCodeLine{00676\ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00677\ \ \ \}}
+\DoxyCodeLine{00678\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HasInstance()\ \{}
+\DoxyCodeLine{00679\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInstance()\ !=\ 0\ \&\&\ !GetInstance()-\/>Destroying;}
+\DoxyCodeLine{00680\ \ \ \}}
+\DoxyCodeLine{00681\ \ \ \textcolor{keywordtype}{void}\ ObjectUnderMouse(AGDrawObject\ *G);}
+\DoxyCodeLine{00682\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00683\ \ \ DECLARE\_CLASS(TMainForm)}
+\DoxyCodeLine{00684\ \};}
+\DoxyCodeLine{00685\ }
+\DoxyCodeLine{00686\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

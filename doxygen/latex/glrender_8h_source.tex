@@ -1,0 +1,413 @@
+\doxysection{glrender.\+h}
+\hypertarget{glrender_8h_source}{}\label{glrender_8h_source}\index{glib/glrender.h@{glib/glrender.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_render\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_render\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}groupobj.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}gloption.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}gllightmodel.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}glscene.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}ebasis.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}ematrix.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}talist.h"{}}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}macroerror.h"{}}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}paramlist.h"{}}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}gpcollection.h"{}}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ "{}glgroup.h"{}}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ "{}styles.h"{}}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#undef\ DrawText}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#undef\ GetObject}}
+\DoxyCodeLine{00032\ BeginGlNamespace()}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ const\ uint8\_t}
+\DoxyCodeLine{00035\ \ \ glStereoColor\ =\ 0x0001,}
+\DoxyCodeLine{00036\ \ \ glStereoCross\ =\ 0x0002,}
+\DoxyCodeLine{00037\ \ \ glStereoAnaglyph\ =\ 0x0003,}
+\DoxyCodeLine{00038\ \ \ glStereoHardware\ =\ 0x0004,}
+\DoxyCodeLine{00039\ \ \ glStereoInterlace\ =\ 0x0005,}
+\DoxyCodeLine{00040\ \ \ glStereoMatrix\ =\ 0x0006;}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ enum\ glSelectionFlag\ \{}
+\DoxyCodeLine{00043\ \ \ glSelectionNone,\ \textcolor{comment}{//\ does\ nothing}}
+\DoxyCodeLine{00044\ \ \ glSelectionSelect,}
+\DoxyCodeLine{00045\ \ \ glSelectionUnselect,}
+\DoxyCodeLine{00046\ \ \ glSelectionInvert}
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}};}
+\DoxyCodeLine{00050\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGlGroup}{TGlGroup}};}
+\DoxyCodeLine{00051\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{class\ }AGOSettings\ :\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00054\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00055\ \ \ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\ \&parent;}
+\DoxyCodeLine{00056\ \ \ olxstr\ name;}
+\DoxyCodeLine{00057\ \ \ \mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}\ *style;}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnStyleChange()\ =\ 0;;}
+\DoxyCodeLine{00059\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00060\ \ \ AGOSettings(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\ \&p,\ \textcolor{keyword}{const}\ olxstr\ \&name);}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{virtual}\ \string~AGOSettings();}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnRendererClear()\ =\ 0;}
+\DoxyCodeLine{00063\ \ \ \mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}\ *GetStyle()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ style;\ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ value\_t,\ \textcolor{keyword}{typename}\ name\_t>}
+\DoxyCodeLine{00066\ \ \ value\_t\ GetParam(\textcolor{keyword}{const}\ name\_t\ \&name,\ value\_t\ \&v,\ \textcolor{keyword}{const}\ value\_t\ \&def)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{if}\ (style\ ==\ 0)\ \{\ \textcolor{keywordflow}{return}\ def;\ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{return}\ v\ !=\ -\/1\ ?\ v}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ :\ (v\ =\ style-\/>GetNumParam(name,\ def,\ \textcolor{keyword}{true}));}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{bool}\ Enter(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{bool}\ Exit(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00073\ \};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{keyword}{class\ }TGlRenderer\ :\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00076\ \ \ \textcolor{comment}{//\ a\ list\ of\ all\ groups\ of\ primitives}}
+\DoxyCodeLine{00077\ \ \ \mbox{\hyperlink{classObjectGroup}{ObjectGroup<TGlMaterial,\ TGlPrimitive>}}\ \ Primitives;}
+\DoxyCodeLine{00078\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TGPCollection*,\ false>}}\ FCollections;}
+\DoxyCodeLine{00079\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TGlMaterial>}}\ FTranslucentObjects,}
+\DoxyCodeLine{00080\ \ \ \ \ FIdentityObjects,\ FTranslucentIdentityObjects;}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classsorted_1_1PointerPointer}{sorted::PointerPointer<AGDrawObject>}}\ GObjectList;}
+\DoxyCodeLine{00082\ \ \ GObjectList\ FGObjects;}
+\DoxyCodeLine{00083\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TGlGroup>}}\ FGroups;\ \ \ \textcolor{comment}{//\ list\ of\ groups}}
+\DoxyCodeLine{00084\ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ FSelection;\ \ \textcolor{comment}{//\ list\ of\ selected\ objects}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTTextureManager}{TTextureManager}}*\ TextureManager;}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{bool}\ FSceneComplete,\ Selecting,\ Picking;}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\ perspective\ related\ stuff}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{bool}\ FPerspective;}
+\DoxyCodeLine{00089\ \ \ ematd\ PerspectiveMatrix;}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{double}\ FPAngle,}
+\DoxyCodeLine{00091\ \ \ \textcolor{comment}{/*\ zoom\ is\ used\ when\ drawn\ on\ a\ larger\ canvas,\ so\ that\ objects,\ which\ are}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ \ draw\ in\ identity\ mode\ can\ fix\ their\ position}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00094\ \ \ \ \ FZoom,}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{/*\ viewzoom\ it\ to\ be\ used\ with\ rasters\ when\ the\ scene\ is\ zoomed\ using\ LookAt}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ \ function}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00098\ \ \ \ \ FViewZoom,}
+\DoxyCodeLine{00099\ \ \ \ \ FProjectionLeft,\ FProjectionRight,\ FProjectionTop,\ FProjectionBottom}
+\DoxyCodeLine{00100\ \ \ \ \ ;}
+\DoxyCodeLine{00101\ \textcolor{comment}{//\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_Fog\ stuff}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{bool}\ Fog;}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{int}\ FogType;}
+\DoxyCodeLine{00104\ \ \ TGlOption\ FogColor;}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{float}\ FogDensity,\ FogStart,\ FogEnd;}
+\DoxyCodeLine{00106\ \textcolor{comment}{//\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{int}\ Top,\ Left,}
+\DoxyCodeLine{00108\ \ \ \ \ AbsoluteTop;\ \textcolor{comment}{//\ on\ srcreen,\ to\ handle\ interlaced\ stereo}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordtype}{int}\ Width,\ Height,\ OWidth;}
+\DoxyCodeLine{00110\ \ \ \textcolor{keywordtype}{double}\ LineWidth,\ MaxRasterZ;}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordtype}{int}\ CompiledListId;}
+\DoxyCodeLine{00112\ \ \ GLubyte\ *poly\_stipple;}
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordtype}{bool}\ poly\_even;}
+\DoxyCodeLine{00114\ \ \ \textcolor{keywordtype}{void}\ SetupStencilFoInterlacedDraw(\textcolor{keywordtype}{bool}\ even);}
+\DoxyCodeLine{00115\ \ \ GLubyte\ SelectionBuffer[4][4*3];}
+\DoxyCodeLine{00116\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<AGOSettings\ *>}}\ ObjectSettings;}
+\DoxyCodeLine{00117\ \ \ mat3d\ StereoMatrix;}
+\DoxyCodeLine{00118\ \ \ vec3d\ StereoTranslation;}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{bool}\ Enter(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordtype}{bool}\ Exit(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00121\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordtype}{void}\ DrawObjects(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{bool}\ SelectObjects,\ \textcolor{keywordtype}{bool}\ SelectPrimitives);}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ vec3d\ FMaxV,\ FMinV;}
+\DoxyCodeLine{00125\ \ \ TEBasis\ FBasis;}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classAGlScene}{AGlScene}}\ *FScene;}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \mbox{\hyperlink{classTGraphicsStyles}{TGraphicsStyles}}\ Styles;}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{class\ }TGlBackground\ *FBackground,\ *FCeiling;}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{bool}\ FGlImageChanged;\ \textcolor{comment}{//\ true\ if\ DrawMethod\ was\ used}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{char}\ *FGlImage;}
+\DoxyCodeLine{00132\ \ \ \textcolor{keywordtype}{int}\ GlImageHeight,\ GlImageWidth;}
+\DoxyCodeLine{00133\ \ \ uint8\_t\ StereoFlag;}
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordtype}{double}\ StereoAngle,\ NearPlane,\ FarPlane;}
+\DoxyCodeLine{00135\ \ \ TGlOption\ StereoLeftColor,\ StereoRightColor;}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{double}\ SceneDepth;}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{bool}\ ATI,\ GLUSelection;}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{class\ }TGlListManager\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ GLuint\ Inc,\ Pos;}
+\DoxyCodeLine{00141\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<GLuint>}}\ Lists;}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00143\ \ \ \ \ TGlListManager(GLuint\ inc=16)\ :\ Inc(inc),\ Pos(0)\ \ \{\}}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~TGlListManager()\ \ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ GLuint\ NewList();}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00147\ \ \ \}\ ListManager;}
+\DoxyCodeLine{00148\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00149\ \ \ TGlRenderer(\mbox{\hyperlink{classAGlScene}{AGlScene}}\ *S,\ \textcolor{keywordtype}{size\_t}\ width,\ \textcolor{keywordtype}{size\_t}\ height);}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{virtual}\ \string~TGlRenderer();}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00152\ \ \ \textcolor{keywordtype}{void}\ ClearObjects();}
+\DoxyCodeLine{00153\ \ \ \mbox{\hyperlink{classAGlScene}{AGlScene}}\&\ GetScene()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *FScene;\ \ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{comment}{//\ the\ functions\ set\ current\ matrix}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordtype}{void}\ SetView(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{bool}\ Identity,\ \textcolor{keywordtype}{bool}\ Select,\ \textcolor{keywordtype}{short}\ Res);}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{/*\ is\ used\ to\ set\ current\ view\ (when\ initialisation\ is\ done\ by\ an\ external}}
+\DoxyCodeLine{00157\ \textcolor{comment}{\ \ librray\ such\ as\ wxWidgets}}
+\DoxyCodeLine{00158\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00159\ \ \ \textcolor{keywordtype}{void}\ SetView(\textcolor{keywordtype}{bool}\ Identity,\ \textcolor{keywordtype}{short}\ Res=1);}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGraphicsStyles}{TGraphicsStyles}}\&\ GetStyles()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Styles;\ \}}
+\DoxyCodeLine{00162\ \ \ TGraphicsStyles\&\ GetStyles()\ \{\ \textcolor{keywordflow}{return}\ Styles;\ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{comment}{//\ removes\ styles,\ which\ are\ not\ used\ by\ any\ collection}}
+\DoxyCodeLine{00164\ \ \ \textcolor{keywordtype}{void}\ CleanUpStyles();}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordtype}{bool}\ IsCompiled()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ CompiledListId\ !=\ -\/1;\ \}}
+\DoxyCodeLine{00167\ \ \ \textcolor{keywordtype}{void}\ Compile(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{//\ if\ true,\ then\ min/max\ are\ not\ updated\ for\ newly\ created\ objects}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keywordtype}{bool}\ IsSceneComplete()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FSceneComplete;\ \ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keywordtype}{bool}\ IsSelecting()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Selecting;\ \ \}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordtype}{bool}\ IsPicking()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Picking;\ \}}
+\DoxyCodeLine{00173\ \ \ \textcolor{keywordtype}{void}\ SetSceneComplete(\textcolor{keywordtype}{bool}\ v)\ \{\ \ FSceneComplete\ =\ v;\ \ \}}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//\ basis\ manipulation}}
+\DoxyCodeLine{00175\ \ \ TEBasis\&\ GetBasis()\ \{\ \ \textcolor{keywordflow}{return}\ FBasis;\ \}}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{const}\ TEBasis\&\ GetBasis()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FBasis;\ \}}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordtype}{void}\ SetBasis(\textcolor{keyword}{const}\ TEBasis\ \&B)\ \ \{\ \ FBasis\ =\ B;\ \}}
+\DoxyCodeLine{00178\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ \textcolor{keywordtype}{void}\ Translate(\textcolor{keyword}{const}\ VC\&\ V)\ \ \{\ \ FBasis.Translate(V);\ \}}
+\DoxyCodeLine{00179\ \ \ \textcolor{keywordtype}{void}\ TranslateX(\textcolor{keywordtype}{double}\ V)\ \ \{\ \ FBasis.TranslateX(V);\ \ \}}
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordtype}{void}\ TranslateY(\textcolor{keywordtype}{double}\ V)\ \ \{\ \ FBasis.TranslateY(V);\ \ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keywordtype}{void}\ TranslateZ(\textcolor{keywordtype}{double}\ V)\ \ \{\ \ FBasis.TranslateZ(V);\ \ \}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keywordtype}{void}\ RotateX(\textcolor{keywordtype}{double}\ V)\ \ \{\ \ FBasis.RotateX(V);\ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keywordtype}{void}\ RotateY(\textcolor{keywordtype}{double}\ V)\ \ \{\ \ FBasis.RotateY(V);\ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{keywordtype}{void}\ RotateZ(\textcolor{keywordtype}{double}\ V)\ \ \{\ \ FBasis.RotateZ(V);\ \}}
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordtype}{double}\ GetZoom()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FBasis.GetZoom();\ \}}
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{void}\ SetZoom(\textcolor{keywordtype}{double}\ V);}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{void}\ ResetBasis()\ \ \{\ \ FBasis.Reset();\ \ \}}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ TGlLightModel\ LightModel;}
+\DoxyCodeLine{00190\ \ \ TActionQueue\ \&OnDraw,\ \textcolor{comment}{//\ register\ your\ handler\ to\ swap\ buffers\ etc}}
+\DoxyCodeLine{00191\ \ \ \ \ \&OnClear;}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordtype}{void}\ Resize(\textcolor{keywordtype}{size\_t}\ w,\ \textcolor{keywordtype}{size\_t}\ h);}
+\DoxyCodeLine{00194\ \ \ \textcolor{keywordtype}{void}\ Resize(\textcolor{keywordtype}{int}\ Left,\ \textcolor{keywordtype}{int}\ Top,\ \textcolor{keywordtype}{size\_t}\ w,\ \textcolor{keywordtype}{size\_t}\ h,\ \textcolor{keywordtype}{double}\ Zoom);}
+\DoxyCodeLine{00195\ \textcolor{comment}{//\ perspective\ stuff}}
+\DoxyCodeLine{00196\ \ \ \textcolor{keywordtype}{void}\ EnablePerspective(\textcolor{keywordtype}{bool}\ Set);}
+\DoxyCodeLine{00197\ \ \ \textcolor{keywordtype}{bool}\ IsPerspectiveEnabled()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FPerspective;\ \}}
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{void}\ SetPerspectiveAngle(\textcolor{keywordtype}{double}\ Angle);}
+\DoxyCodeLine{00199\ \ \ vec3d\ Project(\textcolor{keyword}{const}\ vec3d\ \&v)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00200\ \ \ \textcolor{comment}{//fog\ stuff}}
+\DoxyCodeLine{00201\ \ \ \textcolor{keywordtype}{void}\ EnableFog(\textcolor{keywordtype}{bool}\ Set);}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{bool}\ IsFogEnabled()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Fog;\ \}}
+\DoxyCodeLine{00203\ \ \ DefPropP(\textcolor{keywordtype}{float},\ FogStart)}
+\DoxyCodeLine{00204\ \ \ DefPropP(\textcolor{keywordtype}{float},\ FogEnd)}
+\DoxyCodeLine{00205\ \ \ DefPropP(\textcolor{keywordtype}{int},\ FogType)}
+\DoxyCodeLine{00206\ \ \ DefPropP(\textcolor{keywordtype}{float},\ FogDensity)}
+\DoxyCodeLine{00207\ \ \ DefPropC(TGlOption,\ FogColor)}
+\DoxyCodeLine{00208\ \ \ DefPropC(mat3d,\ StereoMatrix)}
+\DoxyCodeLine{00209\ \ \ DefPropC(vec3d,\ StereoTranslation)}
+\DoxyCodeLine{00210\ \ \ DefPropP(\textcolor{keywordtype}{int},\ AbsoluteTop)}
+\DoxyCodeLine{00211\ \ \ DefPropP(uint8\_t,\ StereoFlag)}
+\DoxyCodeLine{00212\ \ \ DefPropBIsSet(GLUSelection)}
+\DoxyCodeLine{00213\ \ \ \textcolor{keywordtype}{double}\ GetLineWidth()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ LineWidth;\ \ \}}
+\DoxyCodeLine{00214\ \ \ \textcolor{keywordtype}{void}\ SetLineWidth(\textcolor{keywordtype}{double}\ v);}
+\DoxyCodeLine{00215\ \ \ \textcolor{keywordtype}{double}\ GetExtraZoom()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FZoom;\ \ \}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keywordtype}{bool}\ ForcePlain()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ IsColorStereo()\ ||\ IsSelecting();\ \}}
+\DoxyCodeLine{00217\ \ \ \textcolor{keywordtype}{bool}\ IsColorStereo()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ StereoFlag==glStereoColor;\ \ \}}
+\DoxyCodeLine{00218\ \ \ \textcolor{keywordtype}{bool}\ IsCrossStereo()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ StereoFlag==glStereoCross;\ \ \}}
+\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{bool}\ IsAnaglyphStereo()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ StereoFlag==glStereoAnaglyph;\ \ \}}
+\DoxyCodeLine{00220\ }
+\DoxyCodeLine{00221\ \ \ \textcolor{keywordtype}{void}\ Initialise();}
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{void}\ InitLights();}
+\DoxyCodeLine{00223\ \ \ \textcolor{keywordtype}{double}\ CalcZoom(\textcolor{keywordtype}{bool}\ for\_selection\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00224\ \ \ \textcolor{comment}{/*\ returns\ a\ "{}size\ of\ a\ pixel\ in\ current\ viewport"{};\ use\ it\ to\ transform}}
+\DoxyCodeLine{00225\ \textcolor{comment}{\ \ screen\ coordinates\ to\ internal\ coordinates\ of\ OpenGl\ Scene\ like\ follow:\ if\ an}}
+\DoxyCodeLine{00226\ \textcolor{comment}{\ \ object\ has\ to\ follow\ mouse\ pointer,\ then\ the\ change\ in\ coordinates\ should\ be}}
+\DoxyCodeLine{00227\ \textcolor{comment}{\ \ x\ =\ x0+MouseX*GetScale()\ y\ =\ y0+MouseY*GetScale()}}
+\DoxyCodeLine{00228\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00229\ \ \ \textcolor{keywordtype}{double}\ GetScale()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{comment}{//\ to\ be\ used\ to\ calculate\ raster\ positions\ (x,y)}}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordflow}{return}\ 1./Height;}
+\DoxyCodeLine{00231\ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \textcolor{comment}{/*\ to\ be\ used\ to\ calculate\ raster\ positions\ (z)\ */}}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{double}\ GetMaxRasterZ()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ MaxRasterZ;\ \ \}}
+\DoxyCodeLine{00234\ \ \ \textcolor{comment}{//\ calculates\ the\ Z\ value\ for\ the\ given\ offset}}
+\DoxyCodeLine{00235\ \ \ \textcolor{keywordtype}{double}\ CalcRasterZ(\textcolor{keywordtype}{double}\ off)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00236\ \ \ \textcolor{comment}{/*\ this\ function\ provides\ extra\ value\ for\ use\ with\ rasters,\ when\ the\ scene\ is}}
+\DoxyCodeLine{00237\ \textcolor{comment}{\ \ zoomed\ using\ LookAt\ function}}
+\DoxyCodeLine{00238\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{double}\ GetViewZoom()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FViewZoom;\ \ \}}
+\DoxyCodeLine{00240\ \ \ \textcolor{keywordtype}{void}\ UpdateMinMax(\textcolor{keyword}{const}\ vec3d\&\ Max,\ \textcolor{keyword}{const}\ vec3d\&\ Min);}
+\DoxyCodeLine{00241\ \ \ \textcolor{keywordtype}{void}\ ClearMinMax();}
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{const}\ vec3d\&\ MaxDim()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FMaxV;\ \}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{const}\ vec3d\&\ MinDim()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FMinV;\ \}}
+\DoxyCodeLine{00244\ \ \ \textcolor{comment}{/*\ the\ actual\ width\ is\ to\ be\ used\ for\ modifying/restoring\ canvas\ size\ */}}
+\DoxyCodeLine{00245\ \ \ \textcolor{keywordtype}{size\_t}\ GetActualWidth()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{return}\ (StereoFlag==glStereoCross)\ ?\ OWidth\ :\ Width;}
+\DoxyCodeLine{00247\ \ \ \}}
+\DoxyCodeLine{00248\ \ \ \textcolor{comment}{/*\ opposite\ to\ the\ above\ one\ -\/\ this\ is\ used\ in\ all\ model\ calcuations\ */}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keywordtype}{int}\ GetWidth()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Width;\ \ \}}
+\DoxyCodeLine{00250\ \ \ \textcolor{keywordtype}{int}\ GetHeight()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Height;\ \ \}}
+\DoxyCodeLine{00251\ \ \ \textcolor{keywordtype}{int}\ GetLeft()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Left;\ \ \}}
+\DoxyCodeLine{00252\ \ \ \textcolor{keywordtype}{int}\ GetTop()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Top;\ \ \}}
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{/*an\ "{}advanced"{}\ drawing\ procedure\ which\ draws\ an\ object\ on\ a\ static\ image}}
+\DoxyCodeLine{00254\ \textcolor{comment}{\ \ .\ Used\ to\ implement\ faster\ drawing\ for\ such\ objects\ as\ text\ input\ controls}}
+\DoxyCodeLine{00255\ \textcolor{comment}{\ \ and\ frames...\ \ Be\ sure\ that\ the\ object\ is\ of\ "{}a\ modal"{}\ type,\ e.g.\ no}}
+\DoxyCodeLine{00256\ \textcolor{comment}{\ \ significant\ drawing\ activity\ interrupts\ it\ otherwise\ the\ drawing\ will\ be\ very}}
+\DoxyCodeLine{00257\ \textcolor{comment}{\ \ slow\ ideed!}}
+\DoxyCodeLine{00258\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00259\ \ \ \textcolor{keywordtype}{void}\ UpdateGlImage();}
+\DoxyCodeLine{00260\ \ \ \textcolor{keywordtype}{bool}\ GlImageChanged()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FGlImageChanged;\ \}}
+\DoxyCodeLine{00261\ \ \ \textcolor{comment}{//\ use\ to\ realease\ the\ internal\ memory\ allocated\ by\ the\ image}}
+\DoxyCodeLine{00262\ \ \ \textcolor{keywordtype}{void}\ ReleaseGlImage();}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{keywordtype}{void}\ Draw();}
+\DoxyCodeLine{00265\ \ \ \textcolor{keywordtype}{void}\ DrawSilhouette();}
+\DoxyCodeLine{00266\ \ \ \textcolor{comment}{//\ to\ be\ called\ if\ the\ underlying\ OpenGl\ Context\ is\ about\ to\ change}}
+\DoxyCodeLine{00267\ \ \ \textcolor{keywordtype}{void}\ BeforeContextChange();}
+\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//\ to\ be\ called\ if\ the\ underlying\ OpenGl\ Context\ has\ changed}}
+\DoxyCodeLine{00269\ \ \ \textcolor{keywordtype}{void}\ AfterContextChange();}
+\DoxyCodeLine{00270\ \ \ \textcolor{comment}{//\ this\ is\ to\ be\ used\ by\ groups}}
+\DoxyCodeLine{00271\ \ \ \textcolor{keywordtype}{void}\ HandleSelection(\textcolor{keyword}{const}\ AGDrawObject\ \&o,\ \textcolor{keyword}{const}\ TGlPrimitive\ \&p,}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordtype}{bool}\ SelectObjects,\ \textcolor{keywordtype}{bool}\ SelectPrimitives)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00273\ \ \ AGDrawObject*\ SelectObject(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{bool}\ picking);}
+\DoxyCodeLine{00274\ \ \ TGlPrimitive*\ SelectPrimitive(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y);}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \ \ \textcolor{keywordtype}{size\_t}\ GroupCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FGroups.Count();\ \ \}}
+\DoxyCodeLine{00277\ \ \ TGlGroup\&\ GetGroup(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *FGroups[i];\ \ \}}
+\DoxyCodeLine{00278\ \ \ \textcolor{keyword}{const}\ TPtrList<TGlGroup>\&\ GetGroups()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FGroups;\ \ \}}
+\DoxyCodeLine{00279\ \ \ TGlGroup\&\ NewGroup(\textcolor{keyword}{const}\ olxstr\&\ collection\_name);}
+\DoxyCodeLine{00280\ \ \ TGlGroup*\ FindGroupByName(\textcolor{keyword}{const}\ olxstr\&\ colName)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00281\ \ \ TGlGroup*\ FindObjectGroup(\textcolor{keyword}{const}\ AGDrawObject\&\ G)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00282\ \ \ \textcolor{comment}{/*\ groups\ current\ selection\ and\ returns\ the\ created\ group\ object,\ or\ NULL}}
+\DoxyCodeLine{00283\ \textcolor{comment}{\ \ if\ current\ selection\ had\ less\ than\ 2\ elements\ */}}
+\DoxyCodeLine{00284\ \ \ TGlGroup*\ GroupSelection(\textcolor{keyword}{const}\ olxstr\&\ groupName);}
+\DoxyCodeLine{00285\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00286\ \textcolor{comment}{\ \ clears\ the\ groups,\ if\ clean\ is\ specified\ -\/\ it\ makse\ sure\ that\ the\ groups\ are}}
+\DoxyCodeLine{00287\ \textcolor{comment}{\ \ removed\ from\ the\ Object\ list.}}
+\DoxyCodeLine{00288\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00289\ \ \ \textcolor{keywordtype}{void}\ ClearGroups(\textcolor{keywordtype}{bool}\ clean);}
+\DoxyCodeLine{00290\ \ \ \textcolor{keywordtype}{void}\ Ungroup(TGlGroup\&\ GlG);}
+\DoxyCodeLine{00291\ \ \ TGlGroup\&\ GetSelection()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *FSelection;\ \}}
+\DoxyCodeLine{00292\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SelType>\ SelType\&\ ReplaceSelection()\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ FSelection-\/>GetPrimitives().RemoveObject(*FSelection);}
+\DoxyCodeLine{00294\ \ \ \ \ FSelection-\/>SetSelected(\textcolor{keyword}{false});}
+\DoxyCodeLine{00295\ \ \ \ \ FGObjects.Remove(FSelection);}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keyword}{delete}\ FSelection;}
+\DoxyCodeLine{00297\ \ \ \ \ SelType*\ sel\ =\ \textcolor{keyword}{new}\ SelType(*\textcolor{keyword}{this},\ \textcolor{stringliteral}{"{}Selection"{}});}
+\DoxyCodeLine{00298\ \ \ \ \ FSelection\ =\ sel;}
+\DoxyCodeLine{00299\ \ \ \ \ FSelection-\/>Create();}
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keywordflow}{return}\ *sel;}
+\DoxyCodeLine{00301\ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \textcolor{keywordtype}{void}\ Select(AGDrawObject\&\ G,\ \textcolor{keywordtype}{bool}\ v);\ \textcolor{comment}{//\ convinience\ function...}}
+\DoxyCodeLine{00303\ \ \ \textcolor{keywordtype}{void}\ Select(AGDrawObject\&\ G,\ glSelectionFlag\ flag);}
+\DoxyCodeLine{00304\ \ \ \textcolor{keywordtype}{void}\ Select(AGDrawObject\&\ G);}
+\DoxyCodeLine{00305\ \ \ \textcolor{keywordtype}{void}\ Deselect(AGDrawObject\&\ G);}
+\DoxyCodeLine{00306\ \ \ \textcolor{keywordtype}{void}\ ClearSelection();}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordtype}{void}\ SelectAll(\textcolor{keywordtype}{bool}\ Select);}
+\DoxyCodeLine{00308\ \ \ \textcolor{keywordtype}{void}\ InvertSelection();}
+\DoxyCodeLine{00309\ \ \ GLuint\ NewListId()\ \ \{\ \ \textcolor{keywordflow}{return}\ ListManager.NewList();\ \ \}}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \ \ \textcolor{keywordtype}{void}\ operator\ =\ (\textcolor{keyword}{const}\ TGlRenderer\ \&G);}
+\DoxyCodeLine{00312\ \ \ TGPCollection\&\ NewCollection(\textcolor{keyword}{const}\ olxstr\ \&Name);}
+\DoxyCodeLine{00313\ \ \ TGPCollection\&\ GetCollection(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{return}\ *FCollections.GetValue(ind);}
+\DoxyCodeLine{00315\ \ \ \}}
+\DoxyCodeLine{00316\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00317\ \ \ TGPCollection*\ FindCollection(\textcolor{keyword}{const}\ T\&\ Name)\ \ \{}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ FCollections.IndexOf(Name);}
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{keywordflow}{return}\ (ind\ !=\ InvalidIndex)\ ?\ FCollections.GetValue(ind)\ :\ NULL;}
+\DoxyCodeLine{00320\ \ \ \}}
+\DoxyCodeLine{00321\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00322\ \ \ TGPCollection\&\ FindOrCreateCollection(\textcolor{keyword}{const}\ T\&\ Name)\ \ \{}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ FCollections.IndexOf(Name);}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keywordflow}{return}\ (ind\ !=\ InvalidIndex)\ ?\ *FCollections.GetValue(ind)}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ :\ NewCollection(Name);}
+\DoxyCodeLine{00326\ \ \ \}}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \textcolor{comment}{/*\ in\ comparison\ with\ previos\ function\ returns\ first}}
+\DoxyCodeLine{00329\ \textcolor{comment}{\ \ \ suitable\ colelction\ for\ example\ will\ return\ "{}C"{}\ for\ "{}C.C1.1\_555"{}}}
+\DoxyCodeLine{00330\ \textcolor{comment}{\ \ \ if\ nor\ "{}C.C1"{}\ nether\ "{}C.C1.1\_555"{}\ exists}}
+\DoxyCodeLine{00331\ \textcolor{comment}{\ \ \ if\ no\ collection\ if\ found,\ then\ CollName\ =\ "{}C"{},\ otherwise\ a\ name}}
+\DoxyCodeLine{00332\ \textcolor{comment}{\ \ \ of\ the\ returned\ collection}}
+\DoxyCodeLine{00333\ \textcolor{comment}{\ \ \ */}}
+\DoxyCodeLine{00334\ \ \ TGPCollection*\ FindCollectionX(\textcolor{keyword}{const}\ olxstr\ \&Name,\ olxstr\&\ CollName);}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \ \ \textcolor{keywordtype}{size\_t}\ CollectionCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FCollections.Count();\ \}}
+\DoxyCodeLine{00337\ \ \ \textcolor{keywordtype}{void}\ RemoveCollection(TGPCollection\&\ GP);}
+\DoxyCodeLine{00338\ \ \ \textcolor{keywordtype}{void}\ RemoveCollections(\textcolor{keyword}{const}\ TPtrList<TGPCollection>\&\ Collections);}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ \ \ \textcolor{keywordtype}{size\_t}\ PrimitiveCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Primitives.ObjectCount();\ \}}
+\DoxyCodeLine{00341\ \ \ TGlPrimitive\&\ GetPrimitive(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keywordflow}{return}\ Primitives.GetObject(i);}
+\DoxyCodeLine{00343\ \ \ \}}
+\DoxyCodeLine{00344\ \ \ \textcolor{comment}{//\ do\ not\ call\ directly,\ use\ GPCollection's\ method\ instead}}
+\DoxyCodeLine{00345\ \ \ TGlPrimitive\&\ NewPrimitive(\textcolor{keywordtype}{short}\ type);}
+\DoxyCodeLine{00346\ \ \ \textcolor{keywordtype}{void}\ RemovePrimitiveByTag(\textcolor{keywordtype}{int}\ index);}
+\DoxyCodeLine{00347\ \ \ \textcolor{keywordtype}{void}\ OnSetProperties(\textcolor{keyword}{const}\ TGlMaterial\&\ P);}
+\DoxyCodeLine{00348\ \ \ \textcolor{comment}{//\ tracks\ translucent\ and\ identity\ objects}}
+\DoxyCodeLine{00349\ \ \ \textcolor{keywordtype}{void}\ SetProperties(TGlMaterial\&\ P);}
+\DoxyCodeLine{00350\ }
+\DoxyCodeLine{00351\ \ \ \textcolor{keywordtype}{void}\ SetObjectsCapacity(\textcolor{keywordtype}{size\_t}\ v)\ \ \{\ FGObjects.SetCapacity(v);\ \ \}}
+\DoxyCodeLine{00352\ \ \ AGDrawObject\&\ GetObject(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *FGObjects[i];\ \}}
+\DoxyCodeLine{00353\ \ \ \textcolor{keywordtype}{void}\ RemoveObject(AGDrawObject\&\ D)\ \ \{\ \ FGObjects.Remove(\&D);\ \ \}}
+\DoxyCodeLine{00354\ \ \ \textcolor{keywordtype}{void}\ RemoveObjects(\textcolor{keyword}{const}\ AGDObjList\&\ objects);}
+\DoxyCodeLine{00355\ \ \ \textcolor{keywordtype}{void}\ AddObject(AGDrawObject\&\ G);}
+\DoxyCodeLine{00356\ \ \ \textcolor{keywordtype}{size\_t}\ ObjectCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FGObjects.Count();\ \}}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \ \ TTextureManager\&\ GetTextureManager()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *TextureManager;\ \ \}}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \ \ \textcolor{comment}{//\ vendor\ specific,\ fixes\ for\ ATI}}
+\DoxyCodeLine{00361\ \ \ \textcolor{keywordtype}{void}\ DrawText(TGlPrimitive\&\ p,\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ z);}
+\DoxyCodeLine{00362\ \ \ \textcolor{comment}{/*\ avoids\ clipping\ the\ text\ as\ well\ as\ vendor\ specific,\ uses\ screen}}
+\DoxyCodeLine{00363\ \textcolor{comment}{\ \ coordinates}}
+\DoxyCodeLine{00364\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00365\ \ \ \textcolor{keywordtype}{void}\ DrawTextSafe(\textcolor{keyword}{const}\ vec3d\&\ pos,\ \textcolor{keyword}{const}\ olxstr\&\ text,\ \textcolor{keyword}{const}\ TGlFont\&\ fnt);}
+\DoxyCodeLine{00366\ \ \ \textcolor{keywordtype}{bool}\ IsATI()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ATI;\ \ \}}
+\DoxyCodeLine{00367\ \ \ \textcolor{keywordtype}{void}\ EnableClipPlane(\textcolor{keyword}{class}\ TGlClipPlane\ *P,\ \textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00369\ \ \ TGlBackground*\ Background()\ \ \{\ \ \textcolor{keywordflow}{return}\ FBackground;\ \}}
+\DoxyCodeLine{00370\ \ \ TGlBackground*\ Ceiling()\ \ \ \ \ \{\ \ \textcolor{keywordflow}{return}\ FCeiling;\ \}}
+\DoxyCodeLine{00371\ \ \ \textcolor{comment}{/*\ returns\ 24\ bit\ colors,\ formatis\ GL\_RGB\ or\ GL\_BGR\_EXT\ */}}
+\DoxyCodeLine{00372\ \ \ \textcolor{keywordtype}{char}*\ GetPixels(\textcolor{keywordtype}{bool}\ useMalloc=\textcolor{keyword}{false},\ \textcolor{keywordtype}{short}\ aligment=4,\ GLuint\ format=GL\_RGB);}
+\DoxyCodeLine{00373\ \ \ \textcolor{comment}{/*\ the\ functions\ set\ current\ view\ for\ drawinf\ large\ picture\ x,\ y-\/\ curent}}
+\DoxyCodeLine{00374\ \textcolor{comment}{\ \ quadraterial,\ res\ -\/\ required\ resolution;\ to\ be\ used\ in\ conjunction\ with}}
+\DoxyCodeLine{00375\ \textcolor{comment}{\ \ GetPixels}}
+\DoxyCodeLine{00376\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00377\ \ \ \textcolor{keywordtype}{void}\ LookAt(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{short}\ res);}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ n\_t>}
+\DoxyCodeLine{00380\ \ \ AGOSettings\ *FindSettings(\textcolor{keyword}{const}\ n\_t\ \&name)\ \{}
+\DoxyCodeLine{00381\ \ \ \ \ \textcolor{keywordflow}{return}\ ObjectSettings.Find(name,\ NULL);}
+\DoxyCodeLine{00382\ \ \ \}}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \ \ AGOSettings\ \&RegisterSettings(AGOSettings\ \&s,\ \textcolor{keyword}{const}\ olxstr\ \&name)\ \{}
+\DoxyCodeLine{00385\ \ \ \ \ \textcolor{keywordflow}{return}\ *ObjectSettings.Add(name,\ \&s);}
+\DoxyCodeLine{00386\ \ \ \}}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \ \ TEBitArray::const\_type\ GetVisibility();}
+\DoxyCodeLine{00389\ \ \ \textcolor{keywordtype}{void}\ SetVisibility(\textcolor{keyword}{const}\ TEBitArray\ \&v);}
+\DoxyCodeLine{00390\ }
+\DoxyCodeLine{00391\ \ \ \textcolor{keywordtype}{void}\ LibCompile(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00392\ \ \ \textcolor{keywordtype}{void}\ LibStereo(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00393\ \ \ \textcolor{keywordtype}{void}\ LibStereoColor(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00394\ \ \ \textcolor{keywordtype}{void}\ LibFog(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options,\ TMacroData\ \&E);}
+\DoxyCodeLine{00395\ \ \ \textcolor{keywordtype}{void}\ LibPerspective(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options,}
+\DoxyCodeLine{00396\ \ \ \ \ TMacroData\&\ E);}
+\DoxyCodeLine{00397\ \ \ \textcolor{keywordtype}{void}\ LibZoom(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options,\ TMacroData\&\ E);}
+\DoxyCodeLine{00398\ \ \ \textcolor{keywordtype}{void}\ LibCalcZoom(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00399\ \ \ \textcolor{keywordtype}{void}\ LibGetZoom(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00400\ \ \ \textcolor{keywordtype}{void}\ LibLineWidth(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00401\ \ \ \textcolor{keywordtype}{void}\ LibBasis(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00402\ \ \ \textcolor{keywordtype}{void}\ LibRasterZ(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ TMacroData\&\ E);}
+\DoxyCodeLine{00403\ \ \ TLibrary*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name=EmptyString());}
+\DoxyCodeLine{00404\ \};}
+\DoxyCodeLine{00405\ }
+\DoxyCodeLine{00406\ EndGlNamespace()}
+\DoxyCodeLine{00407\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

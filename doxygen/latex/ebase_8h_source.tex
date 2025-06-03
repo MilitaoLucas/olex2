@@ -1,0 +1,464 @@
+\doxysection{ebase.\+h}
+\hypertarget{ebase_8h_source}{}\label{ebase_8h_source}\index{sdl/ebase.h@{sdl/ebase.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_base\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_base\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <typeinfo>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ EsdlClassNameT(class)\ \ typeid(class).name()}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ EsdlObjectNameT(object)\ \ typeid(object).name()}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ EsdlClassName(class)\ \ olxstr(typeid(class).name())}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ EsdlObjectName(object)\ \ olxstr(typeid(object).name())}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ defines\ a\ primitive\ type\ property}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ DefPropP(Type,\ Name)\ \(\backslash\)}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{public:\(\backslash\)}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\ \ Type\ Get\#\#Name()\ const\ \{\ \ return\ Name;\ \ \}\(\backslash\)}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\ \ void\ Set\#\#Name(Type\ MaCV)\ \{\ \ Name\ =\ MaCV;\ \ \}}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ defines\ a\ boolean\ type\ property\ as\ Is/Set}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#define\ DefPropBIsSet(Name)\ \(\backslash\)}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{public:\(\backslash\)}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\ \ bool\ Is\#\#Name()\ const\ \{\ \ return\ Name;\ \ \}\(\backslash\)}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\ \ void\ Set\#\#Name(bool\ MaCV)\ \{\ \ Name\ =\ MaCV;\ \ \}}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ defines\ a\ boolean\ type\ property\ as\ Is/Set}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ DefPropBHasSet(Name)\ \(\backslash\)}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{public:\(\backslash\)}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\ \ bool\ Has\#\#Name()\ const\ \{\ \ return\ Name;\ \ \}\(\backslash\)}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\ \ void\ Set\#\#Name(bool\ MaCV)\ \{\ \ Name\ =\ MaCV;\ \ \}}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ defines\ a\ boolean\ type\ property\ as\ a\ bit\ mask\ as\ Is/Set}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ DefPropBFIsSet(Name,\ VarName,\ BitMask)\ \(\backslash\)}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{public:\(\backslash\)}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\ \ bool\ Is\#\#Name()\ const\ \{\ \ return\ (VarName\ \&\ BitMask)\ !=\ 0;\ \ \}\(\backslash\)}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\ \ void\ Set\#\#Name(bool\ v)\ \ \ \{\ \(\backslash\)}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\ \ \ \ \ \ if(\ v\ )\ \ VarName\ |=\ BitMask;\ \(\backslash\)}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\ \ \ \ \ \ else\ \ \ \ \ VarName\ \&=\ \string~BitMask;\ \ \}}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ defines\ a\ boolean\ type\ property\ as\ a\ bit\ mask\ as\ Has/Set}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#define\ DefPropBFHasSet(Name,\ VarName,\ BitMask)\ \(\backslash\)}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{public:\(\backslash\)}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\ \ bool\ Has\#\#Name()\ const\ \{\ \ return\ (VarName\ \&\ BitMask)\ !=\ 0;\ \ \}\(\backslash\)}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\ \ void\ Set\#\#Name(bool\ v)\ \ \ \{\ \(\backslash\)}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\ \ \ \ \ \ if(\ v\ )\ \ VarName\ |=\ BitMask;\ \(\backslash\)}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\ \ \ \ \ \ else\ \ \ \ \ VarName\ \&=\ \string~BitMask;\ \ \}}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ defines\ a\ complex\ (class)\ type\ property}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ DefPropC(Type,\ Name)\ \(\backslash\)}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{public:\(\backslash\)}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\ \ const\ Type\&\ Get\#\#Name()\ \ \ \ const\ \{\ \ return\ Name;\ \ \}\(\backslash\)}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\ \ void\ Set\#\#Name(const\ Type\&\ MaCV)\ \{\ \ Name\ =\ MaCV;\ \ \}}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ BeginEsdlNamespace()\ \ namespace\ esdl\ \{}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ EndEsdlNamespace()\ \ \};\(\backslash\)}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\ \ using\ namespace\ esdl;}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ UseEsdlNamespace()\ \ using\ namespace\ esdl;}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ GlobalEsdlFunction(\ fun\ )\ \ \ \ \ esdl::fun}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#define\ EsdlObject(\ obj\ )\ \ \ \ \ esdl::obj}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ sync\ debugging}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#ifdef\ \_DEBUG}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\ \ \#if\ !defined(OLX\_DEBUG)}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\ \ \ \ \#define\ OLX\_DEBUG}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#include\ "{}defs.h"{}}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\ \ \#if\ !defined(\_WIN32\_WINNT)\ \&\&\ \_MSC\_VER\ <\ 1500}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\ \ \ \ \#define\ \_WIN32\_WINNT\ 0x400}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\ \ \#include\ <WinSock2.h>}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\ \ \#include\ <windows.h>}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ BeginEsdlNamespace()}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#include\ "{}olxptr.h"{}}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ InvalidIndex\ =\ size\_t(\string~0);}
+\DoxyCodeLine{00084\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ InvalidSize\ =\ size\_t(\string~0);}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\ validates\ if\ unsigned\ number\ is\ valid...\ since\ the\ move\ to\ size\_t\ etc...}}
+\DoxyCodeLine{00086\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{int}\_t>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ olx\_is\_valid\_index(\textcolor{keyword}{const}\ int\_t\&\ v)\ \ \{}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordflow}{return}\ v\ !=\ int\_t(\string~0);}
+\DoxyCodeLine{00088\ \}}
+\DoxyCodeLine{00089\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{int}\_t>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ olx\_is\_valid\_size(\textcolor{keyword}{const}\ int\_t\&\ v)\ \ \{}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordflow}{return}\ v\ !=\ int\_t(\string~0);}
+\DoxyCodeLine{00091\ \}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ wrap\ memory\ management\ functions}}
+\DoxyCodeLine{00093\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ *olx\_malloc\_(\textcolor{keywordtype}{size\_t}\ sz);\ \ \textcolor{comment}{//\ throws\ TOutOfMemoryException}}
+\DoxyCodeLine{00094\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ *olx\_realloc\_(\textcolor{keywordtype}{void}\ *\ a,\ \textcolor{keywordtype}{size\_t}\ sz);\ \ \textcolor{comment}{//\ throws\ TOutOfMemoryException}}
+\DoxyCodeLine{00095\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ T\ *olx\_malloc(\textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordflow}{return}\ (T*)olx\_malloc\_(sz*\textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{00097\ \}}
+\DoxyCodeLine{00098\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ T\ *olx\_realloc(T\ *a,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordflow}{return}\ (T*)olx\_realloc\_(a,\ sz*\textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{00100\ \}}
+\DoxyCodeLine{00101\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keywordtype}{void}\ olx\_free(T\ *a)\ \{}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordflow}{if}(\ a\ !=\ 0\ )\ \ free(a);}
+\DoxyCodeLine{00103\ \}}
+\DoxyCodeLine{00104\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keywordtype}{void}\ olx\_del\_obj(T\ *a)\ \{}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordflow}{if}\ (a\ !=\ 0)\ \textcolor{keyword}{delete}\ a;}
+\DoxyCodeLine{00106\ \}}
+\DoxyCodeLine{00107\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keywordtype}{void}\ olx\_del\_arr(T\ *a)\ \{}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordflow}{if}\ (a\ !=\ 0)\ \textcolor{keyword}{delete}\ []\ a;}
+\DoxyCodeLine{00109\ \}}
+\DoxyCodeLine{00110\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ T\ *olx\_memcpy(T\ *dest,\ \textcolor{keyword}{const}\ T\ *src,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordflow}{return}\ (T\ *)memcpy(dest,\ src,\ sz*\textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{00112\ \}}
+\DoxyCodeLine{00113\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ T\ *olx\_memmove(T\ *dest,\ \textcolor{keyword}{const}\ T\ *src,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00114\ \ \ \textcolor{keywordflow}{return}\ (T\ *)memmove(dest,\ src,\ sz*\textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{00115\ \}}
+\DoxyCodeLine{00116\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ T1>}
+\DoxyCodeLine{00117\ T*\ olx\_memcpy(T*\ dest,\ \textcolor{keyword}{const}\ T1\ \&src,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordflow}{return}\ (T*)memcpy(dest,\ src,\ sz\ *\ \textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{00119\ \}}
+\DoxyCodeLine{00120\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ T1>}
+\DoxyCodeLine{00121\ T*\ olx\_memmove(T*\ dest,\ \textcolor{keyword}{const}\ T1\&\ src,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordflow}{return}\ (T*)memmove(dest,\ src,\ sz\ *\ \textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{00123\ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{keyword}{struct\ }olx\_capacity\_t\ \{}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{size\_t}\ capacity,\ inc;}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordtype}{double}\ inc\_k;}
+\DoxyCodeLine{00128\ \ \ olx\_capacity\_t(\textcolor{keywordtype}{size\_t}\ cap=0,\ \textcolor{keywordtype}{size\_t}\ inc\ =\ 5,\ \textcolor{keywordtype}{double}\ inc\_k\ =\ 1.5)}
+\DoxyCodeLine{00129\ \ \ \ \ :\ capacity(cap),\ inc(inc),\ inc\_k(inc\_k)}
+\DoxyCodeLine{00130\ \ \ \{\}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{size\_t}\ new\_size(\textcolor{keywordtype}{size\_t}\ sz)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(sz*inc\_k)\ +\ inc;\ \}}
+\DoxyCodeLine{00132\ \};}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \textcolor{comment}{/*\ onece\ list\ size\ reaches\ capacity,\ the\ new\ capacity\ is\ set\ to}}
+\DoxyCodeLine{00135\ \textcolor{comment}{seze\ *\ inc\_k\ +\ inc}}
+\DoxyCodeLine{00136\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00137\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\ olx\_reserve(\textcolor{keywordtype}{size\_t}\ cap,\ \textcolor{keywordtype}{size\_t}\ inc\ =\ 5,\ \textcolor{keywordtype}{double}\ inc\_k\ =\ 1.5)\ \{}
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}(cap,\ inc,\ inc\_k);}
+\DoxyCodeLine{00139\ \}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ A>}
+\DoxyCodeLine{00142\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__type}{olx\_type}}\ \{}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ B>}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ check(\textcolor{keyword}{const}\ B\ \&b)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typeid}(b)\ ==\ \textcolor{keyword}{typeid}(A);}
+\DoxyCodeLine{00146\ \ \ \}}
+\DoxyCodeLine{00147\ \};}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ A,\ \textcolor{keyword}{typename}\ B>}
+\DoxyCodeLine{00150\ \textcolor{keywordtype}{bool}\ olx\_type\_check(\textcolor{keyword}{const}\ A\ \&a,\ \textcolor{keyword}{const}\ B\ \&b)\ \{}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typeid}(a)\ ==\ \textcolor{keyword}{typeid}(b);}
+\DoxyCodeLine{00152\ \}}
+\DoxyCodeLine{00153\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTExceptionBase}{TExceptionBase}};}
+\DoxyCodeLine{00154\ \textcolor{comment}{//\ string\ base}}
+\DoxyCodeLine{00155\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{class\ }TTIString\ \{}
+\DoxyCodeLine{00156\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{struct\ }Buffer\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ T*\ Data;}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ RefCnt;}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Length;}
+\DoxyCodeLine{00161\ \ \ \ \ Buffer(\textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keyword}{const}\ T*\ data\ =\ 0,\ \textcolor{keywordtype}{size\_t}\ tocopy\ =\ 0)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ Data\ =\ ((len\ !=\ 0)\ ?\ olx\_malloc<T>(len)\ :\ (T*)0);}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ !=\ 0)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ olx\_memcpy(Data,\ data,\ tocopy);}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ RefCnt\ =\ 1;}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ Length\ =\ len;}
+\DoxyCodeLine{00168\ \ \ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{comment}{//\ creates\ object\ from\ external\ array,\ must\ be\ created\ with\ malloc}}
+\DoxyCodeLine{00170\ \ \ \ \ Buffer(T*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ Data\ =\ data;}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ RefCnt\ =\ 1;}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ Length\ =\ len;}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \string~Buffer()\ \{\ olx\_free(Data);\ \}}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keywordtype}{size\_t}\ newlen)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (newlen\ >\ Length)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ Data\ =\ olx\_realloc(Data,\ newlen);}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ Length\ =\ newlen;}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \};}
+\DoxyCodeLine{00183\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{structTTIString_1_1Buffer}{Buffer}}*\ SData;\ \ \textcolor{comment}{//\ do\ not\ have\ much\ choice\ with\ c\_str\ ...}}
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordtype}{void}\ IncLength(\textcolor{keywordtype}{size\_t}\ len)\ \{\ \_Length\ +=\ len;\ \}}
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{void}\ DecLength(\textcolor{keywordtype}{size\_t}\ len)\ \{\ \_Length\ -\/=\ len;\ \}}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{size\_t}\ GetCapacity()\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ SData\ ==\ 0\ ?\ 0\ :\ SData-\/>Length;\ \}}
+\DoxyCodeLine{00188\ \ \ \textcolor{keywordtype}{size\_t}\ \_Increment,\ \_Length;}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{size\_t}\ \_Start;}
+\DoxyCodeLine{00190\ \ \ TTIString()}
+\DoxyCodeLine{00191\ \ \ \ \ :\ SData(0),\ \_Increment(8),\ \_Length(0),\ \_Start(0)}
+\DoxyCodeLine{00192\ \ \ \{\}}
+\DoxyCodeLine{00193\ \ \ TTIString(\textcolor{keywordtype}{size\_t}\ cap)}
+\DoxyCodeLine{00194\ \ \ \ \ :\ SData(new\ \mbox{\hyperlink{structTTIString_1_1Buffer}{Buffer}}(cap)),\ \_Increment(8),\ \_Length(0),\ \_Start(0)}
+\DoxyCodeLine{00195\ \ \ \{\}}
+\DoxyCodeLine{00196\ \ \ \textcolor{keywordtype}{void}\ checkBufferForModification(\textcolor{keywordtype}{size\_t}\ newSize)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordflow}{if}\ (SData\ ==\ 0)\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ SData\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTTIString_1_1Buffer}{Buffer}}(newSize\ +\ \_Increment);}
+\DoxyCodeLine{00199\ \ \ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (SData-\/>RefCnt\ >\ 1)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ SData-\/>RefCnt-\/-\/;}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \mbox{\hyperlink{structTTIString_1_1Buffer}{Buffer}}*\ newData\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTTIString_1_1Buffer}{Buffer}}(newSize\ +\ \_Increment,\ \&SData-\/>Data[\_Start],}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ olx\_min(\_Length,\ newSize));}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ SData\ =\ newData;}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \_Start\ =\ 0;}
+\DoxyCodeLine{00206\ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (SData-\/>RefCnt\ ==\ 1\ \&\&\ \_Start\ !=\ 0)\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_Length\ !=\ 0)\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ memmove(SData-\/>Data,\ \&SData-\/>Data[\_Start],\ \_Length\ *\ \textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \_Start\ =\ 0;}
+\DoxyCodeLine{00212\ \ \ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keywordflow}{if}\ (SData-\/>Length\ <\ newSize)\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ SData-\/>SetCapacity((\textcolor{keywordtype}{size\_t})(newSize\ *\ 1.5)\ +\ \_Increment);}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \}}
+\DoxyCodeLine{00217\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00218\ \ \ TTIString(\textcolor{keyword}{const}\ TTIString\&\ str)\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ SData\ =\ str.SData;}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{if}\ (SData\ !=\ 0)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ SData-\/>RefCnt++;}
+\DoxyCodeLine{00222\ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \ \ \_Length\ =\ str.\_Length;}
+\DoxyCodeLine{00224\ \ \ \ \ \_Start\ =\ str.\_Start;}
+\DoxyCodeLine{00225\ \ \ \ \ \_Increment\ =\ 8;}
+\DoxyCodeLine{00226\ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{virtual}\ \string~TTIString()\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{if}\ (SData\ !=\ 0\ \&\&\ -\/-\/SData-\/>RefCnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ SData;}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ SData\ =\ 0;}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \_Length\ =\ 0;}
+\DoxyCodeLine{00232\ \ \ \ \ \}}
+\DoxyCodeLine{00233\ \ \ \}}
+\DoxyCodeLine{00234\ \ \ \textcolor{comment}{//\ might\ not\ have\ '\(\backslash\)0'\ char,\ to\ be\ used\ with\ Length\ or\ RawLen\ (char\ count)}}
+\DoxyCodeLine{00235\ \ \ T*\ raw\_str()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ((SData\ ==\ 0)\ ?\ 0\ :\ \&SData-\/>Data[\_Start]);\ \}}
+\DoxyCodeLine{00236\ \ \ \textcolor{comment}{//\ length\ in\ bytes}}
+\DoxyCodeLine{00237\ \ \ \textcolor{keywordtype}{size\_t}\ RawLen()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_Length\ *\ \textcolor{keyword}{sizeof}(T);\ \}}
+\DoxyCodeLine{00238\ \ \ \textcolor{comment}{//\ length\ in\ items}}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{size\_t}\ Length()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_Length;\ \}}
+\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//\ for\ internal:\ use\ with\ caution!}}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{structTTIString_1_1Buffer}{Buffer}}*\ Data\_()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SData;\ \}}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{//\ for\ internal\ stuff}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordtype}{size\_t}\ Start\_()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_Start;\ \}}
+\DoxyCodeLine{00244\ \ \ \textcolor{comment}{/*\ standard\ api\ requires\ terminating\ '\(\backslash\)0';\ the\ use\ of\ raw\_str\ and\ Length()\ is}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ preferable}}
+\DoxyCodeLine{00246\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{const}\ T*\ u\_str()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordflow}{if}\ (SData\ ==\ 0)\ \{}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00250\ \ \ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordflow}{if}\ ((SData-\/>Length\ ==\ (\_Start\ +\ \_Length))\ ||}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ (SData-\/>Data[\_Start\ +\ \_Length]\ !=\ \textcolor{charliteral}{'\(\backslash\)0'}))}
+\DoxyCodeLine{00253\ \ \ \ \ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ checkBufferForModification(\_Length\ +\ 1);}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ SData-\/>Data[\_Start\ +\ \_Length]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00256\ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keywordflow}{return}\ \&SData-\/>Data[\_Start];}
+\DoxyCodeLine{00258\ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_Length\ ==\ 0;\ \}}
+\DoxyCodeLine{00260\ \ \ T\ CharAt(\textcolor{keywordtype}{size\_t}\ i)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00261\ \ \ T\ operator[]\ (\textcolor{keywordtype}{size\_t}\ i)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00262\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TTIString\&\ v)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordflow}{if}\ (SData\ !=\ 0\ \&\&\ -\/-\/SData-\/>RefCnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ SData;}
+\DoxyCodeLine{00265\ \ \ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \ \ \_Start\ =\ v.\_Start;}
+\DoxyCodeLine{00267\ \ \ \ \ \_Length\ =\ v.\_Length;}
+\DoxyCodeLine{00268\ \ \ \ \ SData\ =\ v.SData;}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{if}\ (SData\ !=\ 0)\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ SData-\/>RefCnt++;}
+\DoxyCodeLine{00271\ \ \ \ \ \}}
+\DoxyCodeLine{00272\ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \textcolor{comment}{/*\ reads\ content\ of\ the\ string\ to\ external\ buffer,\ which\ must\ be\ able\ to}}
+\DoxyCodeLine{00274\ \textcolor{comment}{\ accommodate\ string\ length\ +\ 1\ for\ the\ end\ of\ string\ char}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00276\ \ \ T*\ Read(T*\ v)\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordflow}{if}\ (SData\ ==\ 0)\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00279\ \ \ \ \ \}}
+\DoxyCodeLine{00280\ \ \ \ \ olx\_memcpy(v,\ \&SData-\/>Data[\_Start],\ \_Length);}
+\DoxyCodeLine{00281\ \ \ \ \ v[\_Length]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00283\ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \textcolor{keywordtype}{void}\ TrimFloat(\textcolor{keywordtype}{size\_t}\ start=0)\ \{}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ fp\_pos\ =\ InvalidIndex,\ exp\_pos\ =\ InvalidIndex;}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start;\ i\ <\ \_Length;\ i++)\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (CharAt(i)\ ==\ \textcolor{charliteral}{'.'})\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ fp\_pos\ =\ i;}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (fp\_pos\ !=\ InvalidIndex\ \&\&\ CharAt(i)\ ==\ \textcolor{charliteral}{'e'})\ \{}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ exp\_pos\ =\ i;}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keywordflow}{if}\ (fp\_pos\ ==\ InvalidIndex\ \&\&\ exp\_pos\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00297\ \ \ \ \ \}}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{comment}{//\ check\ for\ e+/-\/000}}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordflow}{if}\ (exp\_pos\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ exp\_pos\ +\ 2;\ i\ <\ \_Length;\ i++)\ \{}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (CharAt(i)\ !=\ \textcolor{charliteral}{'0'})\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \_Length\ =\ exp\_pos-\/1;}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (fp\_pos\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00309\ \ \ \ \ \}}
+\DoxyCodeLine{00310\ \ \ \ \ }
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keywordflow}{while}\ (\_Length\ >\ 1\ \&\&\ CharAt(\_Length\ -\/\ 1)\ ==\ \textcolor{charliteral}{'0'})\ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \_Length-\/-\/;}
+\DoxyCodeLine{00313\ \ \ \ \ \}}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_Length\ >\ 0\ \&\&\ CharAt(\_Length\ -\/\ 1)\ ==\ \textcolor{charliteral}{'.'})\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \_Length-\/-\/;}
+\DoxyCodeLine{00316\ \ \ \ \ \}}
+\DoxyCodeLine{00317\ \ \ \}}
+\DoxyCodeLine{00318\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{typedef}\ T\ CharT;}
+\DoxyCodeLine{00320\ \ \ \textcolor{comment}{//\ this\ does\ not\ help\ in\ GCC,}}
+\DoxyCodeLine{00321\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename},\ \textcolor{keyword}{typename}>\ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }TTSString;}
+\DoxyCodeLine{00322\ \};}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00324\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTIString}{TTIString<olxch>}}\ TIString;}
+\DoxyCodeLine{00325\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTIString}{TTIString<char>}}\ TICString;}
+\DoxyCodeLine{00326\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTIString}{TTIString<wchar\_t>}}\ TIWString;}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ TIString\&\ NewLineSequence();}
+\DoxyCodeLine{00329\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ TICString\&\ CNewLineSequence();}
+\DoxyCodeLine{00330\ \textcolor{keyword}{extern}\ \textcolor{keyword}{const}\ TIWString\&\ WNewLineSequence();}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ }
+\DoxyCodeLine{00333\ \textcolor{keyword}{struct\ }ADestructionObserver\ \{}
+\DoxyCodeLine{00334\ \ \ ADestructionObserver\ *next;}
+\DoxyCodeLine{00335\ \ \ ADestructionObserver()\ :\ next(0)}
+\DoxyCodeLine{00336\ \ \ \{\}}
+\DoxyCodeLine{00337\ \ \ \textcolor{keyword}{virtual}\ \string~ADestructionObserver()\ \{\}}
+\DoxyCodeLine{00338\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{class}\ \mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00339\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ ADestructionObserver\ *)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00340\ \ \ \textcolor{keyword}{virtual}\ ADestructionObserver\ *clone()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00341\ \};}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \textcolor{comment}{//\ class\ base}}
+\DoxyCodeLine{00344\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00345\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00346\ \textcolor{preprocessor}{\#ifdef\ \_DEBUG}}
+\DoxyCodeLine{00347\ \ \ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}();}
+\DoxyCodeLine{00348\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{\string~IOlxObject}}();}
+\DoxyCodeLine{00349\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00350\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{\string~IOlxObject}}()\ \{\}}
+\DoxyCodeLine{00351\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00352\ \ \ \textcolor{comment}{//\ throws\ an\ exception\ if\ not\ implemented}}
+\DoxyCodeLine{00353\ \ \ \textcolor{keyword}{virtual}\ TIString\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00354\ \ \ \textcolor{comment}{//\ throws\ an\ exception\ if\ not\ implemented}}
+\DoxyCodeLine{00355\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00356\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00357\ \ \ \textcolor{keywordtype}{bool}\ Is()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00358\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_type<T>::check(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00359\ \ \ \}}
+\DoxyCodeLine{00360\ \};}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \textcolor{preprocessor}{\#include\ "{}olxvptr.h"{}}}
+\DoxyCodeLine{00363\ \textcolor{preprocessor}{\#include\ "{}destruction\_obs.h"{}}}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00365\ \textcolor{keyword}{class\ }APerishable\ :\ \textcolor{keyword}{public}\ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00366\ \ \ \textcolor{keywordtype}{bool}\ HasDObserver(\mbox{\hyperlink{structADestructionObserver}{ADestructionObserver}}\ *dh)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00367\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00368\ \ \ \mbox{\hyperlink{structADestructionObserver}{ADestructionObserver}}\ *dsh\_head,\ *dsh\_tail;}
+\DoxyCodeLine{00369\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00370\ \ \ APerishable()\ :\ dsh\_head(0),\ dsh\_tail(0)}
+\DoxyCodeLine{00371\ \ \ \{\}}
+\DoxyCodeLine{00372\ \ \ \textcolor{keyword}{virtual}\ \string~APerishable();}
+\DoxyCodeLine{00373\ \ \ \textcolor{comment}{//\ must\ be\ created\ with\ new}}
+\DoxyCodeLine{00374\ \ \ \textcolor{keywordtype}{bool}\ AddDestructionObserver(\mbox{\hyperlink{structADestructionObserver}{ADestructionObserver}}\ \&);}
+\DoxyCodeLine{00375\ \ \ \textcolor{keywordtype}{void}\ RemoveDestructionObserver(\textcolor{keyword}{const}\ \mbox{\hyperlink{structADestructionObserver}{ADestructionObserver}}\ \&);}
+\DoxyCodeLine{00376\ \};}
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00378\ \textcolor{comment}{//\ an\ interface\ for\ a\ referencible\ object}}
+\DoxyCodeLine{00379\ \textcolor{keyword}{class\ }AReferencible\ :\ \textcolor{keyword}{public}\ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00380\ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{int}\ This\_RefCount;}
+\DoxyCodeLine{00381\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00382\ \ \ AReferencible()\ :\ This\_RefCount(0)}
+\DoxyCodeLine{00383\ \ \ \{\}}
+\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{virtual}\ \string~AReferencible();}
+\DoxyCodeLine{00385\ \ \ \textcolor{keywordtype}{int}\ GetRefCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ This\_RefCount;\ \}}
+\DoxyCodeLine{00386\ \ \ \textcolor{keywordtype}{int}\ DecRef()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ -\/-\/This\_RefCount;\ \}}
+\DoxyCodeLine{00387\ \ \ \textcolor{keywordtype}{int}\ IncRef()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ++This\_RefCount;\ \}}
+\DoxyCodeLine{00388\ \};}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \textcolor{comment}{//\ we\ need\ this\ class\ to\ throw\ exceptions\ from\ string\ with\ gcc\ ...}}
+\DoxyCodeLine{00391\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00392\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00393\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \&AutoLog()\ \{}
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ v\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00395\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00396\ \ \ \}}
+\DoxyCodeLine{00397\ \ \ \textcolor{comment}{/*\ to\ prevent\ creation\ this\ class\ directly.\ All\ instances\ must\ be\ of\ the}}
+\DoxyCodeLine{00398\ \textcolor{comment}{\ TBasicExceptionClass\ defined\ in\ exception.h}}
+\DoxyCodeLine{00399\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00400\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ CreationProtection()\ =\ 0;}
+\DoxyCodeLine{00401\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00402\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ThrowFunctionFailed(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keywordtype}{int}\ line,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ msg);}
+\DoxyCodeLine{00404\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ThrowIndexOutOfRange(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,}
+\DoxyCodeLine{00405\ \ \ \ \ \textcolor{keywordtype}{int}\ line,\ \textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keywordtype}{size\_t}\ min\_ind,\ \textcolor{keywordtype}{size\_t}\ max\_ind);}
+\DoxyCodeLine{00406\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ThrowInvalidUnsignedFormat(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,}
+\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keywordtype}{int}\ line,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len);}
+\DoxyCodeLine{00408\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ThrowInvalidUnsignedFormat(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,}
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{keywordtype}{int}\ line,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len);}
+\DoxyCodeLine{00410\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ThrowInvalidIntegerFormat(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,}
+\DoxyCodeLine{00411\ \ \ \ \ \textcolor{keywordtype}{int}\ line,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len);}
+\DoxyCodeLine{00412\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ThrowInvalidIntegerFormat(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,}
+\DoxyCodeLine{00413\ \ \ \ \ \textcolor{keywordtype}{int}\ line,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len);}
+\DoxyCodeLine{00414\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ThrowInvalidFloatFormat(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,}
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keywordtype}{int}\ line,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len);}
+\DoxyCodeLine{00416\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ThrowInvalidFloatFormat(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,}
+\DoxyCodeLine{00417\ \ \ \textcolor{keywordtype}{int}\ line,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len);}
+\DoxyCodeLine{00418\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ThrowInvalidBoolFormat(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,}
+\DoxyCodeLine{00419\ \ \ \ \ \textcolor{keywordtype}{int}\ line,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len);}
+\DoxyCodeLine{00420\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ThrowInvalidBoolFormat(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ function,}
+\DoxyCodeLine{00421\ \ \ \ \ \textcolor{keywordtype}{int}\ line,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ src,\ \textcolor{keywordtype}{size\_t}\ src\_len);}
+\DoxyCodeLine{00422\ \ \ \textcolor{keyword}{static}\ TIString\ FormatSrc(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ func,\ \textcolor{keywordtype}{int}\ line);}
+\DoxyCodeLine{00423\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SetAutoLogging(\textcolor{keywordtype}{bool}\ v)\ \ \{\ \ AutoLog()\ =\ v;\ \ \}}
+\DoxyCodeLine{00424\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ GetAutoLogging()\ \ \{\ \ \textcolor{keywordflow}{return}\ AutoLog();\ \ \}}
+\DoxyCodeLine{00425\ \ \ \textcolor{comment}{//\ returns\ recasted\ this,\ or\ throws\ exception\ if\ dynamic\_cast\ fails}}
+\DoxyCodeLine{00426\ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{class\ }TBasicException*\ GetException()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00427\ \};}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ T\ TTIString<T>::CharAt(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00430\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00431\ \ \ \textcolor{keywordflow}{if}\ (i\ >=\ \_Length)\ \{}
+\DoxyCodeLine{00432\ \ \ \ \ TExceptionBase::ThrowIndexOutOfRange(\_\_POlxSourceInfo,\ i,\ 0,\ \_Length);}
+\DoxyCodeLine{00433\ \ \ \}}
+\DoxyCodeLine{00434\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00435\ \ \ \textcolor{keywordflow}{return}\ SData-\/>Data[\_Start\ +\ i];}
+\DoxyCodeLine{00436\ \}}
+\DoxyCodeLine{00437\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ T\ \mbox{\hyperlink{classTTIString}{TTIString<T>::operator[]\ }}(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00438\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00439\ \ \ \textcolor{keywordflow}{if}\ (i\ >=\ \_Length)\ \{}
+\DoxyCodeLine{00440\ \ \ \ \ TExceptionBase::ThrowIndexOutOfRange(\_\_POlxSourceInfo,\ i,\ 0,\ \_Length);}
+\DoxyCodeLine{00441\ \ \ \}}
+\DoxyCodeLine{00442\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00443\ \ \ \textcolor{keywordflow}{return}\ SData-\/>Data[\_Start\ +\ i];}
+\DoxyCodeLine{00444\ \}}
+\DoxyCodeLine{00445\ }
+\DoxyCodeLine{00446\ \textcolor{preprocessor}{\#include\ "{}olxpptr.h"{}}}
+\DoxyCodeLine{00447\ \textcolor{preprocessor}{\#include\ "{}olxalg.h"{}}}
+\DoxyCodeLine{00448\ \textcolor{preprocessor}{\#include\ "{}olxfunc.h"{}}}
+\DoxyCodeLine{00449\ }
+\DoxyCodeLine{00450\ \textcolor{preprocessor}{\#include\ "{}association.h"{}}}
+\DoxyCodeLine{00451\ \textcolor{preprocessor}{\#include\ "{}listalg.h"{}}}
+\DoxyCodeLine{00452\ \textcolor{preprocessor}{\#include\ "{}citem.h"{}}}
+\DoxyCodeLine{00453\ }
+\DoxyCodeLine{00454\ EndEsdlNamespace()}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00456\ \textcolor{preprocessor}{\#include\ "{}istream.h"{}}}
+\DoxyCodeLine{00457\ \textcolor{preprocessor}{\#include\ "{}smart/ostring.h"{}}}
+\DoxyCodeLine{00458\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

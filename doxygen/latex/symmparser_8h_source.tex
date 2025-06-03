@@ -1,0 +1,224 @@
+\doxysection{symmparser.\+h}
+\hypertarget{symmparser_8h_source}{}\label{symmparser_8h_source}\index{xlib/symmparser.h@{xlib/symmparser.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ olx\_xlib\_symmparser\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ olx\_xlib\_symmparser\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}symmat.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00015\ BeginXlibNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ TSymmParser\ \ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *GetAxis()\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{char}\ axis[]\ =\ \textcolor{stringliteral}{"{}XYZ"{}};}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordflow}{return}\ \&axis[0];}
+\DoxyCodeLine{00021\ \ \ \}}
+\DoxyCodeLine{00022\ \ \ \textcolor{comment}{//\ compares\ p\ with\ values\ in\ array\ axes.\ Used\ in\ SymmToMatrix\ function}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{short}\ IsAxis(\textcolor{keyword}{const}\ olxstr\&\ p)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{if}\ (p.Length()\ !=\ 1)\ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *axis=\ GetAxis();}
+\DoxyCodeLine{00026\ \ \ \ \ olxch\ a\ =\ p[0];}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i\ <\ 3;\ i++)}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (axis[i]\ ==\ a)}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vc>\ \ \textcolor{keyword}{static}\ vc\&\ ExtractTranslation(\textcolor{keyword}{const}\ olxstr\&\ str,}
+\DoxyCodeLine{00034\ \ \ \ \ vc\&\ t)}
+\DoxyCodeLine{00035\ \ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{if}(\ str.Length()\ ==\ 3\ )\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ t[0]\ +=\ (int)(str.CharAt(0)-\/\textcolor{charliteral}{'5'});}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ t[1]\ +=\ (int)(str.CharAt(1)-\/\textcolor{charliteral}{'5'});}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ t[2]\ +=\ (int)(str.CharAt(2)-\/\textcolor{charliteral}{'5'});}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ str.Length()\ ==\ 6\ )\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ t[0]\ +=\ (str.SubString(0,\ 2).ToInt()-\/50);}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ t[1]\ +=\ (str.SubString(2,\ 2).ToInt()-\/50);}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ t[2]\ +=\ (str.SubString(4,\ 2).ToInt()-\/50);}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}wrong\ translation\ code:\ "{}})\ <<\ str);}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ t;}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{static}\ olxstr\ FormatFloatEx(\textcolor{keywordtype}{double}\ f)\ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ olxstr\ rv;}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{if}\ (f\ <\ 0)\ \ rv\ <<\ \textcolor{charliteral}{'-\/'};}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{int}\ v\ =\ olx\_abs(olx\_round(f*12)),\ base\ =\ 12;}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{int}\ denom\ =\ olx\_gcd(v,\ base);}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{if}\ (denom\ !=\ 1)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ v\ /=\ denom;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ base\ /=\ denom;}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{if}\ (base\ ==\ 1)}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv\ <<\ v;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv\ <<\ v\ <<\ \textcolor{charliteral}{'/'}\ <<\ base;}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT>\ \textcolor{keyword}{static}\ olxstr\ \_RowToStr(\textcolor{keyword}{const}\ VT\ \&v,\ \textcolor{keywordtype}{int}\ j)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ olxstr\ rv;}
+\DoxyCodeLine{00068\ \ \ \ \ rv.SetCapacity(16);}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i\ <\ 3;\ i\ ++)\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ j)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v[i]\ !=\ 0)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(v[i])\ ==\ 1)}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ rv\ <<\ olx\_sign\_char(v[i])\ <<\ GetAxis()[j];}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v[i]\ >\ 0)\ rv\ <<\ \textcolor{charliteral}{'+'};}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ rv\ <<\ v[i]\ <<\ \textcolor{charliteral}{'*'}\ <<\ GetAxis()[j];}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v[i]\ !=\ 0)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(v[i])\ ==\ 1)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ rv.Insert(GetAxis()[i],\ 0);}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ rv.Insert(olx\_sign\_char(v[i]),\ 0);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ olxstr\ is;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v[i]\ >\ 0)\ is\ <<\ \textcolor{charliteral}{'+'};}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ rv.Insert(is\ <<\ v[i]\ <<\ \textcolor{charliteral}{'*'}\ <<\ GetAxis()[i],\ 0);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SM>\ \textcolor{keyword}{static}\ olxstr\ \_MatrixToSymm(\textcolor{keyword}{const}\ SM\&\ M,\ \textcolor{keywordtype}{bool}\ fraction)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ olxstr\_buf\ T;}
+\DoxyCodeLine{00097\ \ \ \ \ olxstr\ cm(\textcolor{charliteral}{','});}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j=0;\ j\ <\ 3;\ j++)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (j\ !=\ 0)\ T\ <<\ cm;}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ olxstr\ T1\ =\ \_RowToStr(M.r[j],\ j);}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (M.t[j]\ !=\ 0\ )\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!fraction)}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ T1.Insert(olxstr::FormatFloat(3,\ M.t[j],\ \textcolor{keyword}{false}).TrimFloat(),\ 0);}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ T1.Insert(FormatFloatEx(M.t[j]),\ 0);}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ T\ <<\ T1;}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ T;}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \textcolor{comment}{//\ can\ take\ both\ TAsymmUnit\ or\ TUnitCell}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SymSpace>}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{static}\ smatd\ \_SymmCodeToMatrix(\textcolor{keyword}{const}\ SymSpace\&\ sp,\ \textcolor{keyword}{const}\ olxstr\&\ Code,}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordtype}{size\_t}*\ index=NULL)}
+\DoxyCodeLine{00115\ \ \ \{}
+\DoxyCodeLine{00116\ \ \ \ \ TStrList\ Toks(Code,\ \textcolor{charliteral}{'\_'});}
+\DoxyCodeLine{00117\ \ \ \ \ smatd\ mSymm;}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{if}(\ Toks.Count()\ ==\ 1\ )\ \ \{\ \ \textcolor{comment}{//\ standard\ XP\ symm\ code\ like\ 3444}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ Toks[0].Length()\ >=\ 4\ )\ \ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ Toks.Add(\ Toks[0].SubStringFrom(Toks[0].Length()-\/3)\ );}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ Toks[0].SetLength(Toks[0].Length()-\/3);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ isymm\ =\ Toks[0].ToSizeT()-\/1;}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ isymm\ >=\ sp.Count()\ )\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}wrong\ matrix\ index:\ "{}})\ <<\ isymm);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sp[isymm];}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{if}(\ Toks.Count()\ !=\ 2\ )\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}wrong\ code:\ "{}})\ <<\ Code);}
+\DoxyCodeLine{00135\ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ isymm\ =\ Toks[0].ToSizeT()-\/1;}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{if}(\ isymm\ >=\ sp.Count()\ )\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}wrong\ matrix\ index:\ "{}})\ <<\ isymm);}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ mSymm\ =\ sp[isymm];}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{if}(\ index\ !=\ NULL\ )\ \ *index\ =\ isymm;}
+\DoxyCodeLine{00143\ \ \ \ \ vec3i\ t;}
+\DoxyCodeLine{00144\ \ \ \ \ ExtractTranslation(Toks[1],\ t);}
+\DoxyCodeLine{00145\ \ \ \ \ mSymm.t\ +=\ t;}
+\DoxyCodeLine{00146\ \ \ \ \ mSymm.SetRawId(smatd::GenerateId((uint8\_t)isymm,\ t));}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{return}\ mSymm;}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{comment}{//\ Transforms\ matrix\ to\ standard\ SYMM\ operation\ (INS,\ CIF\ files)}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{static}\ olxstr\ MatrixToSymm(\textcolor{keyword}{const}\ smatd\&\ M)\ \ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ \_MatrixToSymm(M,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{comment}{/*\ Transforms\ matrix\ to\ standard\ SYMM\ operation\ (INS,\ CIF\ files),\ using}}
+\DoxyCodeLine{00155\ \textcolor{comment}{\ \ \ \ fractions\ of\ 12\ for\ translations}}
+\DoxyCodeLine{00156\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ olxstr\ MatrixToSymmEx(\textcolor{keyword}{const}\ smatd\&\ M)\ \ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{return}\ \_MatrixToSymm(M,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{/*\ Transforms\ matrix\ to\ standard\ SYMM\ operation\ (INS,\ CIF\ files),\ using}}
+\DoxyCodeLine{00161\ \textcolor{comment}{\ \ fractions\ of\ 12\ for\ translations}}
+\DoxyCodeLine{00162\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MT>}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{static}\ olxstr\ MatrixToSymmEx(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTMatrix33}{TMatrix33<MT>}}\&\ M)\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ olxstr\_buf\ T;}
+\DoxyCodeLine{00166\ \ \ \ \ olxstr\ cm(\textcolor{charliteral}{','});}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j=0;\ j\ <\ 3;\ j++)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (j\ !=\ 0)\ T\ <<\ cm;}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ T\ <<\ \_RowToStr(M[j],\ j);}
+\DoxyCodeLine{00170\ \ \ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{return}\ T;}
+\DoxyCodeLine{00172\ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{comment}{//\ Transforms\ standard\ SYMM\ operation\ (INS,\ CIF\ files)\ to\ matrix}}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{static}\ smatdd\ SymmToMatrix(\textcolor{keyword}{const}\ olxstr\&\ symm);}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//\ return\ a\ matrix\ representation\ of\ 1\_555\ or\ 1\_505050\ code\ for\ the\ unit\ cell}}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{static}\ smatd\ SymmCodeToMatrix(\textcolor{keyword}{const}\ smatd\_list\&\ ml,\ \textcolor{keyword}{const}\ olxstr\&\ Code)\ \ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index\ =\ InvalidIndex;}
+\DoxyCodeLine{00178\ \ \ \ \ smatd\ rv\ =\ \_SymmCodeToMatrix(ml,\ Code,\ \&index);}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{if}(\ index\ !=\ InvalidIndex\ )}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ rv.SetId(smatd::GenerateId((uint8\_t)index,\ rv,\ ml[index]));}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00182\ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SymSpaceOwner>}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{static}\ smatd\ SymmCodeToMatrix(\textcolor{keyword}{const}\ SymSpaceOwner\&\ u,\ \textcolor{keyword}{const}\ olxstr\&\ Code)\ \ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{return}\ \_SymmCodeToMatrix(u.GetSymmSpace(),\ Code);}
+\DoxyCodeLine{00186\ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \textcolor{comment}{/*\ return\ a\ string\ representation\ of\ a\ matrix\ like\ 1\_555\ or\ 1\_505050\ code\ in}}
+\DoxyCodeLine{00188\ \textcolor{comment}{\ \ dependence\ on\ the\ length\ of\ translations;\ Matrix-\/>ContainerId\ must\ be\ set\ to}}
+\DoxyCodeLine{00189\ \textcolor{comment}{\ \ the\ correct\ index\ in\ the\ container!!!}}
+\DoxyCodeLine{00190\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SymSpace>}
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{static}\ olxstr\ MatrixToSymmCode(\textcolor{keyword}{const}\ SymSpace\&\ sp,\ \textcolor{keyword}{const}\ smatd\&\ M)\ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ vec3i\ Trans(sp[M.GetContainerId()].t\ -\/\ M.t);}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordtype}{int}\ baseVal\ =\ 5;}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{if}(\ (olx\_abs(Trans[0])\ >\ 4)\ ||\ (olx\_abs(Trans[1])\ >\ 4)\ ||}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ (olx\_abs(Trans[1])\ >\ 4)\ )}
+\DoxyCodeLine{00197\ \ \ \ \ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ baseVal\ =\ 50;}
+\DoxyCodeLine{00199\ \ \ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_print(\textcolor{stringliteral}{"{}\%i\_\%i\%i\%i"{}},\ M.GetContainerId()+1,}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ baseVal\ -\/\ Trans[0],\ baseVal\ -\/\ Trans[1],\ baseVal\ -\/\ Trans[2]);}
+\DoxyCodeLine{00202\ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \textcolor{comment}{/*checks\ if\ the\ given\ string\ represents\ a\ symmetry\ operation}}
+\DoxyCodeLine{00204\ \textcolor{comment}{\ \ (1\_554,\ 1554,\ 1505149,\ x,y,z)\ works\ as\ a\ combination\ of\ the\ two\ following}}
+\DoxyCodeLine{00205\ \textcolor{comment}{\ \ functions}}
+\DoxyCodeLine{00206\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsSymm(\textcolor{keyword}{const}\ olxstr\&\ s);}
+\DoxyCodeLine{00208\ \ \ \textcolor{comment}{/*checks\ if\ the\ given\ string\ represents\ a\ symmetry\ operation}}
+\DoxyCodeLine{00209\ \textcolor{comment}{\ \ (1\_554,\ 1554,\ 1505149)}}
+\DoxyCodeLine{00210\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsRelSymm(\textcolor{keyword}{const}\ olxstr\&\ s);}
+\DoxyCodeLine{00212\ \ \ \textcolor{comment}{//checks\ if\ the\ given\ string\ represents\ a\ symmetry\ operation\ (x,y,z)}}
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsAbsSymm(\textcolor{keyword}{const}\ olxstr\&\ s);}
+\DoxyCodeLine{00214\ \};}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ EndXlibNamespace()}
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,303 @@
+\doxysection{atomregistry.\+h}
+\hypertarget{atomregistry_8h_source}{}\label{atomregistry_8h_source}\index{xlib/atomregistry.h@{xlib/atomregistry.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_atom\_registry\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_atom\_registry\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}sbond.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ BeginXlibNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ template\ <class,\ class>\ class\ \mbox{\hyperlink{classObjectCaster}{ObjectCaster}};}
+\DoxyCodeLine{00018\ \textcolor{comment}{/*\ Object\ provide\ interface}}
+\DoxyCodeLine{00019\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00020\ template\ <class\ obj\_t>\ class\ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider}}\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTIObjectProvider}{\string~TIObjectProvider}}()\ \{\}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{virtual}\ obj\_t\&\ New(\mbox{\hyperlink{classTNetwork}{TNetwork}}*\ n)\ =\ 0;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{virtual}\ obj\_t\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{inline}\ obj\_t\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Get(i);\ \}}
+\DoxyCodeLine{00027\ \ \ obj\_t\&\ GetLast()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Get(Count()\ -\/\ 1);\ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ i)\ =\ 0;}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ DeleteLast()\ \{\ Delete(Count()\ -\/\ 1);\ \}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Clear()\ =\ 0;}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Null(\textcolor{keywordtype}{size\_t}\ i)\ =\ 0;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ obj\_t\&\ Detach(\textcolor{keywordtype}{size\_t}\ i)\ =\ 0;}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ obj\_t\&\ Attach(obj\_t\&\ o)\ =\ 0;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Pack()\ =\ 0;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ IncCapacity(\textcolor{keywordtype}{size\_t}\ v)\ =\ 0;}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Count()\ ==\ 0;\ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Functor>}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider}}\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Count();\ i++)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ f.OnItem(Get(i),\ i);}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ act\_t>\ \mbox{\hyperlink{classObjectCaster}{ObjectCaster<obj\_t,\ act\_t>}}\ GetAccessor()\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classObjectCaster}{ObjectCaster<obj\_t,\ act\_t>}}(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ \textcolor{comment}{/*\ Object\ caster\ -\/\ object\ taking\ a\ list\ of\ objects\ and\ providing\ interface}}
+\DoxyCodeLine{00049\ \textcolor{comment}{to\ access\ it\ as\ a\ list\ of\ another,\ related\ object\ type}}
+\DoxyCodeLine{00050\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00051\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ obj\_t,\ \textcolor{keyword}{class}\ act\_t>\ \textcolor{keyword}{class\ }ObjectCaster}
+\DoxyCodeLine{00052\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider}}<act\_t>}
+\DoxyCodeLine{00053\ \{}
+\DoxyCodeLine{00054\ \ \ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider<obj\_t>}}\&\ list;}
+\DoxyCodeLine{00055\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00056\ \ \ \textcolor{comment}{//\ dummy\ function...}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{virtual}\ act\_t\&\ New(\mbox{\hyperlink{classTNetwork}{TNetwork}}*)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00061\ \ \ ObjectCaster(\mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider<obj\_t>}}\&\ \_list)\ :\ list(\_list)\ \{\}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ list.Count();\ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{virtual}\ act\_t\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (act\_t\&)list.Get(i);\ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{inline}\ act\_t\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Get(i);\ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ i)\ \{\ list.Delete(i);\ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Clear()\ \{\ list.Clear();\ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Null(\textcolor{keywordtype}{size\_t}\ i)\ \{\ list.Null(i);\ \}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{virtual}\ act\_t\&\ Detach(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ (act\_t\&)list.Detach(i);\ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{virtual}\ act\_t\&\ Attach(act\_t\&\ o)\ \{\ \textcolor{keywordflow}{return}\ (act\_t\&)list.Attach(o);\ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Pack()\ \{\ list.Pack();\ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ IncCapacity(\textcolor{keywordtype}{size\_t}\ v)\ \{\ list.IncCapacity(v);\ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Functor>}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{const}\ ObjectCaster\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Count();\ i++)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ f.OnItem(Get(i),\ i);}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00078\ \ \ \}}
+\DoxyCodeLine{00079\ \};}
+\DoxyCodeLine{00080\ \textcolor{comment}{/*\ Implementation\ of\ the\ object\ provide\ based\ on\ the\ pointer\ list}}
+\DoxyCodeLine{00081\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00082\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ obj\_t>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTObjectProvider}{TObjectProvider}}}
+\DoxyCodeLine{00083\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider}}<obj\_t>}
+\DoxyCodeLine{00084\ \{}
+\DoxyCodeLine{00085\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00086\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<obj\_t>}}\ items;}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{void}\ UpdateOwnerIds()\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Count();\ i++)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ Get(i).SetOwnerId(i);}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{inline}\ obj\_t\&\ AddNew(obj\_t*\ o)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ o-\/>SetOwnerId(Count());}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ *items.Add(o);}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ items.Count();\ \}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{virtual}\ obj\_t\&\ New(\mbox{\hyperlink{classTNetwork}{TNetwork}}*\ n)\ \{\ \textcolor{keywordflow}{return}\ AddNew(\textcolor{keyword}{new}\ obj\_t(n));\ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{virtual}\ obj\_t\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *items[i];\ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{inline}\ obj\_t\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Get(i);\ \}}
+\DoxyCodeLine{00101\ \ \ obj\_t\&\ GetLast()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *items.GetLast();\ \}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{delete}\ items[i];}
+\DoxyCodeLine{00104\ \ \ \ \ items.Delete(i);}
+\DoxyCodeLine{00105\ \ \ \ \ UpdateOwnerIds();}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ DeleteLast()\ \{\ Delete(Count()\ -\/\ 1);\ \}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Clear()\ \{\ items.DeleteItems(\textcolor{keyword}{false}).Clear();\ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Null(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{delete}\ items[i];}
+\DoxyCodeLine{00111\ \ \ \ \ items.Set(i,\ 0);}
+\DoxyCodeLine{00112\ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{virtual}\ obj\_t\&\ Detach(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ obj\_t*\ rv\ =\ items[i];}
+\DoxyCodeLine{00115\ \ \ \ \ items.Delete(i);}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ *rv;}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keyword}{virtual}\ obj\_t\&\ Attach(obj\_t\&\ o)\ \{\ \textcolor{keywordflow}{return}\ *items.Add(o);\ \}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Pack()\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ items.Pack();}
+\DoxyCodeLine{00121\ \ \ \ \ UpdateOwnerIds();}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ IncCapacity(\textcolor{keywordtype}{size\_t}\ v)\ \{\ items.SetCapacity(items.Count()\ +\ v);\ \}}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ items.IsEmpty();\ \}}
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Functor>}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTObjectProvider}{TObjectProvider}}\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00127\ \ \ \ \ items.ForEach(f);}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \};}
+\DoxyCodeLine{00131\ \textcolor{comment}{/*\ TSAtom\ registry\ -\/\ an\ object\ for\ quick\ locating\ of\ atoms\ using\ their\ index\ in}}
+\DoxyCodeLine{00132\ \textcolor{comment}{the\ asymmetric\ unit*/}}
+\DoxyCodeLine{00133\ \textcolor{keyword}{class\ }AtomRegistry\ \{}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{struct\ }DataStruct\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ olx\_array::TArray3D<TArrayList<TSAtomPList*>*>\ registry;}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{int}\ ref\_cnt;}
+\DoxyCodeLine{00137\ \ \ \ \ DataStruct(\textcolor{keyword}{const}\ vec3i\&\ mind,\ \textcolor{keyword}{const}\ vec3i\&\ maxd)}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ :\ registry(mind,\ maxd),\ ref\_cnt(1)\ \{\}}
+\DoxyCodeLine{00139\ \ \ \ \ \string~DataStruct()\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ registry.Length1();\ i++)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ registry.Length2();\ j++)\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ registry.Length3();\ k++)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<TSAtomPList*>}}*\ aum\_slice\ =\ registry.Data[i][j][k];}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aum\_slice\ ==\ 0)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ l\ =\ 0;\ l\ <\ aum\_slice-\/>Count();\ l++)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((*aum\_slice)[l]\ !=\ 0)\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ (*aum\_slice)[l];}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ aum\_slice;}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \};}
+\DoxyCodeLine{00158\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00159\ \ \ DataStruct*\ data;}
+\DoxyCodeLine{00160\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{typedef}\ olx\_array::TArray3D<TArrayList<TSAtomPList*>*>\ RegistryType;}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00163\ \ \ AtomRegistry()\ :\ data(0)\ \{\}}
+\DoxyCodeLine{00164\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00165\ \ \ AtomRegistry(\textcolor{keyword}{const}\ AtomRegistry\&\ r)\ :\ data(r.data)\ \{\ data-\/>ref\_cnt++;\ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00167\ \ \ RegistryType\&\ Init(\textcolor{keyword}{const}\ vec3i\&\ mind,\ \textcolor{keyword}{const}\ vec3i\&\ maxd)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ !=\ 0\ \&\&\ -\/-\/data-\/>ref\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ data;}
+\DoxyCodeLine{00170\ \ \ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \ \ data\ =\ \textcolor{keyword}{new}\ DataStruct(mind,\ maxd);}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{return}\ data-\/>registry;}
+\DoxyCodeLine{00173\ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ !=\ 0\ \&\&\ -\/-\/data-\/>ref\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ data;}
+\DoxyCodeLine{00178\ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ data\ =\ 0;}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00182\ \ \ \string~AtomRegistry()\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ !=\ 0\ \&\&\ -\/-\/data-\/>ref\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ data;}
+\DoxyCodeLine{00185\ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00188\ \ \ AtomRegistry\&\ operator\ =\ (\textcolor{keyword}{const}\ AtomRegistry\&\ ar)\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ !=\ 0\ \&\&\ -\/-\/data-\/>ref\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ data;}
+\DoxyCodeLine{00191\ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ data\ =\ ar.data;}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00194\ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00196\ \ \ RegistryType\&\ GetRegistry()\ \{\ \textcolor{keywordflow}{return}\ data-\/>registry;\ \}}
+\DoxyCodeLine{00197\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00198\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TSAtom>}}\ FindAll(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00199\ \ \ \ \ TSAtomPList\ rv;}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ data-\/>registry.Length1();\ i++)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ data-\/>registry.Length2();\ j++)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ data-\/>registry.Length3();\ k++)\ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<TSAtomPList*>}}*\ aum\_slice\ =\ data-\/>registry.Data[i][j][k];}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aum\_slice\ ==\ 0)\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ l\ =\ 0;\ l\ <\ aum\_slice-\/>Count();\ l++)\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ TSAtomPList\ *au\_slice\ =\ (*aum\_slice)[l];}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (au\_slice\ ==\ 0)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a.GetId()\ >=\ au\_slice-\/>Count())\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ *sa\ =\ (*au\_slice)[a.GetId()];}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sa\ !=\ 0\ \&\&\ !sa-\/>IsDeleted())\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rv.Add(sa);}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00224\ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00226\ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ Find(\textcolor{keyword}{const}\ \mbox{\hyperlink{structTSAtom_1_1Ref}{TSAtom::Ref}}\ \&r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{return}\ Find(r.atom\_id,\ r.matrix\_id);}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00230\ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ Find(\textcolor{keywordtype}{size\_t}\ catom\_id,\ uint32\_t\ matrix\_id)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ ==\ 0)\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00233\ \ \ \ \ \}}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ t\ =\ smatd::GetT(matrix\_id);}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordflow}{if}\ (!data-\/>registry.IsInRange(t))\ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00237\ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<TSAtomPList*>}}*\ aum\_slice\ =\ data-\/>registry.Value(t);}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordflow}{if}\ (aum\_slice\ ==\ 0)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \ \ TSAtomPList*\ au\_slice\ =\ (*aum\_slice)[smatd::GetContainerId(matrix\_id)];}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{comment}{//\ the\ latter\ condition\ -\/\ if\ AU\ is\ the\ same\ but\ some\ objects\ use\ Q-\/peaks\ and}}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{comment}{//\ their\ number\ differs}}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordflow}{if}\ (au\_slice\ ==\ 0\ ||\ au\_slice-\/>Count()\ <=\ catom\_id)\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00247\ \ \ \ \ \}}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordflow}{return}\ (*au\_slice)[catom\_id];}
+\DoxyCodeLine{00249\ \ \ \}}
+\DoxyCodeLine{00250\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00251\ \ \ \mbox{\hyperlink{classTSBond}{TSBond}}*\ Find(\textcolor{keyword}{const}\ \mbox{\hyperlink{structTSBond_1_1Ref}{TSBond::Ref}}\&\ ref)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00252\ \ \ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ a\ =\ Find(ref.a);}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordflow}{if}\ (a\ ==\ 0)\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00255\ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ a-\/>BondCount();\ i++)\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!a-\/>Bond(i).IsDeleted()\ \&\&\ a-\/>Bond(i).Another(*a)\ ==\ ref.b)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&a-\/>Bond(i);}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \ \ \}}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00262\ \ \ \}}
+\DoxyCodeLine{00263\ \};}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \textcolor{keyword}{struct\ }ASObjectProvider\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00266\ \ \ \mbox{\hyperlink{classAtomRegistry}{AtomRegistry}}\ atomRegistry;}
+\DoxyCodeLine{00267\ \ \ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider<TSAtom>}}\&\ atoms;}
+\DoxyCodeLine{00268\ \ \ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider<TSBond>}}\&\ bonds;}
+\DoxyCodeLine{00269\ \ \ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider<class\ TSPlane>}}\&\ planes;}
+\DoxyCodeLine{00270\ \ \ ASObjectProvider(}
+\DoxyCodeLine{00271\ \ \ \ \ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider<TSAtom>}}\&\ \_as,}
+\DoxyCodeLine{00272\ \ \ \ \ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider<TSBond>}}\&\ \_bs,}
+\DoxyCodeLine{00273\ \ \ \ \ \mbox{\hyperlink{classTIObjectProvider}{TIObjectProvider<TSPlane>}}\&\ \_ps)}
+\DoxyCodeLine{00274\ \ \ \ \ :\ atoms(\_as),\ bonds(\_bs),\ planes(\_ps)}
+\DoxyCodeLine{00275\ \ \ \{\}}
+\DoxyCodeLine{00276\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTXFile}{TXFile}}*\ CreateXFile()\ =\ 0;}
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00278\ \};}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \textcolor{keyword}{struct\ }SObjectProvider\ :\ \textcolor{keyword}{public}\ ASObjectProvider\ \{}
+\DoxyCodeLine{00281\ \ \ SObjectProvider()\ :\ ASObjectProvider(*(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTObjectProvider}{TObjectProvider<TSAtom>}}),}
+\DoxyCodeLine{00282\ \ \ \ \ *(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTObjectProvider}{TObjectProvider<TSBond>}}),\ *(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTObjectProvider}{TObjectProvider<TSPlane>}}))}
+\DoxyCodeLine{00283\ \ \ \{\}}
+\DoxyCodeLine{00284\ \ \ \string~SObjectProvider()\ \{}
+\DoxyCodeLine{00285\ \ \ \ \ atoms.Clear();}
+\DoxyCodeLine{00286\ \ \ \ \ bonds.Clear();}
+\DoxyCodeLine{00287\ \ \ \ \ planes.Clear();}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keyword}{delete}\ \&atoms;}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keyword}{delete}\ \&bonds;}
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{keyword}{delete}\ \&planes;}
+\DoxyCodeLine{00291\ \ \ \}}
+\DoxyCodeLine{00292\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTXFile}{TXFile}}\ *CreateXFile();}
+\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ SObjectProvider();\ \}}
+\DoxyCodeLine{00294\ \};}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00296\ EndXlibNamespace()}
+\DoxyCodeLine{00297\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

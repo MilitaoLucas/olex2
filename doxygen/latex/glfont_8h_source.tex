@@ -1,0 +1,176 @@
+\doxysection{glfont.\+h}
+\hypertarget{glfont_8h_source}{}\label{glfont_8h_source}\index{glib/glfont.h@{glib/glfont.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_font\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_font\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glmaterial.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}datastream.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}bitarray.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00018\ BeginGlNamespace()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ struct\ TFontCharSize\ \ \{}
+\DoxyCodeLine{00021\ \ \ int16\_t\ Top,\ Left,\ Bottom,\ Right;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *Data;}
+\DoxyCodeLine{00023\ \ \ TFontCharSize()\ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ Top\ =\ Left\ =\ Right\ =\ Bottom\ =\ -\/1;}
+\DoxyCodeLine{00025\ \ \ \ \ Data\ =\ NULL;}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ Background;}
+\DoxyCodeLine{00028\ \};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{struct\ }TTextRect\ \ \{}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{double}\ top,\ left,\ width,\ height;}
+\DoxyCodeLine{00032\ \ \ TTextRect()\ :\ top(0),\ left(0),\ width(0),\ height(0)\ \{\}}
+\DoxyCodeLine{00033\ \};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{class\ }TGlFont:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00036\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00038\ \ \ \ \ fntFixedWidth\ =\ 0x0001,}
+\DoxyCodeLine{00039\ \ \ \ \ fntIntalic\ \ \ \ =\ 0x0002,}
+\DoxyCodeLine{00040\ \ \ \ \ fntBold\ \ \ \ \ \ \ =\ 0x0004,}
+\DoxyCodeLine{00041\ \ \ \ \ fntBmp\ \ \ \ \ \ \ \ =\ 0x0008,\ \ \textcolor{comment}{//\ create\ bitmap\ font}}
+\DoxyCodeLine{00042\ \ \ \ \ fntTexture\ \ \ \ =\ 0x0010,\ \ \textcolor{comment}{//\ create\ texture\ font}}
+\DoxyCodeLine{00043\ \ \ \ \ fntCreated\ \ \ \ =\ 0x0020,}
+\DoxyCodeLine{00044\ \ \ \ \ fntVectorFont\ =\ 0x0040;}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTGlFont_1_1PSRenderContext}{PSRenderContext}}\ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{struct\ }PSChar\ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ olxcstr\ id;}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ TCStrList\ definition;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ PSChar(\textcolor{keyword}{const}\ olxcstr\&\ \_id)\ :\ id(\_id)\ \{\}}
+\DoxyCodeLine{00050\ \ \ \ \ \};}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<PSChar>}}\ definitions;}
+\DoxyCodeLine{00052\ \ \ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<uint32\_t,\ size\_t>}}\ def\_dict;}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{comment}{//\ only\ very\ limited\ number\ of\ olxch\ range\ is\ supported\ in\ vector\ fonts}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ make\_id(olxch\ ch,\ uint16\_t\ font\_size)\ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((uint32\_t(ch)\ <<\ 16)\ |\ font\_size);}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \};}
+\DoxyCodeLine{00058\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classAGlScene}{AGlScene}}\&\ Parent;}
+\DoxyCodeLine{00060\ \ \ GLuint\ FontBase;}
+\DoxyCodeLine{00061\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TFontCharSize>}}\ CharSizes;}
+\DoxyCodeLine{00062\ \ \ GLuint*\ Textures;}
+\DoxyCodeLine{00063\ \ \ uint16\_t\ Flags,\ PointSize;}
+\DoxyCodeLine{00064\ \ \ uint16\_t\ MaxWidth,\ MaxHeight,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ CharOffset,\ TextureHeight,\ TextureWidth;}
+\DoxyCodeLine{00066\ \ \ int16\_t\ Leftmost,\ Topmost;}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{size\_t}\ Id,\ SmallId;}
+\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\ Material;}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{double}\ VectorScale;}
+\DoxyCodeLine{00070\ \ \ olxstr\ IdString,\ Name;}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{bool}\ AnalyseBitArray(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTEBitArray}{TEBitArray}}\&\ ba,\ \textcolor{keywordtype}{size\_t}\ Char,}
+\DoxyCodeLine{00072\ \ \ \ \ uint16\_t\ width,\ uint16\_t\ height);}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{const}\ olxcstr\&\ DefinePSChar(olxch\ ch,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ drawScale,}
+\DoxyCodeLine{00074\ \ \ \ \ PSRenderContext\&\ context)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ \_DrawText(\textcolor{keyword}{const}\ vec3d\&\ from,\ \textcolor{keyword}{const}\ olxstr\&\ text,\ \textcolor{keywordtype}{double}\ scale)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ type\_t>}
+\DoxyCodeLine{00077\ \ \ type\_t\ AdjustVectorFontSize(type\_t\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{return}\ (IsVectorFont()\ \&\&\ GetPointSize()\ !=\ 15)}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ ?\ (type\_t)(v*GetPointSize()/15.0)\ :\ v;}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00082\ \ \ TGlFont(AGlScene\&\ parent,\ \textcolor{keywordtype}{size\_t}\ \_Id,\ \textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{size\_t}\ \_SmallId=\string~0);}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{virtual}\ \string~TGlFont();}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{void}\ ClearData();\ \textcolor{comment}{//\ must\ be\ called\ to\ reset\ all\ data}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{inline}\ uint16\_t\ GetMaxWidth()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ AdjustVectorFontSize(MaxWidth);}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{inline}\ uint16\_t\ GetMaxHeight()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ AdjustVectorFontSize(MaxHeight);}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{inline}\ int16\_t\ GetLeftmost()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ AdjustVectorFontSize(Leftmost);}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{inline}\ int16\_t\ GetTopmost()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{return}\ AdjustVectorFontSize(Topmost);}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ GetVectorScale()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ VectorScale;\ \ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{size\_t}\ GetId()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Id;\ \ \}}
+\DoxyCodeLine{00101\ \ \ DefPropP(uint16\_t,\ PointSize)}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{size\_t}\ TextWidth(\textcolor{keyword}{const}\ olxstr\&\ Text)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{size\_t}\ TextWidth(\textcolor{keyword}{const}\ olxstr\&\ Text,\ \textcolor{keywordtype}{short}\&\ state)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{size\_t}\ MaxTextLength(\textcolor{keywordtype}{size\_t}\ width)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{double}\ GetCharHalfWidth(\textcolor{keywordtype}{short}\ state)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{size\_t}\ LengthForWidth(\textcolor{keyword}{const}\ olxstr\&\ str,\ \textcolor{keywordtype}{size\_t}\ width)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{size\_t}\ LengthForWidth(\textcolor{keyword}{const}\ olxstr\&\ str,\ \textcolor{keywordtype}{size\_t}\ width,\ \textcolor{keywordtype}{short}\&\ state)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00108\ \ \ uint16\_t\ TextHeight(\textcolor{keyword}{const}\ olxstr\&\ Text=EmptyString())\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordtype}{bool}\ IsCreated()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (Flags\&fntCreated)\ !=\ 0;\ \ \}}
+\DoxyCodeLine{00110\ \ \ TTextRect\ GetTextRect(\textcolor{keyword}{const}\ olxstr\&\ str)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordtype}{bool}\ CharFromRGBArray(\textcolor{keywordtype}{size\_t}\ Char,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *RGBData,}
+\DoxyCodeLine{00112\ \ \ \ \ uint16\_t\ width,\ uint16\_t\ height);}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{keywordtype}{void}\ CreateGlyphsFromRGBArray(\textcolor{keywordtype}{bool}\ FixedWidth,}
+\DoxyCodeLine{00115\ \ \ \ \ uint16\_t\ Width,\ uint16\_t\ Height);}
+\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//\ much\ faster\ version}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{void}\ CreateGlyphs(\textcolor{keyword}{const}\ TEBitArray\&\ ba,\ \textcolor{keywordtype}{bool}\ FixedWidth,}
+\DoxyCodeLine{00118\ \ \ \ \ uint16\_t\ Width,\ uint16\_t\ Height);}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{void}\ CreateHershey(\textcolor{keyword}{const}\ olx\_pdict<size\_t,\ olxstr>\&\ definition,}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{double}\ scale);}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{static}\ TStrList\ ExportHersheyToPS(\textcolor{keyword}{const}\ olxstr\&\ uniq\_chars);}
+\DoxyCodeLine{00122\ \ \ TCStrList\ RenderPSLabel(\textcolor{keyword}{const}\ vec3d\&\ pos,\ \textcolor{keyword}{const}\ olxstr\&\ label,}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{double}\ drawScale,\ \mbox{\hyperlink{structTGlFont_1_1PSRenderContext}{PSRenderContext}}\&\ context)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordtype}{void}\ CreateTextures(uint16\_t\ Width,\ uint16\_t\ Height);}
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ HasTextures()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Textures\ !=\ NULL;\ \ \}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{inline}\ TFontCharSize*\ CharSize(\textcolor{keywordtype}{size\_t}\ Char)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{return}\ Char\ <\ 256\ ?\ CharSizes[(unsigned)Char]\ :\ NULL;}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsFixedWidth()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ (Flags\ \&\ fntFixedWidth)\ ==\ fntFixedWidth;}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsVectorFont()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ (Flags\ \&\ fntVectorFont)\ ==\ fntVectorFont;}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ \ \ DefPropP(uint16\_t,\ CharOffset)}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ Reset\_ATI(\textcolor{keywordtype}{bool}\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{if}(\ v\ )\ \ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ olx\_gl::rasterPos(0,\ 0,\ 0);}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ olx\_gl::callList(FontBase\ +\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordtype}{void}\ DrawVectorText(\textcolor{keyword}{const}\ vec3d\&\ from,\ \textcolor{keyword}{const}\ olxstr\&\ text,}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordtype}{double}\ scale=1.0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00145\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordtype}{short}\ state\ =\ 0;}
+\DoxyCodeLine{00147\ \ \ \ \ DrawVectorText(from,\ text,\ scale,\ state);}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keywordtype}{void}\ DrawVectorText(\textcolor{keyword}{const}\ vec3d\&\ from,\ \textcolor{keyword}{const}\ olxstr\&\ text,\ \textcolor{keywordtype}{double}\ scale,}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordtype}{short}\&\ state)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordtype}{void}\ DrawRasterText(\textcolor{keyword}{const}\ olxstr\&\ text)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordtype}{short}\ state\ =\ 0;}
+\DoxyCodeLine{00153\ \ \ \ \ DrawRasterText(text,\ state);}
+\DoxyCodeLine{00154\ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordtype}{void}\ DrawRasterText(\textcolor{keyword}{const}\ olxstr\&\ text,\ \textcolor{keywordtype}{short}\&\ state)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{/*\ \ renders\ a\ single\ char,\ if\ the\ \(\backslash\)+,\ \(\backslash\)-\/\ or\ \(\backslash\)0\ is\ used,\ the\ index\ is\ scrolled}}
+\DoxyCodeLine{00157\ \textcolor{comment}{\ \ accordingly}}
+\DoxyCodeLine{00158\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00159\ \ \ \textcolor{keywordtype}{void}\ DrawRasterChar(\textcolor{keywordtype}{size\_t}\&\ i,\ \textcolor{keyword}{const}\ olxstr\&\ str,\ \textcolor{keywordtype}{short}\&\ state)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00160\ \ \ \textcolor{keywordtype}{void}\ DrawVectorChar(\textcolor{keywordtype}{size\_t}\&\ i,\ \textcolor{keyword}{const}\ olxstr\&\ str,\ \textcolor{keywordtype}{short}\&\ state)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00161\ \ \ DefPropC(olxstr,\ IdString)}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Name;\ \ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{inline}\ TGlMaterial\&\ GetMaterial()\ \ \{\ \ \textcolor{keywordflow}{return}\ Material;\ \ \}}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ TGlMaterial\&\ GetMaterial()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Material;\ \ \}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keywordtype}{void}\ SetMaterial(\textcolor{keyword}{const}\ TGlMaterial\&\ m);}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }AGlScene;}
+\DoxyCodeLine{00167\ \};}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ EndGlNamespace()}
+\DoxyCodeLine{00170\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

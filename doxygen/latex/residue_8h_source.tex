@@ -1,0 +1,163 @@
+\doxysection{residue.\+h}
+\hypertarget{residue_8h_source}{}\label{residue_8h_source}\index{xlib/residue.h@{xlib/residue.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_residue\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_residue\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}asymmunit.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BeginXlibNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ number\ and\ alias\ are\ unique\ numbers\ */}}
+\DoxyCodeLine{00017\ class\ TResidue\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ NoResidue\ =\ -\/100000}
+\DoxyCodeLine{00021\ \ \ \};}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ olxch\ NoChainId()\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{charliteral}{'\string~'};}
+\DoxyCodeLine{00024\ \ \ \}}
+\DoxyCodeLine{00025\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00026\ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ Parent;}
+\DoxyCodeLine{00027\ \ \ uint32\_t\ Id;}
+\DoxyCodeLine{00028\ \ \ olxch\ ChainId;}
+\DoxyCodeLine{00029\ \ \ olxstr\ ClassName;}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{int}\ Number,\ Alias;}
+\DoxyCodeLine{00031\ \ \ TCAtomPList\ Atoms;}
+\DoxyCodeLine{00032\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00033\ \ \ \textcolor{comment}{//\ removes\ an\ atom\ and\ resets\ the\ ResiId,\ this\ is\ used\ internally\ from\ Add}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ Remove(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{if}\ (Atoms.Remove(ca))\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ ca.SetResiId(\string~0);}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ SetId(uint32\_t\ \textcolor{keywordtype}{id})\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ Id\ =\ id;}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ Atoms[i]-\/>SetResiId(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \textcolor{comment}{/*\ adds\ an\ atom\ to\ this\ residue\ without\ trying\ to\ remove\ from\ the\ owning}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ residue\ (if\ there\ is\ any!)}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{void}\ \_Add(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ Atoms.Add(ca);}
+\DoxyCodeLine{00050\ \ \ \ \ ca.SetResiId(Id);}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00053\ \ \ TResidue(\mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ parent,\ uint32\_t\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ olxstr\&\ cl,}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{int}\ number,\ \textcolor{keywordtype}{int}\ alias,\ olxch\ chainId)}
+\DoxyCodeLine{00055\ \ \ \ \ :\ Parent(parent),\ Id(id),\ ChainId(chainId),}
+\DoxyCodeLine{00056\ \ \ \ \ ClassName(cl),\ Number(number),\ Alias(alias)}
+\DoxyCodeLine{00057\ \ \ \{\}}
+\DoxyCodeLine{00058\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00059\ \ \ DefPropC(olxstr,\ ClassName)}
+\DoxyCodeLine{00060\ \ \ DefPropC(\textcolor{keywordtype}{int},\ Alias)}
+\DoxyCodeLine{00061\ \ \ DefPropP(\textcolor{keywordtype}{int},\ Number)}
+\DoxyCodeLine{00062\ \ \ DefPropP(olxch,\ ChainId)}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{bool}\ HasChainId()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ChainId\ !=\ NoChainId();\ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{bool}\ HasAlias()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Number\ !=\ Alias;\ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ TResidue\ \&r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(GetNumber(),\ r.GetNumber());}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{size\_t}\ GetId()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Id;\ \}}
+\DoxyCodeLine{00069\ \ \ TCAtomPList\&\ GetAtomList()\ \{\ \textcolor{keywordflow}{return}\ Atoms;\ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{const}\ TCAtomPList\&\ GetAtomList()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Atoms;\ \}}
+\DoxyCodeLine{00071\ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ GetParent()\ \{\ \textcolor{keywordflow}{return}\ Parent;\ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{virtual}\ TIString\ ToString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{if}\ (Id\ ==\ 0)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ EmptyString();}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ olxstr\ rv(\textcolor{stringliteral}{"{}RESI\ "{}});}
+\DoxyCodeLine{00077\ \ \ \ \ rv\ <<\ ClassName\ <<\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{if}\ (HasChainId())\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ rv\ <<\ ChainId\ <<\ \textcolor{charliteral}{':'};}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ rv\ <<\ Number;}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{if}\ (HasAlias())\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ rv\ <<\ \textcolor{charliteral}{'\ '}\ <<\ Alias;}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{comment}{//\ will\ prepend\ chain\ id\ if\ set}}
+\DoxyCodeLine{00088\ \ \ olxstr\ GetNumberStr()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{if}\ (HasChainId())\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(GetChainId())\ <<\ \textcolor{charliteral}{':'}\ <<\ GetNumber();}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(GetNumber());}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Atoms.Count();\ \}}
+\DoxyCodeLine{00095\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ GetAtom(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Atoms[i];\ \}}
+\DoxyCodeLine{00096\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Atoms[i];\ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ Atoms[i]-\/>SetResiId(0);}
+\DoxyCodeLine{00100\ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ Atoms.Clear();}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOf(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ Atoms.IndexOf(ca);}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{//\ removes\ atom\ from\ previous\ residue\ and\ puts\ into\ current}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{void}\ Add(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{if}\ (ca.GetResiId()\ ==\ Id)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ Atoms.Add(ca);}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ Parent.GetResidue(ca.GetResiId()).Remove(ca);}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ Atoms.Add(ca);}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ ca.SetResiId(Id);}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{void}\ AddAll(\textcolor{keyword}{const}\ TCAtomPList\ \&atoms)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ Atoms.SetCapacity(Atoms.Count()\ +\ atoms.Count());}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ Add(*atoms[i]);}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keywordtype}{size\_t}\ c)\ \{\ Atoms.SetCapacity(c);\ \}}
+\DoxyCodeLine{00125\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Atoms[i]-\/>IsDeleted())\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ \ \ TResidue*\ Next()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Parent.NextResidue(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00134\ \ \ TResidue*\ Prev()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Parent.PrevResidue(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsValidNumber(\textcolor{keyword}{const}\ olxstr\ \&rn)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx\ =\ rn.IndexOf(\textcolor{charliteral}{':'});}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rn.IsNumber();}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ ==\ 0)\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rn.SubStringFrom(idx+1).IsNumber();}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ ==\ 1)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr::o\_isalphanumeric(rn.CharAt(0))\ \&\&}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ rn.SubStringFrom(idx\ +\ 1).IsNumber();}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}};}
+\DoxyCodeLine{00151\ \};}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TResidue>}}\ ResiPList;}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ EndXlibNamespace()}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

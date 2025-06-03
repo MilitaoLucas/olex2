@@ -1,0 +1,251 @@
+\doxysection{lcells.\+h}
+\hypertarget{lcells_8h_source}{}\label{lcells_8h_source}\index{xlib/lcells.h@{xlib/lcells.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_lcells\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_lcells\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}cifdp.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}unitcell.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}cell\_reduction.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}filetree.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ BeginXlibNamespace()}
+\DoxyCodeLine{00020\ namespace\ lcells\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{struct\ }CellInfo\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ evecd\ cell;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{double}\ volume,\ niggli\_volume;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{short}\ lattice;}
+\DoxyCodeLine{00025\ \ \ \ \ CellInfo()\ :\ cell(6),\ volume(0),\ niggli\_volume(0),\ lattice(1)\ \{\}}
+\DoxyCodeLine{00026\ \ \ \ \ IDataOutputStream\ \&ToStream(IDataOutputStream\ \&out)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ out\ <<\ volume\ <<\ niggli\_volume;}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ cell.ToStream(out);}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \ \ IDataInputStream\&\ FromStream(IDataInputStream\ \&in)\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ in\ >>\ volume;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ in\ >>\ niggli\_volume;}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ cell.FromStream(in);}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ in;}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{struct\ }VolumeComparator\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ CellInfo\ \&a,\ \textcolor{keyword}{const}\ CellInfo\ \&b)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a.volume,\ b.volume);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ CellInfo\ *a,\ \textcolor{keyword}{const}\ CellInfo\ *b)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a-\/>volume,\ b-\/>volume);}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \};}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{struct\ }ReducedVolumeComparator\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ CellInfo\ \&a,\ \textcolor{keyword}{const}\ CellInfo\ \&b)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a.niggli\_volume,\ b.niggli\_volume);}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ CellInfo\ *a,\ \textcolor{keyword}{const}\ CellInfo\ *b)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a-\/>niggli\_volume,\ b-\/>niggli\_volume);}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \};}
+\DoxyCodeLine{00053\ \ \ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{struct\ }CellReader\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{static}\ ConstArrayList<CellInfo>\ read(\textcolor{keyword}{const}\ olxstr\ \&fn);}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ GetCifParamAsString(\textcolor{keyword}{const}\ cif\_dp::CifBlock\ \&block,\ \textcolor{keyword}{const}\ olxstr\ \&Param);}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ ExtractLattFromSymmetry(\textcolor{keyword}{const}\ cif\_dp::CifBlock\ \&block);}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ ToDouble(\textcolor{keyword}{const}\ olxstr\ \&str);}
+\DoxyCodeLine{00060\ \ \ \};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{struct\ }Index\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{struct\ }Entry\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ Entry\ *parent;}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ olxstr\ name;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keyword}{mutable}\ olx\_object\_ptr<olxstr>\ fullName;}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ uint64\_t\ modified;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ Entry(Entry\ *parent\_\ =\ 0)\ :\ parent(parent\_),\ modified(\string~0)\ \{\}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ Entry(Entry\ *parent\_,\ \textcolor{keyword}{const}\ olxstr\ \&name\_,\ uint64\_t\ modified\_)}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ :\ parent(parent\_),\ name(name\_),\ modified(modified\_)\ \{\}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ IDataOutputStream\ \&ToStream(IDataOutputStream\ \&out)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (out\ <<\ TUtf8::Encode(name)\ <<\ modified);}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ IDataInputStream\&\ FromStream(IDataInputStream\ \&in)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ olxcstr\ c\_name;}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ in\ >>\ c\_name;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ name\ =\ TUtf8::Decode(c\_name);}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ in\ >>\ modified;}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ in;}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keyword}{struct\ }NameComparator\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ Entry\ \&a,\ \textcolor{keyword}{const}\ Entry\ \&b)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ a.name.Compare(b.name);}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ Entry\ *a,\ \textcolor{keyword}{const}\ Entry\ *b)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ a-\/>name.Compare(b-\/>name);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ Entry\ \&a,\ \textcolor{keyword}{const}\ olxstr\ \&b)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ a.name.Compare(b);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&FullName()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!fullName.ok())\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ olxstr\_buf\ res\ =\ name;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ Entry\ *p\ =\ parent;}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ olxstr\ ss\ =\ \textcolor{charliteral}{'/'};}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (p\ !=\ 0)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ res\ <<\ ss\ <<\ p-\/>name;}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ p\ =\ p-\/>parent;}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ fullName\ =\ olxstr::FromExternal(}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ res.ReverseRead(olx\_malloc<olxch>(res.Length()\ +\ 1)),\ res.Length());}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ fullName;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \};}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{struct\ }ResultEntry\ :\ \textcolor{keyword}{public}\ CellInfo\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ ResultEntry(\textcolor{keyword}{const}\ olxstr\ \&\_file\_name,\ \textcolor{keyword}{const}\ CellInfo\ \&c)}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ :\ CellInfo(c),\ file\_name(\_file\_name)}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ ResultEntry\ \&e)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ file\_name.Compare(e.file\_name);}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ olxstr\ file\_name;}
+\DoxyCodeLine{00115\ \ \ \ \ \};}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{struct\ }FolderEntry;}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keyword}{struct\ }FileEntry\ :\ \textcolor{keyword}{public}\ Entry\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ TArrayList<CellInfo>\ cells;}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ FileEntry(FolderEntry\ \&p)\ :\ Entry(\&p)\ \{\}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ FileEntry(FolderEntry\ \&p,\ \textcolor{keyword}{const}\ olxstr\ \&name,\ uint64\_t\ modified)}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ :\ Entry(\&p,\ name,\ modified)\ \{\}}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ IDataOutputStream\ \&ToStream(IDataOutputStream\ \&out)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ out\ <<\ (uint32\_t)cells.Count();}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cells.Count();\ i++)}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ cells[i].ToStream(out);}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Entry::ToStream(out);}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ FileEntry\ \&FromStream(IDataInputStream\ \&in)\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ uint32\_t\ sz;}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ in\ >>\ sz;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ cells.SetCount(sz);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint32\_t\ i\ =\ 0;\ i\ <\ sz;\ i++)}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ cells[i].FromStream(in);}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ Entry::FromStream(in);}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Expand(TTypeList<ResultEntry>\ \&all)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cells.Count();\ i++)}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ all.Add(\textcolor{keyword}{new}\ ResultEntry(FullName(),\ cells[i]));}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \};}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{struct\ }FolderEntry\ :\ \textcolor{keyword}{public}\ Entry\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ TTypeList<FileEntry>\ entries;}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{comment}{//SortedTypeList<FileEntry,\ Entry::NameComparator>\ entries;}}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ TTypeList<FolderEntry>\ folders;}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ FolderEntry(FolderEntry\ *parent\ =\ 0)}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ :\ Entry(parent)}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ FolderEntry(FolderEntry\ *parent,\ \textcolor{keyword}{const}\ olxstr\ \&name,\ uint64\_t\ modified)}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ :\ Entry(parent,\ name,\ modified)\ \{\}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Init(\textcolor{keyword}{const}\ TFileTree::Folder\ \&folder);}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Expand(TPtrList<FileEntry>\ \&all);}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Update(\textcolor{keyword}{const}\ TFileTree::Folder\ \&folder);}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ IDataOutputStream\ \&ToStream(IDataOutputStream\ \&out)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ out\ <<\ (uint32\_t)entries.Count();}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ entries.Count();\ i++)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ entries[i].ToStream(out);}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ out\ <<\ (uint32\_t)folders.Count();}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ folders.Count();\ i++)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ folders[i].ToStream(out);}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Entry::ToStream(out);}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ FolderEntry\&\ FromStream(IDataInputStream\ \&in)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ entries.Clear();}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ folders.Clear();}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ uint32\_t\ sz;}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ in\ >>\ sz;}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ entries.SetCapacity(sz);}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint32\_t\ i\ =\ 0;\ i\ <\ sz;\ i++)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ entries.Add((\textcolor{keyword}{new}\ FileEntry(*\textcolor{keyword}{this}))-\/>FromStream(in));}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ in\ >>\ sz;}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ folders.SetCapacity(sz);}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint32\_t\ i\ =\ 0;\ i\ <\ sz;\ i++)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ folders.Add(\textcolor{keyword}{new}\ FolderEntry(\textcolor{keyword}{this})).FromStream(in);}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ Entry::FromStream(in);}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ TotalCount()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ entries.Count();}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ folders.Count();\ i++)\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ cnt\ +=\ folders[i].TotalCount();}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cnt;}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Expand(TTypeList<ResultEntry>\ \&all)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ entries.Count();\ i++)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ entries[i].Expand(all);}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ folders.Count();\ i++)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ folders[i].Expand(all);}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \ \ \};}
+\DoxyCodeLine{00198\ \ \ \ \ FolderEntry\ root;}
+\DoxyCodeLine{00199\ \ \ \ \ uint64\_t\ LastUpdated;}
+\DoxyCodeLine{00200\ \ \ \ \ Index();}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{static}\ SortedObjectList<olxstr,\ olxstrComparator<false>\ >\ masks;}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{char}\ file\_sig[];}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ConsiderFile(\textcolor{keyword}{const}\ olxstr\ \&file\_name)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ masks.IndexOf(}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ TEFile::ExtractFileExt(file\_name).ToLowerCase())\ !=\ InvalidIndex;}
+\DoxyCodeLine{00206\ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\ \&folder,\ \textcolor{keyword}{const}\ olxstr\&\ index\_name);}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordtype}{void}\ PrintInfo()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ PrintResults(\textcolor{keyword}{const}\ TTypeList<ResultEntry>\ \&\ results);}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ Update(\textcolor{keyword}{const}\ olxstr\&\ index\_name,\ \textcolor{keyword}{const}\ olxstr\ \&root\ =\ EmptyString());}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ DefaultIndex()\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::GetSharedDir()\ +\ \textcolor{stringliteral}{"{}lcells.ind"{}};}
+\DoxyCodeLine{00213\ \ \ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordtype}{void}\ SaveToFile(\textcolor{keyword}{const}\ olxstr\ \&file\_name)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00215\ \ \ \ \ Index\ \&LoadFromFile(\textcolor{keyword}{const}\ olxstr\ \&file\_name);}
+\DoxyCodeLine{00216\ \ \ \ \ ConstTypeList<ResultEntry>\ Search(\textcolor{keyword}{const}\ CellInfo\ \&cell,\ \textcolor{keywordtype}{double}\ vol\_diff,}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ filter\_by\_dimensions)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00218\ \ \ \};}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \textcolor{comment}{//\ multiple\ indices\ manager}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{struct\ }IndexManager\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keyword}{struct\ }Item\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ olxstr\ root;\ \ \textcolor{comment}{//\ new\ index\ root}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ olxstr\ index\_file\_name;\ \textcolor{comment}{//\ index\ file\ name}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ update;\ \ \textcolor{comment}{//\ should\ index\ be\ updated?}}
+\DoxyCodeLine{00226\ \ \ \ \ \};}
+\DoxyCodeLine{00227\ \ \ \ \ TTypeList<Item>\ indices;}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordtype}{void}\ LoadConfig(\textcolor{keyword}{const}\ olxstr\ \&file\_name);}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordtype}{void}\ SaveConfig(\textcolor{keyword}{const}\ olxstr\ \&file\_name);}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ DefaultCfgName()\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::GetSharedDir()\ +\ \textcolor{stringliteral}{"{}lcells.xld"{}};}
+\DoxyCodeLine{00234\ \ \ \ \ \}}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordtype}{void}\ Update(\textcolor{keyword}{const}\ olxstr\ \&cfg\_name,\ \textcolor{keyword}{const}\ olxstr\ \&folder\_name,\ \textcolor{keyword}{const}\ olxstr\ \&index\_name);}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keyword}{static}\ ConstTypeList<Index::ResultEntry>\ Search(\textcolor{keyword}{const}\ olxstr\ \&cfg\_name,}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TStrObjList\ \&Cmds,\ \textcolor{keywordtype}{double}\ vol\_diff);}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Search(TStrObjList\ \&Params,\ \textcolor{keyword}{const}\ TParamList\ \&Options,\ TMacroData\ \&E);}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Search(\textcolor{keyword}{const}\ TStrObjList\ \&Params,\ TMacroData\ \&E);}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Update(TStrObjList\ \&Params,\ \textcolor{keyword}{const}\ TParamList\ \&Options,\ TMacroData\ \&E);}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keyword}{static}\ TLibrary*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\ \&name\ =\ EmptyString());}
+\DoxyCodeLine{00242\ \ \ \};}
+\DoxyCodeLine{00243\ \};}
+\DoxyCodeLine{00244\ EndXlibNamespace()}
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

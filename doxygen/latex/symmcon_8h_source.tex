@@ -1,0 +1,57 @@
+\doxysection{symmcon.\+h}
+\hypertarget{symmcon_8h_source}{}\label{symmcon_8h_source}\index{xlib/symmcon.h@{xlib/symmcon.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_symcon\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_symcon\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}mat\_id.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ BeginXlibNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ struct\ SymmConItem\ \ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{int}\ param;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{double}\ multiplier;}
+\DoxyCodeLine{00021\ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structSymmCon}{SymmCon}}\ \ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{int}\ r\_id;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{const}\ SymmConItem*\ map;\ \ \textcolor{comment}{//\ U\ +\ coordinates}}
+\DoxyCodeLine{00026\ \};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{struct\ }SiteSymmCon\ \ \{}
+\DoxyCodeLine{00029\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{bool}\ added;}
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ SymmConItem\ map[9];}
+\DoxyCodeLine{00033\ \ \ SiteSymmCon();}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{bool}\ IsConstrained()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00035\ \ \ SiteSymmCon\&\ operator\ +=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmCon}{SymmCon}}*\ sc);}
+\DoxyCodeLine{00036\ \ \ olxstr\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSymmConReg}{SymmConReg}}\ \ \{}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmCon}{SymmCon}}*\ \_Find(\textcolor{keywordtype}{int}\ rot\_id);}
+\DoxyCodeLine{00041\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmCon}{SymmCon}}*\ Find(\textcolor{keywordtype}{int}\ rot\_id)\ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{return}\ \_Find(rot\_id);\ \textcolor{comment}{//\ both\ matrices\ are\ stored}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{//const\ SymmCon*\ rv\ =\ \_Find(rot\_id);}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//return\ rv\ ==\ NULL\ ?\ \_Find(rotation\_id::invert(rot\_id))\ :\ rv;}}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ EndXlibNamespace()}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,114 @@
+\doxysection{estack.\+h}
+\hypertarget{estack_8h_source}{}\label{estack_8h_source}\index{sdl/estack.h@{sdl/estack.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_estack\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_estack\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}string.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00016\ BeginEsdlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ the\ simplest\ stack\ implementation}}
+\DoxyCodeLine{00019\ template\ <class\ T>\ class\ TStack\ \ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{struct\ }item\ \ \{}
+\DoxyCodeLine{00022\ \ \ \ \ item*\ prev;}
+\DoxyCodeLine{00023\ \ \ \ \ T\ data;}
+\DoxyCodeLine{00024\ \ \ \ \ item(\textcolor{keyword}{const}\ T\&\ v,\ item*\ \_prev)\ :\ prev(\_prev),\ data(v)\ \ \{\}}
+\DoxyCodeLine{00025\ \ \ \};}
+\DoxyCodeLine{00026\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00027\ \ \ item*\ cur;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{size\_t}\ \_count;}
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ TStack()\ :\ cur(NULL),\ \_count(0)\ \ \{\}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{virtual}\ \string~TStack()\ \ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{while}(\ cur\ !=\ NULL\ )\ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ item*\ p\ =\ cur-\/>prev;}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ cur;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ cur\ =\ p;}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \_count\ =\ 0;}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{inline}\ T\&\ Push(\textcolor{keyword}{const}\ T\&\ v)\ \ \{}
+\DoxyCodeLine{00041\ \ \ \ \ item*\ ni\ =\ \textcolor{keyword}{new}\ item(v,\ cur);}
+\DoxyCodeLine{00042\ \ \ \ \ cur\ =\ ni;}
+\DoxyCodeLine{00043\ \ \ \ \ \_count++;}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{return}\ cur-\/>data;}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \ \ T\ Pop()\ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{if}(\ cur\ !=\ NULL\ )\ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ item*\ i\ =\ cur-\/>prev;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ T\ rv\ =\ cur-\/>data;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ cur;}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ cur\ =\ i;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \_count-\/-\/;}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}stack\ is\ empty"{}});}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ cur\ ==\ NULL;\ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \_count;\ \ \}}
+\DoxyCodeLine{00059\ \ \ T\&\ Top()\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}(\ cur\ ==\ NULL\ )}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}stack\ is\ empty"{}});}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ cur-\/>data;}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{comment}{//\ this\ for\ read-\/only\ traversal}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{const}\ item*\ TopItem()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ cur;\ \}}
+\DoxyCodeLine{00066\ \};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{keyword}{class\ }str\_stack\ :\ \textcolor{keyword}{public}\ TStack<olxstr>\ \ \{}
+\DoxyCodeLine{00069\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00070\ \ \ str\_stack(\textcolor{keyword}{const}\ olxstr\&\ exp)\ \ \{\ \ LoadFromExpression(exp);\ \ \}}
+\DoxyCodeLine{00071\ \ \ str\_stack()\ \{\}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{size\_t}\ LoadFromExpression(\textcolor{keyword}{const}\ olxstr\&\ Exp)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ Clear();}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{int}\ argc=0;}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{char}\ op;}
+\DoxyCodeLine{00077\ \ \ \ \ olxstr\ o;}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{bool}\ NewOperation\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{if}(\ !Exp.IsEmpty()\ )\ \ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Exp.Length();\ i++\ )\ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(\ Exp.CharAt(i)\ )\ \ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'-\/'}:\ \ \ \ NewOperation\ =\ \textcolor{keyword}{true};\ \ \ \ op\ =\ \textcolor{charliteral}{'-\/'};\ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'+'}:\ \ \ \ NewOperation\ =\ \textcolor{keyword}{true};\ \ \ \ op\ =\ \textcolor{charliteral}{'+'};\ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'\ '}:\ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'*'}:\ \ \ \ NewOperation\ =\ \textcolor{keyword}{true};\ \ \ \ op\ =\ \textcolor{charliteral}{'*'};\ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'/'}:\ \ \ \ NewOperation\ =\ \textcolor{keyword}{true};\ \ \ \ op\ =\ \textcolor{charliteral}{'/'};\ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ NewOperation\ )\ \ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !o.IsEmpty()\ )\ \ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Push(o);}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ argc++;}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Push(op);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ o.SetLength(0);}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ NewOperation\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ o\ <<\ Exp[i];}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ Push(o);}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{return}\ argc;}
+\DoxyCodeLine{00104\ \ \ \}}
+\DoxyCodeLine{00105\ \};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ EndEsdlNamespace()}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,196 @@
+\doxysection{wxzipfs.\+h}
+\hypertarget{wxzipfs_8h_source}{}\label{wxzipfs_8h_source}\index{repository/wxzipfs.h@{repository/wxzipfs.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_wxzip\_fs\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_wxzip\_fs\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}fsext.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <wx/wx.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <wx/zipstrm.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <wx/mstream.h>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <wx/wfstream.h>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}zipfs.h"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{struct\ }TZipEntry\ \ \{}
+\DoxyCodeLine{00022\ \ \ olxstr\ ZipName;}
+\DoxyCodeLine{00023\ \ \ olxstr\ EntryName;}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }TZipWrapper\ \ \{}
+\DoxyCodeLine{00027\ \ \ wxZipInputStream\ *FInputStream;}
+\DoxyCodeLine{00028\ \ \ wxFile\ *wxfile;}
+\DoxyCodeLine{00029\ \ \ olxstr\_dict<wxZipEntry*,\ false>\ FEntries;}
+\DoxyCodeLine{00030\ \ \ olxstr\_dict<TMemoryBlock*,\ false>\ FMemoryBlocks;}
+\DoxyCodeLine{00031\ \ \ TActionQList\ Actions;}
+\DoxyCodeLine{00032\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00033\ \ \ TMemoryBlock*\ GetMemoryBlock(\textcolor{keyword}{const}\ olxstr\ \&EM);}
+\DoxyCodeLine{00034\ \ \ olxstr\ zip\_name;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{bool}\ UseCache;}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{bool}\ Break;}
+\DoxyCodeLine{00037\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ ZipUrlSignature\_()\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ sig\ =\ \textcolor{stringliteral}{"{}@zip:"{}};}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ sig;}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ TZipWrapper(\textcolor{keyword}{const}\ olxstr\ \&zipName,\ \textcolor{keywordtype}{bool}\ useCache);}
+\DoxyCodeLine{00044\ \ \ TZipWrapper(TEFile*\ zipName,\ \textcolor{keywordtype}{bool}\ useCache);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ TActionQueue\&\ OnProgress;}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \string~TZipWrapper();}
+\DoxyCodeLine{00049\ \ \ IDataInputStream*\ OpenEntry(\textcolor{keyword}{const}\ olxstr\&\ EN);}
+\DoxyCodeLine{00050\ \ \ wxInputStream*\ OpenWxEntry(\textcolor{keyword}{const}\ olxstr\&\ EN);}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{bool}\ ExtractAll(\textcolor{keyword}{const}\ olxstr\&\ dest);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FEntries.Count();\ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ olxstr\&\ Name(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{return}\ FEntries.GetKey(i);}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{inline}\ time\_t\ Timestamp(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ FEntries.GetValue(i)-\/>GetDateTime().GetTicks();}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Size(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ FEntries.GetValue(i)-\/>GetSize();}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ FileExists(\textcolor{keyword}{const}\ olxstr\&\ fn)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ FEntries.HasKey(TEFile::UnixPath(fn));}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsValidFileName(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsZipFile(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ olxstr\ ExtractZipName(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{static}\ olxstr\ ExtractZipEntryName(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ SplitZipUrl(\textcolor{keyword}{const}\ olxstr\ \&fullName,\ TZipEntry\ \&ZE);}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{static}\ olxstr\ ComposeFileName(\textcolor{keyword}{const}\ olxstr\ \&ZipFileNameA,\ \textcolor{keyword}{const}\ olxstr\ \&FNA);}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{void}\ DoBreak()\ \ \{\ \ Break\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00073\ \};}
+\DoxyCodeLine{00075\ \textcolor{keyword}{class\ }TwxZipFileSystem\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAZipFS}{AZipFS}}\ \{}
+\DoxyCodeLine{00076\ \ \ TZipWrapper\ zip;}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{static}\ AZipFS\ *instance\_maker(\textcolor{keyword}{const}\ olxstr\&\ filename,\ \textcolor{keywordtype}{bool}\ UseCache)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TwxZipFileSystem(filename,\ UseCache);}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{//\ proxying\ functions}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Enter(\textcolor{keyword}{const}\ IOlxObject\ *Sender,\ \textcolor{keyword}{const}\ IOlxObject\ *Data,}
+\DoxyCodeLine{00083\ \ \ \ \ TActionQueue\ *\ caller)}
+\DoxyCodeLine{00084\ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{if}\ (Data\ !=\ 0\ \&\&\ Data-\/>Is<TOnProgress>())\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ OnProgress.Enter(\textcolor{keyword}{this},\ Data,\ caller);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ AFileSystem::Enter(Sender,\ Data,\ caller);}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Exit(\textcolor{keyword}{const}\ IOlxObject\ *Sender,\ \textcolor{keyword}{const}\ IOlxObject\ *Data,}
+\DoxyCodeLine{00094\ \ \ \ \ TActionQueue\ *caller)}
+\DoxyCodeLine{00095\ \ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{if}\ (Data\ !=\ 0\ \&\&\ Data-\/>Is<TOnProgress>())\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ OnProgress.Exit(\textcolor{keyword}{this},\ Data,\ caller);}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ AFileSystem::Exit(Sender,\ Data,\ caller);}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ IOlxObject\ *Sender,\ \textcolor{keyword}{const}\ IOlxObject\ *Data,}
+\DoxyCodeLine{00105\ \ \ \ \ TActionQueue\ *caller)}
+\DoxyCodeLine{00106\ \ \ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{if}\ (Data\ !=\ 0\ \&\&\ Data-\/>Is<TOnProgress>())\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ OnProgress.Execute(\textcolor{keyword}{this},\ Data,\ caller);}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ AFileSystem::Execute(Sender,\ Data,\ caller);}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoDelFile(\textcolor{keyword}{const}\ olxstr\&\ f)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoDelDir(\textcolor{keyword}{const}\ olxstr\&\ f)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoNewDir(\textcolor{keyword}{const}\ olxstr\&\ f)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoAdoptFile(\textcolor{keyword}{const}\ TFSItem\&\ Source)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoesExist(\textcolor{keyword}{const}\ olxstr\&\ df,\ \textcolor{keywordtype}{bool})\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{return}\ zip.FileExists(df);}
+\DoxyCodeLine{00121\ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{virtual}\ olx\_object\_ptr<IInputStream>\ \_DoOpenFile(\textcolor{keyword}{const}\ olxstr\&\ src);}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \_DoAdoptStream(IInputStream\&\ file,\ \textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00127\ \ \ TwxZipFileSystem(\textcolor{keyword}{const}\ olxstr\&\ filename,\ \textcolor{keywordtype}{bool}\ UseCache\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00128\ \ \ TwxZipFileSystem(TEFile*\ file,\ \textcolor{keywordtype}{bool}\ UseCache);}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{virtual}\ \string~TwxZipFileSystem();}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{bool}\ ExtractAll(\textcolor{keyword}{const}\ olxstr\&\ dest);}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ DoBreak()\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ AFileSystem::DoBreak();}
+\DoxyCodeLine{00135\ \ \ \ \ zip.DoBreak();}
+\DoxyCodeLine{00136\ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DelFile(\textcolor{keyword}{const}\ olxstr\&\ FN)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00139\ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DelDir(\textcolor{keyword}{const}\ olxstr\&\ DN)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ AdoptFile(\textcolor{keyword}{const}\ TFSItem\&\ Source)\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ AdoptStream(IInputStream\&\ in,\ \textcolor{keyword}{const}\ olxstr\&\ as)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ NewDir(\textcolor{keyword}{const}\ olxstr\&\ DN)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00151\ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ ChangeDir(\textcolor{keyword}{const}\ olxstr\&\ DN)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00154\ \ \ \}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//\ registers\ this\ object\ to\ handle\ ZIP\ files}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ RegisterFactory()\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ ZipFSFactory::Register(\&TwxZipFileSystem::instance\_maker);}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ \};}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \textcolor{keyword}{class\ }TwxInputStreamWrapper\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIInputStream}{IInputStream}}\ \{}
+\DoxyCodeLine{00163\ \ \ wxInputStream\&\ is;}
+\DoxyCodeLine{00164\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00165\ \ \ TwxInputStreamWrapper(wxInputStream\&\ \_is)\ :\ is(\_is)\ \{\}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Read(\textcolor{keywordtype}{void}*\ data,\ \textcolor{keywordtype}{size\_t}\ sz)\ \ \{}
+\DoxyCodeLine{00167\ \ \ \ \ is.Read(data,\ sz);}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetPosition(uint64\_t\ i)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ is.SeekI(OlxIStream::CheckSize<off\_t>(i));}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{virtual}\ uint64\_t\ GetPosition()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ is.TellI();\ \ \}}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{virtual}\ uint64\_t\ GetSize()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ is.GetSize();\ \ \}}
+\DoxyCodeLine{00174\ \};}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \textcolor{keyword}{class\ }TwxOutputStreamWrapper\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOutputStream}{IOutputStream}}\ \{}
+\DoxyCodeLine{00177\ \ \ wxOutputStream\&\ os;}
+\DoxyCodeLine{00178\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00179\ \ \ TwxOutputStreamWrapper(wxOutputStream\&\ \_os)\ :\ os(\_os)\ \{\}}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Write(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ data,\ \textcolor{keywordtype}{size\_t}\ sz)\ \ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordflow}{return}\ os.Write(data,\ sz).LastWrite();}
+\DoxyCodeLine{00182\ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetPosition(uint64\_t\ i)\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ os.SeekO(OlxIStream::CheckSize<off\_t>(i));}
+\DoxyCodeLine{00185\ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{virtual}\ uint64\_t\ GetPosition()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ os.TellO();\ \ \}}
+\DoxyCodeLine{00187\ \ \ \textcolor{keyword}{virtual}\ uint64\_t\ GetSize()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ os.GetSize();\ \ \}}
+\DoxyCodeLine{00188\ \};}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,377 @@
+\doxysection{encodings.\+h}
+\hypertarget{encodings_8h_source}{}\label{encodings_8h_source}\index{sdl/encodings.h@{sdl/encodings.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_encodings\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_encodings\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}eutf8.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ namespace\ encoding\ \ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{struct\ }data\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *base16()\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\_base16\ =\ \textcolor{stringliteral}{"{}0123456789abcdef"{}};}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_base16;}
+\DoxyCodeLine{00020\ \ \ \ \ \}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *base16Capitals()\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\_base16\ =\ \textcolor{stringliteral}{"{}0123456789ABCDEF"{}};}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_base16;}
+\DoxyCodeLine{00024\ \ \ \ \ \}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *base64()\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\_base64\ =}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="{}};}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_base64;}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *base85()\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\_base85\ =}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}0123456789abcdefghijklmnopqrstuvwxyz"{}}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}ABCDEFGHIJKLMNOPQRSTUVWXYZ.-\/:+=\string^!/*?\&<>()[]\{\}@\%\$\#"{}};}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_base85;}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \};}
+\DoxyCodeLine{00037\ \ \ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{struct\ }base64\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0;}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ olxcstr\ rv(CEmptyString(),\ len*4/3+1);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\_base64\ =\ data::base64();}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (len\ >=\ 3)\ \{\ \textcolor{comment}{//\ encode\ full\ blocks\ first}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ rv\ <<\ \_base64[(data[from]\ >>\ 2)\ \&\ 0x3f]\ <<}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \_base64[((data[from]\ <<\ 4)\ \&\ 0x30)\ |\ ((data[from\ +\ 1]\ >>\ 4)\ \&\ 0xf)];}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ rv\ <<\ \_base64[((data[from\ +\ 1]\ <<\ 2)\ \&\ 0x3c)\ |}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ ((data[from\ +\ 2]\ >>\ 6)\ \&\ 0x3)]\ <<\ \_base64[data[from\ +\ 2]\ \&\ 0x3f];}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ from\ +=\ 3;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ len\ -\/=\ 3;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ 0)\ \{\ \textcolor{comment}{//\ pad\ the\ remaining\ characters}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ rv\ <<\ \_base64[(data[from]\ >>\ 2)\ \&\ 0x3f];}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ ==\ 1)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ rv\ <<\ \_base64[(data[from]\ <<\ 4)\ \&\ 0x30]\ <<\ \textcolor{charliteral}{'='};}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ rv\ <<\ \_base64[((data[from]\ <<\ 4)\ \&\ 0x30)\ |\ ((data[from\ +\ 1]\ >>\ 4)\ \&\ 0xf)]\ <<}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \_base64[(data[from\ +\ 1]\ <<\ 2)\ \&\ 0x3c];}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ rv\ <<\ \textcolor{charliteral}{'='};}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ \_index\_of(\textcolor{keywordtype}{char}\ ch)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ >=\ \textcolor{charliteral}{'A'}\ \&\&\ ch\ <=\ \textcolor{charliteral}{'Z'})\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ch\ -\/\ \textcolor{charliteral}{'A'};}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ >=\ \textcolor{charliteral}{'a'}\ \&\&\ ch\ <=\ \textcolor{charliteral}{'z'})\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ch\ -\/\ \textcolor{charliteral}{'a'}\ +\ 26;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ ch\ <=\ \textcolor{charliteral}{'9'})\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ch\ -\/\ \textcolor{charliteral}{'0'}\ +\ 52;}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ ==\ \textcolor{charliteral}{'+'})\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 62;}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ ==\ \textcolor{charliteral}{'/'})\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 63;}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ ==\ \textcolor{charliteral}{'='})\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 64;}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}base64\ char"{}});}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ decode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((len\ \%\ 4)\ !=\ 0)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}base64\ length"{}});}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ olxcstr\ rv;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ len;\ i\ +=\ 4)\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i1\ =\ \_index\_of(data[i]);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i2\ =\ \_index\_of(data[i\ +\ 1]);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i3\ =\ \_index\_of(data[i\ +\ 2]);}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i4\ =\ \_index\_of(data[i\ +\ 3]);}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ ch1\ =\ (char)((i1\ <<\ 2)\ |\ (i2\ >>\ 4));}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ ch2\ =\ (char)(((i2\ \&\ 0xf)\ <<\ 4)\ |\ (i3\ >>\ 2));}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ ch3\ =\ (char)(((i3\ \&\ 0x3)\ <<\ 6)\ |\ i4);}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ rv\ <<\ ch1;}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i3\ !=\ 64)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ rv\ <<\ ch2;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i4\ !=\ 64)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ rv\ <<\ ch3;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ encode((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*)data,\ len);}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ decode(\textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ encode((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*)data,\ len);}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ decode(\textcolor{keyword}{const}\ olxcstr\&\ str)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ decode(str.raw\_str(),\ str.RawLen());}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ olxcstr\&\ str)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ encode(str.raw\_str(),\ str.RawLen());}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \};\ \textcolor{comment}{//\ end\ struct\ base64}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ \ \ \ For\ reference\ see:}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ \ \ \ https://github.com/zeromq/rfc/blob/master/src/spec\_32.c}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{struct\ }base85\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ encode32\_(uint32\_t\ x,\ olxcstr\ \&out)\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ out\ <<\ data::base85()[(x\ /\ (85\ *\ 85\ *\ 85\ *\ 85))\ \%\ 85]}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ <<\ data::base85()[(x\ /\ (85\ *\ 85\ *\ 85))\ \%\ 85]}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ <<\ data::base85()[(x\ /\ (85\ *\ 85))\ \%\ 85]}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ <<\ data::base85()[(x\ /\ 85)\ \%\ 85]}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ <<\ data::base85()[x\ \%\ 85];}
+\DoxyCodeLine{00134\ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ from\ =\ 0;}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ olxcstr\ rv(CEmptyString(),\ len*5/4+2);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\_base85\ =\ data::base85();}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (len\ >=\ 4)\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ uint32\_t\ x\ =\ (uint32\_t)data[from]\ <<\ 24}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ |\ (uint32\_t)\ data[from\ +\ 1]\ <<\ 16}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ |\ (uint32\_t)data[from\ +\ 2]\ <<\ 8}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ |\ (uint32\_t)data[from\ +\ 3];}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ encode32\_(x,\ rv);}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ from\ +=\ 4;}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ len\ -\/=\ 4;}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ 0)\ \{\ \textcolor{comment}{//\ pad\ the\ remaining\ characters}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ uint32\_t\ x\ =\ (uint32\_t)data[from]\ <<\ 24;}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ 1)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ x\ |=\ (uint32\_t)data[from\ +\ 1]\ <<\ 16;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ 2)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ x\ |=\ (uint32\_t)data[from\ +\ 2]\ <<\ 8;}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ encode32\_(x,\ rv);}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ rv\ <<\ len;}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ \_index\_of(\textcolor{keywordtype}{char}\ ch)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \textcolor{keyword}{static}\ int8\_t\ map85\_to256[]\ =\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ 68,-\/1,84,83,82,72,-\/1,75,76,70,65,-\/1,63,62,69,0,1,2,3,4,5,6,7,8,9,64,}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ -\/1,73,66,74,71,81,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ 53,54,55,56,57,58,59,60,61,77,-\/1,78,67,-\/1,-\/1,10,11,12,13,14,15,16,17,}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ 18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,79,-\/1,80}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ ch\ -\/=\ 33;}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ <\ 0\ ||\ map85\_to256[ch]\ <\ 0)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}base85\ char"{}});}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ map85\_to256[ch];}
+\DoxyCodeLine{00173\ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ decode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ ==\ 0)\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ CEmptyString();}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ p\ =\ len\ \%\ 5;}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p\ ==\ 1)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((!olxstr::o\_isdigit(data[len\ -\/\ 1])\ ||\ (data[len\ -\/\ 1]\ -\/\ \textcolor{charliteral}{'0'})\ >\ 3))\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}base85\ padding"{}});}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (p\ !=\ 0)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}base85\ length"{}});}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ olxcstr\ rv(CEmptyString(),\ len*4/5+1);}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ l\_\ =\ (len\ /\ 5)\ *\ 5;}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l\_;\ i\ +=\ 5)\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ uint32\_t\ x\ =\ \_index\_of(data[i]);}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 1;\ j\ <\ 5;\ j++)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ x\ =\ x\ *\ 85\ +\ \_index\_of(data[i\ +\ j]);}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ rv\ <<\ (char)((x>>24)\ \&\ 0xFF)}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ <<\ (char)((x>>16)\ \&\ 0xFF)}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ <<\ (char)((x>>8)\ \&\ 0xFF)}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ <<\ (char)(x\ \&\ 0xFF);}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((len\ \%\ 5)\ ==\ 1)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ rv.SetLength(rv.Length()\ -\/\ 4\ +\ (\textcolor{keywordtype}{size\_t})(data[len-\/1]-\/\textcolor{charliteral}{'0'}));}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00205\ \ \ \ \ \}}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ encode((\textcolor{keyword}{const}\ uint8\_t\ *)data,\ len);}
+\DoxyCodeLine{00208\ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ decode(\textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ decode((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*)data,\ len);}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ decode(\textcolor{keyword}{const}\ olxcstr\&\ str)\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ decode((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*)str.raw\_str(),\ str.RawLen());}
+\DoxyCodeLine{00214\ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ olxcstr\&\ str)\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ encode((\textcolor{keyword}{const}\ uint8\_t\ *)str.raw\_str(),\ str.RawLen());}
+\DoxyCodeLine{00217\ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \};\ \textcolor{comment}{//\ end\ struct\ base85}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{struct\ }base16\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *base16)\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ rv\_len\ =\ len\ *\ 2\ +\ 1;}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *rv\ =\ olx\_malloc<char>(rv\_len);}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ len;\ i++)\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx\ =\ i\ <<\ 1;}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ rv[idx]\ =\ base16[data[i]\ >>\ 4];}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ rv[idx\ +\ 1]\ =\ base16[data[i]\ \&\ 0x0F];}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ rv[rv\_len\ -\/\ 1]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ olxcstr\ s\ =\ olxcstr::FromExternal(rv,\ rv\_len);}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ s.SetLength(s.Length()\ -\/\ 1);}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{00233\ \ \ \ \ \}}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{comment}{//\ inserts\ a\ hyphen\ each\ given\ bytes}}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *base16,}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ hyphen\_each,\ \textcolor{keywordtype}{char}\ hypeh\_char\ =\ \textcolor{charliteral}{'-\/'})}
+\DoxyCodeLine{00237\ \ \ \ \ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hyphen\_each\ ==\ 0)\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ encode(data,\ len,\ base16);}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ rv\_len\ =\ len\ *\ 2\ +\ len\ /\ hyphen\_each\ +\ ((len\%hyphen\_each)\ ==\ 0\ ?\ 0\ :\ 1);}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *rv\ =\ olx\_malloc<char>(rv\_len);}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0,\ j\ =\ 0;\ i\ <\ len;\ i++,\ j\ +=\ 2)\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ rv[j]\ =\ base16[data[i]\ >>\ 4];}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ rv[j\ +\ 1]\ =\ base16[data[i]\ \&\ 0x0F];}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (((i\ +\ 1)\ \%\ hyphen\_each)\ ==\ 0\ \&\&\ (i\ +\ 1)\ <\ len)\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ rv[j\ +\ 2]\ =\ hypeh\_char;}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ j++;}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ rv[rv\_len\ -\/\ 1]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ olxcstr\ s\ =\ olxcstr::FromExternal(rv,\ rv\_len);}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ s.SetLength(s.Length()\ -\/\ 1);}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{00255\ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{comment}{/*\ decodes\ hex\ string\ in\ to\ dest,\ if\ the\ decoder\ encountered\ an\ invalid}}
+\DoxyCodeLine{00257\ \textcolor{comment}{\ \ \ \ char\ it\ returns\ InvalidIndex,\ otherwise\ return\ the\ number\ of\ decoded\ chars,}}
+\DoxyCodeLine{00258\ \textcolor{comment}{\ \ \ \ len\ at\ max}}
+\DoxyCodeLine{00259\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ decode(\textcolor{keyword}{const}\ T\ \&in,\ \textcolor{keywordtype}{char}\ *dest,\ \textcolor{keywordtype}{size\_t}\ dest\_len)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ off=0;}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ len\ =\ in.Length();}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ len;\ i++)\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ olxch\ c\ =\ in[i];}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'9'})\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ c\ -\/=\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (c\ >=\ \textcolor{charliteral}{'a'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'z'})\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ c\ -\/=\ (\textcolor{charliteral}{'a'}\ -\/\ 10);}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (c\ >=\ \textcolor{charliteral}{'A'}\ \&\&\ c\ <=\ \textcolor{charliteral}{'Z'})\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ c\ -\/=\ (\textcolor{charliteral}{'A'}\ -\/\ 10);}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (c\ ==\ \textcolor{charliteral}{'-\/'})\ \{}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ro\ =\ off\ >>\ 1;}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ro\ >=\ dest\_len)\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ dest\_len;}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((off\ \&\ 1)\ ==\ 0)\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ dest[ro]\ =\ c\ <<\ 4;}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ dest[ro]\ |=\ c;}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ off++;}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (off>>1);}
+\DoxyCodeLine{00294\ \ \ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ uint8\_t\ *data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ encode(data,\ len,\ data::base16());}
+\DoxyCodeLine{00297\ \ \ \ \ \}}
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ uint8\_t\ *data,\ \textcolor{keywordtype}{size\_t}\ len,\ \textcolor{keywordtype}{size\_t}\ hyphen\_each,}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ hyphen\_char=\textcolor{charliteral}{'-\/'})}
+\DoxyCodeLine{00300\ \ \ \ \ \{}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ encode(data,\ len,\ data::base16(),}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ hyphen\_each,\ hyphen\_char);}
+\DoxyCodeLine{00303\ \ \ \ \ \}}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ olxcstr\ \&data)\ \{}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ encode((\textcolor{keyword}{const}\ uint8\_t\ *)data.c\_str(),\ data.Length(),\ data::base16());}
+\DoxyCodeLine{00307\ \ \ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ decode(\textcolor{keyword}{const}\ olxcstr\ \&data)\ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ len\ =\ data.Length()\ /\ 2\ +\ 1;}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *bf\ =\ olx\_malloc<char>(len);}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ al\ =\ decode(data,\ bf,\ len);}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olxcstr::FromExternal(bf,\ al,\ len);}
+\DoxyCodeLine{00313\ \ \ \ \ \}}
+\DoxyCodeLine{00314\ \ \ \};\ \textcolor{comment}{//\ end\ struct\ base16}}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \ \ \textcolor{keyword}{struct\ }percent\ \{}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ olxcstr\ us\ =\ TUtf8::Encode(data,\ len).Replace(\textcolor{charliteral}{'\%'},\ \textcolor{stringliteral}{"{}\%25"{}}),}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ rv;}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ rv.SetCapacity(us.Length());}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ us.Length();\ i++)\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (us.CharAt(i)\ <\ 33\ ||\ us.CharAt(i)\ >\ 126)\ \{}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (us.CharAt(i)\ ==\ \textcolor{charliteral}{'\%'})\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ \ i\ +=\ 2;}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ \ \ rv\ <<\ \textcolor{charliteral}{'\%'}\ <<\ data::base16()[((uint8\_t)us.CharAt(i))\ >>\ 4]\ <<}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data::base16()[((uint8\_t)us.CharAt(i))\ \&\ 0x0F];}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ rv\ <<\ us.CharAt(i);}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00336\ \ \ \ \ \}}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ decode(\textcolor{keyword}{const}\ uint8\_t\ *data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ olxcstr\ s;}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ has\_percents\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ s.SetCapacity(len);}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ len;\ i++)\ \{}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data[i]\ ==\ \textcolor{charliteral}{'\%'})\ \{}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ +\ 2\ <\ len)\ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ ch\ =\ olxcstr::o\_atoi<char>((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*)\&data[i\ +\ 1],\ 2,\ 16);}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ !=\ \textcolor{charliteral}{'\%'})\ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ s\ <<\ ch;}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ s\ <<\ \textcolor{stringliteral}{"{}\%25"{}};}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ has\_percents\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ i\ +=\ 2;}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ s\ <<\ (char)data[i];}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ TUtf8::Decode(has\_percents\ ?\ s.Replace(\textcolor{stringliteral}{"{}\%25"{}},\ \textcolor{charliteral}{'\%'})\ :\ s);}
+\DoxyCodeLine{00360\ \ \ \ \ \}}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keyword}{static}\ olxcstr\ encode(\textcolor{keyword}{const}\ olxstr\ \&w)\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ encode(w.u\_str(),\ w.Length());}
+\DoxyCodeLine{00363\ \ \ \ \ \}}
+\DoxyCodeLine{00364\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ decode(\textcolor{keyword}{const}\ olxcstr\ \&data)\ \{}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ decode((\textcolor{keyword}{const}\ uint8\_t\ *)data.c\_str(),\ data.Length());}
+\DoxyCodeLine{00366\ \ \ \ \ \}}
+\DoxyCodeLine{00367\ \ \ \};\ \textcolor{comment}{//\ end\ of\ struct\ percent}}
+\DoxyCodeLine{00368\ \};}
+\DoxyCodeLine{00369\ }
+\DoxyCodeLine{00370\ EndEsdlNamespace()}
+\DoxyCodeLine{00371\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

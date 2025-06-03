@@ -1,0 +1,69 @@
+\doxysection{wxglscene.\+h}
+\hypertarget{wxglscene_8h_source}{}\label{wxglscene_8h_source}\index{gxlib/wxglscene.h@{gxlib/wxglscene.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_xl\_wxglsceneH}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_xl\_wxglsceneH}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxbase.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#if\ defined\ (\_\_WXWIDGETS\_\_)}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}glfont.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}glscene.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}wx/glcanvas.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}wx/wx.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}wx/image.h"{}}}
+\DoxyCodeLine{00020\ BeginGxlNamespace()}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ class\ TwxGlScene:\ public\ \mbox{\hyperlink{classAGlScene}{AGlScene}}\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00024\ \ \ olxstr\ FontsFolder;}
+\DoxyCodeLine{00025\ \ \ TIntList\ FontSizes;}
+\DoxyCodeLine{00026\ \ \ wxGLCanvas\ *Canvas;}
+\DoxyCodeLine{00027\ \ \ wxGLContext\ *Context;}
+\DoxyCodeLine{00028\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//olxstr\ ComposeIdString();}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ DoCreateFont(\mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ fnt,\ \textcolor{keywordtype}{bool}\ half\_size)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ TwxGlScene(\textcolor{keyword}{const}\ olxstr\&\ fontsFolder);}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ \string~TwxGlScene();}
+\DoxyCodeLine{00034\ \ \ \textcolor{comment}{//\ font\ names\ are\ seperated\ by\ the\ '\&'\ char}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{void}\ ExportFont(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ olxstr\&\ fileName)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{//\ imports\ font\ from\ a\ file,\ if\ the\ font\ Name\ exists,\ replaces\ it}}
+\DoxyCodeLine{00037\ \ \ \mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ ImportFont(\mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ fnt)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ \textcolor{comment}{//\ used\ to\ scale\ font\ when\ drawing\ on\ a\ scaled\ surface}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ScaleFonts(\textcolor{keywordtype}{double}\ scale);}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ restores\ the\ font\ sizes\ after\ a\ call\ to\ the\ ScaleFonts}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ RestoreFontScale();}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{virtual}\ olxstr\ ShowFontDialog(\mbox{\hyperlink{classTGlFont}{TGlFont}}*\ glf=NULL,}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ fontDesc=EmptyString());}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Destroy()\ \ \{\ AGlScene::Destroy();\ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{comment}{/*\ the\ canvas\ must\ be\ set\ for\ this\ operation\ to\ succeed.}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ MakeCurrent();}
+\DoxyCodeLine{00050\ \ \ DefPropP(wxGLCanvas\ *,\ Canvas)}
+\DoxyCodeLine{00051\ \ \ DefPropP(wxGLContext\ *,\ Context)}
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{//\ final\ object\ (at\ least\ the\ constructor\ calls\ only\ the\ SetIdString\ of\ THIS\ object}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{class\ }MetaFont\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAGlScene_1_1MetaFont}{AGlScene::MetaFont}}\ \{}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00055\ \ \ \ \ MetaFont(\textcolor{keyword}{const}\ olxstr\&\ fontId)\ \ \{\ \ SetIdString(fontId);\ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetIdString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ SetIdString(\textcolor{keyword}{const}\ olxstr\&\ idstr);}
+\DoxyCodeLine{00058\ \ \ \};}
+\DoxyCodeLine{00059\ \};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ EndGxlNamespace()}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ wxwidgets}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ guard}}
+
+\end{DoxyCode}

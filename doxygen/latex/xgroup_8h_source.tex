@@ -1,0 +1,304 @@
+\doxysection{xgroup.\+h}
+\hypertarget{xgroup_8h_source}{}\label{xgroup_8h_source}\index{gxlib/xgroup.h@{gxlib/xgroup.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_glx\_xgroup\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_glx\_xgroup\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glgroup.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}xatom.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}xbond.h"{}}}
+\DoxyCodeLine{00016\ BeginGxlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{/*\ The\ group\ now\ updates\ the\ atom\ coordinates\ in\ real\ time\ to\ make\ the\ process}}
+\DoxyCodeLine{00019\ \textcolor{comment}{more\ transparent,\ however,\ it\ could\ use\ the\ TEBasis\ in\ the\ following\ way:}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ \ virtual\ bool\ DoTranslate(const\ vec3d\&\ t)\ \{}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ \ \ \ Basis.Translate(t);}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ \ \ return\ true;}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ \}}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ virtual\ bool\ DoRotate(const\ vec3d\&\ vec,\ double\ angle)\ \{}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ \ \ Basis.Rotate(vec,\ angle);}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ \ \ \ return\ true;}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ \ \}}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ \ virtual\ void\ DoDraw(bool\ SelectPrimitives,\ bool\ SelectObjects)\ const\ \{}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ \ \ \ //\ +\ Basis.GetCenter()\ -\/\ in\ the\ next\ call\ to\ orient...}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ \ \ \ olx\_gl::translate(RotationCenter);}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ \ \ \ olx\_gl::orient(Basis);}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ \ \ \ olx\_gl::translate(-\/RotationCenter);}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ \ \ \ ...}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ \ \}}}
+\DoxyCodeLine{00035\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00036\ class\ TXGroup\ :\ public\ \mbox{\hyperlink{classTGlGroup}{TGlGroup}},\ public\ \mbox{\hyperlink{classAGlMouseHandler}{AGlMouseHandler}}\ \{}
+\DoxyCodeLine{00037\ \ \ vec3d\ RotationCenter,\ RotationDir;}
+\DoxyCodeLine{00038\ \ \ vec3d\_alist\ src\_crds;}
+\DoxyCodeLine{00039\ \ \ TXAtomPList\ Atoms;}
+\DoxyCodeLine{00040\ \ \ TXBondPList\ Bonds;}
+\DoxyCodeLine{00041\ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ *rotation\_anchor;}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{double}\ AngleInc,\ AngleAcc;}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{bool}\ mirror,\ MirrororingEnabled;}
+\DoxyCodeLine{00044\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ DoDraw(\textcolor{keywordtype}{bool}\ SelectPrimitives,\ \textcolor{keywordtype}{bool}\ SelectObjects)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{if}\ (GetParentGroup()\ !=\ 0)\ \{\ \ \textcolor{comment}{//\ is\ inside\ a\ group?}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ TGlGroup::DoDraw(SelectPrimitives,\ SelectObjects);}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ ditr=0;\ ditr\ <\ 2;\ ditr++)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ olx\_swap(Atoms[i]-\/>crd(),\ src\_crds[i]);}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Bonds.Count();\ i++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ Bonds[i]-\/>Update();}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ TGlGroup::Count();\ i++)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ G\ =\ GetObject(i);}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!G.IsVisible())\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (G.IsGroup())\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ group\ =\ \textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\textcolor{keyword}{>}(\&G);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (group\ !=\ 0)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ group-\/>Draw(SelectPrimitives,\ SelectObjects);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Select\ =\ (SelectObjects|SelectPrimitives);}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ pc\ =\ G.GetPrimitives().PrimitiveCount();}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ pc;\ j++)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ GlP\ =\ G.GetPrimitives().GetPrimitive(j);}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Select)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ initialised=\textcolor{keyword}{false};}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\&G\ ==\ rotation\_anchor)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (G.Is<\mbox{\hyperlink{classTXAtom}{TXAtom}}>())\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\ \&a\ =\ (\mbox{\hyperlink{classTXAtom}{TXAtom}}\ \&)G;}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a.crd().Equals(RotationCenter,\ 1e-\/3))}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ initialised\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (G.Is<\mbox{\hyperlink{classTXBond}{TXBond}}>())\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTXBond}{TXBond}}\ \&b\ =\ (\mbox{\hyperlink{classTXBond}{TXBond}}\ \&)G;}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (RotationCenter.Equals((b.A().crd()\ +\ b.B().crd())\ /\ 2,\ 1e-\/3))\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ initialised\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (initialised)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TGlGroup::GetGlM().Init(\textcolor{keyword}{false});}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTGlMaterial}{TGlMaterial}}\ glm\ =\ GlP.GetProperties();}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glm.SetFlags(glm.GetFlags()|sglmShininessF|sglmSpecularF);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glm.AmbientF\ *=\ 0.75;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ditr\ ==\ 1)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glm.AmbientF\ =\ glm.AmbientF.GetRGB()\ |\ 0x007070;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glm.AmbientF\ =\ glm.AmbientF.GetRGB()\ |\ 0x700070;}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glm.ShininessF\ =\ 32;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glm.SpecularF\ =\ 0xff00;}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ glm.Init(\textcolor{keyword}{false});}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ Parent.HandleSelection(G,\ GlP,\ SelectObjects,\ SelectPrimitives);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ olx\_gl::pushMatrix();}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (G.Orient(GlP))\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ olx\_gl::popMatrix();}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ GlP.Draw();}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ olx\_gl::popMatrix();}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoTranslate(\textcolor{keyword}{const}\ vec3d\&\ t)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ Atoms[i]-\/>crd()\ +=\ t;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mirror)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ src\_crds[i]\ -\/=\ t;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ RotationCenter\ +=\ t;}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Count();\ i++)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ GetObject(i).Update();}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoRotate(\textcolor{keyword}{const}\ vec3d\&\ vec,\ \textcolor{keywordtype}{double}\ angle)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{if}\ (AngleInc\ !=\ 0)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(AngleAcc\ +=\ angle)\ <\ AngleInc)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ angle\ =\ AngleInc*olx\_sign(AngleAcc);}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ AngleAcc\ =\ 0;}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ mat3d\ m;}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{if}\ (RotationDir.IsNull())\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ olx\_create\_rotation\_matrix(m,\ vec,\ cos(angle),\ sin(angle));}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ olx\_create\_rotation\_matrix(m,\ RotationDir,\ cos(angle),\ sin(angle));}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ Atoms[i]-\/>crd()\ =\ (Atoms[i]-\/>crd()\ -\/\ RotationCenter)*m\ +\ RotationCenter;}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mirror)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ src\_crds[i]\ =\ m*(src\_crds[i]\ -\/\ RotationCenter)\ +\ RotationCenter;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Bonds.Count();\ i++)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ Bonds[i]-\/>Update();}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00158\ \ \ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoZoom(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{bool})\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00162\ \ \ \}}
+\DoxyCodeLine{00163\ \ \ }
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ DoGetRenderer()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetParent();\ \}}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordtype}{bool}\ OnMouseDown(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnMouseDown(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{if}\ (Data.Button\ ==\ smbRight)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Data.HasObject())\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Data.GetObject()-\/>Is<\mbox{\hyperlink{classTXAtom}{TXAtom}}>())\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rotation\_anchor\ ==\ Data.GetObject())\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ rotation\_anchor\ =\ 0;}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ UpdateRotationCenter();}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ rotation\_anchor\ =\ Data.GetObject();}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ RotationCenter\ =\ ((\mbox{\hyperlink{classTXAtom}{TXAtom}}*)Data.GetObject())-\/>crd();}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ RotationDir.Null();}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (Data.GetObject()-\/>Is<\mbox{\hyperlink{classTXBond}{TXBond}}>())\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rotation\_anchor\ ==\ Data.GetObject())\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ rotation\_anchor\ =\ 0;}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ RotationDir.Null();}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ UpdateRotationCenter();}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ rotation\_anchor\ =\ Data.GetObject();}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTXBond}{TXBond}}*\ xb\ =\ (\mbox{\hyperlink{classTXBond}{TXBond}}*)rotation\_anchor;}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ RotationCenter\ =\ (xb-\/>A().crd()\ +\ xb-\/>B().crd())\ /\ 2;}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ RotationDir\ =\ (xb-\/>B().crd()\ -\/\ xb-\/>A().crd()).Normalise();}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnMouseUp(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00201\ \ \ \}}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordtype}{bool}\ OnMouseMove(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keywordflow}{if}\ (MirrororingEnabled\ \&\&\ (Data.Shift\ \&\ sssAlt)\ !=\ 0)\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ mirror\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \mbox{\hyperlink{classTMouseData}{TMouseData}}\ d\ =\ Data;}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ d.Shift\ \&=\ \string~sssAlt;}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnMouseMove(*\textcolor{keyword}{this},\ d);}
+\DoxyCodeLine{00209\ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ mirror\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnMouseMove(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00212\ \ \ \}}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \ \ \textcolor{keywordtype}{bool}\ OnDblClick(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnDblClick(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00216\ \ \ \}}
+\DoxyCodeLine{00217\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00218\ \ \ TXGroup(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ R,\ \textcolor{keyword}{const}\ olxstr\&\ colName)\ :}
+\DoxyCodeLine{00219\ \ \ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}(R,\ colName),}
+\DoxyCodeLine{00220\ \ \ \ \ rotation\_anchor(0),}
+\DoxyCodeLine{00221\ \ \ \ \ AngleInc(0),}
+\DoxyCodeLine{00222\ \ \ \ \ AngleAcc(0),}
+\DoxyCodeLine{00223\ \ \ \ \ mirror(false)}
+\DoxyCodeLine{00224\ \ \ \{}
+\DoxyCodeLine{00225\ \ \ \ \ SetMoveable(\textcolor{keyword}{true});}
+\DoxyCodeLine{00226\ \ \ \ \ SetRoteable(\textcolor{keyword}{true});}
+\DoxyCodeLine{00227\ \ \ \}}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \ \ \textcolor{keywordtype}{void}\ AddAtoms(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TXAtom>}}\&\ atoms)\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ TGlGroup::AddObjects(atoms);}
+\DoxyCodeLine{00231\ \ \ \ \ Atoms.SetCapacity(atoms.Count());}
+\DoxyCodeLine{00232\ \ \ \ \ src\_crds.SetCount(atoms.Count());}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ Bonds.AddAll(Atoms.Add(atoms[i])-\/>GetBonds(),}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structStaticCastAccessor}{StaticCastAccessor<TXBond>}}());}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ src\_crds[i]\ =\ atoms[i]-\/>crd();}
+\DoxyCodeLine{00237\ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ Bonds.ForEach(ACollectionItem::IndexTagSetter());}
+\DoxyCodeLine{00239\ \ \ \ \ Bonds.Pack(}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ olx\_alg::olx\_or(}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ olx\_alg::olx\_not(ACollectionItem::IndexTagAnalyser()),}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structAGDrawObject_1_1FlagsAnalyser}{AGDrawObject::FlagsAnalyser}}(sgdoHidden)}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ );}
+\DoxyCodeLine{00245\ \ \ \ \ TGlGroup::AddObjects(Bonds);}
+\DoxyCodeLine{00246\ \ \ \ \ UpdateRotationCenter();}
+\DoxyCodeLine{00247\ \ \ \}}
+\DoxyCodeLine{00248\ \ \ }
+\DoxyCodeLine{00249\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ TGlGroup::Clear();}
+\DoxyCodeLine{00251\ \ \ \ \ Atoms.Clear();}
+\DoxyCodeLine{00252\ \ \ \ \ Bonds.Clear();}
+\DoxyCodeLine{00253\ \ \ \ \ src\_crds.Clear();}
+\DoxyCodeLine{00254\ \ \ \}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \ \ \textcolor{keywordtype}{void}\ Update()\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ Atoms.Clear();}
+\DoxyCodeLine{00258\ \ \ \ \ Bonds.Clear();}
+\DoxyCodeLine{00259\ \ \ \ \ src\_crds.Clear();}
+\DoxyCodeLine{00260\ \ \ \ \ src\_crds.SetCapacity(TGlGroup::Count());}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ TGlGroup::Count();\ i++)\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ G\ =\ GetObject(i);}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (G.Is<\mbox{\hyperlink{classTXAtom}{TXAtom}}>())\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ src\_crds.Add(Atoms.Add((\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)G)-\/>crd());}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (G.Is<\mbox{\hyperlink{classTXBond}{TXBond}}>())\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ Bonds.Add((\mbox{\hyperlink{classTXBond}{TXBond}}\&)G);}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \ \ \}}
+\DoxyCodeLine{00270\ \ \ \}}
+\DoxyCodeLine{00271\ }
+\DoxyCodeLine{00272\ \ \ \textcolor{keywordtype}{void}\ UpdateRotationCenter()\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ RotationCenter.Null();}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ RotationCenter\ +=\ Atoms[i]-\/>crd();}
+\DoxyCodeLine{00276\ \ \ \ \ \}}
+\DoxyCodeLine{00277\ \ \ \ \ RotationCenter\ /=\ Atoms.Count();}
+\DoxyCodeLine{00278\ \ \ \}}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetRotationCenter()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RotationCenter;\ \}}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \ \ \textcolor{keywordtype}{void}\ SetSrcCoordinates(\textcolor{keyword}{const}\ vec3d\_alist\&\ crds)\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{keywordflow}{if}\ (Atoms.Count()\ ==\ crds.Count())\ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ src\_crds\ =\ crds;}
+\DoxyCodeLine{00285\ \ \ \ \ \}}
+\DoxyCodeLine{00286\ \ \ \}}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \ \ \textcolor{keyword}{const}\ vec3d\_alist\ \&GetSrcCoordinates()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordflow}{return}\ src\_crds;}
+\DoxyCodeLine{00290\ \ \ \}}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \ \ DefPropP(\textcolor{keywordtype}{double},\ AngleInc)}
+\DoxyCodeLine{00293\ \ \ DefPropBIsSet(MirrororingEnabled)}
+\DoxyCodeLine{00294\ \ \ }
+\DoxyCodeLine{00295\ \};}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ EndGxlNamespace()}
+\DoxyCodeLine{00298\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,84 @@
+\doxysection{glmousehandler.\+h}
+\hypertarget{glmousehandler_8h_source}{}\label{glmousehandler_8h_source}\index{glib/glmousehandler.h@{glib/glmousehandler.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_mousehandlerimp\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_mousehandlerimp\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}gdrawobject.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}ebasis.h"{}}}
+\DoxyCodeLine{00015\ BeginGlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ TGlMouseListner\ flags}}
+\DoxyCodeLine{00018\ const\ uint16\_t}
+\DoxyCodeLine{00019\ \ \ glmlMove2d\ \ \ \ =\ 0x0001,}
+\DoxyCodeLine{00020\ \ \ glmlMoveable\ \ =\ 0x0002,}
+\DoxyCodeLine{00021\ \ \ glmlRoteable\ \ =\ 0x0004,}
+\DoxyCodeLine{00022\ \ \ glmlZoomable\ \ =\ 0x0008,}
+\DoxyCodeLine{00023\ \ \ glmlMove2dz\ \ \ =\ 0x0010;\ \ \textcolor{comment}{//\ the\ translation\ is\ divided\ by\ current\ zoom}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ class\ AGlMouseHandler\ \ \{}
+\DoxyCodeLine{00026\ \ \ \textcolor{comment}{//\ default\ handler\ implementation}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{struct\ }EventHandler\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{int}\ SX,\ SY;}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{bool}\ MouseDown,\ MouseHandled;}
+\DoxyCodeLine{00030\ \ \ \ \ EventHandler()\ :\ SX(-\/1),\ SY(-\/1),\ MouseDown(\textcolor{keyword}{false}),\ MouseHandled(\textcolor{keyword}{false})\ \{\}}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnMouseDown(AGlMouseHandler\&\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnMouseUp(AGlMouseHandler\&\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnMouseMove(AGlMouseHandler\&\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnDblClick(AGlMouseHandler\&,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&)\ \ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \}}
+\DoxyCodeLine{00035\ \ \ \}\ handler;}
+\DoxyCodeLine{00036\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00037\ \ \ uint16\_t\ glml\_Flags;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoTranslate(\textcolor{keyword}{const}\ vec3d\&\ t)\ =\ 0;}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoRotate(\textcolor{keyword}{const}\ vec3d\&\ vec,\ \textcolor{keywordtype}{double}\ angle)\ =\ 0;}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoZoom(\textcolor{keywordtype}{double}\ zoom,\ \textcolor{keywordtype}{bool}\ inc)\ =\ 0;}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ DoGetRenderer()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00042\ \ \ EventHandler\&\ GetHandler()\ \{\ \ \textcolor{keywordflow}{return}\ handler;\ \ \}}
+\DoxyCodeLine{00043\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00044\ \ \ AGlMouseHandler()\ :\ glml\_Flags(0)\ \{\}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{virtual}\ \string~AGlMouseHandler()\ \{\}}
+\DoxyCodeLine{00046\ \ \ DefPropBFIsSet(Move2DZ,\ glml\_Flags,\ glmlMove2dz)}
+\DoxyCodeLine{00047\ \ \ DefPropBFIsSet(Move2D,\ glml\_Flags,\ glmlMove2d)}
+\DoxyCodeLine{00048\ \ \ DefPropBFIsSet(Moveable,\ glml\_Flags,\ glmlMoveable)}
+\DoxyCodeLine{00049\ \ \ DefPropBFIsSet(Roteable,\ glml\_Flags,\ glmlRoteable)}
+\DoxyCodeLine{00050\ \ \ DefPropBFIsSet(Zoomable,\ glml\_Flags,\ glmlZoomable)}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ ValidateZoom(\textcolor{keywordtype}{double}\ v)\ \{\ \ \textcolor{keywordflow}{return}\ v\ <\ 0.01\ ?\ 0.01\ :\ v;\ \ \}}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{class\ }AGlMouseHandlerImp:\ \textcolor{keyword}{public}\ AGDrawObject,\ \textcolor{keyword}{public}\ AGlMouseHandler\ \ \{}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ DoGetRenderer()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GetParent();\ \ \}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00058\ \ \ AGlMouseHandlerImp(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ R,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName)\ :}
+\DoxyCodeLine{00059\ \ \ \ \ AGDrawObject(R,\ collectionName)\ \ \{\}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \string~AGlMouseHandlerImp()\ \ \{\}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{bool}\ OnMouseDown(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnMouseDown(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnMouseUp(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{bool}\ OnMouseMove(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnMouseMove(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{bool}\ OnDblClick(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{return}\ GetHandler().OnDblClick(*\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00074\ \ \ \}}
+\DoxyCodeLine{00075\ \};}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ EndGlNamespace()}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

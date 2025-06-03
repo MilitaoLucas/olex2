@@ -1,0 +1,208 @@
+\doxysection{xbase.\+h}
+\hypertarget{xbase_8h_source}{}\label{xbase_8h_source}\index{xlib/xbase.h@{xlib/xbase.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_base\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_base\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ BeginXlibNamespace()\ \ namespace\ xlib\ \{}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ EndXlibNamespace()\ \ \};\(\backslash\)}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ using\ namespace\ xlib;}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ UseXlibNamespace()\ \ using\ namespace\ xlib;}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ GlobalXlibFunction(\ fun\ )\ \ \ \ \ xlib::fun}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ XlibObject(\ obj\ )\ \ \ \ \ xlib::obj}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00023\ BeginXlibNamespace()}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00026\ \ \ sotNone\ \ \ =\ 0x0000,}
+\DoxyCodeLine{00027\ \ \ sotAtom\ \ \ =\ 0x0001,}
+\DoxyCodeLine{00028\ \ \ sotBond\ \ \ =\ 0x0002,}
+\DoxyCodeLine{00029\ \ \ sotHBond\ \ =\ 0x0003,}
+\DoxyCodeLine{00030\ \ \ sotSCBond\ =\ 0x0004,}
+\DoxyCodeLine{00031\ \ \ sotTBond\ \ =\ 0x0005,}
+\DoxyCodeLine{00032\ \ \ sotBBond\ \ =\ 0x0006;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ const\ \textcolor{keywordtype}{double}\ caDefIso\ =\ 0.05;\ \ \textcolor{comment}{//\ default\ atom\ isotropic\ parameter;}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ template\ <class\ Net>\ class\ TSObject:\ public\ virtual\ ACollectionItem\ \{}
+\DoxyCodeLine{00037\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00038\ \ \ Net*\ Network;\ \ \textcolor{comment}{//\ a\ pointer\ to\ parent\ Network}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{short}\ Type;\ \ \textcolor{comment}{//\ object\ type:\ eg\ bond,\ atom,\ etc}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{size\_t}\ OwnerId,\ IdInNetwork;}
+\DoxyCodeLine{00041\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00042\ \ \ TSObject(Net*\ Parent)}
+\DoxyCodeLine{00043\ \ \ \ \ :\ Network(Parent),\ Type(sotNone),\ OwnerId(\string~0)}
+\DoxyCodeLine{00044\ \ \ \{\}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{virtual}\ \string~TSObject()\ \ \{\}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TSObject\&\ S)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ SetType(S.GetType());}
+\DoxyCodeLine{00048\ \ \ \ \ Network\ =\ \&S.GetNetwork();}
+\DoxyCodeLine{00049\ \ \ \ \ SetTag(S.GetTag());}
+\DoxyCodeLine{00050\ \ \ \ \ OwnerId\ =\ S.GetOwnerId();}
+\DoxyCodeLine{00051\ \ \ \ \ IdInNetwork\ =\ S.GetIdInNetwork();}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ DefPropP(\textcolor{keywordtype}{short},\ Type)}
+\DoxyCodeLine{00054\ \ \ \textcolor{comment}{//\ this\ must\ be\ updated\ by\ the\ owner\ container}}
+\DoxyCodeLine{00055\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ OwnerId)}
+\DoxyCodeLine{00056\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ IdInNetwork)}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ Net\&\ GetNetwork()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Network;\ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{void}\ SetNetwork(Net\&\ n)\ \ \{\ \ Network\ =\ \&n;\ \ \}}
+\DoxyCodeLine{00060\ \};}
+\DoxyCodeLine{00061\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ TBasicNode\ -\/\ encapsulate\ basic\ bond}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00064\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Net,\ \textcolor{keyword}{class}\ Node>}
+\DoxyCodeLine{00065\ \textcolor{keyword}{class\ }TBasicBond\ :\ \textcolor{keyword}{public}\ TSObject<Net>\ \{}
+\DoxyCodeLine{00066\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00067\ \ \ Node\ *FA,\ \textcolor{comment}{//\ first\ bond\ atom}}
+\DoxyCodeLine{00068\ \ \ \ \ *FB;\ \textcolor{comment}{//\ second\ bond\ atom}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnAtomSet()\ =\ 0;}
+\DoxyCodeLine{00070\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00071\ \ \ TBasicBond(Net*\ P)}
+\DoxyCodeLine{00072\ \ \ \ \ :\ TSObject<Net>(P),\ FA(0),\ FB(0)}
+\DoxyCodeLine{00073\ \ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ TSObject<Net>::Type\ =\ sotBBond;}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{virtual}\ \string~TBasicBond()\ \{\}}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FA\ !=\ 0\ \&\&\ FB\ !=\ 0;\ \}}
+\DoxyCodeLine{00078\ \ \ Node\&\ A()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *FA;\ \}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{void}\ SetA(Node\&\ a)\ \{\ FA\ =\ \&a;\ \ OnAtomSet();\ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ Node\&\ B()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *FB;\ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{void}\ SetB(Node\&\ a)\ \{\ FB\ =\ \&a;\ \ OnAtomSet();\ \}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ Node\&\ Another(\textcolor{keyword}{const}\ Node\&\ A)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (\&A\ ==\ FA)\ ?\ *FB\ :\ *FA;\ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ Node*\ GetShared(\textcolor{keyword}{const}\ TBasicBond\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{if}\ (FA\ ==\ b.FA\ ||\ FA\ ==\ b.FB)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FA;}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{if}\ (FB\ ==\ b.FA\ ||\ FB\ ==\ b.FB)\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FB;}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<Node>}}\ GetDihedral(\textcolor{keyword}{const}\ TBasicBond\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00096\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<Node>}}\ rv;}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{if}\ (FA-\/>IsConnectedTo(*b.FA))\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ rv\ <<\ FB\ <<\ FA\ <<\ b.FA\ <<\ b.FB;}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (FA-\/>IsConnectedTo(*b.FB))\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ rv\ <<\ FB\ <<\ FA\ <<\ b.FB\ <<\ b.FA;}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (FB-\/>IsConnectedTo(*b.FA))\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ rv\ <<\ FA\ <<\ FB\ <<\ b.FA\ <<\ b.FB;}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (FB-\/>IsConnectedTo(*b.FB))\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ rv\ <<\ FA\ <<\ FB\ <<\ b.FB\ <<\ b.FA;}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<Node>}}\ GetAngle(\textcolor{keyword}{const}\ TBasicBond\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00113\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<Node>}}\ rv;}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{if}\ (FA\ ==\ b.FA)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ rv\ <<\ FB\ <<\ FA\ <<\ b.FB;}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (FA\ ==\ b.FB)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ rv\ <<\ FB\ <<\ FA\ <<\ b.FA;}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (FB\ ==\ b.FA)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ rv\ <<\ FA\ <<\ FB\ <<\ b.FB;}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (FB\ ==\ b.FB)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ rv\ <<\ FA\ <<\ FB\ <<\ b.FA;}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00127\ \ \ \}}
+\DoxyCodeLine{00128\ \};}
+\DoxyCodeLine{00129\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00130\ \textcolor{comment}{//\ TBasicNode\ -\/\ \ basic\ node}}
+\DoxyCodeLine{00131\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00132\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Net,\ \textcolor{keyword}{class}\ NodeType,\ \textcolor{keyword}{class}\ BondType>}
+\DoxyCodeLine{00133\ \textcolor{keyword}{class\ }TBasicNode\ :\ \textcolor{keyword}{public}\ TSObject<Net>\ \{}
+\DoxyCodeLine{00134\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00135\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<NodeType>}}\ Nodes;\ \ \textcolor{comment}{//\ list\ of\ attached\ nodes}}
+\DoxyCodeLine{00136\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<BondType>}}\ Bonds;\ \ \textcolor{comment}{//\ list\ of\ bonds.\ for\ quick\ referencing\ etc}}
+\DoxyCodeLine{00137\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00138\ \ \ TBasicNode(Net*\ N)}
+\DoxyCodeLine{00139\ \ \ \ \ :\ TSObject<Net>(N)}
+\DoxyCodeLine{00140\ \ \ \{\}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{virtual}\ \string~TBasicNode()\ \{\}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ TBasicNode\&\ S)\ \{\}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ Nodes.Clear();}
+\DoxyCodeLine{00147\ \ \ \ \ Bonds.Clear();}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ NodeCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Nodes.Count();\ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{inline}\ NodeType\&\ Node(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Nodes[i];\ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<NodeType>}}\&\ GetNodes()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Nodes;\ \}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{inline}\ NodeType\&\ AddNode(NodeType\&\ N)\ \{\ \textcolor{keywordflow}{return}\ *Nodes.Add(N);\ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsConnectedTo(NodeType\ \&N)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{return}\ Nodes.IndexOf(N)\ !=\ InvalidIndex;}
+\DoxyCodeLine{00156\ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ NullNode(\textcolor{keywordtype}{size\_t}\ i)\ \{\ Nodes[i]\ =\ 0;\ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ NullNode(\textcolor{keyword}{const}\ NodeType\&\ N)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ Nodes.IndexOf(N);}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ Nodes[ind]\ =\ 0;}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00163\ \ \ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ PackNodes()\ \{\ Nodes.Pack();\ \}}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ ClearNodes()\ \{\ Nodes.Clear();\ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ BondCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Bonds.Count();\ \}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{inline}\ BondType\&\ Bond(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *Bonds[i];\ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{inline}\ BondType\&\ AddBond(BondType\&\ N)\ \{\ \textcolor{keywordflow}{return}\ *Bonds.Add(N);\ \}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<BondType>}}\&\ GetBonds()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Bonds;\ \}}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ NullBond(\textcolor{keywordtype}{size\_t}\ i)\ \{\ Bonds[i]\ =\ 0;\ \}}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ NullBond(\textcolor{keyword}{const}\ BondType\&\ N)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ Bonds.IndexOf(N);}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ Bonds[ind]\ =\ 0;}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00179\ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00181\ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ PackBonds()\ \{\ Bonds.Pack();\ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ ClearBonds()\ \{\ Bonds.Clear();\ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keywordtype}{size\_t}\ v)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ Nodes.SetCapacity(v);}
+\DoxyCodeLine{00187\ \ \ \ \ Bonds.SetCapacity(v);}
+\DoxyCodeLine{00188\ \ \ \}}
+\DoxyCodeLine{00189\ \};}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structWBoxInfo}{WBoxInfo}}\ \{}
+\DoxyCodeLine{00193\ \ \ vec3d\ r\_from,\ r\_to,\ \textcolor{comment}{//\ dimensions\ for\ given\ radii}}
+\DoxyCodeLine{00194\ \ \ \ \ s\_from,\ s\_to,\ \ \ \ \ \textcolor{comment}{//\ dimensions\ using\ the\ r\_sfil}}
+\DoxyCodeLine{00195\ \ \ \ \ center,\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ center\ of\ the\ box}}
+\DoxyCodeLine{00196\ \ \ \ \ d;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ three\ values\ for\ the\ planes:\ dist\ =\ p.DotProd(normals[i])\ -\/\ d[i]}}
+\DoxyCodeLine{00197\ \ \ mat3d\ normals;\ \ \ \ \ \ \textcolor{comment}{//\ face\ normals}}
+\DoxyCodeLine{00198\ \};}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ EndXlibNamespace()}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

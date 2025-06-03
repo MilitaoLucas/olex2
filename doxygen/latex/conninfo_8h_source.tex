@@ -1,0 +1,265 @@
+\doxysection{conninfo.\+h}
+\hypertarget{conninfo_8h_source}{}\label{conninfo_8h_source}\index{xlib/conninfo.h@{xlib/conninfo.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olxconn\_info\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olxconn\_info\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}connext.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}list\_joiner.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ BeginXlibNamespace()}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ class\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ class\ ConnInfo\ \ \{}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{struct\ }AtomConnInfo\ :\ \textcolor{keyword}{public}\ CXConnInfoBase\ \ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ atom;}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{bool}\ temporary;}
+\DoxyCodeLine{00029\ \ \ \ \ BondInfoList\ BondsToCreate,\ BondsToRemove;}
+\DoxyCodeLine{00030\ \ \ \ \ AtomConnInfo()}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ :\ atom(NULL),\ temporary(\textcolor{keyword}{false})}
+\DoxyCodeLine{00032\ \ \ \ \ \{\}}
+\DoxyCodeLine{00033\ \ \ \ \ AtomConnInfo(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ :\ atom(\&ca),\ temporary(\textcolor{keyword}{false})}
+\DoxyCodeLine{00035\ \ \ \ \ \{\}}
+\DoxyCodeLine{00036\ \ \ \ \ AtomConnInfo(\textcolor{keyword}{const}\ AtomConnInfo\&\ ci)}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ :\ CXConnInfoBase(ci),\ atom(ci.atom),\ temporary(ci.temporary)}
+\DoxyCodeLine{00038\ \ \ \ \ \{\}}
+\DoxyCodeLine{00039\ \ \ \ \ AtomConnInfo\&\ operator\ =\ (\textcolor{keyword}{const}\ AtomConnInfo\&\ ci)\ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ CXConnInfoBase::operator\ =\ (ci);}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ atom\ =\ ci.atom;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ BondsToCreate\ =\ ci.BondsToCreate;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ BondsToRemove\ =\ ci.BondsToRemove;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ temporary\ =\ ci.temporary;}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ atom);}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00050\ \ \ \ \ PyObject*\ PyExport();}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00052\ \ \ \};}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{struct\ }TypeConnInfo\ :\ \textcolor{keyword}{public}\ CXConnInfoBase\ \ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ atomType;}
+\DoxyCodeLine{00055\ \ \ \ \ TypeConnInfo()\ :\ atomType(NULL)\ \{\}}
+\DoxyCodeLine{00056\ \ \ \ \ TypeConnInfo(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ type)}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ :\ atomType(\&type)}
+\DoxyCodeLine{00058\ \ \ \ \ \{\}}
+\DoxyCodeLine{00059\ \ \ \ \ TypeConnInfo(\textcolor{keyword}{const}\ TypeConnInfo\&\ ci)}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ :\ CXConnInfoBase(ci),\ atomType(ci.atomType)}
+\DoxyCodeLine{00061\ \ \ \ \ \{\}}
+\DoxyCodeLine{00062\ \ \ \ \ TypeConnInfo\&\ operator\ =\ (\textcolor{keyword}{const}\ TypeConnInfo\&\ ti)\ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ CXConnInfoBase::operator\ =\ (ti);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ atomType\ =\ ti.atomType;}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}*\ elm);}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00070\ \ \ \ \ PyObject*\ PyExport();}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00072\ \ \ \};}
+\DoxyCodeLine{00073\ \ \ \mbox{\hyperlink{classolxdict}{olxdict<TCAtom*,\ AtomConnInfo,\ TPointerComparator>}}\ AtomInfo;}
+\DoxyCodeLine{00074\ \ \ \mbox{\hyperlink{classolxdict}{olxdict<const\ cm\_Element*,\ TypeConnInfo,\ TPointerComparator>}}\ TypeInfo;}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classSortedObjectList}{SortedObjectList<int,\ TPrimitiveComparator>}}\ SortedIntList;}
+\DoxyCodeLine{00076\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<SortedIntList>}}\ PartGroups;}
+\DoxyCodeLine{00077\ \ \ \textcolor{comment}{//\ optimised\ for\ search}}
+\DoxyCodeLine{00078\ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<int,\ SortedIntList>}}\ PartGroups\_;}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{const}\ smatd*\ GetCorrectMatrix(\textcolor{keyword}{const}\ smatd*\ eqiv1,\ \textcolor{keyword}{const}\ smatd*\ eqiv2,}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{bool}\ release)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00082\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00083\ \ \ ConnInfo(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ \_rm)\ :\ rm(\_rm)\ \{\}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm;}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \textcolor{comment}{//\ prepares\ a\ list\ of\ extra\ connectivity\ info\ for\ each\ atom\ of\ the\ AUnit}}
+\DoxyCodeLine{00088\ \ \ \mbox{\hyperlink{structCXConnInfo}{CXConnInfo}}\&\ GetConnInfo(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00089\ \ \ \textcolor{comment}{//\ an\ object\ created\ with\ new\ is\ returned\ always}}
+\DoxyCodeLine{00090\ \ \ \mbox{\hyperlink{structCXConnInfo}{CXConnInfo}}\&\ GetConnInfo(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ elm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordtype}{void}\ ProcessConn(TStrList\&\ ins);}
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ the\ atom's\ connetivity\ table\ to\ have\ no\ bonds}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{void}\ Disconnect(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca);}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//\ eqiv\ corresponds\ to\ a2}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ FindBondIndex(\textcolor{keyword}{const}\ BondInfoList\&\ list,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ key,}
+\DoxyCodeLine{00097\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ smatd*\ eqiv);}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{void}\ AddBond(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ smatd*\ eqiv1,}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keyword}{const}\ smatd*\ eqiv2,\ \textcolor{keywordtype}{bool}\ release\_eqiv);}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ RemBond(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ smatd*\ eqiv1,}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{const}\ smatd*\ eqiv2,\ \textcolor{keywordtype}{bool}\ release\_eqiv);}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ AddBond(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ smatd\ \&eqiv1,}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{const}\ smatd\ \&eqiv2);}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ RemBond(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a1,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a2,\ \textcolor{keyword}{const}\ smatd\ \&eqiv1,}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keyword}{const}\ smatd\ \&eqiv2);}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{void}\ SetMaxBondsAndR(\mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a,\ \textcolor{keywordtype}{size\_t}\ maxBonds,\ \textcolor{keywordtype}{double}\ r\ =\ -\/1);}
+\DoxyCodeLine{00107\ \ \ \textcolor{comment}{/*\ combines\ all\ bonds\ to\ create\ and\ delete\ for\ this\ atom\ and\ imposed\ by}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ \ others\ assumes\ that\ all\ atoms\ already\ have\ connectivity\ information\ attached.}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ \ The\ newly\ created\ matrices\ are\ stored\ in\ the\ ml\ -\/\ note\ then\ the\ list\ is}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\ \ deleted\ the\ compiled\ information\ might\ become\ invalid\ (as\ some\ bonds\ will}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\ \ refer\ to\ matrices\ in\ the\ list)}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Compile(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a,\ BondInfoList\&\ toCreate,}
+\DoxyCodeLine{00114\ \ \ \ \ BondInfoList\&\ toDelete,\ smatd\_list\&\ ml);}
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{//.................................................................}}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordtype}{void}\ ProcessFree(\textcolor{keyword}{const}\ TStrList\&\ ins);}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{void}\ ProcessBind(\textcolor{keyword}{const}\ TStrList\&\ ins);}
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//\ checks\ if\ the\ two\ parts\ are\ bound\ by\ BIND}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{bool}\ ArePartsGroupped(\textcolor{keywordtype}{int}\ a,\ \textcolor{keywordtype}{int}\ b)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx\ =\ PartGroups\_.IndexOf(a);}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ PartGroups\_.GetValue(idx).Contains(b);}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \ \{}
+\DoxyCodeLine{00127\ \ \ \ \ AtomInfo.Clear();}
+\DoxyCodeLine{00128\ \ \ \ \ TypeInfo.Clear();}
+\DoxyCodeLine{00129\ \ \ \ \ PartGroups.Clear();}
+\DoxyCodeLine{00130\ \ \ \ \ PartGroups\_.Clear();}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{void}\ ToInsList(TStrList\&\ ins)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \textcolor{keywordtype}{void}\ Assign(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConnInfo}{ConnInfo}}\&\ ci);}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00140\ \ \ PyObject*\ PyExport();}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00142\ \};}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structDistanceGenerator}{DistanceGenerator}}\ \{}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{struct\ }idx\_pair\_t\ :\ \textcolor{keyword}{public}\ olx\_pair\_t<size\_t,\ size\_t>\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ idx\_pair\_t(\textcolor{keywordtype}{size\_t}\ a,\ \textcolor{keywordtype}{size\_t}\ b)}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ :\ olx\_pair\_t<size\_t,\ size\_t>(a,\ b),}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ extra(InvalidIndex)}
+\DoxyCodeLine{00149\ \ \ \ \ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>a\ >\ this-\/>b)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ olx\_swap(this-\/>a,\ this-\/>b);}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ idx\_pair\_t(\textcolor{keywordtype}{size\_t}\ a,\ \textcolor{keywordtype}{size\_t}\ b,\ \textcolor{keywordtype}{size\_t}\ extra)}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ :\ olx\_pair\_t<size\_t,\ size\_t>(a,\ b),}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ extra(extra)}
+\DoxyCodeLine{00157\ \ \ \ \ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>a\ >\ this-\/>b)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ olx\_swap(this-\/>a,\ this-\/>b);}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ idx\_pair\_t\ \&p)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ d\ =\ olx\_cmp(a,\ p.a);}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ ==\ 0)\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ d\ =\ olx\_cmp(b,\ p.b);}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ d;}
+\DoxyCodeLine{00168\ \ \ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{comment}{/*\ could\ cary\ extra\ information,\ like\ source\ dependent\ group.\ Not\ used\ in}}
+\DoxyCodeLine{00170\ \textcolor{comment}{\ \ \ \ comparison}}
+\DoxyCodeLine{00171\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ extra;}
+\DoxyCodeLine{00173\ \ \ \};}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolxset}{olxset<idx\_pair\_t,\ TComparableComparator>}}\ distance\_set\_t;}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolxset}{olxset<size\_t,\ TPrimitiveComparator>}}\ atom\_set\_t;}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolxdict}{olxdict<size\_t,\ size\_t,\ TPrimitiveComparator>}}\ atom\_map\_1\_t;}
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolxdict}{olxdict<size\_t,\ TSizeList,\ TPrimitiveComparator>}}\ atom\_map\_N\_t;}
+\DoxyCodeLine{00178\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<idx\_pair\_t>}}\ pair\_list\_t;}
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<\ pair\_list\_t>}}\ pair\_list\_ptr\_t;}
+\DoxyCodeLine{00180\ \ \ distance\_set\_t\ distances\_12,\ distances\_13;}
+\DoxyCodeLine{00181\ \ \ \textcolor{comment}{/*\ inclusive\ -\/\ if\ true\ only\ atoms\ in\ the\ groups\ are\ considered,\ otherwise\ -\/}}
+\DoxyCodeLine{00182\ \textcolor{comment}{\ \ the\ immediate\ environment\ is\ consedered\ too}}
+\DoxyCodeLine{00183\ \textcolor{comment}{\ \ Note\ that\ then\ generating\ restraints\ in\ non-\/exclusive\ mode\ -\/\ if\ the\ atom\ of}}
+\DoxyCodeLine{00184\ \textcolor{comment}{\ \ a\ 'dependent'\ group\ is\ not\ in\ the\ atom\_map\ -\/\ the\ atom\ of\ the\ reference,\ 0}}
+\DoxyCodeLine{00185\ \textcolor{comment}{\ \ group\ will\ be\ used!}}
+\DoxyCodeLine{00186\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{void}\ Generate(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au,\ \textcolor{keyword}{const}\ atom\_set\_t\ \&atoms,}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordtype}{bool}\ generate\_13,\ \textcolor{keywordtype}{bool}\ inclusive,}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keyword}{const}\ atom\_set\_t\&\ Inclusive\_set,\ \textcolor{keywordtype}{bool}\ skip\_h=\textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ skip\_afixed=\textcolor{keyword}{true});}
+\DoxyCodeLine{00190\ \ \ \textcolor{keywordtype}{void}\ Generate(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au,\ \textcolor{keyword}{const}\ atom\_set\_t\&\ atoms,}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordtype}{bool}\ generate\_13,\ \textcolor{keywordtype}{bool}\ inclusive,\ \textcolor{keywordtype}{bool}\ skip\_h=\textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ skip\_afixed=\textcolor{keyword}{true})}
+\DoxyCodeLine{00192\ \ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ Generate(au,\ atoms,\ generate\_13,\ inclusive,\ atoms,\ skip\_h,\ skip\_afixed);}
+\DoxyCodeLine{00194\ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordtype}{void}\ Generate(\textcolor{keyword}{const}\ TCAtomPList\ atoms,\ \textcolor{keywordtype}{bool}\ generate\_13,\ \textcolor{keywordtype}{bool}\ inclusive,}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordtype}{bool}\ skip\_h\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ skip\_afixed\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00197\ \ \ \textcolor{keywordtype}{void}\ GenerateSADI(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\ \&rm,\ \textcolor{keyword}{const}\ atom\_map\_1\_t\ \&atom\_map,}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordtype}{double}\ esd12,\ \textcolor{keywordtype}{double}\ esd13)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00199\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00200\ \ \ \ \ GenerateSADI\_(distances\_12,\ esd12,\ rm,\ atom\_map);}
+\DoxyCodeLine{00201\ \ \ \ \ GenerateSADI\_(distances\_13,\ esd13,\ rm,\ atom\_map);}
+\DoxyCodeLine{00202\ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordtype}{void}\ GenerateSADI(RefinementModel\ \&rm,\ \textcolor{keyword}{const}\ atom\_map\_N\_t\ \&atom\_map,}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keywordtype}{double}\ esd12,\ \textcolor{keywordtype}{double}\ esd13,\ TStrList*\ log\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00205\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00206\ \ \ \ \ GenerateSADI\_(distances\_12,\ esd12,\ rm,\ atom\_map,\ log);}
+\DoxyCodeLine{00207\ \ \ \ \ GenerateSADI\_(distances\_13,\ esd13,\ rm,\ atom\_map,\ log);}
+\DoxyCodeLine{00208\ \ \ \}}
+\DoxyCodeLine{00209\ \ \ TStrList::const\_list\_type\ GenerateSADIList(\textcolor{keyword}{const}\ TAsymmUnit\&\ au,}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{const}\ atom\_map\_1\_t\&\ atom\_map,\ \textcolor{keywordtype}{double}\ esd12\ =\ 0.02,\ \textcolor{keywordtype}{double}\ esd13\ =\ 0.04)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00211\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00212\ \ \ \ \ TStrList\ rv\ =\ GenerateSADIList\_(distances\_12,\ esd12,\ au,\ atom\_map);}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keywordflow}{return}\ rv.AddAll(GenerateSADIList\_(distances\_13,\ esd13,\ au,\ atom\_map));}
+\DoxyCodeLine{00214\ \ \ \}}
+\DoxyCodeLine{00215\ \ \ TStrList::const\_list\_type\ GenerateSADIList(\textcolor{keyword}{const}\ TAsymmUnit\&\ au,}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keyword}{const}\ atom\_map\_N\_t\&\ atom\_map,\ \textcolor{keywordtype}{double}\ esd12\ =\ 0.02,\textcolor{keywordtype}{double}\ esd13\ =\ 0.04)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00217\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00218\ \ \ \ \ TStrList\ rv\ =\ GenerateSADIList\_(distances\_12,\ esd12,\ au,\ atom\_map);}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keywordflow}{return}\ rv.AddAll(GenerateSADIList\_(distances\_13,\ esd13,\ au,\ atom\_map));}
+\DoxyCodeLine{00220\ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \textcolor{comment}{/*\ Generates\ a\ set\ of\ 1-\/2\ and\ 1-\/3\ DFIXes\ for\ the\ given\ connected\ set\ of\ atoms}}
+\DoxyCodeLine{00222\ \textcolor{comment}{\ \ *\ in\ the\ RefinementModel\ of\ the\ AU\ of\ first\ atom\ in\ the\ set.}}
+\DoxyCodeLine{00223\ \textcolor{comment}{\ \ *\ Set\ esd\ to\ a\ negatove\ value\ to\ suppress\ the\ generation\ of\ the\ related\ DFIXes.}}
+\DoxyCodeLine{00224\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ GenerateDFIX(TCAtomPList\ \&atoms,\ \textcolor{keywordtype}{bool}\ explict\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordtype}{double}\ esd\_12=0.02,\ \textcolor{keywordtype}{double}\ esd\_13=0.04);}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{static}\ TTypeList<pair\_list\_t>::const\_list\_type\ Merge(}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keyword}{const}\ TTypeList<pair\_list\_t>\&\ lists)}
+\DoxyCodeLine{00229\ \ \ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordflow}{return}\ ListJoiner::Join(lists,\ 2,\ DistanceGenerator::idx\_pair\_t(0,\ 0));}
+\DoxyCodeLine{00231\ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \textcolor{comment}{/*\ Generates\ the\ pair\ list\ and\ initialises\ extra\ to\ the\ group\ index\ from}}
+\DoxyCodeLine{00233\ \textcolor{comment}{\ \ the\ distance\ originates.\ This\ is\ helpful\ in\ the\ case\ some\ distances\ in}}
+\DoxyCodeLine{00234\ \textcolor{comment}{\ \ the\ rows\ are\ not\ valid\ and\ values\ could\ be\ shifted}}
+\DoxyCodeLine{00235\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{static}\ TTypeList<pair\_list\_t>::const\_list\_type\ GeneratePairList(}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keyword}{const}\ distance\_set\_t\&\ d,\ \textcolor{keyword}{const}\ TAsymmUnit\&\ au,}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{const}\ atom\_map\_N\_t\&\ atom\_map);}
+\DoxyCodeLine{00239\ \ \ }
+\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//\ non-\/functional\ -\/\ for\ ferrying\ along\ the\ object}}
+\DoxyCodeLine{00241\ \ \ olx\_object\_ptr<atom\_map\_N\_t>\ atom\_map\_N;}
+\DoxyCodeLine{00242\ \ \ olx\_object\_ptr<atom\_map\_1\_t>\ atom\_map\_1;}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ GenerateSADI\_(\textcolor{keyword}{const}\ distance\_set\_t\ \&d,\ \textcolor{keywordtype}{double}\ esd,}
+\DoxyCodeLine{00246\ \ \ \ \ RefinementModel\ \&rm,\ \textcolor{keyword}{const}\ atom\_map\_1\_t\ \&atom\_map);}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ GenerateSADI\_(\textcolor{keyword}{const}\ distance\_set\_t\ \&d,\ \textcolor{keywordtype}{double}\ esd,}
+\DoxyCodeLine{00248\ \ \ \ \ RefinementModel\ \&rm,\ \textcolor{keyword}{const}\ atom\_map\_N\_t\ \&atom\_map,}
+\DoxyCodeLine{00249\ \ \ \ \ TStrList\ *log=0);}
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{static}\ TStrList::const\_list\_type\ GenerateSADIList\_(}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keyword}{const}\ distance\_set\_t\&\ d,\ \textcolor{keywordtype}{double}\ esd,\ \textcolor{keyword}{const}\ TAsymmUnit\&\ au,}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keyword}{const}\ atom\_map\_1\_t\&\ atom\_map);}
+\DoxyCodeLine{00253\ \ \ \textcolor{keyword}{static}\ TStrList::const\_list\_type\ GenerateSADIList\_(}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keyword}{const}\ distance\_set\_t\&\ d,\ \textcolor{keywordtype}{double}\ esd,\ \textcolor{keyword}{const}\ TAsymmUnit\&\ au,}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keyword}{const}\ atom\_map\_N\_t\&\ atom\_map);}
+\DoxyCodeLine{00256\ \};}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ EndXlibNamespace()}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

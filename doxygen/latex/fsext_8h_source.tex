@@ -1,0 +1,115 @@
+\doxysection{fsext.\+h}
+\hypertarget{fsext_8h_source}{}\label{fsext_8h_source}\index{repository/fsext.h@{repository/fsext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_fsext\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_fsext\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}efile.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \#include\ <wx/wx.h>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\ \ \#include\ <wx/filesys.h>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }TZipWrapper;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{struct\ }TMemoryBlock\ \{}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{char}\ *Buffer;}
+\DoxyCodeLine{00024\ \ \ uint32\_t\ Length;}
+\DoxyCodeLine{00025\ \ \ uint64\_t\ DateTime;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{short}\ PersistenceId;\ \textcolor{comment}{//\ dynamic\ property\ -\/\ not\ saved\ to\ a\ file}}
+\DoxyCodeLine{00027\ \ \ TMemoryBlock()\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ Buffer\ =\ NULL;}
+\DoxyCodeLine{00029\ \ \ \ \ Length\ =\ 0;}
+\DoxyCodeLine{00030\ \ \ \ \ DateTime\ =\ 0;}
+\DoxyCodeLine{00031\ \ \ \ \ PersistenceId\ =\ 0;\ \ \textcolor{comment}{//\ not\ persistent}}
+\DoxyCodeLine{00032\ \ \ \}}
+\DoxyCodeLine{00033\ \};}
+\DoxyCodeLine{00034\ \textcolor{comment}{/*\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_*/}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{class\ }TFileHandlerManager\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00037\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TZipWrapper*,\ false>}}\ FZipFiles;}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00039\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TMemoryBlock*,\ false>}}\ FMemoryBlocks;}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ int16\_t\ Version()\ \{\ \textcolor{keywordflow}{return}\ 0x0001;\ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *Signature()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}ODF\_"{}};\ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ SignatureLength()\ \{\ \textcolor{keywordflow}{return}\ 4;\ \}}
+\DoxyCodeLine{00043\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00044\ \ \ \mbox{\hyperlink{structTMemoryBlock}{TMemoryBlock}}\ *GetMemoryBlock(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00045\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00046\ \ \ TFileHandlerManager();}
+\DoxyCodeLine{00047\ \ \ \string~TFileHandlerManager();}
+\DoxyCodeLine{00048\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{static}\ TFileHandlerManager\ *\&Handler();}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{static}\ TStrList\ \&BaseDirs()\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{static}\ TStrList\ l;}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{return}\ l;}
+\DoxyCodeLine{00053\ \ \ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ \_Clear();}
+\DoxyCodeLine{00056\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<IDataInputStream>}}\ \_GetInputStream(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00058\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<wxFSFile>}}\ \_GetFSFileHandler(\ \textcolor{keyword}{const}\ olxstr\ \&FN\ );}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00060\ \ \ \mbox{\hyperlink{structTMemoryBlock}{TMemoryBlock}}\ *\_AddMemoryBlock(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *bf,}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ length,\ \textcolor{keywordtype}{short}\ persistenceId);}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{static}\ olxstr\ LocateFile(\textcolor{keyword}{const}\ olxstr\&\ fn);}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ \_SaveToStream(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}\&\ os,\ \textcolor{keywordtype}{short}\ persistenceMask);}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{void}\ \_LoadFromStream(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ is,\ \textcolor{keywordtype}{short}\ persistenceId);}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsMemoryBlock(\textcolor{keyword}{const}\ olxstr\ \&EM)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ FMemoryBlocks.HasKey(TEFile::UnixPath(EM));}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<IDataInputStream>}}\ GetInputStream(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<wxFSFile>}}\ GetFSFileHandler(\textcolor{keyword}{const}\ olxstr\ \&FN);}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Clear(\textcolor{keywordtype}{short}\ persistenceMask\ =\ \string~0);}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ AddBaseDir(\textcolor{keyword}{const}\ olxstr\&\ bd);}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ AddMemoryBlock(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *bf,\ \textcolor{keywordtype}{size\_t}\ length,}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{short}\ persistenceId);}
+\DoxyCodeLine{00077\ \ \ \textcolor{comment}{/*\ adds\ or\ replaces\ existing\ memory\ block\ and\ allocates\ an\ uninitialised}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ \ storage\ for\ it}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTMemoryBlock}{TMemoryBlock}}\&\ AddMemoryBlock(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{size\_t}\ length,}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{short}\ persistenceId);}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SaveToStream(\mbox{\hyperlink{classIDataOutputStream}{IDataOutputStream}}\&\ os,\ \textcolor{keywordtype}{short}\ persistenceMask);}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ LoadFromStream(\mbox{\hyperlink{classIDataInputStream}{IDataInputStream}}\&\ is,\ \textcolor{keywordtype}{short}\ persistenceId);}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTMemoryBlock}{TMemoryBlock}}*\ FindMemoryBlock(\textcolor{keyword}{const}\ olxstr\&\ bn);}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ Count();}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetBlockName(\textcolor{keywordtype}{size\_t}\ i);}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ GetBlockSize(\textcolor{keywordtype}{size\_t}\ i);}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{static}\ olxstr\ GetBlockDateTime(\textcolor{keywordtype}{size\_t}\ i);}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{short}\ GetPersistenceId(\textcolor{keywordtype}{size\_t}\ i);}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Exists(\textcolor{keyword}{const}\ olxstr\&\ fn);}
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ does\ not\ affect\ the\ file\ system\ -\/\ can\ only\ remove\ a\ cached\ file}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Remove(\textcolor{keyword}{const}\ olxstr\&\ fn);}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{void}\ LibExists(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{void}\ LibDump(TStrObjList\ \&Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options,}
+\DoxyCodeLine{00098\ \ \ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ \&Error);}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ LibClear(TStrObjList\ \&Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options,}
+\DoxyCodeLine{00100\ \ \ \ \ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ \&Error);}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name=EmptyString());}
+\DoxyCodeLine{00102\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{static}\ PyObject\ *PyInit();}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{static}\ olxcstr\ \&ModuleName();}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \};}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

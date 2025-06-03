@@ -1,0 +1,77 @@
+\doxysection{gxfiles.\+h}
+\hypertarget{gxfiles_8h_source}{}\label{gxfiles_8h_source}\index{gxlib/gxfiles.h@{gxlib/gxfiles.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2014\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxlib\_gxfiles\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxlib\_gxfiles\_H}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\#include\ "{}atomregistry.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}xfiles.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}xatom.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}xbond.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}xplane.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}dunitcell.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ BeginGxlNamespace()}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ enum\ \{}
+\DoxyCodeLine{00022\ \ \ GXFILE\_EVT\_OBJETSCREATE\ =\ XFILE\_EVT\_LAST,}
+\DoxyCodeLine{00023\ \ \ GXFILE\_EVT\_FILELOAD,}
+\DoxyCodeLine{00024\ \ \ GXFILE\_EVT\_LAST}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{class\ }TGXFile\ :\ \textcolor{keyword}{public}\ TXFile\ \{}
+\DoxyCodeLine{00028\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ TGXFile(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structXObjectProvider}{XObjectProvider}}\ \&);}
+\DoxyCodeLine{00033\ \ \ \string~TGXFile();}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ TakeOver(TXFile\ \&f);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ TDUnitCell\ *DUnitCell;}
+\DoxyCodeLine{00039\ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ obj\_t,\ \textcolor{keyword}{class}\ act\_t>\ \textcolor{keyword}{class\ }TXObjectProvider}
+\DoxyCodeLine{00042\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTObjectProvider}{TObjectProvider}}<obj\_t>}
+\DoxyCodeLine{00043\ \{}
+\DoxyCodeLine{00044\ \ \ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ renderer;}
+\DoxyCodeLine{00045\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00046\ \ \ TXObjectProvider(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ \_renderer)\ :\ renderer(\_renderer)\ \ \{\}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{virtual}\ obj\_t\&\ New(\mbox{\hyperlink{classTNetwork}{TNetwork}}*\ n)\ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{return}\ TObjectProvider<obj\_t>::AddNew(}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keyword}{new}\ act\_t(n,\ renderer,\ EmptyString()));}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{struct\ }XObjectProvider\ :\ \textcolor{keyword}{public}\ ASObjectProvider\ \{}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGXApp}{TGXApp}}\ \&app;}
+\DoxyCodeLine{00055\ \ \ XObjectProvider(\mbox{\hyperlink{classTGXApp}{TGXApp}}\ \&);}
+\DoxyCodeLine{00056\ \ \ \string~XObjectProvider()\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ atoms.Clear();}
+\DoxyCodeLine{00058\ \ \ \ \ bonds.Clear();}
+\DoxyCodeLine{00059\ \ \ \ \ planes.Clear();}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{delete}\ \&atoms;}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{delete}\ \&bonds;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{delete}\ \&planes;}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTXFile}{TXFile}}\ *CreateXFile()\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTGXFile}{TGXFile}}(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ XObjectProvider(app);\ \}}
+\DoxyCodeLine{00068\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ EndGxlNamespace()}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

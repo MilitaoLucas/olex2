@@ -1,0 +1,536 @@
+\doxysection{reflection.\+h}
+\hypertarget{reflection_8h_source}{}\label{reflection_8h_source}\index{xlib/reflection.h@{xlib/reflection.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_reflection}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_reflection}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}symmspace.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}ecomplex.h"{}}}
+\DoxyCodeLine{00014\ BeginXlibNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ const\ \textcolor{keywordtype}{int}}
+\DoxyCodeLine{00017\ \ \ reflection\_convert\_None\ =\ 0,}
+\DoxyCodeLine{00018\ \ \ reflection\_convert\_F\_to\_Fsq\ =\ 1,}
+\DoxyCodeLine{00019\ \ \ reflection\_convert\_Fsq\_toF\ =\ 2;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ class\ TReflection\ :\ public\ ACollectionItem\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ int16\_t\ NoBatchSet\ =\ 0xFE;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint32\_t}
+\DoxyCodeLine{00025\ \ \ \ \ FlagMask\ =\ 0x000000FF,\ FlagLen\ =\ 8,}
+\DoxyCodeLine{00026\ \ \ \ \ MultMask\ =\ 0x0000FF00,\ MultLen\ =\ 8,\ MultOff\ =\ FlagLen,}
+\DoxyCodeLine{00027\ \ \ \ \ BatchMask\ =\ 0xFFFF0000,\ BatchLen\ =\ 16,\ BatchOff\ =\ FlagLen\ +\ MultLen;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ uint16\_t}
+\DoxyCodeLine{00029\ \ \ \ \ bitCentric\ =\ 0x0001,}
+\DoxyCodeLine{00030\ \ \ \ \ bitAbsent\ =\ 0x0002,}
+\DoxyCodeLine{00031\ \ \ \ \ bitOmitted\ =\ 0x0004;}
+\DoxyCodeLine{00032\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00033\ \ \ vec3i\ hkl;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{double}\ I,\ S;}
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//\ first\ 8\ bits\ -\/\ flags,\ next\ 8\ -\/\ multiplicity,\ then\ batch\ number}}
+\DoxyCodeLine{00036\ \ \ uint32\_t\ Flags;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ \_init(\textcolor{keywordtype}{int}\ batch\ =\ NoBatchSet)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \_reset\_flags(0,\ 1,\ batch);}
+\DoxyCodeLine{00039\ \ \ \ \ SetTag(1);}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ \_reset\_flags(\textcolor{keywordtype}{int}\ flags,\ \textcolor{keywordtype}{int}\ mult,\ \textcolor{keywordtype}{int}\ batch)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ Flags\ =\ flags\ |\ (mult\ <<\ MultOff)\ |\ (batch\ <<\ BatchOff);}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00045\ \ \ TReflection()}
+\DoxyCodeLine{00046\ \ \ \ \ :\ I(0),\ S(0)}
+\DoxyCodeLine{00047\ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \_init();}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ \ \ TReflection(\textcolor{keyword}{const}\ TReflection\&\ r)\ \{\ *\textcolor{keyword}{this}\ =\ r;\ \}}
+\DoxyCodeLine{00051\ \ \ TReflection(\textcolor{keyword}{const}\ TReflection\&\ r,\ \textcolor{keywordtype}{int}\ bacth\_n)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ *\textcolor{keyword}{this}\ =\ r;}
+\DoxyCodeLine{00053\ \ \ \ \ SetBatch(bacth\_n);}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ TReflection(\textcolor{keyword}{const}\ TReflection\&\ r,\ \textcolor{keyword}{const}\ vec3i\&\ \_hkl,\ \textcolor{keywordtype}{int}\ batch\_n\ =\ NoBatchSet)}
+\DoxyCodeLine{00056\ \ \ \ \ :\ hkl(\_hkl),\ I(r.I),\ S(r.S),\ Flags(r.Flags)}
+\DoxyCodeLine{00057\ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ SetBatch(batch\_n);}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \ \ TReflection(\textcolor{keywordtype}{int}\ h,\ \textcolor{keywordtype}{int}\ k,\ \textcolor{keywordtype}{int}\ l)}
+\DoxyCodeLine{00061\ \ \ \ \ :\ hkl(h,\ k,\ l),\ I(0),\ S(0)}
+\DoxyCodeLine{00062\ \ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \_init();}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \ \ TReflection(\textcolor{keyword}{const}\ vec3i\&\ \_hkl)}
+\DoxyCodeLine{00066\ \ \ \ \ :\ hkl(\_hkl),\ I(0),\ S(0)}
+\DoxyCodeLine{00067\ \ \ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \_init();}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \ \ TReflection(\textcolor{keywordtype}{int}\ h,\ \textcolor{keywordtype}{int}\ k,\ \textcolor{keywordtype}{int}\ l,\ \textcolor{keywordtype}{double}\ \_I,\ \textcolor{keywordtype}{double}\ \_S,\ \textcolor{keywordtype}{int}\ batch\ =\ NoBatchSet)}
+\DoxyCodeLine{00071\ \ \ \ \ :\ hkl(h,\ k,\ l),\ I(\_I),\ S(\_S)}
+\DoxyCodeLine{00072\ \ \ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \_init(batch);}
+\DoxyCodeLine{00074\ \ \ \}}
+\DoxyCodeLine{00075\ \ \ TReflection(\textcolor{keywordtype}{int}\ h,\ \textcolor{keywordtype}{int}\ k,\ \textcolor{keywordtype}{int}\ l,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<double,\ double>}}\&\ IS,}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{int}\ batch\ =\ NoBatchSet)}
+\DoxyCodeLine{00077\ \ \ \ \ :\ hkl(h,\ k,\ l),\ I(IS.a),\ S(IS.b)}
+\DoxyCodeLine{00078\ \ \ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \_init(batch);}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ TReflection(\textcolor{keyword}{const}\ vec3i\&\ \_hkl,\ \textcolor{keywordtype}{double}\ \_I,\ \textcolor{keywordtype}{double}\ \_S,\ \textcolor{keywordtype}{int}\ batch\ =\ NoBatchSet)}
+\DoxyCodeLine{00082\ \ \ \ \ :\ hkl(\_hkl),\ I(\_I),\ S(\_S)}
+\DoxyCodeLine{00083\ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \_init(batch);}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ \ \ TReflection(\textcolor{keyword}{const}\ vec3i\&\ \_hkl,\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<double,\ double>}}\&\ IS,}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{int}\ batch\ =\ NoBatchSet)}
+\DoxyCodeLine{00088\ \ \ \ \ :\ hkl(\_hkl),\ I(IS.a),\ S(IS.a)}
+\DoxyCodeLine{00089\ \ \ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \_init(batch);}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{virtual}\ \string~TReflection()\ \{\}}
+\DoxyCodeLine{00093\ \ \ TReflection\&\ operator\ =\ (\textcolor{keyword}{const}\ TReflection\&\ r)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ hkl\ =\ r.hkl;}
+\DoxyCodeLine{00095\ \ \ \ \ I\ =\ r.I;}
+\DoxyCodeLine{00096\ \ \ \ \ S\ =\ r.S;}
+\DoxyCodeLine{00097\ \ \ \ \ Flags\ =\ r.Flags;}
+\DoxyCodeLine{00098\ \ \ \ \ SetTag(r.GetTag());}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{int}\ GetH()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ hkl[0];\ \}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ SetH(\textcolor{keywordtype}{int}\ v)\ \{\ hkl[0]\ =\ v;\ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{int}\ GetK()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ hkl[1];\ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ SetK(\textcolor{keywordtype}{int}\ v)\ \{\ hkl[1]\ =\ v;\ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{int}\ GetL()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ hkl[2];\ \}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{void}\ SetL(\textcolor{keywordtype}{int}\ v)\ \{\ hkl[2]\ =\ v;\ \}}
+\DoxyCodeLine{00107\ \ \ vec3i\&\ GetHkl()\ \{\ \textcolor{keywordflow}{return}\ hkl;\ \}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{const}\ vec3i\&\ GetHkl()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ hkl;\ \}}
+\DoxyCodeLine{00109\ \ \ TReflection\&\ SetHkl(\textcolor{keyword}{const}\ vec3i\&\ \_hkl)\ \{\ hkl\ =\ \_hkl;\ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00110\ \ \ \textcolor{comment}{/*\ returns\ HKL\ identifying\ hash\ for\ individual\ values\ up\ to\ 9\ bits*/}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{static}\ uint32\_t\ CalcHKLHash(\textcolor{keyword}{const}\ vec3i\&\ hkl);}
+\DoxyCodeLine{00112\ \ \ uint32\_t\ GetHKLHash()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CalcHKLHash(hkl);\ \}}
+\DoxyCodeLine{00113\ \ \ \textcolor{comment}{/*\ returns\ HKL\ identifying\ hash\ for\ individual\ values\ up\ to\ 20\ bits*/}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{static}\ uint64\_t\ CalcHKLHash64(\textcolor{keyword}{const}\ vec3i\&\ hkl);}
+\DoxyCodeLine{00115\ \ \ uint64\_t\ GetHKLHash64()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CalcHKLHash64(hkl);\ \}}
+\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00117\ \ \ DefPropP(\textcolor{keywordtype}{double},\ I)}
+\DoxyCodeLine{00118\ \ \ \ \ DefPropP(\textcolor{keywordtype}{double},\ S)}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordtype}{void}\ SetI(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<double,\ double>}}\&\ IS)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ I\ =\ IS.a;}
+\DoxyCodeLine{00121\ \ \ \ \ S\ =\ IS.b;}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{//\ scaling}}
+\DoxyCodeLine{00124\ \ \ TReflection\&\ operator\ *=\ (\textcolor{keywordtype}{double}\ s)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{return}\ Scale(s);}
+\DoxyCodeLine{00126\ \ \ \}}
+\DoxyCodeLine{00127\ \ \ TReflection\&\ Scale(\textcolor{keywordtype}{double}\ s)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ I\ *=\ s;}
+\DoxyCodeLine{00129\ \ \ \ \ S\ *=\ s;}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00133\ \ \ \textcolor{comment}{//\ these\ values\ are\ intialised\ by\ Analyse}}
+\DoxyCodeLine{00134\ \ \ DefPropBFIsSet(Centric,\ Flags,\ bitCentric)}
+\DoxyCodeLine{00135\ \ \ \ \ DefPropBFIsSet(Absent,\ Flags,\ bitAbsent)}
+\DoxyCodeLine{00136\ \ \ \ \ DefPropBFIsSet(Omitted,\ Flags,\ bitOmitted)}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordtype}{bool}\ EqHkl(\textcolor{keyword}{const}\ VC\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{return}\ ((\textcolor{keywordtype}{int})v[0]\ ==\ hkl[0])\ \&\&\ ((int)v[1]\ ==\ hkl[1])\ \&\&}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ ((\textcolor{keywordtype}{int})v[2]\ ==\ hkl[2]);}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordtype}{bool}\ EqNegHkl(\textcolor{keyword}{const}\ VC\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordflow}{return}\ ((\textcolor{keywordtype}{int})v[0]\ ==\ -\/hkl[0])\ \&\&\ ((int)v[1]\ ==\ -\/hkl[1])\ \&\&}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ ((\textcolor{keywordtype}{int})v[2]\ ==\ -\/hkl[2]);}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC,\ \textcolor{keyword}{class}\ MC>}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{static}\ VC\ MulHkl(\textcolor{keyword}{const}\ VC\&\ hkl,\ \textcolor{keyword}{const}\ MC\&\ mat)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{return}\ VC((hkl[0]\ *\ mat[0][0]\ +\ hkl[1]\ *\ mat[1][0]\ +\ hkl[2]\ *\ mat[2][0]),}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ (hkl[0]\ *\ mat[0][1]\ +\ hkl[1]\ *\ mat[1][1]\ +\ hkl[2]\ *\ mat[2][1]),}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ (hkl[0]\ *\ mat[0][2]\ +\ hkl[1]\ *\ mat[1][2]\ +\ hkl[2]\ *\ mat[2][2]));}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{static}\ vec3i\ MulHkl(\textcolor{keyword}{const}\ vec3i\&\ hkl,\ \textcolor{keyword}{const}\ smatd\&\ mat)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{return}\ MulHkl(hkl,\ mat.r);}
+\DoxyCodeLine{00156\ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{//\ generates\ an\ equivalent\ using\ rounding\ on\ the\ resulting\ indexes}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC,\ \textcolor{keyword}{class}\ MC>}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{static}\ vec3i\ MulHklR(\textcolor{keyword}{const}\ VC\&\ hkl,\ \textcolor{keyword}{const}\ MC\&\ mat)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{return}\ vec3i(}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ olx\_round(hkl[0]\ *\ mat[0][0]\ +\ hkl[1]\ *\ mat[1][0]\ +\ hkl[2]\ *\ mat[2][0]),}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ olx\_round(hkl[0]\ *\ mat[0][1]\ +\ hkl[1]\ *\ mat[1][1]\ +\ hkl[2]\ *\ mat[2][1]),}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ olx\_round(hkl[0]\ *\ mat[0][2]\ +\ hkl[1]\ *\ mat[1][2]\ +\ hkl[2]\ *\ mat[2][2]));}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ \ \ vec3i\ operator\ *\ (\textcolor{keyword}{const}\ smatd\&\ mat)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MulHkl(hkl,\ mat.r);\ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MC>\ vec3i\ operator\ *\ (\textcolor{keyword}{const}\ MC\&\ mat)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ MulHkl(hkl,\ mat);}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MC>\ vec3i\ MulHklR(\textcolor{keyword}{const}\ MC\&\ mat)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordflow}{return}\ MulHklR(hkl,\ mat);}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \textcolor{comment}{/*\ replaces\ hkl\ with\ standard\ hkl\ accroding\ to\ provided\ matrices.}}
+\DoxyCodeLine{00173\ \textcolor{comment}{\ \ Also\ performs\ the\ reflection\ analysis,\ namely:}}
+\DoxyCodeLine{00174\ \textcolor{comment}{\ \ Initialises\ Absent\ flag}}
+\DoxyCodeLine{00175\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList>\ \textcolor{keywordtype}{void}\ Standardise(\textcolor{keyword}{const}\ MatList\&\ ml)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ hkl\ =\ Standardise(hkl,\ ml);}
+\DoxyCodeLine{00178\ \ \ \ \ SetAbsent(IsAbsent(hkl,\ ml));}
+\DoxyCodeLine{00179\ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{comment}{/*\ Standardises\ an\ index\ using\ a\ list\ of\ matrices\ and\ if\ idx\ is\ not\ 0\ -\/\ stores}}
+\DoxyCodeLine{00182\ \textcolor{comment}{\ \ \ \ the\ matrix\ index\ in\ it}}
+\DoxyCodeLine{00183\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList>\ \textcolor{keyword}{static}\ vec3i\ Standardise(\textcolor{keyword}{const}\ vec3i\&\ \_hkl,}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keyword}{const}\ MatList\&\ ml,\ \textcolor{keywordtype}{size\_t}*\ idx\ =\ 0)}
+\DoxyCodeLine{00186\ \ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ !=\ 0)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ *idx\ =\ 0;}
+\DoxyCodeLine{00189\ \ \ \ \ \}}
+\DoxyCodeLine{00190\ \ \ \ \ vec3i\ new\_hkl\ =\ \_hkl;}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ml.Count();\ i++)\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ vec3i\ hklv\ =\ \_hkl\ *\ ml[i].r;}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((hklv[2]\ >\ new\_hkl[2])\ ||}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ ((hklv[2]\ ==\ new\_hkl[2])\ \&\&\ (hklv[1]\ >\ new\_hkl[1]))\ ||}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ ((hklv[2]\ ==\ new\_hkl[2])\ \&\&\ (hklv[1]\ ==\ new\_hkl[1])\ \&\&}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ (hklv[0]\ >\ new\_hkl[0])))}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ new\_hkl\ =\ hklv;}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ !=\ 0)\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ *idx\ =\ i;}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keywordflow}{return}\ new\_hkl;}
+\DoxyCodeLine{00205\ \ \ \}}
+\DoxyCodeLine{00206\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList>\ \textcolor{keyword}{static}\ compd\ PhaseShift(\textcolor{keyword}{const}\ vec3i\&\ hkl,}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keyword}{const}\ MatList\&\ ml,\ \textcolor{keywordtype}{size\_t}\ idx)}
+\DoxyCodeLine{00209\ \ \ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ >\ 0\ \&\&\ idx\ <\ ml.Count())\ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ps\ =\ ml[idx].t.DotProd(hkl);}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(ps\ -\/\ olx\_round(ps))\ <\ 0.01)\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ compd::polar(-\/2*M\_PI\ *\ ps);}
+\DoxyCodeLine{00216\ \ \ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}index"{}});}
+\DoxyCodeLine{00218\ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsAbsent(\textcolor{keyword}{const}\ vec3i\&\ hkl,}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keyword}{const}\ MatList\&\ ml)}
+\DoxyCodeLine{00222\ \ \ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ml.Count();\ i++)\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ vec3i\ hklv\ =\ hkl\ *\ ml[i].r;}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hkl\ ==\ hklv)\ \{\ \ \textcolor{comment}{//\ only\ if\ there\ is\ no\ change}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ ps\ =\ ml[i].t.DotProd(hkl);}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(ps\ -\/\ olx\_round(ps))\ >\ 0.01)\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00233\ \ \ \}}
+\DoxyCodeLine{00234\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList>\ \textcolor{keywordtype}{bool}\ IsAbsent(\textcolor{keyword}{const}\ MatList\&\ ml)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordflow}{return}\ IsAbsent(hkl,\ ml);}
+\DoxyCodeLine{00237\ \ \ \}}
+\DoxyCodeLine{00238\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{void}\ Standardise(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ info)\ \ \{}
+\DoxyCodeLine{00240\ \ \ \ \ hkl\ =\ Standardise(hkl,\ info);}
+\DoxyCodeLine{00241\ \ \ \ \ SetAbsent(IsAbsent(hkl,\ info));}
+\DoxyCodeLine{00242\ \ \ \}}
+\DoxyCodeLine{00243\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00244\ \ \ \textcolor{comment}{/*\ Standardies\ an\ index\ and\ keeps\ the\ matrix\ index\ in\ idx.\ Whnd\ idx:}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ \ *\ \ 0\ -\/\ no\ changes,}}
+\DoxyCodeLine{00246\ \textcolor{comment}{\ \ *\ -\/1\ -\/\ inversion\ used}}
+\DoxyCodeLine{00247\ \textcolor{comment}{\ \ *\ >\ 0\ -\/\ a\ matrix\ index\ idx-\/2\ is\ used\ inversion}}
+\DoxyCodeLine{00248\ \textcolor{comment}{\ \ *\ <\ 0\ -\/\ a\ matrix\ index\ abs(idx)-\/2\ is\ used\ with\ inversion}}
+\DoxyCodeLine{00249\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{static}\ vec3i\ Standardise(\textcolor{keyword}{const}\ vec3i\&\ \_hkl,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ info,}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordtype}{int}\ *idx=0);}
+\DoxyCodeLine{00252\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00253\ \ \ \textcolor{keyword}{static}\ compd\ PhaseShift(\textcolor{keyword}{const}\ vec3i\&\ hkl,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ info,}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keywordtype}{int}\ idx)}
+\DoxyCodeLine{00255\ \ \ \{}
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ ==\ 0\ ||\ idx\ ==\ -\/1)\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00258\ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ a\_idx\ =\ olx\_abs(idx);}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keywordflow}{if}\ (a\_idx\ <\ info.matrices.Count()+2)\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ps\ =\ info.matrices[a\_idx-\/2].t.DotProd(hkl);}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(ps\ -\/\ olx\_round(ps))\ <\ 0.01)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ compd::polar(-\/2*M\_PI\ *\ ps);}
+\DoxyCodeLine{00266\ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}index"{}});}
+\DoxyCodeLine{00268\ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00270\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsAbsent(\textcolor{keyword}{const}\ vec3i\&\ hkl,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ info);}
+\DoxyCodeLine{00271\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00272\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ PhaseShift(\textcolor{keyword}{const}\ smatd\&\ m)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ m.t.DotProd(hkl);\ \ \}}
+\DoxyCodeLine{00273\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00274\ \ \ \textcolor{comment}{/*\ analyses\ if\ this\ reflection\ is\ centric,\ systematically\ absent\ and\ its}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ \ multiplicity}}
+\DoxyCodeLine{00276\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00277\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList>\ \textcolor{keywordtype}{void}\ Analyse(\textcolor{keyword}{const}\ MatList\&\ ml)\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \_reset\_flags(0,\ 1,\ GetBatch());}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ml.Count();\ i++)\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ vec3i\ hklv\ =\ MulHkl(hkl,\ ml[i]);}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (EqHkl(hklv))\ \{\ \ \textcolor{comment}{//\ symmetric\ reflection}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ IncMultiplicity();}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsAbsent())\ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ l\ =\ PhaseShift(ml[i]);}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ SetAbsent(olx\_abs(l\ -\/\ olx\_round(l))\ >\ 0.01);}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!IsCentric()\ \&\&\ EqNegHkl(hklv))\ \{\ \textcolor{comment}{//\ centric\ reflection}}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ SetCentric(\textcolor{keyword}{true});}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ \}}
+\DoxyCodeLine{00292\ \ \ \}}
+\DoxyCodeLine{00293\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00294\ \ \ \textcolor{keywordtype}{void}\ Analyse(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\&\ info);}
+\DoxyCodeLine{00295\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00296\ \ \ \textcolor{keywordtype}{bool}\ IsSymmetric(\textcolor{keyword}{const}\ smatd\&\ m)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordflow}{return}\ EqHkl(MulHkl(hkl,\ m));}
+\DoxyCodeLine{00298\ \ \ \}}
+\DoxyCodeLine{00299\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00300\ \ \ \textcolor{keywordtype}{bool}\ IsCentrosymmetric(\textcolor{keyword}{const}\ smatd\&\ m)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordflow}{return}\ EqNegHkl(MulHkl(hkl,\ m));}
+\DoxyCodeLine{00302\ \ \ \}}
+\DoxyCodeLine{00303\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00304\ \ \ \textcolor{keywordtype}{int}\ CompareToWithBatch(\textcolor{keyword}{const}\ TReflection\ \&r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keywordtype}{int}\ res\ =\ GetBatch()\ -\/\ r.GetBatch();\ \ \textcolor{comment}{//\ prioritise\ by\ batch\ number}}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keywordflow}{if}\ (res\ ==\ 0)\ \{}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ res\ =\ CompareTo(r);}
+\DoxyCodeLine{00308\ \ \ \ \ \}}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00310\ \ \ \}}
+\DoxyCodeLine{00311\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ CompareWithbatch(\textcolor{keyword}{const}\ TReflection\ \&a,\ \textcolor{keyword}{const}\ TReflection\ \&b)\ \ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keywordflow}{return}\ a.CompareToWithBatch(b);}
+\DoxyCodeLine{00313\ \ \ \}}
+\DoxyCodeLine{00314\ \ \ \textcolor{comment}{//\ could\ be\ list\ of\ pointers\ or\ list\ of\ const\ pointers}}
+\DoxyCodeLine{00315\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefPList>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortList(RefPList\&\ lst)\ \ \{}
+\DoxyCodeLine{00316\ \ \ \ \ QuickSorter::SortSF(lst,\ \&TReflection::Compare);}
+\DoxyCodeLine{00317\ \ \ \}}
+\DoxyCodeLine{00318\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00319\ \ \ \textcolor{keywordtype}{int}\ CompareTo(\textcolor{keyword}{const}\ TReflection\ \&r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{keywordtype}{int}\ res\ =\ hkl[2]\ -\/\ r.hkl[2];}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordflow}{if}\ (res\ ==\ 0)\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ res\ =\ hkl[1]\ -\/\ r.hkl[1];}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (res\ ==\ 0)\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ res\ =\ hkl[0]\ -\/\ r.hkl[0];}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00326\ \ \ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00328\ \ \ \}}
+\DoxyCodeLine{00329\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ TReflection\ \&a,\ \textcolor{keyword}{const}\ TReflection\ \&b)\ \{}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keywordflow}{return}\ a.CompareTo(b);}
+\DoxyCodeLine{00331\ \ \ \}}
+\DoxyCodeLine{00332\ \ \ \textcolor{comment}{//\ could\ be\ list\ of\ pointers\ or\ list\ of\ const\ pointers}}
+\DoxyCodeLine{00333\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefPList>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortListByIndices(RefPList\&\ lst)\ \{}
+\DoxyCodeLine{00334\ \ \ \ \ QuickSorter::SortSF(lst,\ \&TReflection::Compare);}
+\DoxyCodeLine{00335\ \ \ \}}
+\DoxyCodeLine{00336\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00337\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ vec3i\ \&hkl\_)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00338\ \ \ \ \ \textcolor{keywordflow}{return}\ hkl\ ==\ hkl\_;}
+\DoxyCodeLine{00339\ \ \ \}}
+\DoxyCodeLine{00340\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00341\ \ \ uint8\_t\ GetMultiplicity()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keywordflow}{return}\ (uint8\_t)((Flags\&0xff00)>>MultOff);}
+\DoxyCodeLine{00343\ \ \ \}}
+\DoxyCodeLine{00344\ \ \ \textcolor{keywordtype}{void}\ SetMultiplicity(uint8\_t\ v)\ \ \{}
+\DoxyCodeLine{00345\ \ \ \ \ Flags\ =\ (Flags\&\string~MultMask)|((uint32\_t)v<<MultOff);}
+\DoxyCodeLine{00346\ \ \ \}}
+\DoxyCodeLine{00347\ \ \ \textcolor{keywordtype}{void}\ IncMultiplicity(\textcolor{keywordtype}{int}\ v=1)\ \ \{\ \ SetMultiplicity(GetMultiplicity()+v);\ \ \}}
+\DoxyCodeLine{00348\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00349\ \ \ int16\_t\ GetBatch()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (int16\_t)((Flags\&BatchMask)>>BatchOff);\ \ \}}
+\DoxyCodeLine{00350\ \ \ \textcolor{keywordtype}{void}\ SetBatch(int16\_t\ v)\ \ \{}
+\DoxyCodeLine{00351\ \ \ \ \ Flags\ =\ (Flags\&\string~BatchMask)|((uint32\_t)v<<BatchOff);}
+\DoxyCodeLine{00352\ \ \ \}}
+\DoxyCodeLine{00353\ \ \ \textcolor{keywordtype}{bool}\ IsBatchSet()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetBatch()\ !=\ NoBatchSet;\ \}}
+\DoxyCodeLine{00354\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00355\ \ \ \textcolor{comment}{//\ returns\ a\ string:\ h\ k\ l\ I\ S\ [f]}}
+\DoxyCodeLine{00356\ \ \ TIString\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00357\ \ \ \textcolor{comment}{//writes\ string\ to\ the\ provided\ buffer\ (should\ be\ at\ least\ 29\ bytes\ long)}}
+\DoxyCodeLine{00358\ \ \ \textcolor{keywordtype}{char}*\ ToCBuffer(\textcolor{keywordtype}{char}*\ bf,\ \textcolor{keywordtype}{size\_t}\ sz,\ \textcolor{keywordtype}{double}\ k)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00359\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00360\ \ \ \textcolor{comment}{//\ return\ a\ string\ like:\ tag.\ h\ k\ l\ I\ S\ [f]}}
+\DoxyCodeLine{00361\ \ \ olxstr\ ToNString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00362\ \ \ \ \ olxstr\ Str(olx\_reserve(80));}
+\DoxyCodeLine{00363\ \ \ \ \ Str\ <<\ (IsOmitted()\ ?\ \textcolor{charliteral}{'-\/'}\ :\ \textcolor{charliteral}{'+'})\ <<\ olx\_abs(GetTag())\ <<\ \textcolor{charliteral}{'.'};}
+\DoxyCodeLine{00364\ \ \ \ \ \textcolor{keywordflow}{return}\ (Str.RightPadding(10,\ \textcolor{charliteral}{'\ '},\ \textcolor{keyword}{true})\ <<\ ToString());}
+\DoxyCodeLine{00365\ \ \ \}}
+\DoxyCodeLine{00366\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00367\ \ \ \textcolor{keywordtype}{bool}\ FromString(\textcolor{keyword}{const}\ olxstr\&\ Str);}
+\DoxyCodeLine{00368\ \ \ \textcolor{keywordtype}{bool}\ FromNString(\textcolor{keyword}{const}\ olxstr\&\ str);}
+\DoxyCodeLine{00369\ \ \ \textcolor{comment}{//\ a\ top\ diagonal\ matrix\ is\ expected}}
+\DoxyCodeLine{00370\ \ \ vec3d\ ToCart(\textcolor{keyword}{const}\ mat3d\&\ m)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ToCart(hkl,\ m);\ \ \}}
+\DoxyCodeLine{00371\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00372\ \ \ \textcolor{keyword}{static}\ vec3d\ ToCart(\textcolor{keyword}{const}\ vec3d\&\ hkl,\ \textcolor{keyword}{const}\ mat3d\&\ m)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keywordflow}{return}\ vec3d(}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ hkl[0]*m[0][0],}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ hkl[0]*m[0][1]\ +\ hkl[1]*m[1][1],}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ hkl[0]*m[0][2]\ +\ hkl[1]*m[1][2]\ +\ hkl[2]*m[2][2]}
+\DoxyCodeLine{00377\ \ \ \ \ );}
+\DoxyCodeLine{00378\ \ \ \}}
+\DoxyCodeLine{00379\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00380\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ref>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ GetF(\textcolor{keyword}{const}\ Ref\&\ \_r)\ \{}
+\DoxyCodeLine{00381\ \ \ \ \ \textcolor{keyword}{const}\ TReflection\&\ r\ =\ olx\_ref::get(\_r);}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keywordflow}{return}\ r.GetI()\ <=\ 0\ ?\ 0\ :\ sqrt(r.GetI());}
+\DoxyCodeLine{00383\ \ \ \}}
+\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ GetF(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ \_f)\ \{\ \ \textcolor{keywordflow}{return}\ \_f;\ \ \}}
+\DoxyCodeLine{00385\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ref>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ GetFsq(\textcolor{keyword}{const}\ Ref\&\ \_r)\ \{}
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(\_r).GetI();}
+\DoxyCodeLine{00387\ \ \ \}}
+\DoxyCodeLine{00388\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ GetFsq(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ \_fsq)\ \{\ \ \textcolor{keywordflow}{return}\ \_fsq;\ \ \}}
+\DoxyCodeLine{00389\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ref>\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ vec3i\&\ GetHkl(\textcolor{keyword}{const}\ Ref\&\ \_r)\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(\_r).GetHkl();}
+\DoxyCodeLine{00391\ \ \ \}}
+\DoxyCodeLine{00392\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ vec3i\&\ GetHkl(\textcolor{keyword}{const}\ vec3i\&\ \_hkl)\ \{\ \ \textcolor{keywordflow}{return}\ \_hkl;\ \ \}}
+\DoxyCodeLine{00393\ \ \ \textcolor{keyword}{static}\ vec3i\&\ GetHkl(vec3i\&\ \_hkl)\ \{\ \ \textcolor{keywordflow}{return}\ \_hkl;\ \ \}}
+\DoxyCodeLine{00394\ \ \ \textcolor{comment}{//............................................................................}}
+\DoxyCodeLine{00395\ \ \ \textcolor{comment}{//\ using\ Shelxl-\/like\ conversion}}
+\DoxyCodeLine{00396\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<double,\ double>}}\ F\_as\_Fsq(\textcolor{keywordtype}{double}\ F,\ \textcolor{keywordtype}{double}\ sF)\ \{}
+\DoxyCodeLine{00397\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(F*F,}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ 2\ *\ (olx\_max(0.01,\ sF)*olx\_max(olx\_max(0.01,\ olx\_abs(F)),\ sF)));}
+\DoxyCodeLine{00399\ \ \ \}}
+\DoxyCodeLine{00400\ \ \ \textcolor{comment}{//\ using\ xtal\ 3.7.2\ like\ conversion}}
+\DoxyCodeLine{00401\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<double,\ double>}}\ Fsq\_as\_F(\textcolor{keywordtype}{double}\ Fsq,\ \textcolor{keywordtype}{double}\ sFsq)\ \{}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keywordflow}{if}\ (Fsq\ <=\ 0)\ \{}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(0.0,\ sqrt(sFsq));}
+\DoxyCodeLine{00404\ \ \ \ \ \}}
+\DoxyCodeLine{00405\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ F\ =\ sqrt(Fsq);}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(F,\ sqrt(Fsq\ +\ sFsq)\ -\/\ F);}
+\DoxyCodeLine{00408\ \ \ \ \ \}}
+\DoxyCodeLine{00409\ \ \ \}}
+\DoxyCodeLine{00410\ }
+\DoxyCodeLine{00411\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTReflection_1_1DummyFilter}{DummyFilter}}\ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \textcolor{keywordtype}{bool}\ DoesPass(\textcolor{keyword}{const}\ TReflection\ \&)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00413\ \ \ \};}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \ \ \textcolor{keyword}{struct\ }IoverSigmaFilter\ \{}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keywordtype}{double}\ threshold;}
+\DoxyCodeLine{00417\ \ \ \ \ IoverSigmaFilter(\textcolor{keywordtype}{double}\ threshold)}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ :\ threshold(threshold)}
+\DoxyCodeLine{00419\ \ \ \ \ \{\}}
+\DoxyCodeLine{00420\ \ \ \ \ \textcolor{keywordtype}{bool}\ DoesPass(\textcolor{keyword}{const}\ TReflection\ \&r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r.GetI()\ >\ threshold\ *\ r.GetS();}
+\DoxyCodeLine{00422\ \ \ \ \ \}}
+\DoxyCodeLine{00423\ \ \ \};}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTReflection_1_1DummyWeightCalculator}{DummyWeightCalculator}}\ \{}
+\DoxyCodeLine{00426\ \ \ \ \ \textcolor{keywordtype}{double}\ Calculate(\textcolor{keyword}{const}\ TReflection\ \&r)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00427\ \ \ \};}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \};}
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00431\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIMillerIndexList}{IMillerIndexList}}\ \{}
+\DoxyCodeLine{00432\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00433\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00434\ \ \ \textcolor{keyword}{virtual}\ vec3i\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00435\ \};}
+\DoxyCodeLine{00436\ }
+\DoxyCodeLine{00437\ \textcolor{comment}{//\ generates\ miller\ indices\ in\ given\ range}}
+\DoxyCodeLine{00438\ \textcolor{keyword}{class\ }MillerIndexArray\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIMillerIndexList}{IMillerIndexList}}\ \{}
+\DoxyCodeLine{00439\ \ \ vec3i\ min\_i,\ max\_i;}
+\DoxyCodeLine{00440\ \ \ \textcolor{keywordtype}{size\_t}\ h\_sz,\ hk\_sz,\ hkl\_sz;}
+\DoxyCodeLine{00441\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00442\ \ \ MillerIndexArray(\textcolor{keyword}{const}\ vec3i\&\ mi,\ \textcolor{keyword}{const}\ vec3i\&\ mx)\ :\ min\_i(mi),\ max\_i(mx)\ \{}
+\DoxyCodeLine{00443\ \ \ \ \ h\_sz\ =\ (mx[0]-\/mi[0]+1);}
+\DoxyCodeLine{00444\ \ \ \ \ hk\_sz\ =\ h\_sz*(mx[1]-\/mi[1]+1);}
+\DoxyCodeLine{00445\ \ \ \ \ hkl\_sz\ =\ hk\_sz*(mx[2]-\/mi[2]+1);}
+\DoxyCodeLine{00446\ \ \ \}}
+\DoxyCodeLine{00447\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ hkl\_sz;\ \ \}}
+\DoxyCodeLine{00448\ \ \ vec3i\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00449\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pi\ =\ i/hk\_sz,\ ipi\ =\ i\%hk\_sz;}
+\DoxyCodeLine{00450\ \ \ \ \ \textcolor{keywordflow}{return}\ vec3i(}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ min\_i[0]+(\textcolor{keywordtype}{int})(ipi\%h\_sz),}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ min\_i[1]+(\textcolor{keywordtype}{int})(ipi/h\_sz),}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ min\_i[2]+(\textcolor{keywordtype}{int})pi);}
+\DoxyCodeLine{00454\ \ \ \}}
+\DoxyCodeLine{00455\ \};}
+\DoxyCodeLine{00456\ \textcolor{comment}{//\ could\ be\ wrapper\ around\ list\ of\ vec3i\ or\ TReflection}}
+\DoxyCodeLine{00457\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefList>\ \textcolor{keyword}{class\ }MillerIndexList\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIMillerIndexList}{IMillerIndexList}}\ \{}
+\DoxyCodeLine{00458\ \ \ \textcolor{keyword}{const}\ RefList\&\ src;}
+\DoxyCodeLine{00459\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00460\ \ \ MillerIndexList(\textcolor{keyword}{const}\ RefList\&\ r)}
+\DoxyCodeLine{00461\ \ \ \ \ :\ src(r)}
+\DoxyCodeLine{00462\ \ \ \{\}}
+\DoxyCodeLine{00463\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ src.Count();\ \ \}}
+\DoxyCodeLine{00464\ \ \ vec3i\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TReflection::GetHkl(src[i]);\ \}}
+\DoxyCodeLine{00465\ \};}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00467\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TReflection>}}\ TRefPList;}
+\DoxyCodeLine{00468\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TReflection>}}\ TRefList;}
+\DoxyCodeLine{00469\ }
+\DoxyCodeLine{00470\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structRefListUtil}{RefListUtil}}\ \{}
+\DoxyCodeLine{00471\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00472\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<double,\ double>}}\ FindIRange(\textcolor{keyword}{const}\ list\_t\ \&l)\ \{}
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{keywordflow}{if}\ (l.IsEmpty())\ \{}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_pair::make(0.0,\ 0.0);}
+\DoxyCodeLine{00475\ \ \ \ \ \}}
+\DoxyCodeLine{00476\ \ \ \ \ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<double,\ double>}}\ m;}
+\DoxyCodeLine{00477\ \ \ \ \ m.b\ =\ m.a\ =\ olx\_ref::get(l[0]).GetI();}
+\DoxyCodeLine{00478\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \mbox{\hyperlink{classTReflection}{TReflection}}\ \&r\ =\ olx\_ref::get(l[i]);}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r.GetI()\ >\ m.b)\ \{}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ m.b\ =\ r.GetI();}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r.GetI()\ <\ m.a)\ \{}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ m.a\ =\ r.GetI();}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00486\ \ \ \ \ \}}
+\DoxyCodeLine{00487\ \ \ \ \ \textcolor{keywordflow}{return}\ m;}
+\DoxyCodeLine{00488\ \ \ \}}
+\DoxyCodeLine{00489\ }
+\DoxyCodeLine{00490\ \ \ \textcolor{comment}{//\ considers\ only\ positive\ MAX\ value!}}
+\DoxyCodeLine{00491\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00492\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ CalcScale(\textcolor{keyword}{const}\ list\_t\ \&l)\ \{}
+\DoxyCodeLine{00493\ \ \ \ \ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<double,\ double>}}\ m\ =\ FindIRange(l);}
+\DoxyCodeLine{00494\ \ \ \ \ \textcolor{keywordflow}{return}\ (m.b\ >\ 99999\ ?\ 99999\ /\ m.b\ :\ 1);}
+\DoxyCodeLine{00495\ \ \ \}}
+\DoxyCodeLine{00496\ }
+\DoxyCodeLine{00497\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00498\ \ \ \textcolor{keyword}{static}\ TRefList::const\_list\_type\ Convert(\textcolor{keyword}{const}\ list\_t\ \&l,\ \textcolor{keywordtype}{int}\ ct)\ \{}
+\DoxyCodeLine{00499\ \ \ \ \ TRefList\ rv;}
+\DoxyCodeLine{00500\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \mbox{\hyperlink{classTReflection}{TReflection}}\ \&r\ =\ olx\_ref::get(l[i]);}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \mbox{\hyperlink{classTReflection}{TReflection}}\ \&rc\ =\ rv.AddCopy(r);}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ct\ ==\ reflection\_convert\_F\_to\_Fsq)\ \{}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ rc.SetI(TReflection::F\_as\_Fsq(r.GetI(),\ r.GetS()));}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ct\ ==\ reflection\_convert\_Fsq\_toF)\ \{}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ rc.SetI(TReflection::Fsq\_as\_F(r.GetI(),\ r.GetS()));}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00509\ \ \ \ \ \}}
+\DoxyCodeLine{00510\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00511\ \ \ \}}
+\DoxyCodeLine{00512\ }
+\DoxyCodeLine{00513\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00514\ \ \ \textcolor{keyword}{static}\ list\_t\ \&ConvertInPlace(list\_t\ \&l,\ \textcolor{keywordtype}{int}\ ct)\ \{}
+\DoxyCodeLine{00515\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l.Count();\ i++)\ \{}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \mbox{\hyperlink{classTReflection}{TReflection}}\ \&r\ =\ olx\_ref::get(l[i]);}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ct\ ==\ reflection\_convert\_F\_to\_Fsq)\ \{}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \ \ r.SetI(TReflection::F\_as\_Fsq(r.GetI(),\ r.GetS()));}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ct\ ==\ reflection\_convert\_Fsq\_toF)\ \{}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ r.SetI(TReflection::Fsq\_as\_F(r.GetI(),\ r.GetS()));}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00523\ \ \ \ \ \}}
+\DoxyCodeLine{00524\ \ \ \ \ \textcolor{keywordflow}{return}\ l;}
+\DoxyCodeLine{00525\ \ \ \}}
+\DoxyCodeLine{00526\ \};}
+\DoxyCodeLine{00527\ }
+\DoxyCodeLine{00528\ EndXlibNamespace()}
+\DoxyCodeLine{00529\ }
+\DoxyCodeLine{00530\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

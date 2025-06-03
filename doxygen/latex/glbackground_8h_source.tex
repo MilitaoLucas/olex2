@@ -1,0 +1,52 @@
+\doxysection{glbackground.\+h}
+\hypertarget{glbackground_8h_source}{}\label{glbackground_8h_source}\index{glib/glbackground.h@{glib/glbackground.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_glbackground\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_glbackground\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}gdrawobject.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}gloption.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}glprimitive.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}gltexture.h"{}}}
+\DoxyCodeLine{00017\ BeginGlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ class\ TGlBackground:\ public\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \ \{}
+\DoxyCodeLine{00020\ \ \ TGlOption\ \ FColors[4];}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{bool}\ FCeiling;}
+\DoxyCodeLine{00022\ \ \ \mbox{\hyperlink{classTGlTexture}{TGlTexture}}*\ Texture;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ TGlBackground(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName,\ \textcolor{keywordtype}{bool}\ Ceiling);}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{virtual}\ \string~TGlBackground()\{\ \ \textcolor{keywordflow}{return};\ \};}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName=EmptyString());}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\ \&Max,\ vec3d\ \&Min)\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\};}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{bool}\ Ceiling()\{\ \ \textcolor{keywordflow}{return}\ FCeiling;\ \ \}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{void}\ SetTexture(\mbox{\hyperlink{classTGlTexture}{TGlTexture}}*\ glt);}
+\DoxyCodeLine{00031\ \ \ \mbox{\hyperlink{classTGlTexture}{TGlTexture}}*\ GetTexture()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Texture;\ \ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{void}\ LT(\textcolor{keyword}{const}\ TGlOption\&\ v);}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ RT(\textcolor{keyword}{const}\ TGlOption\&\ v);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{void}\ RB(\textcolor{keyword}{const}\ TGlOption\&\ v);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ LB(\textcolor{keyword}{const}\ TGlOption\&\ v);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{const}\ TGlOption\&\ LT()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FColors[0];\ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{const}\ TGlOption\&\ RT()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FColors[1];\ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{const}\ TGlOption\&\ RB()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FColors[2];\ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{const}\ TGlOption\&\ LB()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FColors[3];\ \ \}}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ EndGlNamespace()}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

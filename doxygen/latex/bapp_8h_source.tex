@@ -1,0 +1,226 @@
+\doxysection{bapp.\+h}
+\hypertarget{bapp_8h_source}{}\label{bapp_8h_source}\index{sdl/bapp.h@{sdl/bapp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_bapp\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_bapp\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}paramlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}os\_util.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}log.h"{}}}
+\DoxyCodeLine{00016\ BeginEsdlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ app\ event\ registry,\ these\ might\ not\ be\ implemented}}
+\DoxyCodeLine{00019\ static\ olxstr}
+\DoxyCodeLine{00020\ \ \ olxappevent\_GL\_DRAW(\textcolor{stringliteral}{"{}GLDRAW"{}}),}
+\DoxyCodeLine{00021\ \ \ olxappevent\_GL\_CLEAR\_STYLES(\textcolor{stringliteral}{"{}GLDSCLEAR"{}}),}
+\DoxyCodeLine{00022\ \ \ olxappevent\_UPDATE\_GUI(\textcolor{stringliteral}{"{}UPDATE\_GUI"{}});}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ class\ TBasicApp:\ public\ virtual\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00025\ \ \ olxstr}
+\DoxyCodeLine{00026\ \textcolor{comment}{/*\ the\ directory\ from\ which\ the\ program\ is\ running\ */}}
+\DoxyCodeLine{00027\ \ \ \ \ BaseDir,}
+\DoxyCodeLine{00028\ \textcolor{comment}{/*\ the\ instance\ specific,\ writable\ directory\ */}}
+\DoxyCodeLine{00029\ \ \ \ \ InstanceDir,}
+\DoxyCodeLine{00030\ \textcolor{comment}{/*\ the\ instance\ independent,\ writable\ directory\ */}}
+\DoxyCodeLine{00031\ \ \ \ \ SharedDir,}
+\DoxyCodeLine{00032\ \ \ \ \ ExeName,}
+\DoxyCodeLine{00033\ \textcolor{comment}{/*\ the\ configuration,\ writable\ directory,\ by\ default\ =\ InstanceDir\ */}}
+\DoxyCodeLine{00034\ \ \ \ \ ConfigDir;}
+\DoxyCodeLine{00035\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTActionQList}{TActionQList}}\ ActionList;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ TBasicApp\ *\&Instance\_()\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{static}\ TBasicApp\ *app\ =\ 0;}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ app;}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLog}{TLog}}\ *Log;}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTEFile}{TEFile}}\ *LogFile;}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{short}\ MaxThreadCount;}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{bool}\ MainFormVisible,\ Profiling,\ BaseDirWriteable;}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ ValidateArgs()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00046\ \ \ TParamList\ Options,\ ArgOptions;}
+\DoxyCodeLine{00047\ \ \ TStrList\ Arguments;}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetPlatformString\_(\textcolor{keywordtype}{bool}\ full)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ HasGUI\_()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{comment}{/*\ this\ list\ of\ actions\ will\ be\ processes\ in\ the\ next\ OnTimer\ call}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ \ (from\ the\ main\ thread)}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00053\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<IOlxAction>}}\ Actions;}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTBasicApp_1_1TActionHandler}{TActionHandler}}\ :\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00057\ \ \ \};}
+\DoxyCodeLine{00058\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00059\ \ \ \textcolor{comment}{//\ the\ file\ name\ of\ the\ application\ with\ full\ path}}
+\DoxyCodeLine{00060\ \ \ TBasicApp(\textcolor{keyword}{const}\ olxstr\&\ AppName,\ \textcolor{keywordtype}{bool}\ read\_options=\textcolor{keyword}{false});}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{virtual}\ \string~TBasicApp();}
+\DoxyCodeLine{00062\ \ \ \textcolor{comment}{//\ only\ options\ what\ were\ passed\ to\ InitArguments}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{const}\ TParamList\&\ GetArgOptions()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ArgOptions;\ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{comment}{//\ all\ options,\ inc\ ones\ from\ option\ files}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{const}\ TParamList\ \&GetOptions()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Options;\ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{const}\ TStrList\ \&GetArguments()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Arguments;\ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{comment}{//\ this\ can\ be\ used\ to\ identify\ version\ changes}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&GetModuleMD5Hash();}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{static}\ olxstr\ GetModuleName();}
+\DoxyCodeLine{00070\ \ \ \textcolor{comment}{/*\ initialises\ Options\ and\ Arguments.\ Options\ either\ contain\ '='\ or\ start}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ \ from\ '-\/'}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ch\_t>}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{void}\ InitArguments(\textcolor{keywordtype}{int}\ argc,\ ch\_t\ **argv)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ ValidateArgs();\ \textcolor{comment}{//\ throw\ an\ excaption\ if\ Arguments\ are\ not\ empty}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;\ i\ <\ argc;\ i++)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ olxstr\ arg\ =\ olxstr::FromCStr(argv[i]);}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (arg.Contains(\textcolor{charliteral}{'='})\ ||\ arg.StartsFrom(\textcolor{charliteral}{'-\/'}))\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ Options.FromString(arg,\ \textcolor{charliteral}{'='});}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ ArgOptions.AddParam(Options.GetName(Options.Count()\ -\/\ 1),}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ Options.GetValue(Options.Count()\ -\/\ 1));}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ Arguments.Add(arg);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{/*The\ options\ are\ read\ when\ the\ object\ is\ constructed,\ calling\ it}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ \ consequently\ will\ update\ the\ values}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordtype}{void}\ ReadOptions(\textcolor{keyword}{const}\ olxstr\ \&fn);}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordtype}{void}\ SaveOptions()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{void}\ UpdateOption(\textcolor{keyword}{const}\ T\ \&name,\ \textcolor{keyword}{const}\ olxstr\ \&value)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ Options.AddParam(name,\ value);}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{comment}{/*\ instance\ dir\ dependents\ on\ the\ location\ of\ the\ executable\ and\ to\ be\ used}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ \ to\ store\ instance\ specific\ data\ -\/\ updates\ etc.\ \ If\ unset,\ the\ value\ is\ equal}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ \ to\ the\ BaseDir}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetSharedDir();}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{/*\ will\ create\ the\ folder\ if\ does\ not\ exist,\ if\ fails\ -\/\ throws}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ \ TFunctionfailedException.\ Shared\ dir\ is\ the\ same\ for\ all\ insatnces\ of}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\ \ Olex2\ disregarding\ the\ location}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ SetSharedDir(\textcolor{keyword}{const}\ olxstr\&\ cd);}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HasSharedDir()\ \{\ \ \textcolor{keywordflow}{return}\ !GetInstance().SharedDir.IsEmpty();\ \ \}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{const}\ olxstr\ \&\_GetInstanceDir()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ InstanceDir.IsEmpty()\ ?\ GetBaseDir()\ :\ InstanceDir;}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ ToClipboard(\textcolor{keyword}{const}\ olxstr\ \&)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keywordtype}{bool}\ ToClipboard(\textcolor{keyword}{const}\ TStrList\ \&text)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{return}\ ToClipboard(text.Text(NewLineSequence()));}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{/*\ If\ the\ path\ is\ absolute\ -\/\ it\ is\ used\ as\ is,\ otherwise\ it\ is\ considered\ to}}
+\DoxyCodeLine{00116\ \textcolor{comment}{\ \ be\ relative\ to\ the\ InstanceDir}}
+\DoxyCodeLine{00117\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{void}\ SetConfigdDir(\textcolor{keyword}{const}\ olxstr\ \&path);}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{bool}\ HasConfigDir()\ \{\ \textcolor{keywordflow}{return}\ !ConfigDir.IsEmpty();\ \}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{const}\ olxstr\ \&GetConfigDir()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ ConfigDir.IsEmpty()\ ?\ \_GetInstanceDir()\ :\ ConfigDir;}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{/*\ sets\ instance\ dir\ -\/\ folder\ dependent\ on\ the\ exe\ location}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00125\ \ \ \textcolor{keywordtype}{void}\ SetInstanceDir(\textcolor{keyword}{const}\ olxstr\ \&d);}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTLog}{TLog}}\&\ GetLog()\ \ \{\ \ \textcolor{keywordflow}{return}\ *GetInstance().Log;\ \ \}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structTLog_1_1LogEntry}{TLog::LogEntry}}\ NewLogEntry(\textcolor{keywordtype}{int}\ evt\_type=logDefault,}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{bool}\ annotate=\textcolor{keyword}{false},\ \textcolor{keyword}{const}\ olxstr\ \&location=EmptyString())}
+\DoxyCodeLine{00129\ \ \ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInstance().Log-\/>NewEntry(evt\_type,\ annotate,\ location);}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{comment}{/*\ if\ var\_name\ is\ not\ NULL,\ tries\ to\ get\ its\ value\ and\ combine\ with\ file\ name}}
+\DoxyCodeLine{00133\ \textcolor{comment}{\ \ of\ path\ if\ either\ are\ empty\ -\/\ the\ curent\ folder\ is\ used\ with\ exename}}
+\DoxyCodeLine{00134\ \textcolor{comment}{\ \ 'unknown.exe'}}
+\DoxyCodeLine{00135\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{static}\ olxstr\ GuessBaseDir(\textcolor{keyword}{const}\ olxstr\&\ path,}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ var\_name=EmptyString());}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetBaseDir()\ \ \{\ \ \textcolor{keywordflow}{return}\ GetInstance().BaseDir;\ \ \}}
+\DoxyCodeLine{00139\ \ \ \textcolor{comment}{/*\ instance\ dir\ dependents\ on\ the\ location\ of\ the\ executable\ and\ to\ be\ used}}
+\DoxyCodeLine{00140\ \textcolor{comment}{\ \ to\ store\ instance\ specific\ data\ -\/\ updates\ etc.\ \ If\ unset,\ the\ value\ is\ equal}}
+\DoxyCodeLine{00141\ \textcolor{comment}{\ \ to\ the\ BaseDir}}
+\DoxyCodeLine{00142\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetInstanceDir()\ \ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInstance().\_GetInstanceDir();}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \textcolor{comment}{//\ this\ resets\ the\ ExeName\ to\ the\ file\ name\ of\ the\ bd}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ SetBaseDir(\textcolor{keyword}{const}\ olxstr\&\ bd);}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsBaseDirWriteable()\ \{\ \ \textcolor{keywordflow}{return}\ GetInstance().BaseDirWriteable;\ \ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{comment}{//\ valid\ only\ if\ correct\ string\ is\ passed\ to\ the\ constructor}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetExeName()\ \ \{\ \ \textcolor{keywordflow}{return}\ GetInstance().ExeName;\ \ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTBasicApp}{TBasicApp}}\&\ GetInstance()\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{if}\ (Instance\_()\ ==\ NULL)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Uninitialised\ application\ layer..."{}});}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{return}\ *Instance\_();}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HasInstance();}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HasGUI()\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInstance().HasGUI\_();}
+\DoxyCodeLine{00162\ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{comment}{/*\ Creates\ a\ log\ file,\ just\ a\ name\ is\ expected:\ like\ olex2\ or\ olex2c,\ the}}
+\DoxyCodeLine{00164\ \textcolor{comment}{\ \ timestamp\ will\ be\ appended\ to\ make\ it\ 'unique'.\ If\ the\ name\ is\ not\ an}}
+\DoxyCodeLine{00165\ \textcolor{comment}{\ \ absolute\ path\ -\/\ the\ InsatnceDir\ is\ used}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00167\ \ \ \textcolor{keywordtype}{bool}\ CreateLogFile(\textcolor{keyword}{const}\ olxstr\ \&file\_name);}
+\DoxyCodeLine{00168\ \ \ \mbox{\hyperlink{classTEFile}{TEFile}}\ *GetLogFile()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ LogFile;\ \}}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{/*Removes\ .log\ files\ in\ the\ given\ folder,\ if\ the\ dir\_name\ is\ empty\ -\/\ the}}
+\DoxyCodeLine{00170\ \textcolor{comment}{\ \ InstanceDir\ is\ cleaned\ up}}
+\DoxyCodeLine{00171\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordtype}{void}\ CleanupLogs(\textcolor{keyword}{const}\ olxstr\ \&dir\_name=EmptyString());}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ NewActionQueue(\textcolor{keyword}{const}\ olxstr\&\ Name);}
+\DoxyCodeLine{00175\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}*\ FindActionQueue(\textcolor{keyword}{const}\ olxstr\&\ Name)\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{return}\ ActionList.Find(Name);}
+\DoxyCodeLine{00177\ \ \ \}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTActionQList}{TActionQList}}\&\ GetActionList()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ActionList;\ \}}
+\DoxyCodeLine{00180\ \ \ \textcolor{comment}{//\ implementation\ might\ consider\ drawing\ scene,\ update\ GUI\ etc..}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Update()\ \ \{\}}
+\DoxyCodeLine{00182\ \ \ \textcolor{comment}{/*\ the\ action\ must\ be\ allocated\ on\ the\ heap}}
+\DoxyCodeLine{00183\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ PostAction(\mbox{\hyperlink{classIOlxAction}{IOlxAction}}\ *a);}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsProfiling()\ \ \{\ \ \textcolor{keywordflow}{return}\ GetInstance().Profiling;\ \ \}}
+\DoxyCodeLine{00187\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SetProfiling(\textcolor{keywordtype}{bool}\ v)\ \ \{\ \ GetInstance().Profiling\ =\ v;\ \ \}}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ GetArgCount()\ \ \{\ \ \textcolor{keywordflow}{return}\ GetInstance().Arguments.Count();\ \ \}}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetArg(\textcolor{keywordtype}{size\_t}\ i)\ \ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInstance().Arguments[i];}
+\DoxyCodeLine{00192\ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \textcolor{comment}{/*\ returns\ WIN32,\ WIN64,\ LINUX32,\ LINUX64,\ MAC32\ etc.\ If\ full\ is\ true\ the}}
+\DoxyCodeLine{00194\ \textcolor{comment}{\ \ used\ package\ versions\ are\ also\ included}}
+\DoxyCodeLine{00195\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{static}\ olxstr\ GetPlatformString(\textcolor{keywordtype}{bool}\ full)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInstance().GetPlatformString\_(full);}
+\DoxyCodeLine{00198\ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Is64BitCompilation();}
+\DoxyCodeLine{00200\ \ \ \mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ lib\_name=\textcolor{stringliteral}{"{}app"{}});}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \textcolor{comment}{//\ application\ layer\ critical\ section}}
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ EnterCriticalSection()\ \ \{\ \ GetCriticalSection().enter();\ \ \}}
+\DoxyCodeLine{00204\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ LeaveCriticalSection()\ \ \{\ \ GetCriticalSection().leave();\ \ \}}
+\DoxyCodeLine{00205\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\&\ GetCriticalSection()\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ app\_cs;}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordflow}{return}\ app\_cs;}
+\DoxyCodeLine{00208\ \ \ \}}
+\DoxyCodeLine{00209\ \ \ DefPropP(\textcolor{keywordtype}{short},\ MaxThreadCount)}
+\DoxyCodeLine{00210\ \ \ \textcolor{comment}{/*\ Note\ that\ objects\ which\ may\ live\ after\ the\ application\ end\ (like\ the\ ones}}
+\DoxyCodeLine{00211\ \textcolor{comment}{\ \ places\ into\ the\ garbage\ collector\ -\/\ should\ check\ that\ an\ application\ instance}}
+\DoxyCodeLine{00212\ \textcolor{comment}{\ \ exsists\ before\ using\ any\ of\ the\ actions\ queues}}
+\DoxyCodeLine{00213\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00214\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnProgress;}
+\DoxyCodeLine{00215\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnTimer;}
+\DoxyCodeLine{00216\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnIdle;}
+\DoxyCodeLine{00217\ \};}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ EndEsdlNamespace()}
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

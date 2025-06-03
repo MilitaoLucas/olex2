@@ -1,0 +1,59 @@
+\doxysection{testsuit.\+h}
+\hypertarget{testsuit_8h_source}{}\label{testsuit_8h_source}\index{sdl/testsuit.h@{sdl/testsuit.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_test\_suit\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_test\_suit\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{/*\ a\ very\ simple\ test\ functions\ wrapper.\ */}}
+\DoxyCodeLine{00016\ struct\ OlxTests\ \ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{struct\ }ITestFunc\ \ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ run(OlxTests\&)\ =\ 0;}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~ITestFunc()\{\}}
+\DoxyCodeLine{00021\ \ \ \};}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{struct\ }TestSFunc\ :\ \textcolor{keyword}{public}\ ITestFunc\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ void\ (*f)(OlxTests\&);}
+\DoxyCodeLine{00024\ \ \ \ \ TestSFunc(\ \textcolor{keywordtype}{void}\ (*\_f)(OlxTests\&)\ )\ :\ f(\_f)\ \ \{\}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ run(OlxTests\&\ t)\ \{\ \ (*f)(t);\ \ \}}
+\DoxyCodeLine{00026\ \ \ \};}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ base>\ \textcolor{keyword}{struct\ }TestMFunc\ :\ \textcolor{keyword}{public}\ ITestFunc\ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ base*\ instance;}
+\DoxyCodeLine{00029\ \ \ \ \ void\ (base::*f)(OlxTests\&);}
+\DoxyCodeLine{00030\ \ \ \ \ TestMFunc(base*\ \_instance,\ \textcolor{keywordtype}{void}\ (base::*\_f)(OlxTests\&)\ )}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ :\ instance(\_instance),\ f(\_f)}
+\DoxyCodeLine{00032\ \ \ \ \ \{\}}
+\DoxyCodeLine{00033\ \ \ \ \ \string~TestMFunc()\ \ \{\ \ \textcolor{keyword}{delete}\ instance;\ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ run(OlxTests\&\ t)\ \ \{\ (instance-\/>*f)(t);\ \ \}}
+\DoxyCodeLine{00035\ \ \ \};}
+\DoxyCodeLine{00036\ \textcolor{keyword}{public}:\ \ \textcolor{comment}{//\ test\ functions\ can\ use\ this\ to\ set\ printed\ information}}
+\DoxyCodeLine{00037\ \ \ olxstr\ description;}
+\DoxyCodeLine{00038\ \ \ OlxTests()\ \ \{\}}
+\DoxyCodeLine{00039\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<ITestFunc>}}\ tests;}
+\DoxyCodeLine{00040\ \ \ OlxTests\&\ Add(\textcolor{keywordtype}{void}\ (*f)(OlxTests\&))\ \ \{}
+\DoxyCodeLine{00041\ \ \ \ \ tests.Add(\ \textcolor{keyword}{new}\ TestSFunc(f));}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ base>}
+\DoxyCodeLine{00045\ \ \ OlxTests\&\ Add(base*\ instance,\ \textcolor{keywordtype}{void}\ (base::*f)(OlxTests\&)\ )\ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ tests.Add(\textcolor{keyword}{new}\ TestMFunc<base>(instance,\ f));}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ run();}
+\DoxyCodeLine{00050\ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ EndEsdlNamespace()}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,82 @@
+\doxysection{type\+\_\+splitter.\+h}
+\hypertarget{type__splitter_8h_source}{}\label{type__splitter_8h_source}\index{sdl/type\_splitter.h@{sdl/type\_splitter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }esdl\ \{}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \ \ \textcolor{comment}{/*\ Allows\ to\ call\ different\ functions\ on\ primitive\ functions\ and\ objects.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ \ See\ string\ implemenation\ for\ usage.\ The\ main\ rationale\ behind\ is\ that\ it\ was\ not}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ possible\ to\ split\ IOlxObject\ from\ the\ generic\ template\ for\ primitive\ types...}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1primitive__type__splitter}{primitive\_type\_splitter}}\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ functor\_t>}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{struct\ }primitive\_type\_splitter\_\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \textcolor{keyword}{const}\ functor\_t\&\ functor;}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ primitive\_type\_splitter\_(\textcolor{keyword}{const}\ functor\_t\&\ functor)}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ :\ functor(functor)}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ x\_t>}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ x\_t\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ functor.c\_functor(v);}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ call(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{double}\&\ v)\textcolor{keyword}{\ const\ }\{\ functor.p\_functor(v);\ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ functor\_t>}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structesdl_1_1primitive__type__splitter_1_1primitive__type__splitter__}{primitive\_type\_splitter\_<functor\_t>}}\ make(\textcolor{keyword}{const}\ functor\_t\&\ f)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structesdl_1_1primitive__type__splitter_1_1primitive__type__splitter__}{primitive\_type\_splitter\_<functor\_t>}}(f);}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__float}{olx\_is\_float}}\ \{\ \ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{false};\ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__float}{olx\_is\_float}}<float>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__float}{olx\_is\_float}}<double>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__float}{olx\_is\_float}}<long\ double>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{false};\ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<bool>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<char>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<short>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<int>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<long>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<long\ long>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<unsigned\ char>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<unsigned\ short>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<unsigned\ int>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<unsigned\ long>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<unsigned\ long\ long>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<float>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<double>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structesdl_1_1olx__is__primitive}{olx\_is\_primitive}}<long\ double>\ \{\ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\ =\ \textcolor{keyword}{true};\ \};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \}\ \textcolor{comment}{//\ end\ of\ namespace\ esdl}}
+
+\end{DoxyCode}

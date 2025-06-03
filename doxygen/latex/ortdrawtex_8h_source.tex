@@ -1,0 +1,535 @@
+\doxysection{ortdrawtex.\+h}
+\hypertarget{ortdrawtex_8h_source}{}\label{ortdrawtex_8h_source}\index{gxlib/ortdrawtex.h@{gxlib/ortdrawtex.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2009\ Pascal\ Parois\ and\ O.\ Dolomanov\ (OlexSys)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ort\_Draw\_Tex\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ort\_Draw\_Tex\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxapp.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}tex\_writer.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }OrtDrawTex\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{struct\ }OrtAtom\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ atom;}
+\DoxyCodeLine{00019\ \ \ \ \ vec3f\ crd;}
+\DoxyCodeLine{00020\ \ \ \ \ mat3f*\ elpm,\ *\ ielpm;}
+\DoxyCodeLine{00021\ \ \ \ \ OrtAtom(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ a,\ \textcolor{keyword}{const}\ vec3f\&\ c,\ mat3f*\ em\ =\ NULL,\ mat3f*\ iem\ =\ NULL)\ :}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ atom(a),\ crd(c),\ elpm(em),\ ielpm(iem)\ \{\ \ \}}
+\DoxyCodeLine{00023\ \ \ \ \ OrtAtom(\textcolor{keyword}{const}\ OrtAtom\&\ a)\ :}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ atom(a.atom),\ crd(a.crd),\ elpm(a.elpm),\ ielpm(a.ielpm)\ \{\ \ \}}
+\DoxyCodeLine{00025\ \ \ \ \ \string~OrtAtom()\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ olx\_del\_obj(elpm);}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ olx\_del\_obj(ielpm);}
+\DoxyCodeLine{00028\ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \};}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ OrtAtomZSort(\textcolor{keyword}{const}\ OrtAtom\&\ a1,\ \textcolor{keyword}{const}\ OrtAtom\&\ a2)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp\_float(a1.crd[2],\ a2.crd[2],\ 1e-\/3f);}
+\DoxyCodeLine{00032\ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{float}\ AradScale,\ DrawScale,\ BondRad,\ LinearScale;}
+\DoxyCodeLine{00034\ \ \ mat3f\ ProjMatr,\ UnProjMatr;}
+\DoxyCodeLine{00035\ \ \ vec3f\ DrawOrigin,\ SceneOrigin;}
+\DoxyCodeLine{00036\ \ \ \mbox{\hyperlink{classTGXApp}{TGXApp}}\&\ app;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{const}\ vec3f\ NullVec;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{short}\ ColorMode;}
+\DoxyCodeLine{00039\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{short}\ ElpDiv,\ PieDiv,\ BondDiv;}
+\DoxyCodeLine{00041\ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}\ ElpCrd,\ PieCrd,\ Arc,\ BondCrd,\ BondProjF,\ BondProjT;}
+\DoxyCodeLine{00042\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<const\ vec3f>}}\ FilteredArc;}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{float}\ PieLineWidth,}
+\DoxyCodeLine{00044\ \ \ \ \ ElpLineWidth,}
+\DoxyCodeLine{00045\ \ \ \ \ QuadLineWidth,}
+\DoxyCodeLine{00046\ \ \ \ \ HBondScale;}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{size\_t}\ PrepareArc(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<vec3f>}}\&\ in,\ \mbox{\hyperlink{classTPtrList}{TPtrList<const\ vec3f>}}\&\ out,\ \textcolor{keyword}{const}\ vec3f\&\ normal)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\ =\ InvalidIndex,\ cnt\ =\ 0;}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ in.Count();\ i++)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ next\_i\ =\ ((i\ +\ 1)\ >=\ in.Count()\ ?\ i\ -\/\ in.Count()\ :\ i)\ +\ 1;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (in[i].DotProd(normal)\ <\ 0\ \&\&\ in[next\_i].DotProd(normal)\ >=\ 0)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ start\ =\ next\_i;}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{if}\ (start\ ==\ InvalidIndex)\ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start;\ i\ <\ start\ +\ in.Count();\ i++)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ (i\ >=\ in.Count()\ ?\ i\ -\/\ in.Count()\ :\ i);}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cnt\ +\ 1\ >=\ in.Count())\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (in[ind].DotProd(normal)\ >=\ 0)}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ out[cnt++]\ =\ \&in[ind];}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ cnt;}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{void}\ DoDrawBonds(\mbox{\hyperlink{classTEXWriter}{TEXWriter}}\&\ pw,\ \textcolor{keyword}{const}\ OrtAtom\&\ oa,\ uint32\_t\ color,\ \textcolor{keywordtype}{float}\ scalex,\ \textcolor{keyword}{const}\ vec3d\&\ p)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{char}\ bf[250];\ \textcolor{comment}{//pascal}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{float}\ xa,\ xb,\ ya,\ yb,\ za,\ zb,\ angle,\ xc,\ yc,\ xd,\ yd,\ xe,\ ye,\ xf,\ yf;}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ AtomCount;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa\ =\ *oa.atom;}
+\DoxyCodeLine{00073\ \ \ \ \ vec3f\ dir\_vec,\ touch\_point,\ touch\_point\_proj,\ off\_vec,\ bproj\_cnt;}
+\DoxyCodeLine{00074\ \ \ \ \ mat3f\ proj\_mat,\ rot\_mat;}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ sa.BondCount();\ j++)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTXBond}{TXBond}}\&\ bn\ =\ \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classTXBond}{TXBond}}\&\textcolor{keyword}{>}(sa.Bond(j));}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bn.IsDeleted()\ ||\ !bn.IsVisible())}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ vec3f\ p1\ =\ (bn.Another(sa).crd()\ +\ SceneOrigin)\ *\ ProjMatr\ +\ DrawOrigin;}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p1[2]\ <=\ oa.crd[2])\ \ \textcolor{comment}{//\ goes\ into\ the\ plane\ -\/\ drawn}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ dir\_vec\ =\ (p1\ -\/\ oa.crd).Normalise();}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ pers\_scale\ =\ 1.0\ -\/\ olx\_sqr(dir\_vec[2]);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ brad\ =\ (bn.A().GetType()\ ==\ iHydrogenZ\ ||\ bn.B().GetType()\ ==\ iHydrogenZ)\ ?}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ BondRad\ *\ HBondScale\ :\ BondRad;}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bn.GetType()\ ==\ sotHBond)\ \ \textcolor{comment}{//even\ thiner\ H-\/bonds}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ brad\ *=\ HBondScale;}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ touch\_point\ =\ (bn.Another(sa).crd()\ -\/\ oa.atom-\/>crd()).Normalise();}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ vec3f\ rot\_vec(-\/touch\_point[1],\ touch\_point[0],\ 0);}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ olx\_create\_rotation\_matrix(rot\_mat,\ rot\_vec.Normalise(),\ touch\_point[2]);}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ proj\_mat\ =\ rot\_mat\ *\ ProjMatr;}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ b\_len\ =\ (p1\ -\/\ oa.crd).Length();}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sa.GetEllipsoid()\ !=\ NULL)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ bproj\_cnt.Null();}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ touch\_point\_proj\ =\ dir\_vec\ *\ (*oa.ielpm);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ BondDiv;\ j++)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ BondProjF[j]\ =\ (((BondCrd[j]\ *\ rot\_mat\ +\ touch\_point)\ *\ ProjMatr).Normalise()\ *\ (*oa.ielpm));}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ bproj\_cnt\ +=\ BondProjF[j];}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ bproj\_cnt\ /=\ BondDiv;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ BondDiv;\ j++)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ BondProjF[j]\ =\ (BondProjF[j]\ -\/\ bproj\_cnt).NormaliseTo(brad\ *\ (1\ +\ pers\_scale)\ *\ scalex)\ +\ bproj\_cnt;}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ BondProjT[j]\ =\ (BondCrd[j]\ *\ proj\_mat).NormaliseTo(brad\ *\ 2\ *\ scalex)\ +\ dir\_vec\ *\ b\_len;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ off\_len\ =\ AradScale\ *\ sa.GetType().r\_bonding\ /\ 2;}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ BondDiv;\ j++)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ BondProjT[j]\ =\ BondProjF[j]\ =\ (BondCrd[j]\ *\ proj\_mat).NormaliseTo(brad\ *\ (1\ +\ pers\_scale)\ *\ scalex);}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ BondProjT[j].NormaliseTo(brad\ *\ 2\ *\ scalex)\ +=\ dir\_vec\ *\ b\_len;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ BondProjF[j]\ +=\ dir\_vec\ *\ off\_len;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{comment}{//pw.drawQuads(BondProjF,\ BondProjT,\ \&TEXWriter::fill);}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (BondProjF.Count()\ !=\ BondProjT.Count())}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}lists\ mismatch"{}});}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (BondProjF.Count()\ >\ 2)}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Calculation\ of\ the\ centre\ of\ the\ intersection\ ellipsis}}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ za\ =\ zb\ =\ ya\ =\ yb\ =\ xa\ =\ xb\ =\ 0;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ bpi\ =\ 0;\ bpi\ <\ BondProjT.Count();\ bpi++)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ xa\ +=\ BondProjT[bpi][0];}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ ya\ +=\ BondProjT[bpi][1];}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ za\ +=\ BondProjT[bpi][2];}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ xb\ +=\ BondProjF[bpi][0];}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ yb\ +=\ BondProjF[bpi][1];}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ zb\ +=\ BondProjF[bpi][2];}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ xa\ =\ xa\ /\ BondProjT.Count()\ +\ p[0];}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ xb\ =\ xb\ /\ BondProjT.Count()\ +\ p[0];}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ ya\ =\ ya\ /\ BondProjT.Count()\ +\ p[1];}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ yb\ =\ yb\ /\ BondProjT.Count()\ +\ p[1];}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ za\ =\ za\ /\ BondProjT.Count()\ +\ p[2];}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ zb\ =\ zb\ /\ BondProjT.Count()\ +\ p[2];}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{comment}{//calculation\ of\ the\ angle\ between\ the\ bond\ and\ the\ vertical.\ Needed\ to\ apply\ a\ shading\ on\ the\ bond}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (xb\ >\ xa\ \&\&\ (xb\ -\/\ xa)\ /\ sqrt((xb\ -\/\ xa)\ *\ (xb\ -\/\ xa)\ +\ (yb\ -\/\ ya)\ *\ (yb\ -\/\ ya))\ <\ 1\ \&\&\ (xb\ -\/\ xa)\ /\ sqrt((xb\ -\/\ xa)\ *\ (xb\ -\/\ xa)\ +\ (yb\ -\/\ ya)\ *\ (yb\ -\/\ ya))\ >\ -\/1)}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ angle\ =\ asin((xb\ -\/\ xa)\ /\ sqrt((xb\ -\/\ xa)\ *\ (xb\ -\/\ xa)\ +\ (yb\ -\/\ ya)\ *\ (yb\ -\/\ ya)))\ *\ 180\ /\ M\_PI;}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ya\ <\ yb)}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ angle\ =\ -\/asin((xb\ -\/\ xa)\ /\ sqrt((xb\ -\/\ xa)\ *\ (xb\ -\/\ xa)\ +\ (yb\ -\/\ ya)\ *\ (yb\ -\/\ ya)))\ *\ 180\ /\ M\_PI;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (xa\ >\ xb\ \&\&\ (xa\ -\/\ xb)\ /\ sqrt((xb\ -\/\ xa)\ *\ (xb\ -\/\ xa)\ +\ (yb\ -\/\ ya)\ *\ (yb\ -\/\ ya))\ <\ 1\ \&\&\ (xa\ -\/\ xb)\ /\ sqrt((xb\ -\/\ xa)\ *\ (xb\ -\/\ xa)\ +\ (yb\ -\/\ ya)\ *\ (yb\ -\/\ ya))\ >\ -\/1)}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ angle\ =\ -\/asin((xa\ -\/\ xb)\ /\ sqrt((xb\ -\/\ xa)\ *\ (xb\ -\/\ xa)\ +\ (yb\ -\/\ ya)\ *\ (yb\ -\/\ ya)))\ *\ 180\ /\ M\_PI;}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ya\ <\ yb)}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ angle\ =\ asin((xa\ -\/\ xb)\ /\ sqrt((xb\ -\/\ xa)\ *\ (xb\ -\/\ xa)\ +\ (yb\ -\/\ ya)\ *\ (yb\ -\/\ ya)))\ *\ 180\ /\ M\_PI;}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ angle\ =\ 0;}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{comment}{//To\ coordinate\ of\ the\ rectangle\ for\ the\ bond}}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ yc\ =\ brad\ *\ (xa\ -\/\ xb)\ /\ sqrt(xa\ *\ xa\ -\/\ 2\ *\ xa\ *\ xb\ +\ xb\ *\ xb\ +\ (ya\ -\/\ yb)\ *\ (ya\ -\/\ yb))\ +\ ya;}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ xc\ =\ -\/(yb\ -\/\ ya)\ *\ (yc\ -\/\ ya)\ /\ (xb\ -\/\ xa)\ +\ xa;}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ ye\ =\ ya\ -\/\ (yc\ -\/\ ya);}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ xe\ =\ xa\ -\/\ (xc\ -\/\ xa);}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \textcolor{comment}{//From\ coordinate\ of\ the\ recangle\ for\ the\ bond}}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{comment}{//0.7,\ this\ end\ is\ a\ bit\ smaller}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ yd\ =\ 0.7\ *\ brad\ *\ (xa\ -\/\ xb)\ /\ sqrt(xa\ *\ xa\ -\/\ 2\ *\ xa\ *\ xb\ +\ xb\ *\ xb\ +\ (ya\ -\/\ yb)\ *\ (ya\ -\/\ yb))\ +\ yb;}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ xd\ =\ -\/(ya\ -\/\ yb)\ *\ (yd\ -\/\ yb)\ /\ (xa\ -\/\ xb)\ +\ xb;}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ yf\ =\ yb\ -\/\ (yd\ -\/\ yb);}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ xf\ =\ xb\ -\/\ (xd\ -\/\ xb);}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \textcolor{comment}{//white\ perimeter\ around\ the\ bond}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)draw[white,very\ thick,\ rounded\ corners=\(\backslash\)\(\backslash\)cornerradius]\ (\%fmm,\%fmm)\ -\/-\/\ \ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ cycle;"{}},}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ xc\ /\ 5,\ yc\ /\ 5,}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ xe\ /\ 5,\ ye\ /\ 5,}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ xf\ /\ 5,\ yf\ /\ 5,}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ xd\ /\ 5,\ yd\ /\ 5);}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \textcolor{comment}{//draw\ the\ shading\ on\ the\ bond}}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{comment}{//I\ need\ the\ projection\ coordinate\ of\ the\ atom}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ vec3f\ p2\ =\ (bn.A().crd()\ +\ SceneOrigin)\ *\ ProjMatr\ +\ DrawOrigin;}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ vec3f\ p3\ =\ (bn.B().crd()\ +\ SceneOrigin)\ *\ ProjMatr\ +\ DrawOrigin;}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \textcolor{comment}{//All\ this,\ just\ to\ have\ a\ correct\ shading...}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ya\ >\ yb\ \&\&\ xa\ <\ xb)}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p2[2]\ <\ p3[2])}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)shade[top\ color=\(\backslash\)\(\backslash\)color\%s,\ bottom\ color=\(\backslash\)\(\backslash\)color\%s,\ shading\ angle=\%f,\ rounded\ corners=\(\backslash\)\(\backslash\)cornerradius]\ (\%fmm,\%fmm)\ -\/-\/\ \ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ cycle;"{}},}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bn.B().GetType().symbol.c\_str(),\ bn.A().GetType().symbol.c\_str(),\ angle,}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xc\ /\ 5,\ yc\ /\ 5,}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xe\ /\ 5,\ ye\ /\ 5,}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xf\ /\ 5,\ yf\ /\ 5,}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xd\ /\ 5,\ yd\ /\ 5);}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)shade[top\ color=\(\backslash\)\(\backslash\)color\%s,\ bottom\ color=\(\backslash\)\(\backslash\)color\%s,\ shading\ angle=\%f,\ rounded\ corners=\(\backslash\)\(\backslash\)cornerradius]\ (\%fmm,\%fmm)\ -\/-\/\ \ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ cycle;"{}},}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bn.A().GetType().symbol.c\_str(),\ bn.B().GetType().symbol.c\_str(),\ angle,}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xc\ /\ 5,\ yc\ /\ 5,}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xe\ /\ 5,\ ye\ /\ 5,}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xf\ /\ 5,\ yf\ /\ 5,}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xd\ /\ 5,\ yd\ /\ 5);}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ya\ >\ yb\ \&\&\ xa\ >\ xb)}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p2[2]\ <\ p3[2])}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)shade[top\ color=\(\backslash\)\(\backslash\)color\%s,\ bottom\ color=\(\backslash\)\(\backslash\)color\%s,\ shading\ angle=\%f,\ rounded\ corners=\(\backslash\)\(\backslash\)cornerradius]\ (\%fmm,\%fmm)\ -\/-\/\ \ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ cycle;"{}},}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bn.B().GetType().symbol.c\_str(),\ bn.A().GetType().symbol.c\_str(),\ angle,}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xc\ /\ 5,\ yc\ /\ 5,}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xe\ /\ 5,\ ye\ /\ 5,}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xf\ /\ 5,\ yf\ /\ 5,}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xd\ /\ 5,\ yd\ /\ 5);}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)shade[top\ color=\(\backslash\)\(\backslash\)color\%s,\ bottom\ color=\(\backslash\)\(\backslash\)color\%s,\ shading\ angle=\%f,\ rounded\ corners=\(\backslash\)\(\backslash\)cornerradius]\ (\%fmm,\%fmm)\ -\/-\/\ \ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ cycle;"{}},}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bn.A().GetType().symbol.c\_str(),\ bn.B().GetType().symbol.c\_str(),\ angle,}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xc\ /\ 5,\ yc\ /\ 5,}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xe\ /\ 5,\ ye\ /\ 5,}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xf\ /\ 5,\ yf\ /\ 5,}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xd\ /\ 5,\ yd\ /\ 5);}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ya\ <=\ yb\ \&\&\ xa\ <=\ xb)}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p2[2]\ <\ p3[2])}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)shade[top\ color=\(\backslash\)\(\backslash\)color\%s,\ bottom\ color=\(\backslash\)\(\backslash\)color\%s,\ shading\ angle=\%f,\ rounded\ corners=\(\backslash\)\(\backslash\)cornerradius]\ (\%fmm,\%fmm)\ -\/-\/\ \ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ cycle;"{}},}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bn.A().GetType().symbol.c\_str(),\ bn.B().GetType().symbol.c\_str(),\ angle,}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xc\ /\ 5,\ yc\ /\ 5,}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xe\ /\ 5,\ ye\ /\ 5,}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xf\ /\ 5,\ yf\ /\ 5,}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xd\ /\ 5,\ yd\ /\ 5);}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)shade[top\ color=\(\backslash\)\(\backslash\)color\%s,\ bottom\ color=\(\backslash\)\(\backslash\)color\%s,\ shading\ angle=\%f,\ rounded\ corners=\(\backslash\)\(\backslash\)cornerradius]\ (\%fmm,\%fmm)\ -\/-\/\ \ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ cycle;"{}},}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bn.B().GetType().symbol.c\_str(),\ bn.A().GetType().symbol.c\_str(),\ angle,}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xc\ /\ 5,\ yc\ /\ 5,}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xe\ /\ 5,\ ye\ /\ 5,}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xf\ /\ 5,\ yf\ /\ 5,}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xd\ /\ 5,\ yd\ /\ 5);}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{comment}{//if(ya\ <=\ yb\ \&\&\ xa\ >=\ xb)}}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p2[2]\ <\ p3[2])}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)shade[top\ color=\(\backslash\)\(\backslash\)color\%s,\ bottom\ color=\(\backslash\)\(\backslash\)color\%s,\ shading\ angle=\%f,\ rounded\ corners=\(\backslash\)\(\backslash\)cornerradius]\ (\%fmm,\%fmm)\ -\/-\/\ \ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ cycle;"{}},}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bn.A().GetType().symbol.c\_str(),\ bn.B().GetType().symbol.c\_str(),\ angle,}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xc\ /\ 5,\ yc\ /\ 5,}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xe\ /\ 5,\ ye\ /\ 5,}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xf\ /\ 5,\ yf\ /\ 5,}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xd\ /\ 5,\ yd\ /\ 5);}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)shade[top\ color=\(\backslash\)\(\backslash\)color\%s,\ bottom\ color=\(\backslash\)\(\backslash\)color\%s,\ shading\ angle=\%f,\ rounded\ corners=\(\backslash\)\(\backslash\)cornerradius]\ (\%fmm,\%fmm)\ -\/-\/\ \ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ cycle;"{}},}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bn.B().GetType().symbol.c\_str(),\ bn.A().GetType().symbol.c\_str(),\ angle,}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xc\ /\ 5,\ yc\ /\ 5,}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xe\ /\ 5,\ ye\ /\ 5,}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xf\ /\ 5,\ yf\ /\ 5,}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xd\ /\ 5,\ yd\ /\ 5);}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Draw\ the\ black\ stroke\ around\ the\ bond}}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)draw[rounded\ corners=\(\backslash\)\(\backslash\)cornerradius]\ (\%fmm,\%fmm)\ -\/-\/\ \ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ (\%fmm,\%fmm)\ -\/-\/\ cycle;"{}},}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ xc\ /\ 5,\ yc\ /\ 5,}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ xe\ /\ 5,\ ye\ /\ 5,}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ xf\ /\ 5,\ yf\ /\ 5,}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ xd\ /\ 5,\ yd\ /\ 5);}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \textcolor{keywordtype}{void}\ DrawBonds(\mbox{\hyperlink{classTEXWriter}{TEXWriter}}\&\ pw,\ \textcolor{keyword}{const}\ OrtAtom\&\ oa,\ \textcolor{keyword}{const}\ vec3d\&\ p)\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{comment}{//DoDrawBonds(pw,\ oa,\ \string~0,\ 1.2,\ p);}}
+\DoxyCodeLine{00267\ \ \ \ \ DoDrawBonds(pw,\ oa,\ 0,\ 1,\ p);}
+\DoxyCodeLine{00268\ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \textcolor{keywordtype}{void}\ DrawRimsAndQuad(\mbox{\hyperlink{classTEXWriter}{TEXWriter}}\&\ pw,\ \textcolor{keyword}{const}\ OrtAtom\&\ oa,\ \textcolor{keywordtype}{bool}\ drawQuad)\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keyword}{const}\ mat3f\&\ elpm\ =\ *oa.elpm;}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keyword}{const}\ mat3f\&\ ielpm\ =\ *oa.ielpm;}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{comment}{//pelpm\ -\/\ projection\ ellipsoid\ matrix}}
+\DoxyCodeLine{00273\ \ \ \ \ mat3f\ pelpm(elpm[0][2]\ <\ 0\ ?\ -\/elpm[0]\ :\ elpm[0],}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ elpm[1][2]\ <\ 0\ ?\ -\/elpm[1]\ :\ elpm[1],}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ elpm[2][2]\ <\ 0\ ?\ -\/elpm[2]\ :\ elpm[2]);}
+\DoxyCodeLine{00276\ \ \ \ \ vec3f\ norm\_vec\ =\ (ElpCrd[0]\ *\ ielpm).XProdVec(ElpCrd[1]\ *\ ielpm);}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keywordflow}{if}\ (norm\_vec[2]\ <\ 0)}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ norm\_vec\ *=\ -\/1;}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ ElpDiv;\ j++)}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ Arc[j]\ =\ ElpCrd[j]\ *\ pelpm;}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pts\_cnt\ =\ PrepareArc(Arc,\ FilteredArc,\ norm\_vec);}
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{comment}{//pw.color(0x0000ff);}}
+\DoxyCodeLine{00284\ \ \ \ \ \textcolor{comment}{//pw.drawLines\_vp(FilteredArc,\ pts\_cnt,\ false);}}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ ElpDiv;\ j++)}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ Arc[j]\ =\ vec3f(ElpCrd[j][1],\ 0,\ ElpCrd[j][0])\ *\ pelpm;}
+\DoxyCodeLine{00288\ \ \ \ \ pts\_cnt\ =\ PrepareArc(Arc,\ FilteredArc,\ norm\_vec);}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{comment}{//pw.color(0x00ff00);}}
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{comment}{//pw.drawLines\_vp(FilteredArc,\ pts\_cnt,\ false);}}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ ElpDiv;\ j++)}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ Arc[j]\ =\ vec3f(0,\ ElpCrd[j][0],\ ElpCrd[j][1])\ *\ pelpm;}
+\DoxyCodeLine{00294\ \ \ \ \ pts\_cnt\ =\ PrepareArc(Arc,\ FilteredArc,\ norm\_vec);}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{comment}{//pw.color(0xff0000);}}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{comment}{//pw.drawLines\_vp(FilteredArc,\ pts\_cnt,\ false);}}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{comment}{//pw.color(0);}}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00300\ \textcolor{comment}{\ \ \ \ if(\ drawQuad\ )\ \ \{}}
+\DoxyCodeLine{00301\ \textcolor{comment}{\ \ \ \ //pw.drawLine(NullVec,\ pelpm[0]);}}
+\DoxyCodeLine{00302\ \textcolor{comment}{\ \ \ \ //pw.drawLine(NullVec,\ pelpm[1]);}}
+\DoxyCodeLine{00303\ \textcolor{comment}{\ \ \ \ //pw.drawLine(NullVec,\ pelpm[2]);}}
+\DoxyCodeLine{00304\ \textcolor{comment}{\ \ \ \ for(\ int\ j=0;\ j\ <\ PieDiv;\ j++\ )}}
+\DoxyCodeLine{00305\ \textcolor{comment}{\ \ \ \ //pw.drawLine(\ PieCrd[j]*pelpm,\ pelpm[0]*((float)(PieDiv-\/j)/PieDiv));}}
+\DoxyCodeLine{00306\ \textcolor{comment}{\ \ \ \ for(\ int\ j=0;\ j\ <\ PieDiv;\ j++\ )}}
+\DoxyCodeLine{00307\ \textcolor{comment}{\ \ \ \ //pw.drawLine(\ vec3f(0,\ PieCrd[j][0],\ PieCrd[j][1])*pelpm,\ pelpm[1]*((float)(PieDiv-\/j)/PieDiv));}}
+\DoxyCodeLine{00308\ \textcolor{comment}{\ \ \ \ for(\ int\ j=0;\ j\ <\ PieDiv;\ j++\ )}}
+\DoxyCodeLine{00309\ \textcolor{comment}{\ \ \ \ //pw.drawLine(\ vec3f(PieCrd[j][1],\ 0,\ PieCrd[j][0])*pelpm,\ pelpm[2]*((float)(PieDiv-\/j)/PieDiv));}}
+\DoxyCodeLine{00310\ \textcolor{comment}{\ \ \ \ \}*/}}
+\DoxyCodeLine{00311\ \ \ \}}
+\DoxyCodeLine{00312\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00313\ \ \ OrtDrawTex()\ :\ app(TGXApp::GetInstance())\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ ElpDiv\ =\ 36;}
+\DoxyCodeLine{00315\ \ \ \ \ BondDiv\ =\ 12;}
+\DoxyCodeLine{00316\ \ \ \ \ PieDiv\ =\ 4;}
+\DoxyCodeLine{00317\ \ \ \ \ QuadLineWidth\ =\ PieLineWidth\ =\ 0.5;}
+\DoxyCodeLine{00318\ \ \ \ \ BondRad\ =\ 4;}
+\DoxyCodeLine{00319\ \ \ \ \ ColorMode\ =\ 0;}
+\DoxyCodeLine{00320\ \ \ \ \ HBondScale\ =\ 0.8;}
+\DoxyCodeLine{00321\ \ \ \}}
+\DoxyCodeLine{00322\ \ \ \textcolor{comment}{//\ create\ ellipse\ and\ pie\ coordinates}}
+\DoxyCodeLine{00323\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classOrtDrawTex_a2e32ae08b48117930d46bcd1373a07df}{Init}}(\mbox{\hyperlink{classTEXWriter}{TEXWriter}}\&\ pw)\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ ElpCrd.SetCount(ElpDiv);}
+\DoxyCodeLine{00325\ \ \ \ \ Arc.SetCount(ElpDiv);}
+\DoxyCodeLine{00326\ \ \ \ \ PieCrd.SetCount(PieDiv);}
+\DoxyCodeLine{00327\ \ \ \ \ FilteredArc.SetCount(ElpDiv);}
+\DoxyCodeLine{00328\ \ \ \ \ BondCrd.SetCount(BondDiv);}
+\DoxyCodeLine{00329\ \ \ \ \ BondProjF.SetCount(BondDiv);}
+\DoxyCodeLine{00330\ \ \ \ \ BondProjT.SetCount(BondDiv);}
+\DoxyCodeLine{00331\ \ \ \ \ \textcolor{keywordtype}{double}\ sin\_a,\ cos\_a;}
+\DoxyCodeLine{00332\ \ \ \ \ olx\_sincos(2\ *\ M\_PI\ /\ ElpDiv,\ \&sin\_a,\ \&cos\_a);}
+\DoxyCodeLine{00333\ \ \ \ \ vec3f\ ps(cos\_a,\ -\/sin\_a,\ 0);}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ ElpDiv;\ i++)\ \{}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ ElpCrd[i]\ =\ ps;}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ x\ =\ ps[0];}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ ps[0]\ =\ (float)(cos\_a\ *\ x\ +\ sin\_a\ *\ ps[1]);}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ ps[1]\ =\ (float)(cos\_a\ *\ ps[1]\ -\/\ sin\_a\ *\ x);}
+\DoxyCodeLine{00339\ \ \ \ \ \}}
+\DoxyCodeLine{00340\ \ \ \ \ olx\_sincos(2\ *\ M\_PI\ /\ BondDiv,\ \&sin\_a,\ \&cos\_a);}
+\DoxyCodeLine{00341\ \ \ \ \ ps\ =\ vec3f(cos\_a\ /\ 2,\ -\/sin\_a\ /\ 2,\ 0);}
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ BondDiv;\ i++)\ \{}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ BondCrd[i]\ =\ ps;}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ x\ =\ ps[0];}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ ps[0]\ =\ (float)(cos\_a\ *\ x\ +\ sin\_a\ *\ ps[1]);}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ ps[1]\ =\ (float)(cos\_a\ *\ ps[1]\ -\/\ sin\_a\ *\ x);}
+\DoxyCodeLine{00347\ \ \ \ \ \}}
+\DoxyCodeLine{00348\ \ \ \ \ ps\ =\ vec3f(1,\ 0,\ 0);}
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ PieDiv;\ i++)\ \{}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ PieCrd[i]\ =\ ps;}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ ps[0]\ =\ (float)(PieDiv\ -\/\ i\ -\/\ 1)\ /\ PieDiv;}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ ps[1]\ =\ (float)sqrt(1.0\ -\/\ ps[0]\ *\ ps[0]);}
+\DoxyCodeLine{00353\ \ \ \ \ \}}
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keywordtype}{float}\ vp[4];}
+\DoxyCodeLine{00355\ \ \ \ \ olx\_gl::get(GL\_VIEWPORT,\ vp);}
+\DoxyCodeLine{00356\ \ \ \ \ \mbox{\hyperlink{classTGXApp}{TGXApp}}\&\ app\ =\ TGXApp::GetInstance();}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{keyword}{const}\ TEBasis\&\ basis\ =\ app.GetRenderer().GetBasis();}
+\DoxyCodeLine{00358\ \ \ \ \ LinearScale\ =\ 1;\ \textcolor{comment}{//\ reset\ now}}
+\DoxyCodeLine{00359\ \ \ \ \ DrawScale\ =\ app.GetRenderer().GetBasis().GetZoom()\ /\ (LinearScale\ *\ app.GetRenderer().GetScale());}
+\DoxyCodeLine{00360\ \ \ \ \ AradScale\ =\ 0.5\ *\ DrawScale;}
+\DoxyCodeLine{00361\ \ \ \ \ BondRad\ =\ 0.1\ *\ DrawScale;}
+\DoxyCodeLine{00362\ \ \ \ \ SceneOrigin\ =\ basis.GetCenter();}
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{comment}{//DrawOrigin\ =\ vec3f(pw.GetWidth()/2,\ pw.GetHeight()/2,\ 0);}}
+\DoxyCodeLine{00364\ \ \ \ \ DrawOrigin\ =\ vec3f(vp[2]\ /\ 2,\ vp[3]\ /\ 2,\ 0);}
+\DoxyCodeLine{00365\ \ \ \ \ ProjMatr\ =\ basis.GetMatrix()\ *\ DrawScale;}
+\DoxyCodeLine{00366\ \ \ \ \ UnProjMatr\ =\ ProjMatr.Inverse();}
+\DoxyCodeLine{00367\ \ \ \}}
+\DoxyCodeLine{00368\ \ \ \textcolor{keywordtype}{void}\ Render(\textcolor{keyword}{const}\ olxstr\&\ fileName)\ \{}
+\DoxyCodeLine{00369\ \ \ \ \ \mbox{\hyperlink{classTEXWriter}{TEXWriter}}\ pw(fileName);}
+\DoxyCodeLine{00370\ \ \ \ \ \mbox{\hyperlink{classOrtDrawTex_a2e32ae08b48117930d46bcd1373a07df}{Init}}(pw);}
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{keywordtype}{char}\ bf[200];}
+\DoxyCodeLine{00372\ \ \ \ \ \textcolor{keywordtype}{bool}\ CurrentAtom;}
+\DoxyCodeLine{00373\ }
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{comment}{//temporary\ colour\ dictionary}}
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{comment}{//map<olxstr,string>\ ColourDic;}}
+\DoxyCodeLine{00376\ \ \ \ \ olxdict\ <olxstr,\ olxcstr,\ olxstrComparator<false>\ >\ ColourDic;}
+\DoxyCodeLine{00377\ \ \ \ \ ColourDic(\textcolor{stringliteral}{"{}C"{}},\ \textcolor{stringliteral}{"{}gray"{}});}
+\DoxyCodeLine{00378\ \ \ \ \ ColourDic(\textcolor{stringliteral}{"{}N"{}},\ \textcolor{stringliteral}{"{}blue"{}});}
+\DoxyCodeLine{00379\ \ \ \ \ ColourDic(\textcolor{stringliteral}{"{}O"{}},\ \textcolor{stringliteral}{"{}red"{}});}
+\DoxyCodeLine{00380\ \ \ \ \ ColourDic(\textcolor{stringliteral}{"{}F"{}},\ \textcolor{stringliteral}{"{}darkgreen"{}});}
+\DoxyCodeLine{00381\ \ \ \ \ ColourDic(\textcolor{stringliteral}{"{}Si"{}},\ \textcolor{stringliteral}{"{}orange"{}});}
+\DoxyCodeLine{00382\ \ \ \ \ ColourDic(\textcolor{stringliteral}{"{}P"{}},\ \textcolor{stringliteral}{"{}purple"{}});}
+\DoxyCodeLine{00383\ \ \ \ \ ColourDic(\textcolor{stringliteral}{"{}S"{}},\ \textcolor{stringliteral}{"{}yellow"{}});}
+\DoxyCodeLine{00384\ \ \ \ \ olxcstr\ def\_color\ =\ \textcolor{stringliteral}{"{}white"{}};}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keyword}{const}\ TEBasis\&\ basis\ =\ app.GetRenderer().GetBasis();}
+\DoxyCodeLine{00387\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<OrtDrawTex::OrtAtom>}}\ atoms;}
+\DoxyCodeLine{00388\ \ \ \ \ \mbox{\hyperlink{structTGXApp_1_1AtomIterator}{TGXApp::AtomIterator}}\ ai\ =\ app.GetAtoms();}
+\DoxyCodeLine{00389\ \ \ \ \ atoms.SetCapacity(ai.count);}
+\DoxyCodeLine{00390\ }
+\DoxyCodeLine{00391\ \ \ \ \ \textcolor{comment}{//radius\ for\ the\ end\ of\ the\ bond}}
+\DoxyCodeLine{00392\ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)newcommand\{\(\backslash\)\(\backslash\)cornerradius\}\{\%fmm\}"{}},}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ 0.12\ *\ 0.1\ *\ DrawScale);}
+\DoxyCodeLine{00394\ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keywordflow}{while}\ (ai.HasNext())\ \{}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ sa\ =\ ai.Next();}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sa.IsDeleted()\ ||\ !sa.IsVisible())}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00400\ }
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \textcolor{comment}{//write\ latex\ colors\ atoms\ commands\ and\ shading}}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ CurrentAtom\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \textcolor{comment}{//We\ check\ first\ if\ a\ similar\ atom\ already\ get\ processed.}}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ atoms.Count();\ j++)\ \{}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa2\ =\ *atoms[j].atom;}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sa.GetType()\ ==\ sa2.GetType())}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \ \ CurrentAtom\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \textcolor{comment}{//writing\ of\ the\ color\ definition\ of\ the\ atom}}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (CurrentAtom\ ==\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)newcommand\{\(\backslash\)\(\backslash\)color\%s\}\{\%s!90!black\}"{}},}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ sa.GetType().symbol.c\_str(),}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ ColourDic.Find(sa.GetType().symbol,\ def\_color).c\_str()}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)pgfdeclareradialshading\{ballshading\%s\}\{\(\backslash\)\(\backslash\)pgfpoint\{-\/10bp\}\{10bp\}\}"{}},}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \ \ sa.GetType().symbol.c\_str());}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\{color(0bp)=(\(\backslash\)\(\backslash\)color\%s!15!white);\ color(9bp)=(\(\backslash\)\(\backslash\)color\%s!75!white);"{}},}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \ \ sa.GetType().symbol.c\_str(),\ sa.GetType().symbol.c\_str());}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}color(18bp)=(\(\backslash\)\(\backslash\)color\%s!70!black);\ color(25bp)=(\(\backslash\)\(\backslash\)color\%s!50!black);\ color(50bp)=(black)\}\ "{}},}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \ \ sa.GetType().symbol.c\_str(),\ sa.GetType().symbol.c\_str());}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sa.GetEllipsoid()\ !=\ 0)\ \{}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ mat3f\&\ elpm\ =\ *(\textcolor{keyword}{new}\ mat3f(sa.GetEllipsoid()-\/>GetMatrix()));}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ elpm.Scale(sa.GetEllipsoid()-\/>GetNorms());}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ elpm\ *=\ TXAtom::GetSettings(app.GetRenderer()).GetTelpProb();}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ elpm\ *=\ ProjMatr;}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ mat3f\&\ ielpm\ =\ *(\textcolor{keyword}{new}\ mat3f((sa.GetEllipsoid()-\/>GetMatrix()\ *\ basis.GetMatrix()).Inverse()));}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \ \ atoms.AddNew(\&sa,\ (sa.crd()\ +\ SceneOrigin)\ *\ ProjMatr\ +\ DrawOrigin,\ \&elpm,\ \&(ielpm\ *=\ elpm));}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ atoms.AddNew(\&sa,\ (sa.crd()\ +\ SceneOrigin)\ *\ ProjMatr\ +\ DrawOrigin);}
+\DoxyCodeLine{00439\ \ \ \ \ \}}
+\DoxyCodeLine{00440\ }
+\DoxyCodeLine{00441\ \ \ \ \ \textcolor{comment}{//tex\ header\ is\ finished,\ start\ the\ body}}
+\DoxyCodeLine{00442\ \ \ \ \ pw.Writenl(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)begin\{document\}"{}});}
+\DoxyCodeLine{00443\ \ \ \ \ pw.Writenl(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)begin\{tikzpicture\}"{}});}
+\DoxyCodeLine{00444\ \ \ \ \ QuickSorter::SortSF(atoms,\ OrtAtomZSort);}
+\DoxyCodeLine{00445\ }
+\DoxyCodeLine{00446\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TSAtom\&\ sa\ =\ *atoms[i].atom;}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ p\ =\ atoms[i].crd;}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sa.GetEllipsoid()\ ==\ 0)\ \{}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \textcolor{comment}{//draw\ the\ atom\ as\ a\ circle,\ done\ twice,\ to\ make\ a\ white\ border\ arounf\ it}}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \textcolor{comment}{//draw\ circle,\ centre,\ radius}}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)begin\{pgfscope\}\(\backslash\)\(\backslash\)pgfsetstrokecolor\{white\}\(\backslash\)\(\backslash\)pgfsetlinewidth\{\(\backslash\)\(\backslash\)whitespace\}\(\backslash\)\(\backslash\)pgfpathcircle\{\(\backslash\)\(\backslash\)pgfpoint\{\%fmm\}\{\%fmm\}\}\{\%fmm\}\(\backslash\)n\(\backslash\)\(\backslash\)pgfshadepath\{ballshading\%s\}\{0\}\(\backslash\)n\(\backslash\)\(\backslash\)pgfusepath\{draw\}\(\backslash\)\(\backslash\)end\{pgfscope\}"{}},}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \ \ p[0]\ /\ 5,\ p[1]\ /\ 5,}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \ \ \ \ AradScale\ *\ sqrt(sa.GetType().r\_pers)\ /\ 5,}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ sa.GetType().symbol.c\_str()}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)pgfpathcircle\{\(\backslash\)\(\backslash\)pgfpoint\{\%fmm\}\{\%fmm\}\}\{\%fmm\}\(\backslash\)n\(\backslash\)\(\backslash\)pgfshadepath\{ballshading\%s\}\{0\}\(\backslash\)n\(\backslash\)\(\backslash\)pgfusepath\{draw\}"{}},}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ p[0]\ /\ 5,\ p[1]\ /\ 5,}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \ \ AradScale\ *\ sqrt(sa.GetType().r\_bonding)\ /\ 5,}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ sa.GetType().symbol.c\_str()}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \textcolor{comment}{//write\ a\ node\ to\ make\ life\ easier\ later}}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)node\ (atom\%zi)\ at\ (\%fmm,\%fmm)\ \{\};"{}},}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ \ \ i,}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ \ \ p[0]\ /\ 5,\ p[1]\ /\ 5);}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mat3f\&\ ielpm\ =\ *atoms[i].ielpm;}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Draw\ the\ atom\ as\ an\ ellipse}}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \textcolor{comment}{//centre,\ basis}}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \textcolor{comment}{//draw\ a\ white\ border\ around\ the\ ellipse}}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ pw.Writenl(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)begin\{pgfscope\}\(\backslash\)n\(\backslash\)\(\backslash\)pgfsetstrokecolor\{white\}\(\backslash\)\(\backslash\)pgfsetlinewidth\{\(\backslash\)\(\backslash\)whitespace\}"{}});}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)pgfpathellipse\{\(\backslash\)\(\backslash\)pgfpoint\{\%fmm\}\{\%fmm\}\}\(\backslash\)n\{\(\backslash\)\(\backslash\)pgfpoint\{\%fmm\}\{\%fmm\}\}\(\backslash\)n\{\(\backslash\)\(\backslash\)pgfpoint\{\%fmm\}\{\%fmm\}\}\(\backslash\)n\(\backslash\)\(\backslash\)pgfusepath\{draw\}"{}},}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \ \ p[0]\ /\ 5,\ p[1]\ /\ 5,}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \ \ ielpm[0][0]\ /\ 5,\ ielpm[0][1]\ /\ 5,}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ \ \ ielpm[1][0]\ /\ 5,\ ielpm[1][1]\ /\ 5}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ pw.Writenl(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)end\{pgfscope\}"{}});}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \ \ \textcolor{comment}{//the\ ellipse}}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)pgfpathellipse\{\(\backslash\)\(\backslash\)pgfpoint\{\%fmm\}\{\%fmm\}\}\(\backslash\)n\{\(\backslash\)\(\backslash\)pgfpoint\{\%fmm\}\{\%fmm\}\}\(\backslash\)n\{\(\backslash\)\(\backslash\)pgfpoint\{\%fmm\}\{\%fmm\}\}\(\backslash\)n\(\backslash\)\(\backslash\)pgfshadepath\{ballshading\%s\}\{0\}\(\backslash\)n\(\backslash\)\(\backslash\)pgfusepath\{draw\}"{}},}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \ \ p[0]\ /\ 5,\ p[1]\ /\ 5,}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \ \ ielpm[0][0]\ /\ 5,\ ielpm[0][1]\ /\ 5,}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \ \ ielpm[1][0]\ /\ 5,\ ielpm[1][1]\ /\ 5,}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \ \ sa.GetType().symbol.c\_str()}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \textcolor{comment}{//write\ a\ node\ to\ make\ life\ easier\ later}}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ sprintf(bf,\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)node\ (atom\%zi)\ at\ (\%fmm,\%fmm)\ \{\};"{}},}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ i,}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \ \ p[0]\ /\ 5,\ p[1]\ /\ 5);}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ pw.Writenl(bf);}
+\DoxyCodeLine{00496\ }
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \textcolor{comment}{//DrawRimsAndQuad(pw,\ atoms[i],\ sa.GetAtomInfo()\ !=\ iCarbonIndex);}}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ DrawBonds(pw,\ atoms[i],\ p);}
+\DoxyCodeLine{00500\ \ \ \ \ \}}
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{comment}{//write\ labels}}
+\DoxyCodeLine{00502\ \ \ \ \ \textcolor{keywordflow}{if}\ (app.LabelCount()\ !=\ 0)\ \{}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ app.LabelCount();\ i++)\ \{}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ TXGlLabel\&\ glxl\ =\ app.GetLabel(i);}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ vec3d\ rp\ =\ glxl.GetRasterPosition();}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ rp[1]\ +=\ 4;}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ rp\ *=\ (DrawScale\ *\ app.GetRenderer().GetScale());}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \ \ \textcolor{comment}{//pw.drawText(glxl.GetLabel(),\ rp+DrawOrigin);}}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00510\ \ \ \ \ \}}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00512\ \ \ \ \ \textcolor{comment}{//document\ close}}
+\DoxyCodeLine{00513\ \ \ \ \ pw.Writenl(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)end\{tikzpicture\}"{}});}
+\DoxyCodeLine{00514\ \ \ \ \ pw.Writenl(\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)end\{document\}"{}});}
+\DoxyCodeLine{00515\ }
+\DoxyCodeLine{00516\ \ \ \}}
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00518\ \ \ DefPropP(\textcolor{keywordtype}{short},\ ElpDiv)}
+\DoxyCodeLine{00519\ \ \ \ \ DefPropP(\textcolor{keywordtype}{short},\ PieDiv)}
+\DoxyCodeLine{00520\ \ \ \ \ DefPropP(\textcolor{keywordtype}{short},\ BondDiv)}
+\DoxyCodeLine{00521\ \ \ \ \ DefPropP(\textcolor{keywordtype}{short},\ ColorMode)}
+\DoxyCodeLine{00522\ \ \ \ \ DefPropP(\textcolor{keywordtype}{float},\ HBondScale)}
+\DoxyCodeLine{00523\ \ \ \ \ DefPropP(\textcolor{keywordtype}{float},\ BondRad)}
+\DoxyCodeLine{00524\ \};}
+\DoxyCodeLine{00525\ }
+\DoxyCodeLine{00526\ \textcolor{comment}{//to\ be\ done:\ labels}}
+\DoxyCodeLine{00527\ \textcolor{comment}{//\(\backslash\)node\ [circle,draw,label=60:\$60\string^\(\backslash\)circ\$,label=below:\$-\/90\string^\(\backslash\)circ\$]\ \{my\ circle\};}}
+\DoxyCodeLine{00528\ }
+\DoxyCodeLine{00529\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

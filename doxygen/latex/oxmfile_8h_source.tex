@@ -1,0 +1,58 @@
+\doxysection{oxmfile.\+h}
+\hypertarget{oxmfile_8h_source}{}\label{oxmfile_8h_source}\index{gxlib/oxmfile.h@{gxlib/oxmfile.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxl\_oxmFile\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxl\_oxmFile\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxapp.h"{}}}
+\DoxyCodeLine{00013\ BeginGxlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ Olex2\ model\ file}}
+\DoxyCodeLine{00016\ class\ TOXMFile\ :\ public\ TBasicCFile\ \{}
+\DoxyCodeLine{00017\ \ \ \mbox{\hyperlink{classTGXApp}{TGXApp}}\&\ gxapp;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ TOXMFile(\mbox{\hyperlink{classTGXApp}{TGXApp}}\&\ app)\ :\ gxapp(app)}
+\DoxyCodeLine{00020\ \ \ \{\}}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{virtual}\ \string~TOXMFile()\ \{\}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SaveToStrings(TStrList\ \&)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00025\ \ \ \}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromStrings(\textcolor{keyword}{const}\ TStrList\ \&)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsNative()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Adopt(\mbox{\hyperlink{classTXFile}{TXFile}}\ \&f,\ \textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ RefMod.Assign(f.GetRM(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ LoadFromFile(\textcolor{keyword}{const}\ olxstr\ \&fn)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ gxapp.LoadModel(fn);}
+\DoxyCodeLine{00036\ \ \ \ \ RefMod.Assign(gxapp.XFile().GetRM(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00037\ \ \ \ \ FileName\ =\ fn;}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SaveToFile(\textcolor{keyword}{const}\ olxstr\&\ fn)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{if}\ (gxapp.XFile().GetRM().GetModelSource().IsEmpty())\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ gxapp.XFile().GetRM().SetModelSource(}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ TEFile::ChangeFileExt(}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ TEFile::ExtractFileName(gxapp.XFile().GetFileName()),}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ EmptyString()));}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ gxapp.SaveModel(fn);}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TOXMFile(gxapp);\ \ \}}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ EndGxlNamespace()}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

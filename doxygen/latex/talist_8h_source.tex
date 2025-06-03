@@ -1,0 +1,590 @@
+\doxysection{talist.\+h}
+\hypertarget{talist_8h_source}{}\label{talist_8h_source}\index{sdl/talist.h@{sdl/talist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_array\_list\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_array\_list\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}etraverse.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}shared.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}constlist.h"{}}}
+\DoxyCodeLine{00017\ BeginEsdlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ template\ <typename>\ class\ \mbox{\hyperlink{classSharedArrayList}{SharedArrayList}};}
+\DoxyCodeLine{00020\ template\ <typename>\ class\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList}};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ template\ <class\ T>\ class\ TArrayList\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{size\_t}\ FCount;}
+\DoxyCodeLine{00025\ \ \ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\ cap;}
+\DoxyCodeLine{00026\ \ \ T*\ Items;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{void}\ init(\textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ cap.capacity\ =\ FCount\ =\ size;}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{if}\ (cap.capacity\ !=\ 0)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ Items\ =\ \textcolor{keyword}{new}\ T[cap.capacity];}
+\DoxyCodeLine{00031\ \ \ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ Items\ =\ 0;}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{//\ creates\ a\ new\ empty\ objects}}
+\DoxyCodeLine{00038\ \ \ TArrayList()\ \{\ init(0);\ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{explicit}\ TArrayList(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ cap)}
+\DoxyCodeLine{00040\ \ \ \ \ :\ cap(cap)}
+\DoxyCodeLine{00041\ \ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ init(cap.capacity);}
+\DoxyCodeLine{00043\ \ \ \ \ FCount\ =\ 0;}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \textcolor{comment}{//\ allocates\ size\ elements\ (can\ be\ accessed\ directly)}}
+\DoxyCodeLine{00047\ \ \ TArrayList(\textcolor{keywordtype}{size\_t}\ size)\ \{\ init(size);\ \}}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ init\_t>}
+\DoxyCodeLine{00050\ \ \ TArrayList(\textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keyword}{const}\ init\_t\&\ initialiser)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ init(size);}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ size;\ i++)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ initialiser.OnItem(Items[i],\ i);}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{/*\ copy\ constuctor\ -\/\ creates\ new\ copies\ of\ the\ objest,\ be\ careful\ as\ the}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ \ \ \ assignement\ operator\ must\ exist\ for\ nonpointer\ objects}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00060\ \ \ TArrayList(\textcolor{keyword}{const}\ TArrayList\&\ list)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ init(list.Count());}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ Items[i]\ =\ list.Items[i];}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00067\ \ \ TArrayList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classSharedArrayList}{SharedArrayList<T>}}\&\ list)\ :\ Items(0)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ TakeOver(list.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00071\ \ \ TArrayList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<T>}}\&\ list)\ :\ Items(0)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ TakeOver(list.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{comment}{/*\ copies\ values\ from\ an\ array\ of\ size\ elements\ \ */}}
+\DoxyCodeLine{00076\ \ \ TArrayList(\textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keyword}{const}\ T*\ array)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ init(size);}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ Items[i]\ =\ array[i];}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{comment}{/*\ copies\ values\ from\ an\ array\ of\ size\ elements\ \ */}}
+\DoxyCodeLine{00084\ \ \ TArrayList(\textcolor{keywordtype}{size\_t}\ size,\ T*\ array)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ init(size);}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ Items[i]\ =\ array[i];}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<T>}}\ FromList(\textcolor{keyword}{const}\ List\&\ list,}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\&\ accessor)}
+\DoxyCodeLine{00094\ \ \ \{}
+\DoxyCodeLine{00095\ \ \ \ \ TArrayList\ rv(list.Count());}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ rv[i]\ =\ accessor(list[i]);}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<T>}}\ FromList(\textcolor{keyword}{const}\ List\&\ list)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ TArrayList\ rv(list.Count());}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ rv[i]\ =\ list[i];}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{comment}{//destructor\ -\/\ beware\ t40:\ error:\ expec\ the\ objects\ are\ deleted!}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{virtual}\ \string~TArrayList()\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ olx\_del\_arr(Items);}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{comment}{//deletes\ the\ objects\ and\ clears\ the\ list}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{\ SetCount(0);\ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00119\ \ \ TArrayList\&\ TakeOver(TArrayList\&\ l,\ \textcolor{keywordtype}{bool}\ do\_delete\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (Items\ !=\ 0)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ Items;}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ FCount\ =\ l.FCount;}
+\DoxyCodeLine{00124\ \ \ \ \ cap\ =\ l.cap;}
+\DoxyCodeLine{00125\ \ \ \ \ Items\ =\ l.Items;}
+\DoxyCodeLine{00126\ \ \ \ \ l.FCount\ =\ l.cap.capacity\ =\ 0;}
+\DoxyCodeLine{00127\ \ \ \ \ l.Items\ =\ 0;}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{if}\ (do\_delete)\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keyword}{delete}\&\ l;}
+\DoxyCodeLine{00130\ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TArrayList(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ TArrayList\&\ Assign(\textcolor{keyword}{const}\ List\&\ list)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{if}\ ((\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*)\textcolor{keyword}{this}\ ==\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*)\&list)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00139\ \ \ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \ \ SetCount(list.Count());}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ Items[i]\ =\ list[i];}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ TArrayList\&\ operator\ =\ (\textcolor{keyword}{const}\ List\&\ list)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{return}\ Assign(list);}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00151\ \ \ TArrayList\&\ operator\ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classSharedArrayList}{SharedArrayList<T>}}\&\ list)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ TakeOver(list.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00155\ \ \ TArrayList\&\ operator\ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<T>}}\&\ list)\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{return}\ TakeOver(list.Release(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00159\ \ \ TArrayList\&\ operator\ =\ (\textcolor{keyword}{const}\ TArrayList\&\ list)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{return}\ Assign(list);}
+\DoxyCodeLine{00161\ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ TArrayList\&\ AddAll(\textcolor{keyword}{const}\ List\&\ list)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ SetCapacity(list.Count()\ +\ FCount);}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ Items[FCount\ +\ i]\ =\ list[i];}
+\DoxyCodeLine{00167\ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \ \ FCount\ +=\ list.Count();}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00170\ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00172\ \ \ TArrayList\&\ AddAll(\textcolor{keyword}{const}\ \mbox{\hyperlink{classSharedArrayList}{SharedArrayList<T>}}\&\ list)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ AddAll(list.obj());}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00176\ \ \ TArrayList\&\ AddAll(\textcolor{keyword}{const}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<T>}}\&\ list)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{return}\ AddAll(list.obj());}
+\DoxyCodeLine{00178\ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ TArrayList\&\ operator\ +=\ (\textcolor{keyword}{const}\ List\&\ list)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordflow}{return}\ AddAll(list);}
+\DoxyCodeLine{00182\ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00184\ \ \ T\&\ Add(\textcolor{keyword}{const}\ T\&\ Obj)\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{if}\ (cap.capacity\ ==\ FCount)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ SetCapacity(cap.new\_size(FCount));}
+\DoxyCodeLine{00187\ \ \ \ \ \}}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{return}\ (Items[FCount++]\ =\ Obj);}
+\DoxyCodeLine{00189\ \ \ \}}
+\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00191\ \ \ T\&\ Add()\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{if}\ (cap.capacity\ ==\ FCount)\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ SetCapacity(cap.new\_size(FCount));}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{return}\ Items[FCount++];}
+\DoxyCodeLine{00196\ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00198\ \ \ TArrayList\&\ operator\ <<\ (\textcolor{keyword}{const}\ T\&\ o)\ \{\ Add(o);\ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00199\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00200\ \ \ TArrayList\&\ operator\ <<\ (\textcolor{keyword}{const}\ TArrayList\&\ l)\ \{\ \textcolor{keywordflow}{return}\ AddAll(l);\ \}}
+\DoxyCodeLine{00201\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00202\ \ \ T\&\ Insert(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keyword}{const}\ T\&\ Obj)\ \{}
+\DoxyCodeLine{00203\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00204\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ index,\ 0,\ FCount\ +\ 1);}
+\DoxyCodeLine{00206\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordflow}{if}\ (cap.capacity\ ==\ FCount)\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ SetCapacity(cap.new\_size(FCount));}
+\DoxyCodeLine{00209\ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ diff\ =\ FCount\ -\/\ index;}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ diff;\ i++)\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ FCount\ -\/\ i;}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ Items[ind]\ =\ Items[ind\ -\/\ 1];}
+\DoxyCodeLine{00214\ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ FCount++;}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{return}\ (Items[index]\ =\ Obj);}
+\DoxyCodeLine{00217\ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00219\ \ \ T\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00221\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ index,\ 0,\ FCount);}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordflow}{return}\ Items[index];}
+\DoxyCodeLine{00224\ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00226\ \ \ T\&\ GetItem(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00227\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00228\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ index,\ 0,\ FCount);}
+\DoxyCodeLine{00229\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordflow}{return}\ Items[index];}
+\DoxyCodeLine{00231\ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00233\ \ \ T\&\ GetLast()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00235\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ FCount\ -\/\ 1,\ 0,\ FCount);}
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ Items[FCount\ -\/\ 1];}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{const}\ T*\ GetData()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Items;\ \}}
+\DoxyCodeLine{00242\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Functor>\ \textcolor{keyword}{const}\ TArrayList\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ f.OnItem(Items[i],\ i);}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00247\ \ \ \}}
+\DoxyCodeLine{00248\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Functor>\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<T>}}\ Filter(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00250\ \ \ \ \ TArrayList\ rv;}
+\DoxyCodeLine{00251\ \ \ \ \ rv.SetCapacity(Count());}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (f.OnItem(GetItem(i),\ i))\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ rv.Add(GetItem(i));}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00258\ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Analyser>\ \textcolor{keywordtype}{size\_t}\ Count(\textcolor{keyword}{const}\ Analyser\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a.OnItem(GetItem(i),\ i))\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordflow}{return}\ cnt;}
+\DoxyCodeLine{00268\ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00270\ \ \ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ GetCapacity()\ \{\ \textcolor{keywordflow}{return}\ cap;\ \}}
+\DoxyCodeLine{00271\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ GetCapacity()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ cap;\ \}}
+\DoxyCodeLine{00272\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00273\ \ \ TArrayList\&\ SetCapacity(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__capacity__t}{olx\_capacity\_t}}\&\ c)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ cap.inc\ =\ c.inc;}
+\DoxyCodeLine{00275\ \ \ \ \ cap.inc\_k\ =\ c.inc\_k;}
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keywordflow}{return}\ SetCapacity(c.capacity);}
+\DoxyCodeLine{00277\ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00279\ \ \ TArrayList\&\ SetCapacity(\textcolor{keywordtype}{size\_t}\ v)\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ <=\ cap.capacity)\ \{}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00282\ \ \ \ \ \}}
+\DoxyCodeLine{00283\ \ \ \ \ cap.capacity\ =\ v;}
+\DoxyCodeLine{00284\ \ \ \ \ T*\ Bf\ =\ \textcolor{keyword}{new}\ T[v];}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keywordflow}{if}\ (Items\ !=\ 0)\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ Bf[i]\ =\ Items[i];}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ Items;}
+\DoxyCodeLine{00290\ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ Items\ =\ Bf;}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00293\ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00295\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ init\_t>}
+\DoxyCodeLine{00296\ \ \ TArrayList\&\ SetCapacity(\textcolor{keywordtype}{size\_t}\ v,\ \textcolor{keyword}{const}\ init\_t\&\ inz)\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ <=\ cap.capacity)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00299\ \ \ \ \ \}}
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ old\_c\ =\ cap.capacity;}
+\DoxyCodeLine{00301\ \ \ \ \ cap.capacity\ =\ v;}
+\DoxyCodeLine{00302\ \ \ \ \ T*\ Bf\ =\ \textcolor{keyword}{new}\ T[v];}
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keywordflow}{if}\ (Items\ !=\ 0)\ \{}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ Bf[i]\ =\ Items[i];}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ Items;}
+\DoxyCodeLine{00308\ \ \ \ \ \}}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ old\_c;\ i\ <\ v;\ i++)\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ inz.OnItem(Bf[i],\ i);}
+\DoxyCodeLine{00311\ \ \ \ \ \}}
+\DoxyCodeLine{00312\ \ \ \ \ Items\ =\ Bf;}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00314\ \ \ \}}
+\DoxyCodeLine{00315\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00316\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ index)\ \{}
+\DoxyCodeLine{00317\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00318\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ index,\ 0,\ FCount);}
+\DoxyCodeLine{00320\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ index\ +\ 1;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ Items[i\ -\/\ 1]\ =\ Items[i];}
+\DoxyCodeLine{00323\ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \ \ FCount-\/-\/;}
+\DoxyCodeLine{00325\ \ \ \}}
+\DoxyCodeLine{00326\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00327\ \ \ \textcolor{keywordtype}{void}\ DeleteRange(\textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ count)\ \{}
+\DoxyCodeLine{00328\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00329\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ from,\ 0,\ FCount);}
+\DoxyCodeLine{00331\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ from\ +\ count,\ 0,\ FCount\ +\ 1);}
+\DoxyCodeLine{00333\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ copy\_cnt\ =\ FCount\ -\/\ from\ -\/\ count;}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ copy\_cnt;\ i++)\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ Items[from\ +\ i]\ =\ Items[from\ +\ count\ +\ i];}
+\DoxyCodeLine{00337\ \ \ \ \ \}}
+\DoxyCodeLine{00338\ \ \ \ \ FCount\ -\/=\ count;}
+\DoxyCodeLine{00339\ \ \ \}}
+\DoxyCodeLine{00340\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00341\ \ \ \textcolor{keywordtype}{bool}\ Remove(\textcolor{keyword}{const}\ T\&\ pObj)\ \{}
+\DoxyCodeLine{00342\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i\ =\ IndexOf(pObj);}
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00345\ \ \ \ \ \}}
+\DoxyCodeLine{00346\ \ \ \ \ Delete(i);}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00348\ \ \ \}}
+\DoxyCodeLine{00349\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00350\ \ \ \ \ \textcolor{comment}{//\ cyclic\ shift\ to\ the\ left}}
+\DoxyCodeLine{00351\ \ \ TArrayList\&\ ShiftL(\textcolor{keywordtype}{size\_t}\ cnt)\ \{}
+\DoxyCodeLine{00352\ \ \ \ \ \textcolor{keywordflow}{if}\ (FCount\ ==\ 0)\ \{}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00354\ \ \ \ \ \}}
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sv\ =\ cnt\ \%\ FCount;}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordflow}{if}\ (sv\ ==\ 0)\ \{}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00358\ \ \ \ \ \}}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keywordflow}{if}\ (sv\ ==\ 1)\ \{\ \ \textcolor{comment}{//\ special\ case}}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ T\ D\ =\ Items[0];}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <=\ FCount\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ Items[i\ -\/\ 1]\ =\ Items[i];}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ Items[FCount\ -\/\ 1]\ =\ D;}
+\DoxyCodeLine{00365\ \ \ \ \ \}}
+\DoxyCodeLine{00366\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ T*\ D\ =\ \textcolor{keyword}{new}\ T[sv];}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sv;\ i++)\ \{}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ D[i]\ =\ Items[i];}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ sv;\ i\ <=\ FCount\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ Items[i\ -\/\ sv]\ =\ Items[i];}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sv;\ i++)\ \{}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ Items[FCount\ -\/\ sv\ +\ i]\ =\ D[i];}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ D;}
+\DoxyCodeLine{00378\ \ \ \ \ \}}
+\DoxyCodeLine{00379\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00380\ \ \ \}}
+\DoxyCodeLine{00381\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{comment}{//\ cyclic\ shift\ to\ the\ right}}
+\DoxyCodeLine{00383\ \ \ TArrayList\&\ ShiftR(\textcolor{keywordtype}{size\_t}\ cnt)\ \{}
+\DoxyCodeLine{00384\ \ \ \ \ \textcolor{keywordflow}{if}\ (FCount\ ==\ 0)\ \{}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00386\ \ \ \ \ \}}
+\DoxyCodeLine{00387\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sv\ =\ cnt\ \%\ FCount;}
+\DoxyCodeLine{00388\ \ \ \ \ \textcolor{keywordflow}{if}\ (sv\ ==\ 0)\ \{}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00390\ \ \ \ \ \}}
+\DoxyCodeLine{00391\ \ \ \ \ \textcolor{keywordflow}{if}\ (sv\ ==\ 1)\ \{\ \ \textcolor{comment}{//\ special\ case}}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ T\ D\ =\ Items[FCount\ -\/\ 1];}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ Items[FCount\ -\/\ i]\ =\ Items[FCount\ -\/\ i\ -\/\ 1];}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ Items[0]\ =\ D;}
+\DoxyCodeLine{00397\ \ \ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ T*\ D\ =\ \textcolor{keyword}{new}\ T[sv];}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sv;\ i++)\ \{}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ D[i]\ =\ Items[FCount\ -\/\ sv\ +\ i];}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ diff\ =\ FCount\ -\/\ sv;}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <=\ diff;\ i++)\ \{}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ Items[FCount\ -\/\ i]\ =\ Items[diff\ -\/\ i];}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sv;\ i++)\ \{}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ Items[i]\ =\ D[i];}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ D;}
+\DoxyCodeLine{00411\ \ \ \ \ \}}
+\DoxyCodeLine{00412\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00413\ \ \ \}}
+\DoxyCodeLine{00414\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00415\ \ \ \textcolor{keywordtype}{void}\ Swap(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00416\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00417\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ i,\ 0,\ FCount);}
+\DoxyCodeLine{00418\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ j,\ 0,\ FCount);}
+\DoxyCodeLine{00419\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00420\ \ \ \ \ T\ D\ =\ Items[i];}
+\DoxyCodeLine{00421\ \ \ \ \ Items[i]\ =\ Items[j];}
+\DoxyCodeLine{00422\ \ \ \ \ Items[j]\ =\ D;}
+\DoxyCodeLine{00423\ \ \ \}}
+\DoxyCodeLine{00424\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00425\ \ \ \textcolor{keywordtype}{void}\ Move(\textcolor{keywordtype}{size\_t}\ from,\ \textcolor{keywordtype}{size\_t}\ to)\ \{}
+\DoxyCodeLine{00426\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00427\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ from,\ 0,\ FCount);}
+\DoxyCodeLine{00429\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \_\_POlxSourceInfo,\ to,\ 0,\ FCount);}
+\DoxyCodeLine{00431\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00432\ \ \ \ \ T\ D\ =\ Items[from];}
+\DoxyCodeLine{00433\ \ \ \ \ \textcolor{keywordflow}{if}\ (from\ >\ to)\ \{}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ diff\ =\ from\ -\/\ to;}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ diff;\ i++)\ \{}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ Items[from\ -\/\ i]\ =\ Items[from\ -\/\ i\ -\/\ 1];}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00438\ \ \ \ \ \}}
+\DoxyCodeLine{00439\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ from\ +\ 1;\ i\ <=\ to;\ i++)\ \{}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ Items[i\ -\/\ 1]\ =\ Items[i];}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00443\ \ \ \ \ \}}
+\DoxyCodeLine{00444\ \ \ \ \ Items[to]\ =\ D;}
+\DoxyCodeLine{00445\ \ \ \}}
+\DoxyCodeLine{00446\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00447\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FCount;\ \}}
+\DoxyCodeLine{00448\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00449\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FCount\ ==\ 0;\ \}}
+\DoxyCodeLine{00450\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00451\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ init\_t>}
+\DoxyCodeLine{00452\ \ \ TArrayList\&\ SetCount(\textcolor{keywordtype}{size\_t}\ v,\ \textcolor{keyword}{const}\ init\_t\&\ initialiser)\ \{}
+\DoxyCodeLine{00453\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ FCount;}
+\DoxyCodeLine{00454\ \ \ \ \ SetCount(v);}
+\DoxyCodeLine{00455\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ cnt;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ initialiser.OnItem(Items[i],\ i);}
+\DoxyCodeLine{00457\ \ \ \ \ \}}
+\DoxyCodeLine{00458\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00459\ \ \ \}}
+\DoxyCodeLine{00460\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00461\ \ \ TArrayList\&\ SetCount(\textcolor{keywordtype}{size\_t}\ v)\ \{}
+\DoxyCodeLine{00462\ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ >\ FCount)\ \{}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ >\ cap.capacity)\ \{}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ SetCapacity(v);}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00466\ \ \ \ \ \}}
+\DoxyCodeLine{00467\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (v\ ==\ 0)\ \{}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Items\ !=\ 0)\ \{}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ Items;}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \ \ Items\ =\ 0;}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ cap.capacity\ =\ 0;}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00473\ \ \ \ \ \}}
+\DoxyCodeLine{00474\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ cap.capacity\ =\ v\ +\ cap.inc;}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ T*\ Bf\ =\ \textcolor{keyword}{new}\ T[cap.capacity];}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ v;\ i++)\ \{}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ Bf[i]\ =\ Items[i];}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Items\ !=\ 0)\ \{}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ Items;}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ Items\ =\ Bf;}
+\DoxyCodeLine{00484\ \ \ \ \ \}}
+\DoxyCodeLine{00485\ \ \ \ \ FCount\ =\ v;}
+\DoxyCodeLine{00486\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00487\ \ \ \}}
+\DoxyCodeLine{00488\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00489\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOf(\textcolor{keyword}{const}\ T\&\ val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00490\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Items[i]\ ==\ val)}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00493\ \ \ \ \ \}}
+\DoxyCodeLine{00494\ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00495\ \ \ \}}
+\DoxyCodeLine{00496\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00497\ \ \ \textcolor{keywordtype}{bool}\ Contains(\textcolor{keyword}{const}\ T\&\ v)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ IndexOf(v)\ !=\ InvalidIndex;\ \}}
+\DoxyCodeLine{00498\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00499\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ \textcolor{keywordtype}{size\_t}\_list\_t>}
+\DoxyCodeLine{00500\ \ \ TArrayList\&\ Rearrange(\textcolor{keyword}{const}\ size\_t\_list\_t\&\ indices,\ \textcolor{keywordtype}{bool}\ inplace=\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{keywordflow}{if}\ (FCount\ <\ 2)\ \{}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00503\ \ \ \ \ \}}
+\DoxyCodeLine{00504\ \ \ \ \ \textcolor{keywordflow}{if}\ (FCount\ !=\ indices.Count())\ \{}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}indices\ list\ size"{}});}
+\DoxyCodeLine{00507\ \ \ \ \ \}}
+\DoxyCodeLine{00508\ \ \ \ \ \textcolor{keywordflow}{if}\ (inplace)\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ olx\_list\_rearrange(*\textcolor{keyword}{this},\ indices);}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00511\ \ \ \ \ \}}
+\DoxyCodeLine{00512\ \ \ \ \ T*\ ni\ =\ olx\_malloc<T>(cap.capacity\ =\ FCount);}
+\DoxyCodeLine{00513\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ FCount;\ i++)\ \{}
+\DoxyCodeLine{00514\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ indices[i],\ 0,\ FCount);}
+\DoxyCodeLine{00517\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ ni[i]\ =\ Items[indices[i]];}
+\DoxyCodeLine{00519\ \ \ \ \ \}}
+\DoxyCodeLine{00520\ \ \ \ \ olx\_free(Items);}
+\DoxyCodeLine{00521\ \ \ \ \ Items\ =\ ni;}
+\DoxyCodeLine{00522\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00523\ \ \ \}}
+\DoxyCodeLine{00524\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00525\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTListTraverser}{TListTraverser<TArrayList<T>}}\ >\ Traverser;}
+\DoxyCodeLine{00526\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00527\ \ \ \textcolor{keyword}{struct\ }InternalAccessor\ \{}
+\DoxyCodeLine{00528\ \ \ \ \ TArrayList\&\ list;}
+\DoxyCodeLine{00529\ \ \ \ \ InternalAccessor(TArrayList\&\ l)\ :\ list(l)\ \{\}}
+\DoxyCodeLine{00530\ \ \ \ \ T\&\ operator\ [](\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ list.Items[i];\ \}}
+\DoxyCodeLine{00531\ \ \ \ \ \textcolor{keyword}{const}\ T\&\ operator\ [](\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ list.Items[i];\ \}}
+\DoxyCodeLine{00532\ \ \ \ \ \textcolor{keyword}{typedef}\ T\ list\_item\_type;}
+\DoxyCodeLine{00533\ \ \ \};}
+\DoxyCodeLine{00534\ \ \ \textcolor{keyword}{typedef}\ T\ list\_item\_type;}
+\DoxyCodeLine{00535\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<T>}}\ const\_list\_type;}
+\DoxyCodeLine{00536\ \ \ olx\_list\_2\_std;}
+\DoxyCodeLine{00537\ \};}
+\DoxyCodeLine{00538\ }
+\DoxyCodeLine{00539\ \textcolor{preprocessor}{\#ifndef\ \_\_BORLANDC\_\_}}
+\DoxyCodeLine{00540\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00541\ \ \ \mbox{\hyperlink{classTListTraverser}{TListTraverser<TArrayList<T>}}\ >\ TArrayList<T>::Traverser;}
+\DoxyCodeLine{00542\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00543\ }
+\DoxyCodeLine{00544\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<int>}}\ TIntList;}
+\DoxyCodeLine{00545\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<unsigned\ int>}}\ TUIntList;}
+\DoxyCodeLine{00546\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<size\_t>}}\ TSizeList;}
+\DoxyCodeLine{00547\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<index\_t>}}\ TIndexList;}
+\DoxyCodeLine{00548\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<double>}}\ TDoubleList;}
+\DoxyCodeLine{00549\ }
+\DoxyCodeLine{00550\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00551\ \textcolor{keyword}{class\ }SharedArrayList\ :\ \textcolor{keyword}{public}\ shared\_array<TArrayList<item\_t>,\ item\_t>\ \{}
+\DoxyCodeLine{00552\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<item\_t>}}\ arr\_t;}
+\DoxyCodeLine{00553\ \ \ \textcolor{keyword}{typedef}\ shared\_array<arr\_t,\ item\_t>\ parent\_t;}
+\DoxyCodeLine{00554\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00555\ \ \ SharedArrayList()\ \{\}}
+\DoxyCodeLine{00556\ \ \ SharedArrayList(\textcolor{keyword}{const}\ SharedArrayList\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00557\ \ \ SharedArrayList(arr\_t\ *arr)\ :\ parent\_t(arr)\ \{\}}
+\DoxyCodeLine{00558\ \ \ SharedArrayList(arr\_t\ \&arr)\ :\ parent\_t(arr)\ \{\}}
+\DoxyCodeLine{00559\ \ \ SharedArrayList\ \&operator\ =\ (\textcolor{keyword}{const}\ SharedArrayList\ \&l)\ \{}
+\DoxyCodeLine{00560\ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00561\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00562\ \ \ \}}
+\DoxyCodeLine{00563\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00564\ \ \ \textcolor{keyword}{typedef}\ item\_t\ list\_item\_type;}
+\DoxyCodeLine{00565\ \};}
+\DoxyCodeLine{00566\ }
+\DoxyCodeLine{00567\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00568\ \textcolor{keyword}{class\ }ConstArrayList\ :\ \textcolor{keyword}{public}\ const\_list<TArrayList<item\_t>\ >\ \{}
+\DoxyCodeLine{00569\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTArrayList}{TArrayList<item\_t>}}\ arr\_t;}
+\DoxyCodeLine{00570\ \ \ \textcolor{keyword}{typedef}\ const\_list<arr\_t>\ parent\_t;}
+\DoxyCodeLine{00571\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00572\ \ \ ConstArrayList(\textcolor{keyword}{const}\ ConstArrayList\ \&l)\ :\ parent\_t(l)\ \{\}}
+\DoxyCodeLine{00573\ \ \ ConstArrayList(arr\_t\ *arr)\ :\ parent\_t(arr)\ \{\}}
+\DoxyCodeLine{00574\ \ \ ConstArrayList(arr\_t\ \&arr)\ :\ parent\_t(arr)\ \{\}}
+\DoxyCodeLine{00575\ \ \ ConstArrayList\ \&operator\ =\ (\textcolor{keyword}{const}\ ConstArrayList\ \&l)\ \{}
+\DoxyCodeLine{00576\ \ \ \ \ parent\_t::operator\ =\ (l);}
+\DoxyCodeLine{00577\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00578\ \ \ \}}
+\DoxyCodeLine{00579\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00580\ \ \ \textcolor{keyword}{typedef}\ item\_t\ list\_item\_type;}
+\DoxyCodeLine{00581\ \};}
+\DoxyCodeLine{00582\ }
+\DoxyCodeLine{00583\ EndEsdlNamespace()}
+\DoxyCodeLine{00584\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

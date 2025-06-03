@@ -1,0 +1,77 @@
+\doxysection{dsphere.\+h}
+\hypertarget{dsphere_8h_source}{}\label{dsphere_8h_source}\index{gxlib/dsphere.h@{gxlib/dsphere.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_glx\_sphere\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_glx\_sphere\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glmousehandler.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}ematrix.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}solid\_angles.h"{}}}
+\DoxyCodeLine{00016\ BeginGxlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ TDSphere:\ public\ \mbox{\hyperlink{classAGlMouseHandlerImp}{AGlMouseHandlerImp}}\ \ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoTranslate(\textcolor{keyword}{const}\ vec3d\&\ t)\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ Basis.Translate(t);\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00022\ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoRotate(\textcolor{keyword}{const}\ vec3d\&\ vec,\ \textcolor{keywordtype}{double}\ angle)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ Basis.Rotate(vec,\ angle);}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoZoom(\textcolor{keywordtype}{double}\ zoom,\ \textcolor{keywordtype}{bool}\ inc)\ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordflow}{if}(\ inc\ )\ \ Basis.SetZoom(ValidateZoom(Basis.GetZoom()\ +\ zoom));}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \ \ \ \ \ Basis.SetZoom(ValidateZoom(zoom));}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ \ \ APointAnalyser*\ analyser;}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{size\_t}\ Generation;\ \ \textcolor{comment}{//6}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{bool}\ OnDblClick(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{bool}\ OnMouseDown(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{return}\ AGlMouseHandlerImp::OnMouseDown(\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{bool}\ OnMouseUp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTMouseData}{TMouseData}}\&\ Data)\ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ AGlMouseHandlerImp::OnMouseUp(\textcolor{keyword}{this},\ Data);}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\ \&CreatePrimitive(\mbox{\hyperlink{classTGPCollection}{TGPCollection}}\ \&collection,}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&name,\ \textcolor{keywordtype}{size\_t}\ gen,\ \textcolor{keywordtype}{bool}\ update\_vec\_cnt);}
+\DoxyCodeLine{00043\ \ \ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\ *lowq,\ *highq;}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{size\_t}\ vec\_cnt;}
+\DoxyCodeLine{00045\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00046\ \ \ TDSphere(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName=EmptyString());}
+\DoxyCodeLine{00047\ \ \ \string~TDSphere()\ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{if}\ (analyser\ !=\ 0)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ analyser;}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName=EmptyString());}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\ \&Max,\ vec3d\ \&Min)\ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{double}\ GetRadius()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00056\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ Generation)}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{size\_t}\ GetVectorCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ vec\_cnt;\ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{comment}{//\ the\ one\ must\ be\ created\ with\ new\ and\ will\ be\ managed\ by\ this\ object}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{void}\ SetAnalyser(APointAnalyser\ *a)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (analyser\ !=\ NULL)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ analyser;}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ analyser\ =\ a;}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{bool}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di);}
+\DoxyCodeLine{00067\ \ \ TEBasis\ Basis;}
+\DoxyCodeLine{00068\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ EndGxlNamespace()}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

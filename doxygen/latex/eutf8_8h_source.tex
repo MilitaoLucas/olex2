@@ -1,0 +1,323 @@
+\doxysection{eutf8.\+h}
+\hypertarget{eutf8_8h_source}{}\label{eutf8_8h_source}\index{sdl/eutf8.h@{sdl/eutf8.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_utf8\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_utf8\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}ememstream.h"{}}}
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ original\ code\ by\ Marius\ Bancila\ at}}
+\DoxyCodeLine{00017\ \textcolor{comment}{http://www.codeguru.com/cpp/misc/misc/multi-\/lingualsupport/article.php/c10451/}}
+\DoxyCodeLine{00018\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ \ UTF8\_MASKBITS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x3F}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ \ UTF8\_MASKBYTE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x80}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ \ UTF8\_MASK2BYTES\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xC0}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ \ UTF8\_MASK3BYTES\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xE0}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ \ UTF8\_MASK4BYTES\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xF0}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ \ UTF8\_MASK5BYTES\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xF8}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ \ UTF8\_MASK6BYTES\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xFC}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{class\ }TUtf8\ \ \{}
+\DoxyCodeLine{00029\ \ \ olxcstr\ (*EncodeFunc)(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ arr,\ \textcolor{keywordtype}{size\_t}\ len);}
+\DoxyCodeLine{00030\ \ \ IDataOutputStream\ \&(*EncodeStreamFunc)(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ arr,\ \textcolor{keywordtype}{size\_t}\ len,}
+\DoxyCodeLine{00031\ \ \ \ \ IDataOutputStream\ \&);}
+\DoxyCodeLine{00032\ \ \ olxwstr\ (*DecodeFunc)(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ arr,\ \textcolor{keywordtype}{size\_t}\ len);}
+\DoxyCodeLine{00033\ \ \ size\_t\ (*CharCountFunc)(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ arr,\ \textcolor{keywordtype}{size\_t}\ len);}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{static}\ TUtf8\&\ GetInstance()\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{static}\ TUtf8\ i\_;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{return}\ i\_;}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00040\ \ \ TUtf8()\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{short}\ sz\ =\ \textcolor{keyword}{sizeof}(wchar\_t);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{if}\ (sz\ ==\ 2)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ EncodeFunc\ =\ \&Encode2;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ EncodeStreamFunc\ =\ \&EncodeStream2;}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ DecodeFunc\ =\ \&Decode2;}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ CharCountFunc\ =\ \&CharCount2;}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (sz\ ==\ 4)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ EncodeFunc\ =\ \&Encode4;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ EncodeStreamFunc\ =\ \&EncodeStream4;}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ DecodeFunc\ =\ \&Decode4;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ CharCountFunc\ =\ \&CharCount4;}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ \ \ \textcolor{comment}{/*\ body\ defined\ in\ olx\_istring.cpp}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{static}\ olxcstr\ Encode(\textcolor{keyword}{const}\ olxcstr\&\ str);}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{static}\ IDataOutputStream\ \&Encode(\textcolor{keyword}{const}\ olxcstr\&\ str,}
+\DoxyCodeLine{00060\ \ \ \ \ IDataOutputStream\ \&out)}
+\DoxyCodeLine{00061\ \ \ \{\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ out\ <<\ str;}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{static}\ olxcstr\ Encode(\textcolor{keyword}{const}\ olxwstr\&\ str)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ olxcstr\ r\ =\ (*GetInstance().EncodeFunc)(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00066\ \ \ \ \ r.SetUTF8(\textcolor{keyword}{true});}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{static}\ olxcstr\ Encode(\textcolor{keyword}{const}\ TTIString<wchar\_t>\&\ str)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ olxcstr\ r\ =\ (*GetInstance().EncodeFunc)(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00072\ \ \ \ \ r.SetUTF8(\textcolor{keyword}{true});}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00074\ \ \ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{static}\ IDataOutputStream\&\ Encode(\textcolor{keyword}{const}\ olxwstr\&\ str,}
+\DoxyCodeLine{00077\ \ \ \ \ IDataOutputStream\&\ out)}
+\DoxyCodeLine{00078\ \ \ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ (*GetInstance().EncodeStreamFunc)(str.raw\_str(),\ str.Length(),\ out);}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{static}\ IDataOutputStream\&\ Encode(\textcolor{keyword}{const}\ TTIString<wchar\_t>\&\ str,}
+\DoxyCodeLine{00082\ \ \ \ \ IDataOutputStream\&\ out)}
+\DoxyCodeLine{00083\ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{return}\ (*GetInstance().EncodeStreamFunc)(str.raw\_str(),\ str.Length(),\ out);}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{static}\ olxcstr\ Encode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ wstr,\ \textcolor{keywordtype}{size\_t}\ len=InvalidSize)\ \ \{}
+\DoxyCodeLine{00088\ \ \ \ \ olxcstr\ r\ =\ (*GetInstance().EncodeFunc)(wstr,}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ len\ ==\ InvalidSize\ ?\ olxstr::o\_strlen(wstr)\ :\ len);}
+\DoxyCodeLine{00090\ \ \ \ \ r.SetUTF8(\textcolor{keyword}{true});}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{static}\ IDataOutputStream\&\ Encode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ wstr,}
+\DoxyCodeLine{00094\ \ \ \ \ IDataOutputStream\&\ out,\ \textcolor{keywordtype}{size\_t}\ len=InvalidSize)}
+\DoxyCodeLine{00095\ \ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{return}\ (*GetInstance().EncodeStreamFunc)(wstr,}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ len\ ==\ InvalidSize\ ?\ olxstr::o\_strlen(wstr)\ :\ len,\ out);}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{static}\ olxwstr\ Decode(\textcolor{keyword}{const}\ olxwstr\&\ str)\ \ \{\ \ \textcolor{keywordflow}{return}\ str;\ \ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ olxwstr\ Decode(\textcolor{keyword}{const}\ olxcstr\&\ str)\ \ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{return}\ (*GetInstance().DecodeFunc)(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{static}\ olxwstr\ Decode(\textcolor{keyword}{const}\ TTIString<char>\&\ str)\ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ (*GetInstance().DecodeFunc)(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{static}\ olxwstr\ Decode(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ str,\ \textcolor{keywordtype}{size\_t}\ len=InvalidSize)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{return}\ (*GetInstance().DecodeFunc)(str,\ len\ ==\ InvalidSize\ ?\ olxstr::o\_strlen(str)\ :\ len);}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ CharCount(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\ str,\ \textcolor{keywordtype}{size\_t}\ len\ =\ InvalidSize)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{return}\ (*GetInstance().CharCountFunc)(str,\ len\ ==\ InvalidSize\ ?\ olxstr::o\_strlen(str)\ :\ len);}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ CharCount(\textcolor{keyword}{const}\ TTIString<char>\&\ str)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{return}\ (*GetInstance().CharCountFunc)(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ CharCount(\textcolor{keyword}{const}\ olxcstr\&\ str)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{return}\ (*GetInstance().CharCountFunc)(str.raw\_str(),\ str.Length());}
+\DoxyCodeLine{00119\ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ CharCount(\textcolor{keyword}{const}\ olxwstr\&\ str)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{return}\ str.Length();}
+\DoxyCodeLine{00122\ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{static}\ uint32\_t\&\ GetFileSignature()\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{static}\ uint32\_t\ FileSignature\ =\ 0x00BFBBEF;}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{return}\ FileSignature;}
+\DoxyCodeLine{00127\ \ \ \}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \textcolor{keyword}{protected}:\ \ \textcolor{comment}{//\ functions\ below\ are\ unsafe\ to\ use\ if\ wchar\_t\ size\ is\ unknown!!}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{static}\ IDataOutputStream\&\ EncodeStream2(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ vinput,\ \textcolor{keywordtype}{size\_t}\ len,}
+\DoxyCodeLine{00131\ \ \ \ \ IDataOutputStream\ \&out)}
+\DoxyCodeLine{00132\ \ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{const}\ uint16\_t*\ input\ =\ (\textcolor{keyword}{const}\ uint16\_t*)vinput;}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ len;\ i++)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (input[i]\ <\ 0x80)\ \{\ \ \textcolor{comment}{//\ 0xxxxxxx}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ out\ <<\ (uint8\_t)input[i];}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (input[i]\ <\ 0x800)\ \{\ \ \textcolor{comment}{//\ 110xxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ out\ <<\ (uint8\_t)(UTF8\_MASK2BYTES\ |\ (input[i]\ >>\ 6))}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ input[i])\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \textcolor{comment}{//\ if(\ input[i]\ <\ 0x10000\ )\ \ \{\ \ //\ 1110xxxx\ 10xxxxxx\ 10xxxxxx.\ always\ true}}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ out\ <<\ (uint8\_t)(UTF8\_MASK3BYTES\ |\ (input[i]\ >>\ 12))}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ (input[i]\ >>\ 6))\ \&\ UTF8\_MASKBITS)}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ input[i])\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{static}\ olxcstr\ Encode2(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ vinput,\ \textcolor{keywordtype}{size\_t}\ len)\ \ \{}
+\DoxyCodeLine{00152\ \ \ \ \ TEMemoryStream\ bf(len);}
+\DoxyCodeLine{00153\ \ \ \ \ EncodeStream2(vinput,\ len,\ bf).SetPosition(0);}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keywordflow}{return}\ bf.ToCString();}
+\DoxyCodeLine{00155\ \ \ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ olxwstr\ Decode2(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ input,\ \textcolor{keywordtype}{size\_t}\ len)\ \ \{}
+\DoxyCodeLine{00158\ \ \ \ \ TDirectionalList<wchar\_t>\ bf(len);}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ len;\ )\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ uint16\_t\ ch;}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK3BYTES)\ ==\ UTF8\_MASK3BYTES)\ \{\ \ \textcolor{comment}{//\ 1110xxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ ch\ =\ ((input[i]\ \&\ 0x0F)\ <<\ 12)\ |\ (}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ (input[i\ +\ 1]\ \&\ UTF8\_MASKBITS)\ <<\ 6)}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ |\ (input[i\ +\ 2]\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ i\ +=\ 3;}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK2BYTES)\ ==\ UTF8\_MASK2BYTES)\ \{\ \ \textcolor{comment}{//\ 110xxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ ch\ =\ ((input[i]\ \&\ 0x1F)\ <<\ 6)\ |\ (input[i\ +\ 1]\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ i\ +=\ 2;}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \ \textcolor{comment}{//\ if(\ input[i]\ <\ UTF8\_MASKBYTE\ )\ \ \{\ \ //\ 0xxxxxxx,\ always\ true}}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ ch\ =\ input[i];}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ i\ +=\ 1;}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ bf.Write(ch);}
+\DoxyCodeLine{00176\ \ \ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \ \ olxwstr\ str(WEmptyString(),\ bf.GetLength());}
+\DoxyCodeLine{00178\ \ \ \ \ bf.ToString(str);}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{return}\ str;}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ CharCount2(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ input,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ len;\ cnt++)\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK3BYTES)\ ==\ UTF8\_MASK3BYTES)\ \{\ \ \textcolor{comment}{//\ 1110xxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ i\ +=\ 3;}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK2BYTES)\ ==\ UTF8\_MASK2BYTES)\ \{\ \ \textcolor{comment}{//\ 110xxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ i\ +=\ 2;}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \ \textcolor{comment}{//\ if(\ input[i]\ <\ UTF8\_MASKBYTE\ )\ \ \{\ \ //\ 0xxxxxxx,\ always\ true}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ i\ +=\ 1;}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{return}\ cnt;}
+\DoxyCodeLine{00196\ \ \ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \textcolor{keyword}{static}\ IDataOutputStream\ \&EncodeStream4(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ vinput,\ \textcolor{keywordtype}{size\_t}\ len,}
+\DoxyCodeLine{00199\ \ \ \ \ IDataOutputStream\ \&out)}
+\DoxyCodeLine{00200\ \ \ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{const}\ uint32\_t*\ input\ =\ (\textcolor{keyword}{const}\ uint32\_t*)vinput;}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ len;\ i++)\ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (input[i]\ <\ 0x80)\ \{\ \ \textcolor{comment}{//\ 0xxxxxxx}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ out\ <<\ (uint8\_t)input[i];}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (input[i]\ <\ 0x800)\ \{\ \ \textcolor{comment}{//\ 110xxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ out\ <<\ (uint8\_t)(UTF8\_MASK2BYTES\ |\ (input[i]\ >>\ 6))}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ input[i])\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (input[i]\ <\ 0x10000)\ \{\ \ \textcolor{comment}{//\ 1110xxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ out\ <<\ (uint8\_t)(UTF8\_MASK3BYTES\ |\ (input[i]\ >>\ 12))}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ (input[i]\ >>\ 6))\ \&\ UTF8\_MASKBITS)}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ input[i])\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (input[i]\ <\ 0x200000)\ \{\ \ \textcolor{comment}{//\ 11110xxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ out\ <<\ (uint8\_t)(UTF8\_MASK4BYTES\ |\ (input[i]\ >>\ 18))}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ (input[i]\ >>\ 12))\ \&\ UTF8\_MASKBITS)}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ (input[i]\ >>\ 6))\ \&\ UTF8\_MASKBITS)}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ input[i])\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (input[i]\ <\ 0x4000000)\ \{\ \ \textcolor{comment}{//\ 111110xx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ out\ <<\ (uint8\_t)(UTF8\_MASK5BYTES\ |\ (input[i]\ >>\ 24))}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ (input[i]\ >>\ 18))\ \&\ UTF8\_MASKBITS)}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ (input[i]\ >>\ 12))\ \&\ UTF8\_MASKBITS)}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ (input[i]\ >>\ 6))\ \&\ UTF8\_MASKBITS)}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ input[i])\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (input[i]\ <\ 0x8000000)\ \{\ \ \textcolor{comment}{//\ 1111110x\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ out\ <<\ (uint8\_t)(UTF8\_MASK6BYTES\ |\ (input[i]\ >>\ 30))}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ (input[i]\ >>\ 18))\ \&\ UTF8\_MASKBITS)}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ (input[i]\ >>\ 12))\ \&\ UTF8\_MASKBITS)}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ (input[i]\ >>\ 6))\ \&\ UTF8\_MASKBITS)}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ <<\ (uint8\_t)((UTF8\_MASKBYTE\ |\ input[i])\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00235\ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{00237\ \ \ \}}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{static}\ olxcstr\ Encode4(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ vinput,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ TEMemoryStream\ bf(len);}
+\DoxyCodeLine{00241\ \ \ \ \ EncodeStream4(vinput,\ len,\ bf).SetPosition(0);}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{return}\ bf.ToCString();}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{static}\ olxwstr\ Decode4(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ input,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ TDirectionalList<wchar\_t>\ bf(len);}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ len;\ )\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ uint32\_t\ ch;}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK6BYTES)\ ==\ UTF8\_MASK6BYTES)\ \{\ \ \textcolor{comment}{//\ 1111110x\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ ch\ =\ ((input[i]\ \&\ 0x01)\ <<\ 30)\ |\ ((input[i\ +\ 1]\ \&\ UTF8\_MASKBITS)\ <<\ 24)}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ |\ ((input[i\ +\ 2]\ \&\ UTF8\_MASKBITS)\ <<\ 18)\ |\ ((input[i\ +\ 3]}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \&\ UTF8\_MASKBITS)\ <<\ 12)}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ |\ ((input[i\ +\ 4]\ \&\ UTF8\_MASKBITS)\ <<\ 6)\ |\ (input[i\ +\ 5]\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ i\ +=\ 6;}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK5BYTES)\ ==\ UTF8\_MASK5BYTES)\ \{\ \ \textcolor{comment}{//\ 111110xx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ ch\ =\ ((input[i]\ \&\ 0x03)\ <<\ 24)\ |\ ((input[i\ +\ 1]}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \&\ UTF8\_MASKBITS)\ <<\ 18)}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ |\ ((input[i\ +\ 2]\ \&\ UTF8\_MASKBITS)\ <<\ 12)\ |\ ((input[i\ +\ 3]}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \&\ UTF8\_MASKBITS)\ <<\ 6)}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ |\ (input[i\ +\ 4]\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ i\ +=\ 5;}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK4BYTES)\ ==\ UTF8\_MASK4BYTES)\ \{\ \ \textcolor{comment}{//\ 11110xxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ ch\ =\ ((input[i]\ \&\ 0x07)\ <<\ 18)\ |\ ((input[i\ +\ 1]}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \&\ UTF8\_MASKBITS)\ <<\ 12)}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ |\ ((input[i\ +\ 2]\ \&\ UTF8\_MASKBITS)\ <<\ 6)\ |\ (input[i\ +\ 3]\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ i\ +=\ 4;}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK3BYTES)\ ==\ UTF8\_MASK3BYTES)\ \{\ \ \textcolor{comment}{//\ 1110xxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ ch\ =\ ((input[i]\ \&\ 0x0F)\ <<\ 12)\ |\ ((input[i\ +\ 1]\ \&\ UTF8\_MASKBITS)\ <<\ 6)}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ |\ (input[i\ +\ 2]\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ i\ +=\ 3;}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK2BYTES)\ ==\ UTF8\_MASK2BYTES)\ \{\ \ \textcolor{comment}{//\ 110xxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ ch\ =\ ((input[i]\ \&\ 0x1F)\ <<\ 6)\ |\ (input[i\ +\ 1]\ \&\ UTF8\_MASKBITS);}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ i\ +=\ 2;}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \ \textcolor{comment}{//\ if(\ input[i]\ <\ UTF8\_MASKBYTE\ )\ \ \{\ \ //\ 0xxxxxxx,\ always\ true}}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ ch\ =\ input[i];}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ i\ +=\ 1;}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ bf.Write(ch);}
+\DoxyCodeLine{00284\ \ \ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \ \ olxwstr\ str(WEmptyString(),\ bf.GetLength());}
+\DoxyCodeLine{00286\ \ \ \ \ bf.ToString(str);}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keywordflow}{return}\ str;}
+\DoxyCodeLine{00288\ \ \ \}}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ CharCount4(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ input,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ len;\ cnt++)\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK6BYTES)\ ==\ UTF8\_MASK6BYTES)\ \{\ \ \textcolor{comment}{//\ 1111110x\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ i\ +=\ 6;}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK5BYTES)\ ==\ UTF8\_MASK5BYTES)\ \{\ \ \textcolor{comment}{//\ 111110xx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ i\ +=\ 5;}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK4BYTES)\ ==\ UTF8\_MASK4BYTES)\ \{\ \ \textcolor{comment}{//\ 11110xxx\ 10xxxxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ i\ +=\ 4;}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK3BYTES)\ ==\ UTF8\_MASK3BYTES)\ \{\ \ \textcolor{comment}{//\ 1110xxxx\ 10xxxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ i\ +=\ 3;}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((input[i]\ \&\ UTF8\_MASK2BYTES)\ ==\ UTF8\_MASK2BYTES)\ \{\ \ \textcolor{comment}{//\ 110xxxxx\ 10xxxxxx}}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ i\ +=\ 2;}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \ \textcolor{comment}{//\ if(\ input[i]\ <\ UTF8\_MASKBYTE\ )\ \ \{\ \ //\ 0xxxxxxx,\ always\ true}}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ i\ +=\ 1;}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00311\ \ \ \ \ \}}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keywordflow}{return}\ cnt;}
+\DoxyCodeLine{00313\ \ \ \}}
+\DoxyCodeLine{00314\ \};}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ EndEsdlNamespace()}
+\DoxyCodeLine{00317\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

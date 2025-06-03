@@ -1,0 +1,447 @@
+\doxysection{xmacro.\+h}
+\hypertarget{xmacro_8h_source}{}\label{xmacro_8h_source}\index{xlib/xmacro.h@{xlib/xmacro.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_xmacro\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_xmacro\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}xapp.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}symmlib.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <stdarg.h>}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ on\ Linux\ its\ is\ defined\ as\ something...}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#undef\ QLength}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//simply\ a\ macro\ registry}}
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classXLibMacros}{XLibMacros}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ParseResParam(TStrObjList\ \&Cmds,\ \textcolor{keywordtype}{double}\&\ esd,\ \textcolor{keywordtype}{double}*\ len=0,}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{double}*\ len1=0,\ \textcolor{keywordtype}{double}*\ ang=0);}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{struct\ }MacroInput\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TSAtom>}}\ atoms;}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TSBond>}}\ bonds;}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TSPlane>}}\ planes;}
+\DoxyCodeLine{00028\ \ \ \ \ MacroInput(TSAtomPList\ \&a,\ TSBondPList\ \&b,\ TSPlanePList\ \&p)}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ :\ atoms(a),\ bonds(b),\ planes(p)}
+\DoxyCodeLine{00030\ \ \ \ \ \{\}}
+\DoxyCodeLine{00031\ \ \ \};}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structXLibMacros_1_1MacroInput}{MacroInput}}\ ExtractSelection(\textcolor{keyword}{const}\ TStrObjList\ \&Cmds,}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{bool}\ unselect);}
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{static}\ DefMacro(Run)}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{static}\ DefMacro(HklBrush)}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ DefMacro(HklStat)}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{static}\ DefMacro(HklMerge)}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{static}\ DefMacro(HklAppend)}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{static}\ DefMacro(HklExclude)}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{static}\ DefMacro(HklImport)}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{static}\ DefMacro(HklSplit)}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{static}\ DefMacro(SG)}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{static}\ DefMacro(SGE)}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{static}\ DefMacro(GraphSR)}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{static}\ DefMacro(GraphPD)}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{static}\ DefMacro(Wilson)}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{static}\ DefMacro(TestSymm)}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{static}\ DefMacro(VATA)\ \textcolor{comment}{//\ validate\ atom\ type\ assignment}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{static}\ DefMacro(Clean)}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{static}\ DefMacro(AtomInfo)}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{static}\ DefMacro(Compaq)}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{static}\ DefMacro(Envi)}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{static}\ DefMacro(AddSE)}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{static}\ DefMacro(Fuse)}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ DefMacro(EXYZ)}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ DefMacro(EADP)}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{static}\ DefMacro(VoidE)}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{static}\ DefMacro(ChangeSG)}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{static}\ DefMacro(FixUnit)}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{static}\ DefMacro(GenDisp)}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{static}\ DefMacro(LstIns)}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{static}\ DefMacro(DelIns)}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{static}\ DefMacro(AddIns)}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{static}\ DefMacro(Htab)}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{static}\ DefMacro(HAdd)}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{static}\ DefMacro(HImp)}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ DefMacro(LS)}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{static}\ DefMacro(Plan)}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{static}\ DefMacro(UpdateWght)}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{static}\ DefMacro(Anis)}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{static}\ DefMacro(Isot)}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{static}\ DefMacro(FixHL)}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{static}\ DefMacro(Fix)}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{static}\ DefMacro(Free)}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{static}\ DefMacro(File)}
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{static}\ DefMacro(Reset)}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{static}\ DefMacro(Degen)}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{static}\ DefMacro(User)}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{static}\ DefMacro(Dir)}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{static}\ DefMacro(LstMac)}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{static}\ DefMacro(LstFun)}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{static}\ DefMacro(LstVar)}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{static}\ DefMacro(LstFS)}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{static}\ DefMacro(ASR)}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{static}\ DefMacro(Describe)}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{static}\ DefMacro(AnalyseModel)}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{static}\ DefMacro(Sort)}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{static}\ DefMacro(SGInfo)}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{static}\ DefMacro(SAInfo)}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{static}\ DefMacro(PiPi)}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{static}\ DefMacro(PiSig)}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{static}\ DefMacro(Split)}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{static}\ DefMacro(Bang)}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{static}\ DefMacro(Flush)}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{static}\ DefMacro(SGS)\ \ \textcolor{comment}{//\ SG\ settings}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{static}\ DefMacro(Inv)}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{static}\ DefMacro(Push)}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ DefMacro(Transform)}
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{static}\ DefMacro(Standardise)}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{static}\ olxstr\ CifResolve(\textcolor{keyword}{const}\ olxstr\&\ func);}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ ProcessExternalFunction(olxstr\&\ func);}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{static}\ DefMacro(CifExtract)}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{static}\ DefMacro(CifMerge)}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{static}\ DefMacro(Cif2Tab)}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{static}\ DefMacro(Cif2Doc)}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{static}\ DefMacro(CifCreate)}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{static}\ DefMacro(CifCreate\_4NoSpherA2)}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{static}\ DefMacro(XYZCluster\_4NoSpherA2)}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{static}\ DefMacro(FcfCreate)}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{static}\ DefMacro(CalcCHN)}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{static}\ DefMacro(CalcMass)}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{static}\ DefMacro(FitCHN)}
+\DoxyCodeLine{00118\ \ \ \textcolor{keyword}{static}\ DefMacro(Tolman)}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{static}\ DefFunc(VVol)}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{static}\ DefMacro(CalcVol)}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{static}\ DefMacro(Close)}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{static}\ DefMacro(Omit)}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{static}\ DefMacro(Shel)}
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{static}\ DefMacro(MolInfo)}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{static}\ DefMacro(RTab)}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{static}\ DefMacro(Update)}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{static}\ DefMacro(Move)}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{static}\ DefMacro(Fvar)}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{static}\ DefMacro(Sump)}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{static}\ DefMacro(Afix)}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{static}\ DefMacro(UpdateAfix)}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{static}\ DefMacro(RefineHDist)}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{static}\ DefMacro(Part)}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{static}\ DefMacro(Spec)}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{static}\ DefMacro(Dfix)}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{static}\ DefMacro(Dang)}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{static}\ DefMacro(Tria)}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{static}\ DefMacro(Sadi)}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{static}\ DefMacro(RRings)}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{static}\ DefMacro(Flat)}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{static}\ DefMacro(Chiv)}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{static}\ DefMacro(SIMU)}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{static}\ DefMacro(DELU)}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{static}\ DefMacro(ISOR)}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{static}\ DefMacro(Same)}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static}\ DefMacro(RIGU)}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{static}\ DefMacro(Delta)}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{static}\ DefMacro(DeltaI)}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{static}\ DefMacro(AddBond)}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{static}\ DefMacro(DelBond)}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{static}\ DefMacro(RESI)}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{static}\ DefMacro(Restrain)}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{static}\ DefMacro(Constrain)}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{static}\ DefMacro(Conn)}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ DefMacro(TLS)}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{static}\ DefMacro(Export)}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{static}\ DefMacro(Sgen)}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{static}\ DefMacro(LstSymm)}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{static}\ DefMacro(RSA)}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{static}\ DefMacro(CONF)}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{static}\ DefMacro(D2CG)}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{static}\ DefMacro(TestR)}
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{static}\ DefMacro(HKLF5)}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{static}\ DefMacro(TestHKLF)}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{static}\ DefMacro(CalcVars)}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{static}\ DefMacro(Pack)}
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{static}\ DefMacro(Grow)}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{static}\ DefMacro(Convert)}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{static}\ DefMacro(SetCharge)}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{static}\ DefMacro(Lowdin)}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{static}\ DefMacro(Adopt)}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{static}\ DefMacro(ADPInfo)}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{static}\ DefMacro(Wigl)}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{static}\ DefFunc(Lst)}
+\DoxyCodeLine{00178\ \ \ \textcolor{keyword}{static}\ DefFunc(FileName)}
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{static}\ DefFunc(FileExt)}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{static}\ DefFunc(FilePath)}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{static}\ DefFunc(FileFull)}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{static}\ DefFunc(FileDrive)}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{static}\ DefFunc(Title)}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{static}\ DefFunc(IsFileLoaded)}
+\DoxyCodeLine{00185\ \ \ \textcolor{keyword}{static}\ DefFunc(IsFileType)}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{static}\ DefFunc(Ins)}
+\DoxyCodeLine{00187\ \ \ \textcolor{keyword}{static}\ DefFunc(Cell)}
+\DoxyCodeLine{00188\ \ \ \textcolor{keyword}{static}\ DefFunc(Cif)}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{static}\ DefFunc(P4p)}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{static}\ DefFunc(Crs)}
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{static}\ DefFunc(Env)}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{static}\ DefFunc(BaseDir)}
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{static}\ DefFunc(DataDir)}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{static}\ DefFunc(HKLSrc)}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{static}\ DefFunc(LSM)}
+\DoxyCodeLine{00198\ \ \ \textcolor{keyword}{static}\ DefFunc(SSM)}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{static}\ DefFunc(SG)}
+\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{static}\ DefFunc(SGS)\ \ \textcolor{comment}{//\ SG\ settings}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \textcolor{keyword}{static}\ DefFunc(ATA)\ \textcolor{comment}{//\ atom\ type\ assigmnet}}
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{static}\ DefFunc(VSS)\ \textcolor{comment}{//\ validate\ structure\ or\ a\ solution,\ better\ the\ analyse!}}
+\DoxyCodeLine{00204\ \ \ \textcolor{keyword}{static}\ DefFunc(FATA)\ \textcolor{comment}{//\ atom\ type\ assignment\ from\ Fourier\ map}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \textcolor{keyword}{static}\ DefFunc(RemoveSE)\ \textcolor{comment}{//\ SG\ modification}}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{static}\ DefFunc(Run)}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{static}\ DefFunc(CCrd)\ \textcolor{comment}{//\ cell\ coordinates\ of\ atoms}}
+\DoxyCodeLine{00210\ \ \ \textcolor{keyword}{static}\ DefFunc(Crd)\ \textcolor{comment}{//\ cartesian\ coordinates\ of\ atoms}}
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{static}\ DefFunc(CalcR)\ \textcolor{comment}{//\ calculates\ R\ factors}}
+\DoxyCodeLine{00212\ \ \ \textcolor{keyword}{static}\ DefFunc(CalcAbs)}
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{static}\ DefFunc(GetCompilationInfo)}
+\DoxyCodeLine{00214\ \ \ \textcolor{keyword}{static}\ DefFunc(SGList)}
+\DoxyCodeLine{00215\ \ \ \textcolor{keyword}{static}\ DefFunc(HKLF)}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{static}\ DefFunc(StrDir)}
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{static}\ DefFunc(HAddCount)}
+\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//\ requires\ smtbx\_refinement\_least\_squares\_ext.pyd}}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{static}\ DefFunc(SetOlex2RefinementListener)}
+\DoxyCodeLine{00220\ \ \ \textcolor{comment}{//\ might\ do\ nothing\ id\ no\ listener\ set!}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{static}\ DefFunc(SetOlex2RefinementInterrupt)}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ChangeCell(\textcolor{keyword}{const}\ mat3d\&\ tm,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSpaceGroup}{TSpaceGroup}}\&\ sg,}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ resHKL\_FN);}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&NAString()\ \{}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ NAString(\textcolor{stringliteral}{"{}n/a"{}});}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{return}\ NAString;}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&NoneString()\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ NoneString(\textcolor{stringliteral}{"{}none"{}});}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordflow}{return}\ NoneString;}
+\DoxyCodeLine{00232\ \ \ \}}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{static}\ olxstr\&\ CurrentDir()\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ cd;}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keywordflow}{return}\ cd;}
+\DoxyCodeLine{00236\ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{/*\ finds\ numbers\ and\ removes\ them\ from\ the\ list\ and\ returns\ the\ number\ of}}
+\DoxyCodeLine{00238\ \textcolor{comment}{\ \ found\ numbers}}
+\DoxyCodeLine{00239\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00240\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list>}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ Parse(list\&\ Cmds,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ ...)\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00243\ \ \ \ \ va\_list\ argptr;}
+\DoxyCodeLine{00244\ \ \ \ \ va\_start(argptr,\ format);}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ len\ =\ olxstr::o\_strlen(format);}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0,\ j\ =\ 0;\ i\ <\ len;\ i++,\ j++)\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (j\ <\ Cmds.Count()\ \&\&\ !Cmds[j].IsNumber())}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ j++;}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (j\ >=\ Cmds.Count())\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'v'})\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ <\ (i\ +\ 1)\ ||\ Cmds.Count()\ <\ (j\ +\ 3))\ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}invalid\ format"{}});}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (format[++i]\ ==\ \textcolor{charliteral}{'i'})\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ vec3i*\ iv\ =\ va\_arg(argptr,\ vec3i*);}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ (*iv)[k]\ =\ Cmds[j\ +\ k].ToInt();}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'d'})\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ vec3d*\ dv\ =\ va\_arg(argptr,\ vec3d*);}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ (*dv)[k]\ =\ Cmds[j\ +\ k].ToDouble();}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}undefined\ vector\ type"{}});}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ Cmds.DeleteRange(j-\/-\/,\ 3);}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'m'})\ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ <\ (i\ +\ 1)\ ||\ Cmds.Count()\ <\ (j\ +\ 9))\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}invalid\ format"{}});}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (format[++i]\ ==\ \textcolor{charliteral}{'i'})\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ mat3i*\ im\ =\ va\_arg(argptr,\ mat3i*);}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 3;\ k++)}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ l\ =\ 0;\ l\ <\ 3;\ l++)}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*im)[k][l]\ =\ Cmds[j\ +\ k\ *\ 3\ +\ l].ToInt();}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'d'})\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ mat3d*\ dm\ =\ va\_arg(argptr,\ mat3d*);}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 3;\ k++)}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ l\ =\ 0;\ l\ <\ 3;\ l++)}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*dm)[k][l]\ =\ Cmds[j\ +\ k\ *\ 3\ +\ l].ToDouble();}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}undefined\ matrix\ type"{}});}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ Cmds.DeleteRange(j-\/-\/,\ 9);}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'i'})\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}*\ iv\ =\ va\_arg(argptr,\ \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ *iv\ =\ Cmds[j].ToInt();}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ Cmds.Delete(j-\/-\/);}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'d'})\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}*\ dv\ =\ va\_arg(argptr,\ \textcolor{keywordtype}{double}*);}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ *dv\ =\ Cmds[j].ToDouble();}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \ \ Cmds.Delete(j-\/-\/);}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \ \ \}}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ TExceptionBase\&\ e)\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ va\_end(argptr);}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ e);}
+\DoxyCodeLine{00312\ \ \ \ \ \}}
+\DoxyCodeLine{00313\ \ \ \ \ va\_end(argptr);}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{return}\ cnt;}
+\DoxyCodeLine{00315\ \ \ \}}
+\DoxyCodeLine{00316\ \ \ \textcolor{comment}{/*\ finds\ numbers\ and\ removes\ them\ from\ the\ list\ and\ returns\ the\ number\ of}}
+\DoxyCodeLine{00317\ \textcolor{comment}{\ \ found\ numbers}}
+\DoxyCodeLine{00318\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list>}
+\DoxyCodeLine{00320\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ParseOnly(\textcolor{keyword}{const}\ list\&\ Cmds,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ ...)\ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00322\ \ \ \ \ va\_list\ argptr;}
+\DoxyCodeLine{00323\ \ \ \ \ va\_start(argptr,\ format);}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ len\ =\ olxstr::o\_strlen(format);}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0,\ j\ =\ 0;\ i\ <\ len;\ i++,\ j++)\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (j\ <\ Cmds.Count()\ \&\&\ !Cmds[j].IsNumber())}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ j++;}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (j\ >=\ Cmds.Count())\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'v'})\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ <\ (i\ +\ 1)\ ||\ Cmds.Count()\ <\ (j\ +\ 3))\ \{}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}invalid\ format"{}});}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (format[++i]\ ==\ \textcolor{charliteral}{'i'})\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ vec3i*\ iv\ =\ va\_arg(argptr,\ vec3i*);}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*iv)[k]\ =\ Cmds[j\ +\ k].ToInt();}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'d'})\ \{}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ \ \ vec3d*\ dv\ =\ va\_arg(argptr,\ vec3d*);}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*dv)[k]\ =\ Cmds[j\ +\ k].ToDouble();}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}undefined\ vector\ type"{}});}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ j\ +=\ 2;}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'m'})\ \{}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ <\ (i\ +\ 1)\ ||\ Cmds.Count()\ <\ (j\ +\ 9))\ \{}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}invalid\ format"{}});}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (format[++i]\ ==\ \textcolor{charliteral}{'i'})\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ \ \ mat3i*\ im\ =\ va\_arg(argptr,\ mat3i*);}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ l\ =\ 0;\ l\ <\ 3;\ l++)\ \{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*im)[k][l]\ =\ Cmds[j\ +\ k\ *\ 3\ +\ l].ToInt();}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'d'})\ \{}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ mat3d*\ dm\ =\ va\_arg(argptr,\ mat3d*);}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ \{}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ l\ =\ 0;\ l\ <\ 3;\ l++)\ \{}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*dm)[k][l]\ =\ Cmds[j\ +\ k\ *\ 3\ +\ l].ToDouble();}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}undefined\ matrix\ type"{}});}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \ \ j\ +=\ 8;}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'i'})\ \{}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}*\ iv\ =\ va\_arg(argptr,\ \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \ \ *iv\ =\ Cmds[j].ToInt();}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (format[i]\ ==\ \textcolor{charliteral}{'d'})\ \{}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}*\ dv\ =\ va\_arg(argptr,\ \textcolor{keywordtype}{double}*);}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \ \ *dv\ =\ Cmds[j].ToDouble();}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00393\ \ \ \ \ \}}
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ TExceptionBase\&\ e)\ \{}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ va\_end(argptr);}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ e);}
+\DoxyCodeLine{00397\ \ \ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \ \ va\_end(argptr);}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keywordflow}{return}\ cnt;}
+\DoxyCodeLine{00400\ \ \ \}}
+\DoxyCodeLine{00401\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Export(\textcolor{keyword}{class}\ TLibrary\&\ lib);}
+\DoxyCodeLine{00402\ }
+\DoxyCodeLine{00403\ \ \ \textcolor{keyword}{static}\ TActionQList\ \&Actions()\ \{}
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{keyword}{static}\ TActionQList\ Actions\_;}
+\DoxyCodeLine{00405\ \ \ \ \ \textcolor{keywordflow}{return}\ Actions\_;}
+\DoxyCodeLine{00406\ \ \ \}}
+\DoxyCodeLine{00407\ \ \ \textcolor{keyword}{static}\ TActionQueue\ \&OnDelIns()\ \{}
+\DoxyCodeLine{00408\ \ \ \ \ \textcolor{keyword}{static}\ TActionQueue\ *OnDelIns=0;}
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{keywordflow}{if}\ (OnDelIns\ ==\ 0)\ \{}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ OnDelIns\ =\ \&XLibMacros::Actions().New(\textcolor{stringliteral}{"{}OnDelIns"{}});}
+\DoxyCodeLine{00411\ \ \ \ \ \}}
+\DoxyCodeLine{00412\ \ \ \ \ \textcolor{keywordflow}{return}\ *OnDelIns;}
+\DoxyCodeLine{00413\ \ \ \}}
+\DoxyCodeLine{00414\ \ \ \textcolor{keyword}{static}\ TActionQueue\ \&OnAddIns()\ \{}
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keyword}{static}\ TActionQueue\ *OnAddIns=0;}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keywordflow}{if}\ (OnAddIns\ ==\ 0)\ \{}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ OnAddIns\ =\ \&XLibMacros::Actions().New(\textcolor{stringliteral}{"{}OnAddIns"{}});}
+\DoxyCodeLine{00418\ \ \ \ \ \}}
+\DoxyCodeLine{00419\ \ \ \ \ \textcolor{keywordflow}{return}\ *OnAddIns;}
+\DoxyCodeLine{00420\ \ \ \}}
+\DoxyCodeLine{00421\ \ \ \textcolor{keyword}{static}\ olxstr\ VarName\_ResetLock()\ \ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}olx\_lock\_reset"{}};\ \ \}}
+\DoxyCodeLine{00422\ \ \ \textcolor{keyword}{static}\ olxstr\ VarName\_InternalTref()\ \ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}olx\_internal\_tref"{}};\ \ \}}
+\DoxyCodeLine{00423\ \ \ \textcolor{keyword}{static}\ olxstr\ GetCompilationInfo();}
+\DoxyCodeLine{00424\ \ \ \textcolor{comment}{/*\ parses["{}a\ b\ c"{}]\ or\ [a,\ b,\ c]\ form,\ the\ first\ may\ come\ from\ c\ /\ crd}}
+\DoxyCodeLine{00425\ \textcolor{comment}{\ \ *\ }}
+\DoxyCodeLine{00426\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00427\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ VecFromParam\_s(TStrObjList\&\ Cmds,\ \textcolor{keywordtype}{size\_t}\ i,}
+\DoxyCodeLine{00428\ \ \ \ \ \textcolor{keywordtype}{bool}\ condensed,\ vec3d\&\ res,\ \textcolor{keywordtype}{bool}\ remove\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00429\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00430\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classXLibMacros_1_1TEnviComparator}{TEnviComparator}}\ \{}
+\DoxyCodeLine{00431\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00432\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_a\_t,\ \textcolor{keyword}{class}\ item\_b\_t>}
+\DoxyCodeLine{00433\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(item\_a\_t\ \textcolor{keyword}{const}\&\ i1,\ item\_b\_t\ \textcolor{keyword}{const}\&\ i2)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00434\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(olx\_ref::get(i1).GetC().QLength(),}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ olx\_ref::get(i2).GetC().QLength());}
+\DoxyCodeLine{00437\ \ \ \ \ \}}
+\DoxyCodeLine{00438\ \ \ \};}
+\DoxyCodeLine{00439\ \};}
+\DoxyCodeLine{00440\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00441\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

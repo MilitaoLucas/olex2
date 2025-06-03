@@ -1,0 +1,306 @@
+\doxysection{citem.\+h}
+\hypertarget{citem_8h_source}{}\label{citem_8h_source}\index{sdl/citem.h@{sdl/citem.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_collectionItem\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_collectionItem\_H}}
+\DoxyCodeLine{00012\ \textcolor{comment}{/*\ Check\ tagstack.h\ when\ performing\ embedded\ operations\ on\ tags\ */}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00015\ \ \ OVERLAP\_NONE\ =\ 0,}
+\DoxyCodeLine{00016\ \ \ OVERLAP\_OVERLAP\ =\ 1,}
+\DoxyCodeLine{00017\ \ \ OVERLAP\_SUBGROUP\ =\ 3,}
+\DoxyCodeLine{00018\ \ \ OVERLAP\_SUPERGROUP\ =\ 5,}
+\DoxyCodeLine{00019\ \ \ \textcolor{comment}{//\ this\ does\ not\ take\ order\ into\ account!}}
+\DoxyCodeLine{00020\ \ \ OVERLAP\_SAME\ =\ OVERLAP\_SUBGROUP\ |\ OVERLAP\_SUPERGROUP}
+\DoxyCodeLine{00021\ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ implements\ data\ for\ collection\ item}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }ACollectionItem\ :\ \textcolor{keyword}{public}\ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{mutable}\ index\_t\ CollectionItemTag;}
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ ACollectionItem()\ :\ CollectionItemTag(-\/1)\ \{\}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{virtual}\ \string~ACollectionItem()\ \ \{\}}
+\DoxyCodeLine{00029\ \ \ index\_t\ GetTag()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ CollectionItemTag;\ \ \}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{static}\ index\_t\ GetTag(\textcolor{keyword}{const}\ item\_t\&\ i)\ \{\ \textcolor{keywordflow}{return}\ olx\_ref::get(i).GetTag();\ \}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SetTag(item\_t\&\ i,\ index\_t\ t)\ \{\ olx\_ref::get(i).SetTag(t);\ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ SetTag(index\_t\ v)\textcolor{keyword}{\ const\ }\{\ CollectionItemTag\ =\ v;\ \ \}}
+\DoxyCodeLine{00035\ \ \ index\_t\ IncTag()\textcolor{keyword}{\ \ const\ }\{\ \ \textcolor{keywordflow}{return}\ ++CollectionItemTag;\ \ \}}
+\DoxyCodeLine{00036\ \ \ index\_t\ DecTag()\textcolor{keyword}{\ \ const\ }\{\ \ \textcolor{keywordflow}{return}\ -\/-\/CollectionItemTag;\ \ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{//\ for\ extended\ functionality\ of\ containers}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }TagAnalyser\_\ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{const}\ index\_t\ ref\_tag;}
+\DoxyCodeLine{00041\ \ \ \ \ TagAnalyser\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_,\ index\_t\ \_ref\_tag)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ :\ accessor(accessor\_),\ ref\_tag(\_ref\_tag)\ \{\}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(accessor(o)).GetTag()\ ==\ ref\_tag;}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \};}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structACollectionItem_1_1TagAnalyser__}{TagAnalyser\_<Accessor>}}}
+\DoxyCodeLine{00050\ \ \ TagAnalyser(\textcolor{keyword}{const}\ Accessor\ \&acc,\ index\_t\ ref\_tag)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structACollectionItem_1_1TagAnalyser__}{TagAnalyser\_<Accessor>}}(acc,\ ref\_tag);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{static}\ TagAnalyser\_<DummyAccessor>}
+\DoxyCodeLine{00054\ \ \ TagAnalyser(index\_t\ ref\_tag)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{return}\ TagAnalyser(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}(),\ ref\_tag);}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }IndexTagAnalyser\_\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00060\ \ \ \ \ IndexTagAnalyser\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_)}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ :\ accessor(accessor\_)\ \{\}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnItem(\textcolor{keyword}{const}\ Item\&\ o,\ \textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{size\_t})GetTag(accessor(o))\ ==\ i;}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \};}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structACollectionItem_1_1IndexTagAnalyser__}{IndexTagAnalyser\_<Accessor>}}}
+\DoxyCodeLine{00069\ \ \ IndexTagAnalyser(\textcolor{keyword}{const}\ Accessor\ \&acc)\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structACollectionItem_1_1IndexTagAnalyser__}{IndexTagAnalyser\_<Accessor>}}(acc);}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{static}\ IndexTagAnalyser\_<DummyAccessor>}
+\DoxyCodeLine{00073\ \ \ IndexTagAnalyser()\ \{\ \textcolor{keywordflow}{return}\ IndexTagAnalyser(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}());\ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }TagSetter\_\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{const}\ index\_t\ ref\_tag;}
+\DoxyCodeLine{00078\ \ \ \ \ TagSetter\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_,\ index\_t\ \_ref\_tag)}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ :\ accessor(accessor\_),\ ref\_tag(\_ref\_tag)\ \ \{\}}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{void}\ OnItem(Item\&\ o,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{\ SetTag(accessor(o),\ ref\_tag);\ \}}
+\DoxyCodeLine{00082\ \ \ \};}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structACollectionItem_1_1TagSetter__}{TagSetter\_<Accessor>}}}
+\DoxyCodeLine{00085\ \ \ TagSetter(\textcolor{keyword}{const}\ Accessor\ \&acc,\ index\_t\ tag)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structACollectionItem_1_1TagSetter__}{TagSetter\_<Accessor>}}(acc,\ tag);}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{static}\ TagSetter\_<DummyAccessor>}
+\DoxyCodeLine{00089\ \ \ TagSetter(index\_t\ tag)\ \{\ \textcolor{keywordflow}{return}\ TagSetter(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}(),\ tag);\ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }IndexTagSetter\_\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00093\ \ \ \ \ IndexTagSetter\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_)}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ :\ accessor(accessor\_)\ \{\}}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{void}\ OnItem(Item\&\ o,\ \textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ SetTag(accessor(o),\ i);\ \}}
+\DoxyCodeLine{00097\ \ \ \};}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structACollectionItem_1_1IndexTagSetter__}{IndexTagSetter\_<Accessor>}}}
+\DoxyCodeLine{00100\ \ \ IndexTagSetter(\textcolor{keyword}{const}\ Accessor\ \&acc)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structACollectionItem_1_1IndexTagSetter__}{IndexTagSetter\_<Accessor>}}(acc);}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{static}\ IndexTagSetter\_<DummyAccessor>}
+\DoxyCodeLine{00104\ \ \ IndexTagSetter()\ \{\ \textcolor{keywordflow}{return}\ IndexTagSetter(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}());\ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }TagAccessor\_\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00108\ \ \ \ \ TagAccessor\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_)}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ :\ accessor(accessor\_)\ \{\}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00111\ \ \ \ \ index\_t\ operator()\ (\textcolor{keyword}{const}\ Item\&\ o)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetTag(accessor(o));\ \}}
+\DoxyCodeLine{00112\ \ \ \};}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structACollectionItem_1_1TagAccessor__}{TagAccessor\_<Accessor>}}}
+\DoxyCodeLine{00115\ \ \ TagAccessor(\textcolor{keyword}{const}\ Accessor\ \&acc)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structACollectionItem_1_1TagAccessor__}{TagAccessor\_<Accessor>}}(acc);\ \}}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{static}\ TagAccessor\_<DummyAccessor>}
+\DoxyCodeLine{00117\ \ \ TagAccessor()\ \{\ \textcolor{keywordflow}{return}\ TagAccessor(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}());\ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>\ \textcolor{keyword}{struct\ }TagComparator\_\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&accessor;}
+\DoxyCodeLine{00121\ \ \ \ \ TagComparator\_(\textcolor{keyword}{const}\ Accessor\ \&accessor\_)}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ :\ accessor(accessor\_)\ \{\}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Item>}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ Item\&\ o1,\ \textcolor{keyword}{const}\ Item\&\ o2)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(GetTag(accessor(o1)),\ GetTag(accessor(o2)));}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \};}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00129\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structACollectionItem_1_1TagComparator__}{TagComparator\_<Accessor>}}}
+\DoxyCodeLine{00130\ \ \ TagComparator(\textcolor{keyword}{const}\ Accessor\ \&acc)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structACollectionItem_1_1TagComparator__}{TagComparator\_<Accessor>}}(acc);\ \}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{static}\ TagComparator\_<DummyAccessor>}
+\DoxyCodeLine{00132\ \ \ TagComparator()\ \{\ \textcolor{keywordflow}{return}\ TagComparator(\mbox{\hyperlink{structDummyAccessor}{DummyAccessor}}());\ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \textcolor{comment}{//\ common\ algorithms}}
+\DoxyCodeLine{00135\ \ \ \textcolor{comment}{//\ creates\ a\ list\ of\ unique\ items}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{static}\ List\&\ Unify(List\&\ list,\ \textcolor{keyword}{const}\ Accessor\ \&acc)\ \ \{}
+\DoxyCodeLine{00138\ \ \ \ \ list.ForEach(IndexTagSetter(acc));}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ list.Pack(olx\_alg::olx\_not(IndexTagAnalyser(acc)));}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{static}\ List\&\ Unify(List\&\ list)\ \ \{\ \textcolor{keywordflow}{return}\ Unify(list,\ DummyAccessor());\ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ List::const\_list\_type\ Unique(\textcolor{keyword}{const}\ List\ \&list,}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keyword}{const}\ Accessor\ \&acc)}
+\DoxyCodeLine{00146\ \ \ \{}
+\DoxyCodeLine{00147\ \ \ \ \ list.ForEach(IndexTagSetter(acc));}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{return}\ list.Filter(IndexTagAnalyser(acc));}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ List::const\_list\_type\ Unique(\textcolor{keyword}{const}\ List\ \&list)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ Unique(list,\ DummyAccessor());}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{comment}{//\ subtracts\ a\ set\ of\ items\ from\ a\ list\ of\ items}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ AccessorA,\ \textcolor{keyword}{class}\ ListB,\ \textcolor{keyword}{class}\ AccessorB>}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{static}\ ListA\&\ Subtract(}
+\DoxyCodeLine{00157\ \ \ \ \ ListA\&\ from,\ \textcolor{keyword}{const}\ AccessorA\ \&aa,}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keyword}{const}\ ListB\&\ set,\ \textcolor{keyword}{const}\ AccessorB\ \&ab)}
+\DoxyCodeLine{00159\ \ \ \{}
+\DoxyCodeLine{00160\ \ \ \ \ from.ForEach(TagSetter(aa,\ 0));}
+\DoxyCodeLine{00161\ \ \ \ \ set.ForEach(TagSetter(ab,\ 1));}
+\DoxyCodeLine{00162\ \ \ \ \ from.Pack(TagAnalyser(aa,\ 1));}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ from;}
+\DoxyCodeLine{00164\ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB>}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{static}\ ListA\&\ Exclude(ListA\&\ from,\ \textcolor{keyword}{const}\ ListB\&\ set)\ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ Subtract(from,\ DummyAccessor(),\ set,\ DummyAccessor());}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{//\ synonym\ for\ Exclude}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{static}\ ListA\&\ Subtract(ListA\&\ from,\ \textcolor{keyword}{const}\ ListB\&\ set,\ \textcolor{keyword}{const}\ Accessor\&\ acc)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{return}\ Subtract(from,\ acc,\ set,\ acc);}
+\DoxyCodeLine{00173\ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB>}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{static}\ ListA\&\ Subtract(ListA\&\ from,\ \textcolor{keyword}{const}\ ListB\&\ set)\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{return}\ Subtract(from,\ DummyAccessor(),\ set,\ DummyAccessor());}
+\DoxyCodeLine{00177\ \ \ \}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \textcolor{comment}{//\ A\ wil\ have\ the\ common\ subset\ }}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ AccessorA,\ \textcolor{keyword}{class}\ ListB,\ \textcolor{keyword}{class}\ AccessorB>}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{static}\ ListA\&\ Intersect(}
+\DoxyCodeLine{00182\ \ \ \ \ ListA\&\ A,\ \textcolor{keyword}{const}\ AccessorA\&\ aa,}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keyword}{const}\ ListB\&\ B,\ \textcolor{keyword}{const}\ AccessorB\&\ ab)}
+\DoxyCodeLine{00184\ \ \ \{}
+\DoxyCodeLine{00185\ \ \ \ \ A.ForEach(TagSetter(aa,\ 0));}
+\DoxyCodeLine{00186\ \ \ \ \ B.ForEach(TagSetter(ab,\ 1));}
+\DoxyCodeLine{00187\ \ \ \ \ A.Pack(TagAnalyser(aa,\ 0));}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{return}\ A;}
+\DoxyCodeLine{00189\ \ \ \}}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{static}\ ListA\&\ Intersect(ListA\&\ A,\ \textcolor{keyword}{const}\ ListB\&\ B,\ \textcolor{keyword}{const}\ Accessor\&\ acc)\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{return}\ Intersect(A,\ acc,\ B,\ acc);}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB>}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{static}\ ListA\&\ Intersect(ListA\&\ A,\ \textcolor{keyword}{const}\ ListB\&\ B)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{return}\ Intersect(A,\ DummyAccessor(),\ B,\ DummyAccessor());}
+\DoxyCodeLine{00197\ \ \ \}}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \textcolor{comment}{/*\ OVERLAP\_SAME\ returned\ independent\ of\ the\ items'\ order!}}
+\DoxyCodeLine{00200\ \textcolor{comment}{\ \ Use\ IsTheSame\ if\ order\ matters.}}
+\DoxyCodeLine{00201\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00202\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ AccessorA,\ \textcolor{keyword}{class}\ ListB,\ \textcolor{keyword}{class}\ AccessorB>}
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ AnalyseOverlap(}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keyword}{const}\ ListA\&\ A,\ \textcolor{keyword}{const}\ AccessorA\&\ aa,}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keyword}{const}\ ListB\&\ B,\ \textcolor{keyword}{const}\ AccessorB\&\ ab)}
+\DoxyCodeLine{00206\ \ \ \{}
+\DoxyCodeLine{00207\ \ \ \ \ A.ForEach(TagSetter(aa,\ 0));}
+\DoxyCodeLine{00208\ \ \ \ \ B.ForEach(TagSetter(ab,\ 1));}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordtype}{bool}\ overlap\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ A.Count();\ i++)\ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aa(A[i]).GetTag()\ !=\ 0)\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ overlap\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{if}\ (!overlap)\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ OVERLAP\_NONE;}
+\DoxyCodeLine{00218\ \ \ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keywordtype}{int}\ rv\ =\ OVERLAP\_OVERLAP;}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordtype}{bool}\ subgroup\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ A.Count();\ i++)\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aa(A[i]).GetTag()\ !=\ 1)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ subgroup\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{if}\ (subgroup)\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ rv\ |=\ OVERLAP\_SUBGROUP;}
+\DoxyCodeLine{00229\ \ \ \ \ \}}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordtype}{bool}\ supergroup\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00231\ \ \ \ \ A.ForEach(TagSetter(aa,\ 0));}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ B.Count();\ i++)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ab(B[i]).GetTag()\ !=\ 0)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ supergroup\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordflow}{if}\ (supergroup)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ rv\ |=\ OVERLAP\_SUPERGROUP;}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ AnalyseOverlap(\textcolor{keyword}{const}\ ListA\&\ A,\ \textcolor{keyword}{const}\ ListB\&\ B,\ \textcolor{keyword}{const}\ Accessor\&\ acc)\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{return}\ AnalyseOverlap(A,\ acc,\ B,\ acc);}
+\DoxyCodeLine{00247\ \ \ \}}
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB>}
+\DoxyCodeLine{00249\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ AnalyseOverlap(\textcolor{keyword}{const}\ ListA\&\ A,\ \textcolor{keyword}{const}\ ListB\&\ B)\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordflow}{return}\ AnalyseOverlap(A,\ DummyAccessor(),\ B,\ DummyAccessor());}
+\DoxyCodeLine{00251\ \ \ \}}
+\DoxyCodeLine{00252\ \ \ }
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{/*\ Could\ be\ used\ to\ check\ if\ the\ lists\ contain\ items\ in\ the\ same\ order.}}
+\DoxyCodeLine{00254\ \textcolor{comment}{\ \ Checking\ size\ allows\ to\ check\ the\ list\ contains\ identical\ items\ in\ the\ same\ order.}}
+\DoxyCodeLine{00255\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00256\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ AccessorA,\ \textcolor{keyword}{class}\ ListB,\ \textcolor{keyword}{class}\ AccessorB>}
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsTheSameOrder(}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keyword}{const}\ ListA\&\ A,\ \textcolor{keyword}{const}\ AccessorA\&\ aa,}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keyword}{const}\ ListB\&\ B,\ \textcolor{keyword}{const}\ AccessorB\&\ ab,\ \textcolor{keywordtype}{bool}\ check\_size=\textcolor{keyword}{false})}
+\DoxyCodeLine{00260\ \ \ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{if}\ (check\_size\ \&\&\ A.Count()\ !=\ B.Count())\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00263\ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ A.ForEach(TagSetter(aa,\ 0));}
+\DoxyCodeLine{00265\ \ \ \ \ B.ForEach(IndexTagSetter(ab));}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ A.Count();\ i++)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aa(A[i]).GetTag()\ !=\ i)\ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00270\ \ \ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00272\ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00274\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ IsTheSameOrder(\textcolor{keyword}{const}\ ListA\&\ A,\ \textcolor{keyword}{const}\ ListB\&\ B,\ \textcolor{keyword}{const}\ Accessor\&\ acc,}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordtype}{bool}\ check\_size=\textcolor{keyword}{false})}
+\DoxyCodeLine{00276\ \ \ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordflow}{return}\ IsTheSameOrder(A,\ acc,\ B,\ acc,\ check\_size);}
+\DoxyCodeLine{00278\ \ \ \}}
+\DoxyCodeLine{00279\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB>}
+\DoxyCodeLine{00280\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ IsTheSameOrder(\textcolor{keyword}{const}\ ListA\&\ A,\ \textcolor{keyword}{const}\ ListB\&\ B,\ \textcolor{keywordtype}{bool}\ check\_size)\ \{}
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keywordflow}{return}\ IsTheSameOrder(A,\ DummyAccessor(),\ B,\ DummyAccessor(),\ check\_size);}
+\DoxyCodeLine{00282\ \ \ \}}
+\DoxyCodeLine{00283\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ AccessorA,\ \textcolor{keyword}{class}\ ListB,\ \textcolor{keyword}{class}\ AccessorB>}
+\DoxyCodeLine{00284\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsTheSame(}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keyword}{const}\ ListA\&\ A,\ \textcolor{keyword}{const}\ AccessorA\&\ aa,}
+\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keyword}{const}\ ListB\&\ B,\ \textcolor{keyword}{const}\ AccessorB\&\ ab)}
+\DoxyCodeLine{00287\ \ \ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{return}\ IsTheSameOrder(A,\ aa,\ B,\ ab,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00289\ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB,\ \textcolor{keyword}{class}\ Accessor>}
+\DoxyCodeLine{00291\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ IsTheSame(\textcolor{keyword}{const}\ ListA\&\ A,\ \textcolor{keyword}{const}\ ListB\&\ B,\ \textcolor{keyword}{const}\ Accessor\&\ acc)}
+\DoxyCodeLine{00292\ \ \ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keywordflow}{return}\ IsTheSameOrder(A,\ acc,\ B,\ acc,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00294\ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ListA,\ \textcolor{keyword}{class}\ ListB>}
+\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ IsTheSame(\textcolor{keyword}{const}\ ListA\&\ A,\ \textcolor{keyword}{const}\ ListB\&\ B)\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordflow}{return}\ IsTheSameOrder(A,\ DummyAccessor(),\ B,\ DummyAccessor(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00298\ \ \ \}}
+\DoxyCodeLine{00299\ \};}
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

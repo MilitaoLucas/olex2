@@ -1,0 +1,171 @@
+\doxysection{association.\+h}
+\hypertarget{association_8h_source}{}\label{association_8h_source}\index{sdl/association.h@{sdl/association.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_association\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_association\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{/*\ an\ association\ template;\ association\ of\ any\ complexity\ can\ be\ build\ from}}
+\DoxyCodeLine{00014\ \textcolor{comment}{this\ :),\ but\ for\ more\ flexibility\ still\ Association3\ is\ provided}}
+\DoxyCodeLine{00015\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ac,\ \textcolor{keyword}{typename}\ Bc>}
+\DoxyCodeLine{00018\ \textcolor{keyword}{struct\ }olx\_pair\_t\ \{}
+\DoxyCodeLine{00019\ \ \ Ac\ a;}
+\DoxyCodeLine{00020\ \ \ Bc\ b;}
+\DoxyCodeLine{00021\ \ \ olx\_pair\_t()\ \{\}}
+\DoxyCodeLine{00022\ \ \ olx\_pair\_t(\textcolor{keyword}{const}\ Ac\ \&a)}
+\DoxyCodeLine{00023\ \ \ \ \ :\ a(a)}
+\DoxyCodeLine{00024\ \ \ \{\}}
+\DoxyCodeLine{00025\ \ \ olx\_pair\_t(\textcolor{keyword}{const}\ Ac\ \&a,\ \textcolor{keyword}{const}\ Bc\ \&b)}
+\DoxyCodeLine{00026\ \ \ \ \ :\ a(a),\ b(b)}
+\DoxyCodeLine{00027\ \ \ \{\}}
+\DoxyCodeLine{00028\ \ \ olx\_pair\_t(\textcolor{keyword}{const}\ olx\_pair\_t\ \&an)}
+\DoxyCodeLine{00029\ \ \ \ \ :\ a(an.GetA()),\ b(an.GetB())}
+\DoxyCodeLine{00030\ \ \ \{\}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00032\ \ \ olx\_pair\_t(\textcolor{keyword}{const}\ T\ \&an)}
+\DoxyCodeLine{00033\ \ \ \ \ :\ a(an.GetA()),\ b(an.GetB())}
+\DoxyCodeLine{00034\ \ \ \{\}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00036\ \ \ olx\_pair\_t\&\ operator\ =\ (\textcolor{keyword}{const}\ T\&\ an)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ a\ =\ an.GetA();}
+\DoxyCodeLine{00038\ \ \ \ \ b\ =\ an.GetB();}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ T\ \&an)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{return}\ (a\ ==\ an.GetA()\ \&\&\ b\ ==\ an.GetB());}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{const}\ Ac\&\ GetA()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ a;\ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{const}\ Bc\&\ GetB()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ b;\ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ SetA(\textcolor{keyword}{const}\ Ac\&\ a)\ \{\ this-\/>a\ =\ a;\ \}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{void}\ SetB(\textcolor{keyword}{const}\ Bc\&\ b)\ \{\ this-\/>b\ =\ b;\ \}}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{namespace\ }olx\_pair\ \{}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ac,\ \textcolor{keyword}{typename}\ Bc>}
+\DoxyCodeLine{00053\ \ \ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<Ac,\ Bc>}}\ make(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<Ac,\ Bc>}}(a,\ b);}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Ac,\ \textcolor{keyword}{typename}\ Bc>}
+\DoxyCodeLine{00058\ \ \ olx\_pair\_t<Ac,\ Bc>\ *New(\textcolor{keyword}{const}\ Ac\ \&a,\ \textcolor{keyword}{const}\ Bc\ \&b)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ olx\_pair\_t<Ac,\ Bc>(a,\ b);}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ac,\ \textcolor{keyword}{class}\ Bc,\ \textcolor{keyword}{class}\ Cc>}
+\DoxyCodeLine{00064\ \textcolor{keyword}{struct\ }AnAssociation3\ :\ \textcolor{keyword}{public}\ olx\_pair\_t<Ac,\ Bc>\ \{}
+\DoxyCodeLine{00065\ \ \ Cc\ c;}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{typedef}\ olx\_pair\_t<Ac,\ Bc>\ parent\_t;}
+\DoxyCodeLine{00067\ \ \ AnAssociation3()\ \{\}}
+\DoxyCodeLine{00068\ \ \ AnAssociation3(\textcolor{keyword}{const}\ Ac\&\ a)}
+\DoxyCodeLine{00069\ \ \ \ \ :\ parent\_t(a)}
+\DoxyCodeLine{00070\ \ \ \{\}}
+\DoxyCodeLine{00071\ \ \ AnAssociation3(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b)}
+\DoxyCodeLine{00072\ \ \ \ \ :\ parent\_t(a,\ b)}
+\DoxyCodeLine{00073\ \ \ \{\}}
+\DoxyCodeLine{00074\ \ \ AnAssociation3(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b,\ \textcolor{keyword}{const}\ Cc\&\ c)}
+\DoxyCodeLine{00075\ \ \ \ \ :\ parent\_t(a,\ b),\ c(c)}
+\DoxyCodeLine{00076\ \ \ \{\}}
+\DoxyCodeLine{00077\ \ \ AnAssociation3(\textcolor{keyword}{const}\ AnAssociation3\&\ an)}
+\DoxyCodeLine{00078\ \ \ \ \ :\ parent\_t(an),\ c(an.GetC())}
+\DoxyCodeLine{00079\ \ \ \{\}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00081\ \ \ AnAssociation3(\textcolor{keyword}{const}\ T\&\ an)}
+\DoxyCodeLine{00082\ \ \ \ \ :\ parent\_t(an),\ c(an.GetC())}
+\DoxyCodeLine{00083\ \ \ \{\}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00085\ \ \ AnAssociation3\&\ operator\ =\ (\textcolor{keyword}{const}\ T\&\ an)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ parent\_t::operator=\ (an);}
+\DoxyCodeLine{00087\ \ \ \ \ c\ =\ an.GetC();}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ T\ \&an)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{return}\ (parent\_t::operator\ ==(an)\ \&\&\ c\ ==\ an.GetC());}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{const}\ Cc\&\ GetC()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ c;\ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{void}\ SetC(\textcolor{keyword}{const}\ Cc\&\ c)\ \{\ this-\/>c\ =\ c;\ \}}
+\DoxyCodeLine{00096\ \};}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ac,\ \textcolor{keyword}{class}\ Bc,\ \textcolor{keyword}{class}\ Cc,\ \textcolor{keyword}{class}\ Dc>}
+\DoxyCodeLine{00099\ \textcolor{keyword}{struct\ }AnAssociation4\ :\ \textcolor{keyword}{public}\ AnAssociation3<Ac,Bc,Cc>\ \{}
+\DoxyCodeLine{00100\ \ \ Dc\ d;}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{typedef}\ AnAssociation3<Ac,\ Bc,\ Cc>\ parent\_t;}
+\DoxyCodeLine{00102\ \ \ AnAssociation4()\ \{\}}
+\DoxyCodeLine{00103\ \ \ AnAssociation4(\textcolor{keyword}{const}\ Ac\&\ a)}
+\DoxyCodeLine{00104\ \ \ \ \ :\ parent\_t(a)}
+\DoxyCodeLine{00105\ \ \ \{\}}
+\DoxyCodeLine{00106\ \ \ AnAssociation4(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b)}
+\DoxyCodeLine{00107\ \ \ \ \ :\ parent\_t(a,\ b)}
+\DoxyCodeLine{00108\ \ \ \{\}}
+\DoxyCodeLine{00109\ \ \ AnAssociation4(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b,\ \textcolor{keyword}{const}\ Cc\&\ c)}
+\DoxyCodeLine{00110\ \ \ \ \ :\ parent\_t(a,\ b,\ c)}
+\DoxyCodeLine{00111\ \ \ \{\}}
+\DoxyCodeLine{00112\ \ \ AnAssociation4(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b,\ \textcolor{keyword}{const}\ Cc\&\ c,\ \textcolor{keyword}{const}\ Dc\&\ \_d)}
+\DoxyCodeLine{00113\ \ \ \ \ :\ parent\_t(a,\ b,\ c),\ d(\_d)}
+\DoxyCodeLine{00114\ \ \ \{\}}
+\DoxyCodeLine{00115\ \ \ AnAssociation4(\textcolor{keyword}{const}\ AnAssociation4\&\ an)}
+\DoxyCodeLine{00116\ \ \ \ \ :\ parent\_t(an),\ d(an.GetD())}
+\DoxyCodeLine{00117\ \ \ \{\}}
+\DoxyCodeLine{00118\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00119\ \ \ AnAssociation4(\textcolor{keyword}{const}\ T\&\ an)}
+\DoxyCodeLine{00120\ \ \ \ \ :\ parent\_t(an),\ d(an.GetD())}
+\DoxyCodeLine{00121\ \ \ \{\}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00123\ \ \ AnAssociation4\&\ operator\ =\ (\textcolor{keyword}{const}\ T\&\ an)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ parent\_t::operator\ =\ (an);}
+\DoxyCodeLine{00125\ \ \ \ \ d\ =\ an.GetD();}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00127\ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ T\ \&an)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{return}\ (parent\_t::operator\ ==(an)\ \&\&\ d\ ==\ an.GetD());}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{const}\ Dc\&\ GetD()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ d;\ \}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{void}\ SetD(\textcolor{keyword}{const}\ Dc\&\ d)\ \{\ this-\/>d\ =\ d;\ \}}
+\DoxyCodeLine{00134\ \};}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structAssociation}{Association}}\ \{}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ac,\ \textcolor{keyword}{class}\ Bc>}
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<Ac,Bc>}}\ Create(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b)\ \ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<Ac,Bc>}}(a,\ b);}
+\DoxyCodeLine{00140\ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ac,\ \textcolor{keyword}{class}\ Bc>}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<Ac,Bc>}}\ *New(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b)\ \ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<Ac,Bc>}}(a,\ b);}
+\DoxyCodeLine{00144\ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ac,\ \textcolor{keyword}{class}\ Bc,\ \textcolor{keyword}{class}\ Cc>}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structAnAssociation3}{AnAssociation3<Ac,Bc,Cc>}}\ Create(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b,\ \textcolor{keyword}{const}\ Cc\&\ c)\ \ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structAnAssociation3}{AnAssociation3<Ac,Bc,Cc>}}(a,\ b,\ c);}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ac,\ \textcolor{keyword}{class}\ Bc,\ \textcolor{keyword}{class}\ Cc>}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structAnAssociation3}{AnAssociation3<Ac,Bc,Cc>}}\ *New(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b,\ \textcolor{keyword}{const}\ Cc\&\ c)\ \ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structAnAssociation3}{AnAssociation3<Ac,Bc,Cc>}}(a,\ b,\ c);}
+\DoxyCodeLine{00152\ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ac,\ \textcolor{keyword}{class}\ Bc,\ \textcolor{keyword}{class}\ Cc,\ \textcolor{keyword}{class}\ Dc>}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structAnAssociation4}{AnAssociation4<Ac,Bc,Cc,Dc>}}}
+\DoxyCodeLine{00155\ \ \ Create(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b,\ \textcolor{keyword}{const}\ Cc\&\ c,\ \textcolor{keyword}{const}\ Dc\&\ d)\ \ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structAnAssociation4}{AnAssociation4<Ac,Bc,Cc,Dc>}}(a,\ b,\ c,\ d);}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Ac,\ \textcolor{keyword}{class}\ Bc,\ \textcolor{keyword}{class}\ Cc,\ \textcolor{keyword}{class}\ Dc>}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structAnAssociation4}{AnAssociation4<Ac,Bc,Cc,Dc>}}\ *}
+\DoxyCodeLine{00160\ \ \ New(\textcolor{keyword}{const}\ Ac\&\ a,\ \textcolor{keyword}{const}\ Bc\&\ b,\ \textcolor{keyword}{const}\ Cc\&\ c,\ \textcolor{keyword}{const}\ Dc\&\ d)\ \ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structAnAssociation4}{AnAssociation4<Ac,Bc,Cc,Dc>}}(a,\ b,\ c,\ d);}
+\DoxyCodeLine{00162\ \ \ \}}
+\DoxyCodeLine{00163\ \};}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

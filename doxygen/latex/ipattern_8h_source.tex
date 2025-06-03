@@ -1,0 +1,43 @@
+\doxysection{ipattern.\+h}
+\hypertarget{ipattern_8h_source}{}\label{ipattern_8h_source}\index{xlib/ipattern.h@{xlib/ipattern.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ olx\_cl\_ipattern\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ olx\_cl\_ipattern\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}chembase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}poly.h"{}}}
+\DoxyCodeLine{00014\ BeginChemNamespace()}
+\DoxyCodeLine{00015\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ a\ wrapper\ for\ TIdistribution;\ use\ it\ for\ the\ calulation\ od\ isitope\ profiles}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00018\ class\ TIPattern\ \ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00020\ \ \ TPolySerie\ Points;}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ TIPattern()\ \{\}}
+\DoxyCodeLine{00023\ \ \ \string~TIPattern()\ \{\}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ PointCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Points.Count();\ \ \}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{inline}\ TSPoint\&\ Point(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Points[i];\ \ \}}
+\DoxyCodeLine{00026\ \ \ \textcolor{comment}{//\ calculates\ isotope\ pattern\ for\ Exp\ -\/\ chemical\ formula\ and\ fills\ Points\ with\ TSPoint}}
+\DoxyCodeLine{00027\ \ \ \textcolor{comment}{//\ Msg\ -\/\ error\ message}}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ Combine\ -\/\ if\ the\ masses\ have\ to\ be\ combined}}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//\ Delta\ -\/\ the\ difference\ between\ combined\ masses}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{bool}\ Calc(\textcolor{keyword}{const}\ olxstr\&\ Exp,\ olxstr\&\ Msg,\ \textcolor{keywordtype}{bool}\ Combine,\ \textcolor{keywordtype}{double}\ Delta);}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ SortDataByMolWeight();}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{void}\ SortDataByItensity();}
+\DoxyCodeLine{00033\ \};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ EndChemNamespace()}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

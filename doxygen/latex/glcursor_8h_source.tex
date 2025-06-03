@@ -1,0 +1,61 @@
+\doxysection{glcursor.\+h}
+\hypertarget{glcursor_8h_source}{}\label{glcursor_8h_source}\index{glib/glcursor.h@{glib/glcursor.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_cursor\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_cursor\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}gdrawobject.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}macroerror.h"{}}}
+\DoxyCodeLine{00016\ BeginGlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ TGlCursor:\ public\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}},\ \mbox{\hyperlink{classAEventsDispatcher}{AEventsDispatcher}}\ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{double}\ X,\ Y,\ Z;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{bool}\ TextStyle;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\ *Primitive;}
+\DoxyCodeLine{00022\ \ \ olxch\ Symbol;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{size\_t}\ FontIndex;}
+\DoxyCodeLine{00024\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ TGlCursor(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Render,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName,}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{bool}\ TextStyle\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName=EmptyString());}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{virtual}\ \string~TGlCursor()\ \{\}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{void}\ SetPosition(\textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ z)\ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ X\ =\ x;}
+\DoxyCodeLine{00035\ \ \ \ \ Y\ =\ y;}
+\DoxyCodeLine{00036\ \ \ \ \ Z\ =\ z;}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ \ \ DefPropP(\textcolor{keywordtype}{double},\ X)}
+\DoxyCodeLine{00039\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Y)}
+\DoxyCodeLine{00040\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Z)}
+\DoxyCodeLine{00041\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ FontIndex)}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGlFont}{TGlFont}}\&\ GetFont()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{bool}\ IsText()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TextStyle;\ \ \}}
+\DoxyCodeLine{00045\ \ \ olxch\ GetSymbol()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Symbol;\ \ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ SetSymbol(olxch\ v);}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&\ Max,\ vec3d\&\ Min)\ \ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ LibSymbol(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name=\textcolor{stringliteral}{"{}cursor"{}});}
+\DoxyCodeLine{00052\ \};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ EndGlNamespace()}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

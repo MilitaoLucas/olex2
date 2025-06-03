@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['rcinfo_0',['RCInfo',['../structTIns_1_1RCInfo.html',1,'TIns']]],
+  ['reducer_1',['reducer',['../classolx__grid__util_1_1reducer.html',1,'olx_grid_util']]],
+  ['ref_2',['Ref',['../structhkl__util_1_1Ref.html',1,'hkl_util::Ref'],['../structTSAtom_1_1Ref.html',1,'TSAtom::Ref'],['../structTSBond_1_1Ref.html',1,'TSBond::Ref']]],
+  ['refinementlistener_3',['RefinementListener',['../structolex2_1_1RefinementListener.html',1,'olex2']]],
+  ['refinementmodel_4',['RefinementModel',['../classRefinementModel.html',1,'']]],
+  ['reflistutil_5',['RefListUtil',['../structRefListUtil.html',1,'']]],
+  ['refmerger_6',['RefMerger',['../classRefMerger.html',1,'']]],
+  ['responseinfo_7',['ResponseInfo',['../structAnHttpFileSystem_1_1ResponseInfo.html',1,'AnHttpFileSystem']]],
+  ['resultcollector_5f_8',['ResultCollector_',['../structolx__list__filter_1_1ResultCollector__.html',1,'olx_list_filter']]],
+  ['reversecmf_9',['ReverseCMF',['../structReverseComparator_1_1ReverseCMF.html',1,'ReverseComparator']]],
+  ['reversecomparator_10',['ReverseComparator',['../structReverseComparator.html',1,'']]],
+  ['reversecomparator_5f_11',['ReverseComparator_',['../structReverseComparator_1_1ReverseComparator__.html',1,'ReverseComparator']]],
+  ['reverseconstlist_5f_12',['ReverseConstList_',['../structolx__list__reverse_1_1ReverseConstList__.html',1,'olx_list_reverse']]],
+  ['reverselist_5f_13',['ReverseList_',['../structolx__list__reverse_1_1ReverseList__.html',1,'olx_list_reverse']]],
+  ['reversemf_14',['ReverseMF',['../structReverseComparator_1_1ReverseMF.html',1,'ReverseComparator']]],
+  ['reversesf_15',['ReverseSF',['../structReverseComparator_1_1ReverseSF.html',1,'ReverseComparator']]],
+  ['ringinfo_16',['RingInfo',['../structTNetwork_1_1RingInfo.html',1,'TNetwork']]],
+  ['rotated_5fadp_5fconstraint_17',['rotated_adp_constraint',['../structrotated__adp__constraint.html',1,'']]],
+  ['rotating_5fadp_5fconstraint_18',['rotating_adp_constraint',['../structrotating__adp__constraint.html',1,'']]],
+  ['rsa_5fenvisorter_19',['RSA_EnviSorter',['../structRSA__EnviSorter.html',1,'']]]
+];

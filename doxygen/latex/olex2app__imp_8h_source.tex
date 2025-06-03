@@ -1,0 +1,78 @@
+\doxysection{olex2app\+\_\+imp.\+h}
+\hypertarget{olex2app__imp_8h_source}{}\label{olex2app__imp_8h_source}\index{olex/olex2app\_imp.h@{olex/olex2app\_imp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx2\_app\_imp\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx2\_app\_imp\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olex2app.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}olxstate.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }Olex2App\ :\ \textcolor{keyword}{public}\ TGXApp,\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classolex2_1_1AOlex2App}{olex2::AOlex2App}}\ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{size\_t}\ statePluginInstalled;}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{bool}\ CheckState(\textcolor{keywordtype}{size\_t}\ state,\ \textcolor{keyword}{const}\ olxstr\&\ stateData)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordflow}{return}\ state\ ==\ statePluginInstalled\ ?\ plugins.Contains(stateData)\ :\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00019\ \ \ \}}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ Olex2App(\textcolor{keyword}{const}\ olxstr\&\ FileName,\ \mbox{\hyperlink{classAGlScene}{AGlScene}}\ *scene=0)}
+\DoxyCodeLine{00023\ \ \ \ \ :\ TGXApp(FileName,\ scene)}
+\DoxyCodeLine{00024\ \ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{classTStateRegistry}{TStateRegistry}}\ \&states\ =\ GetStatesRegistry();}
+\DoxyCodeLine{00026\ \ \ \ \ statePluginInstalled\ =\ TStateRegistry::GetInstance().Register(}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}pluginInstalled"{}},}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTStateRegistry_1_1Slot}{TStateRegistry::Slot}}(}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ states.NewGetter<Olex2App>(\textcolor{keyword}{this},\ \&Olex2App::CheckState),}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTStateRegistry_1_1TMacroSetter}{TStateRegistry::TMacroSetter}}(\textcolor{stringliteral}{"{}InstallPlugin"{}})}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ )}
+\DoxyCodeLine{00032\ \ \ \ \ );}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{void}\ InitOlex2App()\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ olex2::AOlex2App::InitOlex2App();}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ olex2::AOlex2App::plugins.Count();\ i++)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ TStateRegistry::GetInstance().SetState(}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ statePluginInstalled,\ \textcolor{keyword}{true},\ olex2::AOlex2App::plugins[i],\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ AddPlugin(\textcolor{keyword}{const}\ olxstr\ \&pn)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{if}\ (olex2::AOlex2App::AddPlugin(pn))\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ TStateRegistry::GetInstance().SetState(statePluginInstalled,\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ pn,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ RemovePlugin(\textcolor{keyword}{const}\ olxstr\ \&pn)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{if}\ (olex2::AOlex2App::RemovePlugin(pn))\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ TStateRegistry::GetInstance().SetState(statePluginInstalled,\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ pn,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{static}\ Olex2App\ \&GetInstance()\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ AOlex2App*\ app\ =\ olex2::AOlex2App::GetInstance\_();}
+\DoxyCodeLine{00063\ \ \ \ \ Olex2App*\ olx2app\ =\ \textcolor{keyword}{dynamic\_cast<}Olex2App*\textcolor{keyword}{>}(app);}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx2app\ ==\ 0)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}unsuitable\ application\ instance"{}});}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{return}\ *olx2app;}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,80 @@
+\doxysection{planesort.\+h}
+\hypertarget{planesort_8h_source}{}\label{planesort_8h_source}\index{xlib/planesort.h@{xlib/planesort.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_olx\_plane\_sort\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_olx\_plane\_sort\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}splane.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}math/plane.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ BeginXlibNamespace()}
+\DoxyCodeLine{00017\ namespace\ PlaneSort\ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{struct\ }Sorter\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ TArrayList<vec3d>\ sortedPlane;}
+\DoxyCodeLine{00020\ \ \ \ \ Sorter(\textcolor{keyword}{const}\ TSPlane\&\ sp)\ \{\ DoSort(sp);\ \}}
+\DoxyCodeLine{00021\ \ \ \ \ Sorter()\ \{\ \}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ DoSort(\textcolor{keyword}{const}\ TSPlane\&\ sp)\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ sortedPlane.SetCount(sp.Count());}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sp.Count();\ i++)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ sortedPlane[i]\ =\ sp.GetAtom(i).crd();}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ plane::Sort(sortedPlane,\ ListAccessor(sortedPlane),\ sp.GetCenter(),}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ sp.GetNormal());}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{struct\ }PointAccessor\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ \&operator()\ (}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ olx\_pair\_t<vec3d,\ TSAtom*>\ \&p)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00034\ \textcolor{keyword}{\ \ \ \ \ \ }\{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ p.GetA();}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{comment}{/*\ Sorts\ the\ plane\ atoms\ and\ makes\ its\ normal\ \ right-\/handed*/}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SortPlane(TSPlane\ \&p)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ TArrayList<olx\_pair\_t<vec3d,\ TSAtom*>\ >\ sorted(p.Count());}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ p.Count();\ i++)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ sorted[i].a\ =\ p.GetAtom(i).crd();}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ sorted[i].b\ =\ \&p.GetAtom(i);}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ plane::Sort(sorted,\ PointAccessor(),\ p.GetCenter(),\ p.GetNormal());}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sorted.Count();\ i++)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ sorted[i].b-\/>SetTag((index\_t)i);}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ p.\_PlaneSortByAtomTags();}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DoSort(\textcolor{keyword}{const}\ TSAtomPList\&\ atoms,}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{comment}{//\ tag\ dependent\ translations}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olx\_pdict<index\_t,\ vec3d>\&\ transforms,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ center,\ \textcolor{keyword}{const}\ vec3d\&\ normal,\ TSAtomPList\&\ output)}
+\DoxyCodeLine{00057\ \ \ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms.IsEmpty())}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}atom\ list"{}});}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ TArrayList<olx\_pair\_t<vec3d,\ TSAtom*>\ >\ sorted(atoms.Count());}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ sorted[i].a\ =\ atoms[i]-\/>crd()\ +\ transforms.Get(atoms[i]-\/>GetTag());}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ sorted[i].b\ =\ atoms[i];}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ plane::Sort(sorted,\ PointAccessor(),\ center,\ normal);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ output.SetCount(sorted.Count());}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sorted.Count();\ i++)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ output[i]\ =\ sorted[i].b;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \};}
+\DoxyCodeLine{00072\ \};}
+\DoxyCodeLine{00073\ EndXlibNamespace()}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,124 @@
+\doxysection{TThread\+Slot Class Reference}
+\hypertarget{classTThreadSlot}{}\label{classTThreadSlot}\index{TThreadSlot@{TThreadSlot}}
+Inheritance diagram for TThread\+Slot\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classTThreadSlot}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual int \mbox{\hyperlink{classTThreadSlot_a27a58029c3ca846de6200aed307c315f}{Run}} ()
+\item 
+\Hypertarget{classTThreadSlot_a5f02bda47269784ced9a775d843c2ebf}\label{classTThreadSlot_a5f02bda47269784ced9a775d843c2ebf} 
+void {\bfseries Set\+Task} (ITask \&\+\_\+task)
+\item 
+\Hypertarget{classTThreadSlot_ac48473ba0d7c56c84e23a07bdbd2eb72}\label{classTThreadSlot_ac48473ba0d7c56c84e23a07bdbd2eb72} 
+bool {\bfseries Is\+Suspended} () const
+\item 
+\Hypertarget{classTThreadSlot_ab015ccb6adc5e0c76c40f919ea79dc18}\label{classTThreadSlot_ab015ccb6adc5e0c76c40f919ea79dc18} 
+void {\bfseries Suspend} ()
+\item 
+\Hypertarget{classTThreadSlot_ad21b5716e043ff6ad8fb8f433b7d0138}\label{classTThreadSlot_ad21b5716e043ff6ad8fb8f433b7d0138} 
+void {\bfseries Resume} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries Start} ()
+\item 
+bool {\bfseries Join} (bool send\+\_\+terminate=false)
+\item 
+void {\bfseries Send\+Terminate} ()
+\item 
+bool {\bfseries Is\+Running} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classAPerishable}{APerishable}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries Add\+Destruction\+Observer} (\mbox{\hyperlink{structADestructionObserver}{ADestruction\+Observer}} \&)
+\item 
+void {\bfseries Remove\+Destruction\+Observer} (const \mbox{\hyperlink{structADestructionObserver}{ADestruction\+Observer}} \&)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classIOlxObject}{IOlx\+Object}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classTTIString}{TIString}} {\bfseries To\+String} () const
+\item 
+virtual \mbox{\hyperlink{classIOlxObject}{IOlx\+Object}} \texorpdfstring{$\ast$}{*} {\bfseries Replicate} () const
+\item 
+{\footnotesize template$<$class T$>$ }\\bool {\bfseries Is} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classTThreadSlot_a6dbc0f179eaf95c89d20e724ddd3a9fa}\label{classTThreadSlot_a6dbc0f179eaf95c89d20e724ddd3a9fa} 
+\mbox{\hyperlink{structolx__object__ptr}{olx\+\_\+object\+\_\+ptr}}$<$ \mbox{\hyperlink{classTExceptionBase}{TException\+Base}} $>$ {\bfseries exception}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTActionQueue}{TAction\+Queue}} \& {\bfseries On\+Terminate}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class T$>$ }\\static bool {\bfseries Run\+Thread} (T f)
+\item 
+static void {\bfseries Yield} ()
+\item 
+static unsigned long {\bfseries Get\+Current\+Thread\+Id} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual void {\bfseries On\+Send\+Terminate} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Member Functions inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+static void \texorpdfstring{$\ast$}{*} {\bfseries \+\_\+\+Run} (void \texorpdfstring{$\ast$}{*}\+\_\+instance)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}}
+\begin{DoxyCompactItemize}
+\item 
+int volatile {\bfseries Ret\+Val}
+\item 
+bool volatile {\bfseries Terminate}
+\item 
+bool volatile {\bfseries Detached}
+\item 
+bool volatile {\bfseries Running}
+\item 
+pthread\+\_\+t {\bfseries Handle}
+\item 
+\mbox{\hyperlink{classTActionQList}{TAction\+QList}} {\bfseries Actions}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classAPerishable}{APerishable}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structADestructionObserver}{ADestruction\+Observer}} \texorpdfstring{$\ast$}{*} {\bfseries dsh\+\_\+head}
+\item 
+\mbox{\hyperlink{structADestructionObserver}{ADestruction\+Observer}} \texorpdfstring{$\ast$}{*} {\bfseries dsh\+\_\+tail}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classTThreadSlot_a27a58029c3ca846de6200aed307c315f}\index{TThreadSlot@{TThreadSlot}!Run@{Run}}
+\index{Run@{Run}!TThreadSlot@{TThreadSlot}}
+\doxysubsubsection{\texorpdfstring{Run()}{Run()}}
+{\footnotesize\ttfamily \label{classTThreadSlot_a27a58029c3ca846de6200aed307c315f} 
+int TThread\+Slot\+::\+Run (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classAOlxThread}{AOlx\+Thread}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+sdl/olxthpool.\+h\item 
+sdl/olxthpool.\+cpp\end{DoxyCompactItemize}

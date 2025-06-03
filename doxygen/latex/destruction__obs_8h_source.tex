@@ -1,0 +1,82 @@
+\doxysection{destruction\+\_\+obs.\+h}
+\hypertarget{destruction__obs_8h_source}{}\label{destruction__obs_8h_source}\index{sdl/destruction\_obs.h@{sdl/destruction\_obs.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2014\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_desobs\_H}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_desobs\_H}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{struct\ }StaticDestructionObserver\ :\ \textcolor{keyword}{public}\ ADestructionObserver\ \{}
+\DoxyCodeLine{00013\ \ \ void(*des\_obs)(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj);}
+\DoxyCodeLine{00014\ \ \ StaticDestructionObserver(\textcolor{keywordtype}{void}(*des\_obs)(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj))}
+\DoxyCodeLine{00015\ \ \ \ \ :\ des\_obs(des\_obs)}
+\DoxyCodeLine{00016\ \ \ \{\}}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ call(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj)\textcolor{keyword}{\ const\ }\{\ (*des\_obs)(obj);\ \}}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ ADestructionObserver\ *p\_)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{const}\ StaticDestructionObserver\ *p\ =}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const\ }StaticDestructionObserver\ *\textcolor{keyword}{>}(p\_);}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordflow}{return}\ (p\ \&\&\ p-\/>des\_obs\ ==\ des\_obs);}
+\DoxyCodeLine{00022\ \ \ \}}
+\DoxyCodeLine{00023\ \ \ ADestructionObserver\ *clone()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ StaticDestructionObserver(des\_obs);}
+\DoxyCodeLine{00025\ \ \ \}}
+\DoxyCodeLine{00026\ \};}
+\DoxyCodeLine{00027\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base>}
+\DoxyCodeLine{00028\ \textcolor{keyword}{struct\ }MemberDestructionObserver\ :\ \textcolor{keyword}{public}\ ADestructionObserver\ \{}
+\DoxyCodeLine{00029\ \ \ void\ (base::*des\_obs)(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj);}
+\DoxyCodeLine{00030\ \ \ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base>}}\ instance;}
+\DoxyCodeLine{00031\ \ \ MemberDestructionObserver(\textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<base>}}\ \&inst,}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ (base::*des\_obs)(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj))}
+\DoxyCodeLine{00033\ \ \ \ \ :\ instance(inst),}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ des\_obs(des\_obs)}
+\DoxyCodeLine{00035\ \ \ \{\}}
+\DoxyCodeLine{00036\ \ \ MemberDestructionObserver(base\ *inst,}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ (base::*des\_obs)(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj))}
+\DoxyCodeLine{00038\ \ \ \ \ :\ instance(inst),}
+\DoxyCodeLine{00039\ \ \ \ \ des\_obs(des\_obs)}
+\DoxyCodeLine{00040\ \ \ \{\}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ call(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00042\ \ \ \ \ ((*(\textcolor{keyword}{const\_cast<}MemberDestructionObserver\ *\textcolor{keyword}{>}(\textcolor{keyword}{this})-\/>instance)).*des\_obs)(obj);}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ ADestructionObserver\ *p\_)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{const}\ MemberDestructionObserver\ *p\ =}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const\ }MemberDestructionObserver\ *\textcolor{keyword}{>}(p\_);}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ (p\ \&\&\ instance\ ==\ p-\/>instance\ \&\&}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ p-\/>des\_obs\ ==\ des\_obs);}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ \ \ ADestructionObserver\ *clone()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ MemberDestructionObserver(instance,\ des\_obs);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structDestructionObserver}{DestructionObserver}}\ \{}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structMemberDestructionObserver}{MemberDestructionObserver<T>}}\ Make(T*\ inst,}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ (T::*f)(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj))}
+\DoxyCodeLine{00058\ \ \ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structMemberDestructionObserver}{MemberDestructionObserver<T>}}(inst,\ f);}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structStaticDestructionObserver}{StaticDestructionObserver}}\ Make(\textcolor{keywordtype}{void}(*f)(\mbox{\hyperlink{classAPerishable}{APerishable}}\ *))\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structStaticDestructionObserver}{StaticDestructionObserver}}(f);}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structMemberDestructionObserver}{MemberDestructionObserver<T>}}\ \&MakeNew(T*\ inst,}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ (T::*f)(\mbox{\hyperlink{classAPerishable}{APerishable}}*\ obj))}
+\DoxyCodeLine{00067\ \ \ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{return}\ *(\textcolor{keyword}{new}\ \mbox{\hyperlink{structMemberDestructionObserver}{MemberDestructionObserver<T>}}(inst,\ f));}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structStaticDestructionObserver}{StaticDestructionObserver}}\ \&MakeNew(\textcolor{keywordtype}{void}(*f)(\mbox{\hyperlink{classAPerishable}{APerishable}}\ *))\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{return}\ *(\textcolor{keyword}{new}\ \mbox{\hyperlink{structStaticDestructionObserver}{StaticDestructionObserver}}(f));}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ \};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

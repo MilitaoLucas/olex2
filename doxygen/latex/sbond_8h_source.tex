@@ -1,0 +1,111 @@
+\doxysection{sbond.\+h}
+\hypertarget{sbond_8h_source}{}\label{sbond_8h_source}\index{xlib/sbond.h@{xlib/sbond.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_sbond\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_sbond\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}satom.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginXlibNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00020\ \ \ sboUndefined\ =\ 0,}
+\DoxyCodeLine{00021\ \ \ sboSingle\ =\ 1,}
+\DoxyCodeLine{00022\ \ \ sboDouble\ =\ 2,}
+\DoxyCodeLine{00023\ \ \ sboTripple\ =\ 3,}
+\DoxyCodeLine{00024\ \ \ sboAromatic\ =\ 4;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ class\ TSBond\ :\ public\ TBasicBond<class\ \mbox{\hyperlink{classTNetwork}{TNetwork}},\ \mbox{\hyperlink{classTSAtom}{TSAtom}}>\ \{}
+\DoxyCodeLine{00028\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnAtomSet();}
+\DoxyCodeLine{00030\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{bool}\ Deleted;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{short}\ Order;}
+\DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ TSBond(\mbox{\hyperlink{classTNetwork}{TNetwork}}*\ Parent);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \string~TSBond()\ \{\}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ DefPropBIsSet(Deleted)}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsAvailable()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ (!IsDeleted()\ \&\&\ FA-\/>IsAvailable()\ \&\&\ FB-\/>IsAvailable());}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \ \ vec3d\ GetCenter()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (FA-\/>crd()\ +\ FB-\/>crd())\ /\ 2;\ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{double}\ Length()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FA-\/>crd().DistanceTo(FB-\/>crd());\ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{double}\ QLength()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FA-\/>crd().QDistanceTo(FB-\/>crd());\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{struct\ }Ref\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classcomparable__operators__full}{comparable\_operators\_full}}<Ref>\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \mbox{\hyperlink{structTSAtom_1_1Ref}{TSAtom::Ref}}\ a,\ b;}
+\DoxyCodeLine{00047\ \ \ \ \ Ref()\ \{\}}
+\DoxyCodeLine{00048\ \ \ \ \ Ref(\textcolor{keyword}{const}\ \mbox{\hyperlink{structTSAtom_1_1Ref}{TSAtom::Ref}}\&\ \_a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTSAtom_1_1Ref}{TSAtom::Ref}}\&\ \_b)}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ :\ a(\_a),\ b(\_b)}
+\DoxyCodeLine{00050\ \ \ \ \ \{\}}
+\DoxyCodeLine{00051\ \ \ \ \ Ref(\textcolor{keyword}{const}\ Ref\&\ r)\ :\ a(r.a),\ b(r.b)\ \{\}}
+\DoxyCodeLine{00052\ \ \ \ \ Ref(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app)}
+\DoxyCodeLine{00053\ \ \ \ \ :\ a(di.GetItemByName(\textcolor{charliteral}{'a'}),\ app),}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ b(di.GetItemByName(\textcolor{charliteral}{'b'}),\ app)}
+\DoxyCodeLine{00055\ \ \ \ \ \{\}}
+\DoxyCodeLine{00056\ \ \ \ \ Ref\&\ operator\ =\ (\textcolor{keyword}{const}\ Ref\&\ r)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ a\ =\ r.a;}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ b\ =\ r.b;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ Ref\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app,\ \textcolor{keywordtype}{bool}\ use\_id\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsValid(\textcolor{keyword}{const}\ \textcolor{keyword}{class}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTXApp}{TXApp}}\&\ app);}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{int}\ cmp(\textcolor{keyword}{const}\ \mbox{\hyperlink{structTSAtom_1_1Ref}{TSAtom::Ref}}\&\ a1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTSAtom_1_1Ref}{TSAtom::Ref}}\&\ b1,}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTSAtom_1_1Ref}{TSAtom::Ref}}\&\ a2,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTSAtom_1_1Ref}{TSAtom::Ref}}\&\ b2)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00070\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ r\ =\ a1.Compare(b1);}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ ==\ 0)\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ r\ =\ a2.Compare(b2);}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \mbox{\hyperlink{structTSBond_1_1Ref}{Ref}}\ GetRef()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structTSBond_1_1Ref}{Ref}}(FA-\/>GetRef(),\ FB-\/>GetRef());\ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{//\ despite\ the\ fact\ that\ atoms\ are\ alsways\ sorted,\ compare\ both\ end...}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ Ref\&\ r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{return}\ (*FA\ ==\ r.a\ \&\&\ *FB\ ==\ r.b)\ ||\ (*FA\ ==\ r.b\ \&\&\ *FB\ ==\ r.a);}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{static}\ Ref\ GetRef(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&b);}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{static}\ Ref\ GetRef(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ b)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{return}\ GetRef(a,\ 0,\ b,\ 0);}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{static}\ Ref\ GetRef(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a,\ \textcolor{keyword}{const}\ smatd*\ ma,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ b,\ \textcolor{keyword}{const}\ smatd*\ mb);}
+\DoxyCodeLine{00089\ \ \ DefPropP(\textcolor{keywordtype}{short},\ Order)}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{comment}{/*\ returns\ MOL\ file\ compatible\ bond\ order:}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ \ \ \ 1\ =\ Single,\ 2\ =\ Double,\ 3\ =\ Triple,\ 4\ =\ Aromatic,\ 0\ -\/\ undefined}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ \ \ \ The\ first\ element\ argument\ is\ the\ heavier\ one}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{short}\ PercieveOrder(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ a,}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ b,\ \textcolor{keywordtype}{double}\ d);}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ parent);}
+\DoxyCodeLine{00098\ \};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TSBond>}}\ TSBondList;}
+\DoxyCodeLine{00101\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TSBond>}}\ TSBondPList;}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ EndXlibNamespace()}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00105\ }
+
+\end{DoxyCode}

@@ -1,0 +1,179 @@
+\doxysection{patchapi.\+h}
+\hypertarget{patchapi_8h_source}{}\label{patchapi_8h_source}\index{repository/patchapi.h@{repository/patchapi.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_patch\_api\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_patch\_api\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}efile.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}md5.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}utf8file.h"{}}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }patcher\ \ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00022\ \ \ papi\_OK\ \ \ \ \ \ \ \ \ \ \ \ =\ 0,}
+\DoxyCodeLine{00023\ \ \ papi\_Busy\ \ \ \ \ \ \ \ \ \ =\ 1,}
+\DoxyCodeLine{00024\ \ \ papi\_DeleteError\ \ \ =\ 2,}
+\DoxyCodeLine{00025\ \ \ papi\_CopyError\ \ \ \ \ =\ 3,}
+\DoxyCodeLine{00026\ \ \ papi\_AccessDenied\ \ =\ 4,}
+\DoxyCodeLine{00027\ \ \ papi\_InvalidUpdate\ =\ 5;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classpatcher_1_1PatchAPI}{PatchAPI}}\ \{}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{class\ }DeletionExc\ :\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \ \ DeletionExc(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ msg)\ :}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ TBasicException(location,\ msg)\ \{\}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DeletionExc(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00035\ \ \ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ AfterFileCopy(\textcolor{keyword}{const}\ olxstr\&\ src,\ \textcolor{keyword}{const}\ olxstr\&\ dest)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{if}\ (!TEFile::DelFile(src))\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ DeletionExc(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Failed\ to\ delete\ file:\ "{}})\ <<\ src);}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{struct\ }DataDirSettings\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_static,\ is\_manually\_set;}
+\DoxyCodeLine{00046\ \ \ \ \ olxstr\ data\_dir;}
+\DoxyCodeLine{00047\ \ \ \ \ DataDirSettings();}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ does\ nothing\ if\ set\ manually}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{bool}\ Refresh();}
+\DoxyCodeLine{00050\ \ \ \};}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{static}\ DataDirSettings\&\ GetDDSetting()\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{static}\ DataDirSettings\ st;}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ st;}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTEFile}{TEFile}}*\&\ LockFile()\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTEFile}{TEFile}}*\ lock\_file\ =\ 0;}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ lock\_file;}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \_RestoreExecuableFlags();}
+\DoxyCodeLine{00060\ \ \ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{static}\ olxstr\&\ RepositoryTag()\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ repository\_tag;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ repository\_tag;}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{static}\ olxstr\&\ RepositoryBase()\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ repository\_base;}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ repository\_base;}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{static}\ olxstr\&\ SharedDir()\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ shared\_dir;}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}\ shared\_dir;}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{static}\ olxstr\&\ InstanceDir()\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ instance\_dir;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{return}\ instance\_dir;}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00078\ \ \ \mbox{\hyperlink{classpatcher_1_1PatchAPI}{\string~PatchAPI}}()\ \{\ UnlockUpdater();\ \}}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//\ if\ action\ handlers\ are\ passed\ along\ -\/\ they\ will\ be\ automatically\ deleted}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{short}\ DoPatch(\mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AActionHandler>}}\ OnFileCopy\ =\ 0,}
+\DoxyCodeLine{00081\ \ \ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<AActionHandler>}}\ OnOverallCopy\ =\ 0);}
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{/*\ 2012.01.21\ -\/\ the\ location\ is\ stored\ in\ the\ user\ dependent\ folder}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{static}\ olxstr\ GetUpdateLocationFileName()\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::GetInstanceDir()\ +\ \textcolor{stringliteral}{"{}\_\_location.update"{}};}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{comment}{/*\ writes\ patch\ dir\ into\ the\ the\ update\ location\ file\ */}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ MarkPatchComplete();}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HaveUpdates()\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ TEFile::Exists(GetUpdateLocationFileName());}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{static}\ olxstr\ GetUpdateLocation();}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{static}\ olxstr\ GetUpdaterPIDFileName()\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::GetInstanceDir()\ +\ \textcolor{stringliteral}{"{}pid.update"{}};}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetUpdaterCmdFileName()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\_\_cmds.update"{}};\ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetOlex2PIDFileExt()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}olex2\_pid"{}};\ \}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ IsOlex2Running()\ \{\ \textcolor{keywordflow}{return}\ GetNumberOfOlex2Running()\ !=\ 0;\ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ GetNumberOfOlex2Running();}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ LockUpdater();}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ UnlockUpdater();}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetTagFileName()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}olex2.tag"{}};\ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetPatchFolder()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}patch"{}};\ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//reads\ current\ repository\ tag,\ returns\ EmptyString()\ in\ the\ case\ of\ error}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{static}\ olxstr\ ReadRepositoryTag(\textcolor{keyword}{const}\ olxstr\&\ base\_dir\ =\ EmptyString());}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SetDataDir(\textcolor{keyword}{const}\ olxstr\&\ dir,\ \textcolor{keywordtype}{bool}\ is\_static)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{if}\ (dir.IsEmpty())\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}empty\ data\ dir"{}});}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ GetDDSetting().is\_static\ =\ is\_static;}
+\DoxyCodeLine{00112\ \ \ \ \ GetDDSetting().data\_dir\ =\ dir;}
+\DoxyCodeLine{00113\ \ \ \ \ GetDDSetting().is\_manually\_set\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{/*\ return\ 'AppData'\ or\ OLEX2\_DATADIR\ if\ defined}}
+\DoxyCodeLine{00116\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{static}\ olxstr\ \_GetSharedDirRoot(\textcolor{keywordtype}{bool}\ refresh\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{/*\ return\ \_GetSharedDirRoot()/Olex2Data\ on\ windows\ or}}
+\DoxyCodeLine{00119\ \textcolor{comment}{\ \ \_GetSharedDirRoot()/data\ on\ other\ platforms\ (unless\ the\ OLEX2\_DATADIR\_STATIC}}
+\DoxyCodeLine{00120\ \textcolor{comment}{\ \ is\ set\ to\ true}}
+\DoxyCodeLine{00121\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{static}\ olxstr\ GetSharedDir(\textcolor{keywordtype}{bool}\ refresh\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{/*\ composes\ new\ instance\ dir\ and\ saves\ its\ info.\ The\ instance\ dir\ depends\ on}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ \ the\ location\ of\ the\ executable\ and\ thus\ can\ be\ used\ to\ store\ instance}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ \ specific\ updates\ etc}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{static}\ olxstr\ ComposeInstanceDir(\textcolor{keyword}{const}\ olxstr\&\ shared\_dir,}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ \_base\_dir\ =\ EmptyString())}
+\DoxyCodeLine{00129\ \ \ \{}
+\DoxyCodeLine{00130\ \ \ \ \ olxstr\ new\_shared\_dir\ =\ shared\_dir;}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ base\_dir\ =\ \_base\_dir.IsEmpty()\ ?\ TBasicApp::GetBaseDir()\ :}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ TEFile::AddPathDelimeter(\_base\_dir);}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00134\ \ \ \ \ new\_shared\_dir\ <<\ \textcolor{stringliteral}{"{}Olex2Data/"{}};}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00136\ \ \ \ \ new\_shared\_dir\ <<\ \textcolor{stringliteral}{"{}data/"{}};}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{return}\ TEFile::AddPathDelimeterI(}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ new\_shared\_dir\ <<\ MD5::Digest(}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ base\_dir.ToMBStr()\ +\ ReadRepositoryTag(base\_dir)));}
+\DoxyCodeLine{00141\ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{/*\ checks\ for\ OLEX2\_DATADIR,\ if\ OLEX2\_DATADIR\_STATIC\ is\ set\ to\ true,\ the\ root}}
+\DoxyCodeLine{00143\ \textcolor{comment}{\ \ folder\ is\ returned\ and\ used\ (for\ all\ versions\ of\ programs\ which\ may\ be}}
+\DoxyCodeLine{00144\ \textcolor{comment}{\ \ installed\ and\ using\ this\ API}}
+\DoxyCodeLine{00145\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{static}\ olxstr\ GetInstanceDir(\textcolor{keywordtype}{bool}\ refresh\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00147\ \ \ \textcolor{comment}{/*\ mostly\ for\ internal\ use,\ saves\ the\ origin\ of\ the\ MD5\ hash\ to\ folder.info}}
+\DoxyCodeLine{00148\ \textcolor{comment}{\ \ file\ */}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ SaveLocationInfo(\textcolor{keyword}{const}\ olxstr\&\ shared\_dir,}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ base\_dir\ =\ EmptyString())}
+\DoxyCodeLine{00151\ \ \ \{}
+\DoxyCodeLine{00152\ \ \ \ \ TCStrList\ location\_file\_content;}
+\DoxyCodeLine{00153\ \ \ \ \ location\_file\_content.Add(TEFile::AddPathDelimeter(}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ (base\_dir.IsEmpty()\ ?\ TBasicApp::GetBaseDir()\ :\ base\_dir)))}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ <<\ patcher::PatchAPI::ReadRepositoryTag();}
+\DoxyCodeLine{00156\ \ \ \ \ TEFile::WriteLines(shared\_dir\ +\ \textcolor{stringliteral}{"{}folder.info"{}},\ location\_file\_content);}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{static}\ olxstr\ ComposeOldSharedDir(\textcolor{keyword}{const}\ olxstr\&\ shared\_dir)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ olxstr\ new\_shared\_dir\ =\ shared\_dir;}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#ifdef\ \_UNICODE}}
+\DoxyCodeLine{00162\ \ \ \ \ new\_shared\_dir\ <<\ \textcolor{stringliteral}{"{}Olex2u"{}};}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00164\ \ \ \ \ new\_shared\_dir\ <<\ \textcolor{stringliteral}{"{}Olex2"{}};}
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00166\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ TEFile::AddPathDelimeterI(new\_shared\_dir);}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ \};}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \};}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

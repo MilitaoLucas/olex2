@@ -1,0 +1,81 @@
+\doxysection{gpcollection.\+h}
+\hypertarget{gpcollection_8h_source}{}\label{gpcollection_8h_source}\index{glib/gpcollection.h@{glib/gpcollection.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_gpcollection\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_gpcollection\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00015\ BeginGlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ class\ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}};}
+\DoxyCodeLine{00018\ class\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ class\ TGPCollection:\ public\ ACollectionItem\ \ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Parent;}
+\DoxyCodeLine{00022\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TGlPrimitive>}}\ Primitives;\ \textcolor{comment}{//\ a\ list\ of\ primitives\ in\ the\ collection}}
+\DoxyCodeLine{00023\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<AGDrawObject>}}\ GObjects;\ \ \ \textcolor{comment}{//\ a\ list\ of\ all\ objects\ using\ this\ collection}}
+\DoxyCodeLine{00024\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}*\ Style;}
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ TGPCollection(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ parent,\ \textcolor{keyword}{const}\ olxstr\&\ name=EmptyString())\ :}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ Parent(parent),\ Name(name),\ Style(NULL)\ \{\}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \string~TGPCollection()\ \{\}}
+\DoxyCodeLine{00030\ \ \ \textcolor{comment}{//\ clears\ the\ content\ of\ the\ colelction\ and\ removes\ primitives}}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ use\ it\ to\ change\ the\ content\ of\ the\ collection}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{void}\ ClearPrimitives();}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{size\_t}\ PrimitiveCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Primitives.Count();\ \ \}}
+\DoxyCodeLine{00035\ \ \ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ GetPrimitive(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Primitives[index];\ \ \}}
+\DoxyCodeLine{00036\ \ \ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}*\ FindPrimitiveByName(\textcolor{keyword}{const}\ olxstr\&\ Name)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TGlPrimitive>}}\&\ GetPrimitives()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Primitives;\ \ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ NewPrimitive(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keywordtype}{short}\ type);}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ AddPrimitive(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P)\ \ \{\ \ Primitives.Add(P);\ \ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{void}\ RemovePrimitive(\textcolor{keywordtype}{size\_t}\ index)\ \{\ \ Primitives.Delete(index);\ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ RemovePrimitive(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ GlP)\ \ \{\ \ Primitives.Remove(GlP);\ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{bool}\ ContainsPrimitive(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ GlP);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ ObjectCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GObjects.Count();\ \ \}}
+\DoxyCodeLine{00048\ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ GetObject(\textcolor{keywordtype}{size\_t}\ index)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *GObjects[index];\ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AGDrawObject>}}\&\ GetObjects()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GObjects;\ \ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ AddObject(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ Obj);}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GObjects.IsEmpty();\ \ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ ClearObjects()\ \ \{\ \ GObjects.Clear();\ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ RemoveObject(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ G)\ \ \{\ \ GObjects.Remove(G);\ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ RemoveObjects(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AGDrawObject>}}\&\ objects)\ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ ACollectionItem::Exclude<>(GObjects,\ objects);}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{void}\ DeleteObject(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ GObjects.Delete(i);\ \ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{void}\ Draw();}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{void}\ ListParams(TStrList\&\ List,\ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}*\ Primitive);}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ GetParent()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Parent;\ \ \}}
+\DoxyCodeLine{00065\ \ \ DefPropC(olxstr,\ Name)}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetStyle(\mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}*\ S);}
+\DoxyCodeLine{00068\ \ \ \textcolor{comment}{//\ it\ might\ be\ NULL}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classTGraphicsStyle}{TGraphicsStyle}}\&\ GetStyle()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Style;\ \ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ HasStyle()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Style\ !=\ 0;\ \}}
+\DoxyCodeLine{00071\ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ EndGlNamespace()}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

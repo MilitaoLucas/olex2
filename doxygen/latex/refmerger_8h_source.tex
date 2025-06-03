@@ -1,0 +1,235 @@
+\doxysection{refmerger.\+h}
+\hypertarget{refmerger_8h_source}{}\label{refmerger_8h_source}\index{xlib/refmerger.h@{xlib/refmerger.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ref\_merge\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ref\_merge\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}reflection.h"{}}}
+\DoxyCodeLine{00013\ BeginXlibNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ struct\ MergeStats\ \ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{double}\ Rint,\ Rsigma;}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{int}\ SystematicAbsentcesRemoved,}
+\DoxyCodeLine{00018\ \ \ \ \ InconsistentEquivalents,}
+\DoxyCodeLine{00019\ \ \ \ \ TotalReflections,}
+\DoxyCodeLine{00020\ \ \ \ \ UniqueReflections,}
+\DoxyCodeLine{00021\ \ \ \ \ OmittedReflections,}
+\DoxyCodeLine{00022\ \ \ \ \ CentricReflections;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{bool}\ FriedelOppositesMerged;}
+\DoxyCodeLine{00024\ \ \ MergeStats()\ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ Reset();}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{comment}{//\ no\ need\ to\ define\ assignment\ operator\ or\ copy\ constructor\ for\ this\ one...}}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ resets\ all\ values...}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}\ Reset()\ \ \{}
+\DoxyCodeLine{00030\ \ \ \ \ Rint\ =\ Rsigma\ =\ 0;}
+\DoxyCodeLine{00031\ \ \ \ \ TotalReflections\ =\ UniqueReflections\ =\ OmittedReflections\ =\ 0;}
+\DoxyCodeLine{00032\ \ \ \ \ CentricReflections\ =\ SystematicAbsentcesRemoved\ =\ InconsistentEquivalents\ =\ 0;}
+\DoxyCodeLine{00033\ \ \ \ \ FriedelOppositesMerged\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ TotalReflections\ ==\ 0;\ \ \}}
+\DoxyCodeLine{00036\ \};}
+\DoxyCodeLine{00037\ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00038\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRefMerger}{RefMerger}}\ \{}
+\DoxyCodeLine{00039\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00040\ \textcolor{comment}{/*\ Function\ merges\ reflections\ of\ current\ hkl\ file\ (file\ data\ stays\ unchanged!)}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ and\ fills\ the\ 'output'\ list\ with\ merged\ reflections.\ RefListmerger\ class\ must\ provide}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ Merge(const\ TRefPList\&\ refs)\ static\ function\ which\ returns\ a\ new\ merged\ reflection,\ this}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ reflection\ will\ be\ automatically\ deleted\ afterwards.}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ The\ refturned\ value\ is\ Rint\ =\ Sum(|F\string^2-\/F\string^2mean|)/Sum(|F\string^2|)}}
+\DoxyCodeLine{00045\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00046\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger>}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{static}\ MergeStats\ Merge(smatd\_list\&\ ml,\ \textcolor{keyword}{const}\ TRefPList\&\ Refs,\ TRefList\&\ output)\ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ MergeStats\ stats;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//\ replicate\ reflections,\ to\ leave\ this\ object\ as\ it\ is}}
+\DoxyCodeLine{00050\ \ \ \ \ TRefPList\ refs,\ toMerge;\ \ \textcolor{comment}{//\ list\ of\ replicated\ reflections}}
+\DoxyCodeLine{00051\ \ \ \ \ refs.SetCapacity(\ Refs.Count()\ );}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ Refs.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ Refs[i]-\/>GetTag()\ <=\ 0\ )\ \ \textcolor{keywordflow}{continue};\ \ \textcolor{comment}{//\ skip\ omited\ reflections}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ TReflection*\ ref\ =\ refs.Add(\ \textcolor{keyword}{new}\ TReflection(*Refs[i])\ );}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ref-\/>GetI()\ <\ 0\ )\ \ ref-\/>SetI(0);}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ stats.TotalReflections\ =\ Refs.Count();}
+\DoxyCodeLine{00058\ \ \ \ \ stats.OmittedReflections\ =\ Refs.Count()\ -\/\ refs.Count();}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ search\ for\ the\ inversion\ matrix}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{int}\ inverseMatIndex\ =\ -\/1;}
+\DoxyCodeLine{00061\ \ \ \ \ mat3d\ mI;}
+\DoxyCodeLine{00062\ \ \ \ \ mI.I()\ *=\ -\/1;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ ml.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ml[i].r\ ==\ mI\ )\ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ inverseMatIndex\ =\ i;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ stats.FriedelOppositesMerged\ =\ (inverseMatIndex\ !=\ -\/1);}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{comment}{//\ standartise\ reflection\ indexes\ according\ to\ provieded\ list\ of\ symmetry\ operators}}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ ref\_cnt\ =\ refs.Count();}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ ref\_cnt;\ i++\ )}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ refs[i]-\/>Standardise(ml);}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{comment}{//\ sort\ the\ list}}
+\DoxyCodeLine{00076\ \ \ \ \ TReflection::SortPList(refs);}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{comment}{//\ merge\ reflections}}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{double}\ Sdiff\ =\ 0,\ SI\ =\ 0;}
+\DoxyCodeLine{00079\ \ \ \ \ toMerge.Add(refs[0]);\ \ \textcolor{comment}{//\ reference\ reflection}}
+\DoxyCodeLine{00080\ \ \ \ \ output.SetCapacity(\ ref\_cnt\ );\ \textcolor{comment}{//\ better\ more\ that\ none\ :)}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ ref\_cnt;\ )\ \ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ (++i\ <\ ref\_cnt)\ \&\&\ (toMerge[0]-\/>CompareTo(*refs[i])\ ==\ 0)\ )}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ toMerge.Add(\ refs[i]\ );}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !toMerge[0]-\/>IsAbsent()\ )\ \ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ TReflection\ \&rf\ =\ *RefListMerger::Merge(\ toMerge\ );}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ toMerge.Count()\ >\ 1\ )\ \ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ esd\ =\ 0;}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ l=0;\ l\ <\ toMerge.Count();\ l++\ )\ \ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \textcolor{keywordtype}{id}\ =\ toMerge[l]-\/>GetI()\ -\/\ rf.GetI();}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ esd\ +=\ \textcolor{keywordtype}{id}*id;}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ Sdiff\ +=\ fabs(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ SI\ +=\ toMerge[l]-\/>GetI();}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ esd\ =\ sqrt(esd/(toMerge.Count()*(toMerge.Count()-\/1)));}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ esd\ >\ rf.GetS()\ )\ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ esd\ >\ 5*rf.GetS()\ )}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.InconsistentEquivalents\ ++;}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ rf.SetS(\ esd\ );}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ output.Add(rf);}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ stats.SystematicAbsentcesRemoved++;}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ >=\ ref\_cnt\ )\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \ \ toMerge.Clear();}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ toMerge.Add(\ refs[i]\ );}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ ref\_cnt;\ i++\ )}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ refs[i];}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ stats.Rint\ =\ (SI\ !=\ 0)\ ?\ Sdiff/SI\ :\ 0.0;}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{double}\ SS\ =\ 0;}
+\DoxyCodeLine{00118\ \ \ \ \ SI\ =\ 0;}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{if}(\ inverseMatIndex\ !=\ -\/1\ )\ \ \textcolor{comment}{//\ all\ reflection\ will\ be\ cenrtic\ othewise}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ ml.Delete(\ inverseMatIndex\ );}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ output.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ output[i].Analyse(ml);}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ output[i].SetTag(1);\ \ \textcolor{comment}{//\ negative\ tag\ means\ the\ reflection\ is\ omitted}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ output[i].IsCentric()\ )\ \ stats.CentricReflections++;}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ SS\ +=\ output[i].GetS();}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ SI\ +=\ output[i].GetI();}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ stats.Rsigma\ =\ (SI\ !=\ 0)\ ?\ SS/SI\ :\ 0.0;}
+\DoxyCodeLine{00129\ \ \ \ \ stats.UniqueReflections\ =\ output.Count();}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{if}(\ inverseMatIndex\ !=\ -\/1\ )\ \ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ smatd\&\ i\ =\ ml.InsertNew(inverseMatIndex);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ i.r.I()\ *=\ -\/1;}
+\DoxyCodeLine{00133\ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ stats;}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ RefListMerger>}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{static}\ MergeStats\ Merge(smatd\_list\&\ ml,\ \textcolor{keyword}{const}\ TRefList\&\ Refs,\ TRefList\&\ output)\ \ \{}
+\DoxyCodeLine{00138\ \ \ \ \ MergeStats\ stats;}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{comment}{//\ replicate\ reflections,\ to\ leave\ this\ object\ as\ it\ is}}
+\DoxyCodeLine{00140\ \ \ \ \ TRefPList\ refs,\ toMerge;\ \ \textcolor{comment}{//\ list\ of\ replicated\ reflections}}
+\DoxyCodeLine{00141\ \ \ \ \ refs.SetCapacity(\ Refs.Count()\ );}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ Refs.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ Refs[i].GetTag()\ <=\ 0\ )\ \ \textcolor{keywordflow}{continue};\ \ \textcolor{comment}{//\ skip\ omited\ reflections}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ TReflection*\ ref\ =\ refs.Add(\ \textcolor{keyword}{new}\ TReflection(Refs[i])\ );}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ref-\/>GetI()\ <\ 0\ )\ \ ref-\/>SetI(0);}
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ stats.TotalReflections\ =\ Refs.Count();}
+\DoxyCodeLine{00148\ \ \ \ \ stats.OmittedReflections\ =\ Refs.Count()\ -\/\ refs.Count();}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{comment}{//\ search\ for\ the\ inversion\ matrix}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordtype}{int}\ inverseMatIndex\ =\ -\/1;}
+\DoxyCodeLine{00151\ \ \ \ \ mat3d\ mI;}
+\DoxyCodeLine{00152\ \ \ \ \ mI.I()\ *=\ -\/1;}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ ml.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ml[i].r\ ==\ mI\ )\ \ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ inverseMatIndex\ =\ i;}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \ \ stats.FriedelOppositesMerged\ =\ (inverseMatIndex\ !=\ -\/1);}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{comment}{//\ standartise\ reflection\ indexes\ according\ to\ provieded\ list\ of\ symmetry\ operators}}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ ref\_cnt\ =\ refs.Count();}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ ref\_cnt;\ i++\ )}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ refs[i]-\/>Standardise(ml);}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{comment}{//\ sort\ the\ list}}
+\DoxyCodeLine{00166\ \ \ \ \ TReflection::SortPList(refs);}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{comment}{//\ merge\ reflections}}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordtype}{double}\ Sdiff\ =\ 0,\ SI\ =\ 0;}
+\DoxyCodeLine{00169\ \ \ \ \ toMerge.Add(refs[0]);\ \ \textcolor{comment}{//\ reference\ reflection}}
+\DoxyCodeLine{00170\ \ \ \ \ output.SetCapacity(\ ref\_cnt\ );\ \textcolor{comment}{//\ better\ more\ that\ none\ :)}}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ ref\_cnt;\ )\ \ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ (++i\ <\ ref\_cnt)\ \&\&\ (toMerge[0]-\/>CompareTo(*refs[i])\ ==\ 0)\ )}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ toMerge.Add(\ refs[i]\ );}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !toMerge[0]-\/>IsAbsent()\ )\ \ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ TReflection\ \&rf\ =\ *RefListMerger::Merge(\ toMerge\ );}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ toMerge.Count()\ >\ 1\ )\ \ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ esd\ =\ 0;}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ l=0;\ l\ <\ toMerge.Count();\ l++\ )\ \ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \textcolor{keywordtype}{id}\ =\ toMerge[l]-\/>GetI()\ -\/\ rf.GetI();}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ esd\ +=\ \textcolor{keywordtype}{id}*id;}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ Sdiff\ +=\ fabs(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ SI\ +=\ toMerge[l]-\/>GetI();}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ esd\ =\ sqrt(esd/(toMerge.Count()*(toMerge.Count()-\/1)));}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ esd\ >\ rf.GetS()\ )\ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ esd\ >\ 5*rf.GetS()\ )}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stats.InconsistentEquivalents\ ++;}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ rf.SetS(\ esd\ );}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ output.Add(rf);}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ stats.SystematicAbsentcesRemoved++;}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ >=\ ref\_cnt\ )\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \ \ \ \ toMerge.Clear();}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ toMerge.Add(\ refs[i]\ );}
+\DoxyCodeLine{00201\ \ \ \ \ \}}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ ref\_cnt;\ i++\ )}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ refs[i];}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \ \ stats.Rint\ =\ (SI\ !=\ 0)\ ?\ Sdiff/SI\ :\ 0.0;}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordtype}{double}\ SS\ =\ 0;}
+\DoxyCodeLine{00208\ \ \ \ \ SI\ =\ 0;}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{if}(\ inverseMatIndex\ !=\ -\/1\ )\ \ \textcolor{comment}{//\ all\ reflection\ will\ be\ cenrtic\ othewise}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ ml.Delete(\ inverseMatIndex\ );}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ output.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ output[i].Analyse(ml);}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ output[i].SetTag(1);\ \ \textcolor{comment}{//\ negative\ tag\ means\ the\ reflection\ is\ omitted}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ output[i].IsCentric()\ )\ \ stats.CentricReflections++;}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ SS\ +=\ output[i].GetS();}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ SI\ +=\ output[i].GetI();}
+\DoxyCodeLine{00217\ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \ \ stats.Rsigma\ =\ (SI\ !=\ 0)\ ?\ SS/SI\ :\ 0.0;}
+\DoxyCodeLine{00219\ \ \ \ \ stats.UniqueReflections\ =\ output.Count();}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{if}(\ inverseMatIndex\ !=\ -\/1\ )\ \ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ smatd\&\ i\ =\ ml.InsertNew(inverseMatIndex);}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ i.r.I()\ *=\ -\/1;}
+\DoxyCodeLine{00223\ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{return}\ stats;}
+\DoxyCodeLine{00225\ \ \ \}}
+\DoxyCodeLine{00226\ \};}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ EndXlibNamespace()}
+\DoxyCodeLine{00229\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,188 @@
+\doxysection{conrec.\+h}
+\hypertarget{conrec_8h_source}{}\label{conrec_8h_source}\index{gxlib/conrec.h@{gxlib/conrec.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00013\ \textcolor{comment}{Adopted\ procedure,\ source:\ \ C\ derivation\ from\ the\ fortran\ version\ of\ CONREC\ by\ Paul\ Bourke}}
+\DoxyCodeLine{00014\ \textcolor{comment}{(http://local.wasp.uwa.edu.au/\string~pbourke/papers/conrec/)}}
+\DoxyCodeLine{00015\ \textcolor{comment}{Contains\ original\ documentation.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Float>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structContour}{Contour}}\ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{comment}{//\ feedback\ support\ structures}}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classContour_1_1IFeedback}{IFeedback}}\ \ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnLine(Float\ x1,\ Float\ y1,\ Float\ x2,\ Float\ y2,\ Float\ z)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00022\ \ \ \};}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{class\ }StaticFeedback\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classContour_1_1IFeedback}{IFeedback}}\ \ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00025\ \ \ \ \ void\ (*DrawLine)(Float,Float,Float,Float,Float);}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ StaticFeedback(\textcolor{keywordtype}{void}\ (*\_DrawLine)(Float,Float,Float,Float,Float))\ :\ DrawLine(\_DrawLine)\ \ \{\}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnLine(Float\ x1,\ Float\ y1,\ Float\ x2,\ Float\ y2,\ Float\ z)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ (*DrawLine)(x1,\ y1,\ x2,\ y2,\ z);}
+\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Base>\ \textcolor{keyword}{class\ }MemberFeedback\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classContour_1_1IFeedback}{IFeedback}}\ \ \{}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00035\ \ \ \ \ Base\&\ instance;}
+\DoxyCodeLine{00036\ \ \ \ \ void\ (Base::*DrawLine)(Float,Float,Float,Float,Float);}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ \ \ \ \ MemberFeedback(Base\&\ \_instance,\ \textcolor{keywordtype}{void}\ (Base::*\_DrawLine)(Float,Float,Float,Float,Float))\ :}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ instance(\_instance),\ DrawLine(\_DrawLine)\ \ \{\}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnLine(Float\ x1,\ Float\ y1,\ Float\ x2,\ Float\ y2,\ Float\ z)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ (instance.*DrawLine)(x1,\ y1,\ x2,\ y2,\ z);}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Base>\ \textcolor{keyword}{class\ }MemberFeedback<const\ Base\&>\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classContour_1_1IFeedback}{IFeedback}}\ \ \{}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{const}\ Base\&\ instance;}
+\DoxyCodeLine{00048\ \ \ \ \ void\ (Base::*DrawLine)(Float,Float,Float,Float,Float)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00050\ \ \ \ \ MemberFeedback(\textcolor{keyword}{const}\ Base\&\ \_instance,\ \textcolor{keywordtype}{void}\ (Base::*\_DrawLine)(Float,Float,Float,Float,Float)\ \textcolor{keyword}{const})\ :}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ instance(\_instance),\ DrawLine(\_DrawLine)\ \ \{\}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnLine(Float\ x1,\ Float\ y1,\ Float\ x2,\ Float\ y2,\ Float\ z)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ (instance.*DrawLine)(x1,\ y1,\ x2,\ y2,\ z);}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \};}
+\DoxyCodeLine{00056\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00057\ \ \ Float\ h[5];}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{int}\ sh[5];}
+\DoxyCodeLine{00059\ \ \ Float\ xh[5],\ yh[5];}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{inline}\ Float\ xsect(\textcolor{keywordtype}{size\_t}\ p1,\ \textcolor{keywordtype}{size\_t}\ p2)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (h[p2]*xh[p1]-\/h[p1]*xh[p2])/(h[p2]-\/h[p1]);\ \ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{inline}\ Float\ ysect(\textcolor{keywordtype}{size\_t}\ p1,\ \textcolor{keywordtype}{size\_t}\ p2)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ (h[p2]*yh[p1]-\/h[p1]*yh[p2])/(h[p2]-\/h[p1]);\ \ \}}
+\DoxyCodeLine{00062\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ DoContour(Float\ **d,\ \textcolor{keywordtype}{int}\ x\_start,\ \textcolor{keywordtype}{int}\ x\_end,\ \textcolor{keywordtype}{int}\ y\_start,\ \textcolor{keywordtype}{int}\ y\_end,}
+\DoxyCodeLine{00064\ \ \ \ \ Float\ *x,\ Float\ *y,\ \textcolor{keywordtype}{size\_t}\ contour\_number,\ Float\ *z,}
+\DoxyCodeLine{00065\ \ \ \ \ \mbox{\hyperlink{classContour_1_1IFeedback}{IFeedback}}\&\ callback)}
+\DoxyCodeLine{00066\ \ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ im[4]\ =\ \{0,1,1,0\},\ jm[4]=\{0,0,1,1\};}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ castab[3][3][3]\ =\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \{\ \{0,0,8\},\{0,2,5\},\{7,6,9\}\ \},}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \{\ \{0,3,4\},\{1,3,1\},\{4,3,0\}\ \},}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \{\ \{9,6,7\},\{5,2,0\},\{8,0,0\}\ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \};}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ j=(y\_end-\/1);\ j\ >=\ y\_start;\ j-\/-\/\ )\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=x\_start;\ i\ <=\ x\_end-\/1;\ i++)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ Float\ dmin\ \ =\ olx\_min(olx\_min(d[i][j],d[i][j+1]),\ olx\_min(d[i+1][j],d[i+1][j+1]));}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ Float\ dmax\ \ =\ olx\_max(olx\_max(d[i][j],d[i][j+1]),\ olx\_max(d[i+1][j],d[i+1][j+1]));}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dmax\ <\ z[0]\ ||\ dmin\ >\ z[contour\_number-\/1])}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ k=0;\ k\ <\ contour\_number;\ k++\ )\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (z[k]\ <\ dmin\ ||\ z[k]\ >\ dmax)}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ m=4;\ m\ >=\ 0;\ m-\/-\/\ )\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\ >\ 0)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ h[m]\ \ =\ d[i+im[m-\/1]][j+jm[m-\/1]]-\/z[k];}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xh[m]\ =\ x[i+im[m-\/1]];}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ yh[m]\ =\ y[j+jm[m-\/1]];}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ h[0]\ \ =\ Float(0.25)\ *\ (h[1]+h[2]+h[3]+h[4]);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ xh[0]\ =\ Float(0.50)\ *\ (x[i]+x[i+1]);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ yh[0]\ =\ Float(0.50)\ *\ (y[j]+y[j+1]);}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ h[m]\ >\ 0\ )}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sh[m]\ =\ 1;}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ h[m]\ <\ 0\ )}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sh[m]\ =\ -\/1;}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sh[m]\ =\ 0;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ Note:\ at\ this\ stage\ the\ relative\ heights\ of\ the\ corners\ and\ the}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ centre\ are\ in\ the\ h\ array,\ and\ the\ corresponding\ coordinates\ are}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ in\ the\ xh\ and\ yh\ arrays.\ The\ centre\ of\ the\ box\ is\ indexed\ by\ 0}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ and\ the\ 4\ corners\ by\ 1\ to\ 4\ as\ shown\ below.}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ Each\ triangle\ is\ then\ indexed\ by\ the\ parameter\ m,\ and\ the\ 3}}
+\DoxyCodeLine{00106\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ vertices\ of\ each\ triangle\ are\ indexed\ by\ parameters\ m1,m2,and\ m3.}}
+\DoxyCodeLine{00107\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ It\ is\ assumed\ that\ the\ centre\ of\ the\ box\ is\ always\ vertex\ 2}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ though\ this\ is\ important\ only\ when\ all\ 3\ vertices\ lie\ exactly\ on}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ the\ same\ contour\ level,\ in\ which\ case\ only\ the\ side\ of\ the\ box}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ is\ drawn.}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ vertex\ 4\ +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+\ vertex\ 3}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ |\ \(\backslash\)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ /\ |}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ |\ \ \ \(\backslash\)\ \ \ \ m=3\ \ \ \ /\ \ \ |}}
+\DoxyCodeLine{00114\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ |\ \ \ \ \ \(\backslash\)\ \ \ \ \ \ \ /\ \ \ \ \ |}}
+\DoxyCodeLine{00115\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ |\ \ \ \ \ \ \ \(\backslash\)\ \ \ /\ \ \ \ \ \ \ |}}
+\DoxyCodeLine{00116\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ |\ \ m=2\ \ \ \ X\ \ \ m=2\ \ \ |\ \ \ \ \ \ \ the\ centre\ is\ vertex\ 0}}
+\DoxyCodeLine{00117\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ |\ \ \ \ \ \ \ /\ \ \ \(\backslash\)\ \ \ \ \ \ \ |}}
+\DoxyCodeLine{00118\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ |\ \ \ \ \ /\ \ \ \ \ \ \ \(\backslash\)\ \ \ \ \ |}}
+\DoxyCodeLine{00119\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ |\ \ \ /\ \ \ \ m=1\ \ \ \ \(\backslash\)\ \ \ |}}
+\DoxyCodeLine{00120\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ |\ /\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)\ |}}
+\DoxyCodeLine{00121\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ vertex\ 1\ +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+\ vertex\ 2}}
+\DoxyCodeLine{00122\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Scan\ each\ triangle\ in\ the\ box\ */}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ m=1;\ m\ <=\ 4;\ m++\ )\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ m1\ =\ m;}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ m2\ =\ 0,\ m3;}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ m\ !=\ 4\ )}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m3\ =\ m\ +\ 1;}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m3\ =\ 1;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ case\_value\ =\ castab[sh[m1]+1][sh[m2]+1][sh[m3]+1];}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ case\_value\ ==\ 0\ )}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ Float\ x1=0,\ x2=0,\ y1=0,\ y2=0;}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(\ case\_value\ )\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 1:\ \textcolor{comment}{/*\ Line\ between\ vertices\ 1\ and\ 2\ */}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x1\ =\ xh[m1];\ \ y1\ =\ yh[m1];}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x2\ =\ xh[m2];\ \ y2\ =\ yh[m2];}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 2:\ \textcolor{comment}{/*\ Line\ between\ vertices\ 2\ and\ 3\ */}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x1\ =\ xh[m2];\ \ y1\ =\ yh[m2];}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x2\ =\ xh[m3];\ \ y2\ =\ yh[m3];}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 3:\ \textcolor{comment}{/*\ Line\ between\ vertices\ 3\ and\ 1\ */}}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x1\ =\ xh[m3];\ \ y1\ =\ yh[m3];}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x2\ =\ xh[m1];\ \ y2\ =\ yh[m1];}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 4:\ \textcolor{comment}{/*\ Line\ between\ vertex\ 1\ and\ side\ 2-\/3\ */}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x1\ =\ xh[m1];\ \ y1\ =\ yh[m1];}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x2\ =\ xsect(m2,m3);\ \ y2\ =\ ysect(m2,m3);}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 5:\ \textcolor{comment}{/*\ Line\ between\ vertex\ 2\ and\ side\ 3-\/1\ */}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x1\ =\ xh[m2];\ \ y1\ =\ yh[m2];}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x2\ =\ xsect(m3,m1);\ \ y2\ =\ ysect(m3,m1);}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 6:\ \textcolor{comment}{/*\ Line\ between\ vertex\ 3\ and\ side\ 1-\/2\ */}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x1\ =\ xh[m3];\ \ y1\ =\ yh[m3];}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x2\ =\ xsect(m3,m2);\ \ y2\ =\ ysect(m3,m2);}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 7:\ \textcolor{comment}{/*\ Line\ between\ sides\ 1-\/2\ and\ 2-\/3\ */}}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x1\ =\ xsect(m1,m2);\ \ y1\ =\ ysect(m1,m2);}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x2\ =\ xsect(m2,m3);\ \ y2\ =\ ysect(m2,m3);}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 8:\ \textcolor{comment}{/*\ Line\ between\ sides\ 2-\/3\ and\ 3-\/1\ */}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x1\ =\ xsect(m2,m3);\ \ y1\ =\ ysect(m2,m3);}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x2\ =\ xsect(m3,m1);\ \ y2\ =\ ysect(m3,m1);}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 9:\ \textcolor{comment}{/*\ Line\ between\ sides\ 3-\/1\ and\ 1-\/2\ */}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x1\ =\ xsect(m3,m1);\ \ y1\ =\ ysect(m3,m1);}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x2\ =\ xsect(m1,m2);\ \ y2\ =\ ysect(m1,m2);}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Finally\ draw\ the\ line\ */}}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ callback.OnLine(x1,\ y1,\ x2,\ y2,\ z[k]);}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{comment}{/*\ m\ */}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \}\ \textcolor{comment}{/*\ k\ -\/\ contour\ */}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \}\ \textcolor{comment}{/*\ i\ */}}
+\DoxyCodeLine{00180\ \ \ \ \ \}\ \textcolor{comment}{/*\ j\ */}}
+\DoxyCodeLine{00181\ \ \ \}}
+\DoxyCodeLine{00182\ \};}
+
+\end{DoxyCode}

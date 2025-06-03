@@ -1,0 +1,171 @@
+\doxysection{ellipsoid.\+h}
+\hypertarget{ellipsoid_8h_source}{}\label{ellipsoid_8h_source}\index{xlib/ellipsoid.h@{xlib/ellipsoid.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_ellipsoid\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_ellipsoid\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}ematrix.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}tptrlist.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}math/tensor.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}ecomplex.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ BeginXlibNamespace()}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{/*\ Ellipsoid\ always\ must\ be\ in\ the\ cartesian\ frame\ */}}
+\DoxyCodeLine{00022\ struct\ \mbox{\hyperlink{structGramCharlier}{GramCharlier}};}
+\DoxyCodeLine{00023\ class\ TEllipsoid\ :\ public\ ACollectionItem\ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{bool}\ NPD;\ \ \textcolor{comment}{//\ not\ positive\ defined}}
+\DoxyCodeLine{00025\ \ \ evecd\ Quad,\ Esd;\ \ \textcolor{comment}{//\ quadratic\ form\ of\ the\ elipsoid\ and\ esd}}
+\DoxyCodeLine{00026\ \ \ mat3d\ Matrix;\ \ \textcolor{comment}{//\ normalised\ eigen\ vectors}}
+\DoxyCodeLine{00027\ \ \ vec3d\ Norms;\ \ \textcolor{comment}{//\ lengths\ of\ the\ vectors}}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{/*\ do\ not\ change\ this\ value\ !\ it\ is\ equal\ to\ the\ position\ in\ the\ AsymmUnit}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ \ list}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{size\_t}\ Id;}
+\DoxyCodeLine{00032\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<GramCharlier>}}\ anharmonic;}
+\DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ TEllipsoid();}
+\DoxyCodeLine{00035\ \ \ TEllipsoid(\textcolor{keyword}{const}\ TEllipsoid\&\ e);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ TEllipsoid(\textcolor{keyword}{const}\ T\&\ Q)\ \{\ Initialise(Q);\ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ TEllipsoid(\textcolor{keyword}{const}\ T\&\ Q,\ \textcolor{keyword}{const}\ T\&\ E)\ \{\ Initialise(Q,\ E);\ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ \string~TEllipsoid()\ \{\}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ operator\ =\ (\textcolor{keyword}{const}\ TEllipsoid\&\ E);}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{/*\ multiplies\ the\ tensor\ by\ a\ matrix\ */}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ Mult(\textcolor{keyword}{const}\ mat3d\&\ M);}
+\DoxyCodeLine{00042\ \ \ \textcolor{comment}{/*\ multiplies\ the\ tensor\ by\ a\ matrix\ and\ updates\ the\ Esds\ */}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ Mult(\textcolor{keyword}{const}\ mat3d\&\ M,\ \textcolor{keyword}{const}\ ematd\&\ J,\ \textcolor{keyword}{const}\ ematd\&\ Jt);}
+\DoxyCodeLine{00044\ \ \ \textcolor{comment}{/*\ multiplies\ the\ tensor\ by\ a\ matrix\ and\ updates\ the\ Esds.\ The\ VcV\ matrix}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ is\ expected\ to\ be\ as\ a\ linear\ map\ (11,\ 12,\ 13,\ 22,\ 23,\ 33)}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ Mult(\textcolor{keyword}{const}\ mat3d\&\ M,\ \textcolor{keyword}{const}\ ematd\&\ VcV);}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//\ return\ true\ if\ the\ ellipsoid\ is\ not\ positively\ defined}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{bool}\ IsNPD()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ NPD;\ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{bool}\ IsAnharmonic()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ anharmonic.ok();\ \}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<GramCharlier>}}\&\ GetAnharmonicPart()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{return}\ anharmonic;}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<GramCharlier>}}\&\ GetAnharmonicPart()\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ anharmonic;}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ SetAnharmonicPart(\mbox{\hyperlink{structGramCharlier}{GramCharlier}}*\ anh)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ anharmonic\ =\ anh;}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ TEllipsoid\&\ Initialise(\textcolor{keyword}{const}\ T\&\ ShelxQ,\ \textcolor{keyword}{const}\ T\&\ ShelxE)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ Quad.Resize(6);}
+\DoxyCodeLine{00067\ \ \ \ \ Esd.Resize(6);}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 6;\ i++)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ Quad[i]\ =\ ShelxQ[i];}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ Esd[i]\ =\ ShelxE[i];}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ Initialise();}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00074\ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ TEllipsoid\&\ Initialise(\textcolor{keyword}{const}\ T\&\ ShelxQ)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ Quad.Resize(6);}
+\DoxyCodeLine{00077\ \ \ \ \ Esd.Resize(6);}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 6;\ i++)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ Quad[i]\ =\ ShelxQ[i];}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ Esd[i]\ =\ 0;}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ Initialise();}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{comment}{//\ calculates\ eigen\ values\ and\ vectors;\ FQuad\ must\ be\ initialised}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{void}\ Initialise();}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keywordtype}{void}\ GetShelxQuad(T\&\ Q)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 6;\ i++)}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ Q[i]\ =\ Quad[i];}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keywordtype}{void}\ GetShelxQuad(T\&\ Q,\ T\&\ E)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 6;\ i++)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ Q[i]\ =\ Quad[i];}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ E[i]\ =\ Esd[i];}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{void}\ SetEsd(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{double}\ v)\ \{\ Esd[i]\ =\ v;\ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ GetEsd(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Esd[i];\ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ SetQuad(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{double}\ v)\ \{\ Quad[i]\ =\ v;\ \}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ GetQuad(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Quad[i];\ \}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetNorms()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Norms;\ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{double}\ CalcVolume()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ 4\ *\ Norms.Prod()\ *\ M\_PI\ /\ 3;}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{double}\ GetUeq()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (Quad[0]\ +\ Quad[1]\ +\ Quad[2])\ /\ 3;\ \}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{const}\ evecd\&\ GetQuad()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Quad;\ \}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{const}\ evecd\&\ GetEsd()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Esd;\ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{comment}{/*\ the\ matrix\ is\ the\ transposed\ eigenvalues\ of\ the\ quadratic\ form}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{const}\ mat3d\&\ GetMatrix()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Matrix;\ \}}
+\DoxyCodeLine{00112\ \ \ mat3d\ ExpandQuad()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ExpandShelxQuad(Quad);\ \}}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ QT>}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{static}\ mat3d\ ExpandShelxQuad(\textcolor{keyword}{const}\ QT\&\ Q)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{return}\ mat3d(Q[0],\ Q[5],\ Q[4],\ Q[1],\ Q[3],\ Q[2]);}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \textcolor{comment}{/*\ returns\ 6x6\ matrix\ suitable\ for\ the\ esd\ VcV\ matrix\ transformation\ like:}}
+\DoxyCodeLine{00118\ \textcolor{comment}{\ \ \ \ new\_VcV\ =\ J*olx\_VcV*Jt\ assuming\ the\ VcV\ is\ constructed\ like:}}
+\DoxyCodeLine{00119\ \textcolor{comment}{\ \ \ \ U11\ U12\ U13\ U22\ U23\ U33}}
+\DoxyCodeLine{00120\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstMatrix}{ConstMatrix<double>}}\ GetTransformationJ(\textcolor{keyword}{const}\ mat3d\&\ m);}
+\DoxyCodeLine{00122\ \ \ \textcolor{comment}{/*\ transforms\ a\ shelx\ Quad\ index\ (11,\ 22,\ 33,\ 23,\ 13,\ 12)\ to\ linear\ map:}}
+\DoxyCodeLine{00123\ \textcolor{comment}{\ \ (11,\ 12,\ 13,\ 22,\ 23,\ 33)}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ shelx\_to\_linear(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ a[6]\ =\ \{\ 0,\ 5,\ 4,\ 1,\ 3,\ 2\ \};}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{return}\ a[i];}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{comment}{/*\ transforms\ a\ linear\ map\ Quad\ index\ (11,\ 12,\ 13,\ 22,\ 23,\ 33)\ to\ shelx:}}
+\DoxyCodeLine{00130\ \textcolor{comment}{\ \ (11,\ 22,\ 33,\ 23,\ 13,\ 12)}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ linear\_to\_shelx(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ a[6]\ =\ \{\ 0,\ 3,\ 5,\ 4,\ 2,\ 1\ \};}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ a[i];}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{//\ resets\ the\ ellipsoid\ into\ a\ sphere\ of\ given\ radius}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{void}\ ToSpherical(\textcolor{keywordtype}{double}\ r);}
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{/*\ Calculates\ the\ scale\ to\ be\ applied\ to\ the\ ellipsoid\ in\ order\ v\ to\ lie\ on}}
+\DoxyCodeLine{00139\ \textcolor{comment}{\ \ its\ surface}}
+\DoxyCodeLine{00140\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordtype}{double}\ CalcScale(\textcolor{keyword}{const}\ vec3d\&\ v);}
+\DoxyCodeLine{00142\ \ \ DefPropP(\textcolor{keywordtype}{size\_t},\ Id);}
+\DoxyCodeLine{00143\ \};}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \textcolor{keyword}{struct\ }GramCharlier\ \{}
+\DoxyCodeLine{00146\ \ \ tensor::tensor\_rank\_3\ C;}
+\DoxyCodeLine{00147\ \ \ tensor::tensor\_rank\_4\ D;}
+\DoxyCodeLine{00148\ \ \ \textcolor{keywordtype}{int}\ order;}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ GramCharlier(\textcolor{keywordtype}{int}\ order);}
+\DoxyCodeLine{00151\ \ \ GramCharlier(\textcolor{keyword}{const}\ IStrList\&\ str)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ FromStrings(str);}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ compd\ Calculate(\textcolor{keyword}{const}\ vec3i\&\ h)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordtype}{void}\ FromStrings(\textcolor{keyword}{const}\ IStrList\&\ str);}
+\DoxyCodeLine{00156\ \ \ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&i)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<GramCharlier>}}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ i);}
+\DoxyCodeLine{00158\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00159\ \ \ GramCharlier()\ \{\}}
+\DoxyCodeLine{00160\ \};}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TEllipsoid>}}\ \ TEllpList;}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTPtrList}{TPtrList<TEllipsoid>}}\ \ TEllpPList;}
+\DoxyCodeLine{00164\ EndXlibNamespace()}
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

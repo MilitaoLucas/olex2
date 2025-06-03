@@ -1,0 +1,53 @@
+\doxysection{ptypes.\+h}
+\hypertarget{ptypes_8h_source}{}\label{ptypes_8h_source}\index{sdl/ptypes.h@{sdl/ptypes.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_ptypes\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_ptypes\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}egc.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}smart/ostring.h"{}}}
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ primtive\ type\ wrapper\ template}}
+\DoxyCodeLine{00017\ template\ <class\ PT>}
+\DoxyCodeLine{00018\ class\ TEPType\ :\ public\ \mbox{\hyperlink{classAReferencible}{AReferencible}}\ \{}
+\DoxyCodeLine{00019\ \ \ PT\ Value;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ TEPType(\textcolor{keyword}{const}\ PT\&\ val)\ :\ Value(val)\ \{\}}
+\DoxyCodeLine{00022\ \ \ TEPType(\textcolor{keyword}{const}\ TEPType\&\ val)\ :\ Value(val.GetValue())\ \{\}}
+\DoxyCodeLine{00023\ \ \ PT\&\ Val()\ \{\ \textcolor{keywordflow}{return}\ Value;\ \}}
+\DoxyCodeLine{00024\ \ \ PT\&\ operator\ ()()\ \{\ \textcolor{keywordflow}{return}\ Value;\ \}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{const}\ PT\&\ GetValue()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Value;\ \}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ SetValue(\textcolor{keyword}{const}\ PT\&\ v)\ \{\ Value\ =\ v;\ \}}
+\DoxyCodeLine{00027\ \ \ TIString\ ToString()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ olxstr(Value);\ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TEPType(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00033\ \mbox{\hyperlink{classAReferencible}{AReferencible}}\ *createWrapper(\textcolor{keyword}{const}\ T\ \&v)\ \{}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TEPType<T>(v);}
+\DoxyCodeLine{00035\ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classAReferencible}{AReferencible}}*\ createWrapper(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ v)\ \{}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TEPType<olxstr>(v);}
+\DoxyCodeLine{00040\ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{static}\ \mbox{\hyperlink{classAReferencible}{AReferencible}}*\ createWrapper(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ v)\ \{}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TEPType<olxstr>(v);}
+\DoxyCodeLine{00044\ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ EndEsdlNamespace()}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

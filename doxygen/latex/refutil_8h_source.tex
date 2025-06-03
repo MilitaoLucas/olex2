@@ -1,0 +1,271 @@
+\doxysection{refutil.\+h}
+\hypertarget{refutil_8h_source}{}\label{refutil_8h_source}\index{xlib/refutil.h@{xlib/refutil.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ref\_util\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ref\_util\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}symmat.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}reflection.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}bitarray.h"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ BeginXlibNamespace()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ namespace\ RefUtil\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{class\ }ResolutionAndSigmaFilter\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{const}\ RefinementModel\&\ rm;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{mutable}\ RefinementModel::HklStat\ *\_stats;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{double}\ h\_o\_s,\ min\_d,\ max\_d;}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{bool}\ standardise\_for\_omit;}
+\DoxyCodeLine{00026\ \ \ \ \ smatd\_list\ standardisation\_matrices;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ ResolutionAndSigmaFilter(\textcolor{keyword}{const}\ RefinementModel\&\ \_rm);}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ SetStats(RefinementModel::HklStat\&\ stats)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsOutside(\textcolor{keyword}{const}\ TReflection\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsOmitted(\textcolor{keyword}{const}\ vec3i\&\ hkl)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ AdjustIntensity(TReflection\&\ r)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{struct\ }IntensityModifier\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keyword}{const}\ ResolutionAndSigmaFilter\&\ parent;}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ IntensityModifier(\textcolor{keyword}{const}\ ResolutionAndSigmaFilter\&\ \_parent)\ :\ parent(\_parent)\ \{\}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ OnItem(TReflection\&\ r,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{\ parent.AdjustIntensity(r);\ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatList>}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{size\_t}\ GetBijovetPairs(\textcolor{keyword}{const}\ TRefList\&\ refs,\ \textcolor{keyword}{const}\ vec3i\&\ min\_indices,}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\&\ max\_indices,\ TRefPList\&\ pos,\ TRefPList\&\ neg,}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{const}\ MatList\&\ ml)}
+\DoxyCodeLine{00045\ \ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{SymmSpace::InfoEx}}\ sp\ =\ SymmSpace::Compact(ml);}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{if}\ (sp.centrosymmetric)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ pos.SetCapacity(refs.Count()\ /\ 2);}
+\DoxyCodeLine{00051\ \ \ \ \ neg.SetCapacity(refs.Count()\ /\ 2);}
+\DoxyCodeLine{00052\ \ \ \ \ \mbox{\hyperlink{classTEBitArray}{TEBitArray}}\ used(refs.Count());}
+\DoxyCodeLine{00053\ \ \ \ \ olx\_array::TArray3D<TReflection*>\ hkl3d(min\_indices,\ max\_indices);}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ refs.Count();\ i++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ hkl3d(refs[i].GetHkl())\ =\ \&refs[i];}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ refs[i].SetTag(i);}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ refs.Count();\ i++)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (used[i])\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ used.SetTrue(i);}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ mi\ =\ 0;\ mi\ <\ sp.matrices.Count();\ mi++)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3i\&\ pi\ =\ refs[i].GetHkl();}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ vec3i\ ni\ =\ TReflection::MulHkl(refs[i].GetHkl(),\ sp.matrices[mi]);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ ni\ *=\ -\/1;}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ found\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (hkl3d.IsInRange(ni)\ \&\&\ hkl3d(ni)\ !=\ 0)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTReflection}{TReflection}}\&\ n\ =\ *hkl3d(ni);}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (used[n.GetTag()])\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ pos.Add(refs[i]);}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ neg.Add(n);}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ used.SetTrue(n.GetTag());}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ found\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (found)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ pos.Count();}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{struct\ }F\_evaluator\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{double}\ get(\textcolor{keywordtype}{double}\ v)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ v;\ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{double}\ get(\textcolor{keyword}{const}\ compd\&\ v)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ v.mod();\ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ref\_t>}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{double}\ get(\textcolor{keyword}{const}\ ref\_t\&\ r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ TReflection::GetF(r);}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{double}\ getw(\textcolor{keywordtype}{double}\ w)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sqrt(w);\ \}}
+\DoxyCodeLine{00094\ \ \ \};}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{struct\ }Fsq\_evaluator\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{double}\ get(\textcolor{keywordtype}{double}\ v)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ v;\ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{double}\ get(\textcolor{keyword}{const}\ compd\&\ v)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ v.qmod();\ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ref\_t>}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{double}\ get(\textcolor{keyword}{const}\ ref\_t\&\ r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ TReflection::GetFsq(r);}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{double}\ getw(\textcolor{keywordtype}{double}\ w)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ w;\ \}}
+\DoxyCodeLine{00103\ \ \ \};}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{/*\ calculates\ the\ scale\ weighted\ L.S.\ scale\ to\ minimise}}
+\DoxyCodeLine{00106\ \textcolor{comment}{\ \ *\ sum[w(Fc/scale\ -\/\ Fo)\string^2],\ as\ weight\ can\ depend\ on\ Fo\ -\/\ Fc\ is}}
+\DoxyCodeLine{00107\ \textcolor{comment}{\ \ *\ brought\ ont\ the\ Fo\ scale}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class\ }eval\_t,\ \textcolor{keyword}{class\ }FList,\ \textcolor{keyword}{class\ }RefList,}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{class\ }weight\_t,\ \textcolor{keyword}{class\ }filter\_t>}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ CalcScale(\textcolor{keyword}{const}\ eval\_t\ \&eval,}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keyword}{const}\ FList\&\ F,\ \textcolor{keyword}{const}\ RefList\&\ refs,}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keyword}{const}\ weight\_t\&\ weights,\ \textcolor{keyword}{const}\ filter\_t\ filter)}
+\DoxyCodeLine{00114\ \ \ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{double}\ swXX\ =\ 0,\ swXY\ =\ 0;}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ F.Count();\ i++)\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTReflection}{TReflection}}\&\ r\ =\ olx\_ref::get(refs[i]);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!filter.DoesPass(r))\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ Fo\ =\ eval.get(r);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ Fc\ =\ eval.get(F[i]);}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ w\ =\ eval.getw(weights.Calculate(r));}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ swXX\ +=\ w\ *\ Fc\ *\ Fc;}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ swXY\ +=\ w\ *\ Fc\ *\ Fo;}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{return}\ swXX\ /\ swXY;}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\ ext>}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{struct\ }SigmaWeightCalculator\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{double}\ Calculate(\textcolor{keyword}{const}\ TReflection\&\ r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ext\ ==\ 1)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1.\ /\ olx\_max(r.GetS(),\ 1e-\/6);}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ext\ ==\ 2)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1.\ /\ olx\_max(r.GetS()\ *\ r.GetS(),\ 1e-\/6);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1.\ /\ olx\_max(pow(r.GetS(),\ (\textcolor{keywordtype}{double})ext),\ 1e-\/6);}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \};}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{comment}{/*\ Reflection\ tag\ must\ match\ index\ in\ the\ weights!\ */}}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{struct\ }CustomWeightCalculator\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{struct\ }CustomWeightCalculator\_\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \textcolor{keyword}{const}\ list\_t\&\ weights;}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ CustomWeightCalculator\_(\textcolor{keyword}{const}\ list\_t\&\ weights)}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ :\ weights(weights)}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ Calculate(\textcolor{keyword}{const}\ TReflection\&\ r)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ weights[r.GetTag()];}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \};}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keyword}{static}\ CustomWeightCalculator\_<list\_t>\ make(\textcolor{keyword}{const}\ list\_t\&\ weights)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ CustomWeightCalculator\_<list\_t>(weights);}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \};}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{struct\ }ShelxWeightCalculator\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ TDoubleList\ wght;}
+\DoxyCodeLine{00165\ \ \ \ \ mat3d\ h2c;}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordtype}{double}\ scale;}
+\DoxyCodeLine{00167\ \ \ \ \ ShelxWeightCalculator(\textcolor{keyword}{const}\ TDoubleList\&\ wght\_,\ \textcolor{keyword}{const}\ mat3d\&\ h2c,}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ scale);}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordtype}{double}\ Calculate(\textcolor{keyword}{const}\ TReflection\&\ r,\ \textcolor{keywordtype}{double}\ Fc2)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ get\_Fc2(\textcolor{keywordtype}{double}\ v)\ \{\ \textcolor{keywordflow}{return}\ v;\ \}}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ get\_Fc2(\textcolor{keyword}{const}\ compd\ \&v)\ \{\ \textcolor{keywordflow}{return}\ v.qmod();\ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ ref\_list\_t,\ \textcolor{keyword}{typename}\ fc\_list\_t>}
+\DoxyCodeLine{00175\ \ \ \ \ TDoubleList::const\_list\_type\ CalcuateAll(ref\_list\_t\ \&refs,}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \textcolor{keyword}{const}\ fc\_list\_t\ \&Fcs)}
+\DoxyCodeLine{00177\ \ \ \ \ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ TDoubleList\ rv(refs.Count());}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ refs.Count();\ i++)\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ TReflection\&\ r\ =\ olx\_ref::get(refs[i]);}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ r.SetTag(i);}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ rv[i]\ =\ Calculate(r,\ get\_Fc2(Fcs[i]));}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00185\ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \};}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ eval\_t,\ \textcolor{keyword}{typename}\ fc\_list\_t,\ \textcolor{keyword}{class}\ ref\_list\_t>}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ CalcScaleShelx(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keyword}{const}\ eval\_t\&\ eval,\ \textcolor{keyword}{const}\ fc\_list\_t\&\ fcs,\ ref\_list\_t\&\ refs,\ \textcolor{keywordtype}{double}\ scale=-\/1)}
+\DoxyCodeLine{00192\ \ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{if}\ (scale\ ==\ -\/1)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ scale\ =\ 1.\ /\ olx\_sqr(rm.Vars.GetVar(0).GetValue());}
+\DoxyCodeLine{00195\ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{return}\ CalcScale(eval,\ fcs,\ refs,}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ CustomWeightCalculator::make(}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ ShelxWeightCalculator(rm.used\_weight,}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ rm.aunit.GetHklToCartesian(),}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ scale).CalcuateAll(refs,\ fcs).obj()),}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \mbox{\hyperlink{structTReflection_1_1DummyFilter}{TReflection::DummyFilter}}());}
+\DoxyCodeLine{00202\ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ fc\_list\_t,\ \textcolor{keyword}{class}\ ref\_list\_t>}
+\DoxyCodeLine{00204\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ CalcFScaleShelx(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keyword}{const}\ fc\_list\_t\&\ fcs,\ ref\_list\_t\&\ refs)}
+\DoxyCodeLine{00206\ \ \ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordflow}{return}\ CalcScaleShelx(rm,\ F\_evaluator(),\ fcs,\ refs);}
+\DoxyCodeLine{00208\ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ fc\_list\_t,\ \textcolor{keyword}{class}\ ref\_list\_t>}
+\DoxyCodeLine{00210\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ CalcFsqScaleShelx(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keyword}{const}\ fc\_list\_t\&\ fcs,\ ref\_list\_t\&\ refs)}
+\DoxyCodeLine{00212\ \ \ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keywordflow}{return}\ CalcScaleShelx(rm,\ Fsq\_evaluator(),\ fcs,\ refs);}
+\DoxyCodeLine{00214\ \ \ \}}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ eval\_t,\ \textcolor{keyword}{typename}\ fc\_list\_t,\ \textcolor{keyword}{class}\ ref\_list\_t>}
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ CalcScaleSigma(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keyword}{const}\ eval\_t\&\ eval,\ \textcolor{keyword}{const}\ fc\_list\_t\&\ fcs,\ ref\_list\_t\&\ refs)}
+\DoxyCodeLine{00219\ \ \ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{return}\ CalcScale(eval,\ fcs,\ refs,\ SigmaWeightCalculator<2>(),}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \mbox{\hyperlink{structTReflection_1_1DummyFilter}{TReflection::DummyFilter}}());}
+\DoxyCodeLine{00222\ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ fc\_list\_t,\ \textcolor{keyword}{class}\ ref\_list\_t>}
+\DoxyCodeLine{00224\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ CalcFScaleSigma(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{keyword}{const}\ fc\_list\_t\&\ fcs,\ ref\_list\_t\&\ refs)}
+\DoxyCodeLine{00226\ \ \ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{return}\ CalcScaleSigma(rm,\ RefUtil::F\_evaluator(),\ fcs,\ refs);}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ fc\_list\_t,\ \textcolor{keyword}{class}\ ref\_list\_t>}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ CalcFsqScaleSigma(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \textcolor{keyword}{const}\ fc\_list\_t\&\ fcs,\ ref\_list\_t\&\ refs)}
+\DoxyCodeLine{00232\ \ \ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{return}\ CalcScaleSigma(rm,\ RefUtil::Fsq\_evaluator(),\ fcs,\ refs);}
+\DoxyCodeLine{00234\ \ \ \}}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ \textcolor{comment}{/*\ Requires\ an\ instance\ of\ TXApp\ */}}
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{struct\ }Stats\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ TRefList\ refs;}
+\DoxyCodeLine{00239\ \ \ \ \ evecd\ Fsq;}
+\DoxyCodeLine{00240\ \ \ \ \ evecd\ weights,}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ wsqd;\ \textcolor{comment}{//\ weighted\ square\ differences\ }}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordtype}{double}\ R1,\ R1\_partial,\ wR2;}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordtype}{double}\ sum\_wsqd;}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordtype}{double}\ partical\_threshold;\ \textcolor{comment}{//\ =\ 2;}}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ partial\_R1\_cnt;}
+\DoxyCodeLine{00246\ \ \ \ \ vec3i\ min\_hkl,\ max\_hkl;}
+\DoxyCodeLine{00247\ \ \ \ \ Stats(\textcolor{keywordtype}{bool}\ update\_scale,\ \textcolor{keywordtype}{bool}\ fcf);}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordtype}{double}\ UpdatePartialR1(\textcolor{keywordtype}{double}\ threshold);}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \ \ TRefPList::const\_list\_type\ GetNBadRefs(\textcolor{keywordtype}{size\_t}\ N,\ \textcolor{keywordtype}{double}\ *wR2\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ GetBadRefs\_(N,\ 0.0,\ \textcolor{keyword}{true},\ wR2);}
+\DoxyCodeLine{00253\ \ \ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \ \ TRefPList::const\_list\_type\ GetBadRefs(\textcolor{keywordtype}{double}\ threshold,\ \textcolor{keywordtype}{double}\ *wR2\ =\ 0)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ GetBadRefs\_(0,\ threshold,\ \textcolor{keyword}{false},\ wR2);}
+\DoxyCodeLine{00256\ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00258\ \ \ \ \ TRefPList::const\_list\_type\ GetBadRefs\_(\textcolor{keywordtype}{size\_t}\ N,\ \textcolor{keywordtype}{double}\ th,}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ use\_n,}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *wR2)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00261\ \ \ \};}
+\DoxyCodeLine{00262\ \};\ \ \textcolor{comment}{//\ end\ of\ namespace\ RefUtil}}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ EndXlibNamespace()}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

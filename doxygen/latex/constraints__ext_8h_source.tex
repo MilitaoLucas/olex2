@@ -1,0 +1,541 @@
+\doxysection{constraints\+\_\+ext.\+h}
+\hypertarget{constraints__ext_8h_source}{}\label{constraints__ext_8h_source}\index{xlib/constraints\_ext.h@{xlib/constraints\_ext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_conxtraints\_ext\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_conxtraints\_ext\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}catom.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}releasable.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ BeginXlibNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ static\ const\ uint16\_t}
+\DoxyCodeLine{00021\ \ \ direction\_static\ =\ 0,}
+\DoxyCodeLine{00022\ \ \ direction\_vector\ =\ 1,}
+\DoxyCodeLine{00023\ \ \ direction\_normal\ =\ 2,}
+\DoxyCodeLine{00024\ \ \ direction\_centroid\ =\ 3;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ struct\ adirection\ :\ public\ AReferencible,\ public\ AReleasable\ \{}
+\DoxyCodeLine{00027\ \ \ olxstr\ id;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr*\ type\_names()\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ ts[]\ =\ \{\textcolor{stringliteral}{"{}static"{}},\ \textcolor{stringliteral}{"{}vector"{}},\ \textcolor{stringliteral}{"{}normal"{}},\ \textcolor{stringliteral}{"{}centroid"{}}\};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{return}\ \&ts[0];}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ \ \ adirection(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ parent,\ \textcolor{keywordtype}{bool}\ tmp=\textcolor{keyword}{false})}
+\DoxyCodeLine{00033\ \ \ :\ AReleasable(parent,\ tmp)}
+\DoxyCodeLine{00034\ \ \ \{\}}
+\DoxyCodeLine{00035\ \ \ adirection(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ parent,\ \textcolor{keyword}{const}\ olxstr\ \&\_id,\ \textcolor{keywordtype}{bool}\ tmp\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00036\ \ \ \ \ :\ AReleasable(parent,\ tmp),\ id(\_id)}
+\DoxyCodeLine{00037\ \ \ \{\}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{virtual}\ vec3d\ get()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{static}\ adirection*\ FromDataItem(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ to,}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FromToks(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ to,}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ toks,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsValid()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{virtual}\ adirection*\ DoCopy(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ to,}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{virtual}\ olxstr\ ToInsStr(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{virtual}\ olxstr\ Describe()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ TCAtomPList\&\ atoms)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00053\ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{static}\ adirection*\ Copy(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ to,}
+\DoxyCodeLine{00055\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ adirection\&\ c)}
+\DoxyCodeLine{00056\ \ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ c.DoCopy(to,\ rm);}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{virtual}\ adirection*\ CreateFromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{virtual}\ PyObject*\ PyExport()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetName();}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\ \&EncodeType(uint16\_t\ type);}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{static}\ uint16\_t\ DecodeType(\textcolor{keyword}{const}\ olxstr\ \&type);}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ UpdateParams(\textcolor{keyword}{const}\ TStrList\ \&)\ \{\}}
+\DoxyCodeLine{00068\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{struct\ }static\_direction\ :\ \textcolor{keyword}{public}\ adirection\ \{}
+\DoxyCodeLine{00071\ \ \ vec3d\ value;}
+\DoxyCodeLine{00072\ \ \ static\_direction(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ parent,\ \textcolor{keywordtype}{bool}\ tmp=\textcolor{keyword}{false})}
+\DoxyCodeLine{00073\ \ \ :\ adirection(parent,\ tmp)}
+\DoxyCodeLine{00074\ \ \ \{\}}
+\DoxyCodeLine{00075\ \ \ static\_direction(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ parent,\ \textcolor{keyword}{const}\ olxstr\&\ \textcolor{keywordtype}{id},}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ \&\_value)}
+\DoxyCodeLine{00077\ \ \ \ \ :\ adirection(parent,\ \textcolor{keywordtype}{id}),\ value(\_value)}
+\DoxyCodeLine{00078\ \ \ \{\}}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{virtual}\ vec3d\ get()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ value;\ \ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{virtual}\ adirection*\ DoCopy(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ to,}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\ \&)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00083\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ static\_direction(to,\ \textcolor{keywordtype}{id},\ value);}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{virtual}\ adirection*\ CreateFromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{virtual}\ olxstr\ ToInsStr(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{virtual}\ olxstr\ Describe()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{virtual}\ PyObject*\ PyExport()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00094\ \};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \textcolor{keyword}{struct\ }direction\ :\ \textcolor{keyword}{public}\ adirection\ \{}
+\DoxyCodeLine{00097\ \ \ TCAtomGroup\ atoms;}
+\DoxyCodeLine{00098\ \ \ uint16\_t\ type;}
+\DoxyCodeLine{00099\ \ \ direction(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ parent,\ uint16\_t\ type,\ \textcolor{keywordtype}{bool}\ tmp\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00100\ \ \ \ \ :\ adirection(parent,\ tmp),\ type(type)}
+\DoxyCodeLine{00101\ \ \ \{\}}
+\DoxyCodeLine{00102\ \ \ direction(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ parent,\ \textcolor{keyword}{const}\ olxstr\ \&\textcolor{keywordtype}{id},}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomGroup\ \&\_atoms,}
+\DoxyCodeLine{00104\ \ \ \ \ uint16\_t\ \_type)}
+\DoxyCodeLine{00105\ \ \ :\ adirection(parent,\ \textcolor{keywordtype}{id}),}
+\DoxyCodeLine{00106\ \ \ \ \ atoms(\_atoms),}
+\DoxyCodeLine{00107\ \ \ \ \ type(\_type)}
+\DoxyCodeLine{00108\ \ \ \{\}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{virtual}\ vec3d\ get()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{virtual}\ adirection*\ DoCopy(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<adirection>}}\&\ to,}
+\DoxyCodeLine{00111\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{virtual}\ adirection*\ CreateFromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms[i].GetAtom()-\/>IsDeleted())\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00121\ \ \ \}}
+\DoxyCodeLine{00122\ \ \ olxstr\ ToInsStr(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{virtual}\ olxstr\ Describe()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ TCAtomPList\&\ atoms\_)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ atoms[i].GetAtom()-\/>SetTag(0);}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ atoms\_.ForEach(ACollectionItem::TagSetter(1));}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms[i].GetAtom()-\/>GetTag()\ ==\ 1)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00138\ \ \ PyObject*\ PyExport()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00140\ \};}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \textcolor{keyword}{struct\ }rotated\_adp\_constraint\ :\ \textcolor{keyword}{public}\ AReleasable\ \{}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ source,\ \&\ destination;}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structadirection}{adirection}}\&\ dir;}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{double}\ angle;}
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{bool}\ refine\_angle,\ refs\_changed;}
+\DoxyCodeLine{00147\ \ \ rotated\_adp\_constraint(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<rotated\_adp\_constraint>}}\&\ parent,}
+\DoxyCodeLine{00148\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_source,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_destination,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structadirection}{adirection}}\&\ \_dir,}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordtype}{double}\ \_angle,\ \textcolor{keywordtype}{bool}\ \_refine\_angle)}
+\DoxyCodeLine{00150\ \ \ \ \ :\ AReleasable(parent),}
+\DoxyCodeLine{00151\ \ \ \ \ source(\_source),}
+\DoxyCodeLine{00152\ \ \ \ \ destination(\_destination),}
+\DoxyCodeLine{00153\ \ \ \ \ dir(\_dir),}
+\DoxyCodeLine{00154\ \ \ \ \ angle(\_angle),}
+\DoxyCodeLine{00155\ \ \ \ \ refine\_angle(\_refine\_angle),\ refs\_changed(\textcolor{keyword}{false})}
+\DoxyCodeLine{00156\ \ \ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \_dir.IncRef();}
+\DoxyCodeLine{00158\ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \string~rotated\_adp\_constraint()\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{if}\ (!refs\_changed)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ dir.DecRef();}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{return}\ !(!dir.IsValid()\ ||\ source.IsDeleted()\ ||\ destination.IsDeleted());}
+\DoxyCodeLine{00166\ \ \ \}}
+\DoxyCodeLine{00167\ \ \ olxstr\ ToInsStr(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FromToks(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<rotated\_adp\_constraint>}}\&\ to,}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ toks,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{static}\ rotated\_adp\_constraint*\ Copy(}
+\DoxyCodeLine{00171\ \ \ \ \ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<rotated\_adp\_constraint>}}\&\ to,}
+\DoxyCodeLine{00172\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ rotated\_adp\_constraint\&\ c);}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetName();}
+\DoxyCodeLine{00174\ \ \ olxstr\ Describe()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ TCAtomPList\&\ atoms\_)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00176\ \ \ \ \ source.SetTag(0);}
+\DoxyCodeLine{00177\ \ \ \ \ destination.SetTag(0);}
+\DoxyCodeLine{00178\ \ \ \ \ atoms\_.ForEach(ACollectionItem::TagSetter(1));}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{if}\ (source.GetTag()\ ==\ 1\ ||\ destination.GetTag()\ ==\ 1)\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00181\ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{return}\ dir.DoesMatch(atoms\_);}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnReleasedDelete()\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ dir.DecRef();}
+\DoxyCodeLine{00186\ \ \ \ \ refs\_changed\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00187\ \ \ \}}
+\DoxyCodeLine{00188\ \ \ \textcolor{keywordtype}{void}\ UpdateParams(\textcolor{keyword}{const}\ TStrList\&\ toks);}
+\DoxyCodeLine{00189\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{static}\ rotated\_adp\_constraint*\ FromDataItem(}
+\DoxyCodeLine{00191\ \ \ \ \ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<rotated\_adp\_constraint>}}\&\ to,}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00194\ \ \ PyObject*\ PyExport()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00196\ \};}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \textcolor{keyword}{struct\ }rotating\_adp\_constraint\ :\ \textcolor{keyword}{public}\ AReleasable\ \{}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ source,\ \&\ destination;}
+\DoxyCodeLine{00200\ \ \ \textcolor{keywordtype}{double}\ size,\ alpha,\ beta,\ gamma;}
+\DoxyCodeLine{00201\ \ \ \textcolor{keywordtype}{bool}\ refine\_angle,\ refine\_size;}
+\DoxyCodeLine{00202\ \ \ rotating\_adp\_constraint(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<rotating\_adp\_constraint>}}\&\ parent,}
+\DoxyCodeLine{00203\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_source,\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_destination,}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keywordtype}{double}\ size,}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keywordtype}{bool}\ refine\_size,}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keywordtype}{double}\ alpha,\ \textcolor{keywordtype}{double}\ beta,\ \textcolor{keywordtype}{double}\ gamma,\ \textcolor{keywordtype}{bool}\ refine\_angle)}
+\DoxyCodeLine{00207\ \ \ \ \ :\ AReleasable(parent),\ }
+\DoxyCodeLine{00208\ \ \ \ \ source(\_source),}
+\DoxyCodeLine{00209\ \ \ \ \ destination(\_destination),}
+\DoxyCodeLine{00210\ \ \ \ \ size(size),}
+\DoxyCodeLine{00211\ \ \ \ \ alpha(alpha),}
+\DoxyCodeLine{00212\ \ \ \ \ beta(beta),}
+\DoxyCodeLine{00213\ \ \ \ \ gamma(gamma),}
+\DoxyCodeLine{00214\ \ \ \ \ refine\_size(refine\_size),}
+\DoxyCodeLine{00215\ \ \ \ \ refine\_angle(refine\_angle)}
+\DoxyCodeLine{00216\ \ \ \{\}}
+\DoxyCodeLine{00217\ \ \ \string~rotating\_adp\_constraint()\ \{}
+\DoxyCodeLine{00218\ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{return}\ !(source.IsDeleted()\ ||\ destination.IsDeleted());}
+\DoxyCodeLine{00221\ \ \ \}}
+\DoxyCodeLine{00222\ \ \ olxstr\ ToInsStr(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FromToks(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<rotating\_adp\_constraint>}}\&\ to,}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ toks,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{static}\ rotating\_adp\_constraint*\ Copy(}
+\DoxyCodeLine{00226\ \ \ \ \ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<rotating\_adp\_constraint>}}\&\ to,}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ rotating\_adp\_constraint\&\ c);}
+\DoxyCodeLine{00228\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetName();}
+\DoxyCodeLine{00229\ \ \ olxstr\ Describe()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ TCAtomPList\&\ atoms\_)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00231\ \ \ \ \ source.SetTag(0);}
+\DoxyCodeLine{00232\ \ \ \ \ destination.SetTag(0);}
+\DoxyCodeLine{00233\ \ \ \ \ atoms\_.ForEach(ACollectionItem::TagSetter(1));}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordflow}{return}\ source.GetTag()\ ==\ 1\ ||\ destination.GetTag()\ ==\ 1;}
+\DoxyCodeLine{00235\ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \textcolor{keywordtype}{void}\ UpdateParams(\textcolor{keyword}{const}\ TStrList\&\ toks);}
+\DoxyCodeLine{00237\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{static}\ rotating\_adp\_constraint*\ FromDataItem(}
+\DoxyCodeLine{00239\ \ \ \ \ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<rotating\_adp\_constraint>}}\&\ to,}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00241\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00242\ \ \ PyObject*\ PyExport()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00244\ \};}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \textcolor{keyword}{struct\ }same\_group\_constraint\ :\ \textcolor{keyword}{public}\ AReleasable\ \{}
+\DoxyCodeLine{00247\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00248\ \ \ same\_group\_constraint(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<same\_group\_constraint>}}\&\ parent)}
+\DoxyCodeLine{00249\ \ \ :\ AReleasable(parent)}
+\DoxyCodeLine{00250\ \ \ \{\}}
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{mutable}\ \mbox{\hyperlink{classTTypeList}{TTypeList<TCAtomPList>}}\ groups;}
+\DoxyCodeLine{00252\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00253\ \ \ same\_group\_constraint(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<same\_group\_constraint>}}\&\ parent,}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keyword}{const}\ TTypeList<TCAtomPList>::const\_list\_type\&\ groups\_)}
+\DoxyCodeLine{00255\ \ \ \ \ :\ AReleasable(parent),}
+\DoxyCodeLine{00256\ \ \ \ \ groups(groups\_)}
+\DoxyCodeLine{00257\ \ \ \{\}}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ groups.Count();\ i++)\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ complete\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ groups[i].Count();\ j++)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (groups[i][j]-\/>IsDeleted())\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ complete\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (complete)\ \{}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ groups.NullItem(i);}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \ \ \}}
+\DoxyCodeLine{00275\ \ \ \ \ groups.Pack();}
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keywordflow}{return}\ cnt\ >\ 1;}
+\DoxyCodeLine{00277\ \ \ \}}
+\DoxyCodeLine{00278\ \ \ olxstr\ ToInsStr(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00279\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FromToks(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<same\_group\_constraint>}}\&\ to,}
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ toks,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00281\ \ \ \textcolor{keyword}{static}\ same\_group\_constraint*\ Copy(}
+\DoxyCodeLine{00282\ \ \ \ \ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<same\_group\_constraint>}}\&\ to,}
+\DoxyCodeLine{00283\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ same\_group\_constraint\&\ c);}
+\DoxyCodeLine{00284\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetName();}
+\DoxyCodeLine{00285\ \ \ olxstr\ Describe()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00286\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ TCAtomPList\&\ atoms\_)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00287\ \ \ \ \ atoms\_.ForEach(ACollectionItem::TagSetter(1));}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ groups.Count();\ i++)\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ groups[i].ForEach(ACollectionItem::TagSetter(0));}
+\DoxyCodeLine{00290\ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms\_.Count();\ i++)\ \{}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms\_[i]-\/>GetTag()\ ==\ 0)\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00297\ \ \ \}}
+\DoxyCodeLine{00298\ \ \ \textcolor{keywordtype}{void}\ UpdateParams(\textcolor{keyword}{const}\ TStrList\&\ toks);}
+\DoxyCodeLine{00299\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00300\ \ \ \textcolor{keyword}{static}\ same\_group\_constraint*\ FromDataItem(}
+\DoxyCodeLine{00301\ \ \ \ \ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<same\_group\_constraint>}}\&\ to,}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00303\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00304\ \ \ PyObject*\ PyExport()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00306\ \};}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \textcolor{keyword}{struct\ }tls\_group\_constraint\ :\ \textcolor{keyword}{public}\ AReleasable\ \{}
+\DoxyCodeLine{00309\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00310\ \ \ tls\_group\_constraint(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<tls\_group\_constraint>}}\&\ parent)}
+\DoxyCodeLine{00311\ \ \ :\ AReleasable(parent)}
+\DoxyCodeLine{00312\ \ \ \{\}}
+\DoxyCodeLine{00313\ \ \ \textcolor{keyword}{mutable}\ TCAtomPList\ atoms;}
+\DoxyCodeLine{00314\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00315\ \ \ tls\_group\_constraint(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<tls\_group\_constraint>}}\&\ parent,}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList\ \&atoms\_)}
+\DoxyCodeLine{00317\ \ \ :\ AReleasable(parent),}
+\DoxyCodeLine{00318\ \ \ \ \ atoms(atoms\_)}
+\DoxyCodeLine{00319\ \ \ \{\}}
+\DoxyCodeLine{00320\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms[i]-\/>IsDeleted())\ \{}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ atoms[i]\ =\ 0;}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00325\ \ \ \ \ \}}
+\DoxyCodeLine{00326\ \ \ \ \ atoms.Pack();}
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keywordflow}{return}\ atoms.Count()\ >\ 3;}
+\DoxyCodeLine{00328\ \ \ \}}
+\DoxyCodeLine{00329\ \ \ olxstr\ ToInsStr(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00330\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FromToks(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<tls\_group\_constraint>}}\&\ to,}
+\DoxyCodeLine{00331\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ toks,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00332\ \ \ \textcolor{keyword}{static}\ tls\_group\_constraint*\ Copy(}
+\DoxyCodeLine{00333\ \ \ \ \ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<tls\_group\_constraint>}}\&\ to,}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ tls\_group\_constraint\&\ c);}
+\DoxyCodeLine{00335\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetName();}
+\DoxyCodeLine{00336\ \ \ olxstr\ Describe()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00337\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ TCAtomPList\&\ atoms\_)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00338\ \ \ \ \ atoms.ForEach(ACollectionItem::TagSetter(1));}
+\DoxyCodeLine{00339\ \ \ \ \ atoms\_.ForEach(ACollectionItem::TagSetter(0));}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms[i]-\/>GetTag()\ ==\ 0)\ \{}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00344\ \ \ \ \ \}}
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00346\ \ \ \}}
+\DoxyCodeLine{00347\ \ \ \textcolor{keywordtype}{void}\ UpdateParams(\textcolor{keyword}{const}\ TStrList\&\ toks);}
+\DoxyCodeLine{00348\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00349\ \ \ \textcolor{keyword}{static}\ tls\_group\_constraint*\ FromDataItem(}
+\DoxyCodeLine{00350\ \ \ \ \ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<tls\_group\_constraint>}}\&\ to,}
+\DoxyCodeLine{00351\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00352\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00353\ \ \ PyObject*\ PyExport()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00354\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00355\ \};}
+\DoxyCodeLine{00356\ }
+\DoxyCodeLine{00357\ \textcolor{keyword}{struct\ }same\_disp\_constraint\ :\ \textcolor{keyword}{public}\ AReleasable\ \{}
+\DoxyCodeLine{00358\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00359\ \ \ same\_disp\_constraint(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<same\_disp\_constraint>}}\&\ parent)}
+\DoxyCodeLine{00360\ \ \ :\ AReleasable(parent)}
+\DoxyCodeLine{00361\ \ \ \{\}}
+\DoxyCodeLine{00362\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00363\ \ \ \textcolor{keyword}{mutable}\ TCAtomPList\ atoms;}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00365\ \ \ same\_disp\_constraint(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<same\_disp\_constraint>}}\&\ parent,}
+\DoxyCodeLine{00366\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList\&\ atoms\_)}
+\DoxyCodeLine{00367\ \ \ \ \ :\ AReleasable(parent),}
+\DoxyCodeLine{00368\ \ \ \ \ atoms(atoms\_)}
+\DoxyCodeLine{00369\ \ \ \{\}}
+\DoxyCodeLine{00370\ \ \ \textcolor{keywordtype}{bool}\ IsValid()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms[i]-\/>IsDeleted())\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ atoms[i]\ =\ 0;}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00375\ \ \ \ \ \}}
+\DoxyCodeLine{00376\ \ \ \ \ atoms.Pack();}
+\DoxyCodeLine{00377\ \ \ \ \ \textcolor{keywordflow}{return}\ atoms.Count()\ >\ 1;}
+\DoxyCodeLine{00378\ \ \ \}}
+\DoxyCodeLine{00379\ \ \ olxstr\ ToInsStr(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00380\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FromToks(\mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<same\_disp\_constraint>}}\&\ to,}
+\DoxyCodeLine{00381\ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ toks,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00382\ \ \ \textcolor{keyword}{static}\ same\_disp\_constraint*\ Copy(}
+\DoxyCodeLine{00383\ \ \ \ \ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<same\_disp\_constraint>}}\&\ to,}
+\DoxyCodeLine{00384\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ same\_disp\_constraint\&\ c);}
+\DoxyCodeLine{00385\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ olxstr\&\ GetName();}
+\DoxyCodeLine{00386\ \ \ olxstr\ Describe()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00387\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoesMatch(\textcolor{keyword}{const}\ TCAtomPList\&\ atoms\_)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00388\ \ \ \ \ atoms.ForEach(ACollectionItem::TagSetter(1));}
+\DoxyCodeLine{00389\ \ \ \ \ atoms\_.ForEach(ACollectionItem::TagSetter(0));}
+\DoxyCodeLine{00390\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms[i]-\/>GetTag()\ ==\ 0)\ \{}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00394\ \ \ \ \ \}}
+\DoxyCodeLine{00395\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00396\ \ \ \}}
+\DoxyCodeLine{00397\ \ \ \textcolor{keywordtype}{void}\ UpdateParams(\textcolor{keyword}{const}\ TStrList\&\ toks);}
+\DoxyCodeLine{00398\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00399\ \ \ \textcolor{keyword}{static}\ same\_disp\_constraint*\ FromDataItem(}
+\DoxyCodeLine{00400\ \ \ \ \ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer<same\_disp\_constraint>}}\&\ to,}
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm);}
+\DoxyCodeLine{00402\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00403\ \ \ PyObject*\ PyExport()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00404\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00405\ \};}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00407\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classIConstraintContainer}{IConstraintContainer}}\ \{}
+\DoxyCodeLine{00408\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00409\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIConstraintContainer}{\string~IConstraintContainer}}()\ \{\}}
+\DoxyCodeLine{00410\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FromToks(\textcolor{keyword}{const}\ TStrList\&\ toks,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ =\ 0;}
+\DoxyCodeLine{00411\ \ \ \textcolor{keyword}{virtual}\ const\_strlist\ ToInsList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00412\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList*\ atoms,\ \mbox{\hyperlink{classTPtrList}{TPtrList<AReleasable>}}*\ processed)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00413\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ UpdateParams(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keyword}{const}\ TStrList\&\ toks)\ =\ 0;}
+\DoxyCodeLine{00414\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetName()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00415\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ValidateAll()\ =\ 0;}
+\DoxyCodeLine{00416\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Clear()\ =\ 0;}
+\DoxyCodeLine{00417\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00418\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}*\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ =\ 0;}
+\DoxyCodeLine{00419\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Assign(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIConstraintContainer}{IConstraintContainer}}\&\ c)\ =\ 0;}
+\DoxyCodeLine{00420\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00421\ \ \ \textcolor{keyword}{virtual}\ PyObject*\ PyExport()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00422\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00423\ \};}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ constra\textcolor{keywordtype}{int}\_t>}
+\DoxyCodeLine{00426\ \textcolor{keyword}{class\ }ConstraintContainer\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIConstraintContainer}{IConstraintContainer}},}
+\DoxyCodeLine{00427\ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAReleasableContainer}{AReleasableContainer}}<constraint\_t>}
+\DoxyCodeLine{00428\ \{}
+\DoxyCodeLine{00429\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00430\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnRestore(constraint\_t\&\ item)\ \{}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00432\ \ \ \}}
+\DoxyCodeLine{00433\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnRelease(constraint\_t\&\ item)\ \{}
+\DoxyCodeLine{00434\ }
+\DoxyCodeLine{00435\ \ \ \}}
+\DoxyCodeLine{00436\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00437\ \ \ ConstraintContainer()\ \{\}}
+\DoxyCodeLine{00438\ \ \ \string~ConstraintContainer()\ \{}
+\DoxyCodeLine{00439\ \ \ \}}
+\DoxyCodeLine{00440\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00441\ \ \ \ \ AReleasableContainer<constraint\_t>::Clear();}
+\DoxyCodeLine{00442\ \ \ \}}
+\DoxyCodeLine{00443\ \ \ \textcolor{comment}{//\ validates\ all\ the\ constraints\ and\ removes\ the\ invalid\ ones}}
+\DoxyCodeLine{00444\ \ \ \textcolor{keywordtype}{void}\ ValidateAll()\ \{}
+\DoxyCodeLine{00445\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ this-\/>Count();\ i++)\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!this-\/>GetItem(i).IsValid())\ \{}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ this-\/>items.NullItem(i);}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00449\ \ \ \ \ \}}
+\DoxyCodeLine{00450\ \ \ \ \ this-\/>items.Pack();}
+\DoxyCodeLine{00451\ \ \ \}}
+\DoxyCodeLine{00452\ }
+\DoxyCodeLine{00453\ \ \ \textcolor{keywordtype}{void}\ Assign(\mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIConstraintContainer}{IConstraintContainer}}\&\ cn\_)\ \{}
+\DoxyCodeLine{00454\ \ \ \ \ \textcolor{keyword}{const}\ ConstraintContainer\&\ cn\ =}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const\ }ConstraintContainer\&\textcolor{keyword}{>}(cn\_);}
+\DoxyCodeLine{00456\ \ \ \ \ Clear();}
+\DoxyCodeLine{00457\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cn.Count();\ i++)\ \{}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ constraint\_t::Copy(*\textcolor{keyword}{this},\ rm,\ cn.GetItem(i));}
+\DoxyCodeLine{00459\ \ \ \ \ \}}
+\DoxyCodeLine{00460\ \ \ \}}
+\DoxyCodeLine{00461\ \ \ \textcolor{keywordtype}{void}\ FromToks(\textcolor{keyword}{const}\ TStrList\&\ toks,\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \{}
+\DoxyCodeLine{00462\ \ \ \ \ constraint\_t::FromToks(*\textcolor{keyword}{this},\ toks,\ rm);}
+\DoxyCodeLine{00463\ \ \ \}}
+\DoxyCodeLine{00464\ }
+\DoxyCodeLine{00465\ \ \ const\_strlist\ ToInsList(\textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm,}
+\DoxyCodeLine{00466\ \ \ \ \ \textcolor{keyword}{const}\ TCAtomPList*\ atoms,\ \mbox{\hyperlink{classTPtrList}{TPtrList<AReleasable>}}*\ processed)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00467\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00468\ \ \ \ \ TStrList\ out;}
+\DoxyCodeLine{00469\ \ \ \ \ out.SetCapacity(this-\/>Count());}
+\DoxyCodeLine{00470\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ this-\/>Count();\ i++)\ \{}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ constraint\_t\&\ c\ =\ this-\/>GetItem(i);}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c.IsValid())\ \{}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atoms\ ==\ 0\ ||\ c.DoesMatch(*atoms))\ \{}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \ \ out.Add(c.ToInsStr(rm));}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (processed\ !=\ 0)\ \{}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \ \ \ \ processed-\/>Add(c);}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00480\ \ \ \ \ \}}
+\DoxyCodeLine{00481\ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{00482\ \ \ \}}
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00484\ \ \ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00485\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00486\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ this-\/>Count();\ i++)\ \{}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>GetItem(i).IsValid())\ \{}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ this-\/>GetItem(i).ToDataItem(di.AddItem(cnt++));}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00490\ \ \ \ \ \}}
+\DoxyCodeLine{00491\ \ \ \ \ \textcolor{keywordflow}{return}\ di;}
+\DoxyCodeLine{00492\ \ \ \}}
+\DoxyCodeLine{00493\ }
+\DoxyCodeLine{00494\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}*\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \{}
+\DoxyCodeLine{00495\ \ \ \ \ Clear();}
+\DoxyCodeLine{00496\ \ \ \ \ \textcolor{keywordflow}{if}\ (di\ !=\ 0)\ \{}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ FromDataItem(*di,\ rm);}
+\DoxyCodeLine{00498\ \ \ \ \ \}}
+\DoxyCodeLine{00499\ \ \ \}}
+\DoxyCodeLine{00500\ }
+\DoxyCodeLine{00501\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ di,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm)\ \{}
+\DoxyCodeLine{00502\ \ \ \ \ Clear();}
+\DoxyCodeLine{00503\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ di.ItemCount();\ i++)\ \{}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ constraint\_t::FromDataItem(*\textcolor{keyword}{this},\ di.GetItemByIndex(i),\ rm);}
+\DoxyCodeLine{00505\ \ \ \ \ \}}
+\DoxyCodeLine{00506\ \ \ \}}
+\DoxyCodeLine{00507\ }
+\DoxyCodeLine{00508\ \ \ \textcolor{keywordtype}{void}\ UpdateParams(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keyword}{const}\ TStrList\&\ toks)\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ TIndexOutOfRangeException::ValidateRange(\_\_POlxSourceInfo,\ index,\ 0,\ this-\/>Count());}
+\DoxyCodeLine{00510\ \ \ \ \ this-\/>GetItem(index).UpdateParams(toks);}
+\DoxyCodeLine{00511\ \ \ \}}
+\DoxyCodeLine{00512\ \textcolor{preprocessor}{\#ifdef\ \_PYTHON}}
+\DoxyCodeLine{00513\ \ \ PyObject*\ PyExport()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00514\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00515\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ this-\/>Count();\ i++)\ \{}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>GetItem(i).IsValid())\ \{}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00519\ \ \ \ \ \}}
+\DoxyCodeLine{00520\ \ \ \ \ PyObject*\ all\ =\ PyTuple\_New(cnt);}
+\DoxyCodeLine{00521\ \ \ \ \ cnt\ =\ 0;}
+\DoxyCodeLine{00522\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ this-\/>Count();\ i++)\ \{}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>GetItem(i).IsValid())\ \{}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ PyTuple\_SetItem(all,\ cnt++,\ this-\/>GetItem(i).PyExport());}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00526\ \ \ \ \ \}}
+\DoxyCodeLine{00527\ \ \ \ \ \textcolor{keywordflow}{return}\ all;}
+\DoxyCodeLine{00528\ \ \ \}}
+\DoxyCodeLine{00529\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00530\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ constraint\_t::GetName();\ \}}
+\DoxyCodeLine{00531\ \ \ }
+\DoxyCodeLine{00532\ \};}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ EndXlibNamespace()}
+\DoxyCodeLine{00535\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

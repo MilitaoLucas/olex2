@@ -1,0 +1,329 @@
+\doxysection{symmspace.\+h}
+\hypertarget{symmspace_8h_source}{}\label{symmspace_8h_source}\index{xlib/symmspace.h@{xlib/symmspace.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_symmspace\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_symmspace\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}mat\_id.h"{}}}
+\DoxyCodeLine{00014\ BeginXlibNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ template\ <class\ MatList>\ class\ TSymmSpace\ \ \{}
+\DoxyCodeLine{00017\ \ \ MatList\ ml;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{const}\ mat3d\ \&cart2cell,\ \&cell2cart,\ \&hkl2cart;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{size\_t}\ start;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{bool}\ centrosymmetric;}
+\DoxyCodeLine{00021\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00022\ \ \ TSymmSpace(\textcolor{keyword}{const}\ TSymmSpace\&\ sp,\ \textcolor{keywordtype}{size\_t}\ \_start)\ :}
+\DoxyCodeLine{00023\ \ \ \ \ ml(sp.ml),}
+\DoxyCodeLine{00024\ \ \ \ \ cart2cell(sp.cart2cell),}
+\DoxyCodeLine{00025\ \ \ \ \ cell2cart(sp.cell2cart),}
+\DoxyCodeLine{00026\ \ \ \ \ hkl2cart(sp.hkl2cart),}
+\DoxyCodeLine{00027\ \ \ \ \ start(sp.start+\_start),}
+\DoxyCodeLine{00028\ \ \ \ \ centrosymmetric(sp.centrosymmetric)\ \ \{\}}
+\DoxyCodeLine{00029\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ TSymmSpace(\textcolor{keyword}{const}\ MatList\&\ \_ml,}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{const}\ mat3d\&\ \_cart2cell,}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{const}\ mat3d\&\ \_cell2cart,}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{const}\ mat3d\&\ \_hkl2cart,}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_centrosymmetric)\ :}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ ml(\_ml),}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ cart2cell(\_cart2cell),}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ cell2cart(\_cell2cart),}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ hkl2cart(\_hkl2cart),}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ start(0),}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ centrosymmetric(\_centrosymmetric)\ \ \{\}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ TSymmSpace(\textcolor{keyword}{const}\ TSymmSpace\&\ sp)\ :}
+\DoxyCodeLine{00043\ \ \ \ \ ml(sp.ml),}
+\DoxyCodeLine{00044\ \ \ \ \ cart2cell(sp.cart2cell),}
+\DoxyCodeLine{00045\ \ \ \ \ cell2cart(sp.cell2cart),}
+\DoxyCodeLine{00046\ \ \ \ \ hkl2cart(sp.hkl2cart),}
+\DoxyCodeLine{00047\ \ \ \ \ start(sp.start),}
+\DoxyCodeLine{00048\ \ \ \ \ centrosymmetric(sp.centrosymmetric)\ \ \{\}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{const}\ smatd\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ml[i+start];\ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ml.Count()-\/start;\ \ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Count()\ ==\ 0;\ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{bool}\ IsCentrosymmetric()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ centrosymmetric;\ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_type>\ vec3d\ Orthogonalise(\textcolor{keyword}{const}\ vec\_type\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{return}\ vec3d(}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ v[0]*cell2cart[0][0]\ +\ v[1]*cell2cart[1][0]\ +\ v[2]*cell2cart[2][0],}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ v[1]*cell2cart[1][1]\ +\ v[2]*cell2cart[2][1],}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ v[2]*cell2cart[2][2]);}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_type>\ vec\_type\&\ OrthogonaliseI(vec\_type\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00061\ \ \ \ \ v[0]\ =\ v[0]*cell2cart[0][0]\ +\ v[1]*cell2cart[1][0]\ +\ v[2]*cell2cart[2][0];}
+\DoxyCodeLine{00062\ \ \ \ \ v[1]\ =\ v[1]*cell2cart[1][1]\ +\ v[2]*cell2cart[2][1];}
+\DoxyCodeLine{00063\ \ \ \ \ v[2]\ =\ v[2]*cell2cart[2][2];}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_type>\ vec3d\ Fractionalise(\textcolor{keyword}{const}\ vec\_type\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ vec3d(}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ v[0]*cart2cell[0][0]\ +\ v[1]*cart2cell[1][0]\ +\ v[2]*cart2cell[2][0],}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ v[1]*cart2cell[1][1]\ +\ v[2]*cart2cell[2][1],}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ v[2]*cart2cell[2][2]);}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_type>\ vec\_type\&\ FractionaliseI(vec\_type\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00073\ \ \ \ \ v[0]\ =\ v[0]*cart2cell[0][0]\ +\ v[1]*cart2cell[1][0]\ +\ v[2]*cart2cell[2][0];}
+\DoxyCodeLine{00074\ \ \ \ \ v[1]\ =\ v[1]*cart2cell[1][1]\ +\ v[2]*cart2cell[2][1];}
+\DoxyCodeLine{00075\ \ \ \ \ v[2]\ =\ v[2]*cart2cell[2][2];}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_type>\ vec3d\ HklToCart(\textcolor{keyword}{const}\ vec\_type\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ vec3d(}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ v[0]*hkl2cart[0][0],}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ v[0]*hkl2cart[0][1]\ +\ v[1]*hkl2cart[1][1],}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ v[0]*hkl2cart[0][2]\ +\ v[1]*hkl2cart[1][2]\ +\ v[2]*hkl2cart[2][2]}
+\DoxyCodeLine{00083\ \ \ \ \ );}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ TSymmSpace<MatList>\ SubListFrom(\textcolor{keywordtype}{size\_t}\ \_start)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{return}\ TSymmSpace<MatList>(*\textcolor{keyword}{this},\ \_start);}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{comment}{/*\ the\ adaptor\ for\ complex\ classes\ having\ MatrixCount()/GetMatrix(size\_t)}}
+\DoxyCodeLine{00091\ \textcolor{comment}{methods}}
+\DoxyCodeLine{00092\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00093\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatrixContainer>\ \textcolor{keyword}{class\ }MatrixListAdaptor\ \{}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{const}\ MatrixContainer\&\ mc;}
+\DoxyCodeLine{00095\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00096\ \ \ MatrixListAdaptor(\textcolor{keyword}{const}\ MatrixContainer\&\ \_mc)\ :\ mc(\_mc)\ \ \{\}}
+\DoxyCodeLine{00097\ \ \ MatrixListAdaptor(\textcolor{keyword}{const}\ MatrixListAdaptor\&\ mla)\ :\ mc(mla.mc)\ \ \{\}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ mc.MatrixCount();\ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Count()\ ==\ 0;\ \ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{const}\ smatd\&\ operator\ [](\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ mc.GetMatrix(i);\ \ \}}
+\DoxyCodeLine{00101\ \};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \textcolor{keyword}{namespace\ }SymmSpace\ \{}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ sort\_group(\textcolor{keyword}{const}\ smatd\&\ m1,\ \textcolor{keyword}{const}\ smatd\&\ m2);}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structSymmSpace_1_1Info}{Info}}\ \{}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ sort\_matrix\_list(\textcolor{keyword}{const}\ smatd\&\ m1,\ \textcolor{keyword}{const}\ smatd\&\ m2)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(rotation\_id::get(m1.r),\ rotation\_id::get(m2.r));}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{bool}\ centrosymmetric;}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{comment}{/*\ list\ of\ the\ compact\ matrices\ including\ the\ identity}}
+\DoxyCodeLine{00115\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00116\ \ \ \ \ smatd\_list\ matrices;}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{/*\ if\ not\ zero,\ all\ inversion\ of\ the\ symmetry\ operators\ also\ translates\ by}}
+\DoxyCodeLine{00118\ \textcolor{comment}{\ \ \ \ this\ vector}}
+\DoxyCodeLine{00119\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00120\ \ \ \ \ vec3d\ inv\_trans;}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{comment}{//\ always\ positive}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{short}\ latt;}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1Info}{Info}}\&\ info)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1Info}{Info}}\&\ info)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !this-\/>operator==(info);}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{comment}{//\ makes\ sure\ that\ matrix\ list\ is\ sorted\ and\ translations\ are\ normalised}}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{void}\ normalise(\textcolor{keyword}{const}\ vec3d\_list\&\ translations);}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{comment}{//\ just\ sorts\ matrices}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{void}\ normalise()\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ QuickSorter::SortSF(matrices,\ \&sort\_matrix\_list);}
+\DoxyCodeLine{00132\ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{comment}{//\ expands\ this\ compact\ form}}
+\DoxyCodeLine{00134\ \ \ \ \ smatd\_list::const\_list\_type\ expand()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{comment}{//\ normalises\ the\ translation\ -\/\ puts\ in\ the\ [0,1)\ range}}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keyword}{static}\ vec3d\ normalise\_t(\textcolor{keyword}{const}\ vec3d\&\ t);}
+\DoxyCodeLine{00137\ \ \ \};}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structSymmSpace_1_1InfoEx}{InfoEx}}\ \{\ \ \textcolor{comment}{//\ has\ a\ list\ of\ translation\ vectors\ vs\ latt\ number}}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordtype}{bool}\ centrosymmetric;}
+\DoxyCodeLine{00141\ \ \ \ \ smatd\_list\ matrices;}
+\DoxyCodeLine{00142\ \ \ \ \ vec3d\_list\ vertices;}
+\DoxyCodeLine{00143\ \ \ \};}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SP>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structSymmSpace_1_1Info}{Info}}\ GetInfo(\textcolor{keyword}{const}\ SP\&\ sp,}
+\DoxyCodeLine{00146\ \ \ \ \ vec3d\_list*\ translations\_\ =\ NULL)}
+\DoxyCodeLine{00147\ \ \ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{if}\ (sp.Count()\ ==\ 0)\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}at\ least\ one\ matrix\ is\ expected"{}});}
+\DoxyCodeLine{00151\ \ \ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \ \ vec3d\_list\ translations;}
+\DoxyCodeLine{00153\ \ \ \ \ Info\ rv;}
+\DoxyCodeLine{00154\ \ \ \ \ rv.latt\ =\ -\/1;}
+\DoxyCodeLine{00155\ \ \ \ \ rv.centrosymmetric\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{if}\ (sp.Count()\ ==\ 1)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!sp[0].r.IsI()\ ||\ !sp[0].t.IsNull())\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}identity\ matrix\ expected"{}});}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ rv.latt\ =\ 1;\ \textcolor{comment}{//'P';}}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ rv.matrices.AddCopy(sp[0]);}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \ \ olx\_pdict<int,\ smatd\_list>\ groups;}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordtype}{bool}\ identity\_found\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sp.Count();\ i++)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ smatd\_list\&\ l\ =\ groups.Add(rotation\_id::get(sp[i].r));}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ l.AddCopy(sp[i]);}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!identity\_found\ \&\&\ sp[i].IsI())\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ identity\_found\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordflow}{if}\ (!identity\_found)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}missing\ identity\ matrix"{}});}
+\DoxyCodeLine{00177\ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ min\_a\_group\ =\ groups.GetValue(0).Count();}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ groups.Count();\ i++)\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (groups.GetValue(i).Count()\ !=\ min\_a\_group)}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}matrix\ list"{}});}
+\DoxyCodeLine{00182\ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{if}\ (min\_a\_group\ ==\ 1)}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ rv.latt\ =\ 1;\ \textcolor{comment}{//'P';}}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (min\_a\_group\ ==\ 2)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ vec3d\ t\ =\ groups.GetValue(0)[1].t\ -\/\ groups.GetValue(0)[0].t;}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ t\ -\/=\ t.Floor<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(t[0]\ -\/\ 0.5)\ <\ 1e-\/6)\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(t[1]\ -\/\ 0.5)\ <\ 1e-\/6)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(t[2]\ -\/\ 0.5)\ <\ 1e-\/6)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ rv.latt\ =\ 2;\ \textcolor{comment}{//'I';}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (olx\_abs(t[2])\ <\ 1e-\/6)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ rv.latt\ =\ 7;\ \textcolor{comment}{//'C';}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (olx\_abs(t[1])\ <\ 1e-\/6\ \&\&\ olx\_abs(t[2]\ -\/\ 0.5)\ <\ 1e-\/6)\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ rv.latt\ =\ 6;\ \textcolor{comment}{//'B';}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (olx\_abs(t[0])\ <\ 1e-\/6\ \&\&\ olx\_abs(t[1]\ -\/\ 0.5)\ <\ 1e-\/6\ \&\&}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ olx\_abs(t[2]\ -\/\ 0.5)\ <\ 1e-\/6)}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ rv.latt\ =\ 5;\ \textcolor{comment}{//'A';}}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ translations.AddCopy(t);}
+\DoxyCodeLine{00207\ \ \ \ \ \}}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (min\_a\_group\ ==\ 3)\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ vec3d\ t1\ =\ groups.GetValue(0)[1].t\ -\/\ groups.GetValue(0)[0].t;}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ vec3d\ t2\ =\ groups.GetValue(0)[2].t\ -\/\ groups.GetValue(0)[0].t;}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ vec3d\ t1r(2.\ /\ 3,\ 1.\ /\ 3,\ 1.\ /\ 3),\ t2r(1.\ /\ 3,\ 2.\ /\ 3,\ 2.\ /\ 3);}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ vec3d\ t1s(1.\ /\ 3,\ 1.\ /\ 3,\ 2.\ /\ 3),\ t2s(2.\ /\ 3,\ 2.\ /\ 3,\ 1.\ /\ 3);}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ vec3d\ t1t(1.\ /\ 3,\ 2.\ /\ 3,\ 1.\ /\ 3),\ t2t(2.\ /\ 3,\ 1.\ /\ 3,\ 2.\ /\ 3);}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ t1\ -\/=\ t1.Floor<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ t2\ -\/=\ t2.Floor<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((t1.Equals(t1r,\ 1e-\/3)\ \&\&\ t2.Equals(t2r,\ 1e-\/3))\ ||}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ (t1.Equals(t2r,\ 1e-\/3)\ \&\&\ t2.Equals(t1r,\ 1e-\/3)))}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ rv.latt\ =\ 3;\ \textcolor{comment}{//'R';}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((t1.Equals(t1s,\ 1e-\/3)\ \&\&\ t2.Equals(t2s,\ 1e-\/3))\ ||}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ (t1.Equals(t2s,\ 1e-\/3)\ \&\&\ t2.Equals(t1s,\ 1e-\/3)))}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ rv.latt\ =\ 8;\ \textcolor{comment}{//'S';}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((t1.Equals(t1t,\ 1e-\/3)\ \&\&\ t2.Equals(t2t,\ 1e-\/3))\ ||}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ (t1.Equals(t2t,\ 1e-\/3)\ \&\&\ t2.Equals(t1t,\ 1e-\/3)))}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ rv.latt\ =\ 9;\ \textcolor{comment}{//'T';}}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ translations.AddCopy(t1);}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ translations.AddCopy(t2);}
+\DoxyCodeLine{00233\ \ \ \ \ \}}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (min\_a\_group)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ translations.AddNew(0.0,\ 0.5,\ 0.5);}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ translations.AddNew(0.5,\ 0.0,\ 0.5);}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ translations.AddNew(0.5,\ 0.5,\ 0.0);}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ rv.latt\ =\ 4;\ \textcolor{comment}{//'F';}}
+\DoxyCodeLine{00239\ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{if}\ (rv.latt\ <\ 0)\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}could\ not\ deduce\ lattice\ centering"{}});}
+\DoxyCodeLine{00243\ \ \ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ groups.Count();\ i++)\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ groups.GetValue(i).Count();\ j++)\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ groups.GetValue(i)[j].t\ =}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ Info::normalise\_t(groups.GetValue(i)[j].t);}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ QuickSorter::SortSF(groups.GetValue(i),\ \&sort\_group);}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ groups.GetValue(i).SetCount(1);}
+\DoxyCodeLine{00251\ \ \ \ \ \}}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{comment}{//\ find\ out\ if\ centrosymmetric...}}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordflow}{if}\ (groups.Count()\ >\ 1)\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ gc\ =\ groups.Count();}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ inv\_t\_initialised\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ groups.Count();\ i++)\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ii\ =\ groups.IndexOf(rotation\_id::negate(groups.GetKey(i)));}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ii\ ==\ InvalidIndex)}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ check\ that\ the\ thing\ folds\ back\ onto\ itself\ */}}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i1\ =\ i,\ i2\ =\ ii;}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (groups.GetValue(i)[0].r.Determinant()\ <\ 0)}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ olx\_swap(i1,\ i2);}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ vec3d\ t\ =\ Info::normalise\_t(}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ (groups.GetValue(i1)[0].t\ -\/\ groups.GetValue(i2)[0].t).Abs());}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!inv\_t\_initialised)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ rv.inv\_trans\ =\ t;}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ inv\_t\_initialised\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!t.Equals(rv.inv\_trans,\ 1e-\/3))\ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}inversion\ translation\ varies"{}});}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i2\ ==\ i)}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ groups.Delete(i-\/-\/);}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ groups.Delete(i2);}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ rv.centrosymmetric\ =\ (groups.Count()\ *\ 2\ ==\ gc);}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!rv.centrosymmetric\ \&\&\ groups.Count()\ !=\ gc)\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}incomplete\ inversion"{}});}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00286\ \ \ \ \ \}}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ groups.Count();\ i++)\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ rv.matrices.AddCopy(groups.GetValue(i)[0]);}
+\DoxyCodeLine{00289\ \ \ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \ \ rv.normalise(translations);}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keywordflow}{if}\ (translations\_\ !=\ 0)\ \{}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ *translations\_\ =\ translations;}
+\DoxyCodeLine{00293\ \ \ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00295\ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \textcolor{comment}{//\ returns\ a\ compact\ form\ of\ SymmSpace}}
+\DoxyCodeLine{00297\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SP>\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{InfoEx}}\ Compact(\textcolor{keyword}{const}\ SP\&\ sp)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \mbox{\hyperlink{structSymmSpace_1_1InfoEx}{InfoEx}}\ rv;}
+\DoxyCodeLine{00299\ \ \ \ \ \mbox{\hyperlink{structSymmSpace_1_1Info}{Info}}\ info\ =\ GetInfo(sp,\ \&rv.vertices);}
+\DoxyCodeLine{00300\ \ \ \ \ rv.centrosymmetric\ =\ info.centrosymmetric;}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ info.matrices.Count();\ i++)\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!info.matrices[i].IsI())\ \{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ rv.matrices.AddCopy(info.matrices[i]);}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00305\ \ \ \ \ \}}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{comment}{//\ expand\ -\/1\ if\ not\ at\ (0,0,0)}}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keywordflow}{if}\ (!info.inv\_trans.IsNull(1e-\/3))\ \{}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ rv.centrosymmetric\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \textcolor{comment}{//\ use\ info\ -\/\ it\ has\ the\ I}}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ mc\ =\ info.matrices.Count();}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ rv.matrices.SetCapacity(mc\ *\ 2);}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ smatd\ invt(-\/mat3d::Idenity(),\ -\/info.inv\_trans\ *\ 2);}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ mc;\ i++)\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ smatd\&\ m\ =\ rv.matrices.AddCopy(info.matrices[i]\ *\ invt);}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ m.t\ -\/=\ m.t.Floor<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00317\ \ \ \ \ \}}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00319\ \ \ \}}
+\DoxyCodeLine{00320\ \};\ \ \textcolor{comment}{//\ end\ namespace\ SymmSpace}}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ EndXlibNamespace()}
+\DoxyCodeLine{00323\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

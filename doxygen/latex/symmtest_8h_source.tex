@@ -1,0 +1,235 @@
+\doxysection{symmtest.\+h}
+\hypertarget{symmtest_8h_source}{}\label{symmtest_8h_source}\index{xlib/symmtest.h@{xlib/symmtest.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ symmtestH}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ symmtestH}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}lattice.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}unitcell.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#undef\ QLength}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginXlibNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ typedef\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t}}<\textcolor{keywordtype}{size\_t},\textcolor{keywordtype}{size\_t}>\ >\ TIntPairList;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ struct\ TSymmTestData\ \ \{}
+\DoxyCodeLine{00022\ \ \ vec3d\ Center;}
+\DoxyCodeLine{00023\ \ \ TIntPairList\ Atoms;}
+\DoxyCodeLine{00024\ \ \ TSymmTestData(\textcolor{keyword}{const}\ vec3d\&\ v,\ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j\ )\ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ Center\ =\ v;}
+\DoxyCodeLine{00026\ \ \ \ \ Atoms.AddNew<size\_t,\ \textcolor{keywordtype}{size\_t}>(i,\ j);}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Atoms.Count();\ \ \}}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{class\ }TSymmTest\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00032\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<olx\_pair\_t<vec3d,TCAtom*>}}\ >\ Atoms;}
+\DoxyCodeLine{00033\ \ \ vec3d\ GCenter;}
+\DoxyCodeLine{00034\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSymmTestData>}}\ Vecs;}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ VecsCmpByCount(\textcolor{keyword}{const}\ \mbox{\hyperlink{structTSymmTestData}{TSymmTestData}}\ \&a\ ,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structTSymmTestData}{TSymmTestData}}\ \&b)\ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a.Count(),\ b.Count());}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ VecsCmpByRadius(\textcolor{keyword}{const}\ \mbox{\hyperlink{structAnAssociation3}{AnAssociation3<vec3d,size\_t,size\_t>}}\ \&a\ ,}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structAnAssociation3}{AnAssociation3<vec3d,size\_t,size\_t>}}\ \&b)\ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a.GetA().QLength(),\ b.GetA().QLength());}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00046\ \ \ TSymmTest(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTUnitCell}{TUnitCell}}\&\ cell)\ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{comment}{//\ get\ the\ whole\ unit\ cell\ context\ (including\ symmetry\ eqs)}}
+\DoxyCodeLine{00048\ \ \ \ \ cell.GenereteAtomCoordinates(\ Atoms,\ \textcolor{keyword}{false}\ );}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Atoms.Count();\ i++\ )}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ GCenter\ +=\ Atoms[i].GetA();}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{if}(\ Atoms.Count()\ !=\ 0\ )}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ GCenter\ /=\ Atoms.Count();}
+\DoxyCodeLine{00053\ \ \ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ vec3d\ GetGravityCenter()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GCenter;\ \ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \ \mbox{\hyperlink{classTTypeList}{TTypeList<\ TSymmTestData\ >}}\&\ GetResults()\textcolor{keyword}{\ const\ \ }\{\ \ \textcolor{keywordflow}{return}\ Vecs;\ \ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ AtomCount()\textcolor{keyword}{\ const\ \ }\{\ \ \textcolor{keywordflow}{return}\ Atoms.Count();\ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{void}\ Push(\textcolor{keyword}{const}\ vec3d\&\ t)\ \ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Atoms.Count();\ i++\ )}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ Atoms[i].a\ +=\ t;}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{comment}{//bool\ EvaluateMatrix(int\ rowIndex,\ const\ vec3d\&\ trans,\ smatd\&\ res)\ \ \{}}
+\DoxyCodeLine{00065\ \ \ \textcolor{comment}{//\ \ if(\ rowIndex\ <\ 0\ ||\ rowIndex\ >=\ Vecs.Count()\ )}}
+\DoxyCodeLine{00066\ \ \ \textcolor{comment}{//\ \ \ \ throw\ TInvalidArgumentException(\_\_OlxSourceInfo,\ "{}row\ index"{});}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \textcolor{comment}{//\ \ res.Null();}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{comment}{//\ \ const\ TIntPairList\&\ Row\ =\ Vecs[rowIndex].Atoms;}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{comment}{//\ \ if(\ Row.Count()\ >=\ 4\ )\ \ \{}}
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{//\ \ \ \ TMatrixD\ gs(4,4),\ lm(Row.Count(),\ 4),\ lmt(4,\ Row.Count());}}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//\ \ \ \ TVectorD\ b(Row.Count()),\ gr(4),\ sol(4);}}
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ \ \ \ vec3d\ cent;}}
+\DoxyCodeLine{00076\ \ \ \textcolor{comment}{//\ \ \ \ for(\ size\_t\ i=0;\ i\ <\ Row.Count();\ i++\ )\ \ \{}}
+\DoxyCodeLine{00077\ \ \ \textcolor{comment}{//\ \ \ \ \ \ cent\ =\ Atoms[Row[i].GetB()].GetA();}}
+\DoxyCodeLine{00078\ \ \ \textcolor{comment}{//\ \ \ \ \ \ cent\ -\/=\ trans;}}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//\ \ \ \ \ \ for(\ int\ j=0;\ j\ <\ 3;\ j++\ )\ \ \{}}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ if(\ cent[j]\ >\ 0.5\ )\ \ cent[j]\ -\/=\ 1;}}
+\DoxyCodeLine{00081\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ lm[i][j]\ =\ cent[j];}}
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ lmt[j][i]\ =\ cent[j];}}
+\DoxyCodeLine{00083\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \}}}
+\DoxyCodeLine{00084\ \ \ \textcolor{comment}{//\ \ \ \ \ \ lm[i][3]\ =\ 1;}}
+\DoxyCodeLine{00085\ \ \ \textcolor{comment}{//\ \ \ \ \ \ lmt[3][i]\ =\ 1;}}
+\DoxyCodeLine{00086\ \ \ \textcolor{comment}{//\ \ \ \ \}}}
+\DoxyCodeLine{00087\ \ \ \textcolor{comment}{//\ \ \ \ for(int\ i=0;\ i\ <\ 3;\ i++\ )\ \ \{}}
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//\ \ \ \ \ \ for(\ size\_t\ j=0;\ j\ <\ Row.Count();\ j++\ )\ \ \{}}
+\DoxyCodeLine{00089\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ b[j]\ =\ Atoms[Row[j].GetA()].GetA()[i]\ -\/\ trans[i];}}
+\DoxyCodeLine{00090\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ if(\ b[j]\ >\ 0.5\ )\ \ b[j]\ -\/=\ 1;}}
+\DoxyCodeLine{00091\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \}}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{//\ \ \ \ \ \ gs\ =\ lmt\ *\ lm;}}
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//\ \ \ \ \ \ gr\ =\ lmt\ *\ b;}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{comment}{//\ \ \ \ \ \ TMatrixD::GaussSolve(gs,\ gr,\ sol);}}
+\DoxyCodeLine{00097\ \ \ \textcolor{comment}{//\ \ \ \ \ \ res[i]\ =\ sol;}}
+\DoxyCodeLine{00098\ \ \ \textcolor{comment}{//\ \ \ \ \ \ sol.Null();}}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//\ \ \ \ \}}}
+\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//\ \ \ \ return\ true;}}
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//\ \ \}}}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//\ \ return\ false;}}
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//\}}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTSymmTest_a559bf1a36f84c86f9c02ef2490fc7668}{TestMatrix}}(\textcolor{keyword}{const}\ smatd\&\ matr,\ \textcolor{keywordtype}{double}\ tol)\ \ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<\ AnAssociation3<vec3d,size\_t,size\_t>}}\ >\ tmpVecs;}
+\DoxyCodeLine{00107\ \ \ \ \ Vecs.Clear();}
+\DoxyCodeLine{00108\ \ \ \ \ Vecs.SetCapacity(\ (Atoms.Count()*Atoms.Count()-\/1)/2+1\ );}
+\DoxyCodeLine{00109\ \ \ \ \ tmpVecs.SetCapacity(\ (Atoms.Count()*Atoms.Count()-\/1)/2+1\ );}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Atoms.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=i;\ j\ <\ Atoms.Count();\ j++\ )\ \ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ vec3d\ a\ =\ matr\ *\ Atoms[j].GetA()\ -\/\ Atoms[i].GetA();}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ k=0;\ k\ <\ 3;\ k++\ )\ \ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ a[k]\ -\/=\ olx\_round(a[k]);}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a[k]\ <\ 0\ )\ \ a[k]\ +=\ 1;}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ tmpVecs.AddNew<vec3d,size\_t,\textcolor{keywordtype}{size\_t}>(a,\ i,\ j);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{comment}{//\ get\ the\ square,\ as\ we\ compare\ quadratic\ distances}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ stol\ =\ 3*tol*tol;\ \ }
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ optimisation\ technique}}
+\DoxyCodeLine{00125\ \ \ \ \ QuickSorter::SortSF(tmpVecs,VecsCmpByRadius);}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{float}*\ radii\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{float}[\ tmpVecs.Count()+1];}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ tmpVecs.Count();\ i++\ )}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ radii[i]\ =\ (\textcolor{keywordtype}{float})tmpVecs[i].GetA().QLength();}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{comment}{//\ collect\ the\ results}}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ tmpVecs.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ tmpVecs.IsNull(i)\ )\ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \mbox{\hyperlink{structTSymmTestData}{TSymmTestData}}*\ sd\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTSymmTestData}{TSymmTestData}}(}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ tmpVecs[i].GetA(),\ tmpVecs[i].GetB(),\ tmpVecs[i].GetC());}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ Vecs.Add(*sd);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ qval\ =\ radii[i];}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ tmpVecs.NullItem(i);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=i+1;\ j\ <\ tmpVecs.Count();\ j++\ )\ \ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (radii[j]\ -\/\ qval)\ >\ stol\ )\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ tmpVecs.IsNull(j)\ )\ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ sd-\/>Atoms.AddNew<size\_t,\textcolor{keywordtype}{size\_t}>(\ tmpVecs[j].GetB(),\ tmpVecs[j].GetC()\ );}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ qval\ *=\ 0.75;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ qval\ +=\ radii[j]*0.25;}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ sd-\/>Center\ +=\ tmpVecs[j].GetA();\ \ \textcolor{comment}{//\ accumulating\ center}}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ tmpVecs.NullItem(j);}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{comment}{//\ do\ the\ averaging}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Vecs.Count();\ i++\ )}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ Vecs[i].Center\ /=\ Vecs[i].Count();}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keyword}{delete}\ []\ radii;}
+\DoxyCodeLine{00153\ \ \ \ \ QuickSorter::SortSF(Vecs,VecsCmpByCount);}
+\DoxyCodeLine{00154\ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTSymmTest_a8c4c62f82f9672786baef1f8428be9d1}{TestDependency}}(}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<vec3d,TCAtom*>}}\ >\&\ lista,}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<vec3d,TCAtom*>}}\ >\&\ listb,}
+\DoxyCodeLine{00158\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<\ TSymmTestData\ >}}\&\ Vecs,}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keyword}{const}\ smatd\&\ matr,\ \textcolor{keywordtype}{double}\ tol)}
+\DoxyCodeLine{00160\ \ \ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<\ AnAssociation3<vec3d,size\_t,size\_t>}}\ >\ tmpVecs;}
+\DoxyCodeLine{00162\ \ \ \ \ Vecs.Clear();}
+\DoxyCodeLine{00163\ \ \ \ \ Vecs.SetCapacity(\ lista.Count()*listb.Count()+1\ );}
+\DoxyCodeLine{00164\ \ \ \ \ tmpVecs.SetCapacity(\ lista.Count()*listb.Count()+1\ );}
+\DoxyCodeLine{00165\ \ \ \ \ vec3d\ a,\ b;}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ lista.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=0;\ j\ <\ listb.Count();\ j++\ )\ \ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ a\ =\ lista[i].GetA();}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ b\ =\ listb[j].GetA();}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ b\ =\ matr\ *\ b;}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ a\ +=\ b;}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ k=0;\ k\ <\ 3;\ k++\ )\ \ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ a[k]\ -\/=\ olx\_round(a[k]);}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a[k]\ <\ 0\ )\ \ a[k]\ +=\ 1;}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a[k]\ <\ tol\ )\ \ a[k]\ =\ 0;}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ (1-\/a[k])\ <\ tol\ )\ \ a[k]\ =\ 0;}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ tmpVecs.AddNew<vec3d,size\_t,\textcolor{keywordtype}{size\_t}>(a,\ i,\ j);}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{comment}{//\ get\ the\ square,\ as\ we\ compare\ quadratic\ distances}}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordtype}{double}\ stol\ =\ 3*tol*tol,\ qval;\ \ }
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{comment}{//\ optimisation\ technique}}
+\DoxyCodeLine{00186\ \ \ \ \ QuickSorter::SortSF(tmpVecs,VecsCmpByRadius);}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordtype}{float}*\ radii\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{float}[\ tmpVecs.Count()+1];}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ tmpVecs.Count();\ i++\ )}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ radii[i]\ =\ (\textcolor{keywordtype}{float})tmpVecs[i].GetA().QLength();}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{comment}{//\ collect\ the\ results}}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ tmpVecs.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ tmpVecs.IsNull(i)\ )\ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \mbox{\hyperlink{structTSymmTestData}{TSymmTestData}}*\ sd\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structTSymmTestData}{TSymmTestData}}(}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ tmpVecs[i].GetA(),\ tmpVecs[i].GetB(),\ tmpVecs[i].GetC());}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ Vecs.Add(*sd);}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ a\ =\ tmpVecs[i].GetA();\ \textcolor{comment}{//\ "{}crawling"{}\ center}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ qval\ =\ radii[i];}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ tmpVecs.NullItem(i);}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=i+1;\ j\ <\ tmpVecs.Count();\ j++\ )\ \ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (radii[j]\ -\/\ qval)\ >\ stol\ )\ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ tmpVecs.IsNull(j)\ )\ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ olx\_abs(tmpVecs[j].GetA()[0]-\/a[0])\ \ <\ tol\ \&\&}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ olx\_abs(tmpVecs[j].GetA()[1]-\/a[1])\ \ <\ tol\ \&\&}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ olx\_abs(tmpVecs[j].GetA()[2]-\/a[2])\ \ <\ tol\ \ )\ \ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ sd-\/>Atoms.AddNew<size\_t,\textcolor{keywordtype}{size\_t}>(tmpVecs[j].GetB(),\ tmpVecs[j].GetC());}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ a\ *=\ 0.75;}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ a\ +=\ tmpVecs[j].GetA()*0.25;\ \ \textcolor{comment}{//\ implement\ "{}crawling"{}}}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ qval\ *=\ 0.75;}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ qval\ +=\ radii[j]*0.25;}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//qval\ /=\ 2;}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//a\ /=\ 2;}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ sd-\/>Center\ +=\ tmpVecs[j].GetA();\ \ \textcolor{comment}{//\ accumulating\ center}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ tmpVecs.NullItem(j);}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{comment}{//\ do\ the\ averaging}}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ Vecs.Count();\ i++\ )}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ Vecs[i].Center\ /=\ Vecs[i].Count();}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keyword}{delete}\ []\ radii;}
+\DoxyCodeLine{00224\ \ \ \ \ QuickSorter::SortSF(Vecs,VecsCmpByCount);}
+\DoxyCodeLine{00225\ \ \ \}}
+\DoxyCodeLine{00226\ \};}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ EndXlibNamespace()}
+\DoxyCodeLine{00229\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

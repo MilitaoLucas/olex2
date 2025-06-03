@@ -1,0 +1,110 @@
+\doxysection{olxfunc.\+h}
+\hypertarget{olxfunc_8h_source}{}\label{olxfunc_8h_source}\index{sdl/olxfunc.h@{sdl/olxfunc.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2015\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_func\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_func\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structolx__func}{olx\_func}}\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ func\_t>}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{struct\ }func0\_\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ func\_t\ func;}
+\DoxyCodeLine{00018\ \ \ \ \ func0\_(\textcolor{keyword}{const}\ func\_t\ \&f)}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ :\ func(f)}
+\DoxyCodeLine{00020\ \ \ \ \ \{\}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>\ \textcolor{keywordtype}{void}\ OnItem(item\_t\ \&i,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ (olx\_ref::get(i).*func)();}
+\DoxyCodeLine{00023\ \ \ \ \ \}}
+\DoxyCodeLine{00024\ \ \ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ func\_t,\ \textcolor{keyword}{typename}\ arg1\_t>}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{struct\ }func1\_\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ func\_t\ func;}
+\DoxyCodeLine{00029\ \ \ \ \ arg1\_t\ a;}
+\DoxyCodeLine{00030\ \ \ \ \ func1\_(\textcolor{keyword}{const}\ func\_t\ \&f,\ \textcolor{keyword}{const}\ arg1\_t\ \&a)}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ :\ func(f),\ a(a)}
+\DoxyCodeLine{00032\ \ \ \ \ \{\}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>\ \textcolor{keywordtype}{void}\ OnItem(item\_t\ \&i,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ (olx\_ref::get(i).*func)(a);}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \};}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ base\_t,\ \textcolor{keyword}{typename}\ func\_t>}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{struct\ }mfunc1\_\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ base\_t\ \&base;}
+\DoxyCodeLine{00040\ \ \ \ \ func\_t\ func;}
+\DoxyCodeLine{00041\ \ \ \ \ mfunc1\_(base\_t\ \&base,\ \textcolor{keyword}{const}\ func\_t\ \&f)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ :\ base(base),\ func(f)}
+\DoxyCodeLine{00043\ \ \ \ \ \{\}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>\ \textcolor{keywordtype}{void}\ OnItem(item\_t\ \&i,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ (base.*func)(olx\_ref::get(i));}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \};}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ func\_t,\ \textcolor{keyword}{typename}\ arg1\_t,\ \textcolor{keyword}{typename}\ arg2\_t>}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{struct\ }func2\_\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ func\_t\ func;}
+\DoxyCodeLine{00051\ \ \ \ \ arg1\_t\ a;}
+\DoxyCodeLine{00052\ \ \ \ \ arg2\_t\ b;}
+\DoxyCodeLine{00053\ \ \ \ \ func2\_(\textcolor{keyword}{const}\ func\_t\ \&f,\ \textcolor{keyword}{const}\ arg1\_t\ \&a,\ \textcolor{keyword}{const}\ arg2\_t\ \&b)}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ :\ func(f),\ a(a),\ b(b)}
+\DoxyCodeLine{00055\ \ \ \ \ \{\}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>\ \textcolor{keywordtype}{void}\ OnItem(item\_t\ \&i,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ (olx\_ref::get(i).*func)(a,\ b);}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \};}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ base\_t,\ \textcolor{keyword}{typename}\ func\_t,\ \textcolor{keyword}{typename}\ arg1\_t>}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{struct\ }mfunc2\_\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ base\_t\ \&base;}
+\DoxyCodeLine{00063\ \ \ \ \ func\_t\ func;}
+\DoxyCodeLine{00064\ \ \ \ \ arg1\_t\ a;}
+\DoxyCodeLine{00065\ \ \ \ \ mfunc2\_(base\_t\ \&base,\ \textcolor{keyword}{const}\ func\_t\ \&f,\ \textcolor{keyword}{const}\ arg1\_t\ \&a)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ :\ base(base),\ func(f),\ a(a)}
+\DoxyCodeLine{00067\ \ \ \ \ \{\}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ item\_t>\ \textcolor{keywordtype}{void}\ OnItem(item\_t\ \&i,\ \textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ (base.*func)(olx\_ref::get(i),\ a);}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ func\_t>}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__func_1_1func0__}{func0\_<func\_t>}}\ make(\textcolor{keyword}{const}\ func\_t\ \&f)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__func_1_1func0__}{func0\_<func\_t>}}(f);}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ func\_t,\ \textcolor{keyword}{typename}\ arg1\_t>}
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{static}\ func1\_<func\_t,\ arg1\_t>\ make(\textcolor{keyword}{const}\ func\_t\ \&f,\ \textcolor{keyword}{const}\ arg1\_t\ \&a)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{return}\ func1\_<func\_t,\ arg1\_t>(f,\ a);}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ func\_t,\ \textcolor{keyword}{typename}\ arg1\_t,\ \textcolor{keyword}{typename}\ arg2\_t>}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__func_1_1func2__}{func2\_<func\_t,\ arg1\_t,\ arg2\_t>}}\ make(\textcolor{keyword}{const}\ func\_t\ \&f,\ \textcolor{keyword}{const}\ arg1\_t\ \&a,}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{const}\ arg2\_t\ \&b)}
+\DoxyCodeLine{00086\ \ \ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__func_1_1func2__}{func2\_<func\_t,\ arg1\_t,\ arg2\_t>}}(f,\ a,\ b);}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ base\_t,\ \textcolor{keyword}{typename}\ func\_t>}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__func_1_1mfunc1__}{mfunc1\_<base\_t,\ func\_t>}}\ make(base\_t\ *base,\ \textcolor{keyword}{const}\ func\_t\ \&f)\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__func_1_1mfunc1__}{mfunc1\_<base\_t,\ func\_t>}}(*base,\ f);}
+\DoxyCodeLine{00093\ \ \ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ base\_t,\ \textcolor{keyword}{typename}\ func\_t,\ \textcolor{keyword}{typename}\ arg1\_t>}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structolx__func_1_1mfunc2__}{mfunc2\_<base\_t,\ func\_t,\ arg1\_t>}}\ make(base\_t\ *base,\ \textcolor{keyword}{const}\ func\_t\ \&f,}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{const}\ arg1\_t\ \&a)}
+\DoxyCodeLine{00098\ \ \ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__func_1_1mfunc2__}{mfunc2\_<base\_t,\ func\_t,\ arg1\_t>}}(*base,\ f,\ a);}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

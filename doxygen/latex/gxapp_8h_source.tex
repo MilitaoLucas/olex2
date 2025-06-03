@@ -1,0 +1,758 @@
+\doxysection{gxapp.\+h}
+\hypertarget{gxapp_8h_source}{}\label{gxapp_8h_source}\index{gxlib/gxapp.h@{gxlib/gxapp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2025\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gxl\_gxapp\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gxl\_gxapp\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}gxbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}xapp.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}etable.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}symmlib.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}bitarray.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}xfader.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}glmouse.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}dframe.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}3dframe.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}glfont.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}styles.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}glbitmap.h"{}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ "{}hkl.h"{}}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ "{}fracmask.h"{}}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}glrender.h"{}}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ "{}xatom.h"{}}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ "{}xbond.h"{}}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ "{}xplane.h"{}}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ "{}gxfiles.h"{}}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ "{}label\_utils.h"{}}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#ifdef\ \_\_WXWIDGETS\_\_}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}wx/zipstrm.h"{}}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#if\ defined\ \_\_APPLE\_\_\ \&\&\ defined\ \_\_MACH\_\_}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\ \ \#define\ OLX\_RESOURCES\_FOLDER\ "{}olex2.app/Contents/Resources/"{}}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\ \ \#define\ OLX\_RESOURCES\_FOLDER\ "{}"{}}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ BeginGxlNamespace()}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00045\ \ \ simNone\ =\ 0x0000,\ \textcolor{comment}{//\ initialisation\ method}}
+\DoxyCodeLine{00046\ \ \ simHDC\ \ =\ 0x0001,}
+\DoxyCodeLine{00047\ \ \ simBMP\ \ =\ 0x0002;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00050\ \ \ sdsNone\ \ \ =\ 0,\ \textcolor{comment}{//\ drawing\ style}}
+\DoxyCodeLine{00051\ \ \ sdsBS\ \ \ \ \ =\ 1,\ \textcolor{comment}{//\ bals\ and\ sticks}}
+\DoxyCodeLine{00052\ \ \ sdsSP\ \ \ \ \ =\ 2,\ \textcolor{comment}{//\ space\ filling}}
+\DoxyCodeLine{00053\ \ \ sdsES\ \ \ \ \ =\ 3,\ \ \textcolor{comment}{//\ ellipsoide\ and\ sticks}}
+\DoxyCodeLine{00054\ \ \ sdsESR\ \ \ \ =\ 4,\ \ \textcolor{comment}{//\ ellipsoide\ and\ rims\ and\ sticks}}
+\DoxyCodeLine{00055\ \ \ sdsWF\ \ \ \ \ =\ 5,\ \ \textcolor{comment}{//\ wire\ frame}}
+\DoxyCodeLine{00056\ \ \ sdsSS\ \ \ \ \ =\ 6,\ \ \textcolor{comment}{//\ stippled\ cones\ +\ spheres}}
+\DoxyCodeLine{00057\ \ \ sdsST\ \ \ \ \ =\ 7;\ \ \textcolor{comment}{//\ sticks}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ grow\ mode}}
+\DoxyCodeLine{00060\ const\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00061\ \ \ gmCovalent\ \ \ \ \ \ =\ 0x0001,}
+\DoxyCodeLine{00062\ \ \ gmSInteractions\ =\ 0x0002,}
+\DoxyCodeLine{00063\ \ \ gmSameAtoms\ \ \ \ \ =\ 0x0004,}
+\DoxyCodeLine{00064\ \ \ gmVanDerWaals\ \ \ =\ 0x0008;}
+\DoxyCodeLine{00065\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00066\ class\ TDUnitCell;}
+\DoxyCodeLine{00067\ class\ TDBasis;}
+\DoxyCodeLine{00068\ class\ TGraphicsObjects;}
+\DoxyCodeLine{00069\ class\ \mbox{\hyperlink{classTXGlLabels}{TXGlLabels}};}
+\DoxyCodeLine{00070\ class\ TXLine;}
+\DoxyCodeLine{00071\ class\ TXAngle;}
+\DoxyCodeLine{00072\ class\ TDRing;}
+\DoxyCodeLine{00073\ class\ TXGrowLine;}
+\DoxyCodeLine{00074\ class\ TXGrowPoint;}
+\DoxyCodeLine{00075\ class\ TXGlLabel;}
+\DoxyCodeLine{00076\ class\ TXReflection;}
+\DoxyCodeLine{00077\ class\ \mbox{\hyperlink{classTXGrid}{TXGrid}};}
+\DoxyCodeLine{00078\ class\ TXLattice;}
+\DoxyCodeLine{00079\ class\ TDUserObj;}
+\DoxyCodeLine{00080\ class\ TDSphere;}
+\DoxyCodeLine{00081\ class\ TAtomLegend;}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ class\ TGXApp\ :\ public\ TXApp,\ AEventsDispatcher,\ public\ ASelectionOwner\ \{}
+\DoxyCodeLine{00084\ \ \ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TXGrowPoint,\ AGDrawObject>}}\ XGrowPoints;}
+\DoxyCodeLine{00085\ \ \ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TXGrowLine,\ AGDrawObject>}}\ XGrowLines;}
+\DoxyCodeLine{00086\ \ \ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TDUserObj,\ AGDrawObject>}}\ UserObjects;}
+\DoxyCodeLine{00087\ \ \ TStrList\ AtomsToGrow;}
+\DoxyCodeLine{00088\ \ \ smatd\_list\ UsedTransforms;}
+\DoxyCodeLine{00089\ \ \ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TXReflection,\ AGDrawObject>}}\ XReflections;}
+\DoxyCodeLine{00090\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TGlBitmap>}}\ GlBitmaps;}
+\DoxyCodeLine{00091\ \ \ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TXGlLabel,\ IOlxObject>}}\ XLabels;}
+\DoxyCodeLine{00092\ \ \ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TDRing,\ AGDrawObject>}}\ Rings;}
+\DoxyCodeLine{00093\ \ \ \mbox{\hyperlink{classTXGlLabels}{TXGlLabels}}\ *FLabels;}
+\DoxyCodeLine{00094\ \ \ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TXLine,\ AGDrawObject>}}\ Lines;}
+\DoxyCodeLine{00095\ \ \ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TXAngle,\ AGDrawObject>}}\ Angles;}
+\DoxyCodeLine{00096\ \ \ \textcolor{comment}{//\ have\ to\ manage\ memory\ ourselves\ -\/\ base\ class\ is\ used}}
+\DoxyCodeLine{00097\ \ \ AGDObjList\ LooseObjects;}
+\DoxyCodeLine{00098\ \ \ AGDObjList\ ObjectsToCreate;}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ ClearXObjects();}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ CreateXRefs();}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{void}\ CreateXGrowLines();}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ \_CreateXGrowVLines();}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ CreateXGrowPoints();}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{double}\ DeltaV;}
+\DoxyCodeLine{00107\ \ \ \textcolor{comment}{//\ drawing\ data\ and\ functions}}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{double}\ FPictureResolution;}
+\DoxyCodeLine{00109\ \ \ \mbox{\hyperlink{classolxstr__set}{olxstr\_set<>}}\ IndividualCollections;}
+\DoxyCodeLine{00110\ \ \ \textcolor{comment}{/*\ makes\ sure\ that\ only\ bonds\ (and\ grow\ mode\ lines)\ with\ both\ atoms\ visible}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\ \ are\ visible,\ also\ considers\ H,\ and\ Q\ bonds\ special\ handling}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordtype}{void}\ \_syncBondsVisibility();}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTStateRegistry}{TStateRegistry}}\ *States;}
+\DoxyCodeLine{00115\ \ \ TStrList\ TextureNames;}
+\DoxyCodeLine{00116\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ obj\_t,\ \textcolor{keyword}{class}\ act\_t>\ \textcolor{keyword}{struct\ }TIterator\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ offset,\ count;}
+\DoxyCodeLine{00119\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<ObjectCaster<obj\_t,\ act\_t>}}\ >\ objects;}
+\DoxyCodeLine{00120\ \ \ \ \ TIterator()}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ :\ offset(0),\ count(0)}
+\DoxyCodeLine{00122\ \ \ \ \ \{\}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{bool}\ HasNext()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (offset\ <\ count);\ \}}
+\DoxyCodeLine{00124\ \ \ \ \ act\_t\&\ Next()\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ off\ =\ offset;}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ objects.Count();\ i++)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (off\ >=\ objects[i].Count())\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ off\ -\/=\ objects[i].Count();}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ offset++;}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ objects[i][off];}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}end\ is\ reached"{}});}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{void}\ Reset()\ \{\ offset\ =\ 0;\ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Functor>}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keyword}{const}\ TIterator\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ objects.Count();\ i++)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ objects[i].ForEach(f);}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \};}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{struct\ }AtomIterator\ :\ \textcolor{keyword}{public}\ TIterator<TSAtom,\ TXAtom>\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ AtomIterator(\textcolor{keyword}{const}\ TGXApp\&\ app)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ app.XFiles().Count();\ i++)\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ objects.AddCopy(app.XFiles()[i].GetLattice().GetObjects()}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ .atoms.GetAccessor<\mbox{\hyperlink{classTXAtom}{TXAtom}}>());}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ count\ +=\ objects.GetLast().Count();}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \};}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{struct\ }BondIterator\ :\ \textcolor{keyword}{public}\ TIterator<TSBond,\ TXBond>\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ BondIterator(\textcolor{keyword}{const}\ TGXApp\&\ app)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ app.XFiles().Count();\ i++)\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ objects.AddCopy(app.XFiles()[i].GetLattice().GetObjects()}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ .bonds.GetAccessor<\mbox{\hyperlink{classTXBond}{TXBond}}>());}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ count\ +=\ objects.GetLast().Count();}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \};}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{struct\ }PlaneIterator\ :\ \textcolor{keyword}{public}\ TIterator<TSPlane,\ TXPlane>\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ PlaneIterator(\textcolor{keyword}{const}\ TGXApp\&\ app)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ app.XFiles().Count();\ i++)\ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ objects.AddCopy(app.XFiles()[i].GetLattice().GetObjects()}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ .planes.GetAccessor<TXPlane>());}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ count\ +=\ objects.GetLast().Count();}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \};}
+\DoxyCodeLine{00173\ \ \ \mbox{\hyperlink{structTGXApp_1_1AtomIterator}{AtomIterator}}\ GetAtoms()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structTGXApp_1_1AtomIterator}{AtomIterator}}(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00174\ \ \ BondIterator\ GetBonds()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ BondIterator(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00175\ \ \ PlaneIterator\ GetPlanes()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ PlaneIterator(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00176\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00177\ \ \ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}*\ GlRenderer;}
+\DoxyCodeLine{00178\ \ \ TXFader*\ Fader;}
+\DoxyCodeLine{00179\ \ \ THklFile*\ FHklFile;}
+\DoxyCodeLine{00180\ \ \ \mbox{\hyperlink{classTGlMouse}{TGlMouse}}*\ FGlMouse;}
+\DoxyCodeLine{00181\ \ \ TDBasis*\ FDBasis;}
+\DoxyCodeLine{00182\ \ \ \mbox{\hyperlink{classTDFrame}{TDFrame}}*\ FDFrame;}
+\DoxyCodeLine{00183\ \ \ \mbox{\hyperlink{classT3DFrameCtrl}{T3DFrameCtrl}}*\ F3DFrame;}
+\DoxyCodeLine{00184\ \ \ \mbox{\hyperlink{classTXGrid}{TXGrid}}*\ FXGrid;}
+\DoxyCodeLine{00185\ \ \ TDSphere\ *FDSphere;}
+\DoxyCodeLine{00186\ \ \ TAtomLegend\ *FAtomLegend;}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ HasGUI\_()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00189\ \ \ \textcolor{keywordtype}{void}\ FragmentVisible(\mbox{\hyperlink{classTNetwork}{TNetwork}}\ *N,\ \textcolor{keywordtype}{bool}\ V);}
+\DoxyCodeLine{00190\ \ \ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Sender,}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00192\ \ \ \textcolor{keywordtype}{void}\ GetGPCollections(AGDObjList\&\ GDObjects,\ \mbox{\hyperlink{classTPtrList}{TPtrList<TGPCollection>}}\&\ Result);}
+\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTGXApp_1_1GroupData}{GroupData}}\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtom::Ref>}}\ atoms;}
+\DoxyCodeLine{00195\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSBond::Ref>}}\ bonds;}
+\DoxyCodeLine{00196\ \ \ \ \ olxstr\ collectionName;}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordtype}{bool}\ visible;}
+\DoxyCodeLine{00198\ \ \ \ \ index\_t\ parent\_id;}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ atoms.IsEmpty()\ \&\&\ bonds.IsEmpty();\ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ atoms.Clear();}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ bonds.Clear();}
+\DoxyCodeLine{00203\ \ \ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \ \ \mbox{\hyperlink{structTGXApp_1_1GroupData}{GroupData}}\&\ operator\ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{structTGXApp_1_1GroupData}{GroupData}}\&\ g)\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ atoms\ =\ g.atoms;}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ bonds\ =\ g.bonds;}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ collectionName\ =\ g.collectionName;}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ visible\ =\ g.visible;}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ parent\_id\ =\ g.parent\_id;}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \};}
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00214\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtom::Ref>}}\ atoms;}
+\DoxyCodeLine{00215\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSBond::Ref>}}\ bonds;}
+\DoxyCodeLine{00216\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<olxstr>}}\ labels;}
+\DoxyCodeLine{00217\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<vec3d>}}\ centers;}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ atoms.Clear();}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ bonds.Clear();}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ labels.Clear();}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ centers.Clear();}
+\DoxyCodeLine{00223\ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \}\ LabelInfo;}
+\DoxyCodeLine{00225\ \ \ \textcolor{keywordtype}{void}\ StoreLabels();}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordtype}{void}\ RestoreLabels();}
+\DoxyCodeLine{00227\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<GroupData>}}\ GroupDefs;}
+\DoxyCodeLine{00228\ \ \ GroupData\ SelectionCopy[2];}
+\DoxyCodeLine{00229\ \ \ \mbox{\hyperlink{classolxdict}{olxdict<TGlGroup*,\ size\_t,\ TPointerComparator>}}\ GroupDict;}
+\DoxyCodeLine{00230\ \ \ \textcolor{comment}{//\ stores\ numeric\ references}}
+\DoxyCodeLine{00231\ \ \ \textcolor{keywordtype}{void}\ RestoreGroup(\mbox{\hyperlink{classTGlGroup}{TGlGroup}}\&\ glg,\ \textcolor{keyword}{const}\ GroupData\&\ group);}
+\DoxyCodeLine{00232\ \ \ \textcolor{keywordtype}{void}\ RestoreGroups();}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{void}\ StoreGroup(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}\&\ glg,\ GroupData\&\ group);}
+\DoxyCodeLine{00234\ \ \ \textcolor{keywordtype}{void}\ \_UpdateGroupIds();}
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ CalcMaxAtomTag(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ latt)\ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ac\ =\ 0;}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ latt.GetObjects().atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!latt.GetObjects().atoms[i].IsDeleted())\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ ac++;}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{return}\ ac;}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ CalcMaxBondTag(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ latt)\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ bc\ =\ 0;}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ latt.GetObjects().bonds.Count();\ i++)}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!latt.GetObjects().bonds[i].IsDeleted())}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ bc++;}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ bc;}
+\DoxyCodeLine{00250\ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \textcolor{keywordtype}{size\_t}\ GetAtomTag(\mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ sa,\ TSizeList\&\ latt\_sz)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ off\ =\ 0;}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Files.Count();\ i++)\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sa.GetNetwork().GetLattice()\ ==\ Files[i].GetLattice())\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ off\ +\ sa.GetTag();}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ off\ +=\ latt\_sz[i];}
+\DoxyCodeLine{00258\ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00260\ \ \ \}}
+\DoxyCodeLine{00261\ \ \ \textcolor{keywordtype}{size\_t}\ GetBondTag(\mbox{\hyperlink{classTSBond}{TSBond}}\&\ sb,\ TSizeList\&\ latt\_sz)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ off\ =\ 0;}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Files.Count();\ i++)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sb.GetNetwork().GetLattice()\ ==\ Files[i].GetLattice())\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ off\ +\ sb.GetTag();}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ off\ +=\ latt\_sz[i];}
+\DoxyCodeLine{00268\ \ \ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00270\ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ GetXAtom(\textcolor{keywordtype}{size\_t}\ ind)\ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classTXAtom}{TXAtom}}\&\textcolor{keyword}{>}(GetSAtom(ind));}
+\DoxyCodeLine{00273\ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \mbox{\hyperlink{classTXBond}{TXBond}}\&\ GetXBond(\textcolor{keywordtype}{size\_t}\ ind)\ \{}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{classTXBond}{TXBond}}\&\textcolor{keyword}{>}(GetSBond(ind));}
+\DoxyCodeLine{00276\ \ \ \}}
+\DoxyCodeLine{00277\ \ \ sorted::ObjectPrimitive<index\_t>::cons\_list\_type\ GetVisibleCAtomTags();}
+\DoxyCodeLine{00278\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetPlatformString\_(\textcolor{keywordtype}{bool}\ full)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00279\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00280\ \ \ \textcolor{comment}{/*\ considers\ overlayed\ files}}
+\DoxyCodeLine{00281\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00282\ \ \ \textcolor{keywordtype}{void}\ UpdateConnectivity();}
+\DoxyCodeLine{00283\ \ \ \textcolor{keywordtype}{size\_t}\ stateStructureVisible,}
+\DoxyCodeLine{00284\ \ \ \ \ stateHydrogensVisible,}
+\DoxyCodeLine{00285\ \ \ \ \ stateHydrogenBondsVisible,}
+\DoxyCodeLine{00286\ \ \ \ \ stateQPeaksVisible,}
+\DoxyCodeLine{00287\ \ \ \ \ stateQPeakBondsVisible,}
+\DoxyCodeLine{00288\ \ \ \ \ stateCellVisible,}
+\DoxyCodeLine{00289\ \ \ \ \ stateBasisVisible,}
+\DoxyCodeLine{00290\ \ \ \ \ stateGradientOn,}
+\DoxyCodeLine{00291\ \ \ \ \ stateLabelsVisible,}
+\DoxyCodeLine{00292\ \ \ \ \ stateXGridVisible,}
+\DoxyCodeLine{00293\ \ \ \ \ stateWBoxVisible;}
+\DoxyCodeLine{00294\ \ \ \mbox{\hyperlink{classTStateRegistry}{TStateRegistry}}\ \&\ GetStatesRegistry()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *States;\ \}}
+\DoxyCodeLine{00295\ \ \ \textcolor{comment}{//\ only\ works\ with\ wxWidgets\ and\ windows}}
+\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ ToClipboard(\textcolor{keyword}{const}\ olxstr\ \&text)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00297\ \ \ \textcolor{comment}{/*\ funny\ enough,\ if\ this\ is\ not\ overriden\ -\/\ all\ TStrLists\ are\ being\ converted}}
+\DoxyCodeLine{00298\ \textcolor{comment}{\ \ to\ string,\ thus\ making\ the\ compilation\ impossible...}}
+\DoxyCodeLine{00299\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00300\ \ \ \textcolor{keywordtype}{bool}\ ToClipboard(\textcolor{keyword}{const}\ TStrList\ \&l)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordflow}{return}\ TBasicApp::ToClipboard(l);}
+\DoxyCodeLine{00302\ \ \ \}}
+\DoxyCodeLine{00303\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00304\ \ \ \textcolor{keywordtype}{double}\ FProbFactor;}
+\DoxyCodeLine{00305\ \ \ \textcolor{comment}{//\ the\ default\ is\ 1,\ Calculated\ Zoom\ is\ multiplid\ by\ this\ number}}
+\DoxyCodeLine{00306\ \ \ \textcolor{keywordtype}{double}\ ExtraZoom;}
+\DoxyCodeLine{00307\ \ \ \textcolor{comment}{/*\ intialises\ SAtom::Tag\ to\ XAtom::Id\ and\ checks\ if\ any\ atom\ with}}
+\DoxyCodeLine{00308\ \textcolor{comment}{\ \ AtomInfo\ ==\ atom\_type\ has\ visible\ neighbours,\ if\ not\ -\/\ it\ will\ be\ hidden,}}
+\DoxyCodeLine{00309\ \textcolor{comment}{\ \ otherwise\ its\ visibility\ will\ become\ 'show';\ for\ bonds\ makes\ them\ visible}}
+\DoxyCodeLine{00310\ \textcolor{comment}{\ \ only\ if\ both\ atoms\ are\ visible}}
+\DoxyCodeLine{00311\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00312\ \ \ \textcolor{keywordtype}{void}\ SyncAtomAndBondVisiblity(\textcolor{keywordtype}{short}\ atom\_type,\ \textcolor{keywordtype}{bool}\ show\_a,\ \textcolor{keywordtype}{bool}\ show\_b);}
+\DoxyCodeLine{00313\ \ \ \textcolor{keywordtype}{void}\ \_maskInvisible();}
+\DoxyCodeLine{00314\ \ \ \textcolor{keywordtype}{bool}\ MainFormVisible;}
+\DoxyCodeLine{00315\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTGXApp_1_1DUnitCellPtr}{DUnitCellPtr}}\ :\ \textcolor{keyword}{public}\ olx\_virtual\_ptr<TDUnitCell>\ \{}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *get\_ptr()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00317\ \ \ \};}
+\DoxyCodeLine{00318\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00319\ \ \ \textcolor{comment}{//\ FileName\ -\/\ argv[0];}}
+\DoxyCodeLine{00320\ \ \ TGXApp(\textcolor{keyword}{const}\ olxstr\&\ FileName,\ \mbox{\hyperlink{classAGlScene}{AGlScene}}*\ scene\ =\ 0);}
+\DoxyCodeLine{00321\ \ \ \textcolor{keyword}{virtual}\ \string~TGXApp();}
+\DoxyCodeLine{00322\ \ \ \textcolor{keywordtype}{void}\ CreateObjects(\textcolor{keywordtype}{bool}\ CenterModel,\ \textcolor{keywordtype}{bool}\ init\_visibility\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00323\ \ \ \textcolor{keywordtype}{void}\ UpdateBonds();}
+\DoxyCodeLine{00324\ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}*\ AddObjectToCreate(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}*\ obj);}
+\DoxyCodeLine{00325\ \ \ \textcolor{keywordtype}{bool}\ RemoveObjectToCreate(\textcolor{keyword}{const}\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}*\ obj)\ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \textcolor{keywordflow}{return}\ ObjectsToCreate.Remove(obj);}
+\DoxyCodeLine{00327\ \ \ \}}
+\DoxyCodeLine{00328\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00329\ \ \ \textcolor{keywordtype}{void}\ ClearXGrowPoints();}
+\DoxyCodeLine{00330\ \ \ \textcolor{comment}{//\ changes\ the\ graphics\ quality}}
+\DoxyCodeLine{00331\ \ \ int32\_t\ Quality(\textcolor{keywordtype}{int}\ v);}
+\DoxyCodeLine{00332\ \ \ \textcolor{keywordtype}{void}\ Init();}
+\DoxyCodeLine{00333\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00334\ \ \ \textcolor{keywordtype}{void}\ ClearIndividualCollections();}
+\DoxyCodeLine{00335\ \ \ \textcolor{keywordtype}{void}\ ClearGroupDefinitions();}
+\DoxyCodeLine{00336\ \ \ \textcolor{keywordtype}{void}\ ClearStructureRelated();}
+\DoxyCodeLine{00337\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00338\ \ \ \textcolor{comment}{//\ GlRender\ interface}}
+\DoxyCodeLine{00339\ \ \ \textcolor{keywordtype}{void}\ ClearColor(\textcolor{keywordtype}{int}\ Color)\ \{\ GlRenderer-\/>LightModel.SetClearColor(Color);\ \}}
+\DoxyCodeLine{00340\ \ \ uint32\_t\ ClearColor()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{keywordflow}{return}\ GlRenderer-\/>LightModel.GetClearColor().GetRGB();}
+\DoxyCodeLine{00342\ \ \ \}}
+\DoxyCodeLine{00343\ \ \ \mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ GetRenderer()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *GlRenderer;\ \}}
+\DoxyCodeLine{00344\ \ \ TXFader\&\ GetFader()\ \{\ \textcolor{keywordflow}{return}\ *Fader;\ \}}
+\DoxyCodeLine{00345\ \ \ \textcolor{keywordtype}{void}\ InitFadeMode();}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \textcolor{comment}{//\ implementation\ of\ BasicApp\ function\ -\/\ renders\ the\ scene}}
+\DoxyCodeLine{00348\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Update();}
+\DoxyCodeLine{00349\ \ \ DefPropBIsSet(MainFormVisible)}
+\DoxyCodeLine{00350\ \ \ \ \ \textcolor{comment}{//\ renders\ the\ scene\ and\ returns\ used\ time\ in\ ms}}
+\DoxyCodeLine{00351\ \ \ \ \ uint64\_t\ Draw();}
+\DoxyCodeLine{00352\ \ \ \textcolor{comment}{/*\ prepares\ drawing\ on\ a\ bitmap,\ recreates\ graphics\ with\ different}}
+\DoxyCodeLine{00353\ \textcolor{comment}{\ \ parameters,\ scales\ fonts}}
+\DoxyCodeLine{00354\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00355\ \ \ \textcolor{keywordtype}{void}\ BeginDrawBitmap(\textcolor{keywordtype}{double}\ res);}
+\DoxyCodeLine{00356\ \ \ \textcolor{comment}{//\ restores\ the\ on-\/screen\ rendering}}
+\DoxyCodeLine{00357\ \ \ \textcolor{keywordtype}{void}\ FinishDrawBitmap();}
+\DoxyCodeLine{00358\ \ \ \textcolor{keywordtype}{void}\ Resize(\textcolor{keywordtype}{int}\ new\_w,\ \textcolor{keywordtype}{int}\ new\_h)\ \{\ GlRenderer-\/>Resize(new\_w,\ new\_h);\ \}}
+\DoxyCodeLine{00359\ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}*\ SelectObject(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{bool}\ picking)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00360\ \ \ \ \ \textcolor{keywordflow}{return}\ GlRenderer-\/>SelectObject(x,\ y,\ picking);}
+\DoxyCodeLine{00361\ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\ *SelectPrimitive(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{keywordflow}{return}\ GlRenderer-\/>SelectPrimitive(x,\ y);}
+\DoxyCodeLine{00364\ \ \ \}}
+\DoxyCodeLine{00365\ \ \ DefPropP(\textcolor{keywordtype}{double},\ ExtraZoom);}
+\DoxyCodeLine{00366\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00367\ \ \ \textcolor{comment}{//\ TXApp\ interface}}
+\DoxyCodeLine{00368\ \ \ TDBasis\&\ DBasis()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *FDBasis;\ \}}
+\DoxyCodeLine{00369\ \ \ THklFile\&\ HklFile()\ \{\ \textcolor{keywordflow}{return}\ *FHklFile;\ \}}
+\DoxyCodeLine{00370\ \ \ \mbox{\hyperlink{classTDFrame}{TDFrame}}\&\ DFrame()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *FDFrame;\ \}}
+\DoxyCodeLine{00371\ \ \ \mbox{\hyperlink{classTXGrid}{TXGrid}}\&\ XGrid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *FXGrid;\ \}}
+\DoxyCodeLine{00372\ \ \ TDSphere\&\ DSphere()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *FDSphere;\ \}}
+\DoxyCodeLine{00373\ \ \ TAtomLegend\ \&AtomLegend()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *FAtomLegend;\ \}}
+\DoxyCodeLine{00374\ \ \ \mbox{\hyperlink{classT3DFrameCtrl}{T3DFrameCtrl}}\&\ Get3DFrame()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *F3DFrame;\ \}}
+\DoxyCodeLine{00375\ \ \ \mbox{\hyperlink{classTGlMouse}{TGlMouse}}\&\ GetMouseHandler()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *FGlMouse;\ \}}
+\DoxyCodeLine{00376\ \ \ \mbox{\hyperlink{classTGXFile}{TGXFile}}\ \&XFile()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classTGXFile}{TGXFile}}\ \&)Files[0];\ \}}
+\DoxyCodeLine{00377\ \ \ \mbox{\hyperlink{classTGXFile}{TGXFile}}\ \&XFile(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (\mbox{\hyperlink{classTGXFile}{TGXFile}}\ \&)Files[i];\ \}}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \ \ \textcolor{comment}{//\ this\ function\ to\ be\ used\ to\ get\ all\ networks,\ including\ th\ overlayed\ files}}
+\DoxyCodeLine{00380\ \ \ \textcolor{keywordtype}{size\_t}\ GetNetworks(TNetPList\&\ nets);}
+\DoxyCodeLine{00381\ \ \ \textcolor{comment}{//\ sets\ current\ active\ XFile...}}
+\DoxyCodeLine{00382\ \ \ \textcolor{keywordtype}{void}\ SetActiveXFile(\textcolor{keywordtype}{size\_t}\ i);}
+\DoxyCodeLine{00383\ \ \ \mbox{\hyperlink{classTGXFile}{TGXFile}}\&\ NewXFile();}
+\DoxyCodeLine{00384\ \ \ \textcolor{keywordtype}{size\_t}\ XFileCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Files.Count();\ \}}
+\DoxyCodeLine{00385\ \ \ \textcolor{comment}{//\ aligns\ overlayed\ structures\ on\ a\ 2D\ grid}}
+\DoxyCodeLine{00386\ \ \ \textcolor{keywordtype}{void}\ AlignXFiles();}
+\DoxyCodeLine{00387\ \ \ \textcolor{comment}{//\ calculates\ maximum\ radius\ and\ center\ of\ given\ lattice}}
+\DoxyCodeLine{00388\ \ \ \textcolor{keywordtype}{void}\ CalcLatticeRandCenter(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ latt,\ \textcolor{keywordtype}{double}\&\ r,\ vec3d\&\ cnt);}
+\DoxyCodeLine{00389\ \ \ \textcolor{keywordtype}{void}\ DeleteXFile(\textcolor{keywordtype}{size\_t}\ index);}
+\DoxyCodeLine{00390\ \ \ \textcolor{keywordtype}{void}\ DeleteXFiles();}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \ \ \textcolor{keywordtype}{void}\ Select(\textcolor{keyword}{const}\ vec3d\&\ From,\ \textcolor{keyword}{const}\ vec3d\&\ To);}
+\DoxyCodeLine{00393\ \ \ \textcolor{keywordtype}{void}\ SelectAll(\textcolor{keywordtype}{bool}\ Select);}
+\DoxyCodeLine{00394\ \ \ \textcolor{keywordtype}{void}\ InvertSelection()\ \{\ GetRenderer().InvertSelection();\ \ Draw();\ \}}
+\DoxyCodeLine{00395\ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ FindObjectGroup(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ G)\ \{}
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keywordflow}{return}\ GetRenderer().FindObjectGroup(G);}
+\DoxyCodeLine{00397\ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ FindGroup(\textcolor{keyword}{const}\ olxstr\&\ colName)\ \{}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keywordflow}{return}\ GetRenderer().FindGroupByName(colName);}
+\DoxyCodeLine{00400\ \ \ \}}
+\DoxyCodeLine{00401\ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}\&\ GetSelection()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetRenderer().GetSelection();\ \}}
+\DoxyCodeLine{00402\ \ \ \textcolor{comment}{/*\ returns\ the\ newly\ created\ group\ or\ NULL\ if\ the\ grouping\ has\ failed\ */}}
+\DoxyCodeLine{00403\ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}\ *GroupSelection(\textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00404\ \ \ \textcolor{keywordtype}{void}\ UngroupSelection();}
+\DoxyCodeLine{00405\ \ \ \textcolor{keywordtype}{void}\ Ungroup(\mbox{\hyperlink{classTGlGroup}{TGlGroup}}\&\ G);}
+\DoxyCodeLine{00406\ \ \ \textcolor{keywordtype}{void}\ UngroupAll();}
+\DoxyCodeLine{00407\ \ \ \textcolor{comment}{//\ if\ list\ is\ true\ -\/\ the\ selection\ is\ considered\ as\ a\ list\ of\ bonds}}
+\DoxyCodeLine{00408\ \ \ olxstr\ GetSelectionInfo(\textcolor{keywordtype}{bool}\ list\ =\ \textcolor{keyword}{false})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00409\ \ \ olxstr\ GetObjectInfoAt(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00410\ \ \ \textcolor{comment}{//\ ASelection\ Owner\ interface}}
+\DoxyCodeLine{00411\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ExpandSelection(TCAtomGroup\&\ atoms);}
+\DoxyCodeLine{00412\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ExpandSelectionEx(TSAtomPList\&\ atoms);}
+\DoxyCodeLine{00413\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TSObject<TNetwork>}}\ >\ GetSelected();}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \ \ TGlBitmap*\ CreateGlBitmap(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{int}\ left,\ \textcolor{keywordtype}{int}\ top,}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ RGBa,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ format);}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ TGlBitmap*\ FindGlBitmap(\textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00419\ \ \ \textcolor{keywordtype}{void}\ DeleteGlBitmap(\textcolor{keyword}{const}\ olxstr\&\ name);}
+\DoxyCodeLine{00420\ \ \ \textcolor{keywordtype}{size\_t}\ GlBitmapCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GlBitmaps.Count();\ \}}
+\DoxyCodeLine{00421\ \ \ TGlBitmap\&\ GlBitmap(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ *GlBitmaps[i];\ \}}
+\DoxyCodeLine{00422\ }
+\DoxyCodeLine{00423\ \ \ \textcolor{keywordtype}{bool}\ ShowGrid(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keyword}{const}\ olxstr\&\ FN\ =\ EmptyString());}
+\DoxyCodeLine{00424\ \ \ \textcolor{keywordtype}{bool}\ IsGridVisible()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00425\ \ \ \textcolor{keywordtype}{void}\ SetGridDepth(\textcolor{keyword}{const}\ vec3d\&\ crd);}
+\DoxyCodeLine{00426\ }
+\DoxyCodeLine{00427\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00428\ \ \ \textcolor{keywordtype}{bool}\ FQPeaksVisible,}
+\DoxyCodeLine{00429\ \ \ \ \ FHydrogensVisible,}
+\DoxyCodeLine{00430\ \ \ \ \ FHBondsVisible,}
+\DoxyCodeLine{00431\ \ \ \ \ FQPeakBondsVisible,}
+\DoxyCodeLine{00432\ \ \ \ \ FStructureVisible,}
+\DoxyCodeLine{00433\ \ \ \ \ FHklVisible,}
+\DoxyCodeLine{00434\ \ \ \ \ FXGrowLinesVisible,}
+\DoxyCodeLine{00435\ \ \ \ \ XGrowPointsVisible,}
+\DoxyCodeLine{00436\ \ \ \ \ FXPolyVisible,}
+\DoxyCodeLine{00437\ \ \ \ \ DisplayFrozen,}
+\DoxyCodeLine{00438\ \ \ \ \ ZoomAfterModelBuilt;}
+\DoxyCodeLine{00439\ \ \ \textcolor{keywordtype}{short}\ FGrowMode,\ PackMode;}
+\DoxyCodeLine{00440\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00441\ \ \ \mbox{\hyperlink{classTXGlLabels}{TXGlLabels}}\&\ GetLabels()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *FLabels;\ \}}
+\DoxyCodeLine{00442\ \ \ \textcolor{keywordtype}{void}\ UpdateDuplicateLabels();}
+\DoxyCodeLine{00443\ \ \ \textcolor{keywordtype}{bool}\ AreLabelsVisible()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00444\ \ \ \textcolor{keywordtype}{void}\ SetLabelsVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00445\ \ \ \textcolor{keywordtype}{void}\ SetLabelsMode(uint32\_t\ lmode);}
+\DoxyCodeLine{00446\ \ \ \textcolor{keywordtype}{short}\ GetLabelsMode()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00447\ \ \ \textcolor{keywordtype}{void}\ MarkLabel(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ A,\ \textcolor{keywordtype}{bool}\ mark);}
+\DoxyCodeLine{00448\ \ \ \textcolor{keywordtype}{void}\ MarkLabel(\textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keywordtype}{bool}\ mark);}
+\DoxyCodeLine{00449\ \ \ \textcolor{keywordtype}{bool}\ IsLabelMarked(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ A)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00450\ \ \ \textcolor{keywordtype}{bool}\ IsLabelMarked(\textcolor{keywordtype}{size\_t}\ index)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00451\ \ \ \textcolor{keywordtype}{void}\ ClearLabelMarks();}
+\DoxyCodeLine{00452\ }
+\DoxyCodeLine{00453\ \ \ \textcolor{keywordtype}{size\_t}\ GetNextAvailableLabel(\textcolor{keyword}{const}\ olxstr\&\ AtomType);}
+\DoxyCodeLine{00454\ }
+\DoxyCodeLine{00455\ \ \ \textcolor{comment}{//\ moving\ atom\ from/to\ collection}}
+\DoxyCodeLine{00456\ \ \ \textcolor{keywordtype}{void}\ Individualise(\mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ XA,\ \textcolor{keywordtype}{short}\ level\ =\ -\/1,\ int32\_t\ mask\ =\ -\/1);}
+\DoxyCodeLine{00457\ \ \ \textcolor{keywordtype}{void}\ Collectivise(\mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ XA,\ \textcolor{keywordtype}{short}\ level\ =\ -\/1,\ int32\_t\ mask\ =\ -\/1);}
+\DoxyCodeLine{00458\ \ \ \textcolor{keywordtype}{void}\ Individualise(\textcolor{keyword}{const}\ TXAtomPList\&\ atoms,\ \textcolor{keywordtype}{short}\ level\ =\ -\/1,\ int32\_t\ mask\ =\ -\/1);}
+\DoxyCodeLine{00459\ \ \ \textcolor{keywordtype}{void}\ Collectivise(\textcolor{keyword}{const}\ TXAtomPList\&\ atoms,\ \textcolor{keywordtype}{short}\ level\ =\ -\/1,\ int32\_t\ mask\ =\ -\/1);}
+\DoxyCodeLine{00460\ \ \ \textcolor{keywordtype}{void}\ Individualise(\mbox{\hyperlink{classTXBond}{TXBond}}\&\ XB,\ \textcolor{keywordtype}{short}\ level\ =\ -\/1,\ int32\_t\ mask\ =\ -\/1);}
+\DoxyCodeLine{00461\ \ \ \textcolor{keywordtype}{void}\ Collectivise(\mbox{\hyperlink{classTXBond}{TXBond}}\&\ XB,\ \textcolor{keywordtype}{short}\ level\ =\ -\/1,\ int32\_t\ mask\ =\ -\/1);}
+\DoxyCodeLine{00462\ \ \ \textcolor{keywordtype}{void}\ Individualise(\textcolor{keyword}{const}\ TXBondPList\&\ bonds,\ \textcolor{keywordtype}{short}\ level\ =\ -\/1,\ int32\_t\ mask\ =\ -\/1);}
+\DoxyCodeLine{00463\ \ \ \textcolor{keywordtype}{void}\ Collectivise(\textcolor{keyword}{const}\ TXBondPList\&\ bonds,\ \textcolor{keywordtype}{short}\ level\ =\ -\/1,\ int32\_t\ mask\ =\ -\/1);}
+\DoxyCodeLine{00464\ \ \ \textcolor{comment}{//\ should\ not\ be\ used\ externaly}}
+\DoxyCodeLine{00465\ \ \ \textcolor{keywordtype}{void}\ ClearLabels();}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00467\ \ \ DefPropP(\textcolor{keywordtype}{double},\ DeltaV)}
+\DoxyCodeLine{00468\ \ \ \ \ DefPropBIsSet(ZoomAfterModelBuilt)}
+\DoxyCodeLine{00469\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00470\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00471\ \ \ \textcolor{comment}{//\ XFile\ interface}}
+\DoxyCodeLine{00472\ \ \ \ \ \textcolor{keywordtype}{void}\ RegisterXFileFormat(TBasicCFile\ *Parser,\ \textcolor{keyword}{const}\ olxstr\&\ ext)}
+\DoxyCodeLine{00473\ \ \ \{}
+\DoxyCodeLine{00474\ \ \ \ \ XFile().RegisterFileFormat(Parser,\ ext);}
+\DoxyCodeLine{00475\ \ \ \}}
+\DoxyCodeLine{00476\ \ \ \textcolor{keywordtype}{void}\ LoadXFile(\textcolor{keyword}{const}\ olxstr\&\ fn);}
+\DoxyCodeLine{00477\ \ \ \textcolor{keywordtype}{void}\ SaveXFile(\textcolor{keyword}{const}\ olxstr\ \&fn,\ \textcolor{keywordtype}{int}\ flags\ =\ 0)\ \{}
+\DoxyCodeLine{00478\ \ \ \ \ XFile().SaveToFile(fn,\ flags);}
+\DoxyCodeLine{00479\ \ \ \}}
+\DoxyCodeLine{00480\ \ \ \textcolor{keywordtype}{void}\ Uniq()\ \{\ XFile().GetLattice().Uniq();\ \}}
+\DoxyCodeLine{00481\ \ \ \textcolor{keywordtype}{void}\ GrowFragments(\textcolor{keywordtype}{bool}\ Shell,\ TCAtomPList*\ Template\ =\ NULL)\ \{}
+\DoxyCodeLine{00482\ \ \ \ \ XFile().GetLattice().GrowFragments(Shell,\ Template);}
+\DoxyCodeLine{00483\ \ \ \}}
+\DoxyCodeLine{00484\ \ \ \textcolor{keywordtype}{void}\ GrowAtoms(\textcolor{keyword}{const}\ IStrList\&\ Atoms,\ \textcolor{keywordtype}{bool}\ Shell,\ TCAtomPList*\ Template\ =\ NULL);}
+\DoxyCodeLine{00485\ \ \ \textcolor{keywordtype}{void}\ GrowAtom(\mbox{\hyperlink{classTXAtom}{TXAtom}}\ *XA,\ \textcolor{keywordtype}{bool}\ Shell,\ TCAtomPList*\ Template\ =\ NULL);}
+\DoxyCodeLine{00486\ \ \ \textcolor{keywordtype}{void}\ Grow(\textcolor{keyword}{const}\ TXGrowPoint\&\ growPoint);}
+\DoxyCodeLine{00487\ \ \ \textcolor{keywordtype}{void}\ ChangeAtomType(\mbox{\hyperlink{classTXAtom}{TXAtom}}\ *A,\ \textcolor{keyword}{const}\ olxstr\&\ Element);}
+\DoxyCodeLine{00488\ \ \ \textcolor{keywordtype}{void}\ GrowWhole(TCAtomPList*\ Template\ =\ NULL)\ \{}
+\DoxyCodeLine{00489\ \ \ \ \ XFile().GetLattice().GenerateWholeContent(Template);}
+\DoxyCodeLine{00490\ \ \ \}}
+\DoxyCodeLine{00491\ \ \ \textcolor{keywordtype}{void}\ Grow(\textcolor{keyword}{const}\ TXAtomPList\&\ atoms,\ \textcolor{keyword}{const}\ smatd\_list\&\ matrices);}
+\DoxyCodeLine{00492\ \ \ \textcolor{keywordtype}{void}\ GrowBonds();}
+\DoxyCodeLine{00493\ \ \ \textcolor{keywordtype}{void}\ MoveFragment(\mbox{\hyperlink{classTXAtom}{TXAtom}}*\ to,\ \mbox{\hyperlink{classTXAtom}{TXAtom}}*\ fragAtom,\ \textcolor{keywordtype}{bool}\ copy);}
+\DoxyCodeLine{00494\ \ \ \textcolor{keywordtype}{void}\ MoveFragment(\textcolor{keyword}{const}\ vec3d\&\ to,\ \mbox{\hyperlink{classTXAtom}{TXAtom}}*\ fragAtom,\ \textcolor{keywordtype}{bool}\ copy);}
+\DoxyCodeLine{00495\ \ \ \textcolor{keywordtype}{void}\ MoveToCenter();}
+\DoxyCodeLine{00496\ \ \ \textcolor{keywordtype}{void}\ Compaq(\textcolor{keywordtype}{bool}\ AtomicLevel);}
+\DoxyCodeLine{00497\ \ \ \textcolor{keywordtype}{void}\ SetHydrogensVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00498\ \ \ \textcolor{keywordtype}{bool}\ AreHydrogensVisible()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FHydrogensVisible;\ \}}
+\DoxyCodeLine{00499\ \ \ \textcolor{keywordtype}{void}\ SetHBondsVisible(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keywordtype}{bool}\ update\_groups\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00500\ \ \ \textcolor{keywordtype}{bool}\ AreHBondsVisible()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FHBondsVisible;\ \}}
+\DoxyCodeLine{00501\ \ \ \textcolor{keywordtype}{void}\ SetQPeaksVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00502\ \ \ \textcolor{keywordtype}{bool}\ AreQPeaksVisible()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FQPeaksVisible;\ \}}
+\DoxyCodeLine{00503\ \ \ \textcolor{keywordtype}{void}\ SetQPeakBondsVisible(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keywordtype}{bool}\ update\_groups\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00504\ \ \ \textcolor{keywordtype}{bool}\ AreQPeakBondsVisible()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FQPeakBondsVisible;\ \}}
+\DoxyCodeLine{00505\ \ \ \textcolor{keywordtype}{bool}\ IsDisplayFrozen()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ DisplayFrozen;\ \}}
+\DoxyCodeLine{00506\ \ \ \textcolor{keywordtype}{void}\ SetDisplayFrozen(\textcolor{keywordtype}{bool}\ v)\ \{}
+\DoxyCodeLine{00507\ \ \ \ \ DisplayFrozen\ =\ v;}
+\DoxyCodeLine{00508\ \ \ \ \ \textcolor{keywordflow}{if}\ (!v)\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ Draw();}
+\DoxyCodeLine{00510\ \ \ \ \ \}}
+\DoxyCodeLine{00511\ \ \ \}}
+\DoxyCodeLine{00512\ }
+\DoxyCodeLine{00513\ \ \ \textcolor{comment}{//\ hides\ all\ bonds\ for\ all\ hidden\ q-\/peaks}}
+\DoxyCodeLine{00514\ \ \ \textcolor{keywordtype}{void}\ SetStructureVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00515\ \ \ \textcolor{keywordtype}{void}\ SetHklVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00516\ \ \ \textcolor{keywordtype}{bool}\ IsHklVisible()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FHklVisible;\ \}}
+\DoxyCodeLine{00517\ \ \ \textcolor{keywordtype}{bool}\ IsStructureVisible()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FStructureVisible;\ \}}
+\DoxyCodeLine{00518\ \ \ \textcolor{keywordtype}{void}\ ShowPart(\textcolor{keyword}{const}\ TIntList\&\ parts,\ \textcolor{keywordtype}{bool}\ show,\ \textcolor{keywordtype}{bool}\ visible\_only);}
+\DoxyCodeLine{00519\ \ \ \textcolor{keywordtype}{void}\ ShowResi(\textcolor{keyword}{const}\ TIntList\&\ numbers,\ \textcolor{keyword}{const}\ TStrList\ \&names,}
+\DoxyCodeLine{00520\ \ \ \ \ \textcolor{keywordtype}{bool}\ show,\ \textcolor{keywordtype}{bool}\ visible\_only);}
+\DoxyCodeLine{00521\ }
+\DoxyCodeLine{00522\ \ \ \textcolor{keywordtype}{void}\ SetXGrowLinesVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00523\ \ \ \textcolor{keywordtype}{bool}\ GetXGrowLinesVisible()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FXGrowLinesVisible;\ \}}
+\DoxyCodeLine{00524\ \ \ \textcolor{keywordtype}{void}\ LabelGrowBonds();}
+\DoxyCodeLine{00525\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TXGrowLine,\ AGDrawObject>}}\&\ GetGrowLines()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00526\ \ \ \ \ \textcolor{keywordflow}{return}\ XGrowLines;}
+\DoxyCodeLine{00527\ \ \ \}}
+\DoxyCodeLine{00528\ \ \ \textcolor{keywordtype}{short}\ GetGrowMode()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FGrowMode;\ \}}
+\DoxyCodeLine{00529\ \ \ \textcolor{keywordtype}{void}\ SetGrowMode(\textcolor{keywordtype}{short}\ v,\ \textcolor{keyword}{const}\ IStrList\&\ atoms);}
+\DoxyCodeLine{00530\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00531\ \ \ \textcolor{keywordtype}{void}\ SetXGrowPointsVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00532\ \ \ \textcolor{keywordtype}{bool}\ GetXGrowPointsVisible()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ XGrowPointsVisible;\ \}}
+\DoxyCodeLine{00533\ \ \ \textcolor{keywordtype}{short}\ GetPackMode()\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ PackMode;\ \}}
+\DoxyCodeLine{00534\ \ \ \textcolor{keywordtype}{void}\ SetPackMode(\textcolor{keywordtype}{short}\ v,\ \textcolor{keyword}{const}\ olxstr\&\ atoms);}
+\DoxyCodeLine{00535\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00536\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00537\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TXAtom>}}\ XAtomsByMask(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keywordtype}{int}\ Mask,}
+\DoxyCodeLine{00538\ \ \ \ \ \textcolor{keyword}{const}\ AtomLabelInfo\ \&label\_info);}
+\DoxyCodeLine{00539\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TCAtom>}}\ CAtomsByMask(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keywordtype}{int}\ Mask,}
+\DoxyCodeLine{00540\ \ \ \ \ \textcolor{keyword}{const}\ AtomLabelInfo\ \&label\_info);}
+\DoxyCodeLine{00541\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TXAtom>}}\ XAtomsByType(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ AI,}
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{keyword}{const}\ AtomLabelInfo\ \&label\_info,\ \textcolor{keywordtype}{bool}\ FindHidden\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00543\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TCAtom>}}\ CAtomsByType(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ AI,}
+\DoxyCodeLine{00544\ \ \ \ \ \textcolor{keyword}{const}\ AtomLabelInfo\ \&label\_info);}
+\DoxyCodeLine{00545\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TXAtom>}}\ GetSelectedXAtoms(\textcolor{keywordtype}{bool}\ Clear\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00546\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TCAtom>}}\ GetSelectedCAtoms(\textcolor{keywordtype}{bool}\ Clear\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00547\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00548\ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}*\ GetXAtom(\textcolor{keyword}{const}\ olxstr\&\ AtomName,\ \textcolor{keywordtype}{bool}\ Clear);}
+\DoxyCodeLine{00549\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TXAtom>}}\ GetXAtoms(\textcolor{keyword}{const}\ olxstr\&\ AtomName);}
+\DoxyCodeLine{00550\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TXBond>}}\ GetXBonds(\textcolor{keyword}{const}\ olxstr\&\ BondName);}
+\DoxyCodeLine{00551\ \ \ \textcolor{comment}{//\ these\ two\ do\ a\ command\ line\ parsing\ "{}sel\ C1\ \$N\ C??\ C4\ to\ end"{}}}
+\DoxyCodeLine{00552\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TCAtom>}}\ FindCAtoms(\textcolor{keyword}{const}\ IStrList\&\ Atoms,\ \textcolor{keywordtype}{bool}\ ClearSelection\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00553\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TXAtom>}}\ FindXAtoms(\textcolor{keyword}{const}\ IStrList\&\ Atoms,\ \textcolor{keywordtype}{bool}\ getAll\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00554\ \ \ \ \ \textcolor{keywordtype}{bool}\ ClearSelection\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ FindHidden\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00555\ \ \ \textcolor{comment}{//\ this\ function\ will\ return\ atoms\ WITHOUT\ atoms\ of\ the\ overlayed\ files!}}
+\DoxyCodeLine{00556\ \ \ \textcolor{keyword}{virtual}\ TSAtomPList::const\_list\_type\ FindSAtoms(}
+\DoxyCodeLine{00557\ \ \ \ \ \textcolor{keyword}{const}\ IStrList\&\ names,\ \textcolor{keywordtype}{bool}\ ReturnAll\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{bool}\ ClearSelection\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00558\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00559\ \ \ \textcolor{comment}{/*\ the\ function\ simply\ checks\ if\ there\ are\ any\ invisible\ bonds\ connectd\ to\ the}}
+\DoxyCodeLine{00560\ \textcolor{comment}{\ \ \ atom.\ Normally\ this\ happens\ when\ a\ Q-\/peak\ is\ renamed}}
+\DoxyCodeLine{00561\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00562\ \ \ \textcolor{keywordtype}{void}\ CheckQBonds(\mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ Atom);}
+\DoxyCodeLine{00563\ \ \ \textcolor{keywordtype}{void}\ BackupSelection();}
+\DoxyCodeLine{00564\ \ \ \textcolor{comment}{//\ helper\ functions}}
+\DoxyCodeLine{00565\ \ \ \textcolor{keywordtype}{void}\ FillXAtomList(TXAtomPList\&\ res,\ TXAtomPList*\ providedAtoms);}
+\DoxyCodeLine{00566\ \ \ \textcolor{keywordtype}{void}\ FillXBondList(TXBondPList\&\ res,\ TXBondPList*\ providedBonds);}
+\DoxyCodeLine{00567\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00568\ \ \ \textcolor{keywordtype}{void}\ RestoreSelection();}
+\DoxyCodeLine{00569\ \ \ \textcolor{keywordtype}{void}\ CopySelection()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00570\ \ \ \textcolor{keywordtype}{void}\ PasteSelection();}
+\DoxyCodeLine{00571\ \ \ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ Name(\textcolor{keyword}{const}\ olxstr\&\ From,\ \textcolor{keyword}{const}\ olxstr\&\ To,}
+\DoxyCodeLine{00572\ \ \ \ \ \textcolor{keywordtype}{bool}\ ClearSelection,\ \textcolor{keywordtype}{bool}\ NameResi\ =\ \textcolor{keyword}{false},\ \textcolor{keywordtype}{bool}\ DoNotSteal=\textcolor{keyword}{false});}
+\DoxyCodeLine{00573\ \ \ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ Name(\mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ Atom,\ \textcolor{keyword}{const}\ olxstr\&\ Name);}
+\DoxyCodeLine{00574\ \ \ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ ChangeSuffix(\textcolor{keyword}{const}\ TXAtomPList\&\ xatoms,\ \textcolor{keyword}{const}\ olxstr\&\ To);}
+\DoxyCodeLine{00575\ \ \ \textcolor{comment}{//\ makes\ sure\ that\ residues\ have\ the\ same\ labels\ as\ the\ reference\ atoms}}
+\DoxyCodeLine{00576\ \ \ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ SynchroniseResidues(\textcolor{keyword}{const}\ TCAtomPList\ \&reference);}
+\DoxyCodeLine{00577\ }
+\DoxyCodeLine{00578\ }
+\DoxyCodeLine{00579\ \ \ \textcolor{keywordtype}{void}\ InfoList(\textcolor{keyword}{const}\ IStrList\&\ Atoms,\ TStrList\&\ Info,\ \textcolor{keywordtype}{bool}\ Sort,}
+\DoxyCodeLine{00580\ \ \ \ \ \textcolor{keywordtype}{int}\ precision\ =\ 3,\ \textcolor{keywordtype}{bool}\ cart\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00581\ }
+\DoxyCodeLine{00582\ \ \ \textcolor{keywordtype}{void}\ UpdateAtomPrimitives(\textcolor{keywordtype}{int}\ Mask,\ TXAtomPList*\ Atoms\ =\ NULL);}
+\DoxyCodeLine{00583\ \ \ \textcolor{keywordtype}{void}\ UpdateBondPrimitives(\textcolor{keywordtype}{int}\ Mask,\ TXBondPList*\ Bonds\ =\ NULL,\ \textcolor{keywordtype}{bool}\ HBondsOnly\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00584\ }
+\DoxyCodeLine{00585\ \ \ \textcolor{keywordtype}{void}\ SetAtomDrawingStyle(\textcolor{keywordtype}{short}\ ADS,\ TXAtomPList*\ Atoms\ =\ NULL);}
+\DoxyCodeLine{00586\ }
+\DoxyCodeLine{00587\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TXBond>}}\ GetBonds(\textcolor{keyword}{const}\ TStrList\&\ Bonds,\ \textcolor{keywordtype}{bool}\ inc\_lines);}
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00589\ \ \ \textcolor{keywordtype}{void}\ AtomRad(\textcolor{keyword}{const}\ olxstr\&\ Rad,\ TXAtomPList*\ Atoms\ =\ NULL);\ \textcolor{comment}{//\ pers,\ sfil}}
+\DoxyCodeLine{00590\ \ \ \textcolor{keywordtype}{void}\ AtomZoom(\textcolor{keywordtype}{float}\ Zoom,\ TXAtomPList*\ Atoms\ =\ NULL);\ \ \textcolor{comment}{//\ takes\ \%}}
+\DoxyCodeLine{00591\ }
+\DoxyCodeLine{00592\ \ \ \textcolor{keywordtype}{void}\ BondRad(\textcolor{keywordtype}{float}\ R,\ TXBondPList*\ Bonds\ =\ NULL);}
+\DoxyCodeLine{00593\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00594\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ ProbFactor(\textcolor{keywordtype}{double}\ Prob);}
+\DoxyCodeLine{00595\ \ \ \textcolor{keywordtype}{void}\ CalcProbFactor(\textcolor{keywordtype}{double}\ Prob);}
+\DoxyCodeLine{00596\ }
+\DoxyCodeLine{00597\ \ \ TXPlane\ *AddPlane(\textcolor{keyword}{const}\ olxstr\ \&name,\ \textcolor{keyword}{const}\ TXAtomPList\&\ Atoms,}
+\DoxyCodeLine{00598\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ sides,\ \textcolor{keywordtype}{double}\ weightExtent\ =\ 0);}
+\DoxyCodeLine{00599\ \ \ \mbox{\hyperlink{classTSPlane}{TSPlane}}\ *TmpPlane(\textcolor{keyword}{const}\ TXAtomPList*\ Atoms\ =\ NULL,\ \textcolor{keywordtype}{double}\ weightExtent\ =\ 0);}
+\DoxyCodeLine{00600\ \ \ \textcolor{keywordtype}{void}\ DeletePlane(TXPlane\ \&plane);}
+\DoxyCodeLine{00601\ \ \ \textcolor{keywordtype}{void}\ ClearPlanes();}
+\DoxyCodeLine{00602\ \ \ TXPlane\ *FindPlane(\textcolor{keyword}{const}\ olxstr\&\ PlaneName);}
+\DoxyCodeLine{00603\ }
+\DoxyCodeLine{00604\ \ \ TXLine\ *AddLine(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keyword}{const}\ vec3d\&\ base,\ \textcolor{keyword}{const}\ vec3d\&\ edge);}
+\DoxyCodeLine{00605\ \ \ TXLine*\ AddLine(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ base,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ edge);}
+\DoxyCodeLine{00606\ \ \ TXAngle*\ AddAngle(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keyword}{const}\ vec3d\&\ center,}
+\DoxyCodeLine{00607\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\&\ from,\ \textcolor{keyword}{const}\ vec3d\&\ to);}
+\DoxyCodeLine{00608\ \ \ TXAngle*\ AddAngle(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ center,}
+\DoxyCodeLine{00609\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ from,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTSAtom}{TSAtom}}\&\ to);}
+\DoxyCodeLine{00610\ \ \ \textcolor{keywordtype}{void}\ ClearLines()\ \{\ Lines.Clear();\ \}}
+\DoxyCodeLine{00611\ \ \ \textcolor{keywordtype}{void}\ ClearAngles()\ \{\ Angles.Clear();\ \}}
+\DoxyCodeLine{00612\ \ \ \textcolor{keywordtype}{size\_t}\ LineCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Lines.Count();\ \}}
+\DoxyCodeLine{00613\ \ \ TXLine\ \&GetLine(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Lines[i];\ \}}
+\DoxyCodeLine{00614\ \ \ TXGlLabel\ *AddLabel(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keyword}{const}\ vec3d\&\ center,\ \textcolor{keyword}{const}\ olxstr\&\ T);}
+\DoxyCodeLine{00615\ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}*\ FindLooseObject(\textcolor{keyword}{const}\ olxstr\&\ Name);}
+\DoxyCodeLine{00616\ \ \ TDUserObj\ *FindUserObject(\textcolor{keyword}{const}\ olxstr\&\ Name);}
+\DoxyCodeLine{00617\ }
+\DoxyCodeLine{00618\ \ \ TXLattice\&\ AddLattice(\textcolor{keyword}{const}\ olxstr\&\ Name,\ \textcolor{keyword}{const}\ mat3d\&\ basis);}
+\DoxyCodeLine{00619\ \ \ \textcolor{comment}{//\ will\ return\ generated\ symmetry\ equivalents\ too}}
+\DoxyCodeLine{00620\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<TXAtom>}}\ AddCentroid(\textcolor{keyword}{const}\ TXAtomPList\&\ Atoms);}
+\DoxyCodeLine{00621\ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\ \&AddAtom(\mbox{\hyperlink{classTXAtom}{TXAtom}}*\ templ\ =\ NULL);}
+\DoxyCodeLine{00622\ \ \ \textcolor{comment}{//\ adopts\ atoms\ of\ the\ auinit\ and\ returns\ newly\ created\ atoms\ and\ bonds}}
+\DoxyCodeLine{00623\ \ \ \textcolor{keywordtype}{void}\ AdoptAtoms(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au,\ TXAtomPList\&\ atoms,\ TXBondPList\&\ bonds);}
+\DoxyCodeLine{00624\ \ \ \textcolor{keywordtype}{void}\ SelectAtoms(\textcolor{keyword}{const}\ IStrList\&\ Names,\ glSelectionFlag\ flag);}
+\DoxyCodeLine{00625\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TXAtomPList>}}\ FindXAtomsWhere(\textcolor{keyword}{const}\ olxstr\&\ Where);}
+\DoxyCodeLine{00626\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<\ TXBondPList>}}\ FindXBondsWhere(\textcolor{keyword}{const}\ olxstr\&\ Where);}
+\DoxyCodeLine{00627\ \ \ \textcolor{comment}{/*\ allows\ selcting\ rings:\ Condition\ describes\ the\ rings\ to\ select:}}
+\DoxyCodeLine{00628\ \textcolor{comment}{\ \ \ \ C5N\ -\/\ content\ and\ 1-\/4,\ substitutions..}}
+\DoxyCodeLine{00629\ \textcolor{comment}{\ \ \ \ SelectRing(\ "{}C6\ 1-\/4"{})\ selects\ all\ 1,4\ substituted\ benzene\ rings}}
+\DoxyCodeLine{00630\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00631\ \ \ \textcolor{keywordtype}{void}\ SelectRings(\textcolor{keyword}{const}\ olxstr\&\ Condition,\ glSelectionFlag\ flag);}
+\DoxyCodeLine{00632\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtomPList>}}\&\ FindRings(\textcolor{keyword}{const}\ olxstr\&\ Condition,}
+\DoxyCodeLine{00633\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtomPList>}}\&\ rings);}
+\DoxyCodeLine{00634\ \ \ \mbox{\hyperlink{classConstTypeList}{ConstTypeList<TSAtomPList>}}\ FindRings(\textcolor{keyword}{const}\ olxstr\&\ Condition)\ \{}
+\DoxyCodeLine{00635\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TSAtomPList>}}\ l;}
+\DoxyCodeLine{00636\ \ \ \ \ \textcolor{keywordflow}{return}\ FindRings(Condition,\ l);}
+\DoxyCodeLine{00637\ \ \ \}}
+\DoxyCodeLine{00638\ }
+\DoxyCodeLine{00639\ \ \ \textcolor{comment}{//\ these\ two\ create\ structure\ scope\ labels}}
+\DoxyCodeLine{00640\ \ \ TXGlLabel\&\ CreateLabel(\textcolor{keyword}{const}\ vec3d\&\ center,\ \textcolor{keyword}{const}\ olxstr\&\ T,\ uint16\_t\ FontIndex);}
+\DoxyCodeLine{00641\ \ \ TXGlLabel\&\ CreateLabel(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ A,\ uint16\_t\ FontIndex);}
+\DoxyCodeLine{00642\ \ \ \textcolor{comment}{/*\ creates\ aromatic\ rings,\ if\ force\ is\ false\ -\/\ only\ creates\ if\ aromatic\_rings}}
+\DoxyCodeLine{00643\ \textcolor{comment}{\ \ option\ is\ set\ to\ true.\ The\ function\ also\ marks\ ring\ atoms\ (SetRingAtom(true)}}
+\DoxyCodeLine{00644\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00645\ \ \ \textcolor{keywordtype}{void}\ CreateRings(\textcolor{keywordtype}{bool}\ force\ =\ \textcolor{keyword}{false},\ \textcolor{keywordtype}{bool}\ create\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00646\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeListExt}{TTypeListExt<TDRing,\ AGDrawObject>}}\ \&GetRings()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00647\ \ \ \ \ \textcolor{keywordflow}{return}\ Rings;}
+\DoxyCodeLine{00648\ \ \ \}}
+\DoxyCodeLine{00649\ \ \ \textcolor{comment}{//\ recreated\ all\ labels\ (if\ any)\ in\ case\ if\ font\ size\ etc\ changed}}
+\DoxyCodeLine{00650\ \ \ \textcolor{keywordtype}{size\_t}\ LabelCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ XLabels.Count();\ \}}
+\DoxyCodeLine{00651\ \ \ TXGlLabel\&\ GetLabel(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ XLabels[i];\ \}}
+\DoxyCodeLine{00652\ \ \ \textcolor{keyword}{const}\ TXGlLabel\&\ GetLabel(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ XLabels[i];\ \}}
+\DoxyCodeLine{00653\ \ \ \textcolor{keywordtype}{void}\ UpdateLabels();}
+\DoxyCodeLine{00654\ \ \ \textcolor{keyword}{static}\ olxstr\ Label(\textcolor{keyword}{const}\ TXAtomPList\ \&atoms,\ \textcolor{keyword}{const}\ olxstr\ \&sep\ =\ \textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00655\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00656\ \ \ \textcolor{keywordtype}{void}\ SetQPeakScale(\textcolor{keywordtype}{double}\ V);}
+\DoxyCodeLine{00657\ \ \ \textcolor{keywordtype}{double}\ GetQPeakScale();}
+\DoxyCodeLine{00658\ \ \ \textcolor{keywordtype}{void}\ SetQPeakSizeScale(\textcolor{keywordtype}{double}\ V);}
+\DoxyCodeLine{00659\ \ \ \textcolor{keywordtype}{double}\ GetQPeakSizeScale();}
+\DoxyCodeLine{00660\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00661\ \ \ \textcolor{comment}{//\ GlMouse\ interface}}
+\DoxyCodeLine{00662\ \ \ \textcolor{keywordtype}{bool}\ MouseDown(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{short}\ Shift,\ \textcolor{keywordtype}{short}\ Button)\ \{}
+\DoxyCodeLine{00663\ \ \ \ \ \textcolor{keywordflow}{return}\ FGlMouse-\/>MouseDown(x,\ y,\ Shift,\ Button);}
+\DoxyCodeLine{00664\ \ \ \}}
+\DoxyCodeLine{00665\ \ \ \textcolor{keywordtype}{bool}\ MouseUp(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{short}\ Shift,\ \textcolor{keywordtype}{short}\ Button)\ \{}
+\DoxyCodeLine{00666\ \ \ \ \ \textcolor{keywordflow}{return}\ FGlMouse-\/>MouseUp(x,\ y,\ Shift,\ Button);}
+\DoxyCodeLine{00667\ \ \ \}}
+\DoxyCodeLine{00668\ \ \ \textcolor{keywordtype}{bool}\ MouseMove(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{short}\ Shift)\ \{}
+\DoxyCodeLine{00669\ \ \ \ \ \textcolor{keywordflow}{return}\ FGlMouse-\/>MouseMove(x,\ y,\ Shift);}
+\DoxyCodeLine{00670\ \ \ \}}
+\DoxyCodeLine{00671\ \ \ \textcolor{keywordtype}{bool}\ DblClick()\ \{\ \textcolor{keywordflow}{return}\ FGlMouse-\/>DblClick();\ \}}
+\DoxyCodeLine{00672\ \ \ \textcolor{keywordtype}{void}\ ResetMouseState(\textcolor{keywordtype}{short}\ x,\ \textcolor{keywordtype}{short}\ y,\ \textcolor{keywordtype}{short}\ shift\ =\ 0,\ \textcolor{keywordtype}{short}\ button\ =\ 0,}
+\DoxyCodeLine{00673\ \ \ \ \ \textcolor{keywordtype}{bool}\ keep\_object\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00674\ \ \ \{}
+\DoxyCodeLine{00675\ \ \ \ \ FGlMouse-\/>ResetMouseState(x,\ y,\ shift,\ button,\ keep\_object);}
+\DoxyCodeLine{00676\ \ \ \}}
+\DoxyCodeLine{00677\ \ \ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}*\ GetMouseObject()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00678\ \ \ \ \ \textcolor{keywordflow}{return}\ FGlMouse-\/>GetMouseData().GetObject();}
+\DoxyCodeLine{00679\ \ \ \}}
+\DoxyCodeLine{00680\ \ \ \textcolor{keywordtype}{void}\ EnableSelection(\textcolor{keywordtype}{bool}\ v)\ \{\ FGlMouse-\/>SetSelectionEnabled(v);\ \}}
+\DoxyCodeLine{00681\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00682\ \ \ \textcolor{comment}{//\ actions}}
+\DoxyCodeLine{00683\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ \&OnGraphicsVisible,}
+\DoxyCodeLine{00684\ \ \ \ \ \&OnFragmentVisible,}
+\DoxyCodeLine{00685\ \ \ \ \ \&OnAllVisible,}
+\DoxyCodeLine{00686\ \ \ \ \ \&OnObjectsDestroy,}
+\DoxyCodeLine{00687\ \ \ \ \ \&OnObjectsCreate;}
+\DoxyCodeLine{00688\ \ \ \textcolor{keywordtype}{bool}\ IsCellVisible()\ \ \textcolor{keyword}{const};}
+\DoxyCodeLine{00689\ \ \ \textcolor{keywordtype}{void}\ SetCellVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00690\ \ \ \textcolor{keywordtype}{bool}\ IsBasisVisible()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00691\ \ \ \textcolor{keywordtype}{void}\ SetBasisVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00692\ \ \ \textcolor{keywordtype}{bool}\ IsGraphicsVisible(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ *G)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ G-\/>IsVisible();\ \}}
+\DoxyCodeLine{00693\ \ \ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ SetGraphicsVisible(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ *G,\ \textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00694\ \ \ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ SetGraphicsVisible(AGDObjList\&\ G,\ \textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00695\ }
+\DoxyCodeLine{00696\ \ \ \textcolor{keywordtype}{void}\ FragmentsVisible(\textcolor{keyword}{const}\ TNetPList\&\ Networks,\ \textcolor{keywordtype}{bool}\ V);}
+\DoxyCodeLine{00697\ \ \ TNetPList\ InvertFragmentsList(\textcolor{keyword}{const}\ TNetPList\&\ Fragments);}
+\DoxyCodeLine{00698\ \ \ \textcolor{keywordtype}{void}\ SelectFragmentsAtoms(\textcolor{keyword}{const}\ TNetPList\&\ frags,\ \textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00699\ \ \ \textcolor{keywordtype}{void}\ SelectFragmentsBonds(\textcolor{keyword}{const}\ TNetPList\&\ frags,\ \textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00700\ \ \ \textcolor{keywordtype}{void}\ SelectFragments(\textcolor{keyword}{const}\ TNetPList\&\ frags,\ \textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00701\ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ GroupFragments(\textcolor{keyword}{const}\ TNetPList\&\ Fragments,\ \textcolor{keyword}{const}\ olxstr\ groupName);}
+\DoxyCodeLine{00702\ \ \ \textcolor{keywordtype}{void}\ LoadTextures(\textcolor{keyword}{const}\ olxstr\ \&folder);}
+\DoxyCodeLine{00703\ \ \ \textcolor{keywordtype}{void}\ ClearTextures(\textcolor{keywordtype}{short}\ flags);}
+\DoxyCodeLine{00704\ \ \ \textcolor{comment}{//\ inverts\ current\ list\ of\ TLattice\ using\ Selected\ Fragments,\ returns}}
+\DoxyCodeLine{00705\ \ \ \textcolor{comment}{//\ the\ number\ of\ entries\ added\ to\ the\ result}}
+\DoxyCodeLine{00706\ \ \ \textcolor{keywordtype}{void}\ AllVisible(\textcolor{keywordtype}{bool}\ V);}
+\DoxyCodeLine{00707\ \ \ \textcolor{keywordtype}{void}\ CenterModel();}
+\DoxyCodeLine{00708\ }
+\DoxyCodeLine{00709\ \ \ \textcolor{keywordtype}{void}\ CenterView(\textcolor{keywordtype}{bool}\ calcZoom\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00710\ \ \ \textcolor{comment}{/*\ creates\ a\ mask\ of\ visible\ scene,\ Inc\ is\ the\ extra\ added\ to\ atomic\ Van-\/der}}
+\DoxyCodeLine{00711\ \textcolor{comment}{\ \ -\/Waals\ radii}}
+\DoxyCodeLine{00712\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00713\ \ \ \textcolor{keywordtype}{void}\ BuildSceneMask(\mbox{\hyperlink{classFractMask}{FractMask}}\&\ mask,\ \textcolor{keywordtype}{double}\ Inc);}
+\DoxyCodeLine{00714\ \ \ \textcolor{keyword}{static}\ vec3d\ GetConstrainedDirection(\textcolor{keyword}{const}\ vec3d\ \&t);}
+\DoxyCodeLine{00715\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00716\ \ \ \textcolor{comment}{//\ X\ interface}}
+\DoxyCodeLine{00717\ \ \ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ DeleteXAtoms(TXAtomPList\&\ L);}
+\DoxyCodeLine{00718\ \ \ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ DeleteXObjects(\textcolor{keyword}{const}\ AGDObjList\&\ L);}
+\DoxyCodeLine{00719\ \ \ \textcolor{comment}{/*\ function\ undoes\ renaming\ atoms\ */}}
+\DoxyCodeLine{00720\ \ \ \textcolor{keywordtype}{void}\ undoName(\mbox{\hyperlink{classTUndoData}{TUndoData}}\ *data);}
+\DoxyCodeLine{00721\ \ \ \textcolor{comment}{/*\ function\ undoes\ hiding\ of\ objects\ */}}
+\DoxyCodeLine{00722\ \ \ \textcolor{keywordtype}{void}\ undoHide(\mbox{\hyperlink{classTUndoData}{TUndoData}}\ *data);}
+\DoxyCodeLine{00723\ }
+\DoxyCodeLine{00724\ \ \ \textcolor{keywordtype}{void}\ SynchroniseBonds(\textcolor{keyword}{const}\ TXAtomPList\&\ XAtoms);}
+\DoxyCodeLine{00725\ \ \ \textcolor{comment}{/*\ Saves\ only\ structure\ specific\ style\ as\ well\ as\ the\ scene\ properties.}}
+\DoxyCodeLine{00726\ \textcolor{comment}{\ \ Three\ items\ will\ be\ added\ to\ the\ 'item'\ -\/\ Style,\ Scene\ and\ ICollections.\ The}}
+\DoxyCodeLine{00727\ \textcolor{comment}{\ \ latter\ is\ important\ for\ restoring\ properties\ of\ individual\ atoms/bonds\ etc}}
+\DoxyCodeLine{00728\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00729\ \ \ \textcolor{keywordtype}{void}\ SaveStructureStyle(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00730\ \ \ \textcolor{keywordtype}{void}\ LoadStructureStyle(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&item);}
+\DoxyCodeLine{00731\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \mbox{\hyperlink{classIOutputStream}{IOutputStream}}\&\ zos)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00732\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ item,\ \mbox{\hyperlink{classIInputStream}{IInputStream}}\&\ zis);}
+\DoxyCodeLine{00733\ }
+\DoxyCodeLine{00734\ \ \ \textcolor{keywordtype}{void}\ SaveModel(\textcolor{keyword}{const}\ olxstr\&\ file\_name)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00735\ \ \ \textcolor{keywordtype}{void}\ LoadModel(\textcolor{keyword}{const}\ olxstr\&\ file\_name);}
+\DoxyCodeLine{00736\ }
+\DoxyCodeLine{00737\ \ \ const\_strlist\ ToPov()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00738\ \ \ const\_strlist\ ToWrl()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00739\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00740\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classTGXApp}{TGXApp}}\&\ GetInstance()\ \{}
+\DoxyCodeLine{00741\ \ \ \ \ \mbox{\hyperlink{classTBasicApp}{TBasicApp}}\&\ bai\ =\ TBasicApp::GetInstance();}
+\DoxyCodeLine{00742\ \ \ \ \ \mbox{\hyperlink{classTGXApp}{TGXApp}}*\ gxai\ =\ \textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{classTGXApp}{TGXApp}}*\textcolor{keyword}{>}(\&bai);}
+\DoxyCodeLine{00743\ \ \ \ \ \textcolor{keywordflow}{if}\ (gxai\ ==\ 0)\ \{}
+\DoxyCodeLine{00744\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00745\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}unsuitable\ application\ instance"{}});}
+\DoxyCodeLine{00746\ \ \ \ \ \}}
+\DoxyCodeLine{00747\ \ \ \ \ \textcolor{keywordflow}{return}\ *gxai;}
+\DoxyCodeLine{00748\ \ \ \}}
+\DoxyCodeLine{00749\ \};}
+\DoxyCodeLine{00751\ }
+\DoxyCodeLine{00752\ EndGxlNamespace()}
+\DoxyCodeLine{00753\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

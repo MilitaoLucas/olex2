@@ -1,0 +1,563 @@
+\doxysection{maputil.\+h}
+\hypertarget{maputil_8h_source}{}\label{maputil_8h_source}\index{xlib/maputil.h@{xlib/maputil.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xl\_map\_util\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xl\_map\_util\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}estack.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#undef\ QLength}}
+\DoxyCodeLine{00016\ BeginXlibNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ using\ namespace\ olx\_array;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ class\ \mbox{\hyperlink{classMapUtil}{MapUtil}}\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{struct\ }peak\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{bool}\ process;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{double}\ summ;}
+\DoxyCodeLine{00025\ \ \ \ \ uint32\_t\ count;}
+\DoxyCodeLine{00026\ \ \ \ \ vec3i\ center;}
+\DoxyCodeLine{00027\ \ \ \ \ peak()\ :\ process(\textcolor{keyword}{true}),\ summ(0),\ count(0)\ \{\}}
+\DoxyCodeLine{00028\ \ \ \ \ peak(\textcolor{keywordtype}{int}\ \_x,\ \textcolor{keywordtype}{int}\ \_y,\ \textcolor{keywordtype}{int}\ \_z)\ :\ process(\textcolor{keyword}{true}),}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ summ(0),\ count(0),\ center(\_x,\ \_y,\ \_z)\ \{\}}
+\DoxyCodeLine{00030\ \ \ \};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MapT>}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ peak\_search(\textcolor{keyword}{const}\ array\_3d<MapT>\ \&data,}
+\DoxyCodeLine{00035\ \ \ \ \ MapT\ pos\_level,\ \textcolor{keyword}{const}\ array\_3d<bool>\&\ mask,\ \mbox{\hyperlink{classTArrayList}{TArrayList<peak>}}\&\ maxima)}
+\DoxyCodeLine{00036\ \ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ TStack<vec3i>\ stack;}
+\DoxyCodeLine{00038\ \ \ \ \ vec3s\ dim\ =\ data.dim();}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{const}\ MapT\ neg\_level\ =\ -\/pos\_level;}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ mc\ =\ 0;\ mc\ <\ maxima.Count();\ mc++)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \mbox{\hyperlink{structMapUtil_1_1peak}{peak}}\&\ \mbox{\hyperlink{structMapUtil_1_1peak}{peak}}\ =\ maxima[mc];}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mask[\mbox{\hyperlink{structMapUtil_1_1peak}{peak}}.center[0]][\mbox{\hyperlink{structMapUtil_1_1peak}{peak}}.center[1]][\mbox{\hyperlink{structMapUtil_1_1peak}{peak}}.center[2]])\ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ stack.Push(\mbox{\hyperlink{structMapUtil_1_1peak}{peak}}.center);}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \textcolor{keyword}{const}\ MapT\&\ ref\_val\ =\ data[\mbox{\hyperlink{structMapUtil_1_1peak}{peak}}.center[0]][\mbox{\hyperlink{structMapUtil_1_1peak}{peak}}.center[1]][\mbox{\hyperlink{structMapUtil_1_1peak}{peak}}.center[2]];}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ vec3d\ new\_cent;}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!stack.IsEmpty())\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ vec3i\ cent\ =\ stack.Pop();}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ vec3i\ norm\_cent\ =\ cent;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structMapUtil_1_1peak}{peak}}.count++;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ new\_cent\ +=\ cent;}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ norm\_cent[i]\ =\ norm\_cent[i]\ \%\ (int)dim[i];}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (norm\_cent[i]\ <\ 0)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ norm\_cent[i]\ +=\ (int)dim[i];}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ mask[norm\_cent[0]][norm\_cent[1]][norm\_cent[2]]\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ peak.summ\ +=\ data[norm\_cent[0]][norm\_cent[1]][norm\_cent[2]];}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ vec3i\ pt\ =\ norm\_cent,\ \_pt\ =\ cent;}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ di\ =\ 0;\ di\ <\ 3;\ di++)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ pt[di]\ =\ (norm\_cent[di]\ +\ 1)\ \%\ (\textcolor{keywordtype}{int})dim[di];}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mask[pt[0]][pt[1]][pt[2]])\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ref\_val\ <\ 0)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data[pt[0]][pt[1]][pt[2]]\ <\ neg\_level\ ||}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data[pt[0]][pt[1]][pt[2]]\ >\ pos\_level)}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_pt[di]\ =\ cent[di]\ +\ 1;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stack.Push(\_pt);}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mask[pt[0]][pt[1]][pt[2]]\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ pt[di]\ =\ (norm\_cent[di]\ -\/\ 1)\ \%\ (\textcolor{keywordtype}{int})dim[di];}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pt[di]\ <\ 0)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ pt[di]\ +=\ (int)dim[di];}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mask[pt[0]][pt[1]][pt[2]])\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ref\_val\ <\ 0)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data[pt[0]][pt[1]][pt[2]]\ <\ neg\_level\ ||}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data[pt[0]][pt[1]][pt[2]]\ >\ pos\_level)}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_pt[di]\ =\ cent[di]\ -\/\ 1;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stack.Push(\_pt);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mask[pt[0]][pt[1]][pt[2]]\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \_pt[di]\ =\ cent[di];\ \ \textcolor{comment}{//\ restore\ the\ original\ value}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ pt[di]\ =\ norm\_cent[di];}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ new\_cent\ /=\ peak.count;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ peak.center\ =\ new\_cent.Round<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ peak.center[i]\ =\ peak.center[i]\ \%\ (int)dim[i];}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \}}
+\DoxyCodeLine{00101\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//\ a\ simple\ map\ integration,\ considering\ the\ peaks\ and\ holes\ as\ spheres}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MapT>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Integrate(}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{const}\ array\_3d<MapT>\ \&map,}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keyword}{const}\ array\_3d<bool>\ \&Mask,}
+\DoxyCodeLine{00106\ \ \ \ \ MapT\ pos\_level,\ \mbox{\hyperlink{classTArrayList}{TArrayList<MapUtil::peak>}}\&\ Peaks)}
+\DoxyCodeLine{00107\ \ \ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ map\_dim\ =\ map.dim();}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ dim\_e\ =\ Mask.dim();}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{const}\ MapT\ neg\_level\ =\ -\/pos\_level;}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ ix\ =\ 0;\ ix\ <\ dim\_e[0];\ ix++)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ iy\ =\ 0;\ iy\ <\ dim\_e[1];\ iy++)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ iz\ =\ 0;\ iz\ <\ dim\_e[2];\ iz++)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Mask[ix][iy][iz])\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ MapT\&\ ref\_val\ =\ map[ix][iy][iz];}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ref\_val\ >\ pos\_level)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ add\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ ii\ =\ -\/1;\ ii\ <=\ 1;\ ii++)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ind\_x\ =\ ix\ +\ ii;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_x\ <\ 0)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_x\ +=\ map\_dim[0];}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_x\ >=\ map\_dim[0])\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_x\ -\/=\ map\_dim[0];}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ jj\ =\ -\/1;\ jj\ <=\ 1;\ jj++)\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ind\_y\ =\ iy\ +\ jj;}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_y\ <\ 0)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_y\ +=\ map\_dim[1];}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_y\ >=\ map\_dim[1])\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_y\ -\/=\ map\_dim[1];}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ kk\ =\ -\/1;\ kk\ <=\ 1;\ kk++)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ind\_z\ =\ iz\ +\ kk;}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_z\ <\ 0)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_z\ +=\ map\_dim[2];}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_z\ >=\ map\_dim[2])\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_z\ -\/=\ map\_dim[2];}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (map[ind\_x][ind\_y][ind\_z]\ >\ ref\_val)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ add\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!add)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!add)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (add)\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Peaks.Add(peak(ix,\ iy,\ iz));}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ref\_val\ <\ neg\_level)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ add\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ ii\ =\ -\/1;\ ii\ <=\ 1;\ ii++)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ind\_x\ =\ ix\ +\ ii;}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_x\ <\ 0)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_x\ +=\ map\_dim[0];}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_x\ >=\ map\_dim[0])\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_x\ -\/=\ map\_dim[0];}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ jj\ =\ -\/1;\ jj\ <=\ 1;\ jj++)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ind\_y\ =\ iy\ +\ jj;}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_y\ <\ 0)\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_y\ +=\ map\_dim[1];}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_y\ >=\ map\_dim[1])\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_y\ -\/=\ map\_dim[1];}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ kk\ =\ -\/1;\ kk\ <=\ 1;\ kk++)\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ind\_z\ =\ iz\ +\ kk;}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_z\ <\ 0)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_z\ +=\ map\_dim[2];}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\_z\ >=\ map\_dim[2])\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ind\_z\ -\/=\ map\_dim[2];}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (map[ind\_x][ind\_y][ind\_z]\ <\ ref\_val)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ add\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!add)\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!add)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (add)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Peaks.Add(peak(ix,\ iy,\ iz));}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00206\ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ peak\_search<MapT>(map,\ pos\_level,\ Mask,\ Peaks);}
+\DoxyCodeLine{00208\ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \textcolor{comment}{//\ a\ simple\ map\ integration,\ considering\ the\ peaks\ and\ holes\ as\ spheres}}
+\DoxyCodeLine{00210\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MapT>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Integrate(}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keyword}{const}\ array\_3d<MapT>\ \&map,\ MapT\ pos\_level,}
+\DoxyCodeLine{00212\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<MapUtil::peak>}}\&\ Peaks)}
+\DoxyCodeLine{00213\ \ \ \{}
+\DoxyCodeLine{00214\ \ \ \ \ array\_3d<bool>\ Mask(map.width,\ map.height,\ map.depth);}
+\DoxyCodeLine{00215\ \ \ \ \ Integrate(map,\ Mask,\ pos\_level,\ Peaks);}
+\DoxyCodeLine{00216\ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \textcolor{comment}{//\ a\ simple\ map\ integration,\ considering\ the\ peaks\ and\ holes\ as\ spheres}}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MapT>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ IntegrateMask(\textcolor{keyword}{const}\ array\_3d<MapT>\ \&map,}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ \&\_p,\ \textcolor{keyword}{const}\ TArray3D<bool>\ \&mask)}
+\DoxyCodeLine{00220\ \ \ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<index\_t>}}\ d(mask.Length1()\ +\ mask.GetMin1(),}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ mask.Length2()\ +\ mask.GetMin2(),}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ mask.Length3()\ +\ mask.GetMin3());}
+\DoxyCodeLine{00224\ \ \ \ \ vec3i\ dim\ =\ map.dim();}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keywordtype}{double}\ val\ =\ 0;}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordflow}{for}\ (index\_t\ ix\ =\ mask.GetMin1();\ ix\ <\ d[0];\ ix++)\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (index\_t\ iy\ =\ mask.GetMin2();\ iy\ <\ d[1];\ iy++)\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (index\_t\ iz\ =\ mask.GetMin3();\ iz\ <\ d[2];\ iz++)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!mask(ix,\ iy,\ iz))\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTVector3}{TVector3<index\_t>}}\ p(\_p[0]\ +\ ix,\ \_p[1]\ +\ iy,\ \_p[2]\ +\ iz);}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((p[i]\ \%=\ dim[i])\ <\ 0)}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p[i]\ +=\ dim[i];}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ val\ +=\ map[p[0]][p[1]][p[2]];}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keywordflow}{return}\ val;}
+\DoxyCodeLine{00242\ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \textcolor{comment}{/*\ a\ flood\ fill\ based\ algorithm\ to\ find\ undulating\ channels,\ which\ however}}
+\DoxyCodeLine{00244\ \textcolor{comment}{\ \ come\ and\ exit\ at\ one\ of\ the\ 3\ crystallographic\ directions}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ map\_type>\ \textcolor{keyword}{static}\ vec3i\ AnalyseChannels1(}
+\DoxyCodeLine{00247\ \ \ \ \ array\_3d<map\_type>\ \&map,}
+\DoxyCodeLine{00248\ \ \ \ \ map\_type\ max\_level)}
+\DoxyCodeLine{00249\ \ \ \{}
+\DoxyCodeLine{00250\ \ \ \ \ array\_3d<map\_type>\ map\_copy\ =\ map;}
+\DoxyCodeLine{00251\ \ \ \ \ vec3i\ dim\_ind(0,\ 1,\ 2);}
+\DoxyCodeLine{00252\ \ \ \ \ vec3s\ dim\ =\ map.dim();}
+\DoxyCodeLine{00253\ \ \ \ \ vec3i\ res;}
+\DoxyCodeLine{00254\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ dim\_n\ =\ 0;\ dim\_n\ <\ 3;\ dim\_n++)\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ res[dim\_n]\ =\ max\_level;}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dim\_n\ ==\ 1)\ \ \textcolor{comment}{//\ Y,Z,X}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ dim\_ind\ =\ vec3i(1,\ 2,\ 0);}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (dim\_n\ ==\ 2)\ \ \textcolor{comment}{//\ Z,X,Y}}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ dim\_ind\ =\ vec3i(2,\ 0,\ 1);}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ level\_accessible\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ vec3s\ pt;}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ TStack<vec3i>\ stack;}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (stack.IsEmpty())\ \{\ \textcolor{comment}{//\ seed}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ dim[dim\_ind[1]];\ j++)\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ dim[dim\_ind[2]];\ k++)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pt[dim\_ind[1]]\ =\ j;}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pt[dim\_ind[2]]\ =\ k;}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (map[pt[0]][pt[1]][pt[2]]\ >=\ res[dim\_n])\ \{\ \ \textcolor{comment}{//\ find\ suitable\ start}}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stack.Push(pt);}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ map[pt[0]][pt[1]][pt[2]]\ =\ res[dim\_n]\ -\/\ 1;}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (stack.IsEmpty()\ \&\&\ -\/-\/res[dim\_n]\ ==\ 0)\ \textcolor{comment}{//\ would\ be\ odd}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!stack.IsEmpty())\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ pt\ =\ stack.Pop();}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ a\ weak\ condition,\ needs\ more\ work}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pt[dim\_ind[0]]\ ==\ dim[dim\_ind[0]]\ -\/\ 1)\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ level\_accessible\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ vec3i\ p(pt);}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ ii\ =\ 0;\ ii\ <\ 3;\ ii++)\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ p[dim\_ind[ii]]\ =\ (int)(pt[dim\_ind[ii]]\ -\/\ 1);}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p[dim\_ind[ii]]\ >=\ 0\ \&\&\ map[p[0]][p[1]][p[2]]\ ==\ res[dim\_n])\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stack.Push(p);}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ map[p[0]][p[1]][p[2]]\ =\ res[dim\_n]\ -\/\ 1;}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ p[dim\_ind[ii]]\ =\ (int)(pt[dim\_ind[ii]]\ +\ 1);}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p[dim\_ind[ii]]\ <\ (\textcolor{keywordtype}{int})dim[dim\_ind[ii]]\ \&\&}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ map[p[0]][p[1]][p[2]]\ >=\ res[dim\_n])}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stack.Push(p);}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ map[p[0]][p[1]][p[2]]\ =\ res[dim\_n]\ -\/\ 1;}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ p[dim\_ind[ii]]\ =\ (int)pt[dim\_ind[ii]];}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!level\_accessible)\ \{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (-\/-\/res[dim\_n]\ ==\ 0)\ \{}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ map\ =\ map\_copy;}
+\DoxyCodeLine{00312\ \ \ \ \ \}}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00314\ \ \ \}}
+\DoxyCodeLine{00315\ \ \ \textcolor{comment}{/*\ returns\ fractional\ coordinates\ of\ the\ specified\ level,\ safe\ value\ must\ be}}
+\DoxyCodeLine{00316\ \textcolor{comment}{\ \ unique\ and\ not\ occur\ in\ the\ map}}
+\DoxyCodeLine{00317\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00318\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ map\_type>}
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classConstTypeList}{ConstTypeList<vec3d>}}\ FindLevelCenters(array\_3d<map\_type>\ \&map,}
+\DoxyCodeLine{00320\ \ \ \ \ map\_type\ level,\ map\_type\ safe\_value)}
+\DoxyCodeLine{00321\ \ \ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ dim(map.dim());}
+\DoxyCodeLine{00323\ \ \ \ \ vec3d\_list\ centers;}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ dim[0];\ i++)\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ dim[1];\ j++)\ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ dim[2];\ k++)\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (map[i][j][k]\ ==\ level)\ \{}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ vec3i\ p;}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ TStack<vec3i>\ stack;}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ stack.Push(vec3i(i,\ j,\ k));}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \ \ map[i][j][k]\ =\ safe\_value;}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ cnt\ =\ 0;}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!stack.IsEmpty())\ \{}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ vec3i\ p1\ =\ stack.Pop();}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p\ +=\ p1;}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ ii\ =\ -\/1;\ ii\ <=\ 1;\ ii++)\ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ix\ =\ (p1[0]\ +\ ii)\ \%\ dim[0];}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ix\ <\ 0)\ \{}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ix\ +=\ dim[0];}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ ij\ =\ -\/1;\ ij\ <=\ 1;\ ij++)\ \{}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ iy\ =\ (p1[1]\ +\ ij)\ \%\ dim[1];}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (iy\ <\ 0)\ iy\ +=\ dim[1];}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ ik\ =\ -\/1;\ ik\ <=\ 1;\ ik++)\ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ iz\ =\ (p1[2]\ +\ ik)\ \%\ dim[2];}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (iz\ <\ 0)\ iz\ +=\ dim[2];}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (map[ix][iy][iz]\ ==\ level)\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stack.Push(vec3i(p1[0]\ +\ ii,\ p1[1]\ +\ ij,\ p1[2]\ +\ ik));}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ map[ix][iy][iz]\ =\ safe\_value;}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ centers.AddCopy(vec3d(p)\ /\ cnt)\ /=\ dim;}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00360\ \ \ \ \ \}}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{comment}{//\ restore\ the\ voids}}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ dim[0];\ i++)\ \{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ dim[1];\ j++)\ \{}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ dim[2];\ k++)\ \{}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (map[i][j][k]\ ==\ safe\_value)\ \{}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ map[i][j][k]\ =\ level;}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00370\ \ \ \ \ \}}
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{keywordflow}{return}\ centers;}
+\DoxyCodeLine{00372\ \ \ \}}
+\DoxyCodeLine{00373\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ PeakSortByCount(\textcolor{keyword}{const}\ \mbox{\hyperlink{structMapUtil_1_1peak}{MapUtil::peak}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structMapUtil_1_1peak}{MapUtil::peak}}\&\ b)\ \{}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keywordflow}{return}\ b.count\ -\/\ a.count;}
+\DoxyCodeLine{00375\ \ \ \}}
+\DoxyCodeLine{00376\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ PeakSortBySum(\textcolor{keyword}{const}\ \mbox{\hyperlink{structMapUtil_1_1peak}{MapUtil::peak}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structMapUtil_1_1peak}{MapUtil::peak}}\&\ b)\ \{}
+\DoxyCodeLine{00377\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(b.summ,\ a.summ);}
+\DoxyCodeLine{00378\ \ \ \}}
+\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ PeakSortByWeight(\textcolor{keyword}{const}\ \mbox{\hyperlink{structMapUtil_1_1peak}{MapUtil::peak}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structMapUtil_1_1peak}{MapUtil::peak}}\ \&b)\ \{}
+\DoxyCodeLine{00380\ \ \ \ \ \textcolor{keywordflow}{if}\ (a.count\ ==\ 0)\ \{}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ b.count\ ==\ 0\ ?\ 0\ :\ 1;}
+\DoxyCodeLine{00382\ \ \ \ \ \}}
+\DoxyCodeLine{00383\ \ \ \ \ \textcolor{keywordflow}{if}\ (b.count\ ==\ 0)\ \{}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ a.count\ ==\ 0\ ?\ 0\ :\ -\/1;}
+\DoxyCodeLine{00385\ \ \ \ \ \}}
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(b.summ\ /\ b.count,\ a.summ\ /\ a.count);}
+\DoxyCodeLine{00387\ \ \ \}}
+\DoxyCodeLine{00388\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00389\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ SortByDistance(\textcolor{keyword}{const}\ vec3d\ \&a,\ \textcolor{keyword}{const}\ vec3d\ \&b)\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(a.QLength(),\ b.QLength());}
+\DoxyCodeLine{00391\ \ \ \}}
+\DoxyCodeLine{00392\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00393\ \ \ \textcolor{comment}{/*ml\ -\/\ all\ symmetry\ matrices,\ including\ identity\ matrix;}}
+\DoxyCodeLine{00394\ \textcolor{comment}{\ \ norm\ -\/\ the\ reciprocal\ gridding\ (1/mapX,\ 1/mapY,\ 1/mapZ)*/}}
+\DoxyCodeLine{00395\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ SymSpace>}
+\DoxyCodeLine{00396\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ MergePeaks(\textcolor{keyword}{const}\ SymSpace\&\ sp,\ \textcolor{keyword}{const}\ vec3d\&\ norm,}
+\DoxyCodeLine{00397\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<MapUtil::peak>}}\&\ Peaks,\ \mbox{\hyperlink{classTTypeList}{TTypeList<MapUtil::peak>}}\&\ out)}
+\DoxyCodeLine{00398\ \ \ \{}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cnt\ =\ Peaks.Count();}
+\DoxyCodeLine{00400\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<vec3d>}}\ crds;}
+\DoxyCodeLine{00401\ \ \ \ \ crds.SetCapacity(cnt);}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cnt;\ i++)\ \{}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ crds.AddNew(Peaks[i].center)\ *=\ norm;}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ Peaks[i].process\ =\ Peaks.Count()\ !=\ 0;}
+\DoxyCodeLine{00405\ \ \ \ \ \}}
+\DoxyCodeLine{00406\ \ \ \ \ QuickSorter::Sort(Peaks,}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ FunctionComparator::Make(PeakSortByCount),}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ SyncSortListener::MakeSingle(crds));}
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ cnt;\ i++)\ \{}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Peaks[i].process)\ \{}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<MapUtil::peak>}}\ toMerge;}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ toMerge.Add(Peaks[i]);}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ vec3d\ center(crds[i]),\ cmp\_center(crds[i]);}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ 1;\ j\ <\ cnt;\ j++)\ \{}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Peaks[j].process)\ \{}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ sp.Count();\ k++)\ \{}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ c\ =\ sp[k]\ *\ crds[j];}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \ \ vec3d\ tmp\ =\ c\ -\/\ cmp\_center;}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ t\ =\ tmp.Round<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ \ \ sp.OrthogonaliseI(tmp\ -\/=\ t);}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tmp.QLength()\ <\ 0.5)\ \{}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \ \ \ \ toMerge.Add(Peaks[j]);}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ mc\ =\ c\ -\/\ t;}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ \ \ \ \ center\ +=\ mc;}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ \ \ \ \ cmp\_center\ =\ (cmp\_center*toMerge.Count()\ +\ mc*0.25)\ /}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ((double)toMerge.Count()\ +\ 0.25);}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \ \ \ \ Peaks[j].process\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \mbox{\hyperlink{structMapUtil_1_1peak}{MapUtil::peak}}\&\ p\ =\ out.AddNew();}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ toMerge.Count();\ j++)\ \{}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ p.count\ +=\ toMerge[j]-\/>count;}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ p.summ\ +=\ toMerge[j]-\/>summ;}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ center\ /=\ toMerge.Count();}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ center\ /=\ norm;}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ p.center\ =\ center.Round<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{00444\ \ \ \ \ \}}
+\DoxyCodeLine{00445\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ out.Count();\ i++)\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (out[i].count\ ==\ 0)\ \{}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ out.NullItem(i);}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00449\ \ \ \ \ \}}
+\DoxyCodeLine{00450\ \ \ \ \ out.Pack();}
+\DoxyCodeLine{00451\ \ \ \}}
+\DoxyCodeLine{00452\ \ \ \textcolor{comment}{//...........................................................................}}
+\DoxyCodeLine{00453\ \ \ \textcolor{comment}{//\ map\ getter,\ accessing\ an\ integral\ map\ using\ fractional\ index}}
+\DoxyCodeLine{00454\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ mapT,\ \textcolor{keywordtype}{int}\ type>\ \textcolor{keyword}{struct\ }MapGetter\ \{}
+\DoxyCodeLine{00455\ \ \ \ \ \textcolor{keyword}{const}\ array\_3d<mapT>\ \&src;}
+\DoxyCodeLine{00456\ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ dim;}
+\DoxyCodeLine{00457\ \ \ \ \ \textcolor{keyword}{inline}\ vec3i\ NormaliseIndex(\textcolor{keyword}{const}\ vec3d\&\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ vec3i\ p((\textcolor{keywordtype}{int})i[0],\ (\textcolor{keywordtype}{int})i[1],\ (\textcolor{keywordtype}{int})i[2]);}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((p[0]\ \%=\ dim[0])\ <\ 0)\ \{}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ p[0]\ +=\ dim[0];}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((p[1]\ \%=\ dim[1])\ <\ 0)\ \{}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ p[1]\ +=\ dim[1];}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((p[2]\ \%=\ dim[2])\ <\ 0)\ \{}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ p[2]\ +=\ dim[2];}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ p;}
+\DoxyCodeLine{00469\ \ \ \ \ \}}
+\DoxyCodeLine{00470\ \ \ \ \ MapGetter(\textcolor{keyword}{const}\ array\_3d<mapT>\ \&\_src)\ :\ src(\_src),\ dim(\_src.dim())}
+\DoxyCodeLine{00471\ \ \ \ \ \{\}}
+\DoxyCodeLine{00472\ \ \ \ \ mapT\ Get(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<mapT>}}\&\ fractional\_crd)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTVector3}{TVector3<mapT>}}\ p(fractional\_crd[0]\ *\ dim[0],}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ fractional\_crd[1]\ *\ dim[1],\ fractional\_crd[2]\ *\ dim[2]);}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ ==\ 0)\ \{\ \ \textcolor{comment}{//\ cropped\ index\ value}}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ i\ =\ NormaliseIndex(p);}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ src[i[0]][i[1]][i[2]];}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ ==\ 1)\ \{\ \ \textcolor{comment}{//\ linear\ interpolation}}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ mapT\ val\ =\ 0;}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ fp((\textcolor{keywordtype}{int})p[0],\ (\textcolor{keywordtype}{int})p[1],\ (\textcolor{keywordtype}{int})p[2]);}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ \_p\ =\ p[0]\ -\/\ fp[0];}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ \_q\ =\ p[1]\ -\/\ fp[1];}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ \_r\ =\ p[2]\ -\/\ fp[2];}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ vx[2]\ =\ \{\ 1\ -\/\ \_p,\ \_p\ \};}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ vy[2]\ =\ \{\ 1\ -\/\ \_q,\ \_q\ \};}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ vz[2]\ =\ \{\ 1\ -\/\ \_r,\ \_r\ \};}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dx\ =\ 0;\ dx\ <=\ 1;\ dx++)\ \{}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ \_vx\ =\ vx[dx];}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dy\ =\ 0;\ dy\ <=\ 1;\ dy++)\ \{}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ \_vy\ =\ vy[dy];}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dz\ =\ 0;\ dz\ <=\ 1;\ dz++)\ \{}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ \_vz\ =\ vz[dz];}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ i\ =\ NormaliseIndex(}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ vec3d(fp[0]\ +\ dx,\ fp[1]\ +\ dy,\ fp[2]\ +\ dz));}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ val\ +=\ src[i[0]][i[1]][i[2]]\ *\ \_vx*\_vy*\_vz;}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val;}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ ==\ 2)\ \{\ \ \textcolor{comment}{//\ cubic\ interpolation}}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ vec3i\ fp((\textcolor{keywordtype}{int})(p[0]),\ (\textcolor{keywordtype}{int})(p[1]),\ (\textcolor{keywordtype}{int})(p[2]));}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ mapT\ val\ =\ 0;}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ \_p\ =\ p[0]\ -\/\ fp[0],\ \_pc\ =\ \_p*\_p*\_p,\ \_ps\ =\ \_p*\_p;}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ \_q\ =\ p[1]\ -\/\ fp[1],\ \_qc\ =\ \_q*\_q*\_q,\ \_qs\ =\ \_q*\_q;}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ \_r\ =\ p[2]\ -\/\ fp[2],\ \_rc\ =\ \_r*\_r*\_r,\ \_rs\ =\ \_r*\_r;}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ vx[4]\ =\ \{\ -\/\_pc\ /\ 6\ +\ \_ps\ /\ 2\ -\/\ \_p\ /\ 3,\ (\_pc\ -\/\ \_p)\ /\ 2\ -\/\ \_ps\ +\ 1,}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \ \ \ \ (-\/\_pc\ +\ \_ps)\ /\ 2\ +\ \_p,\ (\_pc\ -\/\ \_p)\ /\ 6\ \};}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ vy[4]\ =\ \{\ -\/\_qc\ /\ 6\ +\ \_qs\ /\ 2\ -\/\ \_q\ /\ 3,\ (\_qc\ -\/\ \_q)\ /\ 2\ -\/\ \_qs\ +\ 1,}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ \ \ (-\/\_qc\ +\ \_qs)\ /\ 2\ +\ \_q,\ (\_qc\ -\/\ \_q)\ /\ 6\ \};}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ vz[4]\ =\ \{\ -\/\_rc\ /\ 6\ +\ \_rs\ /\ 2\ -\/\ \_r\ /\ 3,\ (\_rc\ -\/\ \_r)\ /\ 2\ -\/\ \_rs\ +\ 1,}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \ \ \ \ (-\/\_rc\ +\ \_rs)\ /\ 2\ +\ \_r,\ (\_rc\ -\/\ \_r)\ /\ 6\ \};}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dx\ =\ -\/1;\ dx\ <=\ 2;\ dx++)\ \{}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ mapT\ \_vx\ =\ vx[dx\ +\ 1];}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\_x\ =\ fp[0]\ +\ dx;}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dy\ =\ -\/1;\ dy\ <=\ 2;\ dy++)\ \{}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ \_vxy\ =\ vy[dy\ +\ 1]\ *\ \_vx;}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\_y\ =\ fp[1]\ +\ dy;}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dz\ =\ -\/1;\ dz\ <=\ 2;\ dz++)\ \{}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ \_vxyz\ =\ vz[dz\ +\ 1]\ *\ \_vxy;}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3i\ i\ =\ NormaliseIndex(vec3d(n\_x,\ n\_y,\ fp[2]\ +\ dz));}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ val\ +=\ src[i[0]][i[1]][i[2]]\ *\ \_vxyz;}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val;}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00529\ \ \ \ \ \}}
+\DoxyCodeLine{00530\ \ \ \};}
+\DoxyCodeLine{00531\ \ \ \textcolor{comment}{/*\ fills\ a\ grid\ in\ cartesian\ coordinates\ with\ values\ from\ the\ map\ of\ the\ unit}}
+\DoxyCodeLine{00532\ \textcolor{comment}{\ \ cell}}
+\DoxyCodeLine{00533\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00534\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ \_MapGetter,\ \textcolor{keyword}{typename}\ dest\_t>\ \textcolor{keyword}{static}\ array\_3d<dest\_t>\ \&}
+\DoxyCodeLine{00535\ \ \ \ \ Cell2Cart(\textcolor{keyword}{const}\ \_MapGetter\&\ src,\ array\_3d<dest\_t>\ \&dest,}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \textcolor{keyword}{const}\ smatdd\&\ grid\_2\_cart,\ \textcolor{keyword}{const}\ mat3d\&\ cart2cell)}
+\DoxyCodeLine{00537\ \ \ \{}
+\DoxyCodeLine{00538\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ dest.width;\ i++)\ \{}
+\DoxyCodeLine{00539\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ dest.height;\ j++)\ \{}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ dest.depth;\ k++)\ \{}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cartesian\ coordinates\ from\ grid}}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ cc\ =\ vec3d(i,\ j,\ k)*grid\_2\_cart.r\ +\ grid\_2\_cart.t;}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ p(}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \ \ cc[0]\ *\ cart2cell[0][0]\ +\ cc[1]\ *\ cart2cell[1][0]\ +\ cc[2]\ *\ cart2cell[2][0],}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \ \ cc[1]\ *\ cart2cell[1][1]\ +\ cc[2]\ *\ cart2cell[2][1],}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \ \ \ \ cc[2]\ *\ cart2cell[2][2]}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00548\ \ \ \ \ \ \ \ \ \ \ dest[i][j][k]\ =\ src.Get(p);}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00551\ \ \ \ \ \}}
+\DoxyCodeLine{00552\ \ \ \ \ \textcolor{keywordflow}{return}\ dest;}
+\DoxyCodeLine{00553\ \ \ \}}
+\DoxyCodeLine{00554\ \};}
+\DoxyCodeLine{00555\ }
+\DoxyCodeLine{00556\ EndXlibNamespace()}
+\DoxyCodeLine{00557\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

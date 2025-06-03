@@ -1,0 +1,115 @@
+\doxysection{glmaterial.\+h}
+\hypertarget{glmaterial_8h_source}{}\label{glmaterial_8h_source}\index{glib/glmaterial.h@{glib/glmaterial.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_material\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_material\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}groupobj.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}gloption.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}datafile.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00017\ BeginGlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ extern\ const\ TGlOption\ BlackColor;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ const\ uint16\_t}
+\DoxyCodeLine{00022\ \ \ sglmAmbientF\ \ \ =\ 0x0001,\ \ \ \ \textcolor{comment}{//\ material\ properties}}
+\DoxyCodeLine{00023\ \ \ sglmAmbientB\ \ \ =\ 0x0002,}
+\DoxyCodeLine{00024\ \ \ sglmAmbientFB\ \ =\ 0x0003,}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ sglmDiffuseF\ \ \ =\ 0x0004,}
+\DoxyCodeLine{00027\ \ \ sglmDiffuseB\ \ \ =\ 0x0008,}
+\DoxyCodeLine{00028\ \ \ sglmDiffuseFB\ \ =\ 0x000C,}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ sglmSpecularF\ \ =\ 0x0010,}
+\DoxyCodeLine{00031\ \ \ sglmSpecularB\ \ =\ 0x0020,}
+\DoxyCodeLine{00032\ \ \ sglmSpecularFB\ =\ 0x0030,}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ sglmShininessF\ =\ 0x0040,}
+\DoxyCodeLine{00035\ \ \ sglmShininessB\ =\ 0x0080,}
+\DoxyCodeLine{00036\ \ \ sglmShininessFB=\ 0x00C0,}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ sglmEmissionF\ =\ \ 0x0100,}
+\DoxyCodeLine{00039\ \ \ sglmEmissionB\ =\ \ 0x0200,}
+\DoxyCodeLine{00040\ \ \ sglmEmissionFB\ =\ 0x0300,}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ sglmTransparent\ =0x0400,}
+\DoxyCodeLine{00043\ \ \ sglmIdentityDraw=0x0800,}
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ \ sglmStaticDraw\ \ =0x1000,}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ sglmLighting\ \ \ =0x2000,}
+\DoxyCodeLine{00047\ \ \ sglmColorMat\ \ \ =0x4000;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ class\ TGlMaterial:\ public\ AGOProperties,\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00050\ \ \ uint16\_t\ Flags;}
+\DoxyCodeLine{00051\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00052\ \ \ TGlOption\ EmissionF;}
+\DoxyCodeLine{00053\ \ \ TGlOption\ SpecularF;}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{short}\ ShininessF;}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ TGlOption\ EmissionB;}
+\DoxyCodeLine{00057\ \ \ TGlOption\ SpecularB;}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{short}\ ShininessB;}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ TGlOption\ AmbientF;}
+\DoxyCodeLine{00061\ \ \ TGlOption\ DiffuseF;}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ TGlOption\ AmbientB;}
+\DoxyCodeLine{00064\ \ \ TGlOption\ DiffuseB;}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ TGlMaterial()\ :\ Flags(0),\ ShininessF(0),\ ShininessB(0)\ \{\}}
+\DoxyCodeLine{00067\ \ \ TGlMaterial(\textcolor{keyword}{const}\ olxstr\&\ str)\ \ \{\ \ FromString(str);\ \ \}}
+\DoxyCodeLine{00068\ \ \ \string~TGlMaterial()\ \{\}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ Init(\textcolor{keywordtype}{bool}\ skip)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{const}\ TGlMaterial\&\ Intensity(TGlOption\&\ ClearColor,\ \textcolor{keywordtype}{double}\ intensity)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ DefPropP(uint16\_t,\ Flags)}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{comment}{//\ Has/Set}}
+\DoxyCodeLine{00076\ \ \ DefPropBFHasSet(AmbientF,\ \ \ Flags,\ sglmAmbientF)}
+\DoxyCodeLine{00077\ \ \ DefPropBFHasSet(DiffuseF,\ \ \ Flags,\ sglmDiffuseF)}
+\DoxyCodeLine{00078\ \ \ DefPropBFHasSet(EmissionF,\ \ Flags,\ sglmEmissionF)}
+\DoxyCodeLine{00079\ \ \ DefPropBFHasSet(SpecularF,\ \ Flags,\ sglmSpecularF)}
+\DoxyCodeLine{00080\ \ \ DefPropBFHasSet(ShininessF,\ Flags,\ sglmShininessF)}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ DefPropBFHasSet(AmbientB,\ \ \ Flags,\ sglmAmbientB)}
+\DoxyCodeLine{00083\ \ \ DefPropBFHasSet(DiffuseB,\ \ \ Flags,\ sglmDiffuseB)}
+\DoxyCodeLine{00084\ \ \ DefPropBFHasSet(EmissionB,\ \ Flags,\ sglmEmissionB)}
+\DoxyCodeLine{00085\ \ \ DefPropBFHasSet(SpecularB,\ \ Flags,\ sglmSpecularB)}
+\DoxyCodeLine{00086\ \ \ DefPropBFHasSet(ShininessB,\ Flags,\ sglmShininessB)}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ DefPropBFHasSet(Lighting,\ \ Flags,\ sglmLighting)}
+\DoxyCodeLine{00089\ \ \ DefPropBFHasSet(ColorMaterial,\ \ Flags,\ sglmColorMat)}
+\DoxyCodeLine{00090\ \ \ DefPropBFIsSet(Transparent,\ \ Flags,\ sglmTransparent)}
+\DoxyCodeLine{00091\ \ \ DefPropBFIsSet(IdentityDraw,\ \ Flags,\ sglmIdentityDraw)}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ TGlMaterial\&\ operator\ =\ (\textcolor{keyword}{const}\ TGlMaterial\ \&G);}
+\DoxyCodeLine{00094\ \ \ AGOProperties\&\ operator\ =\ (\textcolor{keyword}{const}\ AGOProperties\ \&G);}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ TGlMaterial\ \&G)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{bool}\ operator\ ==\ (\textcolor{keyword}{const}\ AGOProperties\ \&G)\ \textcolor{keyword}{const};\ \textcolor{comment}{//\ !!!}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ TGlMaterial\ \&m)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{bool}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\&\ Item);}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ TIString\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{void}\ FromString(\textcolor{keyword}{const}\ olxstr\&\ str,\ \textcolor{keywordtype}{bool}\ safe=\textcolor{keyword}{false});}
+\DoxyCodeLine{00104\ \ \ olxstr\ ToPOV()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00105\ \ \ olxstr\ ToWRL(\textcolor{keywordtype}{bool}\ back)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00106\ \};}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ EndGlNamespace()}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

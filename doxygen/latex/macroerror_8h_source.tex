@@ -1,0 +1,166 @@
+\doxysection{macroerror.\+h}
+\hypertarget{macroerror_8h_source}{}\label{macroerror_8h_source}\index{sdl/macroerror.h@{sdl/macroerror.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_macroerror\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_macroerror\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}ptypes.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}estack.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}log.h"{}}}
+\DoxyCodeLine{00017\ BeginEsdlNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ class\ \mbox{\hyperlink{classABasicFunction}{ABasicFunction}};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ const\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00022\ \ \ peNonexistingFunction\ =\ 0x0001,}
+\DoxyCodeLine{00023\ \ \ peProcessingError\ \ \ \ \ =\ 0x0002,}
+\DoxyCodeLine{00024\ \ \ peProcessingException\ =\ 0x0004,}
+\DoxyCodeLine{00025\ \ \ peInvalidOption\ \ \ \ \ \ \ =\ 0x0008,}
+\DoxyCodeLine{00026\ \ \ peInvalidArgCount\ \ \ \ \ =\ 0x0010,}
+\DoxyCodeLine{00027\ \ \ peIllegalState\ \ \ \ \ \ \ \ =\ 0x0020,}
+\DoxyCodeLine{00028\ \ \ peProcessingBreak\ \ \ \ \ =\ 0x0040,}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//\ these\ are\ for\ special\ handling}}
+\DoxyCodeLine{00030\ \ \ peUnhandled\ \ \ \ \ \ \ \ \ \ \ =\ 0x1000,}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//\ set\ false\ if\ called\ as\ a\ function\ with\ ()}}
+\DoxyCodeLine{00032\ \ \ piMacroCall\ \ \ \ \ \ \ \ \ \ \ =\ 0x2000;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ class\ TMacroData\ :\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ ProcessError;}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{bool}\ DeleteObject;}
+\DoxyCodeLine{00037\ \ \ olxstr\ ErrorInfo,\ Location;}
+\DoxyCodeLine{00038\ \ \ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ RetValue;}
+\DoxyCodeLine{00039\ \ \ \mbox{\hyperlink{classstr__stack}{str\_stack}}\ Stack;}
+\DoxyCodeLine{00040\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00041\ \ \ TMacroData();}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{virtual}\ \string~TMacroData()\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{if}\ (DeleteObject)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ RetValue;}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{void}\ operator\ =\ (\textcolor{keyword}{const}\ TMacroData\&\ ME);}
+\DoxyCodeLine{00049\ \ \ olxstr\&\ ProcessingError(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ errMsg);}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{void}\ NonexitingMacroError(\textcolor{keyword}{const}\ olxstr\&\ macroName);}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ WrongArgCount(\textcolor{keyword}{const}\ \mbox{\hyperlink{classABasicFunction}{ABasicFunction}}\&\ caller,\ \textcolor{keywordtype}{size\_t}\ provided);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{void}\ WrongOption(\textcolor{keyword}{const}\ \mbox{\hyperlink{classABasicFunction}{ABasicFunction}}\&\ caller,\ \textcolor{keyword}{const}\ olxstr\&\ option);}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ WrongState(\textcolor{keyword}{const}\ \mbox{\hyperlink{classABasicFunction}{ABasicFunction}}\&\ caller);}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ SetUnhandled(\textcolor{keywordtype}{bool}\ v)\ \{\ olx\_set\_bit(v,\ ProcessError,\ peUnhandled);\ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ Reset()\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ ProcessError\ =\ 0;}
+\DoxyCodeLine{00058\ \ \ \ \ ErrorInfo.SetLength(0);}
+\DoxyCodeLine{00059\ \ \ \ \ Location.SetLength(0);}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (DeleteObject)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ RetValue;}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ DeleteObject\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00064\ \ \ \ \ RetValue\ =\ 0;}
+\DoxyCodeLine{00065\ \ \ \ \ Stack.Clear();}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ ClearErrorFlag()\ \{\ ProcessError\ =\ 0;\ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{void}\ ProcessingException(\textcolor{keyword}{const}\ \mbox{\hyperlink{classABasicFunction}{ABasicFunction}}\&\ caller,}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\&\ exc);}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{void}\ ProcessingException(\textcolor{keyword}{const}\ olxstr\&\ location,}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\&\ exc);}
+\DoxyCodeLine{00074\ \ \ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ Break()\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ ProcessError\ |=\ peProcessingBreak;}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{bool}\ IsSuccessful()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ ((ProcessError\ \&\ 0x0FFF)\ ==\ 0);}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{bool}\ DoesFunctionExist()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{return}\ (ProcessError\ \&\ peNonexistingFunction)\ ==\ 0;}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordtype}{bool}\ IsProcessingError()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{return}\ (ProcessError\ \&\ peProcessingError)\ !=\ 0;}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{bool}\ IsProcessingException()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ (ProcessError\ \&\ peProcessingException)\ !=\ 0;}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{bool}\ IsInvalidOption()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ (ProcessError\ \&\ peInvalidOption)\ !=\ 0;}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordtype}{bool}\ IsInvalidArguments()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{return}\ (ProcessError\ \&\ peInvalidArgCount)\ !=\ 0;}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{bool}\ IsIllegalState()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{return}\ (ProcessError\ \&\ peIllegalState)\ !=\ 0;}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{bool}\ IsBreakCalled()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{return}\ (ProcessError\ \&\ peProcessingBreak)\ !=\ 0;}
+\DoxyCodeLine{00101\ \ \ \}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{bool}\ IsHandled()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ (ProcessError\ \&\ peUnhandled)\ ==\ 0;}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ DefPropBFIsSet(MacroCall,\ ProcessError,\ piMacroCall);}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetInfo()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ErrorInfo;\ \}}
+\DoxyCodeLine{00110\ \ \ DefPropC(olxstr,\ Location)}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ olxstr\ GetRetVal()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{keywordtype}{bool}\ HasRetVal()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RetValue\ !=\ 0;\ \}}
+\DoxyCodeLine{00115\ \ \ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ RetObj()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ RetValue;\ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \mbox{\hyperlink{classstr__stack}{str\_stack}}\&\ GetStack()\ \{\ \textcolor{keywordflow}{return}\ Stack;\ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{void}\ PrintStack(\textcolor{keywordtype}{int}\ logEvt\ =\ logError,\ \textcolor{keywordtype}{bool}\ annotate\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ prefix\ =\ EmptyString())\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \textcolor{comment}{//\ the\ type\ is\ validated}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ EObj>\ EObj*\ GetRetObj()\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ EObj*\ r\ =\ \textcolor{keyword}{dynamic\_cast<}EObj*\textcolor{keyword}{>}(RetValue);}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ ==\ 0)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTMacroData_1_1TCastException}{TCastException}}(\_\_OlxSourceInfo,\ EsdlObjectName(*RetValue),}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ EsdlClassName(EObj));}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ PT>\ \textcolor{keywordtype}{void}\ SetRetVal(\textcolor{keyword}{const}\ PT\&\ val)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{if}\ (DeleteObject)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ RetValue;}
+\DoxyCodeLine{00134\ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ DeleteObject\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00136\ \ \ \ \ RetValue\ =\ createWrapper(val);}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ PT>\ \textcolor{keywordtype}{void}\ SetRetVal(PT*\ val)\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{if}\ (DeleteObject)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ RetValue;}
+\DoxyCodeLine{00142\ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ DeleteObject\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00144\ \ \ \ \ RetValue\ =\ val;}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{class\ }TCastException\ :\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00149\ \ \ \ \ TCastException(\textcolor{keyword}{const}\ olxstr\&\ location,\ \textcolor{keyword}{const}\ olxstr\&\ from,}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ to)}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ :\ TBasicException(location,}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Cannot\ cast\ '"{}})\ <<\ from\ <<\ \textcolor{stringliteral}{"{}'\ to\ '"{}}\ <<\ to\ <<\ \textcolor{charliteral}{'\(\backslash\)''})}
+\DoxyCodeLine{00153\ \ \ \ \ \{\}}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TCastException(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00155\ \ \ \};}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \};}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ EndEsdlNamespace()}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

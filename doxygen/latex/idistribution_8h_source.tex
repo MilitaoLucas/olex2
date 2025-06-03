@@ -1,0 +1,53 @@
+\doxysection{idistribution.\+h}
+\hypertarget{idistribution_8h_source}{}\label{idistribution_8h_source}\index{xlib/idistribution.h@{xlib/idistribution.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_\_cl\_idustribution\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_\_cl\_idustribution\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}chembase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}chemdata.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}poly.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ BeginChemNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ struct\ TIsotopeData\ \ \{\ \ \textcolor{comment}{//\ tree\ node}}
+\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TIsotopeData>}}\ Children;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{double}\ M,\ W;}
+\DoxyCodeLine{00021\ \ \ TIsotopeData()\ :\ M(0),\ W(1)\ \{\}}
+\DoxyCodeLine{00022\ \ \ \string~TIsotopeData()\ \{\}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{void}\ Evail(TPolySerie\&\ S,\ \textcolor{keywordtype}{double}\ \&eM,\ \textcolor{keywordtype}{double}\ \&eW);}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ calculates\ itsotopic\ distribution\ of\ a\ given\ formula;\ use\ TIPattern\ instead}}
+\DoxyCodeLine{00027\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{class\ }TIDistribution\ \{}
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TPolynom>}}\ Polynomes;}
+\DoxyCodeLine{00030\ \ \ TIsotopeData\ Root;}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{double}\ Threshold;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{size\_t}\ MaxPoints;}
+\DoxyCodeLine{00033\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ Evail(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPolynomMember}{TPolynomMember}}\&\ PM,\ \textcolor{keywordtype}{double}\&\ M,\ \textcolor{keywordtype}{double}\&\ W)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00035\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<TPolySerie>}}\ PolynomToSerie(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPolynom}{TPolynom}}\&\ P);}
+\DoxyCodeLine{00036\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ TIDistribution();}
+\DoxyCodeLine{00038\ \ \ \string~TIDistribution()\ \{\}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ AddIsotope(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcm__Element}{cm\_Element}}\&\ elm,\ \textcolor{keywordtype}{size\_t}\ count);}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ Calc(TPolySerie\&\ S);}
+\DoxyCodeLine{00041\ \ \ DefPropP(\textcolor{keywordtype}{double},\ Threshold);}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{void}\ SetMaxPoints(\textcolor{keywordtype}{size\_t}\ v)\ \ \{\ \ MaxPoints\ =\ v;\ \ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ CombineSerie(TPolySerie\&\ serie,\ \textcolor{keywordtype}{double}\ threshold);}
+\DoxyCodeLine{00044\ \};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ EndChemNamespace()}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

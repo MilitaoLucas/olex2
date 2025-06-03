@@ -1,0 +1,152 @@
+\doxysection{3dframe.\+h}
+\hypertarget{3dframe_8h_source}{}\label{3dframe_8h_source}\index{glib/3dframe.h@{glib/3dframe.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_gl\_3dframe\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_gl\_3dframe\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glmousehandler.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glrender.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}styles.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}glprimitive.h"{}}}
+\DoxyCodeLine{00016\ BeginGlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ class\ A3DFrameCtrl\ \ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnTranslate(\textcolor{keywordtype}{size\_t}\ sender,\ \textcolor{keyword}{const}\ vec3d\&\ t)\ =\ 0;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnRotate(\textcolor{keywordtype}{size\_t}\ sender,\ \textcolor{keyword}{const}\ vec3d\&\ vec,\ \textcolor{keywordtype}{double}\ angle)\ =\ 0;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnZoom(\textcolor{keywordtype}{size\_t}\ sender,\ \textcolor{keywordtype}{double}\ zoom,\ \textcolor{keywordtype}{bool}\ inc)\ =\ 0;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetBasis()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ frame\ 'face'\ -\/\ the\ control\ sphere\ of\ the\ face}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }TFaceCtrl\ :\ \textcolor{keyword}{public}\ AGlMouseHandlerImp\ \{}
+\DoxyCodeLine{00027\ \ \ A3DFrameCtrl\&\ ParentCtrl;}
+\DoxyCodeLine{00028\ \ \ vec3d\ \&A,\ \&B,\ \&C,\ \&D,\ \&N;}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{size\_t}\ Id;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoTranslate(\textcolor{keyword}{const}\ vec3d\&\ t)\ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ ParentCtrl.OnTranslate(GetId(),\ t);}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoRotate(\textcolor{keyword}{const}\ vec3d\&\ vec,\ \textcolor{keywordtype}{double}\ angle)\ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{return}\ ParentCtrl.OnRotate(GetId(),\ vec,\ angle);}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoZoom(\textcolor{keywordtype}{double}\ zoom,\ \textcolor{keywordtype}{bool}\ inc)\ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ ParentCtrl.OnZoom(GetId(),\ zoom,\ inc);}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00042\ \ \ TFaceCtrl(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ prnt,\ \textcolor{keyword}{const}\ olxstr\&\ cName,\ \textcolor{keywordtype}{size\_t}\ \_Id,}
+\DoxyCodeLine{00043\ \ \ \ \ vec3d\&\ \_A,\ vec3d\&\ \_B,\ vec3d\&\ \_C,\ vec3d\&\ \_D,\ vec3d\&\ \_N,}
+\DoxyCodeLine{00044\ \ \ \ \ A3DFrameCtrl\&\ \_ParentCtrl)}
+\DoxyCodeLine{00045\ \ \ \ \ :\ AGlMouseHandlerImp(prnt,\ cName),}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ ParentCtrl(\_ParentCtrl),}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ A(\_A),\ B(\_B),\ C(\_C),\ D(\_D),\ N(\_N),\ Id(\_Id)}
+\DoxyCodeLine{00048\ \ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ SetMoveable(\textcolor{keyword}{true});}
+\DoxyCodeLine{00050\ \ \ \ \ SetRoteable(\textcolor{keyword}{true});}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{size\_t}\ GetId()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Id;\ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName);}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&,\ vec3d\&)\ \ \{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&);}
+\DoxyCodeLine{00056\ \ \ vec3d\&\ GetA()\ \ \{\ \ \textcolor{keywordflow}{return}\ A;\ \ \}}
+\DoxyCodeLine{00057\ \ \ vec3d\&\ GetB()\ \ \{\ \ \textcolor{keywordflow}{return}\ B;\ \ \}}
+\DoxyCodeLine{00058\ \ \ vec3d\&\ GetC()\ \ \{\ \ \textcolor{keywordflow}{return}\ C;\ \ \}}
+\DoxyCodeLine{00059\ \ \ vec3d\&\ GetD()\ \ \{\ \ \textcolor{keywordflow}{return}\ D;\ \ \}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetN()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ N;\ \ \}}
+\DoxyCodeLine{00061\ \ \ vec3d\ GetCenter()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (A+B+C+D)/4;\ \}}
+\DoxyCodeLine{00062\ \};}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ the\ frame\ class\ itself...}}
+\DoxyCodeLine{00064\ \textcolor{keyword}{class\ }T3DFrameCtrl\ :\ \textcolor{keyword}{public}\ AGlMouseHandlerImp,\ \textcolor{keyword}{public}\ A3DFrameCtrl\ \{}
+\DoxyCodeLine{00065\ \ \ vec3d\ edges[8],\ norms[6],\ center;}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{double}\ zoom;}
+\DoxyCodeLine{00067\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoTranslate(\textcolor{keyword}{const}\ vec3d\&\ t)\ \{\ Translate(t);\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoRotate(\textcolor{keyword}{const}\ vec3d\&\ vec,\ \textcolor{keywordtype}{double}\ angle);}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ DoZoom(\textcolor{keywordtype}{double}\ zoom,\ \textcolor{keywordtype}{bool}\ inc);}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnTranslate(\textcolor{keywordtype}{size\_t}\ sender,\ \textcolor{keyword}{const}\ vec3d\&\ t);}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnRotate(\textcolor{keywordtype}{size\_t}\ sender,\ \textcolor{keyword}{const}\ vec3d\&,\ \textcolor{keywordtype}{double}\ angle)\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{return}\ DoRotate(Faces[sender].GetN(),\ angle);}
+\DoxyCodeLine{00074\ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnZoom(\textcolor{keywordtype}{size\_t},\ \textcolor{keywordtype}{double},\ \textcolor{keywordtype}{bool})\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{bool}\ sphere;}
+\DoxyCodeLine{00079\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00080\ \ \ T3DFrameCtrl(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ prnt,\ \textcolor{keyword}{const}\ olxstr\&\ cName);}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName);}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&\ \_mn,\ vec3d\&\ \_mx)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ vec3d::UpdateMinMax(edges[i],\ \_mn,\ \_mx);}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetBasis()\textcolor{keyword}{\ const\ }\{\}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetVisible(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ p);}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{const}\ vec3d\&\ GetEdge(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >=\ 8)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTIndexOutOfRangeException}{TIndexOutOfRangeException}}(\_\_OlxSourceInfo,\ i,\ 0,\ 8);}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{return}\ edges[i];}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{void}\ SetEdge(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keyword}{const}\ vec3d\&\ val)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >=\ 8)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTIndexOutOfRangeException}{TIndexOutOfRangeException}}(\_\_OlxSourceInfo,\ i,\ 0,\ 8);}
+\DoxyCodeLine{00100\ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ edges[i]\ =\ val;}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{//\ recalculates\ normals\ etc\ for\ the\ new\ edges}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{void}\ UpdateEdges();}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ Translate(\textcolor{keyword}{const}\ vec3d\&\ t)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ edges[i]\ +=\ t;}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ center\ +=\ t;}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordtype}{double}\ GetVolume()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{return}\ sqrt((edges[1]\ -\/\ edges[0]).QLength()*(edges[3]\ -\/\ edges[0]).QLength()}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ *(edges[4]\ -\/\ edges[0]).QLength());}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \ \ vec3d\ GetSize()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ vec3d(}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ (edges[3]\ -\/\ edges[0]).Length(),}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ (edges[1]\ -\/\ edges[0]).Length(),}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ (edges[4]\ -\/\ edges[0]).Length());}
+\DoxyCodeLine{00120\ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{const}\ vec3d\ \&GetCenter()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ center;\ \}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ GetZoom()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ zoom;\ \}}
+\DoxyCodeLine{00123\ \ \ mat3d\ GetNormals()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordflow}{return}\ mat3d(}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ (edges[3]\ -\/\ edges[0]).Normalise(),}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ (edges[1]\ -\/\ edges[0]).Normalise(),}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ (edges[4]\ -\/\ edges[0]).Normalise());}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{void}\ ToDataItem(\mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{void}\ FromDataItem(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTDataItem}{TDataItem}}\ \&di);}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{bool}\ IsSpherical()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sphere;\ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{comment}{//\ ftSphere/ftBox}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{void}\ SetType(\textcolor{keywordtype}{int}\ t);}
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordtype}{void}\ LibType(\textcolor{keyword}{const}\ TStrObjList\&\ Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ E);}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\&\ name\ =\ EmptyString());}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TFaceCtrl>}}\ Faces;}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ ftSphere\ =\ 1,}
+\DoxyCodeLine{00141\ \ \ \ \ ftBox\ =\ 2}
+\DoxyCodeLine{00142\ \ \ \};}
+\DoxyCodeLine{00143\ \};}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ EndGlNamespace()}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

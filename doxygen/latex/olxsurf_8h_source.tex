@@ -1,0 +1,113 @@
+\doxysection{olxsurf.\+h}
+\hypertarget{olxsurf_8h_source}{}\label{olxsurf_8h_source}\index{gxlib/olxsurf.h@{gxlib/olxsurf.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_gxlib\_olxsurf\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_gxlib\_olxsurf\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}arrays.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}olxmps.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}unitcell.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}xatom.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}IsoSurface.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{using\ namespace\ }olx\_array;}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{struct\ }TSurfCalculationTask\ :\ \textcolor{keyword}{public}\ TaskBase\ \{}
+\DoxyCodeLine{00012\ \ \ array\_3d<float>\ \&array;}
+\DoxyCodeLine{00013\ \ \ array\_3d<int>\ \&data;}
+\DoxyCodeLine{00014\ \ \ \textcolor{keyword}{const}\ vec3f\ \&min\_val;}
+\DoxyCodeLine{00015\ \ \ \textcolor{keywordtype}{float}\ res;}
+\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{float}\ pr;}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{const}\ array\_1d<vec3f>\ \&crds;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{const}\ array\_1d<float>\ \&radii;}
+\DoxyCodeLine{00019\ \ \ TSurfCalculationTask(}
+\DoxyCodeLine{00020\ \ \ \ \ array\_3d<float>\ \&array\_,}
+\DoxyCodeLine{00021\ \ \ \ \ array\_3d<int>\ \&data\_,}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{const}\ vec3f\ \&min\_val\_,}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{float}\ res\_,}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{const}\ array\_1d<vec3f>\ \&crds\_,}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{const}\ array\_1d<float>\ \&radii\_,\ \textcolor{keywordtype}{float}\ pr\_)}
+\DoxyCodeLine{00026\ \ \ \ \ :\ array(array\_),}
+\DoxyCodeLine{00027\ \ \ \ \ data(data\_),}
+\DoxyCodeLine{00028\ \ \ \ \ min\_val(min\_val\_),}
+\DoxyCodeLine{00029\ \ \ \ \ res(res\_),\ crds(crds\_),\ radii(radii\_),\ pr(pr\_)}
+\DoxyCodeLine{00030\ \ \ \{\}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ Run(\textcolor{keywordtype}{size\_t}\ i1)\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{float}\ x\ =\ (min\_val[0]\ +\ i1)\ /\ res;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i2\ =\ 0;\ i2\ <\ array.height;\ i2++)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ y\ =\ (min\_val[1]\ +\ i2)\ /\ res;}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i3\ =\ 0;\ i3\ <\ array.depth;\ i3++)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (array[i1][i2][i3]\ !=\ 0)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ vec3f\ p(x,\ y,\ (min\_val[2]\ +\ i3)\ /\ res);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ crds.width;\ i++)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ qd\ =\ crds[i].QDistanceTo(p);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (qd\ <\ olx\_sqr(radii[i]\ +\ pr))\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ data[i1][i2][i3]\ =\ (int)i;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ array[i1][i2][i3]\ =\ -\/1;}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ \ \ TSurfCalculationTask\ *\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TSurfCalculationTask(array,\ data,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ min\_val,\ res,\ crds,\ radii,\ pr);}
+\DoxyCodeLine{00053\ \ \ \}}
+\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{keyword}{struct\ }TSurfCalculationTask1\ :\ \textcolor{keyword}{public}\ TaskBase\ \{}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<vec3f>}}\ \&vertices;}
+\DoxyCodeLine{00058\ \ \ array\_1d<float>\ \&values;}
+\DoxyCodeLine{00059\ \ \ \mbox{\hyperlink{classTUnitCell}{TUnitCell}}\ \&uc;}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au;}
+\DoxyCodeLine{00061\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AnAssociation3<TCAtom*,\ smatd,\ vec3d>}}\ >\ res;}
+\DoxyCodeLine{00062\ \ \ TSurfCalculationTask1(}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<vec3f>}}\ \&vertices\_,}
+\DoxyCodeLine{00064\ \ \ \ \ array\_1d<float>\ \&values\_,}
+\DoxyCodeLine{00065\ \ \ \ \ \mbox{\hyperlink{classTUnitCell}{TUnitCell}}\ \&uc\_)}
+\DoxyCodeLine{00066\ \ \ \ \ :\ vertices(vertices\_),}
+\DoxyCodeLine{00067\ \ \ \ \ values(values\_),}
+\DoxyCodeLine{00068\ \ \ \ \ uc(uc\_),\ au(uc\_.GetLattice().GetAsymmUnit())}
+\DoxyCodeLine{00069\ \ \ \{\}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ Run(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ uc.FindInRangeAMC(au.Fractionalise(vertices[i]),\ 1e-\/3,\ 5,}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ res.SetCount(0,\ \textcolor{keyword}{false}));}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{double}\ v\ =\ 0;}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ res.Count();\ j++)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ v\ +=\ res[j].GetA()-\/>GetType().GetMr()*res[j].GetA()-\/>GetChemOccu()\ /}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ vertices[i].QDistanceTo(res[j].GetC());}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ !=\ 0)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ v\ =\ 1.0\ /\ v;}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ values[i]\ =\ (float)v;}
+\DoxyCodeLine{00082\ \ \ \}}
+\DoxyCodeLine{00083\ \ \ TSurfCalculationTask1\ *\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TSurfCalculationTask1(vertices,\ values,\ uc);}
+\DoxyCodeLine{00085\ \ \ \}}
+\DoxyCodeLine{00086\ \};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{keyword}{class\ }TMolSurf\ \{}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{const}\ TXAtomPList\ \&atoms;}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{float}\ pr;}
+\DoxyCodeLine{00091\ \ \ vec3f\ center;}
+\DoxyCodeLine{00092\ \ \ array\_1d<vec3f>\ crds;}
+\DoxyCodeLine{00093\ \ \ array\_1d<float>\ radii;}
+\DoxyCodeLine{00094\ \ \ array\_3d<float>\ arr;}
+\DoxyCodeLine{00095\ \ \ array\_3d<int>\ data;}
+\DoxyCodeLine{00096\ \ \ vec3f\ min\_v;}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{float}\ res;}
+\DoxyCodeLine{00098\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00099\ \ \ TMolSurf(\textcolor{keyword}{const}\ TXAtomPList\ \&atoms\_,\ \textcolor{keywordtype}{float}\ probe\_radius);}
+\DoxyCodeLine{00100\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<CIsoSurface>}}\ Calculate(\textcolor{keywordtype}{float}\ iso\_level);}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{const}\ vec3f\ \&GetCenter()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{return}\ center;}
+\DoxyCodeLine{00104\ \ \ \}}
+\DoxyCodeLine{00105\ \};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,491 @@
+\doxysection{arrays.\+h}
+\hypertarget{arrays_8h_source}{}\label{arrays_8h_source}\index{sdl/arrays.h@{sdl/arrays.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_arrays\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_arrays\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#ifdef\ \_\_BORLANDC\_\_}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\ \ \#include\ <mem.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \#include\ <stdlib.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \#include\ <string.h>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}evector.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00021\ BeginEsdlNamespace()}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ These\ arrays\ are\ only\ suitable\ for\ primitive\ types,\ as\ memset\ zeroes\ the}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ initialised\ arrays.\ These\ arrays\ are\ just\ for\ convinience,\ as\ the\ Data}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ attribute\ is\ publically\ exposed\ for\ the\ performance\ issues}}
+\DoxyCodeLine{00027\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00028\ namespace\ olx\_array\ \{}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{struct\ }array\_1d\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ item\_t\ *data;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ width;}
+\DoxyCodeLine{00033\ \ \ \ \ array\_1d()}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ :\ data(0),\ width(0)}
+\DoxyCodeLine{00035\ \ \ \ \ \{\}}
+\DoxyCodeLine{00036\ \ \ \ \ array\_1d(\textcolor{keyword}{const}\ array\_1d\ \&a)}
+\DoxyCodeLine{00037\ \ \ \ \ :\ data(0),\ width(0)}
+\DoxyCodeLine{00038\ \ \ \ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ (*this)\ =\ a;}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ array\_1d(\textcolor{keywordtype}{size\_t}\ width\_,\ \textcolor{keywordtype}{bool}\ init\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{int}\ iv=0)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ :\ data(0)}
+\DoxyCodeLine{00043\ \ \ \ \ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ resize(width\_,\ init,\ iv);}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \string~array\_1d()\ \{\ free\_();\ \}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ free\_()\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ !=\ 0)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ data;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ clear()\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ free\_();}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ data\ =\ 0;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ width\ =\ 0;}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ array\_1d\ \&resize(\textcolor{keywordtype}{size\_t}\ w,\ \textcolor{keywordtype}{bool}\ init,\ \textcolor{keywordtype}{int}\ iv=0)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ free\_();}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ width\ =\ w;}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ data\ =\ \textcolor{keyword}{new}\ item\_t[width];}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ memset(data,\ iv,\ width*\textcolor{keyword}{sizeof}(item\_t));}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ item\_t\ \&operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{const}\ item\_t\ \&operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00068\ \ \ \ \ array\_1d\ \&operator\ =\ (\textcolor{keyword}{const}\ array\_1d<item\_t>\ \&a)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (width\ !=\ a.width)\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ resize(a.width,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ memcpy(data,\ a.data,\ \textcolor{keyword}{sizeof}(item\_t)*width);}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00074\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ array\_1d\ \&operator\ =\ (\textcolor{keyword}{const}\ array\_1d<T>\ \&a)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (width\ !=\ a.width)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ resize(a.width,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ width;\ i++)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ data[i]\ =\ a.data[i];}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00083\ \ \ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ width;\ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{typedef}\ item\_t\ list\_item\_type;}
+\DoxyCodeLine{00087\ \ \ \};}
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//\ array\ [0..width][0..height]}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{struct\ }array\_2d\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ item\_t\ **data;}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ width,\ height;}
+\DoxyCodeLine{00093\ \ \ \ \ array\_2d()}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ :\ data(0),\ width(0),\ height(0)}
+\DoxyCodeLine{00095\ \ \ \ \ \{\}}
+\DoxyCodeLine{00096\ \ \ \ \ array\_2d(\textcolor{keyword}{const}\ array\_2d\ \&a)}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ :\ data(0),\ width(0),\ height(0)}
+\DoxyCodeLine{00098\ \ \ \ \ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ (*this)\ =\ a;}
+\DoxyCodeLine{00100\ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ array\_2d(\textcolor{keywordtype}{size\_t}\ width\_,\ \textcolor{keywordtype}{size\_t}\ height\_,\ \textcolor{keywordtype}{bool}\ init\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{int}\ iv=0)}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ :\ data(0)}
+\DoxyCodeLine{00103\ \ \ \ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ resize(width\_,\ height\_,\ init,\ iv);}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \string~array\_2d()\ \{\ free\_();\ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordtype}{void}\ free\_()\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ !=\ 0)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ width;\ i++)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ data[i];}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ data;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{void}\ clear()\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ free\_();}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ data\ =\ 0;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ width\ =\ height\ =\ 0;}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ array\_2d\ \&resize(\textcolor{keywordtype}{size\_t}\ w,\ \textcolor{keywordtype}{size\_t}\ h,\ \textcolor{keywordtype}{bool}\ init,\ \textcolor{keywordtype}{int}\ iv=0)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ free\_();}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ width\ =\ w;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ height\ =\ h;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ data\ =\ \textcolor{keyword}{new}\ item\_t*[width];}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ width;\ i++)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ data[i]\ =\ \textcolor{keyword}{new}\ item\_t[height];}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ memset(data[i],\ iv,\ height*\textcolor{keyword}{sizeof}(item\_t));}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00132\ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \ \ item\_t\ *operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{const}\ item\_t\ *operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00135\ \ \ \ \ array\_2d\ \&operator\ =\ (\textcolor{keyword}{const}\ array\_2d<item\_t>\ \&a)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (width\ !=\ a.width\ ||\ height\ !=\ a.height)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ resize(a.width,\ a.height,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ width;\ i++)\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ memcpy(data[i],\ a.data[i],\ \textcolor{keyword}{sizeof}(item\_t)*height);}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ array\_2d\ \&operator\ =\ (\textcolor{keyword}{const}\ array\_2d<T>\ \&a)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (width\ !=\ a.width\ ||\ height\ !=\ a.height)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ resize(a.width,\ a.height,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ width;\ i++)\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ height;\ j++)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ data[i][j]\ =\ a.data[i][j];}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00154\ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \};}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{struct\ }array\_3d\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ item\_t\ ***data;}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ width,\ height,\ depth;}
+\DoxyCodeLine{00161\ \ \ \ \ array\_3d()}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ :\ data(0),\ width(0),\ height(0),\ depth(0)}
+\DoxyCodeLine{00163\ \ \ \ \ \{\}}
+\DoxyCodeLine{00164\ \ \ \ \ array\_3d(\textcolor{keyword}{const}\ array\_3d\ \&a)}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ :\ data(0),\ width(0),\ height(0),\ depth(0)}
+\DoxyCodeLine{00166\ \ \ \ \ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ (*this)\ =\ a;}
+\DoxyCodeLine{00168\ \ \ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \ \ array\_3d(\textcolor{keywordtype}{size\_t}\ width\_,\ \textcolor{keywordtype}{size\_t}\ height\_,\ \textcolor{keywordtype}{size\_t}\ depth\_,}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ init\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{int}\ iv=0)}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ :\ data(0)}
+\DoxyCodeLine{00172\ \ \ \ \ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ resize(width\_,\ height\_,\ depth\_,\ init,\ iv);}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \string~array\_3d()\ \{\ free\_();\ \}}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordtype}{void}\ free\_()\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data\ !=\ 0)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ width;\ i++)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ height;\ j++)\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ data[i][j];}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ data[i];}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ data;}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordtype}{void}\ clear()\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ free\_();}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ data\ =\ 0;}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ width\ =\ height\ =\ depth\ =\ 0;}
+\DoxyCodeLine{00191\ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00193\ \ \ \ \ array\_3d\ \&\ resize(\textcolor{keyword}{const}\ vec\_t\ \&d,\ \textcolor{keywordtype}{bool}\ init,\ \textcolor{keywordtype}{int}\ iv=0)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ resize(d[0],\ d[1],\ d[2],\ init,\ iv);}
+\DoxyCodeLine{00195\ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ array\_3d\ \&\ resize(\textcolor{keywordtype}{size\_t}\ w,\ \textcolor{keywordtype}{size\_t}\ h,\ \textcolor{keywordtype}{size\_t}\ d,\ \textcolor{keywordtype}{bool}\ init,\ \textcolor{keywordtype}{int}\ iv=0)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ free\_();}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ width\ =\ w;}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ height\ =\ h;}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ depth\ =\ d;}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ data\ =\ \textcolor{keyword}{new}\ item\_t**[width];}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ width;\ i++)\ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ data[i]\ =\ \textcolor{keyword}{new}\ item\_t*[height];}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ height;\ j++)\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ data[i][j]\ =\ \textcolor{keyword}{new}\ item\_t[depth];}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (init)\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ memset(data[i][j],\ iv,\ depth*\textcolor{keyword}{sizeof}(item\_t));}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00212\ \ \ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \ \ vec3s\ dim()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ vec3s(width,\ height,\ depth);\ \}}
+\DoxyCodeLine{00214\ \ \ \ \ item\_t\ **operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00215\ \ \ \ \ item\_t\ *\ \textcolor{keyword}{const}\ *operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data[i];\ \}}
+\DoxyCodeLine{00216\ \ \ \ \ array\_3d\ \&operator\ =\ (\textcolor{keyword}{const}\ array\_3d<item\_t>\ \&a)\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (width\ !=\ a.width\ ||\ height\ !=\ a.height\ ||\ depth\ !=\ a.depth)\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ resize(a.width,\ a.height,\ a.depth,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ width;\ i++)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ height;\ j++)\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ memcpy(data[i][j],\ a.data[i][j],\ \textcolor{keyword}{sizeof}(item\_t)*depth);}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00226\ \ \ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ array\_3d\ \&operator\ =\ (\textcolor{keyword}{const}\ array\_3d<T>\ \&a)\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (width\ !=\ a.width\ ||\ height\ !=\ a.height\ ||\ depth\ !=\ a.depth)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ resize(a.width,\ a.height,\ a.depth,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ width;\ i++)\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ height;\ j++)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ depth;\ k++)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ data[i][j][k]\ =\ a.data[i][j][k];}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00239\ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \};}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AE>\ \textcolor{keyword}{class\ }TArray1D\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ index\_t\ MinIndex;}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{comment}{//\ the\ indexes\ provided\ are\ inclusive}}
+\DoxyCodeLine{00248\ \ \ \ \ TArray1D(index\_t\ minIndex,\ index\_t\ maxIndex)}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ :\ MinIndex(minIndex)}
+\DoxyCodeLine{00250\ \ \ \ \ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (minIndex\ >\ maxIndex)\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ Data.resize(maxIndex\ -\/\ minIndex\ +\ 1,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00255\ \ \ \ \ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keywordtype}{void}\ InitWith(\textcolor{keyword}{const}\ AE\ \&val)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Data.width;\ i++)\ \{}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ Data.data[i]\ =\ val;}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00261\ \ \ \ \ \}}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordtype}{void}\ FastInitWith(\textcolor{keywordtype}{int}\ val)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ memset(Data,\ val,\ Data.width*\textcolor{keyword}{sizeof}(AE));}
+\DoxyCodeLine{00265\ \ \ \ \ \}}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \ \ \ \ array\_1d<AE>\ Data;}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Length()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Data.width;\ \}}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Length();\ \}}
+\DoxyCodeLine{00271\ \ \ \ \ index\_t\ GetMin()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MinIndex;\ \}}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsInRange(index\_t\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ind\ >=\ MinIndex\ \&\&\ ((ind\ -\/\ MinIndex)\ <\ Length());}
+\DoxyCodeLine{00274\ \ \ \ \ \}}
+\DoxyCodeLine{00275\ \ \ \ \ AE\&\ operator\ []\ (index\_t\ index)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Value(index);\ \}}
+\DoxyCodeLine{00276\ \ \ \ \ AE\&\ Value(index\_t\ index)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \_\_POlxSourceInfo,\ index\ -\/\ MinIndex,\ 0,\ Length());}
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Data[index\ -\/\ MinIndex];}
+\DoxyCodeLine{00282\ \ \ \ \ \}}
+\DoxyCodeLine{00283\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00284\ \ \ \ \ \textcolor{keyword}{typedef}\ AE\ list\_item\_type;}
+\DoxyCodeLine{00285\ \ \ \};}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \ \ \textcolor{comment}{//\ we\ do\ not\ use\ TArray1D<\ TArray1D\ >\ for\ performance\ reasons...}}
+\DoxyCodeLine{00288\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AE>\ \textcolor{keyword}{class\ }TArray2D\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keyword}{const}\ index\_t\ MinWidth;}
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{keyword}{const}\ index\_t\ MinHeight;}
+\DoxyCodeLine{00291\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{comment}{//\ the\ indexes\ provided\ are\ inclusive}}
+\DoxyCodeLine{00293\ \ \ \ \ TArray2D(index\_t\ minWidth,\ index\_t\ maxWidth,}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ index\_t\ minHeight,\ index\_t\ maxHeight)}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ :\ MinWidth(minWidth),\ MinHeight(minHeight)}
+\DoxyCodeLine{00296\ \ \ \ \ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (minWidth\ >\ maxWidth\ ||\ minHeight\ >\ maxHeight)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ Data.resize(maxWidth\ -\/\ minWidth\ +\ 1,\ maxHeight\ -\/\ minHeight\ +\ 1,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00301\ \ \ \ \ \}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keywordtype}{void}\ InitWith(\textcolor{keyword}{const}\ AE\&\ val)\ \{}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Data.height;\ i++)\ \{}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ Data.width;\ j++)\ \{}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \ \ Data.data[i][j]\ =\ val;}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00309\ \ \ \ \ \}}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keywordtype}{void}\ FastInitWith(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ val)\ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ Data.width;\ i++)\ \{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ memset(Data.data[i],\ val,\ Data.height*\textcolor{keyword}{sizeof}(AE));}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00315\ \ \ \ \ \}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsInRange(index\_t\ x,\ index\_t\ y)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (x\ >=\ MinWidth\ \&\&\ ((x\ -\/\ MinWidth)\ <\ Data.width))\ \&\&}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ (y\ >=\ MinHeight\ \&\&\ ((y\ -\/\ MinHeight)\ <\ Data.height));}
+\DoxyCodeLine{00320\ \ \ \ \ \}}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ GetWidth()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Data.width;\ \}}
+\DoxyCodeLine{00322\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Length1()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetWidth();\ \}}
+\DoxyCodeLine{00323\ \ \ \ \ index\_t\ GetMin1()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MinWidth;\ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ GetHeight()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Data.height;\ \}}
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Length2()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetHeight();\ \}}
+\DoxyCodeLine{00326\ \ \ \ \ index\_t\ GetMin2()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MinHeight;\ \}}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \ \ array\_2d<AE>\ Data;}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keyword}{const}\ AE\&\ Value(index\_t\ x,\ index\_t\ y)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00331\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \_\_POlxSourceInfo,\ x\ -\/\ MinWidth,\ 0,\ GetWidth());}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \_\_POlxSourceInfo,\ y\ -\/\ MinHeight,\ 0,\ GetHeight());}
+\DoxyCodeLine{00336\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Data[x\ -\/\ MinWidth][y\ -\/\ MinHeight];}
+\DoxyCodeLine{00338\ \ \ \ \ \}}
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keyword}{const}\ AE\&\ operator\ ()\ (index\_t\ x,\ index\_t\ y)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Value(x,\ y);}
+\DoxyCodeLine{00341\ \ \ \ \ \}}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00344\ \ \ \ \ AE\&\ Value(\textcolor{keyword}{const}\ TVector<VC>\&\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Value((index\_t)ind[0],\ (index\_t)ind[1]);}
+\DoxyCodeLine{00346\ \ \ \ \ \}}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>}
+\DoxyCodeLine{00348\ \ \ \ \ AE\&\ operator\ ()\ (\textcolor{keyword}{const}\ TVector<VC>\&\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Value((index\_t)ind[0],\ (index\_t)ind[1]);}
+\DoxyCodeLine{00350\ \ \ \ \ \}}
+\DoxyCodeLine{00351\ \ \ \};}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \ \ \textcolor{comment}{//\ we\ do\ not\ use\ TArray1D<TArray2D<AE>*>*\ Data\ for\ performance\ reasons}}
+\DoxyCodeLine{00354\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AE>\ \textcolor{keyword}{class\ }TArray3D\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{keyword}{const}\ index\_t\ MinWidth;}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keyword}{const}\ index\_t\ MinHeight;}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{keyword}{const}\ index\_t\ MinDepth;}
+\DoxyCodeLine{00358\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00360\ \ \ \ \ TArray3D(\textcolor{keyword}{const}\ vec\_t\&\ mind,\ \textcolor{keyword}{const}\ vec\_t\&\ maxd)}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ :\ MinWidth(mind[0]),\ MinHeight(mind[1]),\ MinDepth(mind[2])}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mind[0]\ >\ maxd[0]\ ||\ mind[1]\ >\ maxd[1]\ ||\ mind[2]\ >\ maxd[2])\ \{}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ Data.resize(maxd[0]\ -\/\ mind[0]\ +\ 1,}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ maxd[1]\ -\/\ mind[1]\ +\ 1,}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ maxd[2]\ -\/\ mind[2]\ +\ 1,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \textcolor{comment}{//\ the\ indexes\ provided\ are\ inclusive}}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ TArray3D(index\_t\ minWidth,\ index\_t\ maxWidth,\ index\_t\ minHeight,}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \ \ index\_t\ maxHeight,\ index\_t\ minDepth,\ index\_t\ maxDepth)}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ :\ MinWidth(minWidth),\ MinHeight(minHeight),\ MinDepth(minDepth)}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (minWidth\ >=\ maxWidth\ ||\ minHeight\ >=\ maxHeight\ ||\ minDepth\ >=\ maxDepth)\ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ Data.resize(maxWidth\ -\/\ minWidth\ +\ 1,}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \ \ maxHeight\ -\/\ minHeight\ +\ 1,}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ maxDepth\ -\/\ minDepth\ +\ 1,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ InitWith(\textcolor{keyword}{const}\ AE\&\ val)\ \{}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Data.width;\ i++)\ \{}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ Data.height;\ j++)\ \{}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ Data.depth;\ k++)\ \{}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Data.data[i][j][k]\ =\ val;}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ FastInitWith(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ val)\ \{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Data.width;\ i++)\ \{}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ Data.height;\ j++)\ \{}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ memset(Data.data[i][j],\ val,\ Data.depth*\textcolor{keyword}{sizeof}(AE));}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00400\ }
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ IsInRange(index\_t\ x,\ index\_t\ y,\ index\_t\ z)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (x\ >=\ MinWidth\ \&\&\ ((x\ -\/\ MinWidth)\ <\ (index\_t)GetWidth()))\ \&\&}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \ \ (y\ >=\ MinHeight\ \&\&\ ((y\ -\/\ MinHeight)\ <\ (index\_t)GetHeight()))\ \&\&}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ (z\ >=\ MinDepth\ \&\&\ ((z\ -\/\ MinDepth)\ <\ (index\_t)GetDepth()));}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ vec>\ \textcolor{keywordtype}{bool}\ IsInRange(\textcolor{keyword}{const}\ vec\&\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IsInRange((index\_t)ind[0],\ (index\_t)ind[1],\ (index\_t)ind[2]);}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ vec3s\ GetSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ vec3s(GetWidth(),\ GetHeight(),\ GetDepth());\ \}}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ GetWidth()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Data.width;\ \}}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Length1()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetWidth();\ \}}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ index\_t\ GetMin1()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MinWidth;\ \}}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ GetHeight()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Data.height;\ \}}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Length2()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetHeight();\ \}}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ index\_t\ GetMin2()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MinHeight;\ \}}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ GetDepth()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Data.depth;\ \}}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Length3()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetDepth();\ \}}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ index\_t\ GetMin3()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ MinDepth;\ \}}
+\DoxyCodeLine{00419\ }
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \textcolor{comment}{//\ direct\ access\ to\ private\ member}}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ array\_3d<AE>\ Data;}
+\DoxyCodeLine{00422\ }
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \textcolor{keyword}{const}\ AE\&\ Value(index\_t\ x,\ index\_t\ y,\ index\_t\ z)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00424\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \ \ \_\_POlxSourceInfo,\ x\ -\/\ MinWidth,\ 0,\ GetWidth());}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ \ \ \_\_POlxSourceInfo,\ y\ -\/\ MinHeight,\ 0,\ GetHeight());}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \ \ \_\_POlxSourceInfo,\ z\ -\/\ MinDepth,\ 0,\ GetDepth());}
+\DoxyCodeLine{00431\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Data[x\ -\/\ MinWidth][y\ -\/\ MinHeight][z\ -\/\ MinDepth];}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ AE\&\ Value(index\_t\ x,\ index\_t\ y,\ index\_t\ z)\ \{}
+\DoxyCodeLine{00435\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \ \ \_\_POlxSourceInfo,\ x\ -\/\ MinWidth,\ 0,\ GetWidth());}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ \ \ \_\_POlxSourceInfo,\ y\ -\/\ MinHeight,\ 0,\ GetHeight());}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ TIndexOutOfRangeException::ValidateRange(}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ \ \ \_\_POlxSourceInfo,\ z\ -\/\ MinDepth,\ 0,\ GetDepth());}
+\DoxyCodeLine{00442\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Data[x\ -\/\ MinWidth][y\ -\/\ MinHeight][z\ -\/\ MinDepth];}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \textcolor{keyword}{const}\ AE\&\ operator\ ()\ (index\_t\ x,\ index\_t\ y,\ index\_t\ z)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Value(x,\ y,\ z);}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ AE\&\ operator\ ()\ (index\_t\ x,\ index\_t\ y,\ index\_t\ z)\ \{}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Value(x,\ y,\ z);}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00451\ }
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ \textcolor{keyword}{const}\ AE\&\ Value(\textcolor{keyword}{const}\ VC\&\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Value((index\_t)ind[0],\ (index\_t)ind[1],\ (index\_t)ind[2]);}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ AE\&\ Value(\textcolor{keyword}{const}\ VC\&\ ind)\ \{}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Value((index\_t)ind[0],\ (index\_t)ind[1],\ (index\_t)ind[2]);}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ \textcolor{keyword}{const}\ AE\&\ operator\ ()\ (\textcolor{keyword}{const}\ VC\&\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Value((index\_t)ind[0],\ (index\_t)ind[1],\ (index\_t)ind[2]);}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VC>\ AE\&\ operator\ ()\ (\textcolor{keyword}{const}\ VC\&\ ind)\ \{}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Value((index\_t)ind[0],\ (index\_t)ind[1],\ (index\_t)ind[2]);}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00464\ \ \ \};}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00466\ \ \ \textcolor{comment}{/*\ suitable\ for\ pimitive\ types\ only}}
+\DoxyCodeLine{00467\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00468\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00469\ \ \ \textcolor{keywordtype}{void}\ copy\_map\_segment\_3(\textcolor{keyword}{const}\ array\_3d<T>\ \&src,\ array\_3d<T>\ \&dst,}
+\DoxyCodeLine{00470\ \ \ \ \ \textcolor{keyword}{const}\ vec3s\ \&start,\ \textcolor{keyword}{const}\ vec3s\ \&end)}
+\DoxyCodeLine{00471\ \ \ \{}
+\DoxyCodeLine{00472\ \ \ \ \ \textcolor{keywordflow}{if}\ (start[0]\ >\ end[0]\ ||\ start[1]\ >\ end[1]\ ||\ start[2]\ >\ end[2]\ ||}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ src.width\ +\ 1\ <\ end[0]\ ||\ src.height\ +\ 1\ <\ end[1]\ ||\ src.depth\ +\ 1\ <\ end[2]\ ||}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ dst.width\ +\ 1\ <\ end[0]\ ||\ dst.height\ +\ 1\ <\ end[1]\ ||\ dst.depth\ +\ 1\ <\ end[2])}
+\DoxyCodeLine{00475\ \ \ \ \ \{}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSrcInfo,\ \textcolor{stringliteral}{"{}map\ dimensions/segment"{}});}
+\DoxyCodeLine{00477\ \ \ \ \ \}}
+\DoxyCodeLine{00478\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ start[0];\ x\ <\ end[0];\ x++)\ \{}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ start[1];\ y\ <\ end[1];\ y++)\ \{}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ memcpy(\&dst[x][y][start[2]],\ \&src[x][y][start[2]],}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(T)*(end[2]-\/start[2]));}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00483\ \ \ \ \ \}}
+\DoxyCodeLine{00484\ }
+\DoxyCodeLine{00485\ \ \ \}}
+\DoxyCodeLine{00486\ \}\ \textcolor{comment}{//\ namespace\ olx\_array}}
+\DoxyCodeLine{00487\ EndEsdlNamespace()}
+\DoxyCodeLine{00488\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

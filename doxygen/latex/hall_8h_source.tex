@@ -1,0 +1,78 @@
+\doxysection{hall.\+h}
+\hypertarget{hall_8h_source}{}\label{hall_8h_source}\index{xlib/hall.h@{xlib/hall.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_Hall\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_Hall\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}mat\_id.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}symmat.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}symmspace.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ BeginXlibNamespace()}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ struct\ HallSymbol\ \ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{struct\ }symop\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{int}\ rot\_id;}
+\DoxyCodeLine{00023\ \ \ \ \ vec3d\ t;}
+\DoxyCodeLine{00024\ \ \ \};}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{void}\ init();}
+\DoxyCodeLine{00026\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<olx\_pair\_t<vec3d,\ olxstr>}}\ >\ trans;}
+\DoxyCodeLine{00027\ \ \ \textcolor{comment}{//const\ TTypeList<olx\_pair\_t<mat3d,\ olxstr>\ >\ rotations;}}
+\DoxyCodeLine{00028\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<olx\_pair\_t<int,olxstr>}}\ >}
+\DoxyCodeLine{00029\ \ \ \ \ rotx,\ roty,\ rotz,\ rotx1,\ roty1,\ rotz1,\ rot3;}
+\DoxyCodeLine{00030\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<int>}}\ r\_dict;}
+\DoxyCodeLine{00031\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<vec3d*>}}\ t\_dict;}
+\DoxyCodeLine{00032\ \ \ olxstr\ FindT(\textcolor{keyword}{const}\ vec3d\&\ t,\ \textcolor{keywordtype}{int}\ order)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00033\ \ \ olxstr\ FindTR(\textcolor{keyword}{const}\ vec3d\&\ t,\ \textcolor{keywordtype}{int}\ order)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{int}\ FindR(olxstr\&\ hs,\ \mbox{\hyperlink{classTTypeList}{TTypeList<symop>}}\&\ matrs,}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList}}<\mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<int,olxstr>}}\ >\&\ rot,\ \textcolor{keywordtype}{bool}\ full)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ \ \ vec3d\ get\_screw\_axis\_t(\textcolor{keywordtype}{int}\ dir,\ \textcolor{keywordtype}{int}\ order)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{//\ dir\ -\/\ 1\ for\ x,\ 2\ for\ y,\ 3\ for\ z,\ which\ -\/\ '\ or\ "{}}}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{int}\ find\_diagonal(\textcolor{keywordtype}{int}\ dir,\ olxch\ which)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{static}\ HallSymbol\ \&GetInstance()\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{static}\ HallSymbol\ i\_;}
+\DoxyCodeLine{00041\ \ \ \ \ i\_.init();}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ i\_;}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ olxstr\ Evaluate\_(\textcolor{keywordtype}{int}\ latt,\ \textcolor{keyword}{const}\ smatd\_list\&\ matrices)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00045\ \ \ olxstr\ EvaluateEx\_(\textcolor{keywordtype}{int}\ latt,\ \textcolor{keyword}{const}\ smatd\_list\&\ matrices)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00046\ \ \ olxstr\ Evaluate\_(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1Info}{SymmSpace::Info}}\&\ si)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00047\ \ \ \mbox{\hyperlink{structSymmSpace_1_1Info}{SymmSpace::Info}}\ Expand\_(\textcolor{keyword}{const}\ olxstr\ \&hs)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00048\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//\ a\ compact\ list\ of\ matrices\ is\ taken}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{static}\ olxstr\ Evaluate(\textcolor{keywordtype}{int}\ latt,\ \textcolor{keyword}{const}\ smatd\_list\&\ matrices)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInstance().Evaluate\_(latt,\ matrices);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \textcolor{comment}{/*\ a\ compact\ list\ of\ matrices\ is\ taken,\ expanded\ and\ compacted\ again\ -\/}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ \ sometimes\ the\ asymmetric\ unit\ will\ have\ inversion\ expanded}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{static}\ olxstr\ EvaluateEx(\textcolor{keywordtype}{int}\ latt,\ \textcolor{keyword}{const}\ smatd\_list\&\ matrices)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInstance().EvaluateEx\_(latt,\ matrices);}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{comment}{//\ takes\ full\ list\ of\ matrices}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{static}\ olxstr\ Evaluate(\textcolor{keyword}{const}\ smatd\_list\&\ matrices)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ Evaluate(SymmSpace::GetInfo(matrices));}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{static}\ olxstr\ Evaluate(\textcolor{keyword}{const}\ \mbox{\hyperlink{structSymmSpace_1_1Info}{SymmSpace::Info}}\&\ si)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInstance().Evaluate\_(si);}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structSymmSpace_1_1Info}{SymmSpace::Info}}\ Expand(\textcolor{keyword}{const}\ olxstr\ \&hs)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ GetInstance().Expand\_(hs);}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ EndXlibNamespace()}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

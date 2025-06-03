@@ -1,0 +1,255 @@
+\doxysection{xeval.\+h}
+\hypertarget{xeval_8h_source}{}\label{xeval_8h_source}\index{gxlib/xeval.h@{gxlib/xeval.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xgl\_xeval\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xgl\_xeval\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xbond.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}xatom.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}glgroup.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}seval.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ data\ provider\ interface}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classITXAtom__DataProvider}{ITXAtom\_DataProvider}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classITSAtom__DataProvider}{ITSAtom\_DataProvider}}\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTXAtom}{TXAtom}}*\ GetTXAtom()\ =\ 0;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetTXAtom(\mbox{\hyperlink{classTXAtom}{TXAtom}}*)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00023\ \ \ \}}
+\DoxyCodeLine{00024\ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ GetTSAtom()\ \{\ \textcolor{keywordflow}{return}\ GetTXAtom();\ \}}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }TTXAtom\_DataProvider\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classITXAtom__DataProvider}{ITXAtom\_DataProvider}}\ \{}
+\DoxyCodeLine{00027\ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}*\ XAtom;}
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ TTXAtom\_DataProvider()\ :\ XAtom(0)\ \{\}}
+\DoxyCodeLine{00030\ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}*\ GetTXAtom()\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{if}\ (XAtom\ ==\ 0)\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}uninitialised\ object"{}});}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{return}\ XAtom;}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ SetTXAtom(\mbox{\hyperlink{classTXAtom}{TXAtom}}*\ val)\ \{\ XAtom\ =\ val;\ \}}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ data\ provider\ interface}}
+\DoxyCodeLine{00040\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classITXBond__DataProvider}{ITXBond\_DataProvider}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIDataProvider}{IDataProvider}}\ \ \{}
+\DoxyCodeLine{00041\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTXBond}{TXBond}}\ *GetTXBond()\ =\ 0;}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetTXBond(\mbox{\hyperlink{classTXBond}{TXBond}}\ *)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTSBond}{TSBond}}\ *GetTSBond()\ \{\ \textcolor{keywordflow}{return}\ GetTXBond();\ \}}
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTTXBond__DataProvider}{TTXBond\_DataProvider}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classITXBond__DataProvider}{ITXBond\_DataProvider}}\ \{}
+\DoxyCodeLine{00049\ \ \ \mbox{\hyperlink{classTXBond}{TXBond}}*\ XBond;}
+\DoxyCodeLine{00050\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00051\ \ \ \mbox{\hyperlink{classTXBond}{TXBond}}*\ GetTXBond()\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{if}\ (XBond\ ==\ 0)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}uninitialised\ object"{}});}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{return}\ XBond;}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{void}\ SetTXBond(\mbox{\hyperlink{classTXBond}{TXBond}}*\ val)\ \{\ XBond\ =\ val;\ \}}
+\DoxyCodeLine{00058\ \};}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ factory\ class\ implementation}}
+\DoxyCodeLine{00060\ \textcolor{keyword}{class\ }TTXBond\_EvaluatorFactory\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}\ \{}
+\DoxyCodeLine{00061\ \ \ \textcolor{comment}{//\ the\ list\ of\ all\ evaluators}}
+\DoxyCodeLine{00062\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<IEvaluator*,\ true>}}\ Evaluators;}
+\DoxyCodeLine{00063\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<IDataProvider*,\ true>}}\ DataProviders;}
+\DoxyCodeLine{00064\ \ \ \mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}*\ FactoryRegister;}
+\DoxyCodeLine{00065\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00066\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Evaluator(\textcolor{keyword}{const}\ olxstr\&\ propertyName)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ Evaluators.Find(propertyName,\ 0);}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Evaluator(\textcolor{keywordtype}{size\_t}\ index)\ \{\ \textcolor{keywordflow}{return}\ Evaluators.GetValue(index);\ \}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{const}\ olxstr\&\ EvaluatorName(\textcolor{keywordtype}{size\_t}\ index)\ \{\ \textcolor{keywordflow}{return}\ Evaluators.GetKey(index);\ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{size\_t}\ EvaluatorCount()\ \{\ \textcolor{keywordflow}{return}\ Evaluators.Count();\ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{comment}{//\ destructor}}
+\DoxyCodeLine{00073\ \ \ \string~TTXBond\_EvaluatorFactory()\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Evaluators.Count();\ i++)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Evaluators.GetValue(i);}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ DataProviders.Count();\ i++)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ DataProviders.GetValue(i);}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{delete}\ provider;}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{//\ constructor\ to\ create\ instaces\ of\ registered\ evaluators}}
+\DoxyCodeLine{00083\ \ \ TTXBond\_EvaluatorFactory(\mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}*\ parent,}
+\DoxyCodeLine{00084\ \ \ \ \ \mbox{\hyperlink{classITXBond__DataProvider}{ITXBond\_DataProvider}}*\ provider);}
+\DoxyCodeLine{00085\ \ \ \mbox{\hyperlink{classITXBond__DataProvider}{ITXBond\_DataProvider}}*\ provider;}
+\DoxyCodeLine{00086\ \};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ data\ provider\ interface}}
+\DoxyCodeLine{00089\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classITGlGroupDataProvider}{ITGlGroupDataProvider}}}
+\DoxyCodeLine{00090\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classITXAtom__DataProvider}{ITXAtom\_DataProvider}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classITXBond__DataProvider}{ITXBond\_DataProvider}}}
+\DoxyCodeLine{00091\ \{}
+\DoxyCodeLine{00092\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ GetTGlGroup()\ =\ 0;}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetTGlGroup(\mbox{\hyperlink{classTGlGroup}{TGlGroup}}*)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTNotImplementedException}{TNotImplementedException}}(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}*\ GetTXAtom()\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ g\ =\ GetTGlGroup();}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{if}\ (g-\/>Count()\ ==\ 0\ ||\ !(*g)[0].Is<\mbox{\hyperlink{classTXAtom}{TXAtom}}>())\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}invalid\ object\ type"{}});}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{return}\ \&(\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)g-\/>GetObject(0);}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \mbox{\hyperlink{classTXBond}{TXBond}}*\ GetTXBond()\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ g\ =\ GetTGlGroup();}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{if}\ (g-\/>Count()\ ==\ 0\ ||\ !(*g)[0].Is<\mbox{\hyperlink{classTXBond}{TXBond}}>())\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}invalid\ object\ type"{}});}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ \&(\mbox{\hyperlink{classTXBond}{TXBond}}\&)g-\/>GetObject(0);}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ \};}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTTGlGroupDataProvider}{TTGlGroupDataProvider}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classITGlGroupDataProvider}{ITGlGroupDataProvider}}\ \{}
+\DoxyCodeLine{00114\ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}\ *sel;}
+\DoxyCodeLine{00115\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00116\ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}\ *GetTGlGroup()\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{if}\ (sel\ ==\ 0)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}uninitialised\ object"{}});}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{return}\ sel;}
+\DoxyCodeLine{00121\ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordtype}{void}\ SetTGlGroup(\mbox{\hyperlink{classTGlGroup}{TGlGroup}}\ *val)\ \{\ sel\ =\ val;\ \}}
+\DoxyCodeLine{00123\ \};}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{comment}{//\ factory\ class\ implementation}}
+\DoxyCodeLine{00126\ \textcolor{keyword}{class\ }TTXAtom\_EvaluatorFactory:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}\ \{}
+\DoxyCodeLine{00127\ \ \ \textcolor{comment}{//\ the\ list\ of\ all\ evaluators}}
+\DoxyCodeLine{00128\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<IEvaluator*,\ true>}}\ Evaluators;}
+\DoxyCodeLine{00129\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<IDataProvider*,\ true>}}\ DataProviders;}
+\DoxyCodeLine{00130\ \ \ \mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}\ *FactoryRegister;}
+\DoxyCodeLine{00131\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00132\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ *Evaluator(\textcolor{keyword}{const}\ olxstr\ \&\ propertyName)\ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{return}\ Evaluators.Find(propertyName,\ 0);}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}\ *Evaluator(\textcolor{keywordtype}{size\_t}\ index)\ \ \{\ \ \textcolor{keywordflow}{return}\ Evaluators.GetValue(index);\ \ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{const}\ olxstr\&\ EvaluatorName(\textcolor{keywordtype}{size\_t}\ index)\ \ \{\ \ \textcolor{keywordflow}{return}\ Evaluators.GetKey(index);\ \ \}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{size\_t}\ EvaluatorCount()\ \ \{\ \ \textcolor{keywordflow}{return}\ Evaluators.Count();\ \ \}}
+\DoxyCodeLine{00138\ \ \ \string~TTXAtom\_EvaluatorFactory()\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Evaluators.Count();\ i++)\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Evaluators.GetValue(i);}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ DataProviders.Count();\ i++)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ DataProviders.GetValue(i);}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keyword}{delete}\ provider;}
+\DoxyCodeLine{00146\ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \textcolor{comment}{//\ constructor\ to\ create\ instaces\ of\ registered\ evaluators}}
+\DoxyCodeLine{00148\ \ \ TTXAtom\_EvaluatorFactory(\mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}\ *parent,}
+\DoxyCodeLine{00149\ \ \ \ \ \mbox{\hyperlink{classITXAtom__DataProvider}{ITXAtom\_DataProvider}}\ *provider);}
+\DoxyCodeLine{00150\ \ \ \mbox{\hyperlink{classITXAtom__DataProvider}{ITXAtom\_DataProvider}}\ *provider;}
+\DoxyCodeLine{00151\ \};}
+\DoxyCodeLine{00152\ \textcolor{comment}{//\ evaluator\ implementation\ for\ bool\ selected}}
+\DoxyCodeLine{00153\ \textcolor{keyword}{class\ }TXAtom\_SelectedEvaluator}
+\DoxyCodeLine{00154\ \ \ :\ \textcolor{keyword}{public}\ TEvaluator<ITXAtom\_DataProvider,IBoolEvaluator,TXAtom\_SelectedEvaluator>}
+\DoxyCodeLine{00155\ \{}
+\DoxyCodeLine{00156\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{//\ constructor}}
+\DoxyCodeLine{00158\ \ \ TXAtom\_SelectedEvaluator(\mbox{\hyperlink{classITXAtom__DataProvider}{ITXAtom\_DataProvider}}*\ parent)}
+\DoxyCodeLine{00159\ \ \ \ \ :\ parent\_t(parent)}
+\DoxyCodeLine{00160\ \ \ \{\}}
+\DoxyCodeLine{00161\ \ \ \textcolor{keywordtype}{bool}\ EvaluateBool()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Parent-\/>GetTXAtom()-\/>IsSelected();\ \ \}}
+\DoxyCodeLine{00162\ \};}
+\DoxyCodeLine{00163\ \textcolor{keyword}{class\ }TXAtom\_VisibleEvaluator}
+\DoxyCodeLine{00164\ \ \ :\ \textcolor{keyword}{public}\ TEvaluator<ITXAtom\_DataProvider,IBoolEvaluator,TXAtom\_VisibleEvaluator>}
+\DoxyCodeLine{00165\ \{}
+\DoxyCodeLine{00166\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00167\ \ \ \textcolor{comment}{//\ constructor}}
+\DoxyCodeLine{00168\ \ \ TXAtom\_VisibleEvaluator(\mbox{\hyperlink{classITXAtom__DataProvider}{ITXAtom\_DataProvider}}*\ parent)}
+\DoxyCodeLine{00169\ \ \ \ \ :\ parent\_t(parent)}
+\DoxyCodeLine{00170\ \ \ \{\}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keywordtype}{bool}\ EvaluateBool()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Parent-\/>GetTXAtom()-\/>IsVisible();\ \}}
+\DoxyCodeLine{00172\ \};}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \textcolor{comment}{//\ factory\ class\ implementation}}
+\DoxyCodeLine{00175\ \textcolor{keyword}{class\ }TTGlGroupEvaluatorFactory\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}\ \{}
+\DoxyCodeLine{00176\ \ \ \textcolor{comment}{//\ the\ list\ of\ all\ evaluators}}
+\DoxyCodeLine{00177\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<IEvaluator*,\ true>}}\ Evaluators;}
+\DoxyCodeLine{00178\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<IEvaluatorFactory*,\ true>}}\ Factories;}
+\DoxyCodeLine{00179\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<ITGlGroupDataProvider>}}\ providers;}
+\DoxyCodeLine{00180\ \ \ \mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}*\ FactoryRegister;}
+\DoxyCodeLine{00181\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00182\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Evaluator(\textcolor{keyword}{const}\ olxstr\&\ propertyName)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{return}\ Evaluators.Find(propertyName,\ 0);}
+\DoxyCodeLine{00184\ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \mbox{\hyperlink{classIEvaluator}{IEvaluator}}*\ Evaluator(\textcolor{keywordtype}{size\_t}\ index)\ \{\ \textcolor{keywordflow}{return}\ Evaluators.GetValue(index);\ \}}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{const}\ olxstr\&\ EvaluatorName(\textcolor{keywordtype}{size\_t}\ index)\ \{\ \textcolor{keywordflow}{return}\ Evaluators.GetKey(index);\ \}}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordtype}{size\_t}\ EvaluatorCount()\ \{\ \textcolor{keywordflow}{return}\ Evaluators.Count();\ \}}
+\DoxyCodeLine{00188\ \ \ \string~TTGlGroupEvaluatorFactory()\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Factories.Count();\ i++)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Factories.GetValue(i);}
+\DoxyCodeLine{00191\ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordtype}{void}\ SetTGlGroup(\mbox{\hyperlink{classTGlGroup}{TGlGroup}}*\ g)\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ providers.Count();\ i++)\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ providers[i]-\/>SetTGlGroup(g);}
+\DoxyCodeLine{00196\ \ \ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \textcolor{comment}{//\ constructor\ to\ create\ instaces\ of\ registered\ evaluators}}
+\DoxyCodeLine{00199\ \ \ TTGlGroupEvaluatorFactory(\mbox{\hyperlink{classIEvaluatorFactory}{IEvaluatorFactory}}*\ parent);}
+\DoxyCodeLine{00200\ \};}
+\DoxyCodeLine{00201\ \textcolor{comment}{//\ evaluator\ implementation\ for\ complex\ A}}
+\DoxyCodeLine{00202\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\ n>}
+\DoxyCodeLine{00203\ \textcolor{keyword}{class\ }TXBond\_AtomEvaluator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classITXAtom__DataProvider}{ITXAtom\_DataProvider}}\ \{}
+\DoxyCodeLine{00204\ \ \ \mbox{\hyperlink{classITXBond__DataProvider}{ITXBond\_DataProvider}}\ *Parent;}
+\DoxyCodeLine{00205\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00206\ \ \ TXBond\_AtomEvaluator(\mbox{\hyperlink{classITXBond__DataProvider}{ITXBond\_DataProvider}}*\ parent)\ :\ Parent(parent)}
+\DoxyCodeLine{00207\ \ \ \{\}}
+\DoxyCodeLine{00208\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classTXAtom}{TXAtom}}\ *GetTXAtom()\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{return}\ \&(n\ ==1\ ?\ Parent-\/>GetTXBond()-\/>A()\ :\ Parent-\/>GetTXBond()-\/>B());}
+\DoxyCodeLine{00210\ \ \ \}}
+\DoxyCodeLine{00211\ \};}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \textcolor{comment}{//\ evaluator\ implementation\ for\ bool\ deleted}}
+\DoxyCodeLine{00214\ \textcolor{keyword}{class\ }TXBond\_DeletedEvaluator}
+\DoxyCodeLine{00215\ \ \ :\ \textcolor{keyword}{public}\ TEvaluator<ITXBond\_DataProvider,IBoolEvaluator,TXBond\_DeletedEvaluator>\ \{}
+\DoxyCodeLine{00216\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00217\ \ \ \textcolor{comment}{//\ constructor}}
+\DoxyCodeLine{00218\ \ \ TXBond\_DeletedEvaluator(\mbox{\hyperlink{classITXBond__DataProvider}{ITXBond\_DataProvider}}*\ parent)}
+\DoxyCodeLine{00219\ \ \ \ \ :\ parent\_t(parent)}
+\DoxyCodeLine{00220\ \ \ \{\}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keywordtype}{bool}\ EvaluateBool()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Parent-\/>GetTXBond()-\/>IsDeleted();\ \ \}}
+\DoxyCodeLine{00222\ \};}
+\DoxyCodeLine{00223\ \textcolor{comment}{//\ evaluator\ implementation\ for\ scalar\ length}}
+\DoxyCodeLine{00224\ \textcolor{keyword}{class\ }TXBond\_LengthEvaluator}
+\DoxyCodeLine{00225\ \ \ :\ \textcolor{keyword}{public}\ TEvaluator<ITXBond\_DataProvider,IFloatEvaluator,TXBond\_LengthEvaluator>}
+\DoxyCodeLine{00226\ \{}
+\DoxyCodeLine{00227\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00228\ \ \ TXBond\_LengthEvaluator(\mbox{\hyperlink{classITXBond__DataProvider}{ITXBond\_DataProvider}}*\ parent)}
+\DoxyCodeLine{00229\ \ \ \ \ :\ parent\_t(parent)}
+\DoxyCodeLine{00230\ \ \ \{\}}
+\DoxyCodeLine{00231\ \ \ \textcolor{keywordtype}{double}\ EvaluateFloat()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Parent-\/>GetTXBond()-\/>Length();\ \ \}}
+\DoxyCodeLine{00232\ \};}
+\DoxyCodeLine{00233\ \textcolor{comment}{//\ evaluator\ implementation\ for\ scalar\ type}}
+\DoxyCodeLine{00234\ \textcolor{keyword}{class\ }TXBond\_TypeEvaluator}
+\DoxyCodeLine{00235\ \ \ :\ \textcolor{keyword}{public}\ TEvaluator<ITXBond\_DataProvider,IIntEvaluator,TXBond\_TypeEvaluator>}
+\DoxyCodeLine{00236\ \{}
+\DoxyCodeLine{00237\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00238\ \ \ TXBond\_TypeEvaluator(\mbox{\hyperlink{classITXBond__DataProvider}{ITXBond\_DataProvider}}*\ parent)}
+\DoxyCodeLine{00239\ \ \ \ \ :\ parent\_t(parent)}
+\DoxyCodeLine{00240\ \ \ \{\}}
+\DoxyCodeLine{00241\ \ \ \textcolor{keywordtype}{long}\ EvaluateInt()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Parent-\/>GetTXBond()-\/>GetType();\ \ \}}
+\DoxyCodeLine{00242\ \};}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \textcolor{keyword}{class\ }TXFactoryRegister\ :\ \textcolor{keyword}{public}\ TSFactoryRegister\ \{}
+\DoxyCodeLine{00245\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00246\ \ \ TXFactoryRegister();}
+\DoxyCodeLine{00247\ \};}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
