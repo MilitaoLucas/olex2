@@ -1,0 +1,286 @@
+\doxysection{align.\+h}
+\hypertarget{align_8h_source}{}\label{align_8h_source}\index{sdl/math/align.h@{sdl/math/align.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_align\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_align\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../threex3.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../ematrix.h"{}}}
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ namespace\ align\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{struct\ }out\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{comment}{//\ a\ 4x4\ matrix\ of\ the\ quaternions}}
+\DoxyCodeLine{00020\ \ \ \ \ ematd\ quaternions;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{comment}{/*\ root\ mean\ square\ distances,\ note\ that\ if\ non-\/unit\ weights\ are\ used,\ these\ values}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ \ \ will\ differe\ from\ the\ RMSD\ calculated\ directly:}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ \ \ (sum(distance\string^2*w\string^2)/sum(w\string^2)\string^0.5\ vs.\ (sum(distance\string^2)/n)\string^0.5}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00025\ \ \ \ \ evecd\ rmsd;}
+\DoxyCodeLine{00026\ \ \ \ \ vec3d\ center\_a,\ center\_b;}
+\DoxyCodeLine{00027\ \ \ \ \ out()\ :\ quaternions(4,\ 4),\ rmsd(4)\ \{\}}
+\DoxyCodeLine{00028\ \ \ \};}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{struct\ }point\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ vec3d\ value;}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{double}\ weight;}
+\DoxyCodeLine{00032\ \ \ \ \ point()\ :\ weight(1.0)\ \{\}}
+\DoxyCodeLine{00033\ \ \ \ \ point(\textcolor{keyword}{const}\ vec3d\&\ p,\ \textcolor{keywordtype}{double}\ w\ =\ 1.0)\ :\ value(p),\ weight(w)\ \{\}}
+\DoxyCodeLine{00034\ \ \ \ \ point(\textcolor{keyword}{const}\ point\&\ ap)\ :\ value(ap.value),\ weight(ap.weight)\ \{\}}
+\DoxyCodeLine{00035\ \ \ \ \ point\&\ operator\ =\ (\textcolor{keyword}{const}\ point\&\ ap)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ value\ =\ ap.value;}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ weight\ =\ ap.weight;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \};}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{struct\ }pair\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ point\ a,\ b;}
+\DoxyCodeLine{00043\ \ \ \ \ pair()\ \{\}}
+\DoxyCodeLine{00044\ \ \ \ \ pair(\textcolor{keyword}{const}\ pair\&\ p)\ :\ a(p.a),\ b(p.b)\ \{\}}
+\DoxyCodeLine{00045\ \ \ \ \ pair(\textcolor{keyword}{const}\ point\&\ \_a,\ \textcolor{keyword}{const}\ point\&\ \_b)\ :\ a(\_a),\ b(\_b)\ \{\}}
+\DoxyCodeLine{00046\ \ \ \ \ pair\&\ operator\ =\ (\textcolor{keyword}{const}\ pair\&\ p)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ a\ =\ p.a;}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ b\ =\ p.b;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ vec3d\ GetValueA()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ a.value;\ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{double}\ GetWeightA()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ a.weight;\ \}}
+\DoxyCodeLine{00053\ \ \ \ \ vec3d\ GetValueB()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ b.value;\ \}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{double}\ GetWeightB()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ b.weight;\ \}}
+\DoxyCodeLine{00055\ \ \ \};}
+\DoxyCodeLine{00056\ \ \ \textcolor{comment}{/*\ finds\ allignment\ quaternions\ for\ given\ coordinates\ and\ their\ weights}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ \ the\ rmsds\ (and\ the\ quaternions)\ are\ sorted\ ascending}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ \ Acta\ A45\ (1989),\ 208.}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ \ The\ resulting\ matrices\ map\ \{b\}\ set\ to\ \{a\}\ */}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ out\ FindAlignmentQuaternions(\textcolor{keyword}{const}\ List\&\ pairs,}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{bool}\ update\_centers=\textcolor{keyword}{true})}
+\DoxyCodeLine{00062\ \ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ out\ ao;}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{double}\ swa\ =\ 0,\ swb\ =\ 0,\ sws\ =\ 0;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ pairs.Count();\ i++)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (update\_centers)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ ao.center\_a\ +=\ pairs[i].GetValueA()*pairs[i].GetWeightA();}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ ao.center\_b\ +=\ pairs[i].GetValueB()*pairs[i].GetWeightB();}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ swa\ +=\ pairs[i].GetWeightA();}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ swb\ +=\ pairs[i].GetWeightB();}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ sws\ +=\ pairs[i].GetWeightA()*pairs[i].GetWeightB();}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{if}\ (update\_centers)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ ao.center\_a\ /=\ swa;}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ ao.center\_b\ /=\ swb;}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ ematd\ evm(4,\ 4);}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ pairs.Count();\ i++)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ v1\ =\ (pairs[i].GetValueA()\ -\/\ ao.center\_a)*pairs[i].GetWeightA();}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ v2\ =\ (pairs[i].GetValueB()\ -\/\ ao.center\_b)*pairs[i].GetWeightB();}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ p\ =\ v1\ +\ v2;}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ m\ =\ v1\ -\/\ v2;}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ evm[0][0]\ +=\ (m[0]\ *\ m[0]\ +\ m[1]\ *\ m[1]\ +\ m[2]\ *\ m[2]);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ evm[0][1]\ +=\ (p[1]\ *\ m[2]\ -\/\ m[1]\ *\ p[2]);}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ evm[0][2]\ +=\ (m[0]\ *\ p[2]\ -\/\ p[0]\ *\ m[2]);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ evm[0][3]\ +=\ (p[0]\ *\ m[1]\ -\/\ m[0]\ *\ p[1]);}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ evm[1][1]\ +=\ (p[1]\ *\ p[1]\ +\ p[2]\ *\ p[2]\ +\ m[0]\ *\ m[0]);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ evm[1][2]\ +=\ (m[0]\ *\ m[1]\ -\/\ p[0]\ *\ p[1]);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ evm[1][3]\ +=\ (m[0]\ *\ m[2]\ -\/\ p[0]\ *\ p[2]);}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ evm[2][2]\ +=\ (p[0]\ *\ p[0]\ +\ p[2]\ *\ p[2]\ +\ m[1]\ *\ m[1]);}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ evm[2][3]\ +=\ (m[1]\ *\ m[2]\ -\/\ p[1]\ *\ p[2]);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ evm[3][3]\ +=\ (p[0]\ *\ p[0]\ +\ p[1]\ *\ p[1]\ +\ m[2]\ *\ m[2]);}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ evm[1][0]\ =\ evm[0][1];}
+\DoxyCodeLine{00096\ \ \ \ \ evm[2][0]\ =\ evm[0][2];}
+\DoxyCodeLine{00097\ \ \ \ \ evm[2][1]\ =\ evm[1][2];}
+\DoxyCodeLine{00098\ \ \ \ \ evm[3][0]\ =\ evm[0][3];}
+\DoxyCodeLine{00099\ \ \ \ \ evm[3][1]\ =\ evm[1][3];}
+\DoxyCodeLine{00100\ \ \ \ \ evm[3][2]\ =\ evm[2][3];}
+\DoxyCodeLine{00101\ \ \ \ \ ematd::EigenValues(evm\ /=\ sws,\ ao.quaternions.I());}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ ao.rmsd[i]\ =\ (evm[i][i]\ <=\ 0\ ?\ 0\ :\ sqrt(evm[i][i]));}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{bool}\ changes\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{while}\ (changes)\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ changes\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ao.rmsd[i\ +\ 1]\ <\ ao.rmsd[i])\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ ao.quaternions.SwapRows(i,\ i\ +\ 1);}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ olx\_swap(ao.rmsd[i],\ ao.rmsd[i\ +\ 1]);}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ changes\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{return}\ ao;}
+\DoxyCodeLine{00117\ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//\ returns\ unweighted\ RMSD}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>\ \textcolor{keywordtype}{double}\ CalcRMSD(\textcolor{keyword}{const}\ List\&\ pairs,}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{const}\ align::out\&\ ao)}
+\DoxyCodeLine{00121\ \ \ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{double}\ rmsd\ =\ 0;}
+\DoxyCodeLine{00123\ \ \ \ \ mat3d\ m;}
+\DoxyCodeLine{00124\ \ \ \ \ QuaternionToMatrix(ao.quaternions[0],\ m);}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ pairs.Count();\ i++)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ rmsd\ +=\ (pairs[i].GetValueA()\ -\/\ ao.center\_a)}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ .QDistanceTo((pairs[i].GetValueB()\ -\/\ ao.center\_b)*m);}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ sqrt(rmsd\ /\ pairs.Count());}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \textcolor{comment}{//\ two\ lists\ to\ 'pair'\ adaptor}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ValueList>}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{struct\ }ListsToPairAdaptorV\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{const}\ ValueList\&\ vlist;}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ count;}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keyword}{struct\ }pair\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keyword}{const}\ ListsToPairAdaptorV\&\ parent;}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index;}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ pair(\textcolor{keyword}{const}\ ListsToPairAdaptorV\&\ \_parent,\ \textcolor{keywordtype}{size\_t}\ i)}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ :\ parent(\_parent),\ index(i)\ \{\}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ vec3d\ GetValueA()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent.vlist[index];\ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ GetWeightA()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ vec3d\ GetValueB()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent.vlist[parent.count\ +\ index];\ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ GetWeightB()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00145\ \ \ \ \ \};}
+\DoxyCodeLine{00146\ \ \ \ \ ListsToPairAdaptorV(\textcolor{keyword}{const}\ ValueList\&\ \_vlist)\ :}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ vlist(\_vlist),\ count(vlist.Count()\ /\ 2)}
+\DoxyCodeLine{00148\ \ \ \ \ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((vlist.Count()\ \%\ 2)\ !=\ 0)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ throw\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}list\ size"{}});}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ pair\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pair(*\textcolor{keyword}{this},\ i);}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ count;\ \}}
+\DoxyCodeLine{00157\ \ \ \};}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ValueList,\ \textcolor{keyword}{class}\ WeightList>}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{struct\ }ListsToPairAdaptorVW\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keyword}{const}\ ValueList\&\ vlist;}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keyword}{const}\ WeightList\&\ wlist;}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ count;}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{struct\ }pair\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keyword}{const}\ ListsToPairAdaptorVW\&\ parent;}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index;}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ pair(\textcolor{keyword}{const}\ ListsToPairAdaptorVW\&\ \_parent,\ \textcolor{keywordtype}{size\_t}\ i)}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ :\ parent(\_parent),\ index(i)\ \{\}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ vec3d\ GetValueA()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent.vlist[index];\ \}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ GetWeightA()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent.wlist[index];\ \}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ vec3d\ GetValueB()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent.vlist[parent.count\ +\ index];\ \}}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ GetWeightB()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent.wlist[parent.count\ +\ index];\ \}}
+\DoxyCodeLine{00172\ \ \ \ \ \};}
+\DoxyCodeLine{00173\ \ \ \ \ ListsToPairAdaptorVW(\textcolor{keyword}{const}\ ValueList\&\ \_vlist,\ \textcolor{keyword}{const}\ WeightList\&\ \_wlist)\ :}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ vlist(\_vlist),\ wlist(\_wlist),\ count(vlist.Count()\ /\ 2)}
+\DoxyCodeLine{00175\ \ \ \ \ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (wlist.Count()\ <\ vlist.Count())\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ throw\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}weights\ list"{}});}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ if\ ((vlist.Count()\ \%\ 2)\ !=\ 0)\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ throw\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}list\ size"{}});}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \ \ pair\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pair(*\textcolor{keyword}{this},\ i);}
+\DoxyCodeLine{00185\ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ count;\ \}}
+\DoxyCodeLine{00187\ \ \ \};}
+\DoxyCodeLine{00188\ \ \ \textcolor{keyword}{struct\ }ListToPairAdaptor\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ValueList,\ \textcolor{keyword}{class}\ WeightList>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ ListsToPairAdaptorVW<ValueList,\ WeightList>\ Make(}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ ValueList\&\ \_vlist,\ \textcolor{keyword}{const}\ WeightList\&\ \_wlist)}
+\DoxyCodeLine{00192\ \ \ \ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ListsToPairAdaptorVW<ValueList,\ WeightList>(\_vlist,\ \_wlist);}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ ValueList>\ \textcolor{keyword}{static}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ ListsToPairAdaptorV<ValueList>\ Make(\textcolor{keyword}{const}\ ValueList\&\ \_vlist)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ListsToPairAdaptorV<ValueList>(\_vlist);}
+\DoxyCodeLine{00198\ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \};}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \};\ \ \textcolor{comment}{//\ end\ namespace\ align}}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatT=\textcolor{keywordtype}{double}>}
+\DoxyCodeLine{00204\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structinertia}{inertia}}\ \{}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structinertia_1_1unit__weight}{unit\_weight}}\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00208\ \ \ \ \ FloatT\ operator()\ (\textcolor{keyword}{const}\ item\_t\ \&)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00209\ \ \ \};}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structinertia_1_1out}{out}}\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \mbox{\hyperlink{classTVector3}{TVector3<FloatT>}}\ moments,\ center;}
+\DoxyCodeLine{00213\ \ \ \ \ \mbox{\hyperlink{classTMatrix33}{TMatrix33<FloatT>}}\ axes;}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keywordtype}{void}\ sort()\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ swaps\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (swaps)\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ swaps\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 2;\ i++)\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (moments[i]\ >\ moments[i\ +\ 1])\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ olx\_swap(axes[i],\ axes[i\ +\ 1]);}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ olx\_swap(moments[i],\ moments[i\ +\ 1]);}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ swaps\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{comment}{//\ keep\ the\ orientation\ system}}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ axes[2]\ =\ axes[0].XProdVec(axes[1]).Normalise();}
+\DoxyCodeLine{00228\ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \};}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ p\_accessor\_t,\ \textcolor{keyword}{class}\ w\_accessor\_t>}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structinertia_1_1out}{out}}\ calc(\textcolor{keyword}{const}\ list\_t\ \&list,}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{const}\ p\_accessor\_t\ \&p\_accessor,}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{const}\ w\_accessor\_t\ \&w\_accessor)}
+\DoxyCodeLine{00235\ \ \ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \mbox{\hyperlink{structinertia_1_1out}{out}}\ rv;}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keywordflow}{if}\ (list.Count()\ <\ 2)\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00239\ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \ \ FloatT\ w\_sum\ =\ 0;}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ FloatT\ w\ =\ w\_accessor(list[i]);}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ rv.center\ +=\ p\_accessor(list[i])*w;}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ w\_sum\ +=\ w;}
+\DoxyCodeLine{00245\ \ \ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \ \ rv.center\ /=\ w\_sum;}
+\DoxyCodeLine{00247\ \ \ \ \ TMatrix33<FloatT>\ I;}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ TVector3<FloatT>\ v\ =}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ (p\_accessor(list[i])\ -\/\ rv.center)*w\_accessor(list[i]);}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ I[0][0]\ +=\ (olx\_sqr(v[1])\ +\ olx\_sqr(v[2]));}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ I[1][1]\ +=\ (olx\_sqr(v[0])\ +\ olx\_sqr(v[2]));}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ I[2][2]\ +=\ (olx\_sqr(v[0])\ +\ olx\_sqr(v[1]));}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ I[0][1]\ -\/=\ v[0]\ *\ v[1];}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ I[0][2]\ -\/=\ v[0]\ *\ v[2];}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ I[1][2]\ -\/=\ v[1]\ *\ v[2];}
+\DoxyCodeLine{00257\ \ \ \ \ \}}
+\DoxyCodeLine{00258\ \ \ \ \ I[1][0]\ =\ I[0][1];}
+\DoxyCodeLine{00259\ \ \ \ \ I[2][0]\ =\ I[0][2];}
+\DoxyCodeLine{00260\ \ \ \ \ I[2][1]\ =\ I[1][2];}
+\DoxyCodeLine{00261\ \ \ \ \ TMatrix33<FloatT>::EigenValues(I,\ rv.axes.I());}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ rv.moments[i]\ =\ I[i][i]\ <\ 0\ ?\ 0\ :\ sqrt(I[i][i]);}
+\DoxyCodeLine{00264\ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00266\ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \textcolor{comment}{//\ calculation\ with\ unit\ weights}}
+\DoxyCodeLine{00268\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00269\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structinertia_1_1out}{out}}\ calc(\textcolor{keyword}{const}\ list\_t\ \&list,\ \textcolor{keyword}{const}\ accessor\_t\ \&accessor)\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordflow}{return}\ calc(list,\ accessor,\ \mbox{\hyperlink{structinertia_1_1unit__weight}{unit\_weight}}());}
+\DoxyCodeLine{00271\ \ \ \}}
+\DoxyCodeLine{00272\ \ \ \textcolor{comment}{//\ calculation\ with\ unit\ weights}}
+\DoxyCodeLine{00273\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00274\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structinertia_1_1out}{out}}\ calc(\textcolor{keyword}{const}\ list\_t\&\ list)\ \{}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{return}\ calc(list,\ DummyAccessor(),\ \mbox{\hyperlink{structinertia_1_1unit__weight}{unit\_weight}}());}
+\DoxyCodeLine{00276\ \ \ \}}
+\DoxyCodeLine{00277\ \};\ \ \textcolor{comment}{//\ end\ struct\ inertia}}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ EndEsdlNamespace()}
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

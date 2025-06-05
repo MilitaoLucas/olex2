@@ -1,0 +1,178 @@
+\doxysection{alg\+\_\+test.\+h}
+\hypertarget{alg__test_8h_source}{}\label{alg__test_8h_source}\index{sdl/tests/alg\_test.h@{sdl/tests/alg\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../talist.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}../threex3.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keywordtype}{void}\ IndexAccessorTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00016\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{double}\ ta\_[5]\ =\ \{1,\ 2,\ 3,\ 4,\ 5\};}
+\DoxyCodeLine{00018\ \ \ TDoubleList\ ta(5,\ \&ta\_[0]);}
+\DoxyCodeLine{00019\ \ \ olx\_list\_reverse::ReverseList\_<TDoubleList>\ rl\ =}
+\DoxyCodeLine{00020\ \ \ \ \ olx\_list\_reverse::Make(ta);}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ rl.Count();\ i++)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{if}\ (rl[i]\ !=\ ta[ta.Count()-\/i-\/1])}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00024\ \ \ \}}
+\DoxyCodeLine{00025\ \ \ olx\_reverse(ta);}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ rl.Count();\ i++)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{if}\ (rl[i]\ !=\ i+1)}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00029\ \ \ \}}
+\DoxyCodeLine{00030\ \ \ olx\_reverse(ta);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ TSizeList\ indices(5,\ olx\_list\_init::index());}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{double}\ v\ =\ olx\_mean(ta);}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(v-\/\textcolor{keywordtype}{double}(1+2+3+4+5)/5)\ >\ 1e-\/8)}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00036\ \ \ IndexAccessor::IndexAccessor\_<TDoubleList>\ la\ =\ IndexAccessor::Make(ta);}
+\DoxyCodeLine{00037\ \ \ v\ =\ olx\_mean(indices,\ la);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(v-\/\textcolor{keywordtype}{double}(1+2+3+4+5)/5)\ >\ 1e-\/8)}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00040\ \ \ indices.Delete(2);}
+\DoxyCodeLine{00041\ \ \ v\ =\ olx\_mean(indices,\ la);}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(v-\/\textcolor{keywordtype}{double}(1+2+4+5)/4)\ >\ 1e-\/8)}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00044\ \ \ indices.Delete(0);}
+\DoxyCodeLine{00045\ \ \ v\ =\ olx\_mean(indices,\ la);}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(v-\/\textcolor{keywordtype}{double}(2+4+5)/3)\ >\ 1e-\/8)}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ vec3d\_alist\ vl(3);}
+\DoxyCodeLine{00050\ \ \ indices.SetCount(3);}
+\DoxyCodeLine{00051\ \ \ indices.ForEach(olx\_list\_init::index());}
+\DoxyCodeLine{00052\ \ \ IndexAccessor::IndexAccessor\_<vec3d\_alist>\ vla\ =\ IndexAccessor::Make(vl);}
+\DoxyCodeLine{00053\ \ \ vl[0][0]\ =\ vl[1][1]\ =\ vl[2][2]\ =\ 3;}
+\DoxyCodeLine{00054\ \ \ vec3d\ mv\ =\ olx\_mean(vl);}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordflow}{if}\ (mv.DistanceTo(olx\_mean(indices,\ vla))\ >\ 1e-\/8)}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordflow}{if}\ (mv.DistanceTo(vec3d(1))\ >\ 1e-\/8)}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00059\ \}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00061\ \textcolor{keywordtype}{void}\ OpTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00062\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{double}\ ta\_[12]\ =\ \{\ 1,\ 2,\ 3,\ 4,\ 5,\ -\/1,\ -\/2,\ -\/3,\ -\/4,\ -\/5,\ 1,\ 0\ \};}
+\DoxyCodeLine{00064\ \ \ TDoubleList\ ta(12,\ \&ta\_[0]);}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_eq(0)).Count()\ !=\ 1)}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_neq(0)).Count()\ !=\ 11)}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_neq(1)).Count()\ !=\ 10)}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_eq(1)).Count()\ !=\ 2)}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_eq(2)).Count()\ !=\ 1)}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_lt(0)).Count()\ !=\ 5)}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_le(0)).Count()\ !=\ 6)}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_gt(0)).Count()\ !=\ 6)}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_ge(0)).Count()\ !=\ 7)}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_eq(0,\ TDirectAccessor<double>())).Count()\ !=\ 1)}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_neq(0,\ TDirectAccessor<double>())).Count()\ !=\ 11)}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_neq(1,\ TDirectAccessor<double>())).Count()\ !=\ 10)}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_eq(1,\ TDirectAccessor<double>())).Count()\ !=\ 2)}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_eq(2,\ TDirectAccessor<double>())).Count()\ !=\ 1)}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_lt(0,\ TDirectAccessor<double>())).Count()\ !=\ 5)}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_le(0,\ TDirectAccessor<double>())).Count()\ !=\ 6)}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_gt(0,\ TDirectAccessor<double>())).Count()\ !=\ 6)}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_ge(0,\ TDirectAccessor<double>())).Count()\ !=\ 7)}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_and(olx\_alg::olx\_ge(0),\ olx\_alg::olx\_le(0)))}
+\DoxyCodeLine{00105\ \ \ \ \ .Count()\ !=\ 1)}
+\DoxyCodeLine{00106\ \ \ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_or(olx\_alg::olx\_gt(0),\ olx\_alg::olx\_lt(0)))}
+\DoxyCodeLine{00110\ \ \ \ \ .Count()\ !=\ 11)}
+\DoxyCodeLine{00111\ \ \ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_not(olx\_alg::olx\_eq(0))).Count()\ !=}
+\DoxyCodeLine{00115\ \ \ \ \ ta.Filter(olx\_alg::olx\_neq(0)).Count())}
+\DoxyCodeLine{00116\ \ \ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00118\ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_not(olx\_alg::olx\_lt(0))).Count()\ !=}
+\DoxyCodeLine{00120\ \ \ \ \ ta.Filter(olx\_alg::olx\_ge(0)).Count())}
+\DoxyCodeLine{00121\ \ \ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00123\ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordflow}{if}\ (ta.Filter(olx\_alg::olx\_not(olx\_alg::olx\_le(0))).Count()\ !=}
+\DoxyCodeLine{00125\ \ \ \ \ ta.Filter(olx\_alg::olx\_gt(0)).Count())}
+\DoxyCodeLine{00126\ \ \ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordflow}{if}\ (ta.Count(olx\_alg::olx\_ge(0,\ TDirectAccessor<double>()))\ !=\ 7)}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{int}\ v\ =\ 10;}
+\DoxyCodeLine{00135\ \ \ \ \ TPtrList<int>\ lst(10);}
+\DoxyCodeLine{00136\ \ \ \ \ lst[0]\ =\ lst[3]\ =\ lst[9]\ =\ \&v;}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{if}\ (lst.Count(olx\_alg::olx\_eq((\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ *)0))\ !=\ 7)}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{if}\ (lst.Count(olx\_alg::olx\_eq(\&v))\ !=\ 3)}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordtype}{int}\ v\ =\ 10;}
+\DoxyCodeLine{00145\ \ \ \ \ TTypeList<int>\ lst(10,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00146\ \ \ \ \ lst.ForEach(olx\_list\_init::value(0));}
+\DoxyCodeLine{00147\ \ \ \ \ lst[0]\ =\ lst[3]\ =\ lst[9]\ =\ v;}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{if}\ (lst.Count(olx\_alg::olx\_eq(0))\ !=\ 7)}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{if}\ (lst.Count(olx\_alg::olx\_eq(v))\ !=\ 3)}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordtype}{int}\ a,\ b;}
+\DoxyCodeLine{00156\ \ \ \ \ sorted::PointerPointer<int>\ lst;}
+\DoxyCodeLine{00157\ \ \ \ \ lst.Add(\&a);}
+\DoxyCodeLine{00158\ \ \ \ \ lst.Add(\&b);}
+\DoxyCodeLine{00159\ \ \ \ \ lst.Add(\&a);}
+\DoxyCodeLine{00160\ \ \ \ \ lst.Add(NULL);}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{if}\ (lst.Count(olx\_alg::olx\_eq(\&a))\ !=\ 2)}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{if}\ (lst.Count(olx\_alg::olx\_eq((\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ *)0))\ !=\ 1)}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \}}
+\DoxyCodeLine{00167\ \textcolor{comment}{//.............................................................................}}
+\DoxyCodeLine{00168\ \textcolor{keywordtype}{void}\ AlgTests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00169\ \ \ t.Add(\&test::IndexAccessorTest)}
+\DoxyCodeLine{00170\ \ \ \ \ .Add(\&test::OpTest);}
+\DoxyCodeLine{00171\ \}}
+\DoxyCodeLine{00172\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

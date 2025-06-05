@@ -1,0 +1,263 @@
+\doxysection{spline.\+h}
+\hypertarget{spline_8h_source}{}\label{spline_8h_source}\index{sdl/math/spline.h@{sdl/math/spline.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_math\_spline\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_math\_spline\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../evector.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../emath.h"{}}}
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ inspired\ by\ ALGLIB,\ wikipedia\ and\ original\ sources}}
+\DoxyCodeLine{00017\ namespace\ math\ \ \{\ \ \textcolor{keyword}{namespace\ }spline\ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00019\ \ \ \ \ boundary\_type\_periodic\ =\ 0,}
+\DoxyCodeLine{00020\ \ \ \ \ boundary\_type\_parabolic\ =\ 1,}
+\DoxyCodeLine{00021\ \ \ \ \ boundary\_type\_first\_derivative\ =\ 2,}
+\DoxyCodeLine{00022\ \ \ \ \ boundary\_type\_second\_derivative\ =\ 3;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ \textcolor{comment}{//\ values\ of\ this\ MAKES\ difference,\ do\ not\ change!}}
+\DoxyCodeLine{00024\ \ \ \ \ boundary\_condition\_first\_derivative\ =\ 1,}
+\DoxyCodeLine{00025\ \ \ \ \ boundary\_condition\_second\_derivative\ =\ 2;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{struct\ }util\ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ diff3(FT\ t,\ FT\ x1,\ FT\ x2,\ FT\ x3,\ FT\ y1,\ FT\ y2,\ FT\ y3)\ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ x2\ -\/=\ x1;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ x3\ -\/=\ x1;}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ a\ =\ (y3-\/y1-\/x3/x2*(y2-\/y1))/(x3*x3-\/x3*x2);}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ b\ =\ (y2-\/y1-\/a*x2*x2)/x2;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 2*a*(t-\/x1)+b;}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ AT,\ \textcolor{keyword}{typename}\ BT,\ \textcolor{keyword}{typename}\ CT,\ \textcolor{keyword}{typename}\ DT,\ \textcolor{keyword}{typename}\ XT>}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ solve\_tridiagonal(AT\&\ a,\ BT\&\ b,\ CT\&\ c,\ DT\&\ d,\ XT\&\ x)\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ n\ =\ a.Count();}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ x.Resize(n);}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ a(0)\ =\ c(c.Count()-\/1)\ =\ 0;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=1;\ i\ <\ n;\ i++\ )\ \ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ t\ =\ a(i)/b(i-\/1);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ b(i)\ -\/=\ t*c(i-\/1);}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ d(i)\ -\/=\ t*d(i-\/1);}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ x(n-\/1)\ =\ d(n-\/1)/b(n-\/1);}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=n-\/2;\ i\ !=\ InvalidIndex;\ i-\/-\/\ )}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ x(i)\ =\ (d(i)-\/c(i)*x(i+1))/b(i);}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ AT,\ \textcolor{keyword}{typename}\ BT,\ \textcolor{keyword}{typename}\ CT,\ \textcolor{keyword}{typename}\ DT,\ \textcolor{keyword}{typename}\ XT>}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ solve\_cyclic\_tridiagonal(AT\&\ a,\ BT\&\ b,\ CT\&\ c,\ DT\&\ d,\ XT\&\ x)\ \ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ n\ =\ a.Count();}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ alpha\ =\ c(n-\/1),\ beta\ =\ a(0),\ gamma\ =\ -\/b(0);}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ b(0)\ *=\ 2;}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ b(n-\/1)\ -\/=\ alpha*beta/gamma;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ TVector<FT>\ u(n),\ y,\ z;}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ u(0)\ =\ gamma;}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ u(n-\/1)\ =\ alpha;}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ solve\_tridiagonal(a,\ b,\ c,\ d,\ y);}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ solve\_tridiagonal(a,\ b,\ c,\ u,\ z);}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ x.Resize(n);}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ k\ =\ (y(0)+beta*y(n-\/1)/gamma)/(1+z(0)+beta*z(n-\/1)/gamma);}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ n;\ i++\ )}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ x(i)\ =\ y(i)-\/k*z(i);}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \};}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \textcolor{keyword}{struct\ }Spline3\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ TVector<FT>\ x,\ y,\ \ \textcolor{comment}{//original\ data}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ c;\ \ \textcolor{comment}{//\ spline\ coefficients}}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{bool}\ periodic,\ linear;}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ XT,\ \textcolor{keyword}{typename}\ YT>\ Spline3(\textcolor{keyword}{const}\ XT\ \&\_x,\ \textcolor{keyword}{const}\ YT\&\ \_y)\ :}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ x(\_x),\ y(\_y),\ periodic(false),\ linear(false)\ \ \{\}}
+\DoxyCodeLine{00072\ \ \ \ \ Spline3()\ :\ periodic(false),\ linear(false)\ \ \{\}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{double}\ interpolate(\textcolor{keywordtype}{double}\ t)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ x.Count()\ <\ 2\ )}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}spline\ size"{}});}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ periodic\ \&\&\ ((t\ >\ x.GetLast())\ ||\ (t\ <\ x(0)))\ )\ \ \{\ \ \textcolor{comment}{//\ remap}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ period\ =\ x.GetLast()-\/x(0);}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ k\ =\ t/period;}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ t\ =\ period*(k\ -\/\ olx\_floor(k));}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ x.IsEmpty()\ ||\ t\ <\ x(0)\ ||\ t\ >\ x.GetLast()\ )}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}spline"{}});}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\ =\ 0,\ end\ =\ x.Count()-\/1;}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ start\ !=\ end-\/1\ )\ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ mid\ =\ (start+end)/2;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ x(mid)\ >\ t\ )}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ end\ =\ mid;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ start\ =\ mid;}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ t\ -\/=\ x(start);}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ linear\ )}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ y(start)+t*c(start);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i\ =\ start*3;}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ y(start)+t*(c(i)+t*(c(i+1)+t*c(i+2)));}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \};}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \textcolor{keyword}{struct\ }Builder\ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{//\ s.x\ and\ s.y\ must\ be\ initialised}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{static}\ Spline3<FT>\&\ hermite(\textcolor{keyword}{const}\ VecT\&\ d,\ Spline3<FT>\&\ s)\ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ s.c.Resize((s.x.Count()-\/1)*3);}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ s.x.Count()-\/1;\ i++\ )\ \ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ dx\ =\ s.x(i+1)-\/s.x(i),}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ dx2\ =\ dx*dx,\ dx3\ =\ dx2*dx;}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ fi\ =\ 3*i;}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ s.c(fi)\ =\ d(i);}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ s.c(fi+1)\ =\ (3*(s.y(i+1)-\/s.y(i))-\/(2*d(i)+d(i+1))*dx)/dx2;}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ s.c(fi+2)\ =\ (2*(s.y(i)-\/s.y(i+1))+(d(i)+d(i+1))*dx)/dx3;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{static}\ Spline3<FT>\&\ linear(Spline3<FT>\&\ s)\ \ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ s.linear\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ s.c.Resize(s.x.Count()-\/1);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ s.x.Count()-\/1;\ i++\ )}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ s.c(i)\ =\ (s.y(i+1)-\/s.y(i))/(s.x(i+1)-\/s.x(i));}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{//J.\ of\ the\ Association\ for\ Computing\ Machinery,\ 17(4),\ 1970,\ 589-\/502}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{static}\ Spline3<FT>\&\ akima(Spline3<FT>\&\ s)\ \ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ TVector<FT>}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ diffs(s.x.Count()-\/1),}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ w(s.x.Count()-\/2),}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ d(s.x.Count());}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ s.x.Count()-\/1;\ i++\ )\ \ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ diffs(i)\ =\ (s.y(i+1)-\/s.y(i))/(s.x(i+1)-\/s.x(i));}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ >\ 0\ )}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ w(i-\/1)\ =\ olx\_abs(diffs(i)-\/diffs(i-\/1));}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=1;\ i\ <\ w.Count()-\/1;\ i++\ )\ \ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (w(i-\/1)\ +\ w(i+1))\ !=\ 0\ )}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ d(i+1)\ =\ (w(i+1)*diffs(i)\ +\ w(i-\/1)*diffs(i+1))/(w(i+1)+w(i-\/1));}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ d(i+1)\ =\ ((s.x(i+2)-\/s.x(i+1))*diffs(i)+(s.x(i+1)-\/s.x(i))*diffs(i+1))/(s.x(i+2)-\/s.x(i));}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ d(0)\ =\ util<FT>::diff3(s.x(0),\ s.x(0),\ s.x(1),\ s.x(2),\ s.y(0),\ s.y(1),\ s.y(2));}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ d(1)\ =\ util<FT>::diff3(s.x(1),\ s.x(0),\ s.x(1),\ s.x(2),\ s.y(0),\ s.y(1),\ s.y(2));}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ n\ =\ s.x.Count();}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ d(n-\/2)\ =\ util<FT>::diff3(s.x(n-\/2),\ s.x(n-\/3),\ s.x(n-\/2),\ s.x(n-\/1),\ s.y(n-\/3),\ s.y(n-\/2),\ s.y(n-\/1));}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ d(n-\/1)\ =\ util<FT>::diff3(s.x(n-\/1),\ s.x(n-\/3),\ s.x(n-\/2),\ s.x(n-\/1),\ s.y(n-\/3),\ s.y(n-\/2),\ s.y(n-\/1));}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ hermite(d,\ s);}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00147\ \textcolor{comment}{\ \ \ \ lbl,\ rbl\ -\/\ one\ of\ the\ boundary\_type,}}
+\DoxyCodeLine{00148\ \textcolor{comment}{\ \ \ \ lb,\ rb\ -\/\ one\ of\ the\ boundary\_condition}}
+\DoxyCodeLine{00149\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{static}\ Spline3<FT>\&\ cubic(Spline3<FT>\&\ s,\ \textcolor{keywordtype}{short}\ lbt,\ \textcolor{keywordtype}{short}\ lb,\ \textcolor{keywordtype}{short}\ rbt,\ \textcolor{keywordtype}{short}\ rb)\ \ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (lbt\ ==\ boundary\_type\_periodic\ \&\&\ rbt\ !=\ boundary\_type\_periodic)\ ||}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ (rbt\ ==\ boundary\_type\_periodic\ \&\&\ lbt\ !=\ boundary\_type\_periodic)\ )}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}boundary\ type"{}});}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ n\ =\ s.x.Count();}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ n\ ==\ 2\ )\ \ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ lbt\ ==\ boundary\_type\_parabolic\ \&\&\ rbt\ ==\ boundary\_type\_parabolic\ )\ \ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ lbt\ =\ rbt\ =\ boundary\_type\_second\_derivative;}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ lb\ =\ rb\ =\ 0;}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ lbt\ ==\ boundary\_type\_periodic\ \&\&\ rbt\ ==\ boundary\_type\_periodic\ )\ \ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ lbt\ =\ rbt\ =\ boundary\_type\_first\_derivative;}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ lb\ =\ rb\ =\ 0;}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ s.y(1)\ =\ s.y(0);}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ TVector<FT>\ a1(n),\ a2(n),\ a3(n),\ b(n),\ d;}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ lbt\ ==\ boundary\_type\_periodic\ \&\&\ rbt\ ==\ boundary\_type\_periodic\ )\ \ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ a1.Resize(n-\/1);}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ a2.Resize(n-\/1);}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ a3.Resize(n-\/1);}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ b.Resize(n-\/1);}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=1;\ i\ <\ n-\/1;\ i++\ )\ \ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ a1(i)\ =\ s.x(i+1)-\/s.x(i);}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ a2(i)\ =\ 2*(s.x(i+1)-\/s.x(i-\/1));}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ a3(i)\ =\ s.x(i)-\/s.x(i-\/1);}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ b(i)\ =\ 3*((s.y(i)-\/s.y(i-\/1))/a3(i)*a1(i)+\ (s.y(i+1)-\/s.y(i))/a1(i)*a3(i));}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ lbt\ ==\ boundary\_type\_periodic\ \&\&\ rbt\ ==\ boundary\_type\_periodic\ )\ \ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ a1(0)\ =\ s.x(1)-\/s.x(0);}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ a3(0)\ =\ s.x(n-\/1)-\/s.x(n-\/2);}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ a2(0)\ =\ 2*(a1(0)+a3(0));}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ b(0)\ =\ 3*(s.y(n-\/1)-\/s.y(n-\/2))/a3(0)*a1(0)\ +\ (s.y(1)-\/s.y(0))/a1(0)*a3(0);}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ util<FT>::solve\_cyclic\_tridiagonal(a1,\ a2,\ a3,\ b,\ d);}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ d.Resize(n);}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ d(n-\/1)\ =\ d(0);}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ s.periodic\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ hermite(d,\ s);}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \textcolor{comment}{//left\ side}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ lbt\ ==\ boundary\_type\_parabolic\ )\ \ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ a2(0)\ =\ a3(0)\ =\ 1;}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ b(0)\ =\ 2*(s.y(1)-\/s.y(0))/(s.x(1)-\/s.x(0));}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ lbt\ ==\ boundary\_type\_first\_derivative\ )\ \ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ a2(0)\ =\ 1;}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ b(0)\ =\ lb;}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ lbt\ ==\ boundary\_type\_second\_derivative\ )\ \ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ a2(0)\ =\ 2;}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ a3(0)\ =\ 1;}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ b(0)\ =\ 3*(s.y(1)-\/s.y(0))/(s.x(1)-\/s.x(0))-\/lb*(s.x(1)-\/s.x(0))/2;}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ right\ side}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ rbt\ ==\ boundary\_type\_parabolic\ )\ \ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ a1(n-\/1)\ =\ a2(n-\/1)\ =\ 1;}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ a3(n-\/1)\ =\ 0;}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ b(n-\/1)\ =\ 2*(s.y(n-\/1)-\/s.y(n-\/2))/(s.x(n-\/1)-\/s.x(n-\/2));}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ rbt\ ==\ boundary\_type\_first\_derivative\ )\ \ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ a1(n-\/1)\ =\ a3(n-\/1)\ =\ 0;}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ a2(n-\/1)\ =\ 1;}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ b(n-\/1)\ =\ rb;}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ rbt\ ==\ boundary\_type\_second\_derivative\ )\ \ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ a1(n-\/1)\ =\ 1;}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ a2(n-\/1)\ =\ 2;}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ a3(n-\/1)\ =\ 0;}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ b(n-\/1)\ =\ 3*(s.y(n-\/1)-\/s.y(n-\/2))/(s.x(n-\/1)-\/s.x(n-\/2))\ +\ rb*(s.x(n-\/1)-\/s.x(n-\/2))/2;}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ util<FT>::solve\_tridiagonal(a1,\ a2,\ a3,\ b,\ d);}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ hermite(d,\ s);}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \ \ \}}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{comment}{//\ bt\ -\/\ boundary,\ parabolic\ or\ periodic}}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keyword}{static}\ Spline3<FT>\&\ catmull\_rom(Spline3<FT>\&\ s,\ \textcolor{keywordtype}{int}\ bt,\ FT\ tension)\ \ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !(bt\ ==\ boundary\_type\_periodic\ ||\ bt\ ==\ boundary\_type\_parabolic)\ )}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}boundary\ type"{}});}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ n\ =\ s.x.Count();}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ n\ ==\ 2\ )\ \ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ bt\ ==\ boundary\_type\_parabolic\ )}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ linear(s);}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cubic(s,\ boundary\_type\_periodic,\ 0,\ boundary\_type\_periodic,\ 0);}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ TVector<FT>\ d(n);}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=1;\ i\ <\ n-\/1;\ i++\ )}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ d(i)\ =\ (1-\/tension)*(s.y(i+1)-\/s.y(i-\/1))/(s.x(i+1)-\/s.x(i-\/1));}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ bt\ ==\ boundary\_type\_periodic\ )\ \ \{}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ s.y.GetLast()\ =\ s.y(0);}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ d(0)\ =\ d(n-\/1)\ =\ (s.y(1)-\/s.y(n-\/2))/(2*(s.x(1)-\/s.x(0)+s.x(n-\/1)-\/s.x(n-\/2)));}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ s.periodic\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ d(0)\ =\ 2*(s.y(1)-\/s.y(0))/(s.x(1)-\/s.x(0))-\/d(1);}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ d(n-\/1)\ =\ 2*(s.y(n-\/1)-\/s.y(n-\/2))/(s.x(n-\/1)-\/s.x(n-\/2))\ -\/\ d(n-\/2);}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ hermite(d,\ s);}
+\DoxyCodeLine{00252\ \ \ \ \ \}}
+\DoxyCodeLine{00253\ \ \ \};}
+\DoxyCodeLine{00254\ \}\};\ \textcolor{comment}{//end\ of\ the\ math::spline}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ EndEsdlNamespace()}
+\DoxyCodeLine{00257\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

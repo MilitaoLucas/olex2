@@ -1,0 +1,252 @@
+\doxysection{builtins.\+h}
+\hypertarget{builtins_8h_source}{}\label{builtins_8h_source}\index{sdl/exparse/builtins.h@{sdl/exparse/builtins.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_exparse\_builins\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_exparse\_builins\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}evaluable.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../emath.h"{}}}
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ namespace\ exparse\ \ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{struct\ }BuiltInsFactory\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{struct\ }IConstFunc\ :\ \textcolor{keyword}{public}\ ANumberEvaluator\ \ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ IEvaluable*\ arg;}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ IConstFunc(IEvaluable*\ \_arg)\ :\ arg(\_arg)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ arg-\/>inc\_ref();}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \string~IConstFunc()\ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ arg-\/>dec\_ref()\ ==\ 0\ )\ \ \textcolor{keyword}{delete}\ arg;}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \ \ \};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{struct\ }IConstFunc2\ :\ \textcolor{keyword}{public}\ ANumberEvaluator\ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ IEvaluable*\ a,\ *b;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ IConstFunc2(IEvaluable*\ \_a,\ IEvaluable*\ \_b)\ :\ a(\_a),\ b(\_b)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ a-\/>inc\_ref();}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ b-\/>inc\_ref();}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \string~IConstFunc2()\ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a-\/>dec\_ref()\ ==\ 0\ )\ \ \textcolor{keyword}{delete}\ a;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ b-\/>dec\_ref()\ ==\ 0\ )\ \ \textcolor{keyword}{delete}\ b;}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \};}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{struct\ }AbsFunc\ :\ \textcolor{keyword}{public}\ IConstFunc\ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ AbsFunc(IEvaluable*\ arg)\ :\ IConstFunc(arg)\ \ \{\}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(olx\_abs<double>(arg-\/>cast<\textcolor{keywordtype}{double}>()));}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \};}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{struct\ }CosFunc\ :\ \textcolor{keyword}{public}\ IConstFunc\ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ CosFunc(IEvaluable*\ arg)\ :\ IConstFunc(arg)\ \ \{\}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(cos(arg-\/>cast<\textcolor{keywordtype}{double}>()));}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \};}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{struct\ }SinFunc\ :\ \textcolor{keyword}{public}\ IConstFunc\ \ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ SinFunc(IEvaluable*\ arg)\ :\ IConstFunc(arg)\ \ \{\}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(sin(arg-\/>cast<\textcolor{keywordtype}{double}>()));}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \};}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{struct\ }TanFunc\ :\ \textcolor{keyword}{public}\ IConstFunc\ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ TanFunc(IEvaluable*\ arg)\ :\ IConstFunc(arg)\ \ \{\}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(tan(arg-\/>cast<\textcolor{keywordtype}{double}>()));}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \};}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{struct\ }PowFunc\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ PowFunc(IEvaluable*\ a,\ IEvaluable\ *b)\ :\ IConstFunc2(a,\ b)\ \ \{\}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(pow(a-\/>cast<\textcolor{keywordtype}{double}>(),\ b-\/>cast<\textcolor{keywordtype}{double}>()));}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \};}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{struct\ }MinFunc\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ MinFunc(IEvaluable*\ a,\ IEvaluable\ *b)\ :\ IConstFunc2(a,\ b)\ \ \{\}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(olx\_min(a-\/>cast<\textcolor{keywordtype}{double}>(),\ b-\/>cast<\textcolor{keywordtype}{double}>()));}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \};}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{struct\ }MaxFunc\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ MaxFunc(IEvaluable*\ a,\ IEvaluable\ *b)\ :\ IConstFunc2(a,\ b)\ \ \{\}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(olx\_max(a-\/>cast<\textcolor{keywordtype}{double}>(),\ b-\/>cast<\textcolor{keywordtype}{double}>()));}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \};}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{struct\ }AddOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ AddOperator(IEvaluable*\ a,\ IEvaluable\ *b)\ :\ IConstFunc2(a,b)\ \ \{\}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(a-\/>cast<\textcolor{keywordtype}{double}>()\ +\ b-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \};}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{struct\ }SubOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ SubOperator(IEvaluable*\ a,\ IEvaluable\ *b)\ :\ IConstFunc2(a,b)\ \ \{\}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(a-\/>cast<\textcolor{keywordtype}{double}>()\ -\/\ b-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \};}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{struct\ }DivOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ DivOperator(IEvaluable*\ a,\ IEvaluable\ *b)\ :\ IConstFunc2(a,b)\ \ \{\}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(a-\/>cast<\textcolor{keywordtype}{double}>()\ /\ b-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \};}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{struct\ }MulOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ MulOperator(IEvaluable*\ a,\ IEvaluable\ *b)\ :\ IConstFunc2(a,b)\ \ \{\}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(a-\/>cast<\textcolor{keywordtype}{double}>()\ *\ b-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \};}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{struct\ }RemOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ RemOperator(IEvaluable*\ a,\ IEvaluable\ *b)\ :\ IConstFunc2(a,b)\ \ \{\}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ IntValue(a-\/>cast<\textcolor{keywordtype}{int}>()\ \%\ b-\/>cast<\textcolor{keywordtype}{int}>());}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \};}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keyword}{struct\ }ChsOperator\ :\ \textcolor{keyword}{public}\ IConstFunc\ \ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ ChsOperator(IEvaluable*\ a)\ :\ IConstFunc(a)\ \ \{\}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(-\/arg-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \};}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{struct\ }PlusOperator\ :\ \textcolor{keyword}{public}\ IConstFunc\ \ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ PlusOperator(IEvaluable*\ a)\ :\ IConstFunc(a)\ \ \{\}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DoubleValue(arg-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \};}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{struct\ }EOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ EOperator(IEvaluable*\ a,\ IEvaluable*\ b)\ :\ IConstFunc2(a,\ b)\ \{\}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ BoolValue(a-\/>cast<\textcolor{keywordtype}{double}>()\ ==\ b-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \};}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{struct\ }NEOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ NEOperator(IEvaluable*\ a,\ IEvaluable*\ b)\ :\ IConstFunc2(a,\ b)\ \{\}}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ BoolValue(a-\/>cast<\textcolor{keywordtype}{double}>()\ !=\ b-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \ \ \};}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keyword}{struct\ }GOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ GOperator(IEvaluable*\ a,\ IEvaluable*\ b)\ :\ IConstFunc2(a,\ b)\ \{\}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ BoolValue(a-\/>cast<\textcolor{keywordtype}{double}>()\ >\ b-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \};}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keyword}{struct\ }GEOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ GEOperator(IEvaluable*\ a,\ IEvaluable*\ b)\ :\ IConstFunc2(a,\ b)\ \{\}}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ BoolValue(a-\/>cast<\textcolor{keywordtype}{double}>()\ >=\ b-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \};}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keyword}{struct\ }LOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ LOperator(IEvaluable*\ a,\ IEvaluable*\ b)\ :\ IConstFunc2(a,\ b)\ \{\}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ BoolValue(a-\/>cast<\textcolor{keywordtype}{double}>()\ <\ b-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \};}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keyword}{struct\ }LEOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ LEOperator(IEvaluable*\ a,\ IEvaluable*\ b)\ :\ IConstFunc2(a,\ b)\ \{\}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ BoolValue(a-\/>cast<\textcolor{keywordtype}{double}>()\ <=\ b-\/>cast<\textcolor{keywordtype}{double}>());}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \ \ \};}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keyword}{struct\ }AndOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ AndOperator(IEvaluable*\ a,\ IEvaluable*\ b)\ :\ IConstFunc2(a,\ b)\ \ \{\}}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ BoolValue(a-\/>cast<\textcolor{keywordtype}{bool}>()\ \&\&\ b-\/>cast<\textcolor{keywordtype}{bool}>());}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \ \ \};}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keyword}{struct\ }OrOperator\ :\ \textcolor{keyword}{public}\ IConstFunc2\ \ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ OrOperator(IEvaluable*\ a,\ IEvaluable*\ b)\ :\ IConstFunc2(a,\ b)\ \ \{\}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ BoolValue(a-\/>cast<\textcolor{keywordtype}{bool}>()\ ||\ b-\/>cast<\textcolor{keywordtype}{bool}>());}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \};}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keyword}{struct\ }NotOperator\ :\ \textcolor{keyword}{public}\ IConstFunc\ \ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ NotOperator(IEvaluable*\ a)\ :\ IConstFunc(a)\ \ \{\}}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ \ }\{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ BoolValue(!arg-\/>cast<\textcolor{keywordtype}{bool}>());}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \};}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keyword}{static}\ IEvaluable*\ create(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ TPtrList<IEvaluable>\&\ args)}
+\DoxyCodeLine{00183\ \ \ \ \ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ args.Count()\ ==\ 1)}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ create(name,\ args[0]);}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ args.Count()\ ==\ 2\ )}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ create(name,\ args[0],\ args[1]);}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{00189\ \ \ \ \ \}}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keyword}{static}\ IEvaluable*\ create(\textcolor{keyword}{const}\ olxstr\&\ name,\ IEvaluable*\ a,}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ IEvaluable*\ b=NULL)}
+\DoxyCodeLine{00192\ \ \ \ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ a\ ==\ NULL\ \&\&\ b\ ==\ NULL\ )\ \ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ b\ ==\ NULL\ )\ \ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}abs"{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ AbsFunc(a);}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}cos"{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ CosFunc(a);}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}sin"{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ SinFunc(a);}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}tan"{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TanFunc(a);}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}-\/"{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ ChsOperator(a);}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}+"{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ PlusOperator(a);}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}!"{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ NotOperator(a);}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{charliteral}{'+'}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ AddOperator(a,\ b);}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{charliteral}{'-\/'}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ SubOperator(a,\ b);}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{charliteral}{'/'}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ DivOperator(a,\ b);}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{charliteral}{'*'}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ MulOperator(a,\ b);}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{charliteral}{'\%'}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ RemOperator(a,\ b);}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}pow"{}}\ )\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ PowFunc(a,\ b);}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}min"{}}\ )\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ MinFunc(a,\ b);}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}max"{}}\ )\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ MaxFunc(a,\ b);}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}\&\&"{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ AndOperator(a,\ b);}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}||"{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ OrOperator(a,\ b);}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}=="{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ EOperator(a,\ b);}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}!="{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ NEOperator(a,\ b);}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{charliteral}{'>'}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ GOperator(a,\ b);}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{charliteral}{'<'}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ LOperator(a,\ b);}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}>="{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ GEOperator(a,\ b);}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ name\ ==\ \textcolor{stringliteral}{"{}<="{}}\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ LEOperator(a,\ b);}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_logical(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ name\ ==\ \textcolor{stringliteral}{"{}||"{}}\ ||\ name\ ==\ \textcolor{stringliteral}{"{}\&\&"{}}\ ||\ name\ ==\ \textcolor{charliteral}{'!'};}
+\DoxyCodeLine{00227\ \ \ \ \ \}}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_cmp(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ name\ ==\ \textcolor{stringliteral}{"{}=="{}}\ ||\ name\ ==\ \textcolor{stringliteral}{"{}!="{}}\ ||\ name\ ==\ \textcolor{charliteral}{'>'}\ ||\ name\ ==\ \textcolor{charliteral}{'<'}\ ||}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ name\ ==\ \textcolor{stringliteral}{"{}>="{}}\ ||\ name\ ==\ \textcolor{stringliteral}{"{}<="{}};}
+\DoxyCodeLine{00231\ \ \ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_arithmetic(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ name\ ==\ \textcolor{charliteral}{'+'}\ ||\ name\ ==\ \textcolor{charliteral}{'-\/'}\ ||\ name\ ==\ \textcolor{charliteral}{'*'}\ ||\ name\ ==\ \textcolor{charliteral}{'/'}\ ||}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ name\ ==\ \textcolor{charliteral}{'\%'};}
+\DoxyCodeLine{00235\ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ has\_arithmetic\_priority(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ name\ ==\ \textcolor{charliteral}{'*'}\ ||\ name\ ==\ \textcolor{charliteral}{'/'};}
+\DoxyCodeLine{00238\ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ is\_assignment(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ name\ ==\ \textcolor{charliteral}{'='};}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \};}
+\DoxyCodeLine{00243\ \};\ \ \textcolor{comment}{//\ end\ exparse\ namespace}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ EndEsdlNamespace()}
+\DoxyCodeLine{00246\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

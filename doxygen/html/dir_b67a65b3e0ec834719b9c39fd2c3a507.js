@@ -1,5 +1,6 @@
 var dir_b67a65b3e0ec834719b9c39fd2c3a507 =
 [
+    [ "tests", "dir_45d4195bc3ca983471db190b659311d8.html", "dir_45d4195bc3ca983471db190b659311d8" ],
     [ "cdsfs.h", "cdsfs_8h_source.html", null ],
     [ "con_in.h", "con__in_8h_source.html", null ],
     [ "eaccell.h", "eaccell_8h_source.html", null ],
@@ -15,6 +16,7 @@ var dir_b67a65b3e0ec834719b9c39fd2c3a507 =
     [ "patchapi.h", "patchapi_8h_source.html", null ],
     [ "ps_writer.h", "ps__writer_8h_source.html", null ],
     [ "py_core.h", "py__core_8h_source.html", null ],
+    [ "py_reg.h", "py__reg_8h_source.html", null ],
     [ "pyext.h", "pyext_8h_source.html", null ],
     [ "refinement_listener.h", "refinement__listener_8h_source.html", null ],
     [ "shellutil.h", "shellutil_8h_source.html", null ],

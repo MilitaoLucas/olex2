@@ -1,0 +1,153 @@
+\doxysection{hashed\+\_\+test.\+h}
+\hypertarget{hashed__test_8h_source}{}\label{hashed__test_8h_source}\index{sdl/tests/hashed\_test.h@{sdl/tests/hashed\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}ehashed.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}encodings.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}etime.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{void}\ basic\_set\_test(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{typedef}\ TEHashSet<olxstr,\ olxstrComparator<false>\ >\ set\_t;}
+\DoxyCodeLine{00018\ \ \ \ \ set\_t\ test;}
+\DoxyCodeLine{00019\ \ \ \ \ olxstr\ test\_set[4]\ =\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{stringliteral}{"{}1"{}},}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{stringliteral}{"{}2"{}},}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{stringliteral}{"{}hello"{}},}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{stringliteral}{"{}test"{}}\};}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ test.Add(test\_set[i]);}
+\DoxyCodeLine{00026\ \ \ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!test.Contains(test\_set[i]))\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected"{}});}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{if}\ (!test.Remove(test\_set[2]))\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected"{}});}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ set\_t::iterator\_t\ itr\ =\ test.Iterate();}
+\DoxyCodeLine{00036\ \ \ \ \ set\_t::basket\_t*\ b;}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{while}\ ((b\ =\ itr.Next())\ !=\ 0)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ cnt\ +=\ b-\/>Count();}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{if}\ (cnt\ !=\ 3)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected"{}});}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{comment}{//...........................................................................................}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ basic\_dict\_test(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ TEHashMap<olxstr,\ olxstr,\ olxstrComparator<true>\ >\ test;}
+\DoxyCodeLine{00049\ \ \ \ \ olxstr\ test\_set[4]\ =\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{stringliteral}{"{}1"{}},}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{stringliteral}{"{}2"{}},}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{stringliteral}{"{}hello"{}},}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{stringliteral}{"{}test"{}}\ \};}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ test.Add(test\_set[i],\ test\_set[i]);}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!test.Contains(test\_set[i]))\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected"{}});}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{comment}{//...........................................................................................}}
+\DoxyCodeLine{00064\ \ \ olxstr\ rnd\_str\_85(\textcolor{keywordtype}{size\_t}\ max\_l=128)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ b85\ =\ encoding::data::base85();}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ l\ =\ (size\_t)rand()\ \%\ max\_l;}
+\DoxyCodeLine{00067\ \ \ \ \ olxstr\ rv(olx\_reserve(l));}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ l;\ i++)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ rv\ <<\ b85[rand()\ \%\ 85];}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ perf\_test(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ max\_str\_c\ =\ 450000;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{bool}\ test\_binary\ =\ max\_str\_c\ <\ 1000000;\ \textcolor{comment}{//\ takes\ too\ long\ with\ >\ 1m\ recs}}
+\DoxyCodeLine{00076\ \ \ \ \ TStrList\ strings(max\_str\_c);}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ max\_str\_c;\ i++)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ strings[i]\ =\ rnd\_str\_85();}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ olxstr\_set<>\ binary\_set(olx\_reserve(test\_binary\ ?\ max\_str\_c\ :\ 1));}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{typedef}\ TEHashSet<olxstr,\ olxstrComparator<false>,\ 4,\ 4>\ set\_t;}
+\DoxyCodeLine{00083\ \ \ \ \ set\_t\ hash\_set;}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ bin\_st\ =\ TETime::msNow();}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordflow}{if}\ (test\_binary)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ max\_str\_c;\ i++)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ binary\_set.Add(strings[i]);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ hash\_st\ =\ TETime::msNow();}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ max\_str\_c;\ i++)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ hash\_set.Add(strings[i]);}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ hash\_end\ =\ TETime::msNow();}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{comment}{//\ hash\ set\ is\ about\ 20\ times\ faster}}
+\DoxyCodeLine{00097\ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ \textcolor{stringliteral}{"{}Binary\ set\ building\ time\ (ms):\ "{}}\ <<}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ hash\_st\ -\/\ bin\_st;}
+\DoxyCodeLine{00099\ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ \textcolor{stringliteral}{"{}Hash\ set\ building\ time\ (ms):\ "{}}\ <<}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ hash\_end\ -\/\ hash\_st;}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ bin\_st\ =\ TETime::msNow();}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{if}\ (test\_binary)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ max\_str\_c;\ i++)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!binary\_set.Contains(strings[i]))\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected"{}});}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ hash\_st\ =\ TETime::msNow();}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ max\_str\_c;\ i++)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!hash\_set.Contains(strings[i]))\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected"{}});}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ hash\_end\ =\ TETime::msNow();}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ hash\ set\ is\ about\ 3\ times\ faster\ for\ 64/2,\ 32/3}}
+\DoxyCodeLine{00118\ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ \textcolor{stringliteral}{"{}Binary\ set\ contains\ time\ (ms):\ "{}}\ <<}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ hash\_st\ -\/\ bin\_st;}
+\DoxyCodeLine{00120\ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ \textcolor{stringliteral}{"{}Hash\ set\ contains\ time\ (ms):\ "{}}\ <<}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ hash\_end\ -\/\ hash\_st;}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ olx\_pdict<size\_t,size\_t>\ stats\ =\ hash\_set.get\_stats();}
+\DoxyCodeLine{00124\ \ \ \ \ TArrayList<olx\_pair\_t<size\_t,\ size\_t>\ >\ rv\_stats(stats.Count());}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ stats.Count();\ i++)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{comment}{//TBasicApp::NewLogEntry()\ <<\ stats.GetKey(i)\ <<\ "{}\ -\/>\ "{}\ <<\ stats.GetValue(i);}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ rv\_stats[i].a\ =\ stats.GetValue(i);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ rv\_stats[i].b\ =\ stats.GetKey(i);}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ QuickSorter::Sort(rv\_stats,}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ ReverseComparator::Make(}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ ComplexComparator::Make(}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ FunctionAccessor::MakeConst(\&olx\_pair\_t<size\_t,\ size\_t>::GetA),}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ TPrimitiveComparator())));}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ olx\_min(10,\ rv\_stats.Count());\ i++)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ rv\_stats[i].a\ <<\ \textcolor{stringliteral}{"{}\ -\/>\ "{}}\ <<\ rv\_stats[i].b;}
+\DoxyCodeLine{00138\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \textcolor{comment}{//...........................................................................................}}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordtype}{void}\ HashedTests(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ t.Add(\&basic\_set\_test)}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ .Add(\&basic\_dict\_test)}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ .Add(\&perf\_test);}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ \};\ \ \textcolor{comment}{//namespace\ test}}
+\DoxyCodeLine{00147\ }
+
+\end{DoxyCode}

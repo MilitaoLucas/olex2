@@ -1,0 +1,69 @@
+\doxysection{irange\+\_\+test.\+h}
+\hypertarget{irange__test_8h_source}{}\label{irange__test_8h_source}\index{sdl/tests/irange\_test.h@{sdl/tests/irange\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}index\_range.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keywordtype}{void}\ IndexRangeTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00014\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00015\ \ \ olxstr\ range\ =\ \textcolor{stringliteral}{"{}1-\/6,9,12-\/15,20,999-\/1000,10-\/20"{}},}
+\DoxyCodeLine{00016\ \ \ \ \ range1\ =\ \textcolor{stringliteral}{"{}14-\/18,40-\/44"{}};}
+\DoxyCodeLine{00017\ \ \ TSizeList\ rmatch;}
+\DoxyCodeLine{00018\ \ \ IndexRange::Builder\ builder;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=1;\ i\ <=\ 6;\ i++\ )\ \ \{}
+\DoxyCodeLine{00020\ \ \ \ \ rmatch\ <<\ i;}
+\DoxyCodeLine{00021\ \ \ \ \ builder\ <<\ i;}
+\DoxyCodeLine{00022\ \ \ \}}
+\DoxyCodeLine{00023\ \ \ rmatch\ <<\ 9\ <<\ 12\ <<\ 13\ <<\ 14\ <<\ 15\ <<\ 20\ <<\ 999\ <<\ 1000;}
+\DoxyCodeLine{00024\ \ \ builder\ <<\ 9\ <<\ 12\ <<\ 13\ <<\ 14\ <<\ 15\ <<\ 20\ <<\ 999\ <<\ 1000;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=10;\ i\ <=\ 20;\ i++\ )\ \ \{}
+\DoxyCodeLine{00026\ \ \ \ \ rmatch\ <<\ i;}
+\DoxyCodeLine{00027\ \ \ \ \ builder\ <<\ i;}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \ \ TSizeList\ testr\ =\ IndexRange::FromString(range);}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordflow}{if}(\ testr.Count()\ !=\ rmatch.Count()\ )}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size\ mismatch"{}});}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ rmatch.Count();\ i++\ )}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{if}(\ rmatch[i]\ !=\ testr[i]\ )}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}results\ mismatch"{}});}
+\DoxyCodeLine{00035\ \ \ IndexRange::RangeItr\ itr\ =\ IndexRange::GetIterator(range);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordflow}{if}(\ rmatch.Count()\ !=\ itr.CalcSize()\ )}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}CalcSize"{}});}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordflow}{while}(\ itr.HasNext()\ )\ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{if}(\ cnt\ >=\ rmatch.Count()\ )}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}itr\ size\ mismatch"{}});}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ v\ =\ rmatch[cnt],}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ v1\ =\ itr.Next();}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{if}(\ rmatch[cnt++]\ !=\ v1\ )}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}itr\ results\ mismatch"{}});}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \ \ olxstr\ s\ =\ IndexRange::ToString(rmatch);}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordflow}{if}(\ range\ !=\ s\ )}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}str\ results\ mismatch"{}});}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordflow}{if}(\ range\ !=\ builder.GetString()\ )}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}builder\ str\ results\ mismatch"{}});}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ IndexRange::RangeItr\ itr1\ =\ IndexRange::GetIterator(range1);}
+\DoxyCodeLine{00054\ \ \ cnt\ =\ 0;}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordflow}{while}(\ itr1.HasNext()\ )\ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ cnt++;}
+\DoxyCodeLine{00057\ \ \ \ \ itr1.Next();}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordflow}{if}(\ cnt\ !=\ itr1.CalcSize()\ )}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}itr\ size\ mismatch"{}});}
+\DoxyCodeLine{00061\ \}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00063\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

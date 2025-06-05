@@ -1,0 +1,236 @@
+\doxysection{exptree.\+h}
+\hypertarget{exptree_8h_source}{}\label{exptree_8h_source}\index{sdl/exparse/exptree.h@{sdl/exparse/exptree.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_exp\_tree\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_exp\_tree\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../tptrlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}../edict.h"{}}}
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ namespace\ exparse\ \ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{namespace\ }parser\_util\ \ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{struct\ }operator\_set\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ SortedObjectList<olxch,\ TPrimitiveComparator>\ charset\_t;}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ SortedObjectList<olxstr,\ olxstrComparator<false>\ >\ operatorset\_t;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \textcolor{comment}{//\ a\ set\ of\ all\ chars\ unique\ to\ the\ operators}}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ charset\_t\ control\_chars;}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ operatorset\_t\ operators;}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ update\_charset();}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ operator\_set();}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_operator(\textcolor{keyword}{const}\ olxstr\&\ exp)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ operators.Contains(exp);}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_control\_char(olxch\ ch)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ control\_chars.Contains(ch);\ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_next\_char\_control(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ind+1\ <\ exp.Length()\ \&\&}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ control\_chars.Contains(exp.CharAt(ind+1));}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ parse\_control\_chars(\textcolor{keyword}{const}\ olxstr\&\ exp,\ olxstr\&\ dest,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\&\ ind)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ add\_operator(\textcolor{keyword}{const}\ olxstr\ \&opr);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ remove\_operator(\textcolor{keyword}{const}\ olxstr\ \&opr);}
+\DoxyCodeLine{00041\ \ \ \ \ \};}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{comment}{//leaves\ ind\ on\ the\ last\ quote\ or\ does\ not\ change\ it\ if\ there\ is\ no\ string}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ skip\_string(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keywordtype}{size\_t}\&\ ind);}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{comment}{/*\ leaves\ the\ ind\ on\ the\ closing\ bracket\ char\ or\ does\ not\ change\ it\ if}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ \ \ there\ is\ none}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{bool}\ skip\_brackets(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keywordtype}{size\_t}\&\ ind);}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{/*\ leaves\ the\ ind\ on\ the\ first\ non-\/white\ space/tab}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ \ \ returns\ the\ updated\ index\ value}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ skip\_whitechars(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keywordtype}{size\_t}\&\ ind);}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{/*\ more\ control\ over\ the\ chars\ to\ skip}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ seq\_t>}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ skip\_chars(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keywordtype}{size\_t}\&\ ind,\ \textcolor{keyword}{const}\ seq\_t\ \&seq,\ \textcolor{keywordtype}{size\_t}\ seq\_l)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ el\ =\ exp.Length();}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ >=\ el)\ \textcolor{keywordflow}{return}\ ind;}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (olxstr::o\_isoneof(exp[ind],\ seq,\ seq\_l))\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (++ind\ ==\ el)}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ind;}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ seq\_t>}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ skip\_chars(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keywordtype}{size\_t}\&\ ind,\ \textcolor{keyword}{const}\ seq\_t\ \&seq)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ skip\_chars(exp,\ ind,\ seq,\ olxstr::o\_strlen(seq));}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{bool}\ parse\_string(\textcolor{keyword}{const}\ olxstr\&\ exp,\ olxstr\&\ dest,\ \textcolor{keywordtype}{size\_t}\&\ ind);}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{comment}{//\ does\ not\ check\ for\ escaped\ quotes}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{bool}\ parse\_escaped\_string(\textcolor{keyword}{const}\ olxstr\&\ exp,\ olxstr\&\ dest,\ \textcolor{keywordtype}{size\_t}\&\ ind);}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{bool}\ parse\_brackets(\textcolor{keyword}{const}\ olxstr\&\ exp,\ olxstr\&\ dest,\ \textcolor{keywordtype}{size\_t}\&\ ind);}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{comment}{/*\ checks\ if\ there\ are\ any\ brackets\ or\ control\ chars\ or\ white\ spaces}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ \ \ \ outside\ quoted\ strings}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_expandable(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keyword}{const}\ operator\_set\ \&os);}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{comment}{/*\ as\ above,\ but\ does\ not\ check\ for\ the\ control\ chars\ */}}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_expandable(\textcolor{keyword}{const}\ olxstr\&\ exp);}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{comment}{//\ checks\ if\ the\ char\ is\ a\ bracket\ char}}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ is\_bracket(olxch\ ch)\ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ch\ ==\ \textcolor{charliteral}{'('}\ ||\ ch\ ==\ \textcolor{charliteral}{'['}\ ||\ ch\ ==\ \textcolor{charliteral}{'\{'}\ ||\ ch\ ==\ \textcolor{charliteral}{'<'};}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{comment}{//\ returns\ the\ bracket\ counterpart}}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{inline}\ olxch\ get\_closing\_bracket(olxch\ oc)\ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxch\ cc\ =\ (oc\ ==\ \textcolor{charliteral}{'('}\ ?\ \textcolor{charliteral}{')'}\ :\ (oc\ ==\ \textcolor{charliteral}{'['}\ ?\ \textcolor{charliteral}{']'}\ :\ (oc\ ==\ \textcolor{charliteral}{'\{'}\ ?\ \textcolor{charliteral}{'\}'}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ :\ (oc\ ==\ \textcolor{charliteral}{'<'}\ ?\ \textcolor{charliteral}{'>'}\ :\ \textcolor{charliteral}{'\#'}))));}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cc\ ==\ \textcolor{charliteral}{'\#'})\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}bracket="{}}).quote()\ <<\ oc);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cc;}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{comment}{//\ checks\ if\ the\ char\ is\ a\ quote\ char}}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ is\_quote(olxch\ ch)\ \ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ch\ ==\ \textcolor{charliteral}{'"{}'}\ ||\ ch\ ==\ \textcolor{charliteral}{'\(\backslash\)''};}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{comment}{//\ checks\ if\ the\ char\ at\ ch\_ind\ is\ ascaped\ (\(\backslash\)')}}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_escaped(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keywordtype}{size\_t}\ ch\_ind);}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{comment}{//\ returns\ index\ of\ th\ next\ unescaped\ char...}}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ next\_unescaped(olxch\ \_what,\ \textcolor{keyword}{const}\ olxstr\&\ \_where,\ \textcolor{keywordtype}{size\_t}\ \_from);}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{/*\ splits\ expressions\ like\ ("{}"{},ddd(),"{}\(\backslash\)"{}"{}),\ leaves\ tokens\ quoted\ if\ quoted}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ \ \ \ originally}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ StrLst>\ \textcolor{keywordtype}{void}\ split\_args(\textcolor{keyword}{const}\ olxstr\&\ exp,\ StrLst\&\ res)\ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_bracket(exp.CharAt(0)))\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ res.Add(exp);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\ =\ 0;}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ exp.Length();\ i++)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxch\ ch\ =\ exp.CharAt(i);}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_bracket(ch)\ \&\&\ !is\_escaped(exp,\ i))\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ skip\_brackets(exp,\ i);}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (is\_quote(ch)\ \&\&\ !is\_escaped(exp,\ i))\ \{\ \ \textcolor{comment}{//\ skip\ strings}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ skip\_string(exp,\ i);}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ch\ ==\ \textcolor{charliteral}{','})\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ res.Add(exp.SubString(start,\ i-\/start)).TrimWhiteChars();}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ start\ =\ i+1;}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ start\ <\ exp.Length()\ )}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ res.Add(\ exp.SubStringFrom(start)\ ).TrimWhiteChars();}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{comment}{//\ removes\ quotation\ from\ a\ string}}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keyword}{inline}\ olxstr\ unquote(\textcolor{keyword}{const}\ olxstr\&\ exp)\ \ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ exp.Length()\ <\ 2\ )\ \ \textcolor{keywordflow}{return}\ exp;}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxch\ ch\ =\ exp.CharAt(0);}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ is\_quote(ch)\ \&\&\ (exp.GetLast()\ ==\ ch)\ \&\&}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ !is\_escaped(exp,\ exp.Length()-\/1)\ )}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ exp.SubStringFrom(1,\ 1);}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ exp;}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{comment}{//\ checks\ if\ the\ string\ is\ quoted}}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ is\_quoted(\textcolor{keyword}{const}\ olxstr\&\ exp)\ \ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ exp.Length()\ <\ 2\ )\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxch\ ch\ =\ exp.CharAt(0);}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (is\_quote(ch)\ \&\&\ (exp.GetLast()\ ==\ ch)\ \&\&}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ !is\_escaped(exp,\ exp.Length()-\/1));}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{comment}{//\ replaces\ \(\backslash\)t,\ \(\backslash\)n,\ \(\backslash\)r,\ \(\backslash\)\(\backslash\),\ \(\backslash\)"{},\ \(\backslash\)'\ with\ corresponding\ values}}
+\DoxyCodeLine{00145\ \ \ \ \ olxstr\ unescape(\textcolor{keyword}{const}\ olxstr\&\ exp);}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{comment}{//\ opposite\ for\ the\ unescape}}
+\DoxyCodeLine{00147\ \ \ \ \ olxstr\ escape(\textcolor{keyword}{const}\ olxstr\&\ exp);}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{comment}{//\ if\ find\ open\_tag,\ initialises\ start\_char\_ind\ with\ position\ next\ after}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keyword}{struct\ }tag\_parse\_info\ \ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ start\_char\_ind,\ end\_string\_ind,\ end\_char\_ind;}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ tag\_parse\_info()}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ :\ start\_char\_ind(-\/1),\ end\_string\_ind(-\/1),\ end\_char\_ind(-\/1)}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00154\ \ \ \ \ \};}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Lst>}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{static}\ tag\_parse\_info\ skip\_tag(\textcolor{keyword}{const}\ Lst\&\ list,\ \textcolor{keyword}{const}\ olxstr\&\ open\_tag,}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ close\_tag,\ \textcolor{keywordtype}{size\_t}\ str\_ind,\ \textcolor{keywordtype}{size\_t}\ char\_ind)}
+\DoxyCodeLine{00158\ \ \ \ \ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ oti\ =\ list[str\_ind].FirstIndexOf(open\_tag,\ char\_ind);}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ tag\_parse\_info\ rv;}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ oti\ ==\ InvalidIndex\ )\ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ rv.start\_char\_ind\ =\ oti+open\_tag.Length();}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ otc\ =\ 1;}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ otc\ !=\ 0\ )\ \ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ line\ =\ list[str\_ind];}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ line.Length();\ i++\ )\ \ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ line.IsSubStringAt(open\_tag,\ i)\ )\ \ otc++;}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ line.IsSubStringAt(close\_tag,\ i)\ \&\&\ -\/-\/otc\ ==\ 0)\ \ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ rv.end\_string\_ind\ =\ str\_ind;}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ rv.start\_char\_ind\ =\ i+close\_tag.Length();}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ++str\_ind\ >=\ list.Count()\ )\ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00177\ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \}}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{struct\ }evaluator\ \ \{}
+\DoxyCodeLine{00181\ \ \ \ \ olxstr\ name;}
+\DoxyCodeLine{00182\ \ \ \ \ TPtrList<T>\ args;}
+\DoxyCodeLine{00183\ \ \ \ \ evaluator(\textcolor{keyword}{const}\ olxstr\&\ \_name)\ :\ name(\_name)\ \{\}}
+\DoxyCodeLine{00184\ \ \ \ \ \string~evaluator()\ \ \{\ args.DeleteItems();\ \}}
+\DoxyCodeLine{00185\ \ \ \};}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{struct\ }expression\_tree\ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ olxstr\ data;}
+\DoxyCodeLine{00188\ \ \ \ \ expression\_tree\ *parent,\ *left,\ *right;}
+\DoxyCodeLine{00189\ \ \ \ \ evaluator<expression\_tree>*\ evator;}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordtype}{bool}\ priority,\ \ \textcolor{comment}{//\ the\ expression\ is\ in\ brackets}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ macro\_call;\ \textcolor{comment}{//\ call\ conversion\ -\/\ f(x)\ or\ 'f\ x'}}
+\DoxyCodeLine{00192\ \ \ \ \ expression\_tree(expression\_tree*\ p,\ \textcolor{keyword}{const}\ olxstr\&\ dt,}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ expression\_tree*\ l,\ expression\_tree*\ r,}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ evaluator<expression\_tree>*\ e)}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ :\ data(dt),\ parent(p),\ left(l),\ right(r),\ evator(e),}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ priority(false),\ macro\_call(false)}
+\DoxyCodeLine{00197\ \ \ \ \ \{\}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \textcolor{comment}{//........................................................................}}
+\DoxyCodeLine{00199\ \ \ \ \ expression\_tree(expression\_tree*\ p,\ \textcolor{keyword}{const}\ olxstr\&\ dt)}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ :\ data(dt),\ parent(p),\ left(NULL),\ right(NULL),\ evator(NULL),}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ priority(false),\ macro\_call(false)}
+\DoxyCodeLine{00202\ \ \ \ \ \{\}}
+\DoxyCodeLine{00203\ \ \ \ \ \ \textcolor{comment}{//........................................................................}}
+\DoxyCodeLine{00204\ \ \ \ \ \string~expression\_tree()\ \ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ left\ !=\ NULL\ )\ \ \textcolor{keyword}{delete}\ left;}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ right\ !=\ NULL\ )\ \ \textcolor{keyword}{delete}\ right;}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ evator\ !=\ NULL\ )\ \ \textcolor{keyword}{delete}\ evator;}
+\DoxyCodeLine{00208\ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordtype}{void}\ expand(\textcolor{keyword}{const}\ parser\_util::operator\_set\ \&os);}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{comment}{/*this\ is\ for\ the\ expansion\ of\ the\ command\ lines\ rather\ than\ of\ the}}
+\DoxyCodeLine{00211\ \textcolor{comment}{\ \ \ \ generic\ expressions\ -\/\ in\ this\ case\ no\ control\ chars\ are\ treated}}
+\DoxyCodeLine{00212\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keywordtype}{void}\ expand\_cmd();}
+\DoxyCodeLine{00214\ \ \ \ \ olxstr\_buf\ ToStringBuffer()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00215\ \ \ \};}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{struct\ }expression\_parser\ \ \{}
+\DoxyCodeLine{00218\ \ \ \ \ expression\_tree*\ root;}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keywordtype}{void}\ expand()\ \ \{\ \ root-\/>expand(parser\_util::operator\_set());\ \ \}}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordtype}{void}\ expand(\textcolor{keyword}{const}\ parser\_util::operator\_set\ \&os)\ \ \{\ \ root-\/>expand(os);\ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ expression\_parser(\textcolor{keyword}{const}\ olxstr\&\ exp)\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ root\ =\ \textcolor{keyword}{new}\ expression\_tree(NULL,\ exp);}
+\DoxyCodeLine{00223\ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \string~expression\_parser()\ \ \{\ \ \textcolor{keyword}{delete}\ root;\ \ \}}
+\DoxyCodeLine{00225\ \ \ \};}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \}\ \ \textcolor{comment}{//\ end\ namespace\ exparse}}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ EndEsdlNamespace()}
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

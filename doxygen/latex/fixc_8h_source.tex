@@ -1,0 +1,78 @@
+\doxysection{fixc.\+h}
+\hypertarget{fixc_8h_source}{}\label{fixc_8h_source}\index{gxlib/modes/fixc.h@{gxlib/modes/fixc.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_FIXC\_MODE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_FIXC\_MODE\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }TFixCMode\ :\ \textcolor{keyword}{public}\ AModeWithLabels\ \{}
+\DoxyCodeLine{00014\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HasInstance;}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{class\ }TFixCModeUndo\ :\ \textcolor{keyword}{public}\ TUndoData\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ Atom;}
+\DoxyCodeLine{00018\ \ \ \ \ \mbox{\hyperlink{structXVarReference}{XVarReference}}*\ Vars[3];}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ LabelIndex;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ TFixCModeUndo(\mbox{\hyperlink{classTXAtom}{TXAtom}}*\ XA)}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ :\ TUndoData(}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTUndoActionImplMF}{TUndoActionImplMF<TFixCModeUndo>}}(\textcolor{keyword}{this},\ \&TFixCModeUndo::undo)),}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ Atom(XA-\/>CAtom()),\ LabelIndex(XA-\/>GetOwnerId())}
+\DoxyCodeLine{00025\ \ \ \ \ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm\ =\ *Atom.GetParent()-\/>GetRefMod();}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ Vars[i]\ =\ rm.Vars.ReleaseRef(Atom,\ catom\_var\_name\_X\ +\ i);}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \string~TFixCModeUndo()\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Vars[i]\ !=\ NULL)}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ Vars[i];}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ undo(TUndoData*\ data)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TFixCMode::HasInstance)}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ TGXApp::GetInstance().MarkLabel(LabelIndex,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm\ =\ *Atom.GetParent()-\/>GetRefMod();}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ rm.Vars.RestoreRef(Atom,\ catom\_var\_name\_X\ +\ i,\ Vars[i]);}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ Vars[i]\ =\ NULL;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \};}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#ifdef\ \_\_BORLANDC\_\_}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTFixCMode_1_1TFixCModeUndo}{TFixCModeUndo}};}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ \ \ TFixCMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ AModeWithLabels(id)\ \{\ HasInstance\ =\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ olex2.processMacro(\textcolor{stringliteral}{"{}labels\ -\/f"{}});}
+\DoxyCodeLine{00052\ \ \ \ \ SetUserCursor(\textcolor{stringliteral}{"{}XYZ"{}},\ \textcolor{stringliteral}{"{}fix"{}});}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \string~TFixCMode()\ \{\ HasInstance\ =\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ Finalise\_()\ \{\}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(AGDrawObject\ \&obj)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{if}\ (obj.Is<TXAtom>())\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ TXAtom\&\ XA\ =\ (TXAtom\&)obj;}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ gxapp.GetUndo().Push(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTFixCMode_1_1TFixCModeUndo}{TFixCModeUndo}}(\&XA));}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ RefinementModel\&\ rm\ =\ *XA.CAtom().GetParent()-\/>GetRefMod();}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ rm.Vars.FixParam(XA.CAtom(),\ catom\_var\_name\_X\ +\ i);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ gxapp.MarkLabel(XA,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,203 @@
+\doxysection{match.\+h}
+\hypertarget{match_8h_source}{}\label{match_8h_source}\index{gxlib/modes/match.h@{gxlib/modes/match.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_MATCH\_MODE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_MATCH\_MODE\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}glconsole.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }TMatchMode\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAMode}{AMode}}\ \ \{}
+\DoxyCodeLine{00015\ \ \ TXAtomPList\ AtomsToMatch;}
+\DoxyCodeLine{00016\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ TransformAtoms(TSAtomPList\&\ atoms,\ \textcolor{keyword}{const}\ mat3d\&\ rm,\ \textcolor{keyword}{const}\ vec3d\&\ origin)\ \ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ atoms.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ atoms[i]-\/>crd()\ =\ (rm*atoms[i]-\/>crd())\ -\/\ origin;}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ atoms[i]-\/>GetEllipsoid()\ !=\ NULL\ )}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ atoms[i]-\/>GetEllipsoid()-\/>Mult(rm);}
+\DoxyCodeLine{00022\ \ \ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ TMatchMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ \mbox{\hyperlink{classAMode}{AMode}}(\textcolor{keywordtype}{id})\ \ \{\}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ AtomsToMatch.Clear();}
+\DoxyCodeLine{00028\ \ \ \ \ SetUserCursor(0,\ \textcolor{stringliteral}{"{}<M>"{}});}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00030\ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ Finalise\_()\ \ \{\}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ obj)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{if}\ (obj.Is<\mbox{\hyperlink{classTXAtom}{TXAtom}}>()\ \&\&\ AtomsToMatch.Count()\ <\ 7)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!AtomsToMatch.AddUnique((\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)obj))\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ FitAtoms(AtomsToMatch,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ SetUserCursor(AtomsToMatch.Count(),\ \textcolor{stringliteral}{"{}<M>"{}});}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ OnGraphicsDestroy()\ \ \{}
+\DoxyCodeLine{00044\ \ \ \ \ AtomsToMatch.Clear();}
+\DoxyCodeLine{00045\ \ \ \ \ SetUserCursor(0,\ \textcolor{stringliteral}{"{}<M>"{}});}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnKey\_(\textcolor{keywordtype}{int}\ keyId,\ \textcolor{keywordtype}{short}\ shiftState)\ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{if}(\ shiftState\ ==\ 0\ \&\&\ keyId\ ==\ OLX\_KEY\_ESCAPE\ )\ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AtomsToMatch.IsEmpty())\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ AtomsToMatch.Delete(AtomsToMatch.Count()-\/1);}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ SetUserCursor(AtomsToMatch.Count(),\ \textcolor{stringliteral}{"{}<M>"{}});}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ FitAtoms(TXAtomPList\&\ AtomsToMatch,\ \textcolor{keywordtype}{bool}\ group);}
+\DoxyCodeLine{00059\ \};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{keywordtype}{void}\ TMatchMode::FitAtoms(TXAtomPList\&\ AtomsToMatch,\ \textcolor{keywordtype}{bool}\ group)\ \{}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordflow}{if}\ ((AtomsToMatch.Count()\ \%\ 2)\ !=\ 0\ ||\ AtomsToMatch.Count()\ <\ 2)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \ \ TNetwork*\ netA\ =\ NULL,\ *netB\ =\ NULL;}
+\DoxyCodeLine{00066\ \ \ TSAtomPList\ atomsA,\ atomsB;}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordflow}{if}\ (AtomsToMatch.Count()\ >=\ 2)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ netA\ =\ \&AtomsToMatch[0]-\/>GetNetwork();}
+\DoxyCodeLine{00069\ \ \ \ \ netB\ =\ \&AtomsToMatch[1]-\/>GetNetwork();}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{if}\ (netA-\/>GetLattice()\ !=\ netB-\/>GetLattice())\ \{\ \ \textcolor{comment}{//match\ lattices}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ atomsB.SetCapacity(netB-\/>GetLattice().GetObjects().atoms.Count());}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ atomsB.AddAll(netB-\/>GetLattice().GetObjects().atoms);}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ atomsA.SetCapacity(netA-\/>GetLattice().GetObjects().atoms.Count());}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ atomsA.AddAll(netA-\/>GetLattice().GetObjects().atoms);}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ atomsB.SetCapacity(netB-\/>NodeCount());}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ netB-\/>NodeCount();\ i++)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ atomsB.Add(netB-\/>Node(i));}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ atomsA.SetCapacity(netA-\/>NodeCount());}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ netA-\/>NodeCount();\ i++)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ atomsA.Add(netA-\/>Node(i));}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordflow}{if}\ (netA\ ==\ netB)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ TBasicApp::NewLogEntry(logError)\ <<\ \textcolor{stringliteral}{"{}Atoms\ belong\ to\ the\ same\ fragment"{}};}
+\DoxyCodeLine{00089\ \ \ \ \ AtomsToMatch.Clear();}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordflow}{if}\ (\&netA-\/>GetLattice()\ ==\ \&netB-\/>GetLattice())\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 2;\ i\ <\ AtomsToMatch.Count();\ i\ +=\ 2)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AtomsToMatch[i]-\/>GetNetwork()\ !=\ netA\ ||}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ AtomsToMatch[i\ +\ 1]-\/>GetNetwork()\ !=\ netB)}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AtomsToMatch[i]-\/>GetNetwork()\ ==\ netB\ \&\&}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ AtomsToMatch[i\ +\ 1]-\/>GetNetwork()\ ==\ netA)}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ AtomsToMatch.Swap(i,\ i\ +\ 1);}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ AtomsToMatch.Clear();}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 2;\ i\ <\ AtomsToMatch.Count();\ i\ +=\ 2)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AtomsToMatch[i]-\/>GetNetwork().GetLattice()\ !=\ netA-\/>GetLattice()\ ||}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ AtomsToMatch[i\ +\ 1]-\/>GetNetwork().GetLattice()\ !=\ netB-\/>GetLattice())}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AtomsToMatch[i]-\/>GetNetwork().GetLattice()\ ==\ netB-\/>GetLattice()\ \&\&}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ AtomsToMatch[i\ +\ 1]-\/>GetNetwork().GetLattice()\ ==\ netA-\/>GetLattice())}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ AtomsToMatch.Swap(i,\ i\ +\ 1);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ AtomsToMatch.Clear();}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordflow}{if}\ (AtomsToMatch.Count()\ ==\ 2)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ vec3d\ shift(AtomsToMatch[1]-\/>crd()\ -\/\ AtomsToMatch[0]-\/>crd());}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atomsA.Count();\ i++)}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ atomsA[i]-\/>crd()\ +=\ shift;}
+\DoxyCodeLine{00131\ \ \ \ \ TNetPList\ na;}
+\DoxyCodeLine{00132\ \ \ \ \ TNetPList\ nb;}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{if}\ (netA-\/>GetLattice()\ !=\ netB-\/>GetLattice())\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ netA-\/>GetLattice().FragmentCount();\ i++)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ na.Add(netA-\/>GetLattice().GetFragment(i));}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ netB-\/>GetLattice().FragmentCount();\ i++)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ nb.Add(netB-\/>GetLattice().GetFragment(i));}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ na.Add(netA);}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ nb.Add(netB);}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordflow}{if}\ (group)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ TGXApp\ \&gxapp\ =\ TGXApp::GetInstance();}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ TGlGroup*\ ga\ =\ gxapp.GroupFragments(na,\ \textcolor{stringliteral}{"{}FragmentA"{}});}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ TGlGroup*\ gb\ =\ gxapp.GroupFragments(nb,\ \textcolor{stringliteral}{"{}FragmentB"{}});}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ gxapp.SelectAll(\textcolor{keyword}{false});}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ga\ !=\ 0\ \&\&\ ga-\/>IsDefaultColor())\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ ga-\/>SetGlM(TGlMaterial(\textcolor{stringliteral}{"{}85;0.000,1.000,0.000,0.000;4144959;1.000,1.000,1.000,0.500;36"{}}));}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (gb\ !=\ 0\ \&\&\ gb-\/>IsDefaultColor())\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ gb-\/>SetGlM(TGlMaterial(\textcolor{stringliteral}{"{}85;1.000,0.000,0.000,0.000;4144959;1.000,1.000,1.000,0.500;36"{}}));}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (AtomsToMatch.Count()\ ==\ 4)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ vec3d\ orgn\ =\ AtomsToMatch[1]-\/>crd();}
+\DoxyCodeLine{00160\ \ \ \ \ vec3d\ vec1\ =\ AtomsToMatch[3]-\/>crd()\ -\/\ orgn;}
+\DoxyCodeLine{00161\ \ \ \ \ vec3d\ vec2\ =\ AtomsToMatch[2]-\/>crd()\ -\/\ orgn;}
+\DoxyCodeLine{00162\ \ \ \ \ vec3d\ rv\ =\ vec1.XProdVec(vec2).Normalise();}
+\DoxyCodeLine{00163\ \ \ \ \ mat3d\ rm\ =\ mat3d::CreateRotationMatrix(rv,\ vec1.CAngle(vec2));}
+\DoxyCodeLine{00164\ \ \ \ \ TransformAtoms(atomsA,\ rm,\ rm*AtomsToMatch[0]-\/>crd()\ -\/\ orgn);}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (AtomsToMatch.Count()\ ==\ 6)\ \{}
+\DoxyCodeLine{00167\ \ \ \ \ vec3d\ rv((AtomsToMatch[1]-\/>crd()\ -\/\ AtomsToMatch[3]-\/>crd()).Normalise());}
+\DoxyCodeLine{00168\ \ \ \ \ vec3d\ v1((AtomsToMatch[5]-\/>crd()\ -\/\ AtomsToMatch[3]-\/>crd()));}
+\DoxyCodeLine{00169\ \ \ \ \ vec3d\ v2((AtomsToMatch[4]-\/>crd()\ -\/\ AtomsToMatch[3]-\/>crd()));}
+\DoxyCodeLine{00170\ \ \ \ \ v1\ =\ rv.NormalThrough(v1);}
+\DoxyCodeLine{00171\ \ \ \ \ v2\ =\ rv.NormalThrough(v2);}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{comment}{//\ replacing\ the\ rotation\ vector\ for\ the\ one\ with\ correct\ orientation}}
+\DoxyCodeLine{00173\ \ \ \ \ rv\ =\ v1.XProdVec(v2).Normalise();}
+\DoxyCodeLine{00174\ \ \ \ \ mat3d\ rm\ =\ mat3d::CreateRotationMatrix(rv,\ v1.CAngle(v2));}
+\DoxyCodeLine{00175\ \ \ \ \ TransformAtoms(atomsA,\ rm,\ rm*AtomsToMatch[0]-\/>crd()\ -\/\ AtomsToMatch[1]-\/>crd());}
+\DoxyCodeLine{00176\ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ TArrayList<olx\_pair\_t<TSAtom*,\ TSAtom*>\ >\ atoms(AtomsToMatch.Count()\ /\ 2);}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ AtomsToMatch.Count();\ i\ +=\ 2)\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ atoms[i\ /\ 2].a\ =\ AtomsToMatch[i];}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ atoms[i\ /\ 2].b\ =\ AtomsToMatch[i\ +\ 1];}
+\DoxyCodeLine{00182\ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \ \ align::out\ ao\ =\ TNetwork::GetAlignmentInfo(atoms,\ \textcolor{keyword}{false},\ TSAtom::weight\_z);}
+\DoxyCodeLine{00184\ \ \ \ \ mat3d\ m;}
+\DoxyCodeLine{00185\ \ \ \ \ QuaternionToMatrix(ao.quaternions[0],\ m);}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atomsA.Count();\ i++)\ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ atomsA[i]-\/>crd()\ =\ (atomsA[i]-\/>crd()\ -\/\ ao.center\_a)*m\ +\ ao.center\_b;}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atomsA[i]-\/>GetEllipsoid()\ !=\ 0)\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ atomsA[i]-\/>GetEllipsoid()-\/>Mult(m);}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{comment}{//TNetwork::DoAlignAtoms(atomsA,\ ao);}}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ \ \ TGXApp::GetInstance().UpdateBonds();}
+\DoxyCodeLine{00195\ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

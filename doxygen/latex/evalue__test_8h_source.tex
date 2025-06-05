@@ -1,0 +1,97 @@
+\doxysection{evalue\+\_\+test.\+h}
+\hypertarget{evalue__test_8h_source}{}\label{evalue__test_8h_source}\index{sdl/tests/evalue\_test.h@{sdl/tests/evalue\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}evalue.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtest_1_1EValueTestData}{EValueTestData}}\ \{}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{double}\ v,\ e;}
+\DoxyCodeLine{00015\ \ \ \ \ olxcstr\ res;}
+\DoxyCodeLine{00016\ \ \ \};}
+\DoxyCodeLine{00017\ \textcolor{keywordtype}{void}\ EValueTests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00018\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{structtest_1_1EValueTestData}{EValueTestData}}\ data[]\ =\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ 100,\ 10,\ \textcolor{stringliteral}{"{}100(10)"{}},}
+\DoxyCodeLine{00021\ \ \ \ \ -\/100,\ 10,\ \textcolor{stringliteral}{"{}-\/100(10)"{}},}
+\DoxyCodeLine{00022\ \ \ \ \ 100,\ 50,\ \textcolor{stringliteral}{"{}100(50)"{}},}
+\DoxyCodeLine{00023\ \ \ \ \ -\/100,\ 50,\ \textcolor{stringliteral}{"{}-\/100(50)"{}},}
+\DoxyCodeLine{00024\ \ \ \ \ 100,\ 0.1,\ \textcolor{stringliteral}{"{}100.0(1)"{}},}
+\DoxyCodeLine{00025\ \ \ \ \ -\/100,\ 0.1,\ \textcolor{stringliteral}{"{}-\/100.0(1)"{}},}
+\DoxyCodeLine{00026\ \ \ \ \ 100,\ 0.01,\ \textcolor{stringliteral}{"{}100.00(1)"{}},}
+\DoxyCodeLine{00027\ \ \ \ \ -\/100,\ 0.01,\ \textcolor{stringliteral}{"{}-\/100.00(1)"{}},}
+\DoxyCodeLine{00028\ \ \ \ \ 100,\ 1,\ \textcolor{stringliteral}{"{}100.0(10)"{}},}
+\DoxyCodeLine{00029\ \ \ \};}
+\DoxyCodeLine{00030\ \ \ EValueTestData\ fwd\_only\_data[]\ =\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ 100.01,\ 0.022,\ \textcolor{stringliteral}{"{}100.01(2)"{}},}
+\DoxyCodeLine{00032\ \ \ \ \ -\/100.01,\ 0.022,\ \textcolor{stringliteral}{"{}-\/100.01(2)"{}},}
+\DoxyCodeLine{00033\ \ \ \ \ -\/100.015,\ 0.025,\ \textcolor{stringliteral}{"{}-\/100.02(3)"{}},}
+\DoxyCodeLine{00034\ \ \ \};}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sz\ =\ \textcolor{keyword}{sizeof}(data)/\textcolor{keyword}{sizeof}(data[0]);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ sz;\ i++\ )\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ TEValue<double>\ ev(data[i].v,\ data[i].e);}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{if}\ (ev.ToCStr()\ !=\ data[i].res)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Expected:\ "{}})\ <<\ data[i].res\ <<\ \textcolor{stringliteral}{"{},\ got:\ "{}}\ <<\ ev.ToCStr());}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ ev\ =\ data[i].res;}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{if}\ (ev.GetV()\ !=\ data[i].v\ ||\ ev.GetE()\ !=\ data[i].e)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ fwd\_only\_sz\ =\ \textcolor{keyword}{sizeof}(fwd\_only\_data)/\textcolor{keyword}{sizeof}(fwd\_only\_data[0]);}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ fwd\_only\_sz;\ i++\ )\ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ TEValue<double>\ ev(fwd\_only\_data[i].v,\ fwd\_only\_data[i].e);}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (ev.ToCStr()\ !=\ fwd\_only\_data[i].res)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Expected:\ "{}})\ <<\ fwd\_only\_data[i].res\ <<\ \textcolor{stringliteral}{"{},\ got:\ "{}}\ <<\ ev.ToCStr());}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ TEValueD\ A,\ B,\ C,\ tst;}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{double}\ data1[][4]\ =\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \{\ 10,2,\ -\/3,\ 1\ \},}
+\DoxyCodeLine{00058\ \ \ \ \ \{\ -\/10,0.2,\ 3,\ 10\ \},}
+\DoxyCodeLine{00059\ \ \ \ \ \{\ 110,2,\ -\/3,\ 1\ \},}
+\DoxyCodeLine{00060\ \ \ \ \ \{\ 10,2,\ 3,\ 2\ \},}
+\DoxyCodeLine{00061\ \ \ \};}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sz1\ =\ \textcolor{keyword}{sizeof}(data1)\ /\ \textcolor{keyword}{sizeof}(data1[1]);}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sz1;\ i++)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ A\ =\ TEValueD(data1[i][0],\ data1[i][1]);}
+\DoxyCodeLine{00065\ \ \ \ \ B\ =\ TEValueD(data1[i][2],\ data1[i][3]);}
+\DoxyCodeLine{00066\ \ \ \ \ C\ =\ A*B;}
+\DoxyCodeLine{00067\ \ \ \ \ tst\ =\ TEValueD(A.V()*B.V(),\ olx\_abs(A.V()*B.V())\ *\ sqrt(olx\_sqr(A.E()\ /\ A.V())\ +\ olx\_sqr(B.E()\ /\ B.V())));}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{if}\ (!C.Equals(tst,\ 0.001))\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ C\ =\ A\ /\ B;}
+\DoxyCodeLine{00072\ \ \ \ \ tst\ =\ TEValueD(A.V()\ /\ B.V(),\ olx\_abs(A.V()\ /\ B.V())\ *\ sqrt(olx\_sqr(A.E()\ /\ A.V())\ +\ olx\_sqr(B.E()\ /\ B.V())));}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{if}\ (!C.Equals(tst,\ 0.001))\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ C\ =\ A\ +\ B;}
+\DoxyCodeLine{00078\ \ \ \ \ tst\ =\ TEValueD(A.V()\ +\ B.V(),\ sqrt(olx\_sqr(A.E())\ +\ olx\_sqr(B.E())));}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{if}\ (!C.Equals(tst,\ 0.001))\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ C\ =\ B\ -\/\ A;}
+\DoxyCodeLine{00084\ \ \ \ \ tst\ =\ TEValueD(B.V()\ -\/\ A.V(),\ sqrt(olx\_sqr(A.E())\ +\ olx\_sqr(B.E())));}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{if}\ (!C.Equals(tst,\ 0.001))\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ \}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00091\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

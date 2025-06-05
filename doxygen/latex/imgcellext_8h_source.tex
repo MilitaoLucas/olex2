@@ -1,0 +1,126 @@
+\doxysection{imgcellext.\+h}
+\hypertarget{imgcellext_8h_source}{}\label{imgcellext_8h_source}\index{olex/html/imgcellext.h@{olex/html/imgcellext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_image\_cell\_ext\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_image\_cell\_ext\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}emath.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}wx/wxhtml.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}wx/gifdecod.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}wx/timer.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}../ctrls/olxctrlbase.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }THtmlImageCell\ :\ \textcolor{keyword}{public}\ wxHtmlCell,\ \textcolor{keyword}{public}\ AOlxCtrl\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{struct\ }Rect\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{short}\ left,\ top,\ right,\ bottom;}
+\DoxyCodeLine{00022\ \ \ \ \ Rect(\textcolor{keywordtype}{short}\ l,\ \textcolor{keywordtype}{short}\ t,\ \textcolor{keywordtype}{short}\ r,\ \textcolor{keywordtype}{short}\ b)}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ :\ left(l),\ top(t),\ right(r),\ bottom(b)}
+\DoxyCodeLine{00024\ \ \ \ \ \{\}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsInside(\textcolor{keywordtype}{short}\ x,\ \textcolor{keywordtype}{short}\ y)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (x\ >=\ left\ \&\&\ x\ <=\ right\ \&\&\ y\ >=\ top\ \&\&\ y\ <=\ bottom);}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \};}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{struct\ }Circle\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{short}\ x,\ y;}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{float}\ qr;}
+\DoxyCodeLine{00032\ \ \ \ \ Circle(\textcolor{keywordtype}{short}\ \_x,\ \textcolor{keywordtype}{short}\ \_y,\ \textcolor{keywordtype}{float}\ \_r)}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ :\ x(\_x),\ y(\_y),\ qr(\_r*\ \_r)}
+\DoxyCodeLine{00034\ \ \ \ \ \{\}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsInside(\textcolor{keywordtype}{short}\ \_x,\ \textcolor{keywordtype}{short}\ \_y)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (olx\_sqr(\_x\ -\/\ x)\ +\ olx\_sqr(\_y\ -\/\ y)\ <=\ qr);}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \};}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{struct\ }AShapeInfo\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ wxHtmlLinkInfo*\ link;}
+\DoxyCodeLine{00041\ \ \ \ \ AShapeInfo(wxHtmlLinkInfo*\ lnk)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ :\ link(lnk)}
+\DoxyCodeLine{00043\ \ \ \ \ \{\}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~AShapeInfo()\ \{\ \textcolor{keyword}{delete}\ link;\ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsInside(\textcolor{keywordtype}{short}\ x,\ \textcolor{keywordtype}{short}\ y)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00046\ \ \ \};}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Shape>}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{struct\ }ShapeInfo\ :\ \textcolor{keyword}{public}\ AShapeInfo\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ Shape\ shape;}
+\DoxyCodeLine{00050\ \ \ \ \ ShapeInfo(\textcolor{keyword}{const}\ Shape\&\ \_shape,\ wxHtmlLinkInfo*\ lnk)}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ :\ AShapeInfo(lnk),\ shape(\_shape)}
+\DoxyCodeLine{00052\ \ \ \ \ \{\}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsInside(\textcolor{keywordtype}{short}\ x,\ \textcolor{keywordtype}{short}\ y)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ shape.IsInside(x,\ y);\ \}}
+\DoxyCodeLine{00054\ \ \ \};}
+\DoxyCodeLine{00055\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<AShapeInfo>}}\ Shapes;}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ Draw(wxDC\&\ dc,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y);}
+\DoxyCodeLine{00057\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00058\ \ \ THtmlImageCell(wxHtmlWindowInterface*\ windowIface,}
+\DoxyCodeLine{00059\ \ \ \ \ wxFSFile*\ input,\ \textcolor{keywordtype}{int}\ w\ =\ wxDefaultCoord,\ \textcolor{keywordtype}{int}\ h\ =\ wxDefaultCoord,}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{double}\ scale\ =\ 1.0,\ \textcolor{keywordtype}{int}\ align\ =\ wxHTML\_ALIGN\_BOTTOM,}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{const}\ wxString\&\ mapname\ =\ wxEmptyString,}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{bool}\ WidthInPercent\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{bool}\ HeightInPercent\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00064\ \ \ \string~THtmlImageCell();}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ Draw(wxDC\&\ dc,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ WXUNUSED(view\_y1),\ \textcolor{keywordtype}{int}\ WXUNUSED(view\_y2),}
+\DoxyCodeLine{00066\ \ \ \ \ wxHtmlRenderingInfo\&\ WXUNUSED(info))\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ Draw(dc,\ x,\ y);}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{virtual}\ wxHtmlLinkInfo*\ GetLink(\textcolor{keywordtype}{int}\ x\ =\ 0,\ \textcolor{keywordtype}{int}\ y\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00070\ \ \ wxHtmlWindowInterface*\ GetWindowInterface()\ \{\ \textcolor{keywordflow}{return}\ m\_windowIface;\ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{const}\ wxHtmlWindowInterface*\ GetWindowInterface()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_windowIface;\ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{void}\ SetImage(\textcolor{keyword}{const}\ wxImage\&\ img);}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ AddRect(\textcolor{keywordtype}{short}\ l,\ \textcolor{keywordtype}{short}\ t,\ \textcolor{keywordtype}{short}\ r,\ \textcolor{keywordtype}{short}\ b,\ \textcolor{keyword}{const}\ wxString\&\ href,\ \textcolor{keyword}{const}\ wxString\&\ target)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ Shapes.Add(\textcolor{keyword}{new}\ ShapeInfo<Rect>(Rect(l,\ t,\ r,\ b),\ \textcolor{keyword}{new}\ wxHtmlLinkInfo(href,\ target)));}
+\DoxyCodeLine{00075\ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{void}\ AddCircle(\textcolor{keywordtype}{short}\ x,\ \textcolor{keywordtype}{short}\ y,\ \textcolor{keywordtype}{float}\ r,\ \textcolor{keyword}{const}\ wxString\&\ href,\ \textcolor{keyword}{const}\ wxString\&\ target)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ Shapes.Add(\textcolor{keyword}{new}\ ShapeInfo<Circle>(Circle(x,\ y,\ r),\ \textcolor{keyword}{new}\ wxHtmlLinkInfo(href,\ target)));}
+\DoxyCodeLine{00078\ \ \ \}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#if\ wxUSE\_GIF\ \&\&\ wxUSE\_TIMER}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ AdvanceAnimation(wxTimer*\ timer);}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Layout(\textcolor{keywordtype}{int}\ w);}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ SetText(\textcolor{keyword}{const}\ wxString\&\ text)\ \{\ Text\ =\ text;\ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{const}\ wxString\&\ GetText()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Text;\ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordtype}{void}\ SetSource(\textcolor{keyword}{const}\ olxstr\&\ text)\ \{\ FSource\ =\ text;\ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetSource()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ FSource;\ \}}
+\DoxyCodeLine{00088\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00089\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<wxBitmap>}}\ m\_bitmap;}
+\DoxyCodeLine{00090\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<wxFSFile>}}\ File;}
+\DoxyCodeLine{00091\ \ \ wxString\ Text;}
+\DoxyCodeLine{00092\ \ \ olxstr\ FSource;}
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordtype}{int}\ m\_bmpW,\ m\_bmpH;}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{bool}\ m\_showFrame\ :\ 1;}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{bool}\ WidthInPercent,\ HeightInPercent;}
+\DoxyCodeLine{00096\ \ \ wxHtmlWindowInterface*\ m\_windowIface;}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#if\ wxUSE\_GIF\ \&\&\ wxUSE\_TIMER}}
+\DoxyCodeLine{00098\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<wxGIFDecoder>}}\ m\_gifDecoder;}
+\DoxyCodeLine{00099\ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<class\ TGIFTimer>}}\ m\_gifTimer;}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{int}\ m\_physX,\ m\_physY;}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{size\_t}\ m\_nCurrFrame;}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{double}\ m\_scale;}
+\DoxyCodeLine{00104\ \ \ wxString\ m\_mapName;}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ DECLARE\_NO\_COPY\_CLASS(THtmlImageCell)}
+\DoxyCodeLine{00107\ \};}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#if\ wxUSE\_GIF\ \&\&\ wxUSE\_TIMER}}
+\DoxyCodeLine{00110\ \textcolor{keyword}{class\ }TGIFTimer\ :\ \textcolor{keyword}{public}\ wxTimer\ \{}
+\DoxyCodeLine{00111\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00112\ \ \ TGIFTimer(\mbox{\hyperlink{classTHtmlImageCell}{THtmlImageCell}}*\ cell);}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Notify();}
+\DoxyCodeLine{00114\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00115\ \ \ \mbox{\hyperlink{classTHtmlImageCell}{THtmlImageCell}}*\ m\_cell;}
+\DoxyCodeLine{00116\ \ \ DECLARE\_NO\_COPY\_CLASS(TGIFTimer)}
+\DoxyCodeLine{00117\ \};}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

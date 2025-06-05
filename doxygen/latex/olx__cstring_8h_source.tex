@@ -1,0 +1,267 @@
+\doxysection{olx\+\_\+cstring.\+h}
+\hypertarget{olx__cstring_8h_source}{}\label{olx__cstring_8h_source}\index{sdl/smart/olx\_cstring.h@{sdl/smart/olx\_cstring.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_cstr\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_cstr\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#ifdef\ \_\_BORLANDC\_\_}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \#include\ <mem.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}../ebase.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}../linked\_operators.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}../type\_splitter.h"{}}}
+\DoxyCodeLine{00023\ BeginEsdlNamespace()}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{comment}{/*\ this\ class\ uses\ reference\ counting\ to\ reduce\ number\ of\ memory\ reallocations*/}}
+\DoxyCodeLine{00026\ class\ TCString\ :\ public\ \mbox{\hyperlink{classTTIString}{TTIString}}<\textcolor{keywordtype}{char}>,\ public\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTTIString}{TTIString<char>}}\ parent\_t;}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{class\ }CharW\ :\ \textcolor{keyword}{public}\ linked\_operators<char,\ CharW,\ wchar\_t>\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Index;}
+\DoxyCodeLine{00031\ \ \ \ \ TCString*\ Instance;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ \ \ \ \ CharW(\textcolor{keywordtype}{size\_t}\ index,\ TCString*\ inst)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ Index\ =\ index;}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ Instance\ =\ inst;}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ GetValue()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Instance-\/>CharAt(Index);\ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetValue(\textcolor{keywordtype}{char}\ v)\ \{\ Instance-\/>Set(Index,\ v);\ \}}
+\DoxyCodeLine{00039\ \ \ \ \ CharW\&\ operator\ =\ (\textcolor{keywordtype}{char}\ v)\ \{\ Instance-\/>Set(Index,\ v);\ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00040\ \ \ \ \ CharW\&\ operator\ =\ (\textcolor{keyword}{const}\ CharW\&\ v)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ Instance-\/>Set(Index,\ v.GetValue());}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \};}
+\DoxyCodeLine{00045\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00046\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00047\ \ \ TCString\&\ AssignWCharStr(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ str,\ \textcolor{keywordtype}{size\_t}\ len\ =\ \string~0);}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{inline}\ TCString\&\ writeType(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ T\ v)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{structolx__array__ptr}{olx\_array\_ptr<char>}}\ bf(80);}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#if\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{00052\ \ \ \ \ sprintf\_s(bf,\ 80,\ format,\ v);}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00054\ \ \ \ \ sprintf(bf,\ format,\ v);}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ len\ =\ strlen(bf);}
+\DoxyCodeLine{00057\ \ \ \ \ checkBufferForModification(\_Length\ +\ len);}
+\DoxyCodeLine{00058\ \ \ \ \ olx\_memcpy(\&SData-\/>Data[\_Length],\ bf,\ len);}
+\DoxyCodeLine{00059\ \ \ \ \ \_Length\ +=\ len;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#if\ !defined(\_UNICODE)}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setObjValue(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\&\ v)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ Assign(v.ToString());}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{struct\ }t\_constructor\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ TCString\&\ str;}
+\DoxyCodeLine{00069\ \ \ \ \ t\_constructor(TCString\&\ str)}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ :\ str(str)}
+\DoxyCodeLine{00071\ \ \ \ \ \{\}}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ type\_t>}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ p\_functor(\textcolor{keyword}{const}\ type\_t\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ str.setTypeValue(printFormat(v),\ v);}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ type\_t>}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{void}\ c\_functor(\textcolor{keyword}{const}\ type\_t\&\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ str.setObjValue(v);}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \};}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setTypeValue(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ T\ v)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \_Start\ =\ 0;}
+\DoxyCodeLine{00085\ \ \ \ \ \_Increment\ =\ 8;}
+\DoxyCodeLine{00086\ \ \ \ \ \mbox{\hyperlink{structolx__array__ptr}{olx\_array\_ptr<char>}}\ bf(80);}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#if\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{00088\ \ \ \ \ sprintf\_s(*bf,\ 80,\ format,\ v);}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00090\ \ \ \ \ sprintf(*bf,\ format,\ v);}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00092\ \ \ \ \ \_Length\ =\ strlen(bf);}
+\DoxyCodeLine{00093\ \ \ \ \ SData\ =\ \textcolor{keyword}{new}\ Buffer(\_Length\ +\ \_Increment,\ bf,\ \_Length);}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{//..............................................................................}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{inline}\ TCString\&\ assignTypeValue(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ T\ v)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \mbox{\hyperlink{structolx__array__ptr}{olx\_array\_ptr<char>}}\ bf(80);}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#if\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{00099\ \ \ \ \ sprintf\_s(*bf,\ 80,\ format,\ v);}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00101\ \ \ \ \ sprintf(*bf,\ format,\ v);}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00103\ \ \ \ \ \_Start\ =\ 0;}
+\DoxyCodeLine{00104\ \ \ \ \ \_Increment\ =\ 8;}
+\DoxyCodeLine{00105\ \ \ \ \ \_Length\ =\ strlen(bf);}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{if}\ (SData\ !=\ 0)\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (SData-\/>RefCnt\ ==\ 1)\ \{\ \textcolor{comment}{//\ owed\ by\ this\ object}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ SData-\/>SetCapacity(\_Length);}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ olx\_memcpy(SData-\/>Data,\ bf,\ \_Length);}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ SData-\/>RefCnt-\/-\/;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ SData\ =\ 0;}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{if}\ (SData\ ==\ 0)\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ SData\ =\ \textcolor{keyword}{new}\ Buffer(\_Length\ +\ \_Increment,\ bf,\ \_Length);}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00120\ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keywordtype}{bool}\ utf8;}
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordtype}{void}\ OnCopy(\textcolor{keyword}{const}\ TCString\&\ cstr);}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{void}\ init(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ wstr,\ \textcolor{keywordtype}{size\_t}\ l=InvalidIndex);}
+\DoxyCodeLine{00124\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00125\ \ \ TCString();}
+\DoxyCodeLine{00126\ \ \ TCString(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ wstr);}
+\DoxyCodeLine{00127\ \ \ \textcolor{comment}{//..........................................................................................}}
+\DoxyCodeLine{00128\ \ \ TCString(\textcolor{keyword}{const}\ \textcolor{keyword}{class}\ TWString\&\ astr);}
+\DoxyCodeLine{00129\ \ \ \textcolor{comment}{//..........................................................................................}}
+\DoxyCodeLine{00130\ \ \ TCString(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\&\ v);}
+\DoxyCodeLine{00131\ \ \ TCString(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTIString}{TTIString<wchar\_t>}}\&\ wstr);}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ TCString(\textcolor{keyword}{const}\ T\&\ v)\ \{}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#if\ !defined(\_UNICODE)}}
+\DoxyCodeLine{00134\ \ \ \ \ primitive\_type\_splitter::make(t\_constructor(*\textcolor{keyword}{this})).call(v);}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00136\ \ \ \ \ setTypeValue(printFormat(v),\ v);}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \textcolor{comment}{//\ float\ numbers\ need\ trimming\ of\ the\ 0000}}
+\DoxyCodeLine{00140\ \ \ TCString(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\&\ v)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ setTypeValue(printFormat(v),\ v);}
+\DoxyCodeLine{00142\ \ \ \ \ parent\_t::TrimFloat();}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \ \ TCString(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ v)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ setTypeValue(printFormat(v),\ v);}
+\DoxyCodeLine{00146\ \ \ \ \ parent\_t::TrimFloat();}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{virtual}\ \string~TCString()\ \{\}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ TCString\&\ operator\ <<\ (\textcolor{keyword}{const}\ CharW\&\ v);}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ TCString\&\ operator\ <<\ (\textcolor{keyword}{const}\ T\&\ v)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ writeType(printFormat(v),\ v);}
+\DoxyCodeLine{00153\ \ \ \}}
+\DoxyCodeLine{00154\ \ \ TCString\&\ operator\ <<\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\&\ v)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ l\ =\ \_Length;}
+\DoxyCodeLine{00156\ \ \ \ \ writeType(printFormat(v),\ v);}
+\DoxyCodeLine{00157\ \ \ \ \ parent\_t::TrimFloat(l);}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00159\ \ \ \}}
+\DoxyCodeLine{00160\ \ \ TCString\&\ operator\ <<\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ v)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ l\ =\ \_Length;}
+\DoxyCodeLine{00162\ \ \ \ \ writeType(printFormat(v),\ v);}
+\DoxyCodeLine{00163\ \ \ \ \ parent\_t::TrimFloat(l);}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{comment}{/*\ there\ is\ just\ no\ way\ with\ borland\ to\ put\ it\ TTIString\ as\ it\ would\ swear\ about}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ \ \ \ [C++\ Error]\ olx\_istring.h(112):\ E2034\ Cannot\ convert\ 'const\ wchar\_t\ *'\ to\ 'const\ char\ *'\ */}}
+\DoxyCodeLine{00168\ \ \ TCString\&\ Append(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ checkBufferForModification(\_Length\ +\ len);}
+\DoxyCodeLine{00170\ \ \ \ \ olx\_memcpy(\&SData-\/>Data[\_Start\ +\ \_Length],\ data,\ len);}
+\DoxyCodeLine{00171\ \ \ \ \ \_Length\ +=\ len;}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00173\ \ \ \}}
+\DoxyCodeLine{00174\ \ \ TCString\&\ Append(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ data,\ \textcolor{keywordtype}{size\_t}\ len)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ checkBufferForModification(\_Length\ +\ len);}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ len;\ i++)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ SData-\/>Data[\_Start\ +\ \_Length\ +\ i]\ =\ (char)data[i];}
+\DoxyCodeLine{00178\ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \_Length\ +=\ len;}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00181\ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \textcolor{comment}{//..........................................................................................}}
+\DoxyCodeLine{00183\ \ \ TCString\&\ operator\ =\ (\textcolor{keyword}{const}\ TWString\&\ astr);\ \ \textcolor{comment}{//\ cannot\ make\ it\ inline\ -\/\ forward\ reference}}
+\DoxyCodeLine{00184\ \ \ TCString\&\ operator\ =\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ v)\ \{\ \textcolor{keywordflow}{return}\ AssignWCharStr(v);\ \}}
+\DoxyCodeLine{00185\ \ \ TCString\&\ operator\ =\ (\textcolor{keywordtype}{wchar\_t}*\ \textcolor{keyword}{const}\&\ v)\ \{\ \textcolor{keywordflow}{return}\ AssignWCharStr(v);\ \}}
+\DoxyCodeLine{00186\ \ \ \textcolor{comment}{//..........................................................................................}}
+\DoxyCodeLine{00187\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{inline}\ TCString\&\ operator\ =\ (\textcolor{keyword}{const}\ T\&\ v)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{return}\ assignTypeValue(printFormat(v),\ v);}
+\DoxyCodeLine{00189\ \ \ \}}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{inline}\ TCString\&\ operator\ =\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\&\ v)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ assignTypeValue(printFormat(v),\ v);}
+\DoxyCodeLine{00192\ \ \ \ \ parent\_t::TrimFloat();}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00194\ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{inline}\ TCString\&\ operator\ =\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ v)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ assignTypeValue(printFormat(v),\ v);}
+\DoxyCodeLine{00197\ \ \ \ \ parent\_t::TrimFloat();}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00199\ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \textcolor{comment}{//..........................................................................................}}
+\DoxyCodeLine{00201\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{char}*\ Data()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ((SData\ ==\ 0)\ ?\ 0\ :\ \&SData-\/>Data[\_Start]);\ \}}
+\DoxyCodeLine{00203\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00204\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ wc\_str()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00205\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ u\_str()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ((SData\ ==\ 0)\ ?\ \textcolor{stringliteral}{"{}"{}}\ :\ TTIString<char>::u\_str());\ \}}
+\DoxyCodeLine{00206\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ c\_str()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ u\_str();\ \}}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{inline}\ CharW\ operator[]\ (\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00208\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >=\ \_Length)}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ TExceptionBase::ThrowIndexOutOfRange(\_\_POlxSourceInfo,\ i,\ 0,\ \_Length);}
+\DoxyCodeLine{00211\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{return}\ CharW(i,\ \textcolor{keyword}{this});}
+\DoxyCodeLine{00213\ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \textcolor{comment}{//\ very\ bizzare\ compilation\ errors\ occur\ if\ it\ is\ not\ redefined\ here}}
+\DoxyCodeLine{00215\ \ \ \textcolor{keywordtype}{char}\ operator[]\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00216\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >=\ \_Length)}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ TExceptionBase::ThrowIndexOutOfRange(\_\_POlxSourceInfo,\ i,\ 0,\ \_Length);}
+\DoxyCodeLine{00219\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{return}\ SData-\/>Data[\_Start\ +\ i];}
+\DoxyCodeLine{00221\ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{char}\ v)\ \{}
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >=\ \_Length)}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ TExceptionBase::ThrowIndexOutOfRange(\_\_POlxSourceInfo,\ i,\ 0,\ \_Length);}
+\DoxyCodeLine{00226\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00227\ \ \ \ \ checkBufferForModification(\_Length);}
+\DoxyCodeLine{00228\ \ \ \ \ SData-\/>Data[\_Start\ +\ i]\ =\ v;}
+\DoxyCodeLine{00229\ \ \ \}}
+\DoxyCodeLine{00230\ \ \ \textcolor{keywordtype}{bool}\ IsUTF8()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordflow}{return}\ utf8;}
+\DoxyCodeLine{00232\ \ \ \}}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{void}\ SetUTF8(\textcolor{keywordtype}{bool}\ v)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ utf8\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00235\ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \textcolor{comment}{//............................................................................}}
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{virtual}\ TIString\ ToString()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00238\ \ \ \textcolor{comment}{//............................................................................}}
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{char})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%c"{}};\ \}}
+\DoxyCodeLine{00240\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{wchar\_t})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%lc"{}};\ \}}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{short}\ \textcolor{keywordtype}{int})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%hd"{}};\ \}}
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ \textcolor{keywordtype}{int})\ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%hu"{}};\ \}}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{int})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%d"{}};\ \}}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int})\ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%u"{}};\ \}}
+\DoxyCodeLine{00245\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%ld"{}};\ \}}
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%lu"{}};\ \}}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%lld"{}};\ \}}
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%llu"{}};\ \}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{float})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%f"{}};\ \}}
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{double})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%lf"{}};\ \}}
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keywordtype}{long}\ \textcolor{keywordtype}{double})\ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%Lf"{}};\ \}}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#if\ !defined(\_UNICODE)}}
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ need\ this\ for\ compilation}}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormat(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\&)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\%X"{}};\ \}}
+\DoxyCodeLine{00255\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00256\ \};}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \textcolor{preprocessor}{\#include\ "{}strbuf.h"{}}}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ EndEsdlNamespace()}
+\DoxyCodeLine{00261\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

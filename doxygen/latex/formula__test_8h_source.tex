@@ -1,0 +1,81 @@
+\doxysection{formula\+\_\+test.\+h}
+\hypertarget{formula__test_8h_source}{}\label{formula__test_8h_source}\index{xlib/tests/formula\_test.h@{xlib/tests/formula\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../chemdata.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keywordtype}{void}\ FormulaParseTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00015\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00016\ \ \ TStrList\ s\_toks;}
+\DoxyCodeLine{00017\ \ \ TDoubleList\ n\_toks;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ itr=0;\ itr\ <=\ 4;\ itr++)\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordflow}{if}\ (itr\ ==\ 0)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ s\_toks\ <<\ \textcolor{stringliteral}{"{}Pb"{}}\ <<\ \textcolor{stringliteral}{"{}Co"{}}\ <<\ \textcolor{stringliteral}{"{}O2"{}};}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ n\_toks\ <<\ 1\ <<\ 1\ <<\ 2;}
+\DoxyCodeLine{00022\ \ \ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (itr\ ==\ 1)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ s\_toks.Clear();}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ n\_toks.Clear();}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ s\_toks\ <<\ \textcolor{stringliteral}{"{}P"{}}\ <<\ \textcolor{stringliteral}{"{}B"{}}\ <<\ \textcolor{stringliteral}{"{}C"{}}\ <<\ \textcolor{stringliteral}{"{}OO2"{}};}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ n\_toks\ <<\ 1\ <<\ 1\ <<\ 1\ <<\ 3;}
+\DoxyCodeLine{00028\ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (itr\ ==\ 2)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ s\_toks.Clear();}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ n\_toks.Clear();}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ s\_toks\ <<\ \textcolor{stringliteral}{"{}P"{}}\ <<\ \textcolor{stringliteral}{"{}B1"{}}\ <<\ \textcolor{stringliteral}{"{}C"{}}\ <<\ \textcolor{stringliteral}{"{}O1OO2"{}};}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ n\_toks\ <<\ 1\ <<\ 1\ <<\ 1\ <<\ 4;}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (itr\ ==\ 3)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ s\_toks.Clear();}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ n\_toks.Clear();}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ s\_toks\ <<\ \textcolor{stringliteral}{"{}P1"{}}\ <<\ \textcolor{stringliteral}{"{}B1"{}}\ <<\ \textcolor{stringliteral}{"{}C"{}}\ <<\ \textcolor{stringliteral}{"{}O1OO2"{}};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ n\_toks\ <<\ 1\ <<\ 1\ <<\ 1\ <<\ 4;}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (itr\ ==\ 4)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ s\_toks.Clear();}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ n\_toks.Clear();}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ s\_toks\ <<\ \textcolor{stringliteral}{"{}P"{}}\ <<\ \textcolor{stringliteral}{"{}Br"{}}\ <<\ \textcolor{stringliteral}{"{}O3"{}};}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ n\_toks\ <<\ 1\ <<\ 1\ <<\ 3;}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00049\ \ \ \ \ ContentList\ cl\ =\ XElementLib::ParseElementString(s\_toks.Text(EmptyString()));}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (cl.Count()\ !=\ s\_toks.Count())\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Unexpected\ number\ of\ tokens:\ "{}})\ <<\ cl.Count()\ <<}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ vs\ expected\ "{}}\ <<\ s\_toks.Count());}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ cl.Count();\ i++)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!s\_toks[i].StartsFromi(cl[i].element-\/>symbol))\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Mismatching\ element\ type.\ Expected\ "{}}).quote()\ <<\ s\_toks[i]\ <<}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ got\ "{}}\ <<\ cl[i].element-\/>symbol);}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(cl[i].count-\/n\_toks[i])\ >\ 1e-\/3)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Mismatching\ element\ count.\ Expected\ "{}}).quote()\ <<\ n\_toks[i]\ <<}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ got\ "{}}\ <<\ cl[i].count);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00072\ \textcolor{keywordtype}{void}\ FormulaTests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00073\ \ \ t.Add(test::FormulaParseTest);}
+\DoxyCodeLine{00074\ \}}
+\DoxyCodeLine{00075\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

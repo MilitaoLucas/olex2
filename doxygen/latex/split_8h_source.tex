@@ -1,0 +1,208 @@
+\doxysection{split.\+h}
+\hypertarget{split_8h_source}{}\label{split_8h_source}\index{gxlib/modes/split.h@{gxlib/modes/split.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_SPLIT\_MODE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_SPLIT\_MODE\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{/*\ The\ mode\ is\ still\ available\ but\ has\ been\ superseeded\ by\ the\ mode\ fit}}
+\DoxyCodeLine{00014\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00017\ \ \ mode\_split\_Disassemble,}
+\DoxyCodeLine{00018\ \ \ mode\_split\_ObjectsCreate}
+\DoxyCodeLine{00019\ \};}
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }TSplitMode\ :\ \textcolor{keyword}{public}\ AEventsDispatcher,\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAMode}{AMode}}\ \{}
+\DoxyCodeLine{00021\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<olx\_pair\_t<TCAtom*,\ TCAtom*>}}\ >\ SplitAtoms;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{void}\ UpdateSelectionCrds()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{classTGlGroup}{TGlGroup}}\&\ sel\ =\ gxapp.GetSelection();}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{if}\ (sel.Count()\ >\ 1)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ vec3d\ cr;}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ TXAtomPList\ atoms;}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sel.Count();\ i++)\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sel[i].Is<TXAtom>())\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ cr\ +=\ ((\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)sel[i]).GetCenter();}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ cr\ +=\ ((\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)sel[i]).crd();}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ atoms.Add((\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)sel[i]);}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ UpdateCrds()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au\ =\ gxapp.XFile().GetAsymmUnit();}
+\DoxyCodeLine{00039\ \ \ \ \ UpdateSelectionCrds();}
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{structTGXApp_1_1AtomIterator}{TGXApp::AtomIterator}}\ ai\ =\ gxapp.GetAtoms();}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{while}\ (ai.HasNext())\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ xa\ =\ ai.Next();}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{comment}{//\ summ\ the\ translations}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ xa.crd()\ +=\ xa.GetCenter();}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ xa.NullCenter();}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ vec3d\ c\ =\ xa.crd();}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ au.CartesianToCell(c);}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ xa.ccrd()\ =\ c;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ xa.CAtom().ccrd()\ =\ c;}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \ \ olxstr\ ReCon;\ \textcolor{comment}{//\ restraint\ or\ constraint\ to\ use\ for\ split\ atoms}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{bool}\ doSplit;}
+\DoxyCodeLine{00054\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00055\ \ \ TSplitMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ \mbox{\hyperlink{classAMode}{AMode}}(\textcolor{keywordtype}{id})\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ gxapp.OnObjectsCreate.Add(\textcolor{keyword}{this},\ mode\_split\_ObjectsCreate,\ msiExit);}
+\DoxyCodeLine{00057\ \ \ \ \ gxapp.XFile().GetLattice().OnDisassemble.Add(}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keyword}{this},\ mode\_split\_Disassemble,\ msiEnter);}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{if}\ (!gxapp.CheckFileType<\mbox{\hyperlink{classTIns}{TIns}}>())\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00063\ \ \ \ \ ReCon\ =\ Options.FindValue(\textcolor{stringliteral}{"{}r"{}},\ EmptyString()).ToLowerCase();}
+\DoxyCodeLine{00064\ \ \ \ \ olex2.processMacro(\textcolor{stringliteral}{"{}cursor(hand)"{}});}
+\DoxyCodeLine{00065\ \ \ \ \ \mbox{\hyperlink{structTGXApp_1_1AtomIterator}{TGXApp::AtomIterator}}\ ai\ =\ gxapp.GetAtoms();}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{while}\ (ai.HasNext())\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ ai.Next().SetMoveable(\textcolor{keyword}{true});}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ gxapp.SetZoomAfterModelBuilt(gxapp}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ .GetOptions().GetBoolOption(\textcolor{stringliteral}{"{}model.center\_on\_update"{}},\ \textcolor{keyword}{true},\ \textcolor{keyword}{true}));}
+\DoxyCodeLine{00071\ \ \ \ \ doSplit\ =\ Options.GetBoolOption(\textcolor{charliteral}{'s'},\ \textcolor{keyword}{false},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \string~TSplitMode()\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ gxapp.OnObjectsCreate.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00077\ \ \ \ \ gxapp.XFile().GetLattice().OnDisassemble.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00078\ \ \ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ Finalise\_()\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm\ =\ gxapp.XFile().GetRM();}
+\DoxyCodeLine{00082\ \ \ \ \ UpdateCrds();}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{comment}{//\ if\ this\ is\ not\ done\ here\ it\ interferes\ and\ may\ cause\ a\ crash}}
+\DoxyCodeLine{00084\ \ \ \ \ gxapp.XFile().GetLattice().OnDisassemble.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00085\ \ \ \ \ gxapp.OnObjectsCreate.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00086\ \ \ \ \ \mbox{\hyperlink{structTGXApp_1_1AtomIterator}{TGXApp::AtomIterator}}\ ai\ =\ gxapp.GetAtoms();}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{while}\ (ai.HasNext())\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ ai.Next().SetMoveable(\textcolor{keyword}{false});}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{if}\ (SplitAtoms.IsEmpty()\ ||\ !doSplit)\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ gxapp.XFile().GetLattice().UpdateConnectivity();}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00093\ \ \ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \ \ TCAtomPList\ to\_isot;}
+\DoxyCodeLine{00095\ \ \ \ \ \mbox{\hyperlink{classXVar}{XVar}}\&\ xv\ =\ rm.Vars.NewVar(0.75);}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ SplitAtoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a\ =\ *SplitAtoms[i].GetA();}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ b\ =\ *SplitAtoms[i].GetB();}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ to\_isot.Add(a);}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ sp\ =\ 1.\ /\ a.GetDegeneracy();}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ rm.Vars.AddVarRef(xv,\ a,\ catom\_var\_name\_Sof,\ relation\_AsVar,\ sp);}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ rm.Vars.AddVarRef(xv,\ b,\ catom\_var\_name\_Sof,\ relation\_AsOneMinusVar,\ sp);}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ part\ =\ a.GetPart();}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (part\ ==\ 0)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ part++;}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ a.SetPart(part);}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ a.SetOccu(0.75*sp);}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ b.SetPart(olx\_sign(part)*(olx\_abs(part)\ +\ 1));}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ b.SetOccu(0.25*sp);}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \mbox{\hyperlink{classTSimpleRestraint}{TSimpleRestraint}}*\ sr\ =\ 0;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ReCon.IsEmpty());}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ReCon\ ==\ \textcolor{stringliteral}{"{}eadp"{}})\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ sr\ =\ \&rm.rEADP.AddNew();}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ReCon\ ==\ \textcolor{stringliteral}{"{}isor"{}})\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ sr\ =\ \&rm.rISOR.AddNew();}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ReCon\ ==\ \textcolor{stringliteral}{"{}simu"{}})\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ sr\ =\ \&rm.rSIMU.AddNew();}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sr\ !=\ 0)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ sr-\/>AddAtomPair(a,\ 0,\ b,\ 0);}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ gxapp.XFile().GetLattice().SetAnis(to\_isot,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00127\ \ \ \ \ gxapp.XFile().GetLattice().Uniq();}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ msg,\ \textcolor{keywordtype}{short}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)}
+\DoxyCodeLine{00132\ \ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{if}\ (msg\ ==\ mode\_split\_ObjectsCreate)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \mbox{\hyperlink{structTGXApp_1_1AtomIterator}{TGXApp::AtomIterator}}\ ai\ =\ gxapp.GetAtoms();}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (ai.HasNext())\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ ai.Next().SetMoveable(\textcolor{keyword}{true});}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (msg\ ==\ mode\_split\_Disassemble)\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ UpdateCrds();}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \&obj)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{if}\ (obj.Is<\mbox{\hyperlink{classTXAtom}{TXAtom}}>())\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\ *XA\ =\ \&(\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)obj;}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ split\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ SplitAtoms.Count();\ i++)}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (*SplitAtoms[i].GetA()\ ==\ XA-\/>CAtom()\ ||}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ *SplitAtoms[i].GetB()\ ==\ XA-\/>CAtom())}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ split\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (split\ \&\&\ doSplit)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\ \&xa\ =\ gxapp.AddAtom(XA);}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au\ =\ gxapp.XFile().GetAsymmUnit();}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structTAsymmUnit_1_1TLabelChecker}{TAsymmUnit::TLabelChecker}}\ lck(au);}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ xa.SetMoveable(\textcolor{keyword}{true});}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ xa.SetRoteable(\textcolor{keyword}{true});}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ SplitAtoms.AddNew(\&XA-\/>CAtom(),\ \&xa.CAtom());}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ part\ =\ XA-\/>CAtom().GetPart();}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (part\ ==\ 0)\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ part++;}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ XA-\/>CAtom().SetPart(part);}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ xa.CAtom().SetPart(part\ +\ 1);}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ xa.crd()\ +=\ 0.5;}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ vec3d\ c\ =\ au.Fractionalise(xa.crd());}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ xa.CAtom().ccrd()\ =\ c;}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ xa.ccrd()\ =\ c;}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ olxstr\ new\_l\ =\ XA-\/>GetLabel();}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ olxch\ lc\ =\ olxstr::o\_tolower(new\_l.GetLast());}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olxstr::o\_isalpha(lc)\ \&\&\ new\_l.Length()\ >\ 1\ \&\&\ lc\ <\ \textcolor{charliteral}{'z'})\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ new\_l[new\_l.Length()\ -\/\ 1]\ =\ ++lc;}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ new\_l\ <<\ \textcolor{charliteral}{'a'};}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ xa.CAtom().SetLabel(lck.CheckLabel(xa.CAtom(),\ new\_l,\ 0,\ \textcolor{keyword}{true}),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (xa.GetType()\ ==\ iQPeakZ)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ xa.CAtom().SetQPeak(1.0);}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ gxapp.XFile().GetLattice().UpdateConnectivity();}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ gxapp.UpdateDuplicateLabels();}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TXApp::DoUseSafeAfix())\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ gxapp.GetUndo().Push(}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ gxapp.XFile().GetLattice().ValidateHGroups(\textcolor{keyword}{true},\ \textcolor{keyword}{true}));}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \ \textcolor{comment}{//\ do\ selection\ then}}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ UpdateSelectionCrds();}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ gxapp.GetRenderer().Select(*XA);}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00197\ \ \ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00199\ \ \ \}}
+\DoxyCodeLine{00200\ \};}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

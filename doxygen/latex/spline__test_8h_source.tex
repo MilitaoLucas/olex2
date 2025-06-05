@@ -1,0 +1,58 @@
+\doxysection{spline\+\_\+test.\+h}
+\hypertarget{spline__test_8h_source}{}\label{spline__test_8h_source}\index{sdl/tests/spline\_test.h@{sdl/tests/spline\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}math/spline.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keywordtype}{void}\ spline\_test(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{using\ namespace\ }math::spline;}
+\DoxyCodeLine{00016\ \ \ t.description\ =\ \_\_OlxSrcInfo;}
+\DoxyCodeLine{00017\ \ \ evecd\ x(11),\ y(11);}
+\DoxyCodeLine{00018\ \ \ double\ (*f)(double)\ =\ \&sin;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <=\ 10;\ i++\ )\ \ \{}
+\DoxyCodeLine{00020\ \ \ \ \ x(i)\ =\ M\_PI*i/5;}
+\DoxyCodeLine{00021\ \ \ \ \ y(i)\ =\ f(x(i));}
+\DoxyCodeLine{00022\ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{double}\ FT;}
+\DoxyCodeLine{00024\ \ \ Spline3<FT>\ akima(x,y),\ cubic(x,y),\ catmull\_rom(x,y);}
+\DoxyCodeLine{00025\ \ \ Builder<FT>::akima(akima);}
+\DoxyCodeLine{00026\ \ \ Builder<FT>::cubic(cubic,}
+\DoxyCodeLine{00027\ \ \ \ \ boundary\_type\_periodic,\ boundary\_condition\_second\_derivative,}
+\DoxyCodeLine{00028\ \ \ \ \ boundary\_type\_periodic,\ boundary\_condition\_second\_derivative);}
+\DoxyCodeLine{00029\ \ \ Builder<FT>::catmull\_rom(catmull\_rom,\ boundary\_type\_parabolic,\ 0.5);}
+\DoxyCodeLine{00030\ \ \ olxstr\_dict<AnAssociation3<Spline3<FT>*,int,\textcolor{keywordtype}{double}>\ >\ splines;}
+\DoxyCodeLine{00031\ \ \ splines.Add(\textcolor{stringliteral}{"{}Akima"{}},\ Association::Create(\&akima,\ 0,\ 0.0));}
+\DoxyCodeLine{00032\ \ \ splines.Add(\textcolor{stringliteral}{"{}Cubic-\/periodic-\/2"{}},\ Association::Create(\&cubic,\ 0,\ 0.0));}
+\DoxyCodeLine{00033\ \ \ splines.Add(\textcolor{stringliteral}{"{}Catmull-\/Rom,\ t=0.5"{}},\ Association::Create(\&catmull\_rom,\ 0,\ 0.1));}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ si\ =\ 0;\ si\ <\ splines.Count();\ si++\ )\ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ Spline3<FT>*\ sp\ =\ splines.GetValue(si).a;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=1;\ i\ <\ 200;\ i++\ )\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ x\ =\ M\_PI*i/50;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !sp-\/>periodic\ \&\&\ x\ >=\ 2*M\_PI\ )}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ splines.GetValue(si).b++;}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ splines.GetValue(si).c\ +=\ olx\_sqr(sp-\/>interpolate(x)-\/f(x));}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ si\ =\ 0;\ si\ <\ splines.Count();\ si++\ )\ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ r\ =\ sqrt(splines.GetValue(si).GetC()/splines.GetValue(si).GetB());}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{if}(\ r\ >\ 0.07\ )}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ olxstr(splines.GetKey(si))\ <<\ \textcolor{stringliteral}{"{},\ too\ large\ deviation:\ "{}}\ <<\ olxstr::FormatFloat(3,\ r,\ \textcolor{keyword}{true}));}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ \}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//...........................................................................................}}
+\DoxyCodeLine{00052\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

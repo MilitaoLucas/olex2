@@ -1,0 +1,112 @@
+\doxysection{exparse\+\_\+test.\+h}
+\hypertarget{exparse__test_8h_source}{}\label{exparse__test_8h_source}\index{sdl/tests/exparse\_test.h@{sdl/tests/exparse\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../exparse/expbuilder.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}../testsuit.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }test\ \{\ \textcolor{keyword}{namespace\ }exparse\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{using\ namespace\ }esdl::exparse;}
+\DoxyCodeLine{00016\ \textcolor{keywordtype}{void}\ Test(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00017\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00018\ \ \ EvaluableFactory\ evf;}
+\DoxyCodeLine{00019\ \ \ context\ cx;}
+\DoxyCodeLine{00020\ \ \ context::init\_global(cx);}
+\DoxyCodeLine{00021\ \ \ evf.types.Add(\&\textcolor{keyword}{typeid}(olxstr),\ \textcolor{keyword}{new}\ StringValue);}
+\DoxyCodeLine{00022\ \ \ evf.classes.Add(\&\textcolor{keyword}{typeid}(olxstr),\ \&StringValue::info);}
+\DoxyCodeLine{00023\ \ \ evf.types.Add(\&\textcolor{keyword}{typeid}(ListValue::list\_t),\ \textcolor{keyword}{new}\ ListValue);}
+\DoxyCodeLine{00024\ \ \ evf.classes.Add(\&\textcolor{keyword}{typeid}(ListValue::list\_t),\ \&ListValue::info);}
+\DoxyCodeLine{00025\ \ \ StringValue::init\_library();}
+\DoxyCodeLine{00026\ \ \ ListValue::init\_library();}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ exp\_builder\ \_exp(evf,\ cx);}
+\DoxyCodeLine{00029\ \ \ olxstr\ tmp\ =\ \textcolor{stringliteral}{"{}a\ =\ 'ab\ c,\ de\(\backslash\)\(\backslash\)';()'"{}};}
+\DoxyCodeLine{00030\ \ \ olxstr\ val\ =\ parser\_util::unquote(tmp.SubStringFrom(4));}
+\DoxyCodeLine{00031\ \ \ IEvaluable*\ iv\ =\ \_exp.build(tmp);}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<olxstr>().val\ !=\ val)}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordflow}{if}\ (cx.vars.Count()\ !=\ 1\ ||\ cx.vars[\textcolor{charliteral}{'a'}]-\/>undress()\ !=\ iv\ ||}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ *cx.vars[\textcolor{charliteral}{'a'}]-\/>cast<olxstr>().val!=\ val)}
+\DoxyCodeLine{00036\ \ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}b\ =\ 'ab\ c'"{}});}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordflow}{if}\ (cx.vars.Count()\ !=\ 2\ ||\ cx.vars[\textcolor{charliteral}{'b'}]-\/>undress()\ !=\ iv)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \_exp.scope.add\_var(\textcolor{stringliteral}{"{}c"{}},\ \textcolor{keyword}{new}\ StringValue(\textcolor{stringliteral}{"{}abcdef"{}}));}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordflow}{if}\ (cx.vars.Count()\ !=\ 3\ ||\ *cx.vars[\textcolor{charliteral}{'c'}]-\/>cast<olxstr>().val!=\ \textcolor{stringliteral}{"{}abcdef"{}})\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a.sub(0,4).sub(1,3).len()"{}});}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<\textcolor{keywordtype}{size\_t}>().val\ !=\ 3)}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordflow}{if}(\ iv-\/>ref\_cnt()\ ==\ 0\ )\ \ \textcolor{keyword}{delete}\ iv;}
+\DoxyCodeLine{00051\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}x\ =\ a.sub(0,4).len()\ +\ b.len()"{}});}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordflow}{if}\ (*\_exp.scope.find\_var(\textcolor{charliteral}{'x'})-\/>cast<\textcolor{keywordtype}{size\_t}>().val\ !=\ 8)}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00054\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ a.sub(0,3)\ !=\ b.sub(0,3)"{}},\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<\textcolor{keywordtype}{bool}>().val\ !=\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00057\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ a.sub(0,3)\ ==\ a.sub(0,3)"{}},\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<\textcolor{keywordtype}{bool}>().val\ !=\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordflow}{if}(\ iv-\/>ref\_cnt()\ ==\ 0\ )\ \ \textcolor{keyword}{delete}\ iv;}
+\DoxyCodeLine{00061\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ a.sub(0,3)\ !=\ b.sub(0,3)"{}});}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<\textcolor{keywordtype}{bool}>().val\ !=\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00064\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ !(a.sub(0,3)\ ==\ b.sub(0,3))"{}});}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<\textcolor{keywordtype}{bool}>().val\ !=\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00067\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ !(a.sub(0,4)\ ==\ b.sub(0,3))"{}});}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<\textcolor{keywordtype}{bool}>().val\ !=\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00070\ \ \ \textcolor{comment}{//iv\ =\ \_exp.build("{}c\ =\ c\ +\ 100"{});}}
+\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//iv\ =\ \_exp.build("{}c\ =\ 1.2\ +\ 1.1\ -\/\ .05"{});}}
+\DoxyCodeLine{00072\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a.len()\ +\ 1.2\ +\ 1.1\ -\/\ abs(-\/.05)*cos(PI/2)"{}});}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(*iv-\/>cast<\textcolor{keywordtype}{double}>().val-\/15.3)\ >\ 1e-\/6)}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordflow}{if}\ (iv-\/>ref\_cnt()\ ==\ 0)\ \textcolor{keyword}{delete}\ iv;}
+\DoxyCodeLine{00076\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a='AaBc'.charAt(2)"{}});}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<olxch>().val\ !=\ L\textcolor{charliteral}{'B'})}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00079\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a='AaBc'[1].toUpper()"{}});}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<olxstr>().val\ !=\ L\textcolor{charliteral}{'A'})}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00082\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a='100'.atoi()"{}});}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<\textcolor{keywordtype}{int}>().val\ !=\ 100)}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00085\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a=['aBc',a,b,\ 1.2]"{}});}
+\DoxyCodeLine{00086\ \ \ ListValue*\ l\ =\ \textcolor{keyword}{dynamic\_cast<}ListValue*\textcolor{keyword}{>}\ (iv);}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordflow}{if}\ (l\ ==\ NULL\ ||\ l-\/>val.Count()\ !=\ 4)}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00089\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a.add(['ab','ac'])"{}});}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordflow}{if}\ (l\ ==\ NULL\ ||\ l-\/>val.Count()\ !=\ 5)}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordflow}{if}\ (iv-\/>ref\_cnt()\ ==\ 0)\ \textcolor{keyword}{delete}\ iv;}
+\DoxyCodeLine{00093\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a=a[4][1][1].toUpper()"{}});}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<olxstr>().val\ !=\ L\textcolor{charliteral}{'C'})}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00096\ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}cos\ pi*30/180"{}});}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordflow}{if}\ (*iv-\/>cast<\textcolor{keywordtype}{double}>().val\ !=\ cos(M\_PI*30/180))}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordflow}{if}\ (iv-\/>ref\_cnt()\ ==\ 0)\ \textcolor{keyword}{delete}\ iv;}
+\DoxyCodeLine{00101\ \}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00103\ \textcolor{keywordtype}{void}\ ExparseTests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00104\ \ \ t.Add(\&test::exparse::Test);}
+\DoxyCodeLine{00105\ \}}
+\DoxyCodeLine{00106\ \}\};\ \ \textcolor{comment}{//namespace\ test::exparse}}
+
+\end{DoxyCode}

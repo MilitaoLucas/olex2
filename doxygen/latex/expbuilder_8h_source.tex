@@ -1,0 +1,55 @@
+\doxysection{expbuilder.\+h}
+\hypertarget{expbuilder_8h_source}{}\label{expbuilder_8h_source}\index{sdl/exparse/expbuilder.h@{sdl/exparse/expbuilder.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_exparse\_expbuilder\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_exparse\_expbuilder\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}builtins.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}exptree.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}explib.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}context.h"{}}}
+\DoxyCodeLine{00016\ BeginEsdlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ namespace\ exparse\ \ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{struct\ }exp\_builder\ \ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00022\ \ \ \ \ IEvaluable*\ process\_const\_func(IEvaluable*\ func,\ IEvaluable*\ left,}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ IEvaluable*\ right=NULL);}
+\DoxyCodeLine{00024\ \ \ \ \ IEvaluable*\ evaluator\_from\_evator(expression\_tree*\ root,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ IEvaluable*\ left=NULL);}
+\DoxyCodeLine{00026\ \ \ \ \ IEvaluable*\ create\_evaluator(expression\_tree*\ root,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ finaliseAssignment=\textcolor{keyword}{true});}
+\DoxyCodeLine{00028\ \ \ \ \ IEvaluable*\ locate\_function(\textcolor{keyword}{const}\ olxstr\&\ name,\ IEvaluable*\ left,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ IEvaluable*\ right);}
+\DoxyCodeLine{00030\ \ \ \ \ IEvaluable*\ evaluator\_from\_string(\textcolor{keyword}{const}\ olxstr\ \&str)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \ \ EvaluableFactory\&\ factory;}
+\DoxyCodeLine{00033\ \ \ \ \ context\&\ scope;}
+\DoxyCodeLine{00034\ \ \ \ \ exp\_builder(EvaluableFactory\&\ \_factory,\ context\&\ \_scope)}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ :\ factory(\_factory),\ scope(\_scope)\ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ IEvaluable*\ build(\textcolor{keyword}{const}\ olxstr\&\ exp,\ \textcolor{keywordtype}{bool}\ finaliseAssignment=\textcolor{keyword}{true})\ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ expression\_parser\ expp(exp);}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ expp.expand();}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ expp.root\ =\ sort\_logical(expp.root);}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ create\_evaluator(expp.root,\ finaliseAssignment);}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ needs\_sorting(expression\_tree*\ root);}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{static}\ expression\_tree*\ sort\_logical(expression\_tree*\ root);}
+\DoxyCodeLine{00045\ \ \ \};}
+\DoxyCodeLine{00046\ \}\ \textcolor{comment}{//\ end\ exparse\ namespace}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ EndEsdlNamespace()}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

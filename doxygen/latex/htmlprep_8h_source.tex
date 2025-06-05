@@ -1,0 +1,48 @@
+\doxysection{htmlprep.\+h}
+\hypertarget{htmlprep_8h_source}{}\label{htmlprep_8h_source}\index{olex/html/htmlprep.h@{olex/html/htmlprep.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}paramlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTHtmlSwitch}{THtmlSwitch}};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }THtmlPreprocessor\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ UnknownSwitchState\ =\ (size\_t)(-\/2);}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ THtmlPreprocessor(\textcolor{keyword}{const}\ olxstr\&\ popup\_name\ =\ EmptyString())}
+\DoxyCodeLine{00020\ \ \ \ \ :\ PopupName(popup\_name)}
+\DoxyCodeLine{00021\ \ \ \{\}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetPopupName()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ PopupName;\ \}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{void}\ CheckForSwitches(\mbox{\hyperlink{classTHtmlSwitch}{THtmlSwitch}}\&\ Sender,\ \textcolor{keywordtype}{bool}\ IsZip);}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{size\_t}\ GetSwitchState(\textcolor{keyword}{const}\ olxstr\&\ switchName)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{return}\ SwitchStates.Find(switchName,\ UnknownSwitchState);}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{void}\ SetSwitchState(\mbox{\hyperlink{classTHtmlSwitch}{THtmlSwitch}}\&\ sw,\ \textcolor{keywordtype}{size\_t}\ state);}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}\ UpdateSwitchState(\mbox{\hyperlink{classTHtmlSwitch}{THtmlSwitch}}\&\ Switch,\ olxstr\&\ String);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ olxstr\ Preprocess(\textcolor{keyword}{const}\ olxstr\&\ html,\ \textcolor{keyword}{const}\ TParamList\&\ params);}
+\DoxyCodeLine{00032\ \ \ olxstr\ Preprocess(\textcolor{keyword}{const}\ olxstr\&\ html)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{return}\ Preprocess(html,\ TParamList());}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{void}\ ClearSwitchStates()\ \{\ SwitchStates.Clear();\ \}}
+\DoxyCodeLine{00039\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00040\ \ \ olxstr\ PopupName;}
+\DoxyCodeLine{00041\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<size\_t,\ true>}}\ SwitchStates;}
+\DoxyCodeLine{00042\ \};}
+
+\end{DoxyCode}

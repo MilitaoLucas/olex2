@@ -1,0 +1,79 @@
+\doxysection{himp.\+h}
+\hypertarget{himp_8h_source}{}\label{himp_8h_source}\index{gxlib/modes/himp.h@{gxlib/modes/himp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_HIMP\_MODE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_HIMP\_MODE\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }THimpMode\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAMode}{AMode}}\ \{}
+\DoxyCodeLine{00014\ \ \ \textcolor{keywordtype}{double}\ BondLength;}
+\DoxyCodeLine{00015\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ THimpMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ \mbox{\hyperlink{classAMode}{AMode}}(\textcolor{keywordtype}{id})\ \{\}}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options)\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ BondLength\ =\ Cmds.IsEmpty()\ ?\ 0\ :\ Cmds[0].ToDouble();}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordflow}{if}\ (BondLength\ <=\ 0.5)\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ TBasicApp::NewLogEntry(logError)\ <<\ \textcolor{stringliteral}{"{}suspicious\ bond\ length"{}};}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00023\ \ \ \ \ \}}
+\DoxyCodeLine{00024\ \ \ \ \ SetUserCursor(\textcolor{stringliteral}{"{}<-\/>"{}},\ olxstr(BondLength));}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00026\ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{void}\ Finalise\_()\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ gxapp.XFile().GetLattice().UpdateConnectivity();}
+\DoxyCodeLine{00029\ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ obj)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{if}\ (obj.Is<\mbox{\hyperlink{classTXAtom}{TXAtom}}>())\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ XA\ =\ (\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)obj;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (XA.GetType()\ ==\ iHydrogenZ)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}*\ aa\ =\ 0;}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ XA.NodeCount();\ i++)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (XA.Node(i).GetType().z\ >\ 2)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aa\ ==\ 0)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ aa\ =\ \&XA.Node(i);}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \ \textcolor{comment}{//\ bad\ connectivity}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ aa\ =\ 0;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aa\ !=\ 0)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ XA.crd()\ =\ aa-\/>crd()\ +\ (XA.crd()\ -\/\ aa-\/>crd()).NormaliseTo(BondLength);}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ XA.ccrd()\ =\ gxapp.XFile().GetAsymmUnit().Fractionalise(XA.crd());}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ XA.CAtom().ccrd()\ =\ XA.ccrd();}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ gxapp.MarkLabel(XA,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ XA.NodeCount();\ i++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (XA.Node(i).GetType().z\ !=\ iHydrogenZ)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ XA.Node(i).crd()\ =\ XA.crd()\ +\ (XA.Node(i).crd()\ -\/\ XA.crd())}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ .NormaliseTo(BondLength);}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ XA.Node(i).ccrd()\ =\ gxapp.XFile().GetAsymmUnit().Fractionalise(}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ XA.Node(i).crd());}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ XA.Node(i).CAtom().ccrd()\ =\ XA.Node(i).ccrd();}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ gxapp.MarkLabel(XA.Node(i),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (XA.Node(i).CAtom().GetParentAfixGroup()\ !=\ 0)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ XA.Node(i).CAtom().GetParentAfixGroup()-\/>SetD(BondLength);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

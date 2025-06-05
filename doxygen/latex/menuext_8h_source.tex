@@ -1,0 +1,81 @@
+\doxysection{menuext.\+h}
+\hypertarget{menuext_8h_source}{}\label{menuext_8h_source}\index{olex/ctrls/menuext.h@{olex/ctrls/menuext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_menu\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_menu\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}wx/wx.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ mtSeparator\ =\ wxITEM\_SEPARATOR,}
+\DoxyCodeLine{00019\ \ \ \ \ mtNormalItem\ =\ wxITEM\_NORMAL,}
+\DoxyCodeLine{00020\ \ \ \ \ mtCheckItem\ =\ wxITEM\_CHECK,}
+\DoxyCodeLine{00021\ \ \ \ \ mtRadioItem\ =\ wxITEM\_RADIO;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{class\ }TMenu\ :\ \textcolor{keyword}{public}\ wxMenu,\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ TMenu(\textcolor{keyword}{const}\ olxstr\&\ Name\ =\ EmptyString())\ :\ wxMenu(Name.u\_str())\ \{\}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{comment}{//\ the\ function\ creates\ a\ new\ clone\ of\ wxMenu}}
+\DoxyCodeLine{00027\ \ \ \ \ TMenu*\ Clone()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ CopyMenu(*\textcolor{keyword}{this});\ \};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{comment}{//\ returns\ a\ new\ menu\ created\ with\ new}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{static}\ TMenu*\ CopyMenu(\textcolor{keyword}{const}\ wxMenu\&\ menu);}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear();\ \textcolor{comment}{//\ empties\ the\ menu}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classctrl__ext_1_1TMenu_1_1MenuData}{MenuData}}\ :\ \textcolor{keyword}{public}\ wxClientData\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \mbox{\hyperlink{classolx__pdict}{olx\_pdict<int,\ olxstr>}}\ macros;}
+\DoxyCodeLine{00035\ \ \ \ \ \};}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{/*\ build\ menu\ from\ ';'\ separated\ string.'\#'\ -\/\ separator,\ items\ name<-\/macro}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ \ \ \ *\ if\ a\ menu\ is\ given\ -\/\ items\ appended\ to\ is,\ otherwise\ a\ new\ menu\ is\ created.}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ \ \ *\ Menu's\ GetClientObject\ wil\ return\ MenuData\ to\ access\ the\ macros}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{static}\ wxMenu*\ CreateMenu(\textcolor{keyword}{const}\ olxstr\&\ def,}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ first\_id=0,\ wxMenu\ *menu=0);}
+\DoxyCodeLine{00042\ \ \ \ \ DECLARE\_CLASS(TMenu);}
+\DoxyCodeLine{00043\ \ \ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{class\ }TMenuItem\ :\ \textcolor{keyword}{public}\ wxMenuItem,\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00047\ \ \ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}*\ ActionQueue;}
+\DoxyCodeLine{00048\ \ \ \ \ olxstr\ DependMode,\ Command,\ OnModeChangeCmd;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{short}\ DependentOn;}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00051\ \ \ \ \ TMenuItem(\textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ type,\ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id},\ \mbox{\hyperlink{classctrl__ext_1_1TMenu}{TMenu}}*\ parent\ =\ 0,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ Name\ =\ EmptyString())}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ :\ wxMenuItem(parent,\ \textcolor{keywordtype}{id},\ Name.u\_str(),\ wxString(),}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}wxItemKind\textcolor{keyword}{>}(type)),}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ OnModeChange(Actions.New(evt\_on\_mode\_change\_id)),}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ ActionQueue(0),}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ DependentOn(0)}
+\DoxyCodeLine{00058\ \ \ \ \ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ SetToDelete(\textcolor{keyword}{false});}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~TMenuItem();}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ SetActionQueue(\mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ q,\ \textcolor{keyword}{const}\ olxstr\&\ dependMode,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordtype}{short}\ dependentOn);}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}*);}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{comment}{//\ updates\ checked\ status}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ ValidateState();}
+\DoxyCodeLine{00067\ \ \ \ \ DefPropC(olxstr,\ Command)}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ OnModeChange;}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ ModeDependent\ =\ 1,}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ StateDependent\ =\ 2;}
+\DoxyCodeLine{00072\ \ \ \ \ DECLARE\_CLASS(TMenuItem)}
+\DoxyCodeLine{00073\ \ \ \};}
+\DoxyCodeLine{00074\ \};\ \ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

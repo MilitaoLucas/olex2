@@ -1,0 +1,48 @@
+\doxysection{trackbarext.\+h}
+\hypertarget{trackbarext_8h_source}{}\label{trackbarext_8h_source}\index{olex/ctrls/trackbarext.h@{olex/ctrls/trackbarext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_trackbar\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_trackbar\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \ \{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{class\ }TTrackBar:\ \textcolor{keyword}{public}\ wxSlider,\ \textcolor{keyword}{public}\ AOlxCtrl\ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ ScrollEvent(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseUpEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00020\ \ \ \ \ olxstr\ Data;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{int}\ this\_Val;\ \ \textcolor{comment}{//\ needed\ to\ call\ events\ only\ if\ value\ has\ changed}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//\ on\ gtk,\ the\ size\ cannot\ be\ changed\ after\ the\ creation!}}
+\DoxyCodeLine{00024\ \ \ \ \ TTrackBar(wxWindow\ *Parent,\ wxWindowID\ \textcolor{keywordtype}{id}\ =\ -\/1,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ value\ =\ 0,\ \textcolor{keywordtype}{int}\ min\_v\ =\ 0,\ \textcolor{keywordtype}{int}\ max\_v\ =\ 100,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxPoint\&\ pos\ =\ wxDefaultPosition,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxSize\&\ size\ =\ wxDefaultSize,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keywordtype}{long}\ style\ =\ wxSL\_HORIZONTAL\ |\ wxSL\_AUTOTICKS);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ DefPropC(olxstr,\ Data)}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ GetValue()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ wxSlider::GetValue();\ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetValue(\textcolor{keywordtype}{int}\ v)\ \{\ wxSlider::SetValue(v);\ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ GetMin()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ wxSlider::GetMin();\ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetMin(\textcolor{keywordtype}{int}\ v)\ \{\ wxSlider::SetRange(this-\/>GetMax(),\ v);\ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ GetMax()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ wxSlider::GetMax();\ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetMax(\textcolor{keywordtype}{int}\ v)\ \{\ wxSlider::SetRange(v,\ this-\/>GetMin());\ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl_1_1ActionQueue}{AOlxCtrl::ActionQueue}}\ \&OnChange,\ \&OnMouseUp;}
+\DoxyCodeLine{00040\ \ \ \};}
+\DoxyCodeLine{00041\ \};\ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

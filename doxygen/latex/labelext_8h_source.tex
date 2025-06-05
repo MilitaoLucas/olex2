@@ -1,0 +1,47 @@
+\doxysection{labelext.\+h}
+\hypertarget{labelext_8h_source}{}\label{labelext_8h_source}\index{olex/ctrls/labelext.h@{olex/ctrls/labelext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_label\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_label\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{class\ }TLabel:\ \textcolor{keyword}{public}\ wxStaticText,\ \textcolor{keyword}{public}\ AOlxCtrl\ \ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ *FActions;}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{void}\ ClickEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00018\ \ \ \ \ olxstr\ Data;}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ OnPaint(wxPaintEvent\&\ event);}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{void}\ onEraseBG(wxEraseEvent\&\ event);}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \ \ TLabel(wxWindow\ *Parent,\ \textcolor{keyword}{const}\ olxstr\ \&label,\ \textcolor{keywordtype}{long}\ style=0)\ :}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ AOlxCtrl(\textcolor{keyword}{this}),}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ OnClick(AOlxCtrl::ActionQueue::New(Actions,\ evt\_on\_click\_id)),}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ wxStaticText(Parent,\ wxID\_ANY,\ label.u\_str(),\ wxDefaultPosition,\ wxDefaultSize,\ style),}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ Data(EmptyString())}
+\DoxyCodeLine{00027\ \ \ \ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ Bind(wxEVT\_LEFT\_DOWN,\ \&TLabel::ClickEvent,\ \textcolor{keyword}{this});}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ Bind(wxEVT\_PAINT,\ \&TLabel::OnPaint,\ \textcolor{keyword}{this});}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ Bind(wxEVT\_ERASE\_BACKGROUND,\ \&TLabel::onEraseBG,\ \textcolor{keyword}{this});}
+\DoxyCodeLine{00031\ \ \ \ \ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ DefPropC(olxstr,\ Data);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl_1_1ActionQueue}{AOlxCtrl::ActionQueue}}\ \&OnClick;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ SetCaption(\textcolor{keyword}{const}\ olxstr\ \&T)\ \{\ \ SetLabel(T.u\_str());\ \}}
+\DoxyCodeLine{00038\ \ \ \ \ olxstr\ GetCaption()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ GetLabel();\ \}}
+\DoxyCodeLine{00039\ \ \ \};}
+\DoxyCodeLine{00040\ \};\ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,87 @@
+\doxysection{treeviewext.\+h}
+\hypertarget{treeviewext_8h_source}{}\label{treeviewext_8h_source}\index{olex/ctrls/treeviewext.h@{olex/ctrls/treeviewext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_treeview\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_treeview\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}bitarray.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}wx/treectrl.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}wx/generic/treectlg.h"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ ID\_TREE\_ExpandAll\ =\ 1000,}
+\DoxyCodeLine{00021\ \ \ \ \ ID\_TREE\_CollapseAll,}
+\DoxyCodeLine{00022\ \ \ \ \ ID\_TREE\_LAST,\ \textcolor{comment}{//\ custom\ menu\ ids\ start\ here}}
+\DoxyCodeLine{00023\ \ \ \};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{class\ }TTreeNodeData\ :\ \textcolor{keyword}{public}\ wxTreeItemData,\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ TTreeNodeData(\mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ obj)\ \{\ \ Data\ =\ obj;\ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~TTreeNodeData()\ \ \{\ \textcolor{keyword}{delete}\ Data;\ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ GetData()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Data;\ \ \}}
+\DoxyCodeLine{00031\ \ \ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{class\ }TTreeView:\ \textcolor{keyword}{public}\ wxTreeCtrl,\ \textcolor{keyword}{public}\ AOlxCtrl\ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ olxstr\ Data;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ SelectionEvent(wxTreeEvent\&\ event);}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ ItemActivateEvent(wxTreeEvent\&\ event);}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ ItemEditEvent(wxTreeEvent\&\ event);}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ ShowContextMenu(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ OnItemContextMenu(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ OnMouseUp(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ReadStrings(\textcolor{keywordtype}{size\_t}\&\ index,\ \textcolor{keyword}{const}\ wxTreeItemId*\ thisCaller,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TStrList\&\ strings);}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ ClearData();}
+\DoxyCodeLine{00045\ \ \ \ \ \mbox{\hyperlink{structolx__object__ptr}{olx\_object\_ptr<wxMenu>}}\ contextMenu;}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ returns\ index\ of\ the\ selected\ item...}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \_SaveState(\mbox{\hyperlink{classTEBitArray}{TEBitArray}}\&\ res,\ \textcolor{keyword}{const}\ wxTreeItemId\&\ item,}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\&\ counter)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ \_RestoreState(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTEBitArray}{TEBitArray}}\&\ res,\ \textcolor{keyword}{const}\ wxTreeItemId\&\ item,}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\&\ counter,\ \textcolor{keywordtype}{size\_t}\ selected);}
+\DoxyCodeLine{00051\ \ \ \ \ wxTreeItemId\ \_FindByLabel(\textcolor{keyword}{const}\ wxTreeItemId\&\ root,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ label)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00053\ \ \ \ \ wxTreeItemId\ \_FindByData(\textcolor{keyword}{const}\ wxTreeItemId\&\ root,}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ data)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ \ \ \ \ TTreeView(wxWindow*\ Parent,\ wxWindowID\ \textcolor{keywordtype}{id}\ =\ -\/1,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxPoint\&\ pos\ =\ wxDefaultPosition,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxSize\&\ size\ =\ wxDefaultSize,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordtype}{long}\ flags\ =\ (wxTR\_HAS\_BUTTONS\ |\ wxTR\_LINES\_AT\_ROOT));}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~TTreeView()\ \ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ ClearData();}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ DefPropC(olxstr,\ Data);}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ SetContextMenu(wxMenu*);}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ SelectByLabel(\textcolor{keyword}{const}\ olxstr\&\ label);}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ SelectByData(\textcolor{keyword}{const}\ olxstr\&\ data);}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{bool}\ LoadFromStrings(\textcolor{keyword}{const}\ TStrList\&\ strings);}
+\DoxyCodeLine{00072\ \ \ \ \ olxstr\ SaveState()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ RestoreState(\textcolor{keyword}{const}\ olxstr\&\ state);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl_1_1ActionQueue}{AOlxCtrl::ActionQueue}}\ \&OnDblClick,\ \&OnSelect,\ \&OnEdit;}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{static}\ wxMenu*\ CreateDefaultContextMenu();}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{static}\ wxMenu*\ CreateContextMenu(\textcolor{keyword}{const}\ olxstr\&\ def);}
+\DoxyCodeLine{00079\ \ \ \};}
+\DoxyCodeLine{00080\ \};\ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

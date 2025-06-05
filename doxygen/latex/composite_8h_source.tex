@@ -1,0 +1,270 @@
+\doxysection{composite.\+h}
+\hypertarget{composite_8h_source}{}\label{composite_8h_source}\index{sdl/math/composite.h@{sdl/math/composite.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_composite\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_composite\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../emath.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ a\ wrapper\ class\ to\ present\ a\ list\ of\ matrices\ as\ a\ single\ matrix.\ To\ be\ used}}
+\DoxyCodeLine{00017\ \textcolor{comment}{with\ non\ empty\ list\ and\ matrices\ of\ the\ same\ dimensions}}
+\DoxyCodeLine{00018\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00019\ template\ <class\ list\_t>\ class\ CompositeMatrix\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{const}\ list\_t\&\ matrices;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ list\_t::list\_item\_type::number\_type\ number\_type;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ row\_sz,\ col\_sz,\ m\_row\_sz,\ m\_col\_sz,\ col\_cnt,\ row\_cnt;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ CompositeMatrix(\textcolor{keyword}{const}\ list\_t\&\ \_matrices,\ \textcolor{keywordtype}{size\_t}\ \_row\_sz,\ \textcolor{keywordtype}{size\_t}\ \_col\_sz)}
+\DoxyCodeLine{00025\ \ \ \ \ :\ matrices(\_matrices),}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ row\_sz(\_row\_sz),\ col\_sz(\_col\_sz),}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ m\_row\_sz(matrices[0].RowCount()),\ m\_col\_sz(matrices[0].RowCount()),}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ col\_cnt(col\_sz*m\_col\_sz),\ row\_cnt(row\_sz*m\_row\_sz)}
+\DoxyCodeLine{00029\ \ \ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{if}\ (matrices.Count()\ !=\ row\_sz*col\_sz)}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}size"{}});}
+\DoxyCodeLine{00032\ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{const}\ number\_type\&\ operator\ ()(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{return}\ matrices[(i/m\_row\_sz)*row\_sz+j/m\_row\_sz][i\%m\_col\_sz][j\%m\_row\_sz];}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \ \ number\_type\&\ operator\ ()(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{return}\ matrices[(i/m\_row\_sz)*row\_sz+j/m\_row\_sz][i\%m\_col\_sz][j\%m\_row\_sz];}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{size\_t}\ ColCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ col\_cnt;\ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{size\_t}\ RowCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ row\_cnt;\ \ \}}
+\DoxyCodeLine{00041\ \};}
+\DoxyCodeLine{00042\ \textcolor{comment}{/*\ a\ wrapper\ class\ to\ represent\ a\ list\ of\ vectors\ as\ a\ single\ vector.\ To\ be}}
+\DoxyCodeLine{00043\ \textcolor{comment}{used\ with\ non\ empty\ list\ and\ all\ vectors\ of\ the\ same\ size}}
+\DoxyCodeLine{00044\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00045\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>\ \textcolor{keyword}{class\ }CompositeVector\ \{}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{const}\ list\_t\&\ vertices;}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ vec\_sz;}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ list\_t::list\_item\_type::list\_item\_type\ number\_type;}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ list\_t::list\_item\_type::list\_item\_type\ list\_item\_type;}
+\DoxyCodeLine{00050\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00051\ \ \ CompositeVector(\textcolor{keyword}{const}\ list\_t\&\ \_vertices)}
+\DoxyCodeLine{00052\ \ \ \ \ :\ vertices(\_vertices),\ vec\_sz(vertices[0].Count())}
+\DoxyCodeLine{00053\ \ \ \{\}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ vertices.Count()*vec\_sz;\ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{const}\ number\_type\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{return}\ \ vertices[i/vec\_sz][i\%vec\_sz];}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ number\_type\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ \ vertices[i/vec\_sz][i\%vec\_sz];\ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keyword}{const}\ number\_type\&\ v)\ \ \{}
+\DoxyCodeLine{00060\ \ \ \ \ vertices[i/vec\_sz][i\%vec\_sz]\ =\ v;}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ \ \ number\_type\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{const}\ number\_type\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00064\ \ \ number\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{const}\ number\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00066\ \};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{comment}{/*\ vector\ based\ on\ a\ matrix\ */}}
+\DoxyCodeLine{00069\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatT>\ \textcolor{keyword}{class\ }MatrixVector\ \{}
+\DoxyCodeLine{00070\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatT::number\_type\ list\_item\_type;}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatT::number\_type\ number\_type;}
+\DoxyCodeLine{00073\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{const}\ MatT\&\ matrix;}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ size;}
+\DoxyCodeLine{00076\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00077\ \ \ MatrixVector(\textcolor{keyword}{const}\ MatT\&\ \_matrix)\ :}
+\DoxyCodeLine{00078\ \ \ \ \ matrix(\_matrix)\ ,\ size(matrix.RowCount()*matrix.RowCount())}
+\DoxyCodeLine{00079\ \ \ \{\}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ size;\ \ \}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{const}\ number\_type\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{return}\ \ matrix[i/matrix.ColCout()][i\%matrix.ColCout()];}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \ \ number\_type\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{return}\ \ matrix[i/matrix.ColCout()][i\%matrix.ColCout()];}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keyword}{const}\ number\_type\&\ v)\ \ \{}
+\DoxyCodeLine{00088\ \ \ \ \ matrix[i/matrix.ColCout()][i\%matrix.ColCout()]\ =\ v;}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ \ \ number\_type\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{const}\ number\_type\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00092\ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{comment}{/*\ vector\ const\ plain\ array\ */}}
+\DoxyCodeLine{00095\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumT>\ \textcolor{keyword}{class\ }ConstPlainVector\ \{}
+\DoxyCodeLine{00096\ \ \ NumT\ \textcolor{keyword}{const}*\ data;}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ size;}
+\DoxyCodeLine{00098\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00099\ \ \ ConstPlainVector(\textcolor{keyword}{const}\ NumT*\ \_data,\ \textcolor{keywordtype}{size\_t}\ sz)}
+\DoxyCodeLine{00100\ \ \ \ \ :\ data(\_data)\ ,\ size(sz)}
+\DoxyCodeLine{00101\ \ \ \{\}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ size;\ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{const}\ NumT\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \ data[i];\ \ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{const}\ NumT\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{const}\ NumT\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00106\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{typedef}\ NumT\ list\_item\_type;}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{typedef}\ NumT\ number\_type;}
+\DoxyCodeLine{00109\ \};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{comment}{/*\ vector\ plain\ array\ */}}
+\DoxyCodeLine{00112\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumT>\ \textcolor{keyword}{class\ }PlainVector\ \{}
+\DoxyCodeLine{00113\ \ \ NumT\ *data;}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ size;}
+\DoxyCodeLine{00115\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00116\ \ \ PlainVector(NumT\ *\_data,\ \textcolor{keywordtype}{size\_t}\ sz)}
+\DoxyCodeLine{00117\ \ \ \ \ :\ data(\_data)\ ,\ size(sz)}
+\DoxyCodeLine{00118\ \ \ \{\}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ size;\ \ \}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{const}\ NumT\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \ data[i];\ \ \}}
+\DoxyCodeLine{00121\ \ \ NumT\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ \ data[i];\ \ \}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keyword}{const}\ NumT\&\ v)\ \ \{\ \ data[i]\ =\ v;\ \ \}}
+\DoxyCodeLine{00123\ \ \ NumT\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{const}\ NumT\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00125\ \ \ NumT\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{const}\ NumT\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00127\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{typedef}\ NumT\ number\_type;}
+\DoxyCodeLine{00129\ \};}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \textcolor{comment}{/*\ vector/list\ slice\ */}}
+\DoxyCodeLine{00132\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT>\ \textcolor{keyword}{class\ }Slice\ \{}
+\DoxyCodeLine{00133\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ VT::list\_item\_type\ list\_item\_type;}
+\DoxyCodeLine{00135\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00136\ \ \ VT\&\ data;}
+\DoxyCodeLine{00137\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ offset,\ size;}
+\DoxyCodeLine{00138\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00139\ \ \ Slice(VT\&\ \_data,\ \textcolor{keywordtype}{size\_t}\ off,\ \textcolor{keywordtype}{size\_t}\ sz)}
+\DoxyCodeLine{00140\ \ \ \ \ :\ data(\_data),\ offset(off),\ size(sz)}
+\DoxyCodeLine{00141\ \ \ \{\}}
+\DoxyCodeLine{00142\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ size;\ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{const}\ list\_item\_type\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \ data[i+offset];\ \ \}}
+\DoxyCodeLine{00144\ \ \ list\_item\_type\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ \ data[i+offset];\ \ \}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keyword}{const}\ list\_item\_type\&\ v)\ \ \{\ \ data[i+offset]\ =\ v;\ \ \}}
+\DoxyCodeLine{00146\ \ \ list\_item\_type\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{const}\ list\_item\_type\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00148\ \ \ list\_item\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{const}\ list\_item\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00150\ \};}
+\DoxyCodeLine{00151\ \textcolor{comment}{/*\ const\ vector/list\ slice\ */}}
+\DoxyCodeLine{00152\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT>\ \textcolor{keyword}{class\ }ConstSlice\ \{}
+\DoxyCodeLine{00153\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ VT::list\_item\_type\ list\_item\_type;}
+\DoxyCodeLine{00155\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{const}\ VT\&\ data;}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ offset,\ size;}
+\DoxyCodeLine{00158\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00159\ \ \ ConstSlice(\textcolor{keyword}{const}\ VT\&\ \_data,\ \textcolor{keywordtype}{size\_t}\ off,\ \textcolor{keywordtype}{size\_t}\ sz)}
+\DoxyCodeLine{00160\ \ \ \ \ :\ data(\_data),\ offset(off),\ size(sz)\ \ \{\}}
+\DoxyCodeLine{00161\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ size;\ \ \}}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{const}\ list\_item\_type\&\ Get(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \ data[i+offset];\ \ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{const}\ list\_item\_type\&\ operator\ []\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{const}\ list\_item\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Get(i);\ \ \}}
+\DoxyCodeLine{00165\ \};}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \textcolor{comment}{/*\ matrix\ based\ on\ a\ vector\ */}}
+\DoxyCodeLine{00168\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VecT>\ \textcolor{keyword}{class\ }VectorMatrix\ \{}
+\DoxyCodeLine{00169\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ VecT::number\_type\ number\_type;}
+\DoxyCodeLine{00171\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{const}\ VecT\&\ vector;}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ row\_sz,\ col\_sz;}
+\DoxyCodeLine{00174\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00175\ \ \ VectorMatrix(\textcolor{keyword}{const}\ VecT\&\ \_vector,\ \textcolor{keywordtype}{size\_t}\ \_row\_sz,\ \textcolor{keywordtype}{size\_t}\ \_col\_sz)\ :}
+\DoxyCodeLine{00176\ \ \ \ \ vector(\_vector),\ row\_sz(\_row\_sz),\ col\_sz(\_col\_sz)}
+\DoxyCodeLine{00177\ \ \ \{\}}
+\DoxyCodeLine{00178\ \ \ \textcolor{keywordtype}{size\_t}\ ColCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ col\_sz;\ \ \}}
+\DoxyCodeLine{00179\ \ \ \textcolor{keywordtype}{size\_t}\ RowCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ row\_sz;\ \ \}}
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ col\_sz\ ==\ 0\ ||\ row\_sz\ ==\ 0;\ \ \}}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{const}\ number\_type\&\ Get(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{return}\ \ vector[i*col\_sz+j];}
+\DoxyCodeLine{00183\ \ \ \}}
+\DoxyCodeLine{00184\ \ \ number\_type\&\ Get(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \ \{\ \ \textcolor{keywordflow}{return}\ \ vector[i*col\_sz+j];\ \ \}}
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordtype}{void}\ Set(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keyword}{const}\ number\_type\&\ v)\ \ \{}
+\DoxyCodeLine{00186\ \ \ \ \ vector[i*col\_sz+j]\ =\ v;}
+\DoxyCodeLine{00187\ \ \ \}}
+\DoxyCodeLine{00188\ \ \ number\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \ \{\ \ \textcolor{keywordflow}{return}\ Get(i,j);\ \ \}}
+\DoxyCodeLine{00189\ \ \ \textcolor{keyword}{const}\ number\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordflow}{return}\ Get(i,j);}
+\DoxyCodeLine{00191\ \ \ \}}
+\DoxyCodeLine{00192\ \};}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumT>\ \textcolor{keyword}{class\ }PlainMatrix}
+\DoxyCodeLine{00195\ \ \ :\ \textcolor{keyword}{public}\ VectorMatrix<PlainVector<NumT>\ >}
+\DoxyCodeLine{00196\ \{}
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classPlainVector}{PlainVector<NumT>}}\ vec\_t;}
+\DoxyCodeLine{00198\ \ \ vec\_t\ vec;}
+\DoxyCodeLine{00199\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00200\ \ \ PlainMatrix(NumT*\ \_data,\ \textcolor{keywordtype}{size\_t}\ row\_sz,\ \textcolor{keywordtype}{size\_t}\ col\_sz)}
+\DoxyCodeLine{00201\ \ \ \ \ :\ vec(\_data,\ row\_sz*col\_sz),}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ VectorMatrix<vec\_t>(vec,\ row\_sz,\ col\_sz)}
+\DoxyCodeLine{00203\ \ \ \{\}}
+\DoxyCodeLine{00204\ \};}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structComposite}{Composite}}\ \{}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT>\ \textcolor{keyword}{static}\ esdl::Slice<VT>\ Slice(}
+\DoxyCodeLine{00208\ \ \ VT\&\ data,\ \textcolor{keywordtype}{size\_t}\ off,\ \textcolor{keywordtype}{size\_t}\ sz)}
+\DoxyCodeLine{00209\ \ \ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{return}\ esdl::Slice<VT>(data,\ off,\ sz);}
+\DoxyCodeLine{00211\ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ VT>\ \textcolor{keyword}{static}\ esdl::ConstSlice<VT>\ ConstSlice(}
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{keyword}{const}\ VT\&\ data,\ \textcolor{keywordtype}{size\_t}\ off,\ \textcolor{keywordtype}{size\_t}\ sz)}
+\DoxyCodeLine{00215\ \ \ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{return}\ esdl::ConstSlice<VT>(data,\ off,\ sz);}
+\DoxyCodeLine{00217\ \ \ \}}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{static}\ esdl::CompositeMatrix<list\_t>\ Matrix(\textcolor{keyword}{const}\ list\_t\ \&l,}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ row\_sz,\ \textcolor{keywordtype}{size\_t}\ col\_sz)}
+\DoxyCodeLine{00222\ \ \ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordflow}{return}\ esdl::CompositeMatrix<list\_t>(l,\ row\_sz,\ col\_sz);}
+\DoxyCodeLine{00224\ \ \ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ list\_t>}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{static}\ esdl::CompositeVector<list\_t>\ Vector(\textcolor{keyword}{const}\ list\_t\ \&l)\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{return}\ esdl::CompositeVector<list\_t>(l);}
+\DoxyCodeLine{00229\ \ \ \}}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ mat\_t>}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{static}\ esdl::MatrixVector<mat\_t>\ MatrixVector(\textcolor{keyword}{const}\ mat\_t\ \&l)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{return}\ esdl::MatrixVector<mat\_t>(l);}
+\DoxyCodeLine{00234\ \ \ \}}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{static}\ esdl::VectorMatrix<vec\_t>\ VectorMatrix(\textcolor{keyword}{const}\ vec\_t\ \&l,}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ rows,\ \textcolor{keywordtype}{size\_t}\ cols)}
+\DoxyCodeLine{00239\ \ \ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{return}\ esdl::VectorMatrix<vec\_t>(l,\ rows,\ cols);}
+\DoxyCodeLine{00241\ \ \ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ num\_t>}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{static}\ esdl::ConstPlainVector<num\_t>\ ConstPlainVector(}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keyword}{const}\ num\_t\ *data,\ \textcolor{keywordtype}{size\_t}\ sz)}
+\DoxyCodeLine{00246\ \ \ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{return}\ esdl::ConstPlainVector<num\_t>(data,\ sz);}
+\DoxyCodeLine{00248\ \ \ \}}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ num\_t>}
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{static}\ esdl::PlainVector<num\_t>\ PlainVector(\textcolor{keyword}{const}\ num\_t\ *data,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{return}\ esdl::PlainVector<num\_t>(data,\ sz);}
+\DoxyCodeLine{00253\ \ \ \}}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ num\_t>}
+\DoxyCodeLine{00256\ \ \ \textcolor{keyword}{static}\ esdl::PlainMatrix<num\_t>\ PlainMatrix(\textcolor{keyword}{const}\ num\_t\ *data,}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ rows,\ \textcolor{keywordtype}{size\_t}\ cols)}
+\DoxyCodeLine{00258\ \ \ \{}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordflow}{return}\ esdl::PlainMatrix<num\_t>(data,\ rows,\ cols);}
+\DoxyCodeLine{00260\ \ \ \}}
+\DoxyCodeLine{00261\ \};}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ EndEsdlNamespace()}
+\DoxyCodeLine{00264\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

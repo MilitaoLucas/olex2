@@ -10,16 +10,18 @@ Inheritance diagram for olxstr\+\_\+dict\texorpdfstring{$<$}{<} VType, case\+\_\
 \begin{DoxyCompactItemize}
 \item 
 \Hypertarget{classolxstr__dict_a8fd7ea97e8c22f9cdb9c5dc717651a9f}\label{classolxstr__dict_a8fd7ea97e8c22f9cdb9c5dc717651a9f} 
-typedef \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ olxstr, VType, olxstr\+Comparator$<$ case\+\_\+insensitive $>$ $>$ {\bfseries const\+\_\+dict\+\_\+type}
+typedef \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ case\+\_\+insensitive $>$ $>$ {\bfseries const\+\_\+dict\+\_\+type}
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Types inherited from \mbox{\hyperlink{classolxdict}{olxdict$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$}}}
 \begin{DoxyCompactItemize}
 \item 
-typedef olxstr {\bfseries key\+\_\+item\+\_\+type}
+typedef \mbox{\hyperlink{classTTSString}{olxstr}} {\bfseries key\+\_\+item\+\_\+type}
 \item 
 typedef VType {\bfseries value\+\_\+item\+\_\+type}
 \item 
-typedef \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries const\+\_\+dict\+\_\+type}
+typedef \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries list\+\_\+item\+\_\+type}
+\item 
+typedef \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries const\+\_\+dict\+\_\+type}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -51,13 +53,13 @@ typedef \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ olxstr, VT
 \item 
 {\bfseries olxdict} (const \mbox{\hyperlink{classolxdict}{olxdict}} \&ad)
 \item 
-{\bfseries olxdict} (const \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ \&ad)
+{\bfseries olxdict} (const \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ \&ad)
 \item 
 void {\bfseries Take\+Over} (\mbox{\hyperlink{classolxdict}{olxdict}} \&d)
 \item 
 \mbox{\hyperlink{classolxdict}{olxdict}} \& {\bfseries operator=} (const \mbox{\hyperlink{classolxdict}{olxdict}} \&ad)
 \item 
-\mbox{\hyperlink{classolxdict}{olxdict}} \& {\bfseries operator=} (const \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ \&ad)
+\mbox{\hyperlink{classolxdict}{olxdict}} \& {\bfseries operator=} (const \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ \&ad)
 \item 
 VType \& {\bfseries Get} (const T \&key) const
 \item 
@@ -75,15 +77,19 @@ void {\bfseries Set\+Capacity} (const \mbox{\hyperlink{structolx__capacity__t}{o
 \item 
 void {\bfseries Set\+Capacity} (size\+\_\+t c)
 \item 
+const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \& {\bfseries Get\+List\+Item} (size\+\_\+t ind) const
+\item 
 VType \& {\bfseries Get\+Value} (size\+\_\+t ind)
 \item 
 const VType \& {\bfseries Get\+Value} (size\+\_\+t ind) const
 \item 
-const olxstr \& {\bfseries Get\+Key} (size\+\_\+t ind) const
-\item 
-const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \& {\bfseries Get\+Entry} (size\+\_\+t ind) const
+const \mbox{\hyperlink{classTTSString}{olxstr}} \& {\bfseries Get\+Key} (size\+\_\+t ind) const
 \item 
 bool {\bfseries Has\+Key} (const T \&key) const
+\item 
+bool {\bfseries Contains} (const T \&key) const
+\item 
+void {\bfseries Add\+List\+Item} (const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \&e)
 \item 
 VType \& {\bfseries operator()} (const T \&key, const VType \&def)
 \item 
@@ -97,6 +103,8 @@ size\+\_\+t {\bfseries Index\+Of} (const T \&key) const
 \item 
 size\+\_\+t {\bfseries Index\+Of\+Value} (const T \&val) const
 \item 
+bool {\bfseries Remove\+List\+Item} (const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \&e)
+\item 
 bool {\bfseries Remove} (const T \&key)
 \item 
 void {\bfseries Delete} (size\+\_\+t ind)
@@ -107,52 +115,52 @@ void {\bfseries Merge} (const \mbox{\hyperlink{classolxdict}{olxdict}} \&d, bool
 \doxysubsection*{Protected Types inherited from \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List$<$ Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$, Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$}}}
 \begin{DoxyCompactItemize}
 \item 
-typedef \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries list\+\_\+item\+\_\+type}
+typedef \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries list\+\_\+item\+\_\+type}
 \item 
-typedef \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ {\bfseries cons\+\_\+list\+\_\+type}
+typedef \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ {\bfseries cons\+\_\+list\+\_\+type}
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List$<$ Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$, Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$}}}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp)
+{\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp)
 \item 
 {\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
 \item 
-{\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp, const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
+{\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp, const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
 \item 
 {\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List}} \&l)
 \item 
-{\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ \&l)
+{\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ \&l)
 \item 
 \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List}} \& {\bfseries operator=} (const \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List}} \&l)
 \item 
-\mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List}} \& {\bfseries operator=} (const \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ \&l)
+\mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List}} \& {\bfseries operator=} (const \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ \&l)
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classTTSortedList}{TTSorted\+List$<$ TObject\+List$<$ Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ $>$, Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$, Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ $>$}}}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries TTSorted\+List} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp)
+{\bfseries TTSorted\+List} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp)
 \item 
 {\bfseries TTSorted\+List} (const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
 \item 
-{\bfseries TTSorted\+List} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp, const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
+{\bfseries TTSorted\+List} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp, const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
 \item 
 {\bfseries TTSorted\+List} (const \mbox{\hyperlink{classTTSortedList}{TTSorted\+List}} \&l)
 \item 
-size\+\_\+t {\bfseries Add} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ \&entry)
+size\+\_\+t {\bfseries Add} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ \&entry)
 \item 
-\mbox{\hyperlink{structolx__pair__t}{olx\+\_\+pair\+\_\+t}}$<$ size\+\_\+t, bool $>$ {\bfseries Add\+Unique} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ \&entry)
+\mbox{\hyperlink{structolx__pair__t}{olx\+\_\+pair\+\_\+t}}$<$ size\+\_\+t, bool $>$ {\bfseries Add\+Unique} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ \&entry)
 \item 
 \mbox{\hyperlink{classTTSortedList}{TTSorted\+List}} \& {\bfseries operator=} (const \mbox{\hyperlink{classTTSortedList}{TTSorted\+List}} \&\+\_\+list)
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classTTSortedListBase}{TTSorted\+List\+Base$<$ TObject\+List$<$ Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ $>$, Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$, Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ $>$}}}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries TTSorted\+List\+Base} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp)
+{\bfseries TTSorted\+List\+Base} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp)
 \item 
 {\bfseries TTSorted\+List\+Base} (const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
 \item 
-{\bfseries TTSorted\+List\+Base} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp, const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
+{\bfseries TTSorted\+List\+Base} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ \&cmp, const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
 \item 
 {\bfseries TTSorted\+List\+Base} (const \mbox{\hyperlink{classTTSortedListBase}{TTSorted\+List\+Base}} \&l)
 \item 
@@ -164,7 +172,7 @@ size\+\_\+t {\bfseries Count} () const
 \item 
 size\+\_\+t {\bfseries Count} (const Analyser \&a) const
 \item 
-const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i) const
+const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i) const
 \item 
 \mbox{\hyperlink{classTTSortedListBase}{TTSorted\+List\+Base}} \& {\bfseries operator=} (const \mbox{\hyperlink{classTTSortedListBase}{TTSorted\+List\+Base}} \&\+\_\+list)
 \item 
@@ -172,7 +180,7 @@ size\+\_\+t {\bfseries Index\+Of} (const KeyC \&entity) const
 \item 
 bool {\bfseries Contains} (const KeyC \&entity) const
 \item 
-bool {\bfseries Remove} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ \&entity)
+bool {\bfseries Remove} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ \&entity)
 \item 
 void {\bfseries Delete} (size\+\_\+t ind)
 \item 
@@ -184,7 +192,7 @@ void {\bfseries Set\+Capacity} (size\+\_\+t cap)
 \item 
 void {\bfseries Set\+Increment} (size\+\_\+t incr)
 \item 
-const \mbox{\hyperlink{classTObjectList}{TObject\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ $>$ \& {\bfseries Get\+List} () const
+const \mbox{\hyperlink{classTObjectList}{TObject\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ $>$ \& {\bfseries Get\+List} () const
 \item 
 void {\bfseries Pack} (const Pack\+Analyser \&pa)
 \item 
@@ -193,18 +201,18 @@ void {\bfseries For\+Each} (const Functor \&f) const
 \doxysubsection*{Static Protected Member Functions inherited from \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List$<$ Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$, Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$}}}
 \begin{DoxyCompactItemize}
 \item 
-static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+List} (const LT \&l)
+static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+List} (const LT \&l)
 \item 
-static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+List} (const LT \&l, const accessor\+\_\+t \&accessor)
+static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+List} (const LT \&l, const accessor\+\_\+t \&accessor)
 \item 
-static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+Array} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ \texorpdfstring{$\ast$}{*}a, size\+\_\+t sz)
+static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$, \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+Array} (const \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ \texorpdfstring{$\ast$}{*}a, size\+\_\+t sz)
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classTTSortedListBase}{TTSorted\+List\+Base$<$ TObject\+List$<$ Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ $>$, Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$, Dict\+Entry$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ $>$}}}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classTObjectList}{TObject\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$ $>$ {\bfseries list}
+\mbox{\hyperlink{classTObjectList}{TObject\+List}}$<$ \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$ $>$ {\bfseries list}
 \item 
-\mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ olxstr, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ {\bfseries cmp}
+\mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, VType, olxstr\+Comparator$<$ false $>$ $>$\+::olxstr\+Comparator$<$ false $>$ {\bfseries cmp}
 \end{DoxyCompactItemize}
 
 

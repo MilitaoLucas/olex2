@@ -1,0 +1,54 @@
+\doxysection{symmparser\+\_\+test.\+h}
+\hypertarget{symmparser__test_8h_source}{}\label{symmparser__test_8h_source}\index{xlib/tests/symmparser\_test.h@{xlib/tests/symmparser\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}symmparser.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }test\ \ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keywordtype}{void}\ symm\_parser\_tests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00015\ \ \ t.description\ =\ \_\_OlxSrcInfo;}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{const}\ mat3d\ mres1(-\/1,0,0,-\/1,0,-\/1),}
+\DoxyCodeLine{00017\ \ \ \ \ mres2(-\/1,1,0,0,-\/1,1,-\/1,0,-\/1),}
+\DoxyCodeLine{00018\ \ \ \ \ mres3(-\/1,1,-\/1,1,-\/1,1,-\/1,1,-\/1),}
+\DoxyCodeLine{00019\ \ \ \ \ mres4(-\/2,0,0,\ 0,2.5,-\/3.5,\ -\/1.5,0,\ 1.5);}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{const}\ vec3d\ tres1(0,0,0),}
+\DoxyCodeLine{00021\ \ \ \ \ tres2(-\/1,-\/0.5,-\/1./3),}
+\DoxyCodeLine{00022\ \ \ \ \ tres3(-\/1,\ 1./6,\ -\/1./12),}
+\DoxyCodeLine{00023\ \ \ \ \ tres4(0,0,-\/1);}
+\DoxyCodeLine{00024\ \ \ smatdd\ rv\ =\ TSymmParser::SymmToMatrix(\textcolor{stringliteral}{"{}-\/x,-\/y,-\/z"{}});}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordflow}{if}(\ rv.t.QDistanceTo(tres1)\ >\ 1e-\/10\ ||\ rv.r\ !=\ mres1\ )}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}S2M:1"{}});}
+\DoxyCodeLine{00027\ \ \ rv\ =\ TSymmParser::SymmToMatrix(\textcolor{stringliteral}{"{}-\/x-\/1,-\/y-\/1/2,-\/z-\/1/3"{}});}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordflow}{if}(\ rv.t.QDistanceTo(tres2)\ >\ 1e-\/10\ ||\ rv.r\ !=\ mres1\ )}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}S2M:2"{}});}
+\DoxyCodeLine{00030\ \ \ rv\ =\ TSymmParser::SymmToMatrix(\textcolor{stringliteral}{"{}-\/1-\/x,-\/1/2-\/y,-\/1/3-\/z"{}});}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordflow}{if}(\ rv.t.QDistanceTo(tres2)\ >\ 1e-\/10\ ||\ rv.r\ !=\ mres1\ )}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}S2M:3"{}});}
+\DoxyCodeLine{00033\ \ \ rv\ =\ TSymmParser::SymmToMatrix(\textcolor{stringliteral}{"{}-\/1-\/x+y,-\/1/2-\/y+z,-\/1/3-\/z-\/x"{}});}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordflow}{if}(\ rv.t.QDistanceTo(tres2)\ >\ 1e-\/10\ ||\ rv.r\ !=\ mres2\ )}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}S2M:4"{}});}
+\DoxyCodeLine{00036\ \ \ rv\ =\ TSymmParser::SymmToMatrix(\textcolor{stringliteral}{"{}-\/1-\/x+y-\/z,1/6+x-\/y+z,-\/1/12-\/x+y-\/z"{}});}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordflow}{if}(\ rv.t.QDistanceTo(tres3)\ >\ 1e-\/10\ ||\ rv.r\ !=\ mres3\ )}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}S2M:5"{}});}
+\DoxyCodeLine{00039\ \ \ rv\ =\ TSymmParser::SymmToMatrix(\textcolor{stringliteral}{"{}+X,+Y,-\/1+Z"{}});}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordflow}{if}(\ rv.t.QDistanceTo(tres4)\ >\ 1e-\/10\ ||\ !rv.r.IsI()\ )}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}S2M:6"{}});}
+\DoxyCodeLine{00042\ \ \ olxstr\ sr4\ =\ TSymmParser::MatrixToSymmEx(mres4);}
+\DoxyCodeLine{00043\ \ \ rv\ =\ TSymmParser::SymmToMatrix(sr4);}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordflow}{if}\ (rv.t.QLength()\ >\ 1e-\/10\ ||\ rv.r\ !=\ mres4)}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}S2M:7"{}});}
+\DoxyCodeLine{00046\ \ \ rv\ =\ TSymmParser::SymmToMatrix(\textcolor{stringliteral}{"{}0.5-\/X,0.5-\/Y,0.5-\/Z"{}});}
+\DoxyCodeLine{00047\ \}}
+\DoxyCodeLine{00048\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

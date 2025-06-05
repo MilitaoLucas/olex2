@@ -1,0 +1,103 @@
+\doxysection{ptr\+\_\+test.\+h}
+\hypertarget{ptr__test_8h_source}{}\label{ptr__test_8h_source}\index{sdl/tests/ptr\_test.h@{sdl/tests/ptr\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}olxptr.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}olxvptr.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00014\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtest_1_1Perishable}{Perishable}}\ :\ \textcolor{keyword}{public}\ APerishable\ \{}
+\DoxyCodeLine{00015\ \ \ \};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{void}\ PtrTest1(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{classtest_1_1Perishable}{Perishable}}\ p,\ p1;}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{structolx__perishable__ptr}{olx\_perishable\_ptr<Perishable>}}\ ptr(\textcolor{keyword}{new}\ \mbox{\hyperlink{classtest_1_1Perishable}{Perishable}});}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{delete}\ \&ptr;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{if}\ (ptr.ok())\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00025\ \ \ \ \ \}}
+\DoxyCodeLine{00026\ \ \ \ \ ptr\ =\ \textcolor{keyword}{new}\ Perishable();}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{delete}\ ptr.release();}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordflow}{if}\ (ptr.ok())\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \mbox{\hyperlink{classtest_1_1Perishable}{Perishable}}\ p1\_;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ ptr\ =\ \&p1\_;}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{if}\ (ptr.ok())\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ ptr\ =\ \&p;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ ptr\ =\ 0;}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{if}\ (ptr.ok())\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ olx\_perishable\_ptr<Perishable>\ ptr\_(\textcolor{keyword}{new}\ \mbox{\hyperlink{classtest_1_1Perishable}{Perishable}});}
+\DoxyCodeLine{00046\ \ \ \ \ ptr\_\ =\ ptr;}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{if}\ (ptr\_.ok())\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{struct\ }VPtrTest\_O:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{int}\ v;}
+\DoxyCodeLine{00054\ \ \ \ \ VPtrTest\_O(\textcolor{keywordtype}{int}\ v)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ this-\/>v\ =\ v;}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \};}
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{struct\ }VPtr\ :\ \textcolor{keyword}{public}\ olx\_virtual\_ptr<VPtrTest\_O>\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \mbox{\hyperlink{structtest_1_1VPtrTest__O}{VPtrTest\_O}}\ *inst;}
+\DoxyCodeLine{00060\ \ \ \ \ VPtr(\mbox{\hyperlink{structtest_1_1VPtrTest__O}{VPtrTest\_O}}\ *p)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ inst\ =\ p;}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ \string~VPtr()\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (inst\ !=\ 0)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ inst;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ set\_inst(\mbox{\hyperlink{structtest_1_1VPtrTest__O}{VPtrTest\_O}}\ *p)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (inst\ !=\ 0)\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ inst;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ inst\ =\ p;}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *get\_ptr()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ inst;}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \};}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordtype}{void}\ VptrTest(OlxTests\ \&t)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00081\ \ \ \ \ \mbox{\hyperlink{structtest_1_1VPtr}{VPtr}}\ *ptr\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{structtest_1_1VPtr}{VPtr}}(\textcolor{keyword}{new}\ \mbox{\hyperlink{structtest_1_1VPtrTest__O}{VPtrTest\_O}}(0));}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{structolx__vptr}{olx\_vptr<VPtrTest\_O>}}\ x(ptr);}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{if}\ (x-\/>v\ !=\ 0)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{comment}{//\ chnging\ the\ underlying\ object!}}
+\DoxyCodeLine{00087\ \ \ \ \ ptr-\/>set\_inst(\textcolor{keyword}{new}\ VPtrTest\_O(1));}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{if}\ (x-\/>v\ !=\ 1)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}unexpected\ result"{}});}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordtype}{void}\ PtrTests(OlxTests\ \&t)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ t.Add(\&PtrTest1)}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ .Add(\&VptrTest);}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}
