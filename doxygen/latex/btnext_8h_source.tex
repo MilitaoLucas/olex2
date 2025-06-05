@@ -1,0 +1,143 @@
+\doxysection{btnext.\+h}
+\hypertarget{btnext_8h_source}{}\label{btnext_8h_source}\index{olex/ctrls/btnext.h@{olex/ctrls/btnext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_btn\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_btn\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{class\ }AButtonBase:\ \textcolor{keyword}{public}\ AActionHandler,\ \textcolor{keyword}{public}\ AOlxCtrl\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{bool}\ Down;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ \_ClickEvent();}
+\DoxyCodeLine{00020\ \ \ \ \ olxstr\ Data,\ DependMode,\ Hint;}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *ActionQueue;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{virtual}\ wxWindow*\ GetParent()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \_SetDown(\textcolor{keywordtype}{bool}\ v)\ \ \{\ \ Down\ =\ v;\ \ \}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ AButtonBase(wxWindow*\ this\_wnd)\ :}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ AOlxCtrl(this\_wnd),}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ OnClick(AOlxCtrl::ActionQueue::New(Actions,\ evt\_on\_click\_id)),}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ OnUp(AOlxCtrl::ActionQueue::New(Actions,\ evt\_on\_uncheck\_id)),}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ OnDown(AOlxCtrl::ActionQueue::New(Actions,\ evt\_on\_check\_id)),}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ Down(\textcolor{keyword}{false}),}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ ActionQueue(0)}
+\DoxyCodeLine{00032\ \ \ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ SetToDelete(\textcolor{keyword}{false});}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~AButtonBase()\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ActionQueue\ !=\ 0)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ ActionQueue-\/>Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ SetActionQueue(\mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ q,\ \textcolor{keyword}{const}\ olxstr\&\ dependMode);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{void}\ OnRemove(\mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)\ \{\ ActionQueue\ =\ 0;\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ DefPropC(olxstr,\ Data)}
+\DoxyCodeLine{00046\ \ \ \ \ DefPropC(olxstr,\ Hint)}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsDown()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Down;\ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ SetDown(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl_1_1ActionQueue}{AOlxCtrl::ActionQueue}}\ \&OnClick,\ \&OnUp,\ \&OnDown;}
+\DoxyCodeLine{00052\ \ \ \};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{class\ }TButton:\ \textcolor{keyword}{public}\ wxButton,\ \textcolor{keyword}{public}\ AButtonBase\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseEnterEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseLeaveEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ ClickEvent(wxCommandEvent\&);}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{void}\ PaintEvent(wxPaintEvent\&);}
+\DoxyCodeLine{00059\ \ \ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<olxstr>}}\ drawParams;}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{virtual}\ wxWindow*\ GetParent()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ wxButton::GetParent();\ \ \}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00063\ \ \ \ \ TButton(wxWindow*\ parent,\ wxWindowID\ \textcolor{keywordtype}{id}\ =\ -\/1,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxString\&\ label\ =\ wxEmptyString,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxPoint\&\ pos\ =\ wxDefaultPosition,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxSize\&\ size\ =\ wxDefaultSize,\ \textcolor{keywordtype}{long}\ style\ =\ 0);}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ SetCaption(\textcolor{keyword}{const}\ olxstr\ \&l)\ \ \{\ \ wxButton::SetLabel(l.u\_str());\ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ olxstr\ GetCaption()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ wxButton::GetLabel();\ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{void}\ SetCustomDrawParams(\textcolor{keyword}{const}\ olxstr\ \&params)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ drawParams\ =\ MapFromToks(params);}
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{class\ }TBmpButton:\ \textcolor{keyword}{public}\ wxBitmapButton,\ \textcolor{keyword}{public}\ AButtonBase\ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseEnterEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseLeaveEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ ClickEvent(wxCommandEvent\&)\ \ \{\ \ AButtonBase::\_ClickEvent();\ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ olxstr\ Source;}
+\DoxyCodeLine{00080\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{virtual}\ wxWindow*\ GetParent()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ wxBitmapButton::GetParent();\ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00083\ \ \ \ \ TBmpButton(wxWindow*\ parent,\ wxWindowID\ \textcolor{keywordtype}{id}\ =\ -\/1,}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxBitmap\&\ bitmap\ =\ wxNullBitmap,}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxPoint\&\ pos\ =\ wxDefaultPosition,}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxSize\&\ size\ =\ wxDefaultSize,\ \textcolor{keywordtype}{long}\ style\ =\ wxBU\_AUTODRAW);}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ DefPropC(olxstr,\ Source)}
+\DoxyCodeLine{00089\ \ \ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{class\ }TImgButton\ :\ \textcolor{keyword}{public}\ wxPanel,\ \textcolor{keyword}{public}\ AButtonBase\ \ \{}
+\DoxyCodeLine{00092\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ stUp\ \ \ \ \ \ \ =\ 0x0001,}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ stDown\ \ \ \ \ =\ 0x0002,}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ stDisabled\ =\ 0x0004,}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ stHover\ \ \ \ =\ 0x0008;}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{short}\ state,\ width,\ height;}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{bool}\ MouseIn,\ ProcessingOnDown;}
+\DoxyCodeLine{00101\ \ \ \ \ wxBitmap\ bmpDown,\ bmpUp,\ bmpDisabled,\ bmpHover;}
+\DoxyCodeLine{00102\ \ \ \ \ olxstr\ Source;}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{virtual}\ wxWindow*\ GetParent()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ wxPanel::GetParent();\ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keyword}{const}\ wxBitmap\&\ ChooseBitmap()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00106\ \ \ \ \ wxBitmap\ BmpFromImage(\textcolor{keyword}{const}\ wxImage\&\ img,\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keywordtype}{int}\ h)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordtype}{void}\ ClickEvent(wxCommandEvent\&)\ \ \{\ \ AButtonBase::\_ClickEvent();\ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{void}\ EraseBGEvent(wxEraseEvent\&)\ \ \{\}}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{void}\ SetImages(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTypeList}{TTypeList<wxImage>}}\&,\ \textcolor{keywordtype}{short}\ ,\ \textcolor{keywordtype}{int}\ w=-\/1,\ \textcolor{keywordtype}{int}\ h=-\/1);}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00111\ \ \ \ \ TImgButton(wxWindow*\ parent);}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{void}\ PaintEvent(wxPaintEvent\ \&\ evt)\ \ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ wxPaintDC\ dc(\textcolor{keyword}{this});}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ Render(dc);}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{void}\ Paint()\ \ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ wxClientDC\ dc(\textcolor{keyword}{this});}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ Render(dc);}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsEnabled()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ state\ !=\ stDisabled;\ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{void}\ SetEnabled(\textcolor{keywordtype}{bool}\ v)\ \ \{\ \ state\ =\ (v\ ?\ stUp\ :\ stDisabled);\ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{comment}{//\ swaps\ Up\ and\ Down\ images\ if\ v\ is\ different\ to\ Down\ state...}}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordtype}{void}\ SetDown(\textcolor{keywordtype}{bool}\ v);}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetSource()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Source;\ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{short}\ GetWidth()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ width;\ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{short}\ GetHeight()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ height;\ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{void}\ Render(wxDC\&\ dc)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordtype}{void}\ SetImages(\textcolor{keyword}{const}\ olxstr\&\ src,\ \textcolor{keywordtype}{int}\ w=-\/1,\ \textcolor{keywordtype}{int}\ h=-\/1);}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseDownEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseUpEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseMoveEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseEnterEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseLeaveEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00135\ \ \ \};}
+\DoxyCodeLine{00136\ \};\ \textcolor{comment}{//end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

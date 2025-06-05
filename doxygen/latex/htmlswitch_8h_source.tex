@@ -1,0 +1,78 @@
+\doxysection{htmlswitch.\+h}
+\hypertarget{htmlswitch_8h_source}{}\label{htmlswitch_8h_source}\index{olex/html/htmlswitch.h@{olex/html/htmlswitch.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_html\_switch\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_html\_switch\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}typelist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}paramlist.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTHtmlPreprocessor}{THtmlPreprocessor}};}
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }THtmlSwitch\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00018\ \ \ olxstr\ Name;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{size\_t}\ FileIndex;\ \ \textcolor{comment}{//\ the\ file\ index}}
+\DoxyCodeLine{00020\ \ \ TStrList\ \ Files;}
+\DoxyCodeLine{00021\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,THtmlSwitch*>}}\ Strings;\ \ \textcolor{comment}{//\ represents\ current\ content\ of\ the\ switch}}
+\DoxyCodeLine{00022\ \ \ TParamList\ Params;\ \ \ \textcolor{comment}{//\ parameters\ to\ be\ replaced\ with\ their\ values\ param=ll\ use\ \#param}}
+\DoxyCodeLine{00023\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<THtmlSwitch>}}\ Switches;\ \textcolor{comment}{//\ a\ list\ of\ subitems}}
+\DoxyCodeLine{00024\ \ \ THtmlSwitch\ *ParentSwitch;}
+\DoxyCodeLine{00025\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{bool}\ UpdateSwitch;}
+\DoxyCodeLine{00027\ \ \ \mbox{\hyperlink{classTHtmlPreprocessor}{THtmlPreprocessor}}*\ ParentHtml;}
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ THtmlSwitch(\mbox{\hyperlink{classTHtmlPreprocessor}{THtmlPreprocessor}}\ *\_parent\_html,\ THtmlSwitch\ *\_parent\_switch)}
+\DoxyCodeLine{00030\ \ \ \ \ :\ ParentHtml(\_parent\_html),}
+\DoxyCodeLine{00031\ \ \ \ \ ParentSwitch(\_parent\_switch),}
+\DoxyCodeLine{00032\ \ \ \ \ UpdateSwitch(\textcolor{keyword}{true}),}
+\DoxyCodeLine{00033\ \ \ \ \ FileIndex(0)}
+\DoxyCodeLine{00034\ \ \ \{\}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{virtual}\ \string~THtmlSwitch()\ \{\ \ Clear();\ \ \}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ DefPropC(olxstr,\ Name)}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ GetFileIndex()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ FileIndex;\ \}}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ \ SetFileIndex(\textcolor{keywordtype}{size\_t}\ ind);}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{void}\ UpdateFileIndex();}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ FileCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Files.Count();\ \}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{const}\ olxstr\ \&GetFile(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Files[ind];\ \}}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ ClearFiles()\ \ \{\ \ Files.Clear();\ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ AddFile(\textcolor{keyword}{const}\ olxstr\ \&fn)\ \ \{\ \ Files.Add(fn);\ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetCurrentFile()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_is\_valid\_index(FileIndex)\ ?\ Files[FileIndex]\ :\ EmptyString();}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,THtmlSwitch*>}}\&\ GetStrings()\ \ \{\ \ \textcolor{keywordflow}{return}\ Strings;\ \}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,THtmlSwitch*>}}\&\ GetStrings()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Strings;\ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ SwitchCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Switches.Count();\ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{inline}\ THtmlSwitch\&\ GetSwitch(\textcolor{keywordtype}{size\_t}\ ind)\ \ \{\ \ \textcolor{keywordflow}{return}\ Switches[ind];\ \}}
+\DoxyCodeLine{00056\ \ \ THtmlSwitch*\ \ FindSwitch(\textcolor{keyword}{const}\ olxstr\ \&IName);}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{size\_t}\ FindSimilar(\textcolor{keyword}{const}\ olxstr\ \&start,\ \textcolor{keyword}{const}\ olxstr\ \&end,\ \mbox{\hyperlink{classTPtrList}{TPtrList<THtmlSwitch>}}\&\ ret);}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{void}\ Expand(\mbox{\hyperlink{classTPtrList}{TPtrList<THtmlSwitch>}}\&\ ret);}
+\DoxyCodeLine{00059\ \ \ THtmlSwitch\&\ NewSwitch();}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ AddParam(\textcolor{keyword}{const}\ olxstr\ \&name,\ \textcolor{keyword}{const}\ olxstr\ \&value)\{\ \ Params.AddParam(name,\ value);\ \ \};}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{void}\ AddParam(\textcolor{keyword}{const}\ olxstr\ \&nameEqVal)\ \ \{\ \ Params.FromString(nameEqVal,\ \textcolor{charliteral}{'='});\ \ \};}
+\DoxyCodeLine{00063\ \ \ TParamList\&\ GetParams()\ \ \{\ \ \textcolor{keywordflow}{return}\ Params;\ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{const}\ TParamList\&\ GetParams()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Params;\ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{bool}\ IsToUpdateSwitch()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ UpdateSwitch;\ \};}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ SetUpdateSwitch(\textcolor{keywordtype}{bool}\ v)\ \ \{\ \ UpdateSwitch\ =\ v;\ \};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{void}\ ToStrings(TStrList\ \&List,\ \textcolor{keywordtype}{bool}\ annotate);}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{bool}\ ToFile();}
+\DoxyCodeLine{00071\ \};}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

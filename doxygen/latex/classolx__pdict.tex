@@ -19,6 +19,8 @@ typedef key\+\_\+t {\bfseries key\+\_\+item\+\_\+type}
 \item 
 typedef obj\+\_\+t {\bfseries value\+\_\+item\+\_\+type}
 \item 
+typedef \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ key\+\_\+t, obj\+\_\+t, TPrimitive\+Comparator $>$ {\bfseries list\+\_\+item\+\_\+type}
+\item 
 typedef \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ key\+\_\+t, obj\+\_\+t, TPrimitive\+Comparator $>$ {\bfseries const\+\_\+dict\+\_\+type}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Public Member Functions}
@@ -75,15 +77,19 @@ void {\bfseries Set\+Capacity} (const \mbox{\hyperlink{structolx__capacity__t}{o
 \item 
 void {\bfseries Set\+Capacity} (size\+\_\+t c)
 \item 
+const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \& {\bfseries Get\+List\+Item} (size\+\_\+t ind) const
+\item 
 obj\+\_\+t \& {\bfseries Get\+Value} (size\+\_\+t ind)
 \item 
 const obj\+\_\+t \& {\bfseries Get\+Value} (size\+\_\+t ind) const
 \item 
 const key\+\_\+t \& {\bfseries Get\+Key} (size\+\_\+t ind) const
 \item 
-const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \& {\bfseries Get\+Entry} (size\+\_\+t ind) const
-\item 
 bool {\bfseries Has\+Key} (const T \&key) const
+\item 
+bool {\bfseries Contains} (const T \&key) const
+\item 
+void {\bfseries Add\+List\+Item} (const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \&e)
 \item 
 obj\+\_\+t \& {\bfseries operator()} (const T \&key, const obj\+\_\+t \&def)
 \item 
@@ -96,6 +102,8 @@ obj\+\_\+t \& {\bfseries Add} (const T \&key)
 size\+\_\+t {\bfseries Index\+Of} (const T \&key) const
 \item 
 size\+\_\+t {\bfseries Index\+Of\+Value} (const T \&val) const
+\item 
+bool {\bfseries Remove\+List\+Item} (const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \&e)
 \item 
 bool {\bfseries Remove} (const T \&key)
 \item 
@@ -139,15 +147,19 @@ void {\bfseries Set\+Capacity} (const \mbox{\hyperlink{structolx__capacity__t}{o
 \item 
 void {\bfseries Set\+Capacity} (size\+\_\+t c)
 \item 
+const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \& {\bfseries Get\+List\+Item} (size\+\_\+t ind) const
+\item 
 obj\+\_\+t \& {\bfseries Get\+Value} (size\+\_\+t ind)
 \item 
 const obj\+\_\+t \& {\bfseries Get\+Value} (size\+\_\+t ind) const
 \item 
 const key\+\_\+t \& {\bfseries Get\+Key} (size\+\_\+t ind) const
 \item 
-const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \& {\bfseries Get\+Entry} (size\+\_\+t ind) const
-\item 
 bool {\bfseries Has\+Key} (const T \&key) const
+\item 
+bool {\bfseries Contains} (const T \&key) const
+\item 
+void {\bfseries Add\+List\+Item} (const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \&e)
 \item 
 obj\+\_\+t \& {\bfseries operator()} (const T \&key, const obj\+\_\+t \&def)
 \item 
@@ -160,6 +172,8 @@ obj\+\_\+t \& {\bfseries Add} (const T \&key)
 size\+\_\+t {\bfseries Index\+Of} (const T \&key) const
 \item 
 size\+\_\+t {\bfseries Index\+Of\+Value} (const T \&val) const
+\item 
+bool {\bfseries Remove\+List\+Item} (const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \&e)
 \item 
 bool {\bfseries Remove} (const T \&key)
 \item 

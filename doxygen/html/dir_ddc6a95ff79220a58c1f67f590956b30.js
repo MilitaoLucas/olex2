@@ -1,5 +1,9 @@
 var dir_ddc6a95ff79220a58c1f67f590956b30 =
 [
+    [ "exparse", "dir_078bf028a800637021b549cfb3f10008.html", "dir_078bf028a800637021b549cfb3f10008" ],
+    [ "math", "dir_e6430357912e31967d15a689e19f69a8.html", "dir_e6430357912e31967d15a689e19f69a8" ],
+    [ "smart", "dir_361a4b9d7178134081eeb5b24497da52.html", "dir_361a4b9d7178134081eeb5b24497da52" ],
+    [ "tests", "dir_11109a61d3bef587ba0fc9db638732f4.html", "dir_11109a61d3bef587ba0fc9db638732f4" ],
     [ "actions.h", "actions_8h_source.html", null ],
     [ "arrays.h", "arrays_8h_source.html", null ],
     [ "association.h", "association_8h_source.html", null ],
@@ -24,6 +28,7 @@ var dir_ddc6a95ff79220a58c1f67f590956b30 =
     [ "efilelist.h", "efilelist_8h_source.html", null ],
     [ "egc.h", "egc_8h_source.html", null ],
     [ "egraph.h", "egraph_8h_source.html", null ],
+    [ "ehashed.h", "ehashed_8h_source.html", null ],
     [ "ellist.h", "ellist_8h_source.html", null ],
     [ "emath.h", "emath_8h_source.html", null ],
     [ "ematrix.h", "ematrix_8h_source.html", null ],

@@ -1,0 +1,354 @@
+\doxysection{container\+\_\+test.\+h}
+\hypertarget{container__test_8h_source}{}\label{container__test_8h_source}\index{sdl/tests/container\_test.h@{sdl/tests/container\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}../testsuit.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../ellist.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}../equeue.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../estack.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../typelist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}../talist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}../bitarray.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}../eset.h"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keywordtype}{void}\ \_PrepareList(TTypeList<int>\&\ il)\ \ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00022\ \ \ \ \ il.AddCopy(i);}
+\DoxyCodeLine{00023\ \}}
+\DoxyCodeLine{00024\ \textcolor{keywordtype}{void}\ \_PrepareList(TArrayList<int>\&\ il)\ \ \{}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00026\ \ \ \ \ il.Add(i);}
+\DoxyCodeLine{00027\ \}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ List>}
+\DoxyCodeLine{00029\ \textcolor{keywordtype}{void}\ ListTests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{int}\ valid\_move\ []\ \ \ =\ \{1,2,3,4,5,6,7,8,9,0\};}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{int}\ valid\_shift1\ []\ =\ \{8,9,0,1,2,3,4,5,6,7\};}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{int}\ valid\_shift2\ []\ =\ \{7,8,9,0,1,2,3,4,5,6\};}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{int}\ valid\_shift3\ []\ =\ \{0,1,2,3,4,5,6,7,8,9\};}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{int}\ valid\_shift4\ []\ =\ \{1,2,3,4,5,6,7,8,9,0\};}
+\DoxyCodeLine{00035\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00036\ \ \ t.description\ <<\ \textcolor{charliteral}{'\ '}\ <<\ EsdlClassName(List);}
+\DoxyCodeLine{00037\ \ \ List\ il;}
+\DoxyCodeLine{00038\ \ \ \_PrepareList(il);}
+\DoxyCodeLine{00039\ \ \ il.Move(0,9);}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{if}(\ il[i]\ !=\ valid\_move[i]\ )}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Move\ failed"{}});}
+\DoxyCodeLine{00043\ \ \ il.ShiftR(3);}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{if}(\ il[i]\ !=\ valid\_shift1[i]\ )}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}ShiftR\ failed"{}});}
+\DoxyCodeLine{00047\ \ \ il.ShiftR(1);}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{if}(\ il[i]\ !=\ valid\_shift2[i]\ )}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}ShiftR\ failed"{}});}
+\DoxyCodeLine{00051\ \ \ il.ShiftL(3);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{if}(\ il[i]\ !=\ valid\_shift3[i]\ )}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}ShiftL\ failed"{}});}
+\DoxyCodeLine{00055\ \ \ il.ShiftL(1);}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{if}(\ il[i]\ !=\ valid\_shift4[i]\ )}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}ShiftL\ failed"{}});}
+\DoxyCodeLine{00059\ \ \ il.Move(9,0);}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{if}(\ il[i]\ !=\ i\ )}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Consistency\ failed"{}});}
+\DoxyCodeLine{00063\ \}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00065\ \textcolor{keywordtype}{void}\ DirectionalListTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00066\ \ \ TUDTypeList<int>\ test;}
+\DoxyCodeLine{00067\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00069\ \ \ \ \ test.Add(i);}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )\ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{if}(\ test[i]\ !=\ i\ )}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Indexing\ is\ broken"{}});}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ \ \ TUDTypeList<int>::Iterator\ itr\ =\ test.GetIterator();}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{int}\ cnt\ =\ 0;}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordflow}{while}(\ itr.HasNext()\ )\ \ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{if}(\ itr.Next()\ !=\ cnt++\ )}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Iteration\ failed"{}});}
+\DoxyCodeLine{00079\ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordflow}{if}(\ cnt\ !=\ 10\ )}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordflow}{if}(\ (test[5]\ =\ 7)\ !=\ 7\ )}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Assignment\ is\ broken"{}});}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ TUDTypeList<int*,\ NewCleanup>\ test1;}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00088\ \ \ \ \ test1.Add(\textcolor{keyword}{new}\ \textcolor{keywordtype}{int}(i));}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )\ \ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{if}(\ *test1[i]\ !=\ i\ )}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Indexing\ is\ broken"{}});}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordflow}{if}(\ (*test1[5]\ =\ 7)\ !=\ 7\ )}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Assignment\ is\ broken"{}});}
+\DoxyCodeLine{00095\ \}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00097\ \textcolor{keywordtype}{void}\ LinkedlListTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00098\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{typedef}\ TLinkedList<int>\ list\_t;}
+\DoxyCodeLine{00100\ \ \ list\_t\ test;}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00102\ \ \ \ \ test.Add(i);}
+\DoxyCodeLine{00103\ \ \ list\_t::Iterator\ itr\ =\ test.GetIterator();}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{int}\ cnt\ =\ 0;}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordflow}{while}(\ itr.HasNext()\ )\ \ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{if}(\ itr.Next()\ !=\ cnt++\ )}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Iteration\ failed"{}});}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordflow}{if}(\ cnt\ !=\ 10\ )}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00111\ \}}
+\DoxyCodeLine{00112\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00113\ \textcolor{keywordtype}{void}\ StackTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00114\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00115\ \ \ TStack<int>\ stack;}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00117\ \ \ \ \ stack.Push(i);}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )\ \ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{if}(\ stack.Top()\ !=\ 10-\/i-\/1\ ||\ stack.Pop()\ !=\ 10-\/i-\/1\ )}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00121\ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordflow}{if}(\ !stack.IsEmpty()\ ||\ stack.Count()\ !=\ 0\ )}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00124\ \}}
+\DoxyCodeLine{00125\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00126\ \textcolor{keywordtype}{void}\ QueueTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00127\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00128\ \ \ TQueue<int>\ queue;}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00130\ \ \ \ \ queue.Push(i);}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )\ \ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{if}(\ queue.First()\ !=\ i\ ||\ queue.PopFirst()\ !=\ i\ )}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \textcolor{keywordflow}{if}(\ !queue.IsEmpty()\ ||\ queue.Count()\ !=\ 0\ )}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00137\ \ \ \textcolor{comment}{//\ now\ as\ stack}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )}
+\DoxyCodeLine{00139\ \ \ \ \ queue.PushFirst(i);}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )\ \ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{if}(\ queue.First()\ !=\ 10-\/i-\/1\ ||\ queue.Pop()\ !=\ 10-\/i-\/1\ )}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00143\ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordflow}{if}(\ !queue.IsEmpty()\ ||\ queue.Count()\ !=\ 0\ )}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00146\ \}}
+\DoxyCodeLine{00147\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00148\ \textcolor{keywordtype}{void}\ SharedListTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00149\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00150\ \ \ SharedArrayList<int>\ aalist(\textcolor{keyword}{new}\ TArrayList<int>(10)),\ calist,\ balist(calist);}
+\DoxyCodeLine{00151\ \ \ SharedTypeList<int>\ atlist,\ btlist(atlist),\ ctlist(atlist);}
+\DoxyCodeLine{00152\ \ \ SharedPtrList<const\ int>\ aplist,\ bplist;}
+\DoxyCodeLine{00153\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ aalist.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00154\ \ \ \ \ aalist[i]\ =\ int(i);}
+\DoxyCodeLine{00155\ \ \ \ \ atlist.Add(\textcolor{keyword}{new}\ \textcolor{keywordtype}{int})\ =\ int(i);}
+\DoxyCodeLine{00156\ \ \ \ \ aplist.Add(\&(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&)aalist[i]);}
+\DoxyCodeLine{00157\ \ \ \}}
+\DoxyCodeLine{00158\ \ \ calist\ =\ aalist;}
+\DoxyCodeLine{00159\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ aalist.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{if}(\ aalist[i]\ !=\ calist[i]\ )}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{if}(\ atlist[i]\ !=\ aalist[i]\ )}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{if}(\ atlist[i]\ !=\ *aplist[i]\ )}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00166\ \ \ \}}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \textcolor{keywordflow}{if}(\ !btlist.IsEmpty()\ ||\ !balist.IsEmpty()\ )\ \ \textcolor{comment}{//\ original\ is\ empty}}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ aalist[0]\ =\ 10;}
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordflow}{if}(\ aalist[0]\ !=\ 10\ ||\ calist[0]\ !=\ 0\ )}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ balist\ =\ calist;}
+\DoxyCodeLine{00176\ \ \ balist[1]\ =\ 9;}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordflow}{if}(\ aalist[1]\ !=\ 1\ ||\ balist[1]\ !=\ 9\ ||\ calist[1]\ !=\ 1\ )}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordflow}{if}(\ *aplist[0]\ !=\ 0\ ||\ *aplist[1]\ !=\ 1\ )}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \textcolor{comment}{//\ finally\ will\ modify\ the\ original}}
+\DoxyCodeLine{00184\ \ \ calist[0]\ =\ 10;}
+\DoxyCodeLine{00185\ \ \ calist[1]\ =\ 9;}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordflow}{if}(\ *aplist[0]\ !=\ 10\ ||\ *aplist[1]\ !=\ 9\ )}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ TArrayList<int>\ al(aalist),\ \textcolor{comment}{//\ release\ reference\ through\ copy\ constructor}}
+\DoxyCodeLine{00191\ \ \ \ \ al1;}
+\DoxyCodeLine{00192\ \ \ al1\ =\ balist;\ \textcolor{comment}{//\ release\ reference\ through\ assignmnet}}
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordflow}{if}(\ aalist.IsValid()\ ||\ balist.IsValid()\ )}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Release\ failed"{}});}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordflow}{if}(\ al.Count()\ !=\ 10\ ||\ al1.Count()\ !=\ 10\ )}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ TTypeList<int>\ tl(atlist),\ tl1;}
+\DoxyCodeLine{00199\ \ \ tl1\ =\ btlist;}
+\DoxyCodeLine{00200\ \ \ \textcolor{keywordflow}{if}(\ atlist.IsValid()\ ||\ btlist.IsValid()\ )}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Release\ failed"{}});}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordflow}{if}(\ tl.Count()\ !=\ 10\ ||\ tl1.Count()\ !=\ 0\ )}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ TPtrList<const\ int>\ pl(aplist),\ pl1;}
+\DoxyCodeLine{00206\ \ \ pl1\ =\ bplist;}
+\DoxyCodeLine{00207\ \ \ \textcolor{keywordflow}{if}(\ aplist.IsValid()\ ||\ bplist.IsValid()\ )}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Release\ failed"{}});}
+\DoxyCodeLine{00209\ \ \ \textcolor{keywordflow}{if}(\ pl.Count()\ !=\ 10\ ||\ pl1.Count()\ !=\ 0\ )}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00211\ \}}
+\DoxyCodeLine{00212\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00213\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtest_1_1ConstListTest}{ConstListTest}}\ \{}
+\DoxyCodeLine{00214\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<int>}}\ f()\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<int>}}\ rv(10);}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )\ \ rv[i]\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{int}(i);}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00218\ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \mbox{\hyperlink{classConstArrayList}{ConstArrayList<int>}}\ f1()\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<int>}}\ rv(10);}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )\ \ rv[i]\ =\ i;}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00223\ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \mbox{\hyperlink{classConstTypeList}{ConstTypeList<int>}}\ f2()\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<int>}}\ rv;}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )\ \ rv.AddNew(i);}
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \textcolor{keywordtype}{void}\ ContainerTests(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ t.description\ =\ \_\_OlxSrcInfo;}
+\DoxyCodeLine{00231\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<int>}}\ pl\ =\ f();}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordflow}{if}(\ pl.Count()\ !=\ 10\ )}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ pl.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ *pl[i]\ !=\ i\ )}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00237\ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ pl.DeleteItems(\textcolor{keyword}{false});}
+\DoxyCodeLine{00239\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<int>}}\ al\ =\ f1();}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{if}(\ al.Count()\ !=\ 10\ )}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ i\ <\ 10;\ i++\ )\ \ \{}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ al[i]\ !=\ i\ )}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00245\ \ \ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<int>}}\ tl\ =\ f2();}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{if}(\ tl.Count()\ !=\ 10\ )}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ i=0;\ tl.Count()\ <\ 10;\ i++\ )\ \ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ tl[i]\ !=\ i\ )}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00252\ \ \ \ \ \}}
+\DoxyCodeLine{00253\ \ \ \}}
+\DoxyCodeLine{00254\ \};}
+\DoxyCodeLine{00255\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00256\ \textcolor{keywordtype}{void}\ SetTest(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00257\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{int}\ sv[5]\ =\ \{\ 1,\ 2,\ 5,\ 7,\ 1\ \},\ sv1[4]\ =\ \{2,7,8,9\};}
+\DoxyCodeLine{00259\ \ \ olxset<int,\ TPrimitiveComparator>\ s(sv,\ 5),\ s1(sv1,\ 4);}
+\DoxyCodeLine{00260\ \ \ \textcolor{keywordflow}{if}\ (s.Count()\ !=\ 4)\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00262\ \ \ \}}
+\DoxyCodeLine{00263\ \ \ \textcolor{keywordflow}{if}\ ((s-\/s1).Count()\ !=\ 2)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00265\ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \textcolor{keywordflow}{if}\ ((s\ +\ s1).Count()\ !=\ 6)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00268\ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \textcolor{keywordflow}{if}\ ((s\ \&\ s1).Count()\ !=\ 2)\ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00271\ \ \ \}}
+\DoxyCodeLine{00272\ \}}
+\DoxyCodeLine{00273\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00274\ \textcolor{keywordtype}{void}\ BitArrayTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00275\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00276\ \ \ \{}
+\DoxyCodeLine{00277\ \ \ \ \ TEBitArray\ br(16);}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ br.Count();\ i++)\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((i\ \%\ 2)\ ==\ 0)}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ br.SetTrue(i);}
+\DoxyCodeLine{00281\ \ \ \ \ \}}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ res[17]\ =\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}101010101010101"{}},}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}11111111"{}},}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}0502050205"{}},}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}05050505"{}},}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}211021"{}},}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}021021005"{}},}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}085042001"{}},}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}085085"{}},}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}03410042"{}},}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}03410021"{}},}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}13650010"{}},}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}0136500005"{}},}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}0546100002"{}},}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}0546100001"{}},}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}021845"{}},}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}021845"{}},}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}021845"{}}}
+\DoxyCodeLine{00300\ \ \ \ \ \};}
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 17;\ i++)\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (br.FormatString(i\ +\ 1)\ !=\ res[i])\ \{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \ \ olxstr(br.FormatString(i\ +\ 1))\ <<\ \textcolor{stringliteral}{"{}\ !=\ "{}}\ <<\ res[i]);}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00306\ \ \ \ \ \}}
+\DoxyCodeLine{00307\ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \{}
+\DoxyCodeLine{00309\ \ \ \ \ TEBitArray\ br1(16),\ br2(17);}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keywordflow}{if}\ (br1\ ==\ br2)\ \{}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00312\ \ \ \ \ \}}
+\DoxyCodeLine{00313\ \ \ \ \ br2.SetSize(16);}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{if}\ (!(br1\ ==\ br2))\ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00316\ \ \ \ \ \}}
+\DoxyCodeLine{00317\ \ \ \ \ br1.SetSize(18);}
+\DoxyCodeLine{00318\ \ \ \ \ br1.SetTrue(10);}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \ \ \ \ br2.SetSize(18);}
+\DoxyCodeLine{00321\ \ \ \ \ br2.SetTrue(10);}
+\DoxyCodeLine{00322\ \ \ \ \ br2.SetTrue(17);}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keywordflow}{if}\ (br1\ ==\ br2)\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00325\ \ \ \ \ \}}
+\DoxyCodeLine{00326\ \ \ \ \ }
+\DoxyCodeLine{00327\ \ \ \ \ br1.SetSize(17);}
+\DoxyCodeLine{00328\ \ \ \ \ br2.SetSize(17);}
+\DoxyCodeLine{00329\ \ \ \ \ \textcolor{keywordflow}{if}\ (!(br1\ ==\ br2))\ \{}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Unexpected\ result"{}});}
+\DoxyCodeLine{00331\ \ \ \ \ \}}
+\DoxyCodeLine{00332\ \ \ \}}
+\DoxyCodeLine{00333\ \}}
+\DoxyCodeLine{00334\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00335\ \textcolor{keywordtype}{void}\ ContainerTests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00336\ \ \ t.Add(\&test::ListTests<TArrayList<int>\ >)}
+\DoxyCodeLine{00337\ \ \ \ \ .Add(\&test::ListTests<TTypeList<int>\ >)}
+\DoxyCodeLine{00338\ \ \ \ \ .Add(\&test::DirectionalListTest)}
+\DoxyCodeLine{00339\ \ \ \ \ .Add(\&test::LinkedlListTest).}
+\DoxyCodeLine{00340\ \ \ \ \ Add(\&test::QueueTest).}
+\DoxyCodeLine{00341\ \ \ \ \ Add(\&test::StackTest).}
+\DoxyCodeLine{00342\ \ \ \ \ Add(\&test::SharedListTest).}
+\DoxyCodeLine{00343\ \ \ \ \ Add(\textcolor{keyword}{new}\ \mbox{\hyperlink{structtest_1_1ConstListTest}{ConstListTest}},\ \&ConstListTest::ContainerTests).}
+\DoxyCodeLine{00344\ \ \ \ \ Add(\&test::BitArrayTest).}
+\DoxyCodeLine{00345\ \ \ \ \ Add(\&test::SetTest);}
+\DoxyCodeLine{00346\ \}}
+\DoxyCodeLine{00347\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00348\ \};\ \ \textcolor{comment}{//\ namespace\ test}}
+
+\end{DoxyCode}

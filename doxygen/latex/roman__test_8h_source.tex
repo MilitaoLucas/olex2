@@ -1,0 +1,32 @@
+\doxysection{roman\+\_\+test.\+h}
+\hypertarget{roman__test_8h_source}{}\label{roman__test_8h_source}\index{sdl/tests/roman\_test.h@{sdl/tests/roman\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2015\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../roman.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00012\ \ \ \textcolor{keywordtype}{void}\ TestRoman(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 100;\ i++)\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ x\ =\ rand()\ \%\ (4000);}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ olxstr\ r\ =\ RomanNumber::To(x);}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ri\ =\ RomanNumber::From(r);}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ri\ !=\ x)\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ olxstr(x)\ <<\ \textcolor{stringliteral}{"{}\ !=\ "{}}\ <<\ ri\ <<\ \textcolor{stringliteral}{"{},\ "{}}\ <<\ r);}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ x;}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \ \ \}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \}}
+\DoxyCodeLine{00026\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

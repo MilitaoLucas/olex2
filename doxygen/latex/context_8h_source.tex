@@ -1,0 +1,112 @@
+\doxysection{context.\+h}
+\hypertarget{context_8h_source}{}\label{context_8h_source}\index{sdl/exparse/context.h@{sdl/exparse/context.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_exparse\_context\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_exparse\_context\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}funcwrap.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ namespace\ exparse\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{struct\ }context\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ LibraryRegistry\ functions;}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{comment}{//olxdict<std::type\_info\ const*,\ IClassRegistry*,\ TPointerComparator>\ classes;}}
+\DoxyCodeLine{00020\ \ \ \ \ olxdict<olxstr,\ IClassInfo*,\ olxstrComparator<false>\ >\ classes;}
+\DoxyCodeLine{00021\ \ \ \ \ olxstr\_dict<IEvaluable*,\ true>\ consts;}
+\DoxyCodeLine{00022\ \ \ \ \ olxstr\_dict<VarProxy*,\ false>\ vars;}
+\DoxyCodeLine{00023\ \ \ \ \ context*\ parent;}
+\DoxyCodeLine{00024\ \ \ \ \ context(context*\ \_parent\ =\ NULL)\ :\ parent(\_parent)\ \{\}}
+\DoxyCodeLine{00025\ \ \ \ \ \string~context()\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ classes.Count();\ i++)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ classes.GetValue(i);}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ consts.Count();\ i++)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (consts.GetValue(i)-\/>dec\_ref()\ ==\ 0)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ consts.GetValue(i);}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ vars.Count();\ i++)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vars.GetValue(i)-\/>dec\_ref()\ ==\ 0)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ vars.GetValue(i);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ add\_var(\textcolor{keyword}{const}\ olxstr\&\ name,\ IEvaluable*\ val,\ \textcolor{keywordtype}{bool}\ replace\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ vars.IndexOf(name);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (replace)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ vars.Add(name,\ \textcolor{keyword}{new}\ VarProxy(val))-\/>inc\_ref();}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ vars.GetValue(ind)-\/>update\_value(val);}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}duplicated\ variable:\ "{}})\ <<\ name);}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ vars.Add(name,\ \textcolor{keyword}{new}\ VarProxy(val))-\/>inc\_ref();}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{void}\ add\_const(\textcolor{keyword}{const}\ olxstr\&\ name,\ IEvaluable*\ val)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ consts.IndexOf(name);}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}duplicated\ constant:\ "{}})\ <<\ name);}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ val-\/>inc\_ref();}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ consts.Add(name,\ val);}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ IEvaluable*\ find\_var(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ vars.IndexOf(name);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ vars.GetValue(ind);}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ context*\ cx\ =\ this-\/>parent;}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (cx\ !=\ NULL)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ IEvaluable*\ rv\ =\ cx-\/>find\_var(name);}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rv\ !=\ NULL)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ cx\ =\ cx-\/>parent;}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ IEvaluable*\ find\_const(\textcolor{keyword}{const}\ olxstr\&\ name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ consts.IndexOf(name);}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ consts.GetValue(ind);}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ context*\ cx\ =\ this-\/>parent;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (cx\ !=\ NULL)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ IEvaluable*\ rv\ =\ cx-\/>find\_const(name);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rv\ !=\ NULL)\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ cx\ =\ cx-\/>parent;}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ init\_global(context\&\ cx)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ cx.add\_const(\textcolor{stringliteral}{"{}PI"{}},\ \textcolor{keyword}{new}\ DoubleValue(M\_PI));}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ cx.add\_const(\textcolor{stringliteral}{"{}true"{}},\ \textcolor{keyword}{new}\ BoolValue(\textcolor{keyword}{true}));}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ cx.add\_const(\textcolor{stringliteral}{"{}false"{}},\ \textcolor{keyword}{new}\ BoolValue(\textcolor{keyword}{false}));}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \};}
+\DoxyCodeLine{00103\ \};\ \ \textcolor{comment}{//\ end\ exparse\ namespace}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ EndEsdlNamespace()}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

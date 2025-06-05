@@ -1,0 +1,140 @@
+\doxysection{strbuf.\+h}
+\hypertarget{strbuf_8h_source}{}\label{strbuf_8h_source}\index{sdl/smart/strbuf.h@{sdl/smart/strbuf.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_strbuf\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_strbuf\_H}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ no\ namespace\ -\/\ to\ be\ included\ into}}
+\DoxyCodeLine{00013\ \textcolor{comment}{/*\ string\ buffer,\ reuses\ memory\ allocated\ by\ any\ posted\ TCString\ entry\ */}}
+\DoxyCodeLine{00014\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \textcolor{keywordtype}{char}\_t,\ \textcolor{keyword}{class}\ str\_t>}
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }TTStrBuffer\ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{struct\ }Entry\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{typename}\ str\_t::Buffer*\ Data;}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Start,\ Length;}
+\DoxyCodeLine{00019\ \ \ \ \ Entry*\ Next;}
+\DoxyCodeLine{00020\ \ \ \};}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{size\_t}\ \_Length;}
+\DoxyCodeLine{00022\ \ \ Entry\ *Head,\ *Tail;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{void}\ \_Clear()\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ Entry*\ en\ =\ Head;}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{while}\ (en\ !=\ NULL)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ Head\ =\ en-\/>Next;}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (-\/-\/en-\/>Data-\/>RefCnt\ ==\ 0)}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ en-\/>Data;}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ en;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ en\ =\ Head;}
+\DoxyCodeLine{00031\ \ \ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ TTStrBuffer()\ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ Tail\ =\ Head\ =\ NULL;}
+\DoxyCodeLine{00037\ \ \ \ \ \_Length\ =\ 0;}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ TTStrBuffer(\textcolor{keyword}{const}\ str\_t\&\ v)\ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ Tail\ =\ Head\ =\ \textcolor{keyword}{new}\ Entry;}
+\DoxyCodeLine{00041\ \ \ \ \ Tail-\/>Data\ =\ v.Data\_();}
+\DoxyCodeLine{00042\ \ \ \ \ Tail-\/>Start\ =\ v.Start\_();}
+\DoxyCodeLine{00043\ \ \ \ \ \_Length\ =\ Tail-\/>Length\ =\ v.Length();}
+\DoxyCodeLine{00044\ \ \ \ \ Tail-\/>Next\ =\ NULL;}
+\DoxyCodeLine{00045\ \ \ \ \ Tail-\/>Data-\/>RefCnt++;}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ TTStrBuffer(\textcolor{keyword}{const}\ TTStrBuffer\&\ v)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ Tail\ =\ Head\ =\ NULL;}
+\DoxyCodeLine{00050\ \ \ \ \ \_Length\ =\ 0;}
+\DoxyCodeLine{00051\ \ \ \ \ this-\/>operator\ <<\ (v);}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{virtual}\ \string~TTStrBuffer()\ \ \{\ \_Clear();\ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \_Clear();}
+\DoxyCodeLine{00058\ \ \ \ \ Head\ =\ Tail\ =\ NULL;}
+\DoxyCodeLine{00059\ \ \ \ \ \_Length\ =\ 0;}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ TTStrBuffer\&\ operator\ <<\ (\textcolor{keyword}{const}\ str\_t\&\ v)\ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{if}(\ v.Data\_()\ ==\ NULL\ )\ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{if}(\ Head\ ==\ NULL\ )\ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ Tail\ =\ Head\ =\ \textcolor{keyword}{new}\ Entry;}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ Tail-\/>Next\ =\ \textcolor{keyword}{new}\ Entry;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ Tail\ =\ Tail-\/>Next;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ Tail-\/>Next\ =\ NULL;}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ Tail-\/>Data\ =\ v.Data\_();}
+\DoxyCodeLine{00073\ \ \ \ \ Tail-\/>Start\ =\ v.Start\_();}
+\DoxyCodeLine{00074\ \ \ \ \ \_Length\ +=\ (Tail-\/>Length\ =\ v.Length());}
+\DoxyCodeLine{00075\ \ \ \ \ Tail-\/>Next\ =\ NULL;}
+\DoxyCodeLine{00076\ \ \ \ \ Tail-\/>Data-\/>RefCnt++;}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00078\ \ \ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ TTStrBuffer\&\ operator\ <<\ (\textcolor{keyword}{const}\ TTStrBuffer\&\ v)\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ Entry\ *en\ =\ v.Head;}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{while}\ (en\ !=\ NULL)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Head\ ==\ NULL)}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ Tail\ =\ Head\ =\ \textcolor{keyword}{new}\ Entry;}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ Tail-\/>Next\ =\ \textcolor{keyword}{new}\ Entry;}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ Tail\ =\ Tail-\/>Next;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ Tail-\/>Next\ =\ NULL;}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ Tail-\/>Data\ =\ en-\/>Data;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ Tail-\/>Start\ =\ en-\/>Start;}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \_Length\ +=\ (Tail-\/>Length\ =\ en-\/>Length);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ en\ =\ en-\/>Next;}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ Tail-\/>Next\ =\ NULL;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ Tail-\/>Data-\/>RefCnt++;}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//\ writes\ the\ EOL\ -\/\ size\ of\ v\ should\ be\ Length()+1}}
+\DoxyCodeLine{00100\ \ \ char\_t\ *Read(char\_t\ *v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{if}(\ Head\ ==\ NULL\ )}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ v[0]\ =\ L\textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ Entry*\ en\ =\ Head;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ read\ =\ 0;}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ en\ !=\ NULL\ )\ \ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ olx\_memcpy(\&v[read],\ \&en-\/>Data-\/>Data[en-\/>Start],\ en-\/>Length);}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ read\ +=\ en-\/>Length;}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ en\ =\ en-\/>Next;}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ v[read]\ =\ L\textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \textcolor{comment}{//\ writes\ the\ EOL\ -\/\ size\ of\ v\ should\ be\ CalcSize()+1}}
+\DoxyCodeLine{00116\ \ \ char\_t\ *ReverseRead(char\_t\ *v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{if}(\ Head\ !=\ NULL\ )\ \ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ Entry*\ en\ =\ Head;}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ x\ =\ \_Length-\/1;}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ en\ !=\ NULL\ )\ \ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=en-\/>Length;\ i\ !=\ 0;\ i-\/-\/,\ x-\/-\/\ )}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ v[x]\ =\ en-\/>Data-\/>Data[en-\/>Start+i-\/1];}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ en\ =\ en-\/>Next;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ v[\_Length]\ =\ L\textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{size\_t}\ Length()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \_Length;\ \ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \_Length\ ==\ 0;\ \}}
+\DoxyCodeLine{00131\ \ \ Entry\ *GetHead()\ \{\ \ \textcolor{keywordflow}{return}\ Head;\ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{const}\ Entry\ *GetHead()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Head;\ \ \}}
+\DoxyCodeLine{00133\ \};}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

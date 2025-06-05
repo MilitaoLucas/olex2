@@ -6,15 +6,11 @@ Inheritance diagram for olxstr\+\_\+set\texorpdfstring{$<$}{<} case\+\_\+insensi
 \includegraphics[height=5.000000cm]{classolxstr__set}
 \end{center}
 \end{figure}
-\doxysubsubsection*{Additional Inherited Members}
-\doxysubsection*{Public Types inherited from \mbox{\hyperlink{classolxset}{olxset$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$}}}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-typedef olxstr {\bfseries list\+\_\+item\+\_\+type}
-\item 
-typedef olxstr {\bfseries set\+\_\+item\+\_\+type}
-\item 
-typedef \mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries const\+\_\+set\+\_\+type}
+\Hypertarget{classolxstr__set_a3c66f8d484f5baddcab757fa4dddfcbb}\label{classolxstr__set_a3c66f8d484f5baddcab757fa4dddfcbb} 
+{\bfseries olxstr\+\_\+set} (const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classolxset}{olxset$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$}}}
 \begin{DoxyCompactItemize}
@@ -25,29 +21,33 @@ typedef \mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ olxstr, olxs
 \item 
 {\bfseries olxset} (const olxstr\+Comparator$<$ false $>$ \&cmp, const \mbox{\hyperlink{structolx__capacity__t}{olx\+\_\+capacity\+\_\+t}} \&cap)
 \item 
-{\bfseries olxset} (const olxstr \+\_\+values\mbox{[}$\,$\mbox{]}, size\+\_\+t cnt, const olxstr\+Comparator$<$ false $>$ \&cmp)
+{\bfseries olxset} (const \mbox{\hyperlink{classTTSString}{olxstr}} \+\_\+values\mbox{[}$\,$\mbox{]}, size\+\_\+t cnt, const olxstr\+Comparator$<$ false $>$ \&cmp)
 \item 
-{\bfseries olxset} (const olxstr \+\_\+values\mbox{[}$\,$\mbox{]}, size\+\_\+t cnt)
+{\bfseries olxset} (const \mbox{\hyperlink{classTTSString}{olxstr}} \+\_\+values\mbox{[}$\,$\mbox{]}, size\+\_\+t cnt)
 \item 
 {\bfseries olxset} (const \mbox{\hyperlink{classolxset}{olxset}} \&ad)
 \item 
-{\bfseries olxset} (const \mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ \&ad)
+{\bfseries olxset} (const \mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ \&ad)
 \item 
 void {\bfseries Take\+Over} (\mbox{\hyperlink{classolxset}{olxset}} \&d)
 \item 
 \mbox{\hyperlink{classolxset}{olxset}} \& {\bfseries operator=} (const \mbox{\hyperlink{classolxset}{olxset}} \&ad)
 \item 
-\mbox{\hyperlink{classolxset}{olxset}} \& {\bfseries operator=} (const \mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ \&ad)
+\mbox{\hyperlink{classolxset}{olxset}} \& {\bfseries operator=} (const \mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ \&ad)
 \item 
 size\+\_\+t {\bfseries Count} () const
 \item 
-const olxstr \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i) const
+const \mbox{\hyperlink{classTTSString}{olxstr}} \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i) const
 \item 
-const olxstr \& {\bfseries Get} (size\+\_\+t i) const
+const \mbox{\hyperlink{classTTSString}{olxstr}} \& {\bfseries Get} (size\+\_\+t i) const
+\item 
+const \mbox{\hyperlink{classTTSString}{olxstr}} \& {\bfseries Get\+List\+Item} (size\+\_\+t i) const
 \item 
 bool {\bfseries Contains} (const T \&key) const
 \item 
 bool {\bfseries Add} (const T \&obj)
+\item 
+bool {\bfseries Add\+List\+Item} (const \mbox{\hyperlink{classTTSString}{olxstr}} \&obj)
 \item 
 \mbox{\hyperlink{classolxset}{olxset}} \& {\bfseries Add\+All} (const coll\+\_\+t \&l)
 \item 
@@ -56,6 +56,8 @@ bool {\bfseries Add} (const T \&obj)
 \mbox{\hyperlink{classolxset}{olxset}} \& {\bfseries operator$<$$<$} (const T \&obj)
 \item 
 size\+\_\+t {\bfseries Index\+Of} (const T \&key) const
+\item 
+bool {\bfseries Remove\+List\+Item} (const \mbox{\hyperlink{classTTSString}{olxstr}} \&v)
 \item 
 bool {\bfseries Remove} (const T \&v)
 \item 
@@ -69,24 +71,34 @@ bool {\bfseries Is\+Empty} () const
 \item 
 \mbox{\hyperlink{classolxset}{olxset}} \& {\bfseries operator+=} (const \mbox{\hyperlink{classolxset}{olxset}} \&s)
 \item 
-\mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries operator+} (const \mbox{\hyperlink{classolxset}{olxset}} \&s) const
+\mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries operator+} (const \mbox{\hyperlink{classolxset}{olxset}} \&s) const
 \item 
-\mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries operator\&} (const \mbox{\hyperlink{classolxset}{olxset}} \&s) const
+\mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries operator\&} (const \mbox{\hyperlink{classolxset}{olxset}} \&s) const
 \item 
 \mbox{\hyperlink{classolxset}{olxset}} {\bfseries operator-\/=} (const \mbox{\hyperlink{classolxset}{olxset}} \&s) const
 \item 
-\mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries operator-\/} (const \mbox{\hyperlink{classolxset}{olxset}} \&s) const
+\mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries operator-\/} (const \mbox{\hyperlink{classolxset}{olxset}} \&s) const
 \item 
 void {\bfseries Set\+Increment} (size\+\_\+t v)
 \item 
 void {\bfseries Set\+Capacity} (size\+\_\+t v)
 \end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{classolxset}{olxset$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{classTTSString}{olxstr}} {\bfseries list\+\_\+item\+\_\+type}
+\item 
+typedef \mbox{\hyperlink{classTTSString}{olxstr}} {\bfseries set\+\_\+item\+\_\+type}
+\item 
+typedef \mbox{\hyperlink{classconst__olxset}{const\+\_\+olxset}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries const\+\_\+set\+\_\+type}
+\end{DoxyCompactItemize}
 \doxysubsection*{Protected Types inherited from \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$}}}
 \begin{DoxyCompactItemize}
 \item 
-typedef olxstr {\bfseries list\+\_\+item\+\_\+type}
+typedef \mbox{\hyperlink{classTTSString}{olxstr}} {\bfseries list\+\_\+item\+\_\+type}
 \item 
-typedef \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries cons\+\_\+list\+\_\+type}
+typedef \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries cons\+\_\+list\+\_\+type}
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$}}}
 \begin{DoxyCompactItemize}
@@ -99,11 +111,11 @@ typedef \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List
 \item 
 {\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List}} \&l)
 \item 
-{\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ \&l)
+{\bfseries Sorted\+Object\+List} (const \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ \&l)
 \item 
 \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List}} \& {\bfseries operator=} (const \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List}} \&l)
 \item 
-\mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List}} \& {\bfseries operator=} (const \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ \&l)
+\mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List}} \& {\bfseries operator=} (const \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ \&l)
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classTTSortedList}{TTSorted\+List$<$ TObject\+List$<$ olxstr $>$, olxstr\+Comparator$<$ false $>$, olxstr $>$}}}
 \begin{DoxyCompactItemize}
@@ -116,9 +128,9 @@ typedef \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List
 \item 
 {\bfseries TTSorted\+List} (const \mbox{\hyperlink{classTTSortedList}{TTSorted\+List}} \&l)
 \item 
-size\+\_\+t {\bfseries Add} (const olxstr \&entry)
+size\+\_\+t {\bfseries Add} (const \mbox{\hyperlink{classTTSString}{olxstr}} \&entry)
 \item 
-\mbox{\hyperlink{structolx__pair__t}{olx\+\_\+pair\+\_\+t}}$<$ size\+\_\+t, bool $>$ {\bfseries Add\+Unique} (const olxstr \&entry)
+\mbox{\hyperlink{structolx__pair__t}{olx\+\_\+pair\+\_\+t}}$<$ size\+\_\+t, bool $>$ {\bfseries Add\+Unique} (const \mbox{\hyperlink{classTTSString}{olxstr}} \&entry)
 \item 
 \mbox{\hyperlink{classTTSortedList}{TTSorted\+List}} \& {\bfseries operator=} (const \mbox{\hyperlink{classTTSortedList}{TTSorted\+List}} \&\+\_\+list)
 \end{DoxyCompactItemize}
@@ -141,7 +153,7 @@ size\+\_\+t {\bfseries Count} () const
 \item 
 size\+\_\+t {\bfseries Count} (const Analyser \&a) const
 \item 
-const olxstr \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i) const
+const \mbox{\hyperlink{classTTSString}{olxstr}} \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t i) const
 \item 
 \mbox{\hyperlink{classTTSortedListBase}{TTSorted\+List\+Base}} \& {\bfseries operator=} (const \mbox{\hyperlink{classTTSortedListBase}{TTSorted\+List\+Base}} \&\+\_\+list)
 \item 
@@ -149,7 +161,7 @@ size\+\_\+t {\bfseries Index\+Of} (const KeyC \&entity) const
 \item 
 bool {\bfseries Contains} (const KeyC \&entity) const
 \item 
-bool {\bfseries Remove} (const olxstr \&entity)
+bool {\bfseries Remove} (const \mbox{\hyperlink{classTTSString}{olxstr}} \&entity)
 \item 
 void {\bfseries Delete} (size\+\_\+t ind)
 \item 
@@ -161,7 +173,7 @@ void {\bfseries Set\+Capacity} (size\+\_\+t cap)
 \item 
 void {\bfseries Set\+Increment} (size\+\_\+t incr)
 \item 
-const \mbox{\hyperlink{classTObjectList}{TObject\+List}}$<$ olxstr $>$ \& {\bfseries Get\+List} () const
+const \mbox{\hyperlink{classTObjectList}{TObject\+List}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}} $>$ \& {\bfseries Get\+List} () const
 \item 
 void {\bfseries Pack} (const Pack\+Analyser \&pa)
 \item 
@@ -170,16 +182,16 @@ void {\bfseries For\+Each} (const Functor \&f) const
 \doxysubsection*{Static Protected Member Functions inherited from \mbox{\hyperlink{classSortedObjectList}{Sorted\+Object\+List$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$}}}
 \begin{DoxyCompactItemize}
 \item 
-static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+List} (const LT \&l)
+static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+List} (const LT \&l)
 \item 
-static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+List} (const LT \&l, const accessor\+\_\+t \&accessor)
+static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+List} (const LT \&l, const accessor\+\_\+t \&accessor)
 \item 
-static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ olxstr, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+Array} (const olxstr \texorpdfstring{$\ast$}{*}a, size\+\_\+t sz)
+static \mbox{\hyperlink{classConstSortedObjectList}{Const\+Sorted\+Object\+List}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}}, olxstr\+Comparator$<$ false $>$ $>$ {\bfseries From\+Array} (const \mbox{\hyperlink{classTTSString}{olxstr}} \texorpdfstring{$\ast$}{*}a, size\+\_\+t sz)
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classTTSortedListBase}{TTSorted\+List\+Base$<$ TObject\+List$<$ olxstr $>$, olxstr\+Comparator$<$ false $>$, olxstr $>$}}}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classTObjectList}{TObject\+List}}$<$ olxstr $>$ {\bfseries list}
+\mbox{\hyperlink{classTObjectList}{TObject\+List}}$<$ \mbox{\hyperlink{classTTSString}{olxstr}} $>$ {\bfseries list}
 \item 
 olxstr\+Comparator$<$ false $>$ {\bfseries cmp}
 \end{DoxyCompactItemize}

@@ -20,6 +20,9 @@ typedef KType {\bfseries key\+\_\+item\+\_\+type}
 \Hypertarget{classolxdict_a96115b8148350bbcd6b5eb564ca9a3d4}\label{classolxdict_a96115b8148350bbcd6b5eb564ca9a3d4} 
 typedef VType {\bfseries value\+\_\+item\+\_\+type}
 \item 
+\Hypertarget{classolxdict_a771510657ab6e1ed8d014bea5f891c24}\label{classolxdict_a771510657ab6e1ed8d014bea5f891c24} 
+typedef \mbox{\hyperlink{structDictEntry}{Dict\+Entry}}$<$ KType, VType, Comparator $>$ {\bfseries list\+\_\+item\+\_\+type}
+\item 
 \Hypertarget{classolxdict_a43620ce32c2a13f6d76087c4ed66b3aa}\label{classolxdict_a43620ce32c2a13f6d76087c4ed66b3aa} 
 typedef \mbox{\hyperlink{classconst__olxdict}{const\+\_\+olxdict}}$<$ KType, VType, Comparator $>$ {\bfseries const\+\_\+dict\+\_\+type}
 \end{DoxyCompactItemize}
@@ -80,6 +83,9 @@ void {\bfseries Set\+Capacity} (const \mbox{\hyperlink{structolx__capacity__t}{o
 \Hypertarget{classolxdict_af89027d33f177035b65f1a960105adea}\label{classolxdict_af89027d33f177035b65f1a960105adea} 
 void {\bfseries Set\+Capacity} (size\+\_\+t c)
 \item 
+\Hypertarget{classolxdict_afc803002f52fc9d47e4f4b563e743206}\label{classolxdict_afc803002f52fc9d47e4f4b563e743206} 
+const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \& {\bfseries Get\+List\+Item} (size\+\_\+t ind) const
+\item 
 \Hypertarget{classolxdict_aaec5a85f35e98822c7a38ba1bbe32493}\label{classolxdict_aaec5a85f35e98822c7a38ba1bbe32493} 
 VType \& {\bfseries Get\+Value} (size\+\_\+t ind)
 \item 
@@ -89,11 +95,14 @@ const VType \& {\bfseries Get\+Value} (size\+\_\+t ind) const
 \Hypertarget{classolxdict_aa99afe1ec8f1300bf7d5c877be8a40e1}\label{classolxdict_aa99afe1ec8f1300bf7d5c877be8a40e1} 
 const KType \& {\bfseries Get\+Key} (size\+\_\+t ind) const
 \item 
-\Hypertarget{classolxdict_a0908da120f3457117caaebe7387b00e4}\label{classolxdict_a0908da120f3457117caaebe7387b00e4} 
-const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \& {\bfseries Get\+Entry} (size\+\_\+t ind) const
-\item 
 \Hypertarget{classolxdict_ad5c464bd453ad783ee84163bd074bd2f}\label{classolxdict_ad5c464bd453ad783ee84163bd074bd2f} 
 {\footnotesize template$<$class T$>$ }\\bool {\bfseries Has\+Key} (const T \&key) const
+\item 
+\Hypertarget{classolxdict_ae4aad0200621e5ace468229aaa7cc714}\label{classolxdict_ae4aad0200621e5ace468229aaa7cc714} 
+{\footnotesize template$<$class T$>$ }\\bool {\bfseries Contains} (const T \&key) const
+\item 
+\Hypertarget{classolxdict_a94ddefa3538737340b17cbbaf34ac762}\label{classolxdict_a94ddefa3538737340b17cbbaf34ac762} 
+void {\bfseries Add\+List\+Item} (const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \&e)
 \item 
 \Hypertarget{classolxdict_a1641b4ac912f41b5df488da1c2442742}\label{classolxdict_a1641b4ac912f41b5df488da1c2442742} 
 {\footnotesize template$<$typename T$>$ }\\VType \& {\bfseries operator()} (const T \&key, const VType \&def)
@@ -112,6 +121,9 @@ const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \& {\bfseries Get\+Entry} 
 \item 
 \Hypertarget{classolxdict_a1d024309b7cf1d4e1812287958568ada}\label{classolxdict_a1d024309b7cf1d4e1812287958568ada} 
 {\footnotesize template$<$class T$>$ }\\size\+\_\+t {\bfseries Index\+Of\+Value} (const T \&val) const
+\item 
+\Hypertarget{classolxdict_a724ab407d3cf233cc958d45afc73fc3f}\label{classolxdict_a724ab407d3cf233cc958d45afc73fc3f} 
+bool {\bfseries Remove\+List\+Item} (const \mbox{\hyperlink{structDictEntry}{Entry\+Type}} \&e)
 \item 
 \Hypertarget{classolxdict_a3e2368bf5a88753beba6e4f99289a190}\label{classolxdict_a3e2368bf5a88753beba6e4f99289a190} 
 {\footnotesize template$<$class T$>$ }\\bool {\bfseries Remove} (const T \&key)

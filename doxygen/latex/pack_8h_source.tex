@@ -1,0 +1,44 @@
+\doxysection{pack.\+h}
+\hypertarget{pack_8h_source}{}\label{pack_8h_source}\index{gxlib/modes/pack.h@{gxlib/modes/pack.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_PACK\_MODE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_PACK\_MODE\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }TPackMode\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAMode}{AMode}}\ \{}
+\DoxyCodeLine{00014\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00015\ \ \ TPackMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ \mbox{\hyperlink{classAMode}{AMode}}(\textcolor{keywordtype}{id})}
+\DoxyCodeLine{00016\ \ \ \{\}}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\ \&Cmds,\ \textcolor{keyword}{const}\ TParamList\ \&Options)\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ olxstr\ AtomsToGrow(Cmds.Text(\textcolor{charliteral}{'\ '}));}
+\DoxyCodeLine{00019\ \ \ \ \ olex2.processMacro(\textcolor{stringliteral}{"{}cursor(hand)"{}});}
+\DoxyCodeLine{00020\ \ \ \ \ gxapp.SetPackMode(0,\ AtomsToGrow);}
+\DoxyCodeLine{00021\ \ \ \ \ gxapp.SetXGrowPointsVisible(\textcolor{keyword}{true});}
+\DoxyCodeLine{00022\ \ \ \ \ gxapp.SetZoomAfterModelBuilt(\textcolor{keyword}{false});}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00024\ \ \ \}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{void}\ Finalise\_()\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ gxapp.SetZoomAfterModelBuilt(\textcolor{keyword}{true});}
+\DoxyCodeLine{00027\ \ \ \ \ gxapp.SetXGrowPointsVisible(\textcolor{keyword}{false});}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ obj)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{if}\ (obj.Is<TXGrowPoint>())\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ gxapp.Grow((TXGrowPoint\&)obj);}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

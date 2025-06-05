@@ -1,0 +1,77 @@
+\doxysection{hfix.\+h}
+\hypertarget{hfix_8h_source}{}\label{hfix_8h_source}\index{gxlib/modes/hfix.h@{gxlib/modes/hfix.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_HFIX\_MODE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_HFIX\_MODE\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}xlcongen.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}unitcell.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }THfixMode\ :\ \textcolor{keyword}{public}\ AModeWithLabels\ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{int}\ Hfix;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{double}\ d;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{bool}\ tc\_val;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00021\ \ \ TXlConGen*\ xlConGen;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ THfixMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ AModeWithLabels(\textcolor{keywordtype}{id}),\ xlConGen(0)}
+\DoxyCodeLine{00024\ \ \ \{\}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{if}\ (!gxapp.CheckFileType<\mbox{\hyperlink{classTIns}{TIns}}>())\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00028\ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ d\ =\ Options.FindValue(\textcolor{charliteral}{'d'},\ \textcolor{stringliteral}{"{}-\/1"{}}).ToDouble();}
+\DoxyCodeLine{00030\ \ \ \ \ tc\_val\ =\ Options.GetBoolOption(\textcolor{charliteral}{'t'},\ \textcolor{keyword}{false},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00031\ \ \ \ \ Hfix\ =\ Cmds.IsEmpty()\ ?\ 0\ :\ Cmds[0].ToInt();}
+\DoxyCodeLine{00032\ \ \ \ \ xlConGen\ =\ \textcolor{keyword}{new}\ TXlConGen(gxapp.XFile().GetRM());}
+\DoxyCodeLine{00033\ \ \ \ \ SetUserCursor(Hfix,\ \textcolor{stringliteral}{"{}hfix"{}});}
+\DoxyCodeLine{00034\ \ \ \ \ olex2.processMacro(\textcolor{stringliteral}{"{}labels\ -\/a\ -\/h"{}});}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{void}\ Finalise\_()\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ olx\_del\_obj(xlConGen);}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \&obj)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{if}\ (obj.Is<\mbox{\hyperlink{classTXAtom}{TXAtom}}>())\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\ *XA\ =\ \&(\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)obj;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TAfixGroup::IsFittedRing(Hfix))\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ gxapp.AutoAfixRings(Hfix,\ XA,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (Hfix\ ==\ 0)\ \{\ \ \textcolor{comment}{//\ special\ case}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ ca\ =\ XA-\/>CAtom();}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ca.GetDependentAfixGroup()\ !=\ 0)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ ca.GetDependentAfixGroup()-\/>Clear();}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ca.DependentHfixGroupCount()\ !=\ 0)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ ca.DependentHfixGroupCount();\ i++)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ ca.GetDependentHfixGroup(i).Clear();}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ca.GetParentAfixGroup()\ !=\ 0)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ ca.GetParentAfixGroup()-\/>Clear();}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ olxstr\ cmd\ =\ olxstr(\textcolor{stringliteral}{"{}hadd"{}})\ <<\ \textcolor{charliteral}{'\ '}\ <<\ Hfix\ <<\ \textcolor{stringliteral}{"{}\ \#c"{}}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ <<\ XA-\/>CAtom().GetId()\ <<\ \textcolor{stringliteral}{"{}\ -\/d="{}}\ <<\ d\ <<\ \textcolor{stringliteral}{"{}\ -\/t="{}}\ <<\ tc\_val;}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ olex2.processMacro(cmd);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

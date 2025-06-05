@@ -1,0 +1,138 @@
+\doxysection{sort\+\_\+test.\+h}
+\hypertarget{sort__test_8h_source}{}\label{sort__test_8h_source}\index{sdl/tests/sort\_test.h@{sdl/tests/sort\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2024\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}std\_sort.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}stable\_sort.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtest_1_1SortTest}{SortTest}}\ \ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ icmp(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ a,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ b)\ \ \{\ \ \textcolor{keywordflow}{return}\ a-\/b;\ \ \}}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{struct\ }Cmp\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ it>}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ it\ \&a,\ \textcolor{keyword}{const}\ it\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_ref::get(a)-\/olx\_ref::get(b);}
+\DoxyCodeLine{00020\ \ \ \ \ \}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{int}\ compare(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&a,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \&b)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ a-\/b;}
+\DoxyCodeLine{00023\ \ \ \ \ \}}
+\DoxyCodeLine{00024\ \ \ \};}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ shuffle(list\_t\&\ list)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ lc\ =\ list.Count();}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ lc*2;\ i++)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ p1\ =\ (olx\_abs(rand())\ *\ lc\ /\ RAND\_MAX)\ \%\ lc;}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ p2\ =\ (olx\_abs(rand())\ *\ lc\ /\ RAND\_MAX)\ \%\ lc;}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ list.Swap(p1,\ p2);}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Sorter>}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DoTestT(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ t.description\ <<\ \_\_FUNC\_\_\ <<\ \textcolor{charliteral}{'<'}\ <<\ EsdlClassName(Sorter)\ <<\ \textcolor{charliteral}{'>'};}
+\DoxyCodeLine{00038\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<int>}}\ al1(1001),\ al2(1001);}
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<int>}}\ pl1(1001),\ pl2(1001);}
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<int>}}\ tl1(1001,\ \textcolor{keyword}{false}),\ tl2(1001,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ al1.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ al1[i]\ =\ al2[i]\ =\ rand();}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ pl1[i]\ =\ \&al1[i];\ \ pl2[i]\ =\ \&al2[i];}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ tl1.Set(i,\ \&al1[i]);\ \ tl2.Set(i,\ \&al2[i]);}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *cause=NULL;}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ Cmp\ cmp;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ Sorter::Sort(al1,\ FunctionComparator::Make(icmp),}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ SyncSortListener::MakeSingle(al2));}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ Sorter::Sort(pl1,\ Cmp(),}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ SyncSortListener::MakeSingle(pl2));}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ Sorter::Sort(tl1,\ FunctionComparator::MakeConst(cmp,\ \&Cmp::compare),}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ SyncSortListener::MakeSingle(tl2));}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ al1.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ >\ 0\ \&\&\ (al1[i-\/1]\ >\ al1[i]\ ||\ tl1[i-\/1]\ >\ tl2[i]\ ||\ *pl1[i-\/1]\ >\ *pl2[i])\ )}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}sorting\ failed"{}});}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ al1[i]\ !=\ al2[i]\ ||\ tl1[i]\ !=\ tl2[i]\ ||\ *pl1[i]\ !=\ *pl2[i]\ )}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}syncronised\ sorting\ failed"{}});}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ Sorter::Sort(al1,\ ReverseComparator::Make(icmp));}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ Sorter::Sort(al2,\ ReverseComparator::Make(Cmp()));}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ al1.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ 0\ \&\&\ (al1[i-\/1]\ <\ al1[i]\ ||\ al2[i-\/1]\ <\ al2[i]\ ||\ al1[i]\ !=\ al2[i]))}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}sorting\ failed"{}});}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ Sorter::Sort(al2,\ ReverseComparator::MakeConst(cmp,\ \&Cmp::compare));}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ al1.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (al1[i]\ !=\ al2[i])}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}sorting\ failed"{}});}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{catch}(\mbox{\hyperlink{classTExceptionBase}{TExceptionBase}}\ \&e)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ cause\ =\ e.Replicate();}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ tl1.ReleaseAll();}
+\DoxyCodeLine{00077\ \ \ \ \ tl2.ReleaseAll();}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{if}\ (cause\ !=\ 0)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ cause);}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{struct\ }StableSortVal\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{int}\ val;}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx;}
+\DoxyCodeLine{00085\ \ \ \ \ StableSortVal()\ \{\}}
+\DoxyCodeLine{00086\ \ \ \ \ StableSortVal(\textcolor{keywordtype}{int}\ val,\ \textcolor{keywordtype}{size\_t}\ idx)}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ :\ val(val),\ idx(idx)}
+\DoxyCodeLine{00088\ \ \ \ \ \{\}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ StableSortVal\&\ o)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_cmp(val,\ o.val);}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Sorter>}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ DoStableTestT(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ t.description\ <<\ \_\_FUNC\_\_\ <<\ \textcolor{charliteral}{'<'}\ <<\ EsdlClassName(Sorter)\ <<\ \textcolor{charliteral}{'>'};}
+\DoxyCodeLine{00097\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<StableSortVal>}}\ al1(1021),\ al2(1021);}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{comment}{//\ create\ N\ elements\ with\ values\ 0-\/5}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ al1.Count();\ i++)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ al1[i]\ =\ al2[i]\ =\ \mbox{\hyperlink{structtest_1_1SortTest_1_1StableSortVal}{StableSortVal}}(rand()\%6,\ i);}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ Sorter::Sort(al1,\ \mbox{\hyperlink{classTComparableComparator}{TComparableComparator}}(),}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ SyncSortListener::MakeSingle(al2));}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ al1.Count();\ i++)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ 0\ \&\&\ (al1[i\ -\/\ 1].val\ >\ al1[i].val))\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}sorting\ failed"{}});}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (al1[i].val\ !=\ al2[i].val)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}syncronised\ sorting\ failed"{}});}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ 0\ \&\&\ (al1[i\ -\/\ 1].val\ ==\ al1[i].val\ \&\&\ al1[i\ -\/\ 1].idx\ >\ al1[i].idx))\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}stable\ sorting\ failed"{}});}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{void}\ DoTest(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ t.Add(\ \&SortTest::DoTestT<BubbleSorter>)}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ .Add(\&SortTest::DoTestT<QuickSorter>)}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ .Add(\&SortTest::DoTestT<StdSorter>)}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ .Add(\&SortTest::DoTestT<StdStableSorter>)}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ ;}
+\DoxyCodeLine{00125\ \ \ \ \ t.Add(\&SortTest::DoStableTestT<BubbleSorter>)}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ .Add(\&SortTest::DoStableTestT<StdStableSorter>)}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ .Add(\&SortTest::DoStableTestT<StableQuickSorter>)}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ ;}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ \};}
+\DoxyCodeLine{00131\ \textcolor{comment}{//.........................................................................}}
+\DoxyCodeLine{00132\ \};\ \ \textcolor{comment}{//\ namespace\ test}}
+
+\end{DoxyCode}

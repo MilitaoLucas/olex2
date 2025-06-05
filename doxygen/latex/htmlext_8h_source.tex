@@ -1,0 +1,233 @@
+\doxysection{htmlext.\+h}
+\hypertarget{htmlext_8h_source}{}\label{htmlext_8h_source}\index{olex/html/htmlext.h@{olex/html/htmlext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_htmlext\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_htmlext\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}bapp.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}paramlist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}actions.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}../wininterface.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}wx/wxhtml.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ "{}wx/dynarray.h"{}}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}../ctrls.h"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ "{}widgetcellext.h"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}htmlprep.h"{}}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00026\ \ \ html\_parent\_resize\ =\ 2}
+\DoxyCodeLine{00027\ \};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTHtmlManager}{THtmlManager}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{class\ }THtml\ :\ \textcolor{keyword}{public}\ wxHtmlWindow,\ \textcolor{keyword}{public}\ AEventsDispatcher,\ \textcolor{keyword}{public}\ AOlxCtrl,}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{public}\ THtmlPreprocessor}
+\DoxyCodeLine{00033\ \{}
+\DoxyCodeLine{00034\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{bool}\ Movable,\ PageLoadRequested,\ ShowTooltips;}
+\DoxyCodeLine{00036\ \ \ \mbox{\hyperlink{classolxdict}{olxdict<const\ IOlxObject*,\ int,\ TPointerComparator>}}\ Locks;}
+\DoxyCodeLine{00037\ \ \ olxstr\ PageRequested;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ \&stateTooltipsVisible()\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ v=InvalidIndex;}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00043\ \ \ \mbox{\hyperlink{classTHtmlWidgetCell}{THtmlWidgetCell}}\ *parentCell;}
+\DoxyCodeLine{00044\ \ \ olxstr\ WebFolder,\ \textcolor{comment}{//\ the\ base\ of\ all\ web\ files}}
+\DoxyCodeLine{00045\ \ \ \ \ FileName;}
+\DoxyCodeLine{00046\ \ \ olxstr\ NormalFont,\ FixedFont;}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ OnLinkClicked(\textcolor{keyword}{const}\ wxHtmlLinkInfo\&\ link);}
+\DoxyCodeLine{00048\ \ \ wxHtmlOpeningStatus\ OnOpeningURL(wxHtmlURLType\ type,\ \textcolor{keyword}{const}\ wxString\&\ url,}
+\DoxyCodeLine{00049\ \ \ \ \ wxString\ *redirect)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ OnSizeEvt(wxSizeEvent\&\ event);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{void}\ OnMouseDblClick(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ OnMouseDown(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ OnMouseUp(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ OnMouseMotion(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ OnCellMouseHover(wxHtmlCell\ *Cell,\ wxCoord\ x,\ wxCoord\ y);}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{void}\ OnClipboard(wxClipboardTextEvent\&\ event);}
+\DoxyCodeLine{00058\ \ \ olxstr\ OnSizeData,\ OnDblClickData;}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ MsgId,\ \textcolor{keywordtype}{short}\ MsgSubId,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ScrollWindow(\textcolor{keywordtype}{int}\ dx,\ \textcolor{keywordtype}{int}\ dy,\ \textcolor{keyword}{const}\ wxRect*\ rect\ =\ NULL);}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ DoScroll(\textcolor{keywordtype}{int}\ x\_pos,\ \textcolor{keywordtype}{int}\ y\_pos);}
+\DoxyCodeLine{00063\ \ \ \textcolor{comment}{//\ position\ of\ where\ the\ mous\ was\ down}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{int}\ MouseX,\ MouseY;}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{bool}\ MouseDown;}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \mbox{\hyperlink{classTHtmlSwitch}{THtmlSwitch}}*\ Root;}
+\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<AnAssociation3<AOlxCtrl*,wxWindow*,bool>}},\ \textcolor{keyword}{true}>\ Objects;}
+\DoxyCodeLine{00069\ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<TStrList>}}\ Groups;}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{class\ }TObjectsState\ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<olxstr\_dict<olxstr,false>}}*,\ \textcolor{keyword}{true}>\ Objects;}
+\DoxyCodeLine{00072\ \ \ \ \ THtml\&\ html;}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00074\ \ \ \ \ TObjectsState(THtml\&\ htm)\ :\ html(htm)\ \{\ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \string~TObjectsState();}
+\DoxyCodeLine{00076\ \ \ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<olxstr,false>}}*\ FindProperties(\textcolor{keyword}{const}\ olxstr\&\ cname)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ Objects.IndexOf(cname);}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (ind\ ==\ InvalidIndex)\ ?\ NULL\ :\ Objects.GetValue(ind);}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<olxstr,false>}}*\ DefineControl(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::type\_info\&\ type);}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{void}\ SaveState();}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ RestoreState();}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{void}\ SaveToFile(\textcolor{keyword}{const}\ olxstr\&\ fn);}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{bool}\ LoadFromFile(\textcolor{keyword}{const}\ olxstr\&\ fn);}
+\DoxyCodeLine{00086\ \ \ \};}
+\DoxyCodeLine{00087\ \ \ \mbox{\hyperlink{classTHtml_1_1TObjectsState}{TObjectsState}}\ ObjectsState;}
+\DoxyCodeLine{00088\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00089\ \ \ olxstr\ GetObjectValue(\textcolor{keyword}{const}\ AOlxCtrl\ *Object);}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetObjectData(\textcolor{keyword}{const}\ AOlxCtrl\ *Object);}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordtype}{bool}\ GetObjectState(\textcolor{keyword}{const}\ AOlxCtrl\ *Object,\ \textcolor{keyword}{const}\ olxstr\&\ state);}
+\DoxyCodeLine{00092\ \ \ olxstr\ GetObjectImage(\textcolor{keyword}{const}\ AOlxCtrl\ *Object);}
+\DoxyCodeLine{00093\ \ \ olxstr\ GetObjectItems(\textcolor{keyword}{const}\ AOlxCtrl\ *Object);}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{void}\ SetObjectValue(AOlxCtrl\ *AOlxCtrl,}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ olxstr\&\ value);}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{void}\ SetObjectData(AOlxCtrl\ *AOlxCtrl,\ \textcolor{keyword}{const}\ olxstr\&\ Data);}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{void}\ SetObjectState(AOlxCtrl\ *AOlxCtrl,\ \textcolor{keywordtype}{bool}\ State,}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ state\_name);}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{bool}\ SetObjectImage(AOlxCtrl\ *AOlxCtrl,\ \textcolor{keyword}{const}\ olxstr\&\ src);}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{bool}\ SetObjectItems(AOlxCtrl\ *AOlxCtrl,\ \textcolor{keyword}{const}\ olxstr\&\ src);}
+\DoxyCodeLine{00101\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00102\ \ \ THtml(THtmlManager\ \&manager,\ wxWindow\ *Parent,}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&pop\_name=EmptyString(),\ \textcolor{keywordtype}{int}\ flags=4);}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{virtual}\ \string~THtml();}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{void}\ OnKeyDown(wxKeyEvent\ \&event);}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{void}\ OnChar(wxKeyEvent\ \&event);}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{void}\ OnNavigation(wxNavigationKeyEvent\ \&event);}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \textcolor{keywordtype}{int}\ GetBorders()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ wxHtmlWindow::m\_Borders;\ \ \}}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordtype}{void}\ SetFonts(\textcolor{keyword}{const}\ olxstr\ \&normal,\ \textcolor{keyword}{const}\ olxstr\ \&fixed);}
+\DoxyCodeLine{00112\ \ \ \textcolor{keywordtype}{void}\ GetFonts(olxstr\ \&normal,\ olxstr\ \&fixed)\ \ \{}
+\DoxyCodeLine{00113\ \ \ \ \ normal\ =\ this-\/>NormalFont;}
+\DoxyCodeLine{00114\ \ \ \ \ fixed\ =\ this-\/>FixedFont;}
+\DoxyCodeLine{00115\ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordtype}{bool}\ GetShowTooltips()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ ShowTooltips;\ \ \}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{void}\ SetShowTooltips(\textcolor{keywordtype}{bool}\ v,\ \textcolor{keyword}{const}\ olxstr\ \&html\_name=EmptyString());}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{bool}\ IsPageLoadRequested()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ PageLoadRequested;\ \ \}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordtype}{void}\ LockPageLoad(\textcolor{keyword}{const}\ IOlxObject*\ caller)\ \ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keyword}{volatile}\ olx\_scope\_cs\ cs(TBasicApp::GetCriticalSection());}
+\DoxyCodeLine{00122\ \ \ \ \ Locks.Add(caller,\ 0)++;}
+\DoxyCodeLine{00123\ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordtype}{void}\ UnlockPageLoad(\textcolor{keyword}{const}\ IOlxObject*\ caller)\ \ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{volatile}\ olx\_scope\_cs\ cs(TBasicApp::GetCriticalSection());}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ pos\ =\ Locks.IndexOf(caller);}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}caller"{}});}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{int}\ lc\ =\ -\/-\/Locks.GetValue(pos);}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{if}(\ lc\ <\ 0\ )\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}not\ matching\ call\ to\ unlock"{}});}
+\DoxyCodeLine{00134\ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{if}\ (lc\ ==\ 0)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ Locks.Delete(pos);}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordtype}{bool}\ IsPageLocked()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keyword}{volatile}\ olx\_scope\_cs\ cs(TBasicApp::GetCriticalSection());}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ !Locks.IsEmpty();}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordtype}{bool}\ ProcessPageLoadRequest();}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Destroy();}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetHomePage()\textcolor{keyword}{\ const\ \ }\{\ \ \textcolor{keywordflow}{return}\ FileName;\ \ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keywordtype}{void}\ SetHomePage(\textcolor{keyword}{const}\ olxstr\&\ hp)\ \ \{\ \ FileName\ =\ hp;\ \ \}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \textcolor{keywordtype}{bool}\ LoadPage(\textcolor{keyword}{const}\ wxString\ \&File);}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordtype}{bool}\ UpdatePage(\textcolor{keywordtype}{bool}\ update\_indices=\textcolor{keyword}{true});}
+\DoxyCodeLine{00152\ \ \ DefPropC(olxstr,\ WebFolder);}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ THtmlSwitch\&\ GetRoot()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ *Root;\ \}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordtype}{bool}\ ItemState(\textcolor{keyword}{const}\ olxstr\&\ ItemName,\ \textcolor{keywordtype}{short}\ State);}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00157\ \textcolor{comment}{\ \ adds\ an\ object\ to\ container\ and\ return\ true\ if\ an\ existing\ control}}
+\DoxyCodeLine{00158\ \textcolor{comment}{\ \ has\ been\ replaced}}
+\DoxyCodeLine{00159\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00160\ \ \ \textcolor{keywordtype}{bool}\ AddControl(\textcolor{keyword}{const}\ olxstr\&\ Name,\ AOlxCtrl\ *Obj,\ wxWindow*\ wxObj,}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordtype}{bool}\ Manage\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00162\ \ \ AOlxCtrl\ *FindObject(\textcolor{keyword}{const}\ olxstr\&\ Name)\ \ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ Objects.IndexOf(Name);}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{return}\ (ind\ ==\ InvalidIndex)\ ?\ NULL\ :\ Objects.GetValue(ind).a;}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ \ \ wxWindow\ *FindObjectWindow(\textcolor{keyword}{const}\ olxstr\&\ Name)\ \ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ ind\ =\ Objects.IndexOf(Name);}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordflow}{return}\ (ind\ ==\ InvalidIndex)\ ?\ 0\ :\ Objects.GetValue(ind).b;}
+\DoxyCodeLine{00169\ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \textcolor{keywordtype}{size\_t}\ ObjectCount()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Objects.Count();\ \ \}}
+\DoxyCodeLine{00171\ \ \ AOlxCtrl*\ GetObject(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Objects.GetValue(i).a;\ \ \}}
+\DoxyCodeLine{00172\ \ \ wxWindow*\ GetWindow(\textcolor{keywordtype}{size\_t}\ i)\ \ \{\ \ \textcolor{keywordflow}{return}\ Objects.GetValue(i).b;\ \ \}}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{const}\ olxstr\&\ GetObjectName(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ Objects.GetKey(i);\ \ \}}
+\DoxyCodeLine{00174\ \ \ \textcolor{keywordtype}{bool}\ IsObjectManageble(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordflow}{return}\ Objects.GetValue(i).GetC();}
+\DoxyCodeLine{00176\ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00178\ \ \ DefPropBIsSet(Movable)}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ THtmlManager\ \&Manager;}
+\DoxyCodeLine{00181\ \ \ TActionQueue\&\ OnURL;}
+\DoxyCodeLine{00182\ \ \ TActionQueue\&\ OnLink;}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ TActionQueue\&\ OnDblClick,\ \&OnSize;}
+\DoxyCodeLine{00185\ \ \ TActionQueue\&\ OnKey;}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \ \ DefPropC(olxstr,\ OnSizeData)}
+\DoxyCodeLine{00188\ \ \ DefPropC(olxstr,\ OnDblClickData)}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ THtmlWidgetCell\ *GetParentCell()\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{return}\ parentCell;}
+\DoxyCodeLine{00192\ \ \ \}}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ wxHtmlCell\ *GetRootCell()\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{return}\ m\_Cell;}
+\DoxyCodeLine{00196\ \ \ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{void}\ SetParentCell(THtmlWidgetCell\ *cell)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ parentCell\ =\ cell;}
+\DoxyCodeLine{00200\ \ \ \}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \textcolor{comment}{//\ global\ data\ for\ the\ HTML\ parsing....}}
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{static}\ olxstr\ \&SwitchSource()\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ src;}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keywordflow}{return}\ src;}
+\DoxyCodeLine{00206\ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{static}\ str\_stack\ \&SwitchSources()\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keyword}{static}\ str\_stack\ st;}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{return}\ st;}
+\DoxyCodeLine{00210\ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \textcolor{comment}{/*\ removes\ cycling\ refences\ like\ \#onclick\ =\ \#onclick\ or}}
+\DoxyCodeLine{00212\ \textcolor{comment}{\ \ \#onclick\ =\ \#onchange,\ \#onchange\ =\ \#onclick,\ returns\ }}
+\DoxyCodeLine{00213\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00214\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ CyclicReduce(olxstr\_dict<olxstr,\ true>\ \&values);}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//\ an\ extention...}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{class\ }WordCell\ :\ \textcolor{keyword}{public}\ wxHtmlWordCell\ \ \{}
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00218\ \ \ \ \ WordCell(\textcolor{keyword}{const}\ wxString\&\ word,\ \textcolor{keyword}{const}\ wxDC\&\ dc)\ :\ wxHtmlWordCell(word,\ dc)}
+\DoxyCodeLine{00219\ \ \ \ \ \{\}}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{comment}{//just\ this\ extra\ function\ for\ managed\ alignment\ ...}}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordtype}{void}\ SetDescent(\textcolor{keywordtype}{int}\ v)\ \{\ \ m\_Descent\ =\ v;\ \ \}}
+\DoxyCodeLine{00222\ \ \ \};}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }THtmlManager;}
+\DoxyCodeLine{00225\ \};}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

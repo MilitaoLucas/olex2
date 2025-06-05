@@ -1,0 +1,72 @@
+\doxysection{widgetcellext.\+h}
+\hypertarget{widgetcellext_8h_source}{}\label{widgetcellext_8h_source}\index{olex/html/widgetcellext.h@{olex/html/widgetcellext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_html\_widget\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_html\_widget\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}wx/wxhtml.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}eset.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }THtmlWidgetCell\ :\ \textcolor{keyword}{public}\ wxHtmlWidgetCell\ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{int}\ float\_y;}
+\DoxyCodeLine{00017\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00018\ \ \ wxRect\ CalcRect()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{int}\ absx\ =\ 0,\ absy\ =\ 0,\ stx,\ sty;}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{const}\ wxHtmlCell\ *c\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordflow}{while}\ (c\ !=\ 0)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ absx\ +=\ c-\/>GetPosX();}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ absy\ +=\ c-\/>GetPosY();}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ c\ =\ c-\/>GetParent();}
+\DoxyCodeLine{00025\ \ \ \ \ \}}
+\DoxyCodeLine{00026\ \ \ \ \ wxScrolledWindow\ *scrolwin\ =}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ wxDynamicCast(m\_Wnd-\/>GetParent(),\ wxScrolledWindow);}
+\DoxyCodeLine{00028\ \ \ \ \ scrolwin-\/>GetViewStart(\&stx,\ \&sty);}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{return}\ wxRect(absx\ -\/\ wxHTML\_SCROLL\_STEP\ *\ stx,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ absy\ -\/\ wxHTML\_SCROLL\_STEP\ *\ sty,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ m\_Width,\ m\_Height);}
+\DoxyCodeLine{00032\ \ \ \}}
+\DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ THtmlWidgetCell(wxWindow*\ \_wnd,\ \textcolor{keywordtype}{int}\ \_float\_x\ =\ 0,\ \textcolor{keywordtype}{int}\ \_float\_y\ =0)\ :}
+\DoxyCodeLine{00035\ \ \ \ \ wxHtmlWidgetCell(\_wnd,\ \_float\_x),}
+\DoxyCodeLine{00036\ \ \ \ \ float\_y(\_float\_y)}
+\DoxyCodeLine{00037\ \ \ \{\}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \string~THtmlWidgetCell()\ \{\}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{int}\ GetFloatY()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ float\_y;\ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{comment}{//\ implemented\ in\ imagecellext.cpp\ ...}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ SetHeight(\textcolor{keywordtype}{int}\ h);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ Draw(wxDC\&\ WXUNUSED(dc),\ \textcolor{keywordtype}{int}\ WXUNUSED(x),\ \textcolor{keywordtype}{int}\ WXUNUSED(y),}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{int}\ WXUNUSED(view\_y1),\ \textcolor{keywordtype}{int}\ WXUNUSED(view\_y2),}
+\DoxyCodeLine{00047\ \ \ \ \ wxHtmlRenderingInfo\&\ WXUNUSED(info))}
+\DoxyCodeLine{00048\ \ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ wxRect\ csz\ =\ m\_Wnd-\/>GetRect(),}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ nsz\ =\ CalcRect();}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{if}\ (csz\ !=\ nsz)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ m\_Wnd-\/>SetSize(nsz);}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{void}\ DrawInvisible(wxDC\&\ WXUNUSED(dc),\ \textcolor{keywordtype}{int}\ WXUNUSED(x),\ \textcolor{keywordtype}{int}\ WXUNUSED(y),}
+\DoxyCodeLine{00057\ \ \ \ \ wxHtmlRenderingInfo\&\ WXUNUSED(info))}
+\DoxyCodeLine{00058\ \ \ \{}
+\DoxyCodeLine{00059\ \ \ \ \ wxRect\ csz\ =\ m\_Wnd-\/>GetRect(),}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ nsz\ =\ CalcRect();}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{if}\ (csz\ !=\ nsz)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ m\_Wnd-\/>SetSize(nsz);}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \};}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

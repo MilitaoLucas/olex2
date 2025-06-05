@@ -1,0 +1,44 @@
+\doxysection{hall\+\_\+test.\+h}
+\hypertarget{hall__test_8h_source}{}\label{hall__test_8h_source}\index{xlib/tests/hall\_test.h@{xlib/tests/hall\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}../hall.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}../symmlib.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keywordtype}{void}\ HallTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00016\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00017\ \ \ TSymmLib\ \&sl\ =\ TSymmLib::GetInstance();}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ sl.SGCount();\ i++)\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ TSpaceGroup\ \&sg\ =\ sl.GetGroup(i);}
+\DoxyCodeLine{00020\ \ \ \ \ SymmSpace::Info\ si\ =\ sg.GetInfo();}
+\DoxyCodeLine{00021\ \ \ \ \ olxstr\ hs\ =\ HallSymbol::Evaluate(si);}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{if}\ (hs\ !=\ sg.GetHallSymbol())\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Hall\ symbol\ mismatch:\ "{}}).quote()\ <<\ hs\ <<}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ (olxstr(\textcolor{stringliteral}{"{}vs\ "{}}).quote()\ <<\ sg.GetHallSymbol()));}
+\DoxyCodeLine{00026\ \ \ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \ \ SymmSpace::Info\ r\_si\ =\ HallSymbol::Expand(hs);}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordflow}{if}\ (si\ !=\ r\_si)\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Hall\ symbol\ expansion\ failed"{}});}
+\DoxyCodeLine{00031\ \ \ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \}}
+\DoxyCodeLine{00033\ \}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00035\ \textcolor{keywordtype}{void}\ HallTests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00036\ \ \ t.Add(test::HallTest);}
+\DoxyCodeLine{00037\ \}}
+\DoxyCodeLine{00038\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

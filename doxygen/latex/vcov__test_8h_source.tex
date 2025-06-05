@@ -1,0 +1,96 @@
+\doxysection{vcov\+\_\+test.\+h}
+\hypertarget{vcov__test_8h_source}{}\label{vcov__test_8h_source}\index{xlib/tests/vcov\_test.h@{xlib/tests/vcov\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}vcov.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}ins.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keywordtype}{void}\ vcov\_test(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00016\ \ \ t.description\ =\ \_\_OlxSrcInfo;}
+\DoxyCodeLine{00017\ \ \ TXApp\&\ app\ =\ TXApp::GetInstance();}
+\DoxyCodeLine{00018\ \ \ \textcolor{comment}{//\ trying\ to\ register\ the\ extension\ name\ throws\ an\ exception}}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordflow}{try}\ \ \{\ \ app.XFile().RegisterFileFormat(\textcolor{keyword}{new}\ TIns,\ \textcolor{stringliteral}{"{}res"{}});\ \}}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordflow}{catch}(\textcolor{keyword}{const}\ TExceptionBase\&\ )\ \ \{\}}
+\DoxyCodeLine{00021\ \ \ TEFile\ tf(app.GetBaseDir()\ +\ \textcolor{stringliteral}{"{}vcov\_test.res"{}},\ \textcolor{stringliteral}{"{}w+b"{}});}
+\DoxyCodeLine{00022\ \ \ tf.Write(}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{stringliteral}{"{}CELL\ 0.7\ 12.3\ 10\ 4.7\ 90\ 123\ 78\(\backslash\)n"{}}}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{stringliteral}{"{}ZERR\ 2\ 0.01\ 0.03\ 0.008\ 0.1\ 0.13\ 0.17\(\backslash\)n"{}}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{stringliteral}{"{}LATT\ 1\(\backslash\)n"{}}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{stringliteral}{"{}SFAC\ C\(\backslash\)n"{}}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{stringliteral}{"{}UNIT\ 1\(\backslash\)n"{}}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{stringliteral}{"{}C1\ 1\ 0.33\ 0.25\ 0.66\ 1\ 0.25\(\backslash\)n"{}}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{stringliteral}{"{}HKLF\ 4\(\backslash\)n"{}}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{stringliteral}{"{}END"{}}}
+\DoxyCodeLine{00031\ \ \ \ \ );}
+\DoxyCodeLine{00032\ \ \ tf.SetTemporary(\textcolor{keyword}{true});}
+\DoxyCodeLine{00033\ \ \ tf.Flush();}
+\DoxyCodeLine{00034\ \ \ app.XFile().LoadFromFile(tf.GetName());}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordflow}{if}(\ app.XFile().GetLattice().GetObjects().atoms.IsEmpty()\ )\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{stringliteral}{"{}could\ not\ complete\ test:\ at\ least\ 1\ atom\ is\ needed"{}});}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ TAsymmUnit\&\ au\ =\ app.XFile().GetAsymmUnit();}
+\DoxyCodeLine{00040\ \ \ VcoVContainer\ vcovc(au);}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordflow}{try}\ \ \{\ \ app.InitVcoV(vcovc);\ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordflow}{catch}(\textcolor{keyword}{const}\ TExceptionBase\&)\ \ \{\}}
+\DoxyCodeLine{00043\ \ \ TSAtom\&\ src\ =\ \ app.XFile().GetLattice().GetObjects().atoms[0];}
+\DoxyCodeLine{00044\ \ \ TSAtom\ a(NULL),\ b(NULL);}
+\DoxyCodeLine{00045\ \ \ a.CAtom(src.CAtom());}
+\DoxyCodeLine{00046\ \ \ a.\_SetMatrix(\textcolor{keyword}{const\_cast<}smatd\&\textcolor{keyword}{>}(src.GetMatrix()));}
+\DoxyCodeLine{00047\ \ \ b.CAtom(src.CAtom());}
+\DoxyCodeLine{00048\ \ \ b.\_SetMatrix(\textcolor{keyword}{const\_cast<}smatd\&\textcolor{keyword}{>}(src.GetMatrix()));}
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//\ test\ cell\ axis\ esds}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ 3;\ i++\ )\ \ \{}
+\DoxyCodeLine{00051\ \ \ \ \ vec3d\ tr;}
+\DoxyCodeLine{00052\ \ \ \ \ tr[i]\ =\ 1;}
+\DoxyCodeLine{00053\ \ \ \ \ a.crd()\ =\ au.Orthogonalise(src.ccrd()+tr);}
+\DoxyCodeLine{00054\ \ \ \ \ TEValueD\ e\ =\ vcovc.CalcDistance(src,\ a);}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{if}(\ olx\_abs(e.GetV()-\/au.GetAxes()[i])\ >\ 1e-\/6\ ||}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ olx\_abs(e.GetE()-\/au.GetAxisEsds()[i])\ >\ 1e-\/6)}
+\DoxyCodeLine{00057\ \ \ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{comment}{//\ test\ cell\ angle\ esds}}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ 3;\ i++\ )\ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ vec3d\ tra;}
+\DoxyCodeLine{00064\ \ \ \ \ tra[i]\ =\ 1;}
+\DoxyCodeLine{00065\ \ \ \ \ a.crd()\ =\ au.Orthogonalise(src.ccrd()+tra);}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ j=i+1;\ j\ <\ 3;\ j++\ )\ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ vec3d\ trb;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ trb[j]\ =\ 1;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ b.crd()\ =\ au.Orthogonalise(src.ccrd()+trb);}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ai\ =\ 0;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ j\ ==\ 1\ )}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ ai\ =\ 2;}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ ==\ 0\ )}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ ai\ =\ 1;}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ ai\ =\ 0;}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ TEValueD\ e\ =\ vcovc.CalcAngle(a,\ src,\ b);}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ olx\_abs(e.GetV()-\/au.GetAngles()[ai])\ >\ 1e-\/4\ ||}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ olx\_abs(e.GetE()-\/au.GetAngleEsds()[ai])\ >\ 1e-\/4)}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00088\ \}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//..................................................................................}}
+\DoxyCodeLine{00090\ \};\ \ \textcolor{comment}{//end\ namespace\ test}}
+
+\end{DoxyCode}

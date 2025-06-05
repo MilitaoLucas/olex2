@@ -1,0 +1,633 @@
+\doxysection{funcwrap.\+h}
+\hypertarget{funcwrap_8h_source}{}\label{funcwrap_8h_source}\index{sdl/exparse/funcwrap.h@{sdl/exparse/funcwrap.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ olx\_func\_wrap\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ olx\_func\_wrap\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../typelist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}../edict.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}../estlist.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}evaluable.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <typeinfo>}}
+\DoxyCodeLine{00018\ BeginEsdlNamespace()}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ namespace\ exparse\ \ \{}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00023\ \ \ \textcolor{comment}{/*\ function\ interface\ */}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{struct\ }IBasicFunction\ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~IBasicFunction()\ \ \{\}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ get\_name()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ get\_signature()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ get\_argc()\ \textcolor{keyword}{const}\ \ =\ 0;}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ type\_info\&\ get\_arg\_type(\textcolor{keywordtype}{size\_t}\ i)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ type\_info\&\ get\_RV\_type()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00031\ \ \ \};}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{struct\ }IMemberFunction\ :\ \textcolor{keyword}{public}\ IBasicFunction\ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(IOlxObject\ *self,\ \textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ params)\ =\ 0;}
+\DoxyCodeLine{00035\ \ \ \};}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{struct\ }IStaticFunction\ :\ \textcolor{keyword}{public}\ IBasicFunction\ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(\textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ params)\ =\ 0;}
+\DoxyCodeLine{00039\ \ \ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{comment}{/*\ abstract\ function\ */}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base,\ \textcolor{keyword}{class}\ rv>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classAFunction}{AFunction}}\ :\ \textcolor{keyword}{public}\ base\ \{}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00044\ \ \ \ \ TPtrList<type\_info\ const>\ arg\_types;}
+\DoxyCodeLine{00045\ \ \ \ \ olxstr\ name;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00047\ \ \ \ \ AFunction(\textcolor{keyword}{const}\ olxstr\&\ \_name\ )\ :\ name(\_name)\ \ \{\}}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ get\_name()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ name;\ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{virtual}\ olxstr\ get\_signature()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ olxstr\ retval\ =\ get\_RV\_type().name();}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ retval\ <<\ \textcolor{charliteral}{'\ '}\ <<\ get\_name()\ <<\ \textcolor{charliteral}{'('};}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ arg\_types.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ retval\ <<\ arg\_types[i]-\/>name();}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (i+1)\ <\ arg\_types.Count()\ )}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ retval\ <<\ \textcolor{stringliteral}{"{},\ "{}};}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ retval\ <<\ \textcolor{charliteral}{')'};}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ retval;}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ get\_argc()\textcolor{keyword}{\ const\ \ }\{\ \ \textcolor{keywordflow}{return}\ arg\_types.Count();\ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ type\_info\&\ get\_arg\_type(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *arg\_types[i];}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ type\_info\&\ get\_RV\_type()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typeid}(rv);\ \ \}}
+\DoxyCodeLine{00065\ \ \ \};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{comment}{//\ static\ function}}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{class\ }VoidFunction\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IStaticFunction,void>\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ void\ (*func)();}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00073\ \ \ \ \ VoidFunction(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (*f)(\textcolor{keywordtype}{void})\ )}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ :\ AFunction<IStaticFunction,void>(name),\ func(f)\ \{\}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(\textcolor{keyword}{const}\ EvaluableFactory\&,}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ params)}
+\DoxyCodeLine{00077\ \ \ \ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ this-\/>func();}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ VoidValue;}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \};}
+\DoxyCodeLine{00082\ \ \ \textcolor{comment}{//\ class\ member\ function}}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_\textcolor{keyword}{class}>\ \textcolor{keyword}{class\ }VoidMemberFunction}
+\DoxyCodeLine{00084\ \ \ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IMemberFunction,void>}
+\DoxyCodeLine{00085\ \ \ \{}
+\DoxyCodeLine{00086\ \ \ \ \ void\ (base\_class::*func)();}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00088\ \ \ \ \ VoidMemberFunction(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (base\_class::*f)()\ )}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ :\ AFunction<IMemberFunction,void>(name),\ func(f)\ \ \{\}}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(IOlxObject\ *self,\ \textcolor{keyword}{const}\ EvaluableFactory\&,}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ params\ )}
+\DoxyCodeLine{00092\ \ \ \ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ IEvaluable\ *b\ =\ \textcolor{keyword}{dynamic\_cast<}IEvaluable\ *\textcolor{keyword}{>}(self);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (b\ !=\ NULL)}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ (b-\/>cast<base\_class>().val-\/>*func)();}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ (\textcolor{keyword}{dynamic\_cast<}base\_class*\textcolor{keyword}{>}(self)-\/>*func)();}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ VoidValue;}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \};}
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//\ static\ function}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ argt\_1>\ \textcolor{keyword}{class\ }VoidFunction1}
+\DoxyCodeLine{00104\ \ \ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IStaticFunction,void>}
+\DoxyCodeLine{00105\ \ \ \{}
+\DoxyCodeLine{00106\ \ \ \ \ void\ (*func)(argt\_1);}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00108\ \ \ \ \ VoidFunction1(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (*f)(argt\_1))}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ :\ AFunction<IStaticFunction,void>(name),\ func(f)}
+\DoxyCodeLine{00110\ \ \ \ \ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ arg\_types.Add(\textcolor{keyword}{typeid}(argt\_1));}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(\textcolor{keyword}{const}\ EvaluableFactory\&,}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ params)}
+\DoxyCodeLine{00115\ \ \ \ \ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ this-\/>func(params[0]-\/>cast<argt\_1>());}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ VoidValue;}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \};}
+\DoxyCodeLine{00120\ \ \ \textcolor{comment}{//\ class\ member\ function}}
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_\textcolor{keyword}{class},\ \textcolor{keyword}{typename}\ argt\_1>}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{class\ }VoidMemberFunction1\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IMemberFunction,\ void>\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ void\ (base\_class::*func)(argt\_1);}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00125\ \ \ \ \ VoidMemberFunction1(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (base\_class::*f)(argt\_1))}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ :\ AFunction<IMemberFunction,void>(name),\ func(f)}
+\DoxyCodeLine{00127\ \ \ \ \ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ arg\_types.Add(\textcolor{keyword}{typeid}(argt\_1));}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(IOlxObject\ *self,\ \textcolor{keyword}{const}\ EvaluableFactory\&,}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ params\ )}
+\DoxyCodeLine{00132\ \ \ \ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ IEvaluable\ *b\ =\ \textcolor{keyword}{dynamic\_cast<}IEvaluable\ *\textcolor{keyword}{>}(self);}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (b\ !=\ NULL)}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ (b-\/>cast<base\_class>().val-\/>*func)(params[0]-\/>cast<argt\_1>());}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ (\textcolor{keyword}{dynamic\_cast<}base\_class*\textcolor{keyword}{>}(self)-\/>*func)(params[0]-\/>cast<argt\_1>());}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ VoidValue;}
+\DoxyCodeLine{00139\ \ \ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \};}
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{//\ static\ function}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ argt\_1,\ \textcolor{keyword}{class}\ argt\_2>}
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{class\ }VoidFunction2\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IStaticFunction,void>\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ void\ (*func)(argt\_1,\ argt\_2);}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00147\ \ \ \ \ VoidFunction2(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (*f)(argt\_1,\ argt\_2)\ )}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ :\ AFunction<IStaticFunction,void>(name),\ func(f)}
+\DoxyCodeLine{00149\ \ \ \ \ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ arg\_types.Add(\textcolor{keyword}{typeid}(argt\_1));}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ arg\_types.Add(\textcolor{keyword}{typeid}(argt\_2));}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(\textcolor{keyword}{const}\ EvaluableFactory\&,}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&params)}
+\DoxyCodeLine{00155\ \ \ \ \ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ this-\/>func(params[0]-\/>cast<argt\_1>(),\ params[1]-\/>cast<argt\_2>());}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ VoidValue;}
+\DoxyCodeLine{00158\ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \};}
+\DoxyCodeLine{00160\ \ \ \textcolor{comment}{//\ class\ member\ function}}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_\textcolor{keyword}{class},\ \textcolor{keyword}{class}\ argt\_1,\ \textcolor{keyword}{class}\ argt\_2>}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{class\ }VoidMemberFunction2\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IMemberFunction,void>\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ void\ (base\_class::*func)(argt\_1,\ argt\_2);}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00165\ \ \ \ \ VoidMemberFunction2(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ (base\_class::*f)(argt\_1,\ argt\_2)\ )}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ :\ AFunction<IMemberFunction,void>(name),\ func(f)}
+\DoxyCodeLine{00168\ \ \ \ \ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ arg\_types.Add(\textcolor{keyword}{typeid}(argt\_1));}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ arg\_types.Add(\textcolor{keyword}{typeid}(argt\_2));}
+\DoxyCodeLine{00171\ \ \ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(IOlxObject\ *self,\ \textcolor{keyword}{const}\ EvaluableFactory\&,}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&params\ )}
+\DoxyCodeLine{00174\ \ \ \ \ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ IEvaluable\ *b\ =\ \textcolor{keyword}{dynamic\_cast<}IEvaluable\ *\textcolor{keyword}{>}(self);}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (b\ !=\ NULL)}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ (b-\/>cast<base\_class>().val-\/>*func)(}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ params[0]-\/>cast<argt\_1>(),}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ params[1]-\/>cast<argt\_2>());}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ (\textcolor{keyword}{dynamic\_cast<}base\_class*\textcolor{keyword}{>}(self)-\/>*func)(}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ params[0]-\/>cast<argt\_1>(),}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ params[1]-\/>cast<argt\_2>());}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ VoidValue;}
+\DoxyCodeLine{00185\ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \};}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//\ static\ function}}
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ rvt>\ \textcolor{keyword}{class\ }Function\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IStaticFunction,rvt>\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ rvt\ (*func)();}
+\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00194\ \ \ \ \ Function(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt\ (*f)(\textcolor{keywordtype}{void})\ )}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ :\ AFunction<IStaticFunction,rvt>(name),\ func(f)\ \{\}}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(\textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ params)}
+\DoxyCodeLine{00198\ \ \ \ \ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ factory.create<rvt>(this-\/>func());}
+\DoxyCodeLine{00200\ \ \ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \};}
+\DoxyCodeLine{00202\ \ \ \textcolor{comment}{//\ class\ member\ function}}
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ base\_\textcolor{keyword}{class}>\ \textcolor{keyword}{class\ }MemberFunction}
+\DoxyCodeLine{00204\ \ \ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IMemberFunction,rvt>}
+\DoxyCodeLine{00205\ \ \ \{}
+\DoxyCodeLine{00206\ \ \ \ \ rvt\ (base\_class::*func)();}
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00208\ \ \ \ \ MemberFunction(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt\ (base\_class::*f)()\ )}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ :\ AFunction<IMemberFunction,rvt>(name),\ func(f)\ \{\}}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(IOlxObject\ *self,\ \textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ params)}
+\DoxyCodeLine{00212\ \ \ \ \ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ IEvaluable\ *b\ =\ \textcolor{keyword}{dynamic\_cast<}IEvaluable\ *\textcolor{keyword}{>}(self);}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (b\ !=\ NULL)}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ factory.create<rvt>((b-\/>cast<base\_class>().val-\/>*func)());}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ factory.create<rvt>((\textcolor{keyword}{dynamic\_cast<}base\_class*\textcolor{keyword}{>}(self)-\/>*func)());}
+\DoxyCodeLine{00217\ \ \ \ \ \}}
+\DoxyCodeLine{00218\ \ \ \};}
+\DoxyCodeLine{00220\ \ \ \textcolor{comment}{//\ static\ function}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ argt\_1>\ \textcolor{keyword}{class\ }Function1}
+\DoxyCodeLine{00222\ \ \ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IStaticFunction,rvt>}
+\DoxyCodeLine{00223\ \ \ \{}
+\DoxyCodeLine{00224\ \ \ \ \ rvt\ (*func)(argt\_1);}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00226\ \ \ \ \ Function1(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt\ (*f)(argt\_1))}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ :\ AFunction<IStaticFunction,rvt>(name),\ func(f)}
+\DoxyCodeLine{00228\ \ \ \ \ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ AFunction<IStaticFunction,rvt>::arg\_types.Add(\textcolor{keyword}{typeid}(argt\_1));}
+\DoxyCodeLine{00230\ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(\textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&params)}
+\DoxyCodeLine{00233\ \ \ \ \ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ factory.create<rvt>(this-\/>func(params[0]-\/>cast<argt\_1>()));}
+\DoxyCodeLine{00235\ \ \ \ \ \}}
+\DoxyCodeLine{00236\ \ \ \};}
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{//class\ member\ function}}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ base\_\textcolor{keyword}{class},\ \textcolor{keyword}{class}\ argt\_1>}
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{class\ }MemberFunction1\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IMemberFunction,rvt>\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ rvt\ (base\_class::*func)(argt\_1);}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00242\ \ \ \ \ MemberFunction1(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt\ (base\_class::*f)(argt\_1)\ )}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ :\ AFunction<IMemberFunction,rvt>(name),\ func(f)}
+\DoxyCodeLine{00244\ \ \ \ \ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ AFunction<IMemberFunction,rvt>::arg\_types.Add(\textcolor{keyword}{typeid}(argt\_1));}
+\DoxyCodeLine{00246\ \ \ \ \ \}}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(IOlxObject\ *self,\ \textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ params)}
+\DoxyCodeLine{00249\ \ \ \ \ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ IEvaluable\ *b\ =\ \textcolor{keyword}{dynamic\_cast<}IEvaluable\ *\textcolor{keyword}{>}(self);}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (b\ !=\ NULL)}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ factory.create<rvt>((b-\/>cast<base\_class>().val-\/>*func)(}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ params[0]-\/>cast<argt\_1>()));}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ factory.create<rvt>((\textcolor{keyword}{dynamic\_cast<}base\_class*\textcolor{keyword}{>}(self)-\/>*func)(}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ params[0]-\/>cast<argt\_1>()));}
+\DoxyCodeLine{00256\ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \};}
+\DoxyCodeLine{00259\ \ \ \textcolor{comment}{//\ static\ function}}
+\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ argt\_1,\ \textcolor{keyword}{class}\ argt\_2>}
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{class\ }Function2\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IStaticFunction,rvt>\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ rvt\ (*func)(argt\_1,\ argt\_2);}
+\DoxyCodeLine{00263\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00264\ \ \ \ \ Function2(\textcolor{keyword}{const}\ olxstr\&\ name,\ \ rvt(*f)(argt\_1,argt\_2)\ )\ :}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ AFunction<IStaticFunction,rvt>(name),\ func(f)}
+\DoxyCodeLine{00266\ \ \ \ \ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ AFunction<IStaticFunction,rvt>::arg\_types.Add(\textcolor{keyword}{typeid}(argt\_1));}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ AFunction<IStaticFunction,rvt>::arg\_types.Add(\textcolor{keyword}{typeid}(argt\_2));}
+\DoxyCodeLine{00269\ \ \ \ \ \}}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(\textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&params\ )}
+\DoxyCodeLine{00272\ \ \ \ \ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ factory.create<rvt>(this-\/>func(params[0]-\/>cast<argt\_1>(),}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ params[1]-\/>cast<argt\_2>()));}
+\DoxyCodeLine{00275\ \ \ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \};}
+\DoxyCodeLine{00277\ \ \ \textcolor{comment}{//class\ member\ function}}
+\DoxyCodeLine{00278\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ base\_\textcolor{keyword}{class},\ \textcolor{keyword}{class}\ argt\_1,\ \textcolor{keyword}{class}\ argt\_2>}
+\DoxyCodeLine{00279\ \ \ \textcolor{keyword}{class\ }MemberFunction2\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAFunction}{AFunction}}<IMemberFunction,rvt>\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ rvt\ (base\_class::*func)(argt\_1,\ argt\_2);}
+\DoxyCodeLine{00281\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00282\ \ \ \ \ MemberFunction2(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt\ (base\_class::*f)(argt\_1,\ argt\_2))}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ :\ AFunction<IMemberFunction,rvt>(name),\ func(f)}
+\DoxyCodeLine{00284\ \ \ \ \ \{}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ AFunction<IMemberFunction,rvt>::arg\_types.Add(\textcolor{keyword}{typeid}(argt\_1));}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ AFunction<IMemberFunction,rvt>::arg\_types.Add(\textcolor{keyword}{typeid}(argt\_2));}
+\DoxyCodeLine{00287\ \ \ \ \ \}}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ run(IOlxObject\ *self,\ \textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ params)}
+\DoxyCodeLine{00290\ \ \ \ \ \{}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ IEvaluable\ *b\ =\ \textcolor{keyword}{dynamic\_cast<}IEvaluable\ *\textcolor{keyword}{>}(self);}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (b\ !=\ NULL)}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ factory.create((b-\/>cast<base\_class>().val-\/>*func)(}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ params[0]-\/>cast<argt\_1>(),\ params[1]-\/>cast<argt\_2>()));}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ factory.create(\ (\textcolor{keyword}{dynamic\_cast<}base\_class*\textcolor{keyword}{>}(self)-\/>*func)(}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ params[0]-\/>cast<argt\_1>(),\ params[1]-\/>cast<argt\_2>()));}
+\DoxyCodeLine{00297\ \ \ \ \ \}}
+\DoxyCodeLine{00298\ \ \ \};}
+\DoxyCodeLine{00300\ \ \ \textcolor{keyword}{class\ }LibraryRegistry\ \{}
+\DoxyCodeLine{00301\ \ \ \ \ olxstr\_dict<IStaticFunction*>\ funcs;}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordtype}{void}\ \_add(\textcolor{keyword}{const}\ olxstr\&\ name,\ IStaticFunction*\ f)\ \{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (funcs.IndexOf(name)\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ f;}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Duplicate\ function\ instance:\ "{}}).quote()\ <<\ name);}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ funcs.Add(name,\ f);}
+\DoxyCodeLine{00309\ \ \ \ \ \}}
+\DoxyCodeLine{00310\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00311\ \ \ \ \ \string~LibraryRegistry()\ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ funcs.Count();\ i++)\ \{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ funcs.GetValue(i);}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00315\ \ \ \ \ \}}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ is\_empty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ funcs.IsEmpty();\ \}}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keyword}{inline}\ IStaticFunction*\ find(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{size\_t}\ argc)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ funcs.IndexOf(olxstr(name)\ <<\ \textcolor{charliteral}{'\#'}\ <<\ argc);}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ind\ ==\ InvalidIndex\ ?\ NULL\ :\ funcs.GetValue(ind);}
+\DoxyCodeLine{00320\ \ \ \ \ \}}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ index\_of(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{size\_t}\ argc)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ funcs.IndexOf(olxstr(name)\ <<\ \textcolor{charliteral}{'\#'}\ <<\ argc);}
+\DoxyCodeLine{00323\ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}(*f)(\textcolor{keywordtype}{void}))\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#0"{}},\ \textcolor{keyword}{new}\ VoidFunction(name,\ f));}
+\DoxyCodeLine{00326\ \ \ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ argt\_1>}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}(*f)(argt\_1))\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#1"{}},\ \textcolor{keyword}{new}\ VoidFunction1<argt\_1>(name,\ f));}
+\DoxyCodeLine{00330\ \ \ \ \ \}}
+\DoxyCodeLine{00331\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ argt\_1,\ \textcolor{keyword}{class}\ argt\_2>}
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}(*f)(argt\_1,\ argt\_2))\ \{}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#2"{}},\ \textcolor{keyword}{new}\ VoidFunction2<argt\_1,\ argt\_2>(name,\ f));}
+\DoxyCodeLine{00334\ \ \ \ \ \}}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ rvt>}
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt(*f)(\textcolor{keywordtype}{void}))\ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#0"{}},\ \textcolor{keyword}{new}\ Function<rvt>(name,\ f));}
+\DoxyCodeLine{00338\ \ \ \ \ \}}
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ argt\_1>}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt(*f)(argt\_1))\ \{}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#1"{}},\ \textcolor{keyword}{new}\ Function1<rvt,\ argt\_1>(name,\ f));}
+\DoxyCodeLine{00342\ \ \ \ \ \}}
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ argt\_1,\ \textcolor{keyword}{class}\ argt\_2>}
+\DoxyCodeLine{00344\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt(*f)(argt\_1,\ argt\_2))\ \{}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#2"{}},\ \textcolor{keyword}{new}\ Function2<rvt,\ argt\_1,\ argt\_2>(name,\ f));}
+\DoxyCodeLine{00346\ \ \ \ \ \}}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00348\ \ \ \ \ \textcolor{keyword}{struct\ }FuncEvaluator\ :\ \textcolor{keyword}{public}\ IEvaluable\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ IStaticFunction*\ func;}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ TPtrList<IEvaluable>\ args;}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EvaluableFactory\&\ factory;}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ FuncEvaluator(\textcolor{keyword}{const}\ EvaluableFactory\&\ fc,\ IStaticFunction*\ f,}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ a)\ :\ func(f),\ args(a),\ factory(fc)}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ args.Count();\ i++)\ \{}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ args[i]-\/>inc\_ref();}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \string~FuncEvaluator()\ \{}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ args.Count();\ i++)\ \{}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (args[i]-\/>dec\_ref()\ ==\ 0)\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ args[i];}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ func-\/>run(factory,\ args);}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ is\_function()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00370\ \ \ \ \ \};}
+\DoxyCodeLine{00371\ \ \ \ \ IEvaluable*\ create\_from\_name(\textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00373\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ IStaticFunction*\ gf\ =\ find(name,\ args.Count());}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (gf\ ==\ 0)\ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}could\ not\ locate\ specified\ function:\ "{}}).quote()\ <<\ name);}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ FuncEvaluator(factory,\ gf,\ args);}
+\DoxyCodeLine{00380\ \ \ \ \ \}}
+\DoxyCodeLine{00381\ \ \ \ \ IEvaluable*\ create\_from\_index(\textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00383\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ FuncEvaluator(factory,\ funcs.GetValue(index),\ args);}
+\DoxyCodeLine{00385\ \ \ \ \ \}}
+\DoxyCodeLine{00386\ \ \ \ \ IEvaluable*\ call(\textcolor{keyword}{const}\ EvaluableFactory\&\ factory,\ \textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00388\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ IStaticFunction*\ gf\ =\ find(name,\ args.Count());}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (gf\ ==\ 0)\ \{}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}could\ not\ locate\ specified\ function:\ "{}}).quote()\ <<\ name);}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ gf-\/>run(factory,\ args);}
+\DoxyCodeLine{00395\ \ \ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \};}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00398\ \ \ \textcolor{keyword}{struct\ }IClassRegistry\ \{}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~IClassRegistry()}
+\DoxyCodeLine{00400\ \ \ \ \ \{\}}
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ create\_from\_name(IEvaluable\&\ self,}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00405\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ create\_from\_index(IEvaluable\&\ self,}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index,}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ is\_empty()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00410\ \ \ \ \ \textcolor{keyword}{virtual}\ IMemberFunction*\ find(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{size\_t}\ argc)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00411\ \ \ \};}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \ \ \textcolor{keyword}{struct\ }IClassInfo\ \{}
+\DoxyCodeLine{00414\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~IClassInfo()\ \{}
+\DoxyCodeLine{00415\ \ \ \ \ \}}
+\DoxyCodeLine{00416\ \ \ \ \ \textcolor{keyword}{virtual}\ IStaticFunction*\ find\_static\_function(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ argc)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00418\ \ \ \ \ \textcolor{keyword}{virtual}\ IMemberFunction*\ find\_member\_function(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ argc)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ IClassRegistry\ \&get\_functions()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00422\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ IClassRegistry\ \&get\_wrapper\_functions()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00423\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ LibraryRegistry\ \&get\_static\_functions()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00424\ \ \ \};}
+\DoxyCodeLine{00425\ }
+\DoxyCodeLine{00426\ \ \ \textcolor{keyword}{struct\ }AClassFuncEvaluator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00427\ \ \ \ \ \textcolor{keyword}{const}\ EvaluableFactory\&\ factory;}
+\DoxyCodeLine{00428\ \ \ \ \ IEvaluable\&\ self;}
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{keyword}{const}\ std::type\_info\&\ self\_rtti;}
+\DoxyCodeLine{00430\ \ \ \ \ IMemberFunction*\ func;}
+\DoxyCodeLine{00431\ \ \ \ \ TPtrList<IEvaluable>\ args;}
+\DoxyCodeLine{00432\ \ \ \ \ AClassFuncEvaluator(\textcolor{keyword}{const}\ EvaluableFactory\&\ fc,\ IEvaluable\&\ s,}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ IMemberFunction*\ f,\ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ a)}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ :\ factory(fc),\ self(s),\ self\_rtti(s.get\_type\_info()),\ func(f),\ args(a)}
+\DoxyCodeLine{00435\ \ \ \ \ \{}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ s.inc\_ref();}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ args.Count();\ i++)\ \{}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ args[i]-\/>inc\_ref();}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00440\ \ \ \ \ \}}
+\DoxyCodeLine{00441\ \ \ \ \ \string~AClassFuncEvaluator()\ \{}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (self.dec\_ref()\ ==\ 0)\ \{}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \&self;}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ args.Count();\ i++)\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (args[i]-\/>dec\_ref()\ ==\ 0)\ \{}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ args[i];}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00450\ \ \ \ \ \}}
+\DoxyCodeLine{00451\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ is\_function()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00452\ \ \ \};}
+\DoxyCodeLine{00453\ }
+\DoxyCodeLine{00454\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ base\_\textcolor{keyword}{class}>\ \textcolor{keyword}{class\ }ClassRegistry}
+\DoxyCodeLine{00455\ \ \ \ \ :\ \textcolor{keyword}{public}\ IClassRegistry}
+\DoxyCodeLine{00456\ \ \ \{}
+\DoxyCodeLine{00457\ \ \ \ \ olxstr\_dict<IMemberFunction*>\ funcs;}
+\DoxyCodeLine{00458\ \ \ \ \ \textcolor{keywordtype}{void}\ \_add(\textcolor{keyword}{const}\ olxstr\&\ name,\ IMemberFunction*\ f)\ \{}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (funcs.IndexOf(name)\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ f;}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Duplicate\ function\ instance:\ "{}}).quote()\ <<\ name);}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ funcs.Add(name,\ f);}
+\DoxyCodeLine{00465\ \ \ \ \ \}}
+\DoxyCodeLine{00466\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00467\ \ \ \ \ \string~ClassRegistry()\ \{}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ funcs.Count();\ i++)\ \{}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ funcs.GetValue(i);}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00471\ \ \ \ \ \}}
+\DoxyCodeLine{00472\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ is\_empty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ funcs.IsEmpty();\ \}}
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{keyword}{inline}\ IMemberFunction*\ find(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{size\_t}\ argc)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ funcs.IndexOf(olxstr(name)\ <<\ \textcolor{charliteral}{'\#'}\ <<\ argc);}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ind\ ==\ InvalidIndex\ ?\ NULL\ :\ funcs.GetValue(ind);}
+\DoxyCodeLine{00476\ \ \ \ \ \}}
+\DoxyCodeLine{00477\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{size\_t}\ index\_of(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{size\_t}\ argc)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ funcs.IndexOf(olxstr(name)\ <<\ \textcolor{charliteral}{'\#'}\ <<\ argc);}
+\DoxyCodeLine{00479\ \ \ \ \ \}}
+\DoxyCodeLine{00480\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (base\_class::*f)())\ \{}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#0"{}},\ \textcolor{keyword}{new}\ VoidMemberFunction<base\_class>(name,\ f));}
+\DoxyCodeLine{00482\ \ \ \ \ \}}
+\DoxyCodeLine{00483\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (base\_class::*f)()\ \textcolor{keyword}{const})\ \{}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#0"{}},\ \textcolor{keyword}{new}\ VoidMemberFunction<base\_class>(name,}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ (\textcolor{keywordtype}{void}\ (base\_class::*)())f));}
+\DoxyCodeLine{00486\ \ \ \ \ \}}
+\DoxyCodeLine{00487\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ argt\_1>}
+\DoxyCodeLine{00488\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (base\_class::*f)(argt\_1))\ \{}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#1"{}},\ \textcolor{keyword}{new}\ VoidMemberFunction1<base\_class,\ argt\_1>(}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ name,\ f));}
+\DoxyCodeLine{00491\ \ \ \ \ \}}
+\DoxyCodeLine{00492\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ argt\_1>}
+\DoxyCodeLine{00493\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (base\_class::*f)(argt\_1)\ \textcolor{keyword}{const})\ \{}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#1"{}},\ \textcolor{keyword}{new}\ VoidMemberFunction1<base\_class,\ argt\_1>(name,}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ (\textcolor{keywordtype}{void}\ (base\_class::*)(argt\_1))f));}
+\DoxyCodeLine{00496\ \ \ \ \ \}}
+\DoxyCodeLine{00497\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ argt\_1,\ \textcolor{keyword}{class}\ argt\_2>}
+\DoxyCodeLine{00498\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (base\_class::*f)(argt\_1,\ argt\_2))\ \{}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#2"{}},\ \textcolor{keyword}{new}\ VoidMemberFunction2<base\_class,\ argt\_1,\ argt\_2>(}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ name,\ f));}
+\DoxyCodeLine{00501\ \ \ \ \ \}}
+\DoxyCodeLine{00502\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ argt\_1,\ \textcolor{keyword}{class}\ argt\_2>}
+\DoxyCodeLine{00503\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keywordtype}{void}\ (base\_class::*f)(argt\_1,\ argt\_2)\ \textcolor{keyword}{const})\ \{}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#2"{}},\ \textcolor{keyword}{new}\ VoidMemberFunction2<base\_class,\ argt\_1,\ argt\_2>(name,}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ (\textcolor{keywordtype}{void}\ (base\_class::*)(argt\_1,\ argt\_2))f));}
+\DoxyCodeLine{00506\ \ \ \ \ \}}
+\DoxyCodeLine{00507\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ rvt>}
+\DoxyCodeLine{00508\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt(base\_class::*f)())\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#0"{}},\ \textcolor{keyword}{new}\ MemberFunction<rvt,\ base\_class>(name,\ f));}
+\DoxyCodeLine{00510\ \ \ \ \ \}}
+\DoxyCodeLine{00511\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ rvt>}
+\DoxyCodeLine{00512\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt(base\_class::*f)()\ \textcolor{keyword}{const})\ \{}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#0"{}},\ \textcolor{keyword}{new}\ MemberFunction<rvt,\ base\_class>(name,}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ (rvt(base\_class::*)())f));}
+\DoxyCodeLine{00515\ \ \ \ \ \}}
+\DoxyCodeLine{00516\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ argt\_1>}
+\DoxyCodeLine{00517\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt(base\_class::*f)(argt\_1))\ \{}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#1"{}},\ \textcolor{keyword}{new}\ MemberFunction1<rvt,\ base\_class,\ argt\_1>(name,\ f));}
+\DoxyCodeLine{00519\ \ \ \ \ \}}
+\DoxyCodeLine{00520\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ argt\_1>}
+\DoxyCodeLine{00521\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt(base\_class::*f)(argt\_1)\ \textcolor{keyword}{const})\ \{}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#1"{}},\ \textcolor{keyword}{new}\ MemberFunction1<rvt,\ base\_class,\ argt\_1>(name,}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \ \ (rvt(base\_class::*)(argt\_1))f));}
+\DoxyCodeLine{00524\ \ \ \ \ \}}
+\DoxyCodeLine{00525\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ argt\_1,\ \textcolor{keyword}{class}\ argt\_2>}
+\DoxyCodeLine{00526\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt(base\_class::*f)(argt\_1,\ argt\_2))\ \{}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#2"{}},\ \textcolor{keyword}{new}\ MemberFunction2<rvt,\ base\_class,\ argt\_1,\ argt\_2>(}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ name,\ f));}
+\DoxyCodeLine{00529\ \ \ \ \ \}}
+\DoxyCodeLine{00530\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ rvt,\ \textcolor{keyword}{class}\ argt\_1,\ \textcolor{keyword}{class}\ argt\_2>}
+\DoxyCodeLine{00531\ \ \ \ \ \textcolor{keywordtype}{void}\ add(\textcolor{keyword}{const}\ olxstr\&\ name,\ rvt(base\_class::*f)(argt\_1,\ argt\_2)\ \textcolor{keyword}{const})\ \{}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \_add(name\ +\ \textcolor{stringliteral}{"{}\#2"{}},\ \textcolor{keyword}{new}\ MemberFunction2<rvt,\ base\_class,\ argt\_1,\ argt\_2>(}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ name,\ (rvt(base\_class::*)(argt\_1,\ argt\_2))f));}
+\DoxyCodeLine{00534\ \ \ \ \ \}}
+\DoxyCodeLine{00535\ }
+\DoxyCodeLine{00536\ \ \ \ \ \textcolor{keyword}{struct\ }FuncEvaluator\ :\ \textcolor{keyword}{public}\ AClassFuncEvaluator\ \{}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ FuncEvaluator(\textcolor{keyword}{const}\ EvaluableFactory\&\ fc,\ IEvaluable\&\ s,}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \ \ IMemberFunction*\ f,\ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ a)}
+\DoxyCodeLine{00539\ \ \ \ \ \ \ \ \ :\ AClassFuncEvaluator(fc,\ s,\ f,\ a)}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ find\_method(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ EvaluableFactory\&\ f,}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args,}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ IEvaluable*\ proxy\ =\ NULL)}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ f.classes.IndexOf(\&func-\/>get\_RV\_type());}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00548\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \ \ IMemberFunction*\ mf\ =\ f.classes.GetValue(i)-\/>find\_member\_function(}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \ \ name,\ args.Count());}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mf\ ==\ NULL)\ \{}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \ \ IStaticFunction*\ sf\ =\ f.classes.GetValue(i)-\/>find\_static\_function(}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \ \ \ \ name,\ args.Count());}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sf\ ==\ NULL\ ?\ NULL\ :\ \textcolor{keyword}{new}\ LibraryRegistry::FuncEvaluator(}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \ \ f,\ sf,\ args);}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ FuncEvaluator(f,\ *\textcolor{keyword}{this},\ mf,\ args);}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00563\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (self\_rtti\ !=\ self.get\_type\_info())\ \{}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}the\ underlying\ object\ type\ has\ changed"{}});}
+\DoxyCodeLine{00566\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ func-\/>run(self.cast<base\_class>().val,\ factory,\ args);}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00569\ \ \ \ \ \};}
+\DoxyCodeLine{00570\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ create\_from\_name(IEvaluable\&\ self,}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00573\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ IMemberFunction*\ gf\ =\ find(name,\ args.Count());}
+\DoxyCodeLine{00575\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (gf\ ==\ NULL)\ \{}
+\DoxyCodeLine{00576\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}could\ not\ locate\ specified\ function:\ "{}}).quote()\ <<\ name);}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ FuncEvaluator(factory,\ self,\ gf,\ args);}
+\DoxyCodeLine{00580\ \ \ \ \ \}}
+\DoxyCodeLine{00581\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ create\_from\_index(IEvaluable\&\ self,}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EvaluableFactory\&\ factory,}
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ index,\ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00584\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ FuncEvaluator(factory,\ self,\ funcs.GetValue(index),\ args);}
+\DoxyCodeLine{00586\ \ \ \ \ \}}
+\DoxyCodeLine{00587\ \ \ \ \ IEvaluable*\ call(\textcolor{keyword}{const}\ EvaluableFactory\&\ factory,\ base\_class\&\ self,}
+\DoxyCodeLine{00588\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ name,\ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args)}
+\DoxyCodeLine{00589\ \ \ \ \ \{}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ IMemberFunction*\ gf\ =\ find(name,\ args.Count());}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (gf\ ==\ NULL)\ \{}
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}could\ not\ locate\ specified\ function:\ "{}}).quote()\ <<\ name);}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00595\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ gf-\/>run(\&self,\ factory,\ args);}
+\DoxyCodeLine{00596\ \ \ \ \ \}}
+\DoxyCodeLine{00597\ \ \ \};}
+\DoxyCodeLine{00598\ }
+\DoxyCodeLine{00599\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ wrapper\_\textcolor{keyword}{class},\ \textcolor{keyword}{class}\ base\_\textcolor{keyword}{class}>\ \textcolor{keyword}{struct\ }ClassInfo}
+\DoxyCodeLine{00600\ \ \ \ \ :\ \textcolor{keyword}{public}\ IClassInfo}
+\DoxyCodeLine{00601\ \ \ \{}
+\DoxyCodeLine{00602\ \ \ \ \ ClassRegistry<base\_class>\ functions;}
+\DoxyCodeLine{00603\ \ \ \ \ ClassRegistry<wrapper\_class>\ wrap\_functions;}
+\DoxyCodeLine{00604\ \ \ \ \ LibraryRegistry\ globals;}
+\DoxyCodeLine{00605\ \ \ \ \ \textcolor{keyword}{virtual}\ IStaticFunction*\ find\_static\_function(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ argc)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00607\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ globals.find(name,\ argc);}
+\DoxyCodeLine{00609\ \ \ \ \ \}}
+\DoxyCodeLine{00610\ \ \ \ \ \textcolor{keyword}{virtual}\ IMemberFunction*\ find\_member\_function(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ argc)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00612\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ IMemberFunction*\ mf\ =\ functions.find(name,\ argc);}
+\DoxyCodeLine{00614\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mf\ !=\ 0)\ \{}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mf;}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00617\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ wrap\_functions.find(name,\ argc);}
+\DoxyCodeLine{00618\ \ \ \ \ \}}
+\DoxyCodeLine{00619\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_empty()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ functions.is\_empty()\ \&\&\ globals.is\_empty()\ \&\&}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ wrap\_functions.is\_empty();}
+\DoxyCodeLine{00622\ \ \ \ \ \}}
+\DoxyCodeLine{00623\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ IClassRegistry\ \&get\_functions()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ functions;}
+\DoxyCodeLine{00625\ \ \ \ \ \}}
+\DoxyCodeLine{00626\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ IClassRegistry\ \&get\_wrapper\_functions()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ wrap\_functions;}
+\DoxyCodeLine{00628\ \ \ \ \ \}}
+\DoxyCodeLine{00629\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ LibraryRegistry\ \&get\_static\_functions()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ globals;}
+\DoxyCodeLine{00631\ \ \ \ \ \}}
+\DoxyCodeLine{00632\ \ \ \};}
+\DoxyCodeLine{00633\ \};\ \ \textcolor{comment}{//\ end\ exparse\ namespace}}
+\DoxyCodeLine{00634\ }
+\DoxyCodeLine{00635\ EndEsdlNamespace()}
+\DoxyCodeLine{00636\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

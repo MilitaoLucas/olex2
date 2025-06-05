@@ -1,0 +1,117 @@
+\doxysection{nui.\+h}
+\hypertarget{nui_8h_source}{}\label{nui_8h_source}\index{olex/nui/nui.h@{olex/nui/nui.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}exception.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}library.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxth.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}glpixels.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }olx\_nui\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }NUIInitFaieldEx\ :\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ NUIInitFaieldEx(\textcolor{keyword}{const}\ olxstr\ \&location,\ \textcolor{keyword}{const}\ olxstr\ \&msg=EmptyString())}
+\DoxyCodeLine{00021\ \ \ \ \ :\ TBasicException(location,\ msg)\ \{\}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ GetNiceName()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}NUI\ initialisation\ failed"{}};\ \ \}}
+\DoxyCodeLine{00023\ \ \ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ NUIInitFaieldEx(*\textcolor{keyword}{this});\ \ \}}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classolx__nui_1_1INUI}{INUI}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{short}}
+\DoxyCodeLine{00029\ \ \ \ \ processVideo\ \ \ \ =\ 0x0001,}
+\DoxyCodeLine{00030\ \ \ \ \ processSkeleton\ =\ 0x0002,}
+\DoxyCodeLine{00031\ \ \ \ \ processDepth\ \ \ \ =\ 0x0004;}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ InitProcessing(\textcolor{keywordtype}{short}\ flags)\ =\ 0;}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ DoProcessing()\ =\ 0;}
+\DoxyCodeLine{00034\ \};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \mbox{\hyperlink{classolx__nui_1_1INUI}{INUI}}\ *Initialise();}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#if\ defined\ \_\_WIN32\_\_\ \&\&\ !defined(\_WIN64)\ \&\&\ defined(\_\_OLX\_USE\_NUI\_\_)}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#include\ <MSR\_NuiApi.h>}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{class\ }Skeleton\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \{}
+\DoxyCodeLine{00042\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ DrawQuad(\textcolor{keyword}{const}\ vec3d\ \&p1,\ \textcolor{keyword}{const}\ vec3d\ \&p2,}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ \&p3,\ \textcolor{keyword}{const}\ vec3d\ \&p4);}
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ DrawLimp(\textcolor{keyword}{const}\ vec3d\ \&shoulder,\ \textcolor{keyword}{const}\ vec3d\ \&wrist,}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ \&body,\ \textcolor{keyword}{const}\ vec3d\ \&p\_shoulder,\ \textcolor{keyword}{const}\ vec3d\ \&p\_elbow,}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{const}\ vec3d\ \&p\_wrist,\ \textcolor{keywordtype}{bool}\ cw);}
+\DoxyCodeLine{00048\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ \ \ Skeleton(\mbox{\hyperlink{classTGlRenderer}{TGlRenderer}}\&\ Renderer,\ \textcolor{keyword}{const}\ olxstr\&\ collectionName)}
+\DoxyCodeLine{00050\ \ \ :\ \mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}(Renderer,\ collectionName),}
+\DoxyCodeLine{00051\ \ \ \ \ points(NUI\_SKELETON\_COUNT)}
+\DoxyCodeLine{00052\ \ \ \{\}}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ Create(\textcolor{keyword}{const}\ olxstr\&\ cName=EmptyString());}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{bool}\ Orient(\mbox{\hyperlink{classTGlPrimitive}{TGlPrimitive}}\&\ P);}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{bool}\ GetDimensions(vec3d\&\ Max,\ vec3d\&\ Min)\ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ TArrayList<vec3d\_alist>\ points;}
+\DoxyCodeLine{00059\ \};}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{keyword}{class\ }Kinect\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classolx__nui_1_1INUI}{INUI}}\ \{}
+\DoxyCodeLine{00062\ \ \ \textcolor{keywordtype}{bool}\ Initialised;}
+\DoxyCodeLine{00063\ \ \ HANDLE\ hDepthFrameEvt,\ hVideoFrameEvt,\ hSkeletonEvt;}
+\DoxyCodeLine{00064\ \ \ HANDLE\ hDepthStream,\ hVideoStream;}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ throw\_failed(\textcolor{keyword}{const}\ olxstr\ \&src,\ HRESULT\ res,\ \textcolor{keyword}{const}\ olxstr\ \&msg=EmptyString());}
+\DoxyCodeLine{00066\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{class\ }ListenerThread\ :\ \textcolor{keyword}{public}\ AOlxThread\ \{}
+\DoxyCodeLine{00068\ \ \ Kinect\ \&instance;}
+\DoxyCodeLine{00069\ \ \ HANDLE\ events[3];}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00071\ \ \ \ \ ListenerThread(Kinect\ \&\_instance)\ :\ instance(\_instance)\ \ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ events[0]\ =\ instance.hDepthFrameEvt;}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ events[1]\ =\ instance.hVideoFrameEvt;}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ events[2]\ =\ instance.hSkeletonEvt;}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ Run();}
+\DoxyCodeLine{00077\ \ \ \};}
+\DoxyCodeLine{00078\ \ \ ListenerThread\ *listener;}
+\DoxyCodeLine{00079\ \ \ Skeleton\ *skeleton;}
+\DoxyCodeLine{00080\ \ \ TGlPixels\ *pixels;}
+\DoxyCodeLine{00081\ \ \ olxstr\ last\_command;}
+\DoxyCodeLine{00082\ \ \ olxstr\_dict<olxstr,\ true>\ commands;}
+\DoxyCodeLine{00083\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00084\ \ \ Kinect()}
+\DoxyCodeLine{00085\ \ \ :\ Initialised(false),}
+\DoxyCodeLine{00086\ \ \ \ \ hDepthFrameEvt(INVALID\_HANDLE\_VALUE),}
+\DoxyCodeLine{00087\ \ \ \ \ hVideoFrameEvt(INVALID\_HANDLE\_VALUE),}
+\DoxyCodeLine{00088\ \ \ \ \ hSkeletonEvt(INVALID\_HANDLE\_VALUE),}
+\DoxyCodeLine{00089\ \ \ \ \ listener(NULL),}
+\DoxyCodeLine{00090\ \ \ \ \ HasVideoFrame(false),}
+\DoxyCodeLine{00091\ \ \ \ \ HasDepthFrame(false),}
+\DoxyCodeLine{00092\ \ \ \ \ HasSkeleton(false),}
+\DoxyCodeLine{00093\ \ \ \ \ skeleton(NULL),}
+\DoxyCodeLine{00094\ \ \ \ \ pixels(NULL)}
+\DoxyCodeLine{00095\ \ \ \{\}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \string~Kinect()\ \ \{\ \ Finalise();\ \ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ Kinect*\ Initialise();}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ Finalise();}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{bool}\ HasVideoFrame,\ HasDepthFrame,\ HasSkeleton;}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ InitProcessing(\textcolor{keywordtype}{short}\ flags);}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ DoProcessing();}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{void}\ processVideo();}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{void}\ processDepth();}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{void}\ processSkeleton();}
+\DoxyCodeLine{00109\ \};}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\_\_WIN32\_\_}}
+\DoxyCodeLine{00111\ \};}
+
+\end{DoxyCode}
