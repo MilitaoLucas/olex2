@@ -1,0 +1,184 @@
+\doxysection{grow.\+h}
+\hypertarget{grow_8h_source}{}\label{grow_8h_source}\index{gxlib/modes/grow.h@{gxlib/modes/grow.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_GROW\_MODE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_GROW\_MODE\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xgrowline.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}label\_corrector.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }TGrowMode\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAMode}{AMode}}\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{bool}\ GrowShells;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{short}\ mode,\ part;}
+\DoxyCodeLine{00019\ \ \ \textcolor{comment}{//\ the\ size\ is\ used\ to\ detrmine\ if\ the\ AU\ is\ being\ rebuilt}}
+\DoxyCodeLine{00020\ \ \ \mbox{\hyperlink{classTEBitArray}{TEBitArray}}\ detached;}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ TGrowMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})}
+\DoxyCodeLine{00023\ \ \ \ \ :\ \mbox{\hyperlink{classAMode}{AMode}}(\textcolor{keywordtype}{id}),\ GrowShells(\textcolor{keyword}{false}),\ mode(0),\ part(0)}
+\DoxyCodeLine{00024\ \ \ \{\}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{bool}\ SI\ =\ Options.Contains(\textcolor{charliteral}{'s'}),}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ Cov\ =\ Options.Contains(\textcolor{charliteral}{'c'}),}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ VdW\ =\ Options.Contains(\textcolor{charliteral}{'v'}),}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ Rad\ =\ Options.Contains(\textcolor{charliteral}{'r'});}
+\DoxyCodeLine{00030\ \ \ \ \ GrowShells\ =\ Options.Contains(\textcolor{stringliteral}{"{}shells"{}});}
+\DoxyCodeLine{00031\ \ \ \ \ mode\ =\ 0;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{if}\ (SI)\ \ \ mode\ =\ gmSInteractions;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{if}\ (Cov)\ \ mode\ =\ gmCovalent;}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (VdW)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ mode\ =\ gmVanDerWaals;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ olxstr\ vr\ =\ Options.FindValue(\textcolor{charliteral}{'v'});}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ gxapp.SetDeltaV(vr.IsEmpty()\ ?\ 2.0\ :\ vr.ToDouble());}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (Rad)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ mode\ =\ gmSameAtoms;}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode\ ==\ 0)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ mode\ =\ gmCovalent;}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{if}\ (Options.Contains(\textcolor{charliteral}{'p'}))\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mode\ !=\ gmCovalent\ ||\ Options.Contains(\textcolor{charliteral}{'a'}))\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry(logError)\ <<\ \textcolor{stringliteral}{"{}Incompatible\ values"{}};}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ olxstr\ pv\ =\ Options.FindValue(\textcolor{charliteral}{'p'});}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ part\ =\ pv.IsEmpty()\ ?\ -\/1\ :\ pv.ToInt();}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ GrowShells\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ the\ AU\ rebuilding\ mode,\ enfoces\ grow\ shells\ and\ covalent\ bonds\ only}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{if}\ (Options.Contains(\textcolor{charliteral}{'a'}))\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au\ =\ gxapp.XFile().GetAsymmUnit();}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ detached.SetSize(au.AtomCount());}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ au.AtomCount();\ i++)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a\ =\ au.GetAtom(i);}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!a.IsDetached()\ \&\&\ a.GetType()\ ==\ iQPeakZ)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ a.SetDetached(\textcolor{keyword}{true});}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ detached.SetTrue(i);}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ gxapp.UpdateConnectivity();}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ GrowShells\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ mode\ =\ gmCovalent;}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ olex2.processMacro(\textcolor{stringliteral}{"{}cursor(hand)"{}});}
+\DoxyCodeLine{00070\ \ \ \ \ gxapp.SetGrowMode(mode,\ Cmds);}
+\DoxyCodeLine{00071\ \ \ \ \ gxapp.SetXGrowLinesVisible(\textcolor{keyword}{true});}
+\DoxyCodeLine{00072\ \ \ \ \ gxapp.SetZoomAfterModelBuilt(\textcolor{keyword}{false});}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{if}\ (Options.GetBoolOption(\textcolor{charliteral}{'l'}))\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<TXGrowLine>}}\ gl\ =\ gxapp.GetGrowLines();}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ QuickSorter::Sort(gl,}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ ComplexComparator::Make(}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ FunctionAccessor::MakeConst(\&TXGrowLine::Length),}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ TPrimitiveComparator()));}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ TTable\ tab(gl.Count(),\ 4);}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ tab.ColName(0)\ =\ \textcolor{stringliteral}{"{}From"{}};}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ tab.ColName(1)\ =\ \textcolor{stringliteral}{"{}To"{}};}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ tab.ColName(2)\ =\ \textcolor{stringliteral}{"{}Symm"{}};}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ tab.ColName(3)\ =\ \textcolor{stringliteral}{"{}D"{}};}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ gl.Count();\ i++)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ tab[i][0]\ =\ gl[i]-\/>XAtom().CAtom().GetResiLabel();}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ tab[i][1]\ =\ gl[i]-\/>CAtom().GetResiLabel();}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (gl[i]-\/>GetTransform().IsFirst())\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ tab[i][2]\ =\ \textcolor{charliteral}{'I'};}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ tab[i][2]\ =\ TSymmParser::MatrixToSymmEx(gl[i]-\/>GetTransform());}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ tab[i][3]\ =\ olxstr::FormatFloat(3,\ gl[i]-\/>Length());}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ tab.CreateTXTList(\textcolor{stringliteral}{"{}Contacts"{}},\ \textcolor{keyword}{true},\ \textcolor{keyword}{false},\ \textcolor{stringliteral}{"{}\ \ "{}});}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{void}\ Finalise\_()\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ gxapp.SetXGrowLinesVisible(\textcolor{keyword}{false});}
+\DoxyCodeLine{00101\ \ \ \ \ gxapp.SetZoomAfterModelBuilt(\textcolor{keyword}{true});}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordflow}{if}\ (!detached.IsEmpty())\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au\ =\ gxapp.XFile().GetAsymmUnit();}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ au.AtomCount();\ i++)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (detached[i])\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ au.GetAtom(i).SetDetached(\textcolor{keyword}{false});}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ gxapp.XFile().GetLattice().CompaqQ();}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{if}\ (part\ !=\ 0)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ latt\ =\ gxapp.XFile().GetLattice();}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \mbox{\hyperlink{structLabelCorrector}{LabelCorrector}}\ lc(latt.GetAsymmUnit(),\ TXApp::GetMaxLabelLength(),}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ TXApp::DoRenameParts());}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ latt.GetObjects().atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&a\ =\ latt.GetObjects().atoms[i];}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ a.CAtom().SetOccu(a.CAtom().GetOccu()\ /\ 2);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!a.GetMatrix().IsFirst())\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&ca\ =\ latt.GetAsymmUnit().NewAtom();}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ ca.ccrd()\ =\ a.ccrd();}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ ca.SetType(a.GetType());}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ ca.SetPart((int8\_t)part);}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ ca.SetOccu(a.CAtom().GetOccu());}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ ca.SetLabel(a.GetLabel(),\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ lc.Correct(ca);}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ gxapp.XFile().GetRM().Vars.FixParam(ca,\ catom\_var\_name\_Sof);}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ latt.Init();}
+\DoxyCodeLine{00130\ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \textcolor{keywordtype}{void}\ UpdateAU(\textcolor{keywordtype}{size\_t}\ ac)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{if}\ (detached.IsEmpty())\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00134\ \ \ \ \ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ latt\ =\ gxapp.XFile().GetLattice();}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ ac;\ i\ <\ latt.GetObjects().atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&aa\ =\ latt.GetObjects().atoms[i];}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ ac;\ j++)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTSAtom}{TSAtom}}\ \&ab\ =\ latt.GetObjects().atoms[j];}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (aa.CAtom().GetId()\ ==\ ab.CAtom().GetId())\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ ab.SetDeleted(\textcolor{keyword}{true});}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{if}\ (ac\ !=\ latt.GetObjects().atoms.Count())\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ latt.UpdateAsymmUnit();}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ latt.Init();}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\&\ obj)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \mbox{\hyperlink{classTLattice}{TLattice}}\&\ latt\ =\ gxapp.XFile().GetLattice();}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{if}\ (obj.Is<TXGrowLine>())\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ TXGrowLine\&\ xl\ =\ (TXGrowLine\&)obj;}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (GrowShells\ \&\&\ (mode\ ==\ gmCovalent\ ||\ mode\ ==\ gmVanDerWaals))\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ac\ =\ latt.GetObjects().atoms.Count();}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ latt.GrowAtom(xl.CAtom(),\ xl.GetTransform());}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ UpdateAU(ac);}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ latt.GrowFragment(xl.CAtom().GetFragmentId(),\ xl.GetTransform());}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (obj.Is<\mbox{\hyperlink{classTXAtom}{TXAtom}}>())\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ac\ =\ latt.GetObjects().atoms.Count();}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ a\ =\ (\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)obj;}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!a.IsGrown())\ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ latt.GrowAtom(a,\ GrowShells,\ NULL);}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ UpdateAU(ac);}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00171\ \ \ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \}}
+\DoxyCodeLine{00176\ \};}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

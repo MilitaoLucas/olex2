@@ -1,0 +1,49 @@
+\doxysection{colorext.\+h}
+\hypertarget{colorext_8h_source}{}\label{colorext_8h_source}\index{olex/ctrls/colorext.h@{olex/ctrls/colorext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_color\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_color\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}wx/clrpicker.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{class\ }TColorCtrl:\ \textcolor{keyword}{public}\ wxColourPickerCtrl,\ \textcolor{keyword}{public}\ AOlxCtrl\ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ ChangeEvent(wxColourPickerEvent\ \&event);}
+\DoxyCodeLine{00020\ \ \ \ \ olxstr\ Data;}
+\DoxyCodeLine{00021\ \ \ \ \ wxColor\ Color;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ TColorCtrl(wxWindow\ *Parent,\ wxWindowID\ \textcolor{keywordtype}{id}\ =\ -\/1,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxColor\ \&value\ =\ *wxBLACK,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxPoint\&\ pos\ =\ wxDefaultPosition,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxSize\&\ size\ =\ wxDefaultSize,\ \textcolor{keywordtype}{long}\ style\ =\ 0);}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsReadOnly()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ WI.HasWindowStyle(wxTE\_READONLY);\ \}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ SetReadOnly(\textcolor{keywordtype}{bool}\ v)\ \{\ WI.AddWindowStyle(wxTE\_READONLY);\ \}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ SetValue(wxColor\ v)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ Color\ =\ v;}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ wxColourPickerCtrl::SetColour(v);}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ wxColor\ GetValue()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ wxColourPickerCtrl::GetColour();}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ DefPropC(olxstr,\ Data)}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl_1_1ActionQueue}{AOlxCtrl::ActionQueue}}\ \&OnChange;}
+\DoxyCodeLine{00041\ \ \ \};}
+\DoxyCodeLine{00042\ \};\ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

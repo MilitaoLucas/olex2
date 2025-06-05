@@ -1,0 +1,68 @@
+\doxysection{comboext.\+h}
+\hypertarget{comboext_8h_source}{}\label{comboext_8h_source}\index{olex/ctrls/comboext.h@{olex/ctrls/comboext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_combo\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_combo\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}itemlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}wx/combo.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{class\ }TComboBox\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classctrl__ext_1_1TItemList}{TItemList}}<wxComboBox>,\ \textcolor{keyword}{public}\ AOlxCtrl\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ ChangeEvent(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{void}\ EnterPressedEvent(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ LeaveEvent(wxFocusEvent\&\ event);}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ EnterEvent(wxFocusEvent\&\ event);}
+\DoxyCodeLine{00023\ \ \ \ \ olxstr\ Data;}
+\DoxyCodeLine{00024\ \ \ \ \ olxstr\ StrValue;}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{int}\ entered\_counter;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{bool}\ OnChangeAlways;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ TComboBox(wxWindow\ *Parent,\ wxWindowID\ \textcolor{keywordtype}{id}\ =\ -\/1,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxString\ \&value\ =\ wxEmptyString,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxPoint\&\ pos\ =\ wxDefaultPosition,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxSize\&\ size\ =\ wxDefaultSize,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordtype}{long}\ style\ =\ wxTE\_PROCESS\_ENTER);}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~TComboBox();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear();}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{bool}\ HasValue()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(IsReadOnly()\ \&\&\ GetSelection()\ ==\ -\/1);}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ wxString\ GetValue()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (HasValue()\ ?\ wxComboBox::GetValue()\ :\ wxString(wxEmptyString));}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ olxstr\ GetText()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{void}\ SetText(\textcolor{keyword}{const}\ olxstr\ \&text);}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ DefPropC(olxstr,\ Data)}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsReadOnly()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ WI.HasWindowStyle(wxCB\_READONLY);\ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ SetReadOnly(\textcolor{keywordtype}{bool}\ v)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ v\ ?\ WI.AddWindowStyle(wxCB\_READONLY)\ :\ WI.DelWindowStyle(wxCB\_READONLY);}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \ \ DefPropBIsSet(OnChangeAlways)}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ HandleOnLeave();}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ HandleOnEnter();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl_1_1ActionQueue}{ActionQueue}}\ \&OnChange,\ \&OnLeave,\ \&OnEnter,\ \&OnReturn;}
+\DoxyCodeLine{00060\ \ \ \};}
+\DoxyCodeLine{00061\ \};\ \ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

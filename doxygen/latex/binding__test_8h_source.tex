@@ -1,0 +1,272 @@
+\doxysection{binding\+\_\+test.\+h}
+\hypertarget{binding__test_8h_source}{}\label{binding__test_8h_source}\index{sdl/tests/binding\_test.h@{sdl/tests/binding\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}exparse/expbuilder.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}exparse/funcwrap.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \textcolor{keywordtype}{void}\ BindingTest1(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{using\ namespace\ }esdl::exparse;}
+\DoxyCodeLine{00018\ \ \ \ \ EvaluableFactory\ evf;}
+\DoxyCodeLine{00019\ \ \ \ \ context\ cx;}
+\DoxyCodeLine{00020\ \ \ \ \ context::init\_global(cx);}
+\DoxyCodeLine{00021\ \ \ \ \ evf.types.Add(\&\textcolor{keyword}{typeid}(olxstr),\ \textcolor{keyword}{new}\ StringValue);}
+\DoxyCodeLine{00022\ \ \ \ \ evf.classes.Add(\&\textcolor{keyword}{typeid}(olxstr),\ \&StringValue::info);}
+\DoxyCodeLine{00023\ \ \ \ \ evf.types.Add(\&\textcolor{keyword}{typeid}(ListValue::list\_t),\ \textcolor{keyword}{new}\ ListValue);}
+\DoxyCodeLine{00024\ \ \ \ \ evf.classes.Add(\&\textcolor{keyword}{typeid}(ListValue::list\_t),\ \&ListValue::info);}
+\DoxyCodeLine{00025\ \ \ \ \ StringValue::init\_library();}
+\DoxyCodeLine{00026\ \ \ \ \ ListValue::init\_library();}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ exp\_builder\ \_exp(evf,\ cx);}
+\DoxyCodeLine{00029\ \ \ \ \ IEvaluableHolder\ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a\ =\ 'ab\ c,\ de\(\backslash\)\(\backslash\)';()'"{}});}
+\DoxyCodeLine{00030\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}b\ =\ 'ab\ c'"{}});}
+\DoxyCodeLine{00031\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a.sub(0,4).sub(1,3).len()"{}});}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{if}\ (!iv.value().is\_final())\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}final\ evaluable\ is\ not\ recognised"{}});}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{if}\ (iv.cast<\textcolor{keywordtype}{int}>()\ !=\ 3)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}function\ value"{}});}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//\ try\ wrong\ syntax}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{bool}\ failed\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}x\ =\ a.sub\ (0,4).len()\ +\ b.len()"{}});}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ failed\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ TExceptionBase\ \&e)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{if}\ (!failed)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}syntax\ analysis"{}});}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}x\ =\ a.sub(0,4).len()\ +\ b.len()"{}});}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (iv.cast<\textcolor{keywordtype}{int}>()\ !=\ 8)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}function\ value"{}});}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ a.sub(0,3)\ ==\ b.sub(0,3)"{}},\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{if}\ (!cx.find\_var(\textcolor{charliteral}{'c'})-\/>cast<\textcolor{keywordtype}{bool}>())\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ a.sub(0,3)\ !=\ b.sub(0,3)"{}});}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{if}\ (cx.find\_var(\textcolor{charliteral}{'c'})-\/>cast<\textcolor{keywordtype}{bool}>())\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ !(a.sub(0,3)\ ==\ b.sub(0,3))"{}});}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{if}\ (cx.find\_var(\textcolor{charliteral}{'c'})-\/>cast<\textcolor{keywordtype}{bool}>())\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ !(a.sub(0,4)\ ==\ b.sub(0,3))"{}});}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{if}\ (!cx.find\_var(\textcolor{charliteral}{'c'})-\/>cast<\textcolor{keywordtype}{bool}>())\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ b.sub(0,3)\ +\ 'dfg'"{}});}
+\DoxyCodeLine{00070\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ c\ +\ 100"{}});}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{if}\ (*iv.cast<olxstr>().val\ !=\ \textcolor{stringliteral}{"{}ab\ dfg100"{}})\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}c\ =\ 1.2\ +\ 1.1\ -\/\ .05"{}});}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(iv.cast<\textcolor{keywordtype}{double}>()\ -\/\ 2.25)\ >\ 1e-\/6)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a.len()\ +\ 1.2\ +\ 1.1\ -\/\ abs(-\/.05)*cos(PI/2)"{}});}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(iv.cast<\textcolor{keywordtype}{double}>()\ -\/\ 15.3)\ >\ 1e-\/6)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a='AaBc'.charAt(2)"{}});}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{if}\ (iv.cast<olxch>()\ !=\ \textcolor{charliteral}{'B'})\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a='AaBc'[1].toUpper()"{}});}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{if}\ (*iv.cast<olxstr>().val\ !=\ \textcolor{charliteral}{'A'})\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a='100'.atoi()"{}});}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{if}\ (iv.cast<\textcolor{keywordtype}{int}>()\ !=\ 100)\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00093\ \ \ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a=['aBc',a,b,\ 1.2]"{}});}
+\DoxyCodeLine{00095\ \ \ \ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ TPtrList<IEvaluable>\ \&l\ =\ *iv.cast<TPtrList<IEvaluable>\ >().val;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (l.Count()\ !=\ 4)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}list\ size"{}});}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(l[3]-\/>cast<double>()-\/1.2)\ >\ 1e-\/6\ )\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}list\ value"{}});}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a.add(['ab','ac'])"{}});}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{if}\ (cx.find\_var(\textcolor{charliteral}{'a'})-\/>cast<TPtrList<IEvaluable>\ >().val-\/>Count()\ !=\ 5)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}list\ size"{}});}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}a=a[4][1][1].toUpper()"{}});}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{if}\ (*iv.cast<olxstr>().val\ !=\ \textcolor{charliteral}{'C'})\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}cos\ pi*30/180"{}});}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(iv.cast<\textcolor{keywordtype}{double}>()\ -\/\ cos(M\_PI\ *\ 30\ /\ 180)))\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}b\ =\ 35.0"{}});}
+\DoxyCodeLine{00118\ \ \ \ \ ANumberEvaluator\&\ ne\ =\ \textcolor{keyword}{dynamic\_cast<}ANumberEvaluator\&\textcolor{keyword}{>}(iv.value());}
+\DoxyCodeLine{00119\ \ \ \ \ ne.set\_final(\textcolor{keyword}{false});\ \textcolor{comment}{//\ prevent\ the\ follwing\ expression\ from\ 'collapsing'}}
+\DoxyCodeLine{00120\ \ \ \ \ iv\ =\ \_exp.build(\textcolor{stringliteral}{"{}cos\ pi*b/180"{}});}
+\DoxyCodeLine{00121\ \ \ \ \ ne.set\_final(\textcolor{keyword}{true});\ \textcolor{comment}{//\ make\ sure\ it\ is\ not\ marked\ as\ final!}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(iv.cast<\textcolor{keywordtype}{double}>()\ -\/\ cos(M\_PI\ *\ 35\ /\ 180))\ >\ 1e-\/10)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00124\ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{comment}{//\ the\ trick\ with\ final\ allows\ evaluating\ values\ in\ a\ loop}}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 10;\ i++)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ ne.set\_value(i\ *\ 10);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(iv.cast<\textcolor{keywordtype}{double}>()\ -\/\ cos(M\_PI\ *\ i\ *\ 10\ /\ 180))\ >\ 1e-\/10)\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}var\ value"{}});}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{comment}{//iv\ =\ \_exp.build("{}if(a)\{\ a\ =\ a.sub(0,3);\ \}else\{\ a\ =\ a.sub(0,4);\ \}"{});}}
+\DoxyCodeLine{00133\ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00135\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{void}\ vtest\_0()\ \{\}}
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{void}\ vtest\_1(\textcolor{keywordtype}{bool})\ \{\}}
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordtype}{void}\ vtest\_2(\textcolor{keywordtype}{bool},\ \textcolor{keywordtype}{bool})\ \{\}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordtype}{bool}\ test\_0()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00142\ \ \ \textcolor{keywordtype}{bool}\ test\_1(\textcolor{keywordtype}{bool}\ v)\ \{\ \textcolor{keywordflow}{return}\ !v;\ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordtype}{bool}\ test\_2(\textcolor{keywordtype}{bool}\ v1,\ \textcolor{keywordtype}{bool}\ v2)\ \{\ \textcolor{keywordflow}{return}\ v1\ \&\&\ v2;\ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{struct\ }test\_struct\ :\ \textcolor{keyword}{public}\ exparse::IEvaluable,\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordtype}{int}\ test\_val;}
+\DoxyCodeLine{00147\ \ \ \ \ test\_struct()\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ test\_val\ =\ 0;}
+\DoxyCodeLine{00149\ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ test\_struct(\textcolor{keywordtype}{int}\ v)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ test\_val\ =\ v;}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keyword}{static}\ test\_struct\ \&create0()\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *(\textcolor{keyword}{new}\ test\_struct());}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{static}\ test\_struct\ \&create1(\textcolor{keywordtype}{int}\ v)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *(\textcolor{keyword}{new}\ test\_struct(v));}
+\DoxyCodeLine{00158\ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordtype}{void}\ vtest\_0()\ \{\}}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordtype}{void}\ vtest\_1(\textcolor{keywordtype}{bool}\ v)\ \{\}}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordtype}{void}\ vtest\_2(\textcolor{keywordtype}{bool}\ v1,\ \textcolor{keywordtype}{bool}\ v2)\ \{\}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordtype}{bool}\ test\_0()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordtype}{bool}\ test\_1(\textcolor{keywordtype}{bool}\ v)\ \{\ \textcolor{keywordflow}{return}\ !v;\ \}}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordtype}{bool}\ test\_2(\textcolor{keywordtype}{bool}\ v1,\ \textcolor{keywordtype}{bool}\ v2)\ \{\ \textcolor{keywordflow}{return}\ v1\ \&\&\ v2;\ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordtype}{int}\ get\_val()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ test\_val;\ \}}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordtype}{void}\ set\_val(\textcolor{keywordtype}{int}\ v)\ \ \{\ test\_val\ =\ v;\ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ \_evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ create\_proxy\_();}
+\DoxyCodeLine{00171\ \ \ \ \ \}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ is\_final()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00175\ \ \ \ \ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \};}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordtype}{void}\ BindingTest2(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keyword}{using\ namespace\ }esdl::exparse;}
+\DoxyCodeLine{00183\ \ \ \ \ EvaluableFactory\ evf;}
+\DoxyCodeLine{00184\ \ \ \ \ context\ cx;}
+\DoxyCodeLine{00185\ \ \ \ \ context::init\_global(cx);}
+\DoxyCodeLine{00186\ \ \ \ \ evf.types.Add(\&\textcolor{keyword}{typeid}(olxstr),\ \textcolor{keyword}{new}\ StringValue);}
+\DoxyCodeLine{00187\ \ \ \ \ evf.classes.Add(\&\textcolor{keyword}{typeid}(olxstr),\ \&StringValue::info);}
+\DoxyCodeLine{00188\ \ \ \ \ evf.types.Add(\&\textcolor{keyword}{typeid}(ListValue::list\_t),\ \textcolor{keyword}{new}\ ListValue);}
+\DoxyCodeLine{00189\ \ \ \ \ evf.classes.Add(\&\textcolor{keyword}{typeid}(ListValue::list\_t),\ \&ListValue::info);}
+\DoxyCodeLine{00190\ \ \ \ \ StringValue::init\_library();}
+\DoxyCodeLine{00191\ \ \ \ \ ListValue::init\_library();}
+\DoxyCodeLine{00192\ \ \ \ \ exp\_builder\ \_exp(evf,\ cx);}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \ \ cx.functions.add(\textcolor{stringliteral}{"{}vtest"{}},\ \&vtest\_0);}
+\DoxyCodeLine{00195\ \ \ \ \ cx.functions.add(\textcolor{stringliteral}{"{}vtest"{}},\ \&vtest\_1);}
+\DoxyCodeLine{00196\ \ \ \ \ cx.functions.add(\textcolor{stringliteral}{"{}vtest"{}},\ \&vtest\_2);}
+\DoxyCodeLine{00197\ \ \ \ \ cx.functions.add(\textcolor{stringliteral}{"{}test"{}},\ \&test\_0);}
+\DoxyCodeLine{00198\ \ \ \ \ cx.functions.add(\textcolor{stringliteral}{"{}test"{}},\ \&test\_1);}
+\DoxyCodeLine{00199\ \ \ \ \ cx.functions.add(\textcolor{stringliteral}{"{}test"{}},\ \&test\_2);}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ ClassInfo<test\_struct,\ test\_struct>\ \&cr\ =\ *(\textcolor{keyword}{new}\ ClassInfo<test\_struct,\ test\_struct>());}
+\DoxyCodeLine{00202\ \ \ \ \ cr.globals.add(\textcolor{stringliteral}{"{}\_\_init\_\_"{}},\ \&test\_struct::create0);}
+\DoxyCodeLine{00203\ \ \ \ \ cr.globals.add(\textcolor{stringliteral}{"{}\_\_init\_\_"{}},\ \&test\_struct::create1);}
+\DoxyCodeLine{00204\ \ \ \ \ cr.functions.add(\textcolor{stringliteral}{"{}vtest"{}},\ \&test\_struct::vtest\_0);}
+\DoxyCodeLine{00205\ \ \ \ \ cr.functions.add(\textcolor{stringliteral}{"{}vtest"{}},\ \&test\_struct::vtest\_1);}
+\DoxyCodeLine{00206\ \ \ \ \ cr.functions.add(\textcolor{stringliteral}{"{}vtest"{}},\ \&test\_struct::vtest\_2);}
+\DoxyCodeLine{00207\ \ \ \ \ cr.functions.add(\textcolor{stringliteral}{"{}test"{}},\ \&test\_struct::test\_0);}
+\DoxyCodeLine{00208\ \ \ \ \ cr.functions.add(\textcolor{stringliteral}{"{}test"{}},\ \&test\_struct::test\_1);}
+\DoxyCodeLine{00209\ \ \ \ \ cr.functions.add(\textcolor{stringliteral}{"{}test"{}},\ \&test\_struct::test\_2);}
+\DoxyCodeLine{00210\ \ \ \ \ cr.functions.add(\textcolor{stringliteral}{"{}get\_val"{}},\ \&test\_struct::get\_val);}
+\DoxyCodeLine{00211\ \ \ \ \ cr.functions.add(\textcolor{stringliteral}{"{}set\_val"{}},\ \&test\_struct::set\_val);}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \ \ evf.types.Add(\&\textcolor{keyword}{typeid}(\mbox{\hyperlink{structtest_1_1test__struct}{test\_struct}}\ \&),\ \textcolor{keyword}{new}\ VarProxy(0));}
+\DoxyCodeLine{00214\ \ \ \ \ cx.classes.Add(\textcolor{stringliteral}{"{}test\_struct"{}},\ \&cr);}
+\DoxyCodeLine{00215\ \ \ \ \ evf.classes.Add(\&\textcolor{keyword}{typeid}(\mbox{\hyperlink{structtest_1_1test__struct}{test\_struct}}\ \&),\ \&cr);}
+\DoxyCodeLine{00216\ \ \ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<IEvaluable>}}\ args;}
+\DoxyCodeLine{00217\ \ \ \ \ \mbox{\hyperlink{structtest_1_1test__struct}{test\_struct}}\ ts;}
+\DoxyCodeLine{00218\ \ \ \ \ EvaluableFactory\ factory;}
+\DoxyCodeLine{00219\ \ \ \ \ IEvaluableHolder\ i\ =\ cr.functions.call(factory,\ ts,\ \textcolor{stringliteral}{"{}test"{}},\ args);}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordflow}{if}\ (i.cast<\textcolor{keywordtype}{bool}>()\ !=\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}value"{}});}
+\DoxyCodeLine{00222\ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \ \ args.Add(\_exp.build(\textcolor{stringliteral}{"{}a\ =\ 1"{}}));}
+\DoxyCodeLine{00224\ \ \ \ \ args.Add(\_exp.build(\textcolor{stringliteral}{"{}b\ =\ 0"{}}));}
+\DoxyCodeLine{00225\ \ \ \ \ i\ =\ cr.functions.call(factory,\ ts,\ \textcolor{stringliteral}{"{}test"{}},\ args);}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordflow}{if}\ (i.cast<\textcolor{keywordtype}{bool}>()\ !=\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}value"{}});}
+\DoxyCodeLine{00228\ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \ \ args[0]\ =\ cx.find\_var(\textcolor{charliteral}{'a'});}
+\DoxyCodeLine{00230\ \ \ \ \ args[1]\ =\ \_exp.build(\textcolor{stringliteral}{"{}b\ =\ 1"{}});}
+\DoxyCodeLine{00231\ \ \ \ \ i\ =\ cr.functions.call(factory,\ ts,\ \textcolor{stringliteral}{"{}test"{}},\ args);}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordflow}{if}\ (i.cast<\textcolor{keywordtype}{bool}>()\ !=\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}value"{}});}
+\DoxyCodeLine{00234\ \ \ \ \ \}}
+\DoxyCodeLine{00235\ \ \ \ \ i\ =\ \_exp.build(\textcolor{stringliteral}{"{}t\ =\ test\_struct()"{}});}
+\DoxyCodeLine{00236\ \ \ \ \ i\ =\ \_exp.build(\textcolor{stringliteral}{"{}t\ =\ test\_struct(1)"{}});}
+\DoxyCodeLine{00237\ \ \ \ \ \_exp.build(\textcolor{stringliteral}{"{}t.set\_val(5)"{}});}
+\DoxyCodeLine{00238\ \ \ \ \ i\ =\ \_exp.build(\textcolor{stringliteral}{"{}t.get\_val()\ ==\ 4"{}});}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordflow}{if}\ (i.cast<\textcolor{keywordtype}{bool}>()\ !=\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}value"{}});}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \ \ i\ =\ \_exp.build(\textcolor{stringliteral}{"{}t.get\_val()\ ==\ 5"{}});}
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordflow}{if}\ (i.cast<\textcolor{keywordtype}{bool}>()\ !=\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}value"{}});}
+\DoxyCodeLine{00245\ \ \ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \ \ i\ =\ \_exp.build(\textcolor{stringliteral}{"{}t.test(true,true)"{}});}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{if}\ (i.cast<\textcolor{keywordtype}{bool}>()\ !=\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}value"{}});}
+\DoxyCodeLine{00249\ \ \ \ \ \}}
+\DoxyCodeLine{00250\ \ \ \ \ i\ =\ \_exp.build(\textcolor{stringliteral}{"{}t.test(true,false)"{}});}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordflow}{if}\ (i.cast<\textcolor{keywordtype}{bool}>()\ !=\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}value"{}});}
+\DoxyCodeLine{00253\ \ \ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \ \ i\ =\ \_exp.build(\textcolor{stringliteral}{"{}t.test(false,false)"{}});}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keywordflow}{if}\ (i.cast<\textcolor{keywordtype}{bool}>()\ !=\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}value"{}});}
+\DoxyCodeLine{00257\ \ \ \ \ \}}
+\DoxyCodeLine{00258\ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00260\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00261\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00262\ \ \ \textcolor{keywordtype}{void}\ BindingTests(OlxTests\ \&t)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ t.Add(\&BindingTest1).}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ Add(\&BindingTest2);}
+\DoxyCodeLine{00265\ \ \ \}}
+\DoxyCodeLine{00266\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

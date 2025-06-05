@@ -3,7 +3,7 @@
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
-\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2025\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
 \DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
 \DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
 \DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
@@ -49,9 +49,9 @@
 \DoxyCodeLine{00045\ \};}
 \DoxyCodeLine{00046\ }
 \DoxyCodeLine{00047\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KType,\ \textcolor{keyword}{typename}\ VType,\ \textcolor{keyword}{class}\ Comparator>\ \textcolor{keyword}{class\ }olxdict}
-\DoxyCodeLine{00048\ \ \ :\ \textcolor{keyword}{protected}\ SortedObjectList}
-\DoxyCodeLine{00049\ \ \ <DictEntry<KType,\ VType,\ Comparator>,}
-\DoxyCodeLine{00050\ \ \ typename\ DictEntry<KType,\ VType,\ Comparator>::Comparator>}
+\DoxyCodeLine{00048\ \ \ :\ \textcolor{keyword}{protected}\ SortedObjectList<}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ DictEntry<KType,\ VType,\ Comparator>,}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ typename\ DictEntry<KType,\ VType,\ Comparator>::Comparator>}
 \DoxyCodeLine{00051\ \{}
 \DoxyCodeLine{00052\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structDictEntry}{DictEntry<KType,\ VType,\ Comparator>}}\ EntryType;}
 \DoxyCodeLine{00053\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ EntryType::Comparator\ cmpt\_t;}
@@ -122,182 +122,199 @@
 \DoxyCodeLine{00118\ \ \ \ \ \}}
 \DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ind).val;}
 \DoxyCodeLine{00120\ \ \ \}}
-\DoxyCodeLine{00121\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{\ SortedL::Clear();\ \}}
-\DoxyCodeLine{00122\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SortedL::Count();\ \}}
-\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SortedL::IsEmpty();\ \}}
-\DoxyCodeLine{00124\ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keyword}{const}\ olx\_capacity\_t\&\ c)\ \{\ SortedL::SetCapacity(c);\ \}}
-\DoxyCodeLine{00125\ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keywordtype}{size\_t}\ c)\ \{\ SortedL::SetCapacity(c);\ \}}
-\DoxyCodeLine{00126\ \ \ VType\&\ GetValue(\textcolor{keywordtype}{size\_t}\ ind)\ \{\ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ind).val;\ \}}
-\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{const}\ VType\&\ GetValue(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ind).val;}
-\DoxyCodeLine{00129\ \ \ \}}
-\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{const}\ KType\&\ GetKey(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ind).key;}
-\DoxyCodeLine{00132\ \ \ \}}
-\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{const}\ EntryType\&\ GetEntry(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ind);}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \textcolor{keywordtype}{void}\ Clear()\ \{\ SortedL::Clear();\ \}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SortedL::Count();\ \}}
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ SortedL::IsEmpty();\ \}}
+\DoxyCodeLine{00125\ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keyword}{const}\ olx\_capacity\_t\&\ c)\ \{\ SortedL::SetCapacity(c);\ \}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{void}\ SetCapacity(\textcolor{keywordtype}{size\_t}\ c)\ \{\ SortedL::SetCapacity(c);\ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \textcolor{keyword}{const}\ EntryType\&\ GetListItem(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ind);}
+\DoxyCodeLine{00130\ \ \ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ VType\&\ GetValue(\textcolor{keywordtype}{size\_t}\ ind)\ \{\ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ind).val;\ \}}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{const}\ VType\&\ GetValue(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ind).val;}
 \DoxyCodeLine{00135\ \ \ \}}
-\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keywordtype}{bool}\ HasKey(\textcolor{keyword}{const}\ T\&\ key)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::IndexOf(key)\ !=\ InvalidIndex;}
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{const}\ KType\&\ GetKey(\textcolor{keywordtype}{size\_t}\ ind)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ind).key;}
 \DoxyCodeLine{00138\ \ \ \}}
-\DoxyCodeLine{00139\ }
-\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00141\ \ \ VType\&\ operator\ ()\ (\textcolor{keyword}{const}\ T\&\ key,\ \textcolor{keyword}{const}\ VType\&\ def)\ \{}
-\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{return}\ Add(key,\ def);}
-\DoxyCodeLine{00143\ \ \ \}}
-\DoxyCodeLine{00144\ \ \ }
-\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00146\ \ \ VType\&\ Add(\textcolor{keyword}{const}\ T\&\ key,\ \textcolor{keyword}{const}\ VType\&\ def,\ \textcolor{keywordtype}{bool}\ update\ =\ \textcolor{keyword}{false})\ \{}
-\DoxyCodeLine{00147\ \ \ \ \ olx\_pair\_t<size\_t,\ bool>\ ip\ =\ SortedL::AddUnique(key);}
-\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{if}\ (ip.b\ ||\ update)\ \{\ \textcolor{comment}{//\ new\ entry?}}
-\DoxyCodeLine{00149\ \ \ \ \ \ \ SortedL::operator[]\ (ip.a).val\ =\ def;}
-\DoxyCodeLine{00150\ \ \ \ \ \}}
-\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ip.a).val;}
-\DoxyCodeLine{00152\ \ \ \}}
-\DoxyCodeLine{00153\ \ \ }
-\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00155\ \ \ VType\&\ Add(\textcolor{keyword}{const}\ T\&\ key)\ \{}
-\DoxyCodeLine{00156\ \ \ \ \ olx\_pair\_t<size\_t,\ bool>\ ip\ =\ SortedL::AddUnique(key);}
-\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ip.a).val;}
-\DoxyCodeLine{00158\ \ \ \}}
-\DoxyCodeLine{00159\ \ \ \textcolor{comment}{//\ returs\ index\ of\ new/exsisting\ entry\ and\ true\ if\ the\ record\ is\ new}}
-\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
-\DoxyCodeLine{00161\ \ \ olx\_pair\_t<size\_t,\ bool>\ AddEx(\textcolor{keyword}{const}\ T\&\ key)\ \{}
-\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::AddUnique(key);}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keywordtype}{bool}\ HasKey(\textcolor{keyword}{const}\ T\&\ key)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::Contains(key);}
+\DoxyCodeLine{00141\ \ \ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keywordtype}{bool}\ Contains(\textcolor{keyword}{const}\ T\&\ key)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::Contains(key);}
+\DoxyCodeLine{00145\ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{void}\ AddListItem(\textcolor{keyword}{const}\ EntryType\&\ e)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ SortedL::AddUnique(e.key);}
+\DoxyCodeLine{00149\ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00152\ \ \ VType\&\ operator\ ()\ (\textcolor{keyword}{const}\ T\&\ key,\ \textcolor{keyword}{const}\ VType\&\ def)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{return}\ Add(key,\ def);}
+\DoxyCodeLine{00154\ \ \ \}}
+\DoxyCodeLine{00155\ \ \ }
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00157\ \ \ VType\&\ Add(\textcolor{keyword}{const}\ T\&\ key,\ \textcolor{keyword}{const}\ VType\&\ def,\ \textcolor{keywordtype}{bool}\ update\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ olx\_pair\_t<size\_t,\ bool>\ ip\ =\ SortedL::AddUnique(key);}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{if}\ (ip.b\ ||\ update)\ \{\ \textcolor{comment}{//\ new\ entry?}}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ SortedL::operator[]\ (ip.a).val\ =\ def;}
+\DoxyCodeLine{00161\ \ \ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ip.a).val;}
 \DoxyCodeLine{00163\ \ \ \}}
-\DoxyCodeLine{00164\ }
-\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
-\DoxyCodeLine{00166\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOf(\textcolor{keyword}{const}\ T\&\ key)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::IndexOf(key);}
-\DoxyCodeLine{00168\ \ \ \}}
-\DoxyCodeLine{00169\ \ \ }
-\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
-\DoxyCodeLine{00171\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOfValue(\textcolor{keyword}{const}\ T\&\ val)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ SortedL::Count();\ i++)\ \{}
-\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (SortedL::operator\ []\ (i).val\ ==\ val)\ \{}
-\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
-\DoxyCodeLine{00175\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00176\ \ \ \ \ \}}
-\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
-\DoxyCodeLine{00178\ \ \ \}}
-\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
-\DoxyCodeLine{00180\ \ \ \textcolor{keywordtype}{bool}\ Remove(\textcolor{keyword}{const}\ T\&\ key)\ \{}
-\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ SortedL::IndexOf(key);}
-\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
-\DoxyCodeLine{00183\ \ \ \ \ \ \ SortedL::Delete(ind);}
-\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00185\ \ \ \ \ \}}
-\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00187\ \ \ \}}
-\DoxyCodeLine{00188\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ ind)\ \{\ SortedL::Delete(ind);\ \}}
-\DoxyCodeLine{00189\ }
-\DoxyCodeLine{00190\ \ \ \textcolor{keywordtype}{void}\ Merge(\textcolor{keyword}{const}\ olxdict\&\ d,\ \textcolor{keywordtype}{bool}\ replace\ =\ \textcolor{keyword}{true})\ \{}
-\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ d.Count();\ i++)\ \{}
-\DoxyCodeLine{00192\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx\ =\ IndexOf(d.GetKey(i));}
-\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ ==\ InvalidIndex)\ \{}
-\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ Add(d.GetKey(i),\ d.GetValue(i));}
-\DoxyCodeLine{00195\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (replace)\ \{}
-\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ GetValue(idx)\ =\ d.GetValue(idx);}
-\DoxyCodeLine{00198\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00199\ \ \ \ \ \}}
-\DoxyCodeLine{00200\ \ \ \}}
-\DoxyCodeLine{00201\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00202\ \ \ \textcolor{keyword}{typedef}\ KType\ key\_item\_type;}
-\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{typedef}\ VType\ value\_item\_type;}
-\DoxyCodeLine{00204\ \ \ \textcolor{keyword}{typedef}\ const\_olxdict<KType,\ VType,\ Comparator>\ const\_dict\_type;}
-\DoxyCodeLine{00205\ \};}
-\DoxyCodeLine{00206\ }
-\DoxyCodeLine{00207\ \textcolor{comment}{//\ a\ primitive\ comparable}}
-\DoxyCodeLine{00208\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ key\_t,\ \textcolor{keyword}{typename}\ obj\_t>}
-\DoxyCodeLine{00209\ \textcolor{keyword}{class\ }olx\_pdict}
-\DoxyCodeLine{00210\ \ \ :\ \textcolor{keyword}{public}\ olxdict<key\_t,\ obj\_t,\ TPrimitiveComparator>}
-\DoxyCodeLine{00211\ \{}
-\DoxyCodeLine{00212\ \ \ \textcolor{keyword}{typedef}\ olxdict<key\_t,\ obj\_t,\ TPrimitiveComparator>\ parent\_t;}
-\DoxyCodeLine{00213\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00214\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classconst__olxdict}{const\_olxdict<key\_t,\ obj\_t,\ TPrimitiveComparator>}}\ const\_dict\_type;}
-\DoxyCodeLine{00215\ }
-\DoxyCodeLine{00216\ \ \ olx\_pdict()\ :\ parent\_t(TPrimitiveComparator())\ \{\}}
-\DoxyCodeLine{00217\ \ \ olx\_pdict(\textcolor{keyword}{const}\ olx\_pdict\ \&d)\ :\ parent\_t(d)\ \{\}}
-\DoxyCodeLine{00218\ \ \ olx\_pdict(\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ :\ parent\_t(d)\ \{\}}
-\DoxyCodeLine{00219\ \ \ olx\_pdict\ \&operator\ =\ (\textcolor{keyword}{const}\ olx\_pdict\ \&d)\ \{}
-\DoxyCodeLine{00220\ \ \ \ \ parent\_t::operator\ =\ (d);}
-\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
-\DoxyCodeLine{00222\ \ \ \}}
-\DoxyCodeLine{00223\ \ \ olx\_pdict\ \&operator\ =\ (\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ \{}
-\DoxyCodeLine{00224\ \ \ \ \ parent\_t::operator\ =\ (d);}
-\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
-\DoxyCodeLine{00226\ \ \ \}}
-\DoxyCodeLine{00227\ \};}
-\DoxyCodeLine{00228\ }
-\DoxyCodeLine{00229\ \textcolor{comment}{//\ a\ comparable\ comparable}}
-\DoxyCodeLine{00230\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ key\_t,\ \textcolor{keyword}{typename}\ obj\_t>}
-\DoxyCodeLine{00231\ \textcolor{keyword}{class\ }olx\_cdict}
-\DoxyCodeLine{00232\ \ \ :\ \textcolor{keyword}{public}\ olxdict<key\_t,\ obj\_t,\ TComparableComparator>}
-\DoxyCodeLine{00233\ \{}
-\DoxyCodeLine{00234\ \ \ \textcolor{keyword}{typedef}\ olxdict<key\_t,\ obj\_t,\ TComparableComparator>\ parent\_t;}
-\DoxyCodeLine{00235\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classconst__olxdict}{const\_olxdict<key\_t,\ obj\_t,\ TComparableComparator>}}\ const\_dict\_type;}
-\DoxyCodeLine{00237\ }
-\DoxyCodeLine{00238\ \ \ olx\_cdict()}
-\DoxyCodeLine{00239\ \ \ \ \ :\ parent\_t(\mbox{\hyperlink{classTComparableComparator}{TComparableComparator}}())}
-\DoxyCodeLine{00240\ \ \ \{\}}
-\DoxyCodeLine{00241\ \ \ olx\_cdict(\textcolor{keyword}{const}\ olx\_cdict\ \&d)\ :\ parent\_t(d)\ \{\}}
-\DoxyCodeLine{00242\ \ \ olx\_cdict(\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ :\ parent\_t(d)\ \{\}}
-\DoxyCodeLine{00243\ \ \ olx\_cdict\ \&operator\ =\ (\textcolor{keyword}{const}\ olx\_cdict\ \&d)\ \{}
-\DoxyCodeLine{00244\ \ \ \ \ parent\_t::operator\ =\ (d);}
-\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
-\DoxyCodeLine{00246\ \ \ \}}
-\DoxyCodeLine{00247\ \ \ olx\_cdict\ \&operator\ =\ (\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ \{}
-\DoxyCodeLine{00248\ \ \ \ \ parent\_t::operator\ =\ (d);}
-\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
-\DoxyCodeLine{00250\ \ \ \}}
-\DoxyCodeLine{00251\ \};}
-\DoxyCodeLine{00252\ }
-\DoxyCodeLine{00253\ \textcolor{comment}{//\ a\ string\ to\ type\ association....}}
-\DoxyCodeLine{00254\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ VType,\ \textcolor{keywordtype}{bool}\ case\_insensitive\ =\ false>}
-\DoxyCodeLine{00255\ \textcolor{keyword}{class\ }olxstr\_dict}
-\DoxyCodeLine{00256\ \ \ :\ \textcolor{keyword}{public}\ olxdict<olxstr,\ VType,\ olxstrComparator<case\_insensitive>\ >}
-\DoxyCodeLine{00257\ \{}
-\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{typedef}\ olxdict\ <\ olxstr,\ VType,\ olxstrComparator<case\_insensitive>\ >}
-\DoxyCodeLine{00259\ \ \ parent\_t;}
-\DoxyCodeLine{00260\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classconst__olxdict}{const\_olxdict<olxstr,\ VType,\ olxstrComparator<case\_insensitive>}}\ >}
-\DoxyCodeLine{00262\ \ \ \ \ const\_dict\_type;}
-\DoxyCodeLine{00263\ }
-\DoxyCodeLine{00264\ \ \ olxstr\_dict()}
-\DoxyCodeLine{00265\ \ \ \ \ :\ parent\_t(olxstrComparator<case\_insensitive>())}
-\DoxyCodeLine{00266\ \ \ \{\}}
-\DoxyCodeLine{00267\ \ \ olxstr\_dict(\textcolor{keyword}{const}\ olxstr\_dict\ \&d)\ :\ parent\_t(d)\ \{\}}
-\DoxyCodeLine{00268\ \ \ olxstr\_dict(\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ :\ parent\_t(d)\ \{\}}
-\DoxyCodeLine{00269\ \ \ olxstr\_dict\ \&operator\ =\ (\textcolor{keyword}{const}\ olxstr\_dict\ \&d)\ \{}
-\DoxyCodeLine{00270\ \ \ \ \ parent\_t::operator\ =\ (d);}
-\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
-\DoxyCodeLine{00272\ \ \ \}}
-\DoxyCodeLine{00273\ \ \ olxstr\_dict\ \&operator\ =\ (\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ \{}
-\DoxyCodeLine{00274\ \ \ \ \ parent\_t::operator\ =\ (d);}
-\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
-\DoxyCodeLine{00276\ \ \ \}}
-\DoxyCodeLine{00277\ \};}
-\DoxyCodeLine{00278\ }
-\DoxyCodeLine{00279\ \textcolor{comment}{//\ const\_dict}}
-\DoxyCodeLine{00280\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ key\_t,\ \textcolor{keyword}{typename}\ val\_t,\ \textcolor{keyword}{class}\ Comparator>}
-\DoxyCodeLine{00281\ \textcolor{keyword}{class\ }const\_olxdict\ :\ \textcolor{keyword}{public}\ const\_dict<}
-\DoxyCodeLine{00282\ \ \ olxdict<key\_t,val\_t,Comparator>\ >}
-\DoxyCodeLine{00283\ \{}
-\DoxyCodeLine{00284\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolxdict}{olxdict<key\_t,val\_t,Comparator>}}\ dict\_t;}
-\DoxyCodeLine{00285\ \ \ \textcolor{keyword}{typedef}\ const\_dict<dict\_t>\ parent\_t;}
-\DoxyCodeLine{00286\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00287\ \ \ const\_olxdict(\textcolor{keyword}{const}\ const\_olxdict\ \&d)\ :\ parent\_t(d)\ \{\}}
-\DoxyCodeLine{00288\ \ \ const\_olxdict(dict\_t\ \&d)\ :\ parent\_t(d)\ \{\}}
-\DoxyCodeLine{00289\ \ \ const\_olxdict(dict\_t\ *d)\ :\ parent\_t(d)\ \{\}}
-\DoxyCodeLine{00290\ \ \ const\_olxdict\ \&operator\ =\ (\textcolor{keyword}{const}\ const\_olxdict\ \&d)\ \{}
+\DoxyCodeLine{00164\ \ \ }
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00166\ \ \ VType\&\ Add(\textcolor{keyword}{const}\ T\&\ key)\ \{}
+\DoxyCodeLine{00167\ \ \ \ \ olx\_pair\_t<size\_t,\ bool>\ ip\ =\ SortedL::AddUnique(key);}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::operator[]\ (ip.a).val;}
+\DoxyCodeLine{00169\ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \textcolor{comment}{//\ returs\ index\ of\ new/exsisting\ entry\ and\ true\ if\ the\ record\ is\ new}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00172\ \ \ olx\_pair\_t<size\_t,\ bool>\ AddEx(\textcolor{keyword}{const}\ T\&\ key)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::AddUnique(key);}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOf(\textcolor{keyword}{const}\ T\&\ key)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{return}\ SortedL::IndexOf(key);}
+\DoxyCodeLine{00179\ \ \ \}}
+\DoxyCodeLine{00180\ \ \ }
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00182\ \ \ \textcolor{keywordtype}{size\_t}\ IndexOfValue(\textcolor{keyword}{const}\ T\&\ val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ SortedL::Count();\ i++)\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (SortedL::operator\ []\ (i).val\ ==\ val)\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \ \ \}}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00189\ \ \ \}}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \textcolor{keywordtype}{bool}\ RemoveListItem(\textcolor{keyword}{const}\ EntryType\&\ e)\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{return}\ Remove(e.key);}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00196\ \ \ \textcolor{keywordtype}{bool}\ Remove(\textcolor{keyword}{const}\ T\&\ key)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ SortedL::IndexOf(key);}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ SortedL::Delete(ind);}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00201\ \ \ \ \ \}}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00203\ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \textcolor{keywordtype}{void}\ Delete(\textcolor{keywordtype}{size\_t}\ ind)\ \{\ SortedL::Delete(ind);\ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \textcolor{keywordtype}{void}\ Merge(\textcolor{keyword}{const}\ olxdict\&\ d,\ \textcolor{keywordtype}{bool}\ replace\ =\ \textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ d.Count();\ i++)\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx\ =\ IndexOf(d.GetKey(i));}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ Add(d.GetKey(i),\ d.GetValue(i));}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (replace)\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ GetValue(idx)\ =\ d.GetValue(idx);}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \}}
+\DoxyCodeLine{00217\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{typedef}\ KType\ key\_item\_type;}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{typedef}\ VType\ value\_item\_type;}
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{typedef}\ DictEntry<KType,\ VType,\ Comparator>\ list\_item\_type;}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{typedef}\ const\_olxdict<KType,\ VType,\ Comparator>\ const\_dict\_type;}
+\DoxyCodeLine{00222\ \};}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \textcolor{comment}{//\ a\ primitive\ comparable}}
+\DoxyCodeLine{00225\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ key\_t,\ \textcolor{keyword}{typename}\ obj\_t>}
+\DoxyCodeLine{00226\ \textcolor{keyword}{class\ }olx\_pdict}
+\DoxyCodeLine{00227\ \ \ :\ \textcolor{keyword}{public}\ olxdict<key\_t,\ obj\_t,\ TPrimitiveComparator>}
+\DoxyCodeLine{00228\ \{}
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{typedef}\ olxdict<key\_t,\ obj\_t,\ TPrimitiveComparator>\ parent\_t;}
+\DoxyCodeLine{00230\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classconst__olxdict}{const\_olxdict<key\_t,\ obj\_t,\ TPrimitiveComparator>}}\ const\_dict\_type;}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ olx\_pdict()\ :\ parent\_t(TPrimitiveComparator())\ \{\}}
+\DoxyCodeLine{00234\ \ \ olx\_pdict(\textcolor{keyword}{const}\ olx\_pdict\ \&d)\ :\ parent\_t(d)\ \{\}}
+\DoxyCodeLine{00235\ \ \ olx\_pdict(\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ :\ parent\_t(d)\ \{\}}
+\DoxyCodeLine{00236\ \ \ olx\_pdict\ \&operator\ =\ (\textcolor{keyword}{const}\ olx\_pdict\ \&d)\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ parent\_t::operator\ =\ (d);}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00239\ \ \ \}}
+\DoxyCodeLine{00240\ \ \ olx\_pdict\ \&operator\ =\ (\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ parent\_t::operator\ =\ (d);}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ \};}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \textcolor{comment}{//\ a\ comparable\ comparable}}
+\DoxyCodeLine{00247\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ key\_t,\ \textcolor{keyword}{typename}\ obj\_t>}
+\DoxyCodeLine{00248\ \textcolor{keyword}{class\ }olx\_cdict}
+\DoxyCodeLine{00249\ \ \ :\ \textcolor{keyword}{public}\ olxdict<key\_t,\ obj\_t,\ TComparableComparator>}
+\DoxyCodeLine{00250\ \{}
+\DoxyCodeLine{00251\ \ \ \textcolor{keyword}{typedef}\ olxdict<key\_t,\ obj\_t,\ TComparableComparator>\ parent\_t;}
+\DoxyCodeLine{00252\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00253\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classconst__olxdict}{const\_olxdict<key\_t,\ obj\_t,\ TComparableComparator>}}\ const\_dict\_type;}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \ \ olx\_cdict()}
+\DoxyCodeLine{00256\ \ \ \ \ :\ parent\_t(\mbox{\hyperlink{classTComparableComparator}{TComparableComparator}}())}
+\DoxyCodeLine{00257\ \ \ \{\}}
+\DoxyCodeLine{00258\ \ \ olx\_cdict(\textcolor{keyword}{const}\ olx\_cdict\ \&d)\ :\ parent\_t(d)\ \{\}}
+\DoxyCodeLine{00259\ \ \ olx\_cdict(\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ :\ parent\_t(d)\ \{\}}
+\DoxyCodeLine{00260\ \ \ olx\_cdict\ \&operator\ =\ (\textcolor{keyword}{const}\ olx\_cdict\ \&d)\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ parent\_t::operator\ =\ (d);}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00263\ \ \ \}}
+\DoxyCodeLine{00264\ \ \ olx\_cdict\ \&operator\ =\ (\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ parent\_t::operator\ =\ (d);}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00267\ \ \ \}}
+\DoxyCodeLine{00268\ \};}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \textcolor{comment}{//\ a\ string\ to\ type\ association....}}
+\DoxyCodeLine{00271\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ VType,\ \textcolor{keywordtype}{bool}\ case\_insensitive\ =\ false>}
+\DoxyCodeLine{00272\ \textcolor{keyword}{class\ }olxstr\_dict}
+\DoxyCodeLine{00273\ \ \ :\ \textcolor{keyword}{public}\ olxdict<olxstr,\ VType,\ olxstrComparator<case\_insensitive>\ >}
+\DoxyCodeLine{00274\ \{}
+\DoxyCodeLine{00275\ \ \ \textcolor{keyword}{typedef}\ olxdict\ <\ olxstr,\ VType,\ olxstrComparator<case\_insensitive>\ >}
+\DoxyCodeLine{00276\ \ \ parent\_t;}
+\DoxyCodeLine{00277\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00278\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classconst__olxdict}{const\_olxdict<olxstr,\ VType,\ olxstrComparator<case\_insensitive>}}\ >}
+\DoxyCodeLine{00279\ \ \ \ \ const\_dict\_type;}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \ \ olxstr\_dict()}
+\DoxyCodeLine{00282\ \ \ \ \ :\ parent\_t(olxstrComparator<case\_insensitive>())}
+\DoxyCodeLine{00283\ \ \ \{\}}
+\DoxyCodeLine{00284\ \ \ olxstr\_dict(\textcolor{keyword}{const}\ olxstr\_dict\ \&d)\ :\ parent\_t(d)\ \{\}}
+\DoxyCodeLine{00285\ \ \ olxstr\_dict(\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ :\ parent\_t(d)\ \{\}}
+\DoxyCodeLine{00286\ \ \ olxstr\_dict\ \&operator\ =\ (\textcolor{keyword}{const}\ olxstr\_dict\ \&d)\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ parent\_t::operator\ =\ (d);}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00289\ \ \ \}}
+\DoxyCodeLine{00290\ \ \ olxstr\_dict\ \&operator\ =\ (\textcolor{keyword}{const}\ const\_dict\_type\ \&d)\ \{}
 \DoxyCodeLine{00291\ \ \ \ \ parent\_t::operator\ =\ (d);}
 \DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
 \DoxyCodeLine{00293\ \ \ \}}
 \DoxyCodeLine{00294\ \};}
 \DoxyCodeLine{00295\ }
-\DoxyCodeLine{00296\ EndEsdlNamespace()}
-\DoxyCodeLine{00297\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00296\ \textcolor{comment}{//\ const\_dict}}
+\DoxyCodeLine{00297\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ key\_t,\ \textcolor{keyword}{typename}\ val\_t,\ \textcolor{keyword}{class}\ Comparator>}
+\DoxyCodeLine{00298\ \textcolor{keyword}{class\ }const\_olxdict\ :\ \textcolor{keyword}{public}\ const\_dict<}
+\DoxyCodeLine{00299\ \ \ olxdict<key\_t,val\_t,Comparator>\ >}
+\DoxyCodeLine{00300\ \{}
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classolxdict}{olxdict<key\_t,val\_t,Comparator>}}\ dict\_t;}
+\DoxyCodeLine{00302\ \ \ \textcolor{keyword}{typedef}\ const\_dict<dict\_t>\ parent\_t;}
+\DoxyCodeLine{00303\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00304\ \ \ const\_olxdict(\textcolor{keyword}{const}\ const\_olxdict\ \&d)\ :\ parent\_t(d)\ \{\}}
+\DoxyCodeLine{00305\ \ \ const\_olxdict(dict\_t\ \&d)\ :\ parent\_t(d)\ \{\}}
+\DoxyCodeLine{00306\ \ \ const\_olxdict(dict\_t\ *d)\ :\ parent\_t(d)\ \{\}}
+\DoxyCodeLine{00307\ \ \ const\_olxdict\ \&operator\ =\ (\textcolor{keyword}{const}\ const\_olxdict\ \&d)\ \{}
+\DoxyCodeLine{00308\ \ \ \ \ parent\_t::operator\ =\ (d);}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00310\ \ \ \}}
+\DoxyCodeLine{00311\ \};}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ EndEsdlNamespace()}
+\DoxyCodeLine{00314\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

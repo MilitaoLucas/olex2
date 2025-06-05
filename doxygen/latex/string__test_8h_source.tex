@@ -1,0 +1,176 @@
+\doxysection{string\+\_\+test.\+h}
+\hypertarget{string__test_8h_source}{}\label{string__test_8h_source}\index{sdl/tests/string\_test.h@{sdl/tests/string\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keywordtype}{void}\ ReplaceTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00013\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00014\ \ \ olxstr\ a(\textcolor{stringliteral}{"{}abcdef"{}});}
+\DoxyCodeLine{00015\ \ \ \textcolor{keywordflow}{if}(\ a.Replace(\textcolor{stringliteral}{"{}abc"{}},\ \textcolor{stringliteral}{"{}cba"{}})\ !=\ \textcolor{stringliteral}{"{}cbadef"{}}\ )}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordflow}{if}(\ a.Replace(\textcolor{charliteral}{'a'},\ \textcolor{stringliteral}{"{}aa"{}})\ !=\ \textcolor{stringliteral}{"{}cbaadef"{}}\ )}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordflow}{if}(\ a.Replace(\textcolor{charliteral}{'a'},\ \textcolor{stringliteral}{"{}aa"{}})\ !=\ \textcolor{stringliteral}{"{}cbaaaadef"{}}\ )}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordflow}{if}(\ a.Replace(\textcolor{stringliteral}{"{}aa"{}},\ \textcolor{stringliteral}{"{}h"{}})\ !=\ \textcolor{stringliteral}{"{}cbhhdef"{}}\ )}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordflow}{if}(\ a.Replace(\textcolor{stringliteral}{"{}h"{}},\ EmptyString())\ !=\ \textcolor{stringliteral}{"{}cbdef"{}}\ )}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00025\ \ \ a\ =\ \textcolor{stringliteral}{"{}abcwwwbcawww"{}};}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordflow}{if}(\ a.DeleteStrings(\textcolor{stringliteral}{"{}www"{}})\ !=\ \textcolor{stringliteral}{"{}abcbca"{}}\ )}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00028\ \ \ a\ =\ \textcolor{stringliteral}{"{}abcawwwbcawww"{}};}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordflow}{if}\ (a.DeleteStrings(\textcolor{stringliteral}{"{}ca"{}})\ !=\ \textcolor{stringliteral}{"{}abwwwbwww"{}})}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordflow}{if}(\ a.DeleteChars(\textcolor{charliteral}{'a'})\ !=\ \textcolor{stringliteral}{"{}bwwwbwww"{}}\ )}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordflow}{if}(\ a.DeleteCharSet(\textcolor{stringliteral}{"{}bw"{}})\ !=\ \textcolor{stringliteral}{"{}"{}}\ )}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordflow}{if}\ (olxstr(\textcolor{stringliteral}{"{}bw\_bw\_"{}}).Replace(\textcolor{stringliteral}{"{}bw"{}},\ \textcolor{stringliteral}{"{}wbw"{}})\ !=\ \textcolor{stringliteral}{"{}wbw\_wbw\_"{}})}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordflow}{if}\ (olxstr(\textcolor{stringliteral}{"{}bw\_bw\_bw"{}}).Replace(\textcolor{stringliteral}{"{}bw"{}},\ \textcolor{stringliteral}{"{}wbw"{}})\ !=\ \textcolor{stringliteral}{"{}wbw\_wbw\_wbw"{}})}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordflow}{if}\ (olxstr(\textcolor{stringliteral}{"{}\_xw\_bw\_xw"{}}).Replace(\textcolor{stringliteral}{"{}xw"{}},\ \textcolor{stringliteral}{"{}w\_w"{}})\ !=\ \textcolor{stringliteral}{"{}\_w\_w\_bw\_w\_w"{}})}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ EmptyString());}
+\DoxyCodeLine{00041\ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{keywordtype}{void}\ IsNumberTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00044\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00045\ \ \ olxstr\ valid\_num\_str[]\ =\ \{\ \textcolor{stringliteral}{"{}0"{}},\ \textcolor{stringliteral}{"{}\ 0\ "{}},\ \textcolor{stringliteral}{"{}\ 0"{}},\ \textcolor{stringliteral}{"{}0\ "{}},\ \textcolor{stringliteral}{"{}\ 0"{}},\ \textcolor{stringliteral}{"{}\ 0"{}},\ \textcolor{stringliteral}{"{}\ .0\ "{}},\ \textcolor{stringliteral}{"{}\ 0.0\ "{}},\ \textcolor{stringliteral}{"{}\ 0.e0\ "{}},}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{stringliteral}{"{}\ \ 0.e-\/1\ \ "{}},\ \textcolor{stringliteral}{"{}\ \ 0xffa\ \ "{}},\ \textcolor{stringliteral}{"{}\ \ 0xffa"{}},\ \textcolor{stringliteral}{"{}\ 0"{}},\ \textcolor{stringliteral}{"{}\ -\/0.\ "{}},\ \textcolor{stringliteral}{"{}\ +0.\ "{}},\ \textcolor{stringliteral}{"{}+0e-\/5"{}},\ \textcolor{stringliteral}{"{}-\/.e-\/5"{}},\ \textcolor{stringliteral}{"{}07777"{}}\ \ \};}
+\DoxyCodeLine{00047\ \ \ olxstr\ invalid\_num\_str[]\ =\ \{\ EmptyString(),\ \textcolor{stringliteral}{"{}\ \ 0xffx"{}},\ \textcolor{stringliteral}{"{}\ 0a"{}},\ \textcolor{stringliteral}{"{}\ -\/."{}},\ \textcolor{stringliteral}{"{}0e-\/a"{}},\ \textcolor{stringliteral}{"{}08"{}},\ \textcolor{stringliteral}{"{}.."{}},\ \textcolor{stringliteral}{"{}0.0."{}},}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{stringliteral}{"{}1e-\/5e-\/4"{}}\ \};}
+\DoxyCodeLine{00049\ \ \ olxstr\ valid\_int\_str[]\ =\ \{\textcolor{stringliteral}{"{}\ \ 0xff\ "{}},\ \textcolor{stringliteral}{"{}0xa"{}},\ \textcolor{stringliteral}{"{}0777"{}},\ \textcolor{stringliteral}{"{}-\/3"{}},\ \textcolor{stringliteral}{"{}\ +3\ "{}}\ \};}
+\DoxyCodeLine{00050\ \ \ olxstr\ invalid\_int\_str[]\ =\ \{\textcolor{stringliteral}{"{}\ \ 0xffx"{}},\ \textcolor{stringliteral}{"{}\ 0xa."{}},\ \textcolor{stringliteral}{"{}\ 0778"{}},\ \textcolor{stringliteral}{"{}-\/3."{}},\ \textcolor{stringliteral}{"{}\ +3.\ "{}}\ \};}
+\DoxyCodeLine{00051\ \ \ olxstr\ valid\_uint\_str[]\ =\ \{\textcolor{stringliteral}{"{}\ \ 0xff"{}},\ \textcolor{stringliteral}{"{}\ 0xa"{}},\ \textcolor{stringliteral}{"{}\ 0777"{}},\ \textcolor{stringliteral}{"{}3"{}},\ \textcolor{stringliteral}{"{}\ +3\ "{}}\ \};}
+\DoxyCodeLine{00052\ \ \ olxstr\ invalid\_uint\_str[]\ =\ \{\textcolor{stringliteral}{"{}-\/3"{}},\ \textcolor{stringliteral}{"{}\ -\/0"{}}\ \};}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ \textcolor{keyword}{sizeof}(valid\_num\_str)/\textcolor{keyword}{sizeof}(valid\_num\_str[0]);\ i++\ )\ \ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{if}(\ !valid\_num\_str[i].IsNumber()\ )}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ olxstr(\textcolor{stringliteral}{"{}valid\ number\ is\ not\ recognised:\ '"{}})\ <<\ valid\_num\_str[i]\ <<\ \textcolor{charliteral}{'\(\backslash\)''});}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ \textcolor{keyword}{sizeof}(invalid\_num\_str)/\textcolor{keyword}{sizeof}(invalid\_num\_str[0]);\ i++\ )\ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{if}(\ invalid\_num\_str[i].IsNumber()\ )}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ olxstr(\textcolor{stringliteral}{"{}invalid\ number\ is\ not\ recognised:\ '"{}})\ <<\ invalid\_num\_str[i]\ <<\ \textcolor{charliteral}{'\(\backslash\)''});}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ \textcolor{keyword}{sizeof}(valid\_int\_str)/\textcolor{keyword}{sizeof}(valid\_int\_str[0]);\ i++\ )\ \ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{if}(\ !valid\_int\_str[i].IsInt()\ )}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ olxstr(\textcolor{stringliteral}{"{}valid\ number\ is\ not\ recognised:\ '"{}})\ <<\ valid\_int\_str[i]\ <<\ \textcolor{charliteral}{'\(\backslash\)''});}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ \textcolor{keyword}{sizeof}(invalid\_int\_str)/\textcolor{keyword}{sizeof}(invalid\_int\_str[0]);\ i++\ )\ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{if}(\ invalid\_int\_str[i].IsInt()\ )}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ olxstr(\textcolor{stringliteral}{"{}invalid\ number\ is\ not\ recognised:\ '"{}})\ <<\ invalid\_int\_str[i]\ <<\ \textcolor{charliteral}{'\(\backslash\)''});}
+\DoxyCodeLine{00068\ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ \textcolor{keyword}{sizeof}(valid\_uint\_str)/\textcolor{keyword}{sizeof}(valid\_uint\_str[0]);\ i++\ )\ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{if}(\ !valid\_uint\_str[i].IsUInt()\ )}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ olxstr(\textcolor{stringliteral}{"{}valid\ number\ is\ not\ recognised:\ '"{}})\ <<\ valid\_uint\_str[i]\ <<\ \textcolor{charliteral}{'\(\backslash\)''});}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ \textcolor{keyword}{sizeof}(invalid\_uint\_str)/\textcolor{keyword}{sizeof}(invalid\_uint\_str[0]);\ i++\ )\ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{if}(\ invalid\_int\_str[i].IsUInt()\ )}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ olxstr(\textcolor{stringliteral}{"{}invalid\ number\ is\ not\ recognised:\ '"{}})\ <<\ invalid\_uint\_str[i]\ <<\ \textcolor{charliteral}{'\(\backslash\)''});}
+\DoxyCodeLine{00076\ \ \ \}}
+\DoxyCodeLine{00077\ \ \ olxstr\ ws\ =\ \textcolor{stringliteral}{"{}\ \ \ "{}};}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordflow}{if}\ (!ws.TrimWhiteChars().IsEmpty())\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}trimming\ is\ not\ working"{}});}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ \ \ ws\ =\ \textcolor{stringliteral}{"{}a\ \ \ "{}};}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordflow}{if}\ (ws.TrimWhiteChars()\ !=\ \textcolor{stringliteral}{"{}a"{}})\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}trimming\ is\ not\ working"{}});}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ ws\ =\ \textcolor{stringliteral}{"{}\ a\ \ \ "{}};}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordflow}{if}\ (ws.TrimWhiteChars()\ !=\ \textcolor{stringliteral}{"{}a"{}})\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}trimming\ is\ not\ working"{}});}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ \ \ ws\ =\ \textcolor{stringliteral}{"{}\ a\ \ \ "{}};}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordflow}{if}\ (olxstr(ws).TrimWhiteChars(\textcolor{keyword}{true},\textcolor{keyword}{false})\ !=\ \textcolor{stringliteral}{"{}a\ \ \ "{}})\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}trimming\ is\ not\ working"{}});}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ \ \ ws\ =\ \textcolor{stringliteral}{"{}\ a\ \ \ "{}};}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordflow}{if}\ (olxstr(ws).TrimWhiteChars(\textcolor{keyword}{false},\ \textcolor{keyword}{true})\ !=\ \textcolor{stringliteral}{"{}\ a"{}})\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}trimming\ is\ not\ working"{}});}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordflow}{if}\ (olxstr(ws).TrimL(\textcolor{charliteral}{'\ '})\ !=\ \textcolor{stringliteral}{"{}a\ \ \ "{}})\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}trimming\ is\ not\ working"{}});}
+\DoxyCodeLine{00099\ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordflow}{if}\ (olxstr(ws).TrimR(\textcolor{charliteral}{'\ '})\ !=\ \textcolor{stringliteral}{"{}\ a"{}})\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}trimming\ is\ not\ working"{}});}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordflow}{if}\ (olxstr(ws).TrimWhiteChars(\textcolor{keyword}{false},\ \textcolor{keyword}{true})\ !=\ \textcolor{stringliteral}{"{}\ a"{}})\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}trimming\ is\ not\ working"{}});}
+\DoxyCodeLine{00105\ \ \ \}}
+\DoxyCodeLine{00106\ \ \ ws\ =\ \textcolor{stringliteral}{"{}\ \ a"{}};}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordflow}{if}\ (ws.TrimWhiteChars()\ !=\ \textcolor{stringliteral}{"{}a"{}})\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}trimming\ is\ not\ working"{}});}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ \}}
+\DoxyCodeLine{00111\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00112\ \textcolor{keywordtype}{void}\ SubstringTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00113\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00114\ \ \ olxstr\ x(\textcolor{stringliteral}{"{}abcd>>"{}});}
+\DoxyCodeLine{00115\ \ \ \textcolor{keywordflow}{if}\ (x.IsSubStringAt(\textcolor{stringliteral}{"{}>>"{}},\ 3))}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordflow}{if}\ (x.IsSubStringAt(\textcolor{stringliteral}{"{}>>"{}},\ 5))}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordflow}{if}\ (!x.IsSubStringAt(\textcolor{stringliteral}{"{}>>"{}},\ 4))}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00121\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ x.Length()-\/1;\ i++)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{if}\ (!x.IsSubStringAt(x.SubStringFrom(i),\ i))}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00124\ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \textcolor{keywordflow}{if}\ (x.SubString(0,\ 1)\ !=\ \textcolor{charliteral}{'a'})}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordflow}{if}\ (x.SubString(0,\ 2)\ !=\ \textcolor{stringliteral}{"{}ab"{}})}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordflow}{if}\ (x.SubStringFrom(2)\ !=\ \textcolor{stringliteral}{"{}cd>>"{}})}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordflow}{if}\ (x.SubStringTo(2)\ !=\ \textcolor{stringliteral}{"{}ab"{}})}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordflow}{if}\ (x.IndexOf(\textcolor{stringliteral}{"{}>>"{}})\ !=\ 4)}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00135\ \}}
+\DoxyCodeLine{00136\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00137\ \textcolor{keywordtype}{void}\ PrintTest(OlxTests\&\ t\_)\ \{}
+\DoxyCodeLine{00138\ \ \ t\_.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordflow}{if}\ (olx\_print(\textcolor{stringliteral}{"{}\%\%\%\%"{}})\ !=\ \textcolor{stringliteral}{"{}\%\%"{}})}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordflow}{if}\ (olx\_print(\textcolor{stringliteral}{"{}\%\%\%d"{}},\ 10)\ !=\ \textcolor{stringliteral}{"{}\%10"{}})}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordflow}{if}\ (olx\_print(\textcolor{stringliteral}{"{}\%s"{}},\ \textcolor{stringliteral}{"{}string"{}})\ !=\ \textcolor{stringliteral}{"{}string"{}})}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordflow}{if}\ (olx\_print(\textcolor{stringliteral}{"{}\%ls"{}},\ L\textcolor{stringliteral}{"{}lstring"{}})\ !=\ \textcolor{stringliteral}{"{}lstring"{}})}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordflow}{if}\ (olx\_print(\textcolor{stringliteral}{"{}\%lf"{}},\ 10.1)\ !=\ \textcolor{stringliteral}{"{}10.1"{}})}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00149\ \ \ \textcolor{keywordflow}{if}\ (olx\_print(\textcolor{stringliteral}{"{}\%llu"{}},\ (uint64\_t)10)\ !=\ \textcolor{stringliteral}{"{}10"{}})}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00151\ \ \ olxstr\ t=\textcolor{stringliteral}{"{}abc"{}};}
+\DoxyCodeLine{00152\ \ \ \textcolor{keywordflow}{if}\ (olx\_print(\textcolor{stringliteral}{"{}\%lf\ \%\%\ \%w"{}},\ 10.1,\ \&t)\ !=\ \textcolor{stringliteral}{"{}10.1\ \%\ abc"{}})}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00154\ \}}
+\DoxyCodeLine{00155\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00156\ \textcolor{keywordtype}{void}\ TrimTest(OlxTests\&\ t\_)\ \{}
+\DoxyCodeLine{00157\ \ \ t\_.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordflow}{if}\ (olxstr(\textcolor{stringliteral}{"{}lu"{}}).TrimR(\textcolor{charliteral}{'u'})\ !=\ \textcolor{stringliteral}{"{}l"{}})}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00160\ \ \ \textcolor{keywordflow}{if}\ (olxstr(\textcolor{stringliteral}{"{}u"{}}).TrimR(\textcolor{charliteral}{'u'})\ !=\ \textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}assert"{}});}
+\DoxyCodeLine{00162\ \}}
+\DoxyCodeLine{00163\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00164\ \textcolor{keywordtype}{void}\ StringTests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00165\ \ \ t.Add(\&ReplaceTest).Add(\&IsNumberTest)}
+\DoxyCodeLine{00166\ \ \ \ \ .Add(\&SubstringTest)}
+\DoxyCodeLine{00167\ \ \ \ \ .Add(\&PrintTest)}
+\DoxyCodeLine{00168\ \ \ \ \ .Add(\&TrimTest);}
+\DoxyCodeLine{00169\ \}}
+\DoxyCodeLine{00170\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

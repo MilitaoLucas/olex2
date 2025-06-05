@@ -1,0 +1,422 @@
+\doxysection{evaluable.\+h}
+\hypertarget{evaluable_8h_source}{}\label{evaluable_8h_source}\index{sdl/exparse/evaluable.h@{sdl/exparse/evaluable.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_evaluable\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_evaluable\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../ebase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../edict.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}expvalue.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}../bapp.h"{}}}
+\DoxyCodeLine{00016\ BeginEsdlNamespace()}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ namespace\ exparse\ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{struct\ }VarProxy;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{class\ }TCastException\ :\ \textcolor{keyword}{public}\ TBasicException\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{const}\ std::type\_info\&\ type;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ TCastException(\textcolor{keyword}{const}\ olxstr\&\ src,\ \textcolor{keyword}{const}\ std::type\_info\&\ ti)}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ :\ TBasicException(src,\ olxstr(\textcolor{stringliteral}{"{}Invalid\ cast\ to\ "{}})\ <<\ ti.name()),\ type(ti)}
+\DoxyCodeLine{00026\ \ \ \ \ \{\}}
+\DoxyCodeLine{00027\ \ \ \ \ TCastException(\textcolor{keyword}{const}\ TCastException\&\ ce)}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ :\ TBasicException(ce),\ type(ce.type)\ \{\}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{const}\ std::type\_info\&\ GetTypeInfo()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ type;\ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{virtual}\ IOlxObject*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TCastException(*\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00031\ \ \ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{int}\ ref\_cnt\_;}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ \ \ IEvaluable()\ :\ ref\_cnt\_(0)\ \{\}}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~IEvaluable()\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ref\_cnt\_\ !=\ 0)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Non-\/zero\ reference\ count:\ "{}}).quote()\ <<\ ref\_cnt\_);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{typedef}\ cast\_result(*cast\_operator)(\textcolor{keyword}{const}\ IEvaluable*);}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{typedef}\ olxdict<std::type\_info\ const*,\ cast\_operator,\ TPointerComparator>}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ operator\_dict;}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{comment}{//\ self\ casting...}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{static}\ cast\_result\ self\_cast(\textcolor{keyword}{const}\ IEvaluable*\ i)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cast\_result(i,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{virtual}\ cast\_operator\ get\_cast\_operator(\textcolor{keyword}{const}\ std::type\_info\&)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ create\_new(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ find\_property(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ find\_method(\textcolor{keyword}{const}\ olxstr\&,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{struct}\ EvaluableFactory\&,\ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ IEvaluable*\ proxy\ =\ NULL)}
+\DoxyCodeLine{00064\ \ \ \ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ is\_final()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ is\_function()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//\ for\ the\ proxies!}}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable\ *undress()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{int}\ inc\_ref()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ++ref\_cnt\_;\ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{int}\ dec\_ref()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (-\/-\/ref\_cnt\_\ <\ 0)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ 1;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ref\_cnt\_;}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{int}\ ref\_cnt()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ref\_cnt\_;\ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{struct\ }caster\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ cast\_operator\ co;}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ caster(cast\_operator\ \_co)\ :\ co(\_co)\ \{\}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ val\_wrapper<T,\ IEvaluable>\ cast(\textcolor{keyword}{const}\ IEvaluable*\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val\_wrapper<T,\ IEvaluable>((*co)(i));}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \};}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{struct\ }caster<const\ T\&>\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ cast\_operator\ co;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ caster(cast\_operator\ \_co)\ :\ co(\_co)\ \{\}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ val\_wrapper<const\ T\&,\ IEvaluable>\ cast(\textcolor{keyword}{const}\ IEvaluable*\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val\_wrapper<const\ T\&,\ IEvaluable>((*co)(i));}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ std::type\_info\&\ get\_type\_info()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typeid}(*this);}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ IEvaluable\ *create\_proxy\_()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ val\_wrapper<T,\ IEvaluable>\ cast()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!is\_final())\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ IEvaluable*\ tmp\ =\ \_evaluate();}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ val\_wrapper<T,\ IEvaluable>\ rv(tmp-\/>cast<T>(),\ tmp);}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::type\_info\&\ ti\ =\ \textcolor{keyword}{typeid}(T);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{comment}{//\ a\ simple\ case...}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ti\ ==\ get\_type\_info())}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ caster<T>(\&IEvaluable::self\_cast).cast(\textcolor{keyword}{this});}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ti\ ==\ \textcolor{keyword}{typeid}(IEvaluable\&))\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val\_wrapper<T,\ IEvaluable>(cast\_result(create\_proxy\_(),\ \textcolor{keyword}{true}));}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ cast\_operator\ co\ =\ get\_cast\_operator(ti);}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (co\ !=\ 0)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ caster<T>(co).cast(\textcolor{keyword}{this});}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (...)\ \{\}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TCastException(\_\_OlxSourceInfo,\ ti);}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ T*\ cast\_helper(\textcolor{keyword}{const}\ IEvaluable*\ i)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keyword}{const}\ T*\ ci\ =\ \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const\ }T*\textcolor{keyword}{>}(i);}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ci\ ==\ 0)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TCastException(\_\_OlxSourceInfo,\ \textcolor{keyword}{typeid}(i));}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ci;}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \};}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{class\ }IEvaluableHolder\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ IEvaluable\ *val;}
+\DoxyCodeLine{00133\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00134\ \ \ \ \ IEvaluableHolder()}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ :\ val(0)}
+\DoxyCodeLine{00136\ \ \ \ \ \{\}}
+\DoxyCodeLine{00137\ \ \ \ \ IEvaluableHolder(IEvaluable\ *i)}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ :\ val(i)}
+\DoxyCodeLine{00139\ \ \ \ \ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ i-\/>inc\_ref();}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \string~IEvaluableHolder()\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val\ !=\ 0\ \&\&\ val-\/>dec\_ref()\ ==\ 0)\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ val;}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ IEvaluable\ *\ operator\ =\ (IEvaluable\ *i)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val\ !=\ 0\ \&\&\ val-\/>dec\_ref()\ ==\ 0)\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ val;}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ val\ =\ i;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ i-\/>inc\_ref();}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00154\ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \ \ IEvaluable\ *\ release()\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ IEvaluable\ *i\ =\ val;}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ val\ =\ 0;}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ i-\/>dec\_ref();}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_valid()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ val\ !=\ 0;\ \}}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ val\_wrapper<T,\ IEvaluable>\ cast()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val\ ==\ 0)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}null"{}});}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val-\/>cast<T>();}
+\DoxyCodeLine{00167\ \ \ \ \ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \ \ IEvaluable\ \&value()\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val\ ==\ 0)\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}null"{}});}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *val;}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keyword}{const}\ IEvaluable\ \&value()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val\ ==\ 0)\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}null"{}});}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *val;}
+\DoxyCodeLine{00180\ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \};}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{struct\ }ANumberEvaluator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keyword}{static}\ IEvaluable::operator\_dict\ cast\_operators;}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ IEvaluable::operator\_dict::Entry\ cast\_operators\_table[];}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keyword}{static}\ cast\_result\ bool\_cast(\textcolor{keyword}{const}\ IEvaluable*\ i)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cast\_result(\textcolor{keyword}{new}\ \textcolor{keywordtype}{bool}(}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ IEvaluable::cast\_helper<ANumberEvaluator>(i)-\/>Evaluate()\ !=\ 0),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00190\ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keyword}{static}\ cast\_result\ str\_cast(\textcolor{keyword}{const}\ IEvaluable*\ i)\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cast\_result(\textcolor{keyword}{new}\ olxstr(}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ IEvaluable::cast\_helper<ANumberEvaluator>(i)-\/>Evaluate()),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{static}\ cast\_result\ primitive\_cast(\textcolor{keyword}{const}\ IEvaluable*\ i)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cast\_result(\textcolor{keyword}{new}\ T(}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ (T)IEvaluable::cast\_helper<ANumberEvaluator>(i)-\/>Evaluate()),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00198\ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ register\_cast()\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ cast\_operators.Add(\&\textcolor{keyword}{typeid}(T),\ \&ANumberEvaluator::primitive\_cast<T>);}
+\DoxyCodeLine{00201\ \ \ \ \ \}}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keyword}{static}\ IEvaluable::operator\_dict::Entry\ create\_operator\_entry()\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IEvaluable::operator\_dict::Entry(}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \&\textcolor{keyword}{typeid}(T),\ \&ANumberEvaluator::primitive\_cast<T>);}
+\DoxyCodeLine{00206\ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{virtual}\ cast\_operator\ get\_cast\_operator(\textcolor{keyword}{const}\ std::type\_info\&\ ti)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cast\_operators.Get(\&ti);}
+\DoxyCodeLine{00209\ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ Evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ IEvaluable*\ ev\ =\ \_evaluate();}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ rv\ =\ ev-\/>cast<\textcolor{keywordtype}{double}>();}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00214\ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keywordtype}{bool}\ \textcolor{keyword}{final};\ \ \textcolor{comment}{//\ does\ represent\ a\ number?}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00217\ \ \ \ \ ANumberEvaluator(\textcolor{keywordtype}{bool}\ \_final\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ :\ final(\_final)}
+\DoxyCodeLine{00219\ \ \ \ \ \{\}}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_final()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{final};\ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordtype}{void}\ set\_final(\textcolor{keywordtype}{bool}\ v)\ \{\ \textcolor{keyword}{final}\ =\ v;\ \}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ set\_value(\textcolor{keywordtype}{double}\ v)\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00225\ \ \ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \};}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ BC,\ \textcolor{keyword}{typename}\ Type>}
+\DoxyCodeLine{00228\ \ \ \textcolor{keyword}{struct\ }TPrimitiveEvaluator\ :\ \textcolor{keyword}{public}\ ANumberEvaluator,\ \textcolor{keyword}{public}\ BC\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keyword}{static}\ cast\_result\ str\_cast(\textcolor{keyword}{const}\ IEvaluable*\ i)\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cast\_result(}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ olxstr(}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ IEvaluable::cast\_helper<TPrimitiveEvaluator<BC,\ Type>\ >(i)-\/>get\_value()),}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{keyword}{true});}
+\DoxyCodeLine{00234\ \ \ \ \ \}}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keyword}{static}\ cast\_result\ val\_cast(\textcolor{keyword}{const}\ IEvaluable*\ i)\ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cast\_result(}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \&IEvaluable::cast\_helper<TPrimitiveEvaluator<BC,\ Type>\ >(i)-\/>get\_value(),}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{keyword}{false});}
+\DoxyCodeLine{00239\ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keyword}{virtual}\ cast\_operator\ get\_cast\_operator(\textcolor{keyword}{const}\ std::type\_info\&\ ti)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{typeid}(Type)\ ==\ ti)\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&val\_cast;}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{typeid}(olxstr)\ ==\ ti)\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&str\_cast;}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ANumberEvaluator::get\_cast\_operator(ti);}
+\DoxyCodeLine{00248\ \ \ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \ \ TPrimitiveEvaluator(\textcolor{keyword}{const}\ Type\&\ val)\ :\ ANumberEvaluator(true),\ BC(val)\ \{\}}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ Evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{double})BC::val;}
+\DoxyCodeLine{00252\ \ \ \ \ \}}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ 1;}
+\DoxyCodeLine{00255\ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ create\_new(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ v)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TPrimitiveEvaluator<BC,\ Type>(*\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }Type*\textcolor{keyword}{>}(v));}
+\DoxyCodeLine{00258\ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ set\_value(\textcolor{keywordtype}{double}\ v)\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ BC::val\ =\ \textcolor{keyword}{static\_cast<}Type\textcolor{keyword}{>}(v);}
+\DoxyCodeLine{00261\ \ \ \ \ \}}
+\DoxyCodeLine{00262\ \ \ \};}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{struct\ }TPrimitiveInstance\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ T\ val;}
+\DoxyCodeLine{00266\ \ \ \ \ TPrimitiveInstance(\textcolor{keyword}{const}\ T\&\ \_val)\ :\ val(\_val)\ \{\}}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keyword}{const}\ T\&\ get\_value()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ val;\ \}}
+\DoxyCodeLine{00268\ \ \ \};}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ \textcolor{keyword}{struct\ }VoidValue\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}cannot\ evaluate\ void\ type"{}});}
+\DoxyCodeLine{00274\ \ \ \ \ \}}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keyword}{virtual}\ cast\_operator\ get\_cast\_operator(\textcolor{keyword}{const}\ std::type\_info\&)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}no\ casting\ is\ avilable\ for\ the\ void\ type"{}});}
+\DoxyCodeLine{00278\ \ \ \ \ \}}
+\DoxyCodeLine{00279\ \ \ \};}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \ \ \textcolor{keyword}{struct\ }VarProxy\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ IEvaluable*\ value;}
+\DoxyCodeLine{00283\ \ \ \ \ VarProxy(IEvaluable*\ \_value)\ :\ value(\_value)\ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ !=\ NULL)}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ value-\/>inc\_ref();}
+\DoxyCodeLine{00286\ \ \ \ \ \}}
+\DoxyCodeLine{00287\ \ \ \ \ \string~VarProxy()\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ !=\ NULL\ \&\&\ value-\/>dec\_ref()\ ==\ 0)\ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ value;}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ \}}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordtype}{void}\ update\_value(IEvaluable*\ \_value)\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ ==\ \_value)\ \{}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value-\/>dec\_ref()\ ==\ 0)\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ value;}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ value\ =\ \_value;}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \_value-\/>inc\_ref();}
+\DoxyCodeLine{00301\ \ \ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ std::type\_info\&\ get\_type\_info()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ value-\/>get\_type\_info();}
+\DoxyCodeLine{00304\ \ \ \ \ \}}
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ value;\ \}}
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ find\_property(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ value-\/>find\_property(name);}
+\DoxyCodeLine{00308\ \ \ \ \ \}}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ find\_method(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{struct}\ EvaluableFactory\&\ f,}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args,\ IEvaluable*\ proxy\ =\ NULL)}
+\DoxyCodeLine{00312\ \ \ \ \ \{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ value-\/>find\_method(name,\ f,\ args,\ proxy\ ==\ NULL\ ?\ \textcolor{keyword}{this}\ :\ proxy);}
+\DoxyCodeLine{00314\ \ \ \ \ \}}
+\DoxyCodeLine{00315\ \ \ \ \ \textcolor{keyword}{virtual}\ cast\_operator\ get\_cast\_operator(\textcolor{keyword}{const}\ std::type\_info\&\ ti)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ value-\/>get\_cast\_operator(ti);}
+\DoxyCodeLine{00317\ \ \ \ \ \}}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_final()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00319\ \ \ \ \ IEvaluable\ *undress()\ \{\ \textcolor{keywordflow}{return}\ value-\/>undress();\ \}}
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable\ *create\_new(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *data)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ VarProxy(}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const\_cast<}IEvaluable*\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }IEvaluable*\textcolor{keyword}{>}(data)));}
+\DoxyCodeLine{00323\ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \};}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{typedef}\ TPrimitiveEvaluator<TPrimitiveInstance<bool>,\ \textcolor{keywordtype}{bool}>\ BoolValue;}
+\DoxyCodeLine{00327\ \ \ \textcolor{keyword}{typedef}\ TPrimitiveEvaluator<TPrimitiveInstance<int>,\ \textcolor{keywordtype}{int}>\ IntValue;}
+\DoxyCodeLine{00328\ \ \ \textcolor{keyword}{typedef}\ TPrimitiveEvaluator<TPrimitiveInstance<double>,\ \textcolor{keywordtype}{double}>\ DoubleValue;}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \ \ \textcolor{comment}{/*\ helper\ function\ to\ tackle\ 4.1\ gcc\ unable\ to\ resolve\ 'const\ T\&\ v'\ with}}
+\DoxyCodeLine{00331\ \textcolor{comment}{\ \ \ v\ being\ a\ reference...}}
+\DoxyCodeLine{00332\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00333\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{struct\ }creator\ \{}
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keyword}{static}\ IEvaluable*\ create(\textcolor{keyword}{const}\ EvaluableFactory\ \&f,\ \textcolor{keyword}{const}\ T\ \&v);}
+\DoxyCodeLine{00335\ \ \ \};}
+\DoxyCodeLine{00336\ \ \ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }creator<\mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \&>\ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ create(\textcolor{keyword}{const}\ EvaluableFactory\ \&f,\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ \&v);}
+\DoxyCodeLine{00338\ \ \ \};}
+\DoxyCodeLine{00339\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keyword}{struct\ }creator<T\ \&>\ \{}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ create(\textcolor{keyword}{const}\ EvaluableFactory\ \&f,\ T\ \&v);}
+\DoxyCodeLine{00341\ \ \ \};}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \ \ \textcolor{keyword}{struct\ }EvaluableFactory\ \{}
+\DoxyCodeLine{00344\ \ \ \ \ olxdict<std::type\_info\ const*,\ IEvaluable*,\ TPointerComparator>\ types;}
+\DoxyCodeLine{00345\ \ \ \ \ olxdict<std::type\_info\ const*,\ struct\ IClassInfo*,\ TPointerComparator>}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ classes;}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \textcolor{keywordtype}{void}\ add\_ptype()\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ types.Add(\&\textcolor{keyword}{typeid}(T),\ \textcolor{keyword}{new}\ TPrimitiveEvaluator<TPrimitiveInstance<T>,\ T>(0));}
+\DoxyCodeLine{00349\ \ \ \ \ \}}
+\DoxyCodeLine{00350\ \ \ \ \ EvaluableFactory()\ \{}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (types.IsEmpty())\ \{}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ add\_ptype<bool>();}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ add\_ptype<char>();}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ add\_ptype<wchar\_t>();}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ add\_ptype<unsigned\ char>();}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ add\_ptype<short\ int>();}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ add\_ptype<unsigned\ short\ int>();}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ add\_ptype<int>();}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ add\_ptype<unsigned\ int>();}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ add\_ptype<long\ int>();}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ add\_ptype<unsigned\ long\ int>();}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ add\_ptype<long\ long\ int>();}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ add\_ptype<unsigned\ long\ long\ int>();}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ add\_ptype<float>();}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ add\_ptype<double>();}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ add\_ptype<long\ double>();}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ types.Add(\&\textcolor{keyword}{typeid}(IEvaluable\ \&),\ \textcolor{keyword}{new}\ VarProxy(NULL));}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00369\ \ \ \ \ \}}
+\DoxyCodeLine{00370\ \ \ \ \ \string~EvaluableFactory()\ \{}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ types.Count();\ i++)\ \{}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ types.GetValue(i);}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00374\ \ \ \ \ \}}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ IEvaluable*\ create\_(\textcolor{keyword}{const}\ T\&\ val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::type\_info\&\ ti\ =\ \textcolor{keyword}{typeid}(T);}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ types.IndexOf(\&ti);}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Could\ not\ locate\ object\ factory\ for\ "{}})\ <<\ ti.name());}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ types.GetValue(i)-\/>create\_new(\&val);}
+\DoxyCodeLine{00384\ \ \ \ \ \};}
+\DoxyCodeLine{00385\ \ \ \ \ IEvaluable*\ create\_ref(IEvaluable\ \&val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::type\_info\&\ ti\ =\ \textcolor{keyword}{typeid}(IEvaluable\ \&);}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ types.IndexOf(\&ti);}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Could\ not\ locate\ object\ factory\ for\ "{}})\ <<\ ti.name());}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ types.GetValue(i)-\/>create\_new(\&val);}
+\DoxyCodeLine{00393\ \ \ \ \ \};}
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ IEvaluable*\ create(T\ val)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ creator<T>::create(*\textcolor{keyword}{this},\ val);}
+\DoxyCodeLine{00396\ \ \ \ \ \};}
+\DoxyCodeLine{00397\ \ \ \};}
+\DoxyCodeLine{00398\ }
+\DoxyCodeLine{00399\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ creator<T>::create(}
+\DoxyCodeLine{00400\ \ \ \ \ \textcolor{keyword}{const}\ EvaluableFactory\ \&f,\ \textcolor{keyword}{const}\ T\ \&v)}
+\DoxyCodeLine{00401\ \ \ \{}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keywordflow}{return}\ f.create\_(v);}
+\DoxyCodeLine{00403\ \ \ \}}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00405\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}*\ creator<T\ \&>::create(\textcolor{keyword}{const}\ EvaluableFactory\ \&f,\ T\ \&v)\ \{}
+\DoxyCodeLine{00406\ \ \ \ \ \mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ *\ e\ =\ \textcolor{keyword}{dynamic\_cast<}\mbox{\hyperlink{classIEvaluable}{IEvaluable}}\ *\textcolor{keyword}{>}(\&v);}
+\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keywordflow}{if}\ (e\ !=\ 0)\ \{}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ f.create\_ref(*e);}
+\DoxyCodeLine{00409\ \ \ \ \ \}}
+\DoxyCodeLine{00410\ \ \ \ \ \textcolor{keywordflow}{return}\ f.create\_(v);}
+\DoxyCodeLine{00411\ \ \ \}}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \}\ \ \textcolor{comment}{//\ end\ namespace\ exparse}}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ EndEsdlNamespace()}
+\DoxyCodeLine{00416\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

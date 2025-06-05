@@ -1,0 +1,119 @@
+\doxysection{expvalue.\+h}
+\hypertarget{expvalue_8h_source}{}\label{expvalue_8h_source}\index{sdl/exparse/expvalue.h@{sdl/exparse/expvalue.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_expvalue\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_expvalue\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../ebase.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ namespace\ exparse\ \ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{struct\ }cast\_result\ \ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ value;}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{bool}\ temporary;\ \ \textcolor{comment}{//\ the\ value\ must\ be\ deleted}}
+\DoxyCodeLine{00019\ \ \ \ \ cast\_result(\textcolor{keyword}{const}\ cast\_result\&\ cr)}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ :\ value(cr.value),\ temporary(cr.temporary)}
+\DoxyCodeLine{00021\ \ \ \ \ \{\}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00023\ \ \ \ \ cast\_result(T\ val,\ \textcolor{keywordtype}{bool}\ tmp)}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ :\ value(val),\ temporary(tmp)}
+\DoxyCodeLine{00025\ \ \ \ \ \{\}}
+\DoxyCodeLine{00026\ \ \ \};}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ OT>\ \textcolor{keyword}{struct\ }val\_wrapper\ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ T*\ val;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{bool}\ do\_delete;}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{mutable}\ OT*\ origin;}
+\DoxyCodeLine{00032\ \ \ \ \ val\_wrapper(\textcolor{keyword}{const}\ val\_wrapper\&\ v)\ :\ val(v.val),\ do\_delete(v.do\_delete),}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ origin(v.origin)}
+\DoxyCodeLine{00034\ \ \ \ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ v.origin\ =\ NULL;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ v.do\_delete\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ val\_wrapper(\textcolor{keyword}{const}\ val\_wrapper\&\ v,\ OT*\ \_origin)\ :\ val(v.val),}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ do\_delete(v.do\_delete),\ origin(\_origin)}
+\DoxyCodeLine{00040\ \ \ \ \ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ origin-\/>inc\_ref();}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ v.do\_delete\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ val\_wrapper(\textcolor{keyword}{const}\ cast\_result\&\ cr)}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ :\ val((T*)cr.value),\ do\_delete(cr.temporary),\ origin(NULL)}
+\DoxyCodeLine{00046\ \ \ \ \ \{\}}
+\DoxyCodeLine{00047\ \ \ \ \ \string~val\_wrapper()\ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ do\_delete\ )}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ val;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ origin\ !=\ NULL\ \&\&\ origin-\/>dec\_ref()\ ==\ 0\ )}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ origin;}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{operator}\ \textcolor{keyword}{const}\ T\&\ ()\ \ \{\ \ \textcolor{keywordflow}{return}\ *val;\ \ \}}
+\DoxyCodeLine{00054\ \ \ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ OT>\ \textcolor{keyword}{struct\ }val\_wrapper<const\ T\&,OT>\ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ T*\ val;}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{mutable}\ OT*\ origin;}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{bool}\ do\_delete;}
+\DoxyCodeLine{00060\ \ \ \ \ val\_wrapper(\textcolor{keyword}{const}\ val\_wrapper\&\ v)}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ :\ val(v.val),\ origin(v.origin),\ do\_delete(v.do\_delete)}
+\DoxyCodeLine{00062\ \ \ \ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ v.origin\ =\ NULL;}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ v.do\_delete\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ val\_wrapper(\textcolor{keyword}{const}\ val\_wrapper\&\ v,\ OT*\ \_origin)\ :\ val(v.val),}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ origin(\_origin),\ do\_delete(v.do\_delete)}
+\DoxyCodeLine{00068\ \ \ \ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ origin-\/>inc\_ref();}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ v.do\_delete\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ val\_wrapper(\textcolor{keyword}{const}\ cast\_result\&\ cr)}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ :\ val((T*)cr.value),\ origin(NULL),\ do\_delete(cr.temporary)\ \ \{\}}
+\DoxyCodeLine{00074\ \ \ \ \ \string~val\_wrapper()\ \ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ do\_delete\ )}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ val;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ origin\ !=\ NULL\ \&\&\ origin-\/>dec\_ref()\ ==\ 0\ )}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ origin;}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{operator}\ \textcolor{keyword}{const}\ T\&\ ()\ \ \{\ \ \textcolor{keywordflow}{return}\ *val;\ \ \}}
+\DoxyCodeLine{00081\ \ \ \};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ OT>\ \textcolor{keyword}{struct\ }val\_wrapper<T\&,OT>\ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ T*\ val;}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{mutable}\ OT*\ origin;}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{mutable}\ \textcolor{keywordtype}{bool}\ do\_delete;}
+\DoxyCodeLine{00087\ \ \ \ \ val\_wrapper(\textcolor{keyword}{const}\ val\_wrapper\&\ v)}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ :\ val(v.val),\ origin(v.origin),\ do\_delete(v.do\_delete)}
+\DoxyCodeLine{00089\ \ \ \ \ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ v.origin\ =\ NULL;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ v.do\_delete\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ val\_wrapper(\textcolor{keyword}{const}\ val\_wrapper\&\ v,\ OT*\ \_origin)\ :\ val(v.val),}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ origin(\_origin),\ do\_delete(v.do\_delete)}
+\DoxyCodeLine{00095\ \ \ \ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ origin-\/>inc\_ref();}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ v.do\_delete\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ val\_wrapper(\textcolor{keyword}{const}\ cast\_result\&\ cr)}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ :\ val((T*)cr.value),\ origin(NULL),\ do\_delete(cr.temporary)\ \ \{\}}
+\DoxyCodeLine{00101\ \ \ \ \ \string~val\_wrapper()\ \ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ do\_delete\ )}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ val;}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ origin\ !=\ NULL\ \&\&\ origin-\/>dec\_ref()\ ==\ 0\ )}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ origin;}
+\DoxyCodeLine{00106\ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{operator}\ T\&\ ()\ \ \{\ \ \textcolor{keywordflow}{return}\ *val;\ \ \}}
+\DoxyCodeLine{00108\ \ \ \};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \}\ \ \textcolor{comment}{//\ end\ namespace\ exparse}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ EndEsdlNamespace()}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

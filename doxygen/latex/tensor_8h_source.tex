@@ -1,0 +1,578 @@
+\doxysection{tensor.\+h}
+\hypertarget{tensor_8h_source}{}\label{tensor_8h_source}\index{sdl/math/tensor.h@{sdl/math/tensor.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2020-\/2020\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_tensor\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_tensor\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}threex3.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }esdl\ \{\ \textcolor{keyword}{namespace\ }tensor\ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{namespace\ }utils\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ calc\_multiplicity(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ *idx,\ \textcolor{keywordtype}{size\_t}\ sz)\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ mult\ =\ 1;}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ mult\ *=\ olx\_factorial\_t<size\_t>(idx[i]);}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olx\_factorial\_t<size\_t>(sz)\ /\ mult;}
+\DoxyCodeLine{00022\ \ \ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \}\ \textcolor{comment}{//\ tensor\ utils}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{typedef}\ TSizeList\ index\_t;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{typedef}\ TArrayList<index\_t>\ index\_list\_t;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ heir\_t,\ \textcolor{keyword}{typename}\ FloatType>}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__base}{tensor\_base}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ heir\_t\ \&self()\ \{\ \textcolor{keywordflow}{return}\ *(heir\_t*)\textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{const}\ heir\_t\ \&self()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *(heir\_t*)\textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{/*\ https://en.wikipedia.org/wiki/Heap\%27s\_algorithm}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ \ \ \ initialises\ equivalent\ map\ indices}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ init\_index(\textcolor{keywordtype}{size\_t}\ k,\ index\_t\ \&idx,\ \textcolor{keywordtype}{size\_t}\ linear\_index)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ ==\ 1)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ heir\_t::get\_linear\_index\_(idx)\ =\ linear\_index;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ init\_index(k\ -\/\ 1,\ idx,\ linear\_index);}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ k\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((k\ \&\ 1)\ ==\ 1)\ \{\ \textcolor{comment}{//\ odd?}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ idx.Swap(0,\ k\ -\/\ 1);}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ idx.Swap(i,\ k\ -\/\ 1);}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ init\_index(k\ -\/\ 1,\ idx,\ linear\_index);}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{comment}{/*\ initialises\ the\ rank-\/D\ index\ to\ linear\ index\ map\ and\ the\ indices}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ \ \ \ multiplicity}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ init\_map\_m()\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keyword}{const}\ index\_list\_t\ \&indices\ =\ heir\_t::get\_indices();}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ indices.Count();\ i++)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ index\_t\ idx\ =\ indices[i];}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ init\_index(idx.Count(),\ idx,\ i);}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ mps[3]\ =\ \{\ 0,\ 0,\ 0\ \};}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ idx.Count();\ j++)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ mps[idx[j]]++;}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ get\_multiplicity\_()[i]\ =\ utils::calc\_multiplicity(mps,\ heir\_t::rank());}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{static}\ index\_t\ \&get\_multiplicity\_()\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keyword}{static}\ index\_t\ multiplicity(heir\_t::size(),\ olx\_list\_init::zero());}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ multiplicity;}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{const}\ FloatType\ \&\ operator\ [](\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ self().data\_[i];\ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ FloatType\ \&\ operator\ [](\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ self().data\_[i];\ \}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ get\_linear\_idx(\textcolor{keyword}{const}\ index\_t\ \&idx)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ heir\_t::get\_linear\_index\_(idx);}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ get\_multiplicity(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ get\_multiplicity\_()[i];}
+\DoxyCodeLine{00083\ \ \ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{/*\ this\ might\ be\ required\ in\ a\ multithreaded\ envirenment!}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ initialise()\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ heir\_t::get\_map();}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{/*\ This\ is\ equivalent\ to\ h*T*h\string^t\ and\ in\ genenal\ e.g.\ for\ rank\ 3\ T\ and\ h}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ \ \ \ tv\ =\ h*T:}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ \ \ \ \ \ for\ (size\_t\ ti\ =\ 0;\ ti\ <\ 3;\ ti++)\ \{}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ \ \ \ \ \ \ \ for\ (size\_t\ tj\ =\ 0;\ tj\ <\ 3;\ tj++)\ \{}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ for\ (size\_t\ tk\ =\ 0;\ tk\ <\ 3;\ tk++)\ \{}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ tv[ti]\ +=\ h[tj]\ *\ h[tk]\ *\ T(tk,\ tj,\ ti);}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ \ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ \ \ \ \ \}}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ \ \ \ \ \ return\ tv.DotProd(h)}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>}
+\DoxyCodeLine{00101\ \ \ \ \ FloatType\ sum\_up(\textcolor{keyword}{const}\ vec\_t\ \&h)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ FloatType\ r\ =\ 0;}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keyword}{const}\ index\_list\_t\ \&indices\ =\ heir\_t::get\_indices();}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ indices.Count();\ i++)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ index\_t\ \&idx\ =\ indices[i];}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ FloatType\ prod\_h\ =\ 1;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ heir\_t::rank();\ j++)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ prod\_h\ *=\ h[idx[j]];}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ r\ +=\ prod\_h\ *\ get\_multiplicity(i)\ *}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ self().data\_[heir\_t::get\_linear\_index\_(idx)];}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{typename}\ TArrayList<FloatType>::const\_list\_type}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ gradient\_coefficients(\textcolor{keyword}{const}\ vec3i\ \&h)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00118\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<FloatType>}}\ r(heir\_t::size());}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keyword}{const}\ index\_list\_t\ \&indices\ =\ heir\_t::get\_indices();}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ indices.Count();\ i++)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ index\_t\ \&idx\ =\ indices[i];}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ FloatType\ prod\_h\ =\ 1;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ heir\_t::rank();\ j++)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ prod\_h\ *=\ h[idx[j]];}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ r[i]\ =\ prod\_h\ *\ get\_multiplicity(i);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00130\ \ \ \ \ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<FloatType>}}\ \&data()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ self().data\_;}
+\DoxyCodeLine{00134\ \ \ \ \ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keyword}{virtual}\ TIString\ ToString()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ olxstr\_buf\ s;}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ data().Count();\ i++)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ s\ <<\ olx\_print(\textcolor{stringliteral}{"{}\%10.3le\ "{}},\ data()[i]);}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ olxstr(s);}
+\DoxyCodeLine{00142\ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \};}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatType\ =\ \textcolor{keywordtype}{double}>}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{class\ }tensor\_rank\_2\_t\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__base}{tensor\_base}}<tensor\_rank\_2\_t<FloatType>,\ FloatType>\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__base}{tensor\_base<tensor\_rank\_2\_t<FloatType>}},\ FloatType>\ parent\_t;}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__base}{tensor\_base}}<tensor\_rank\_2\_t<FloatType>,\ FloatType>;}
+\DoxyCodeLine{00149\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<FloatType>}}\ data\_;}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ \ \ \ should\ be\ to\ be\ identical\ with\ higher\ order}}
+\DoxyCodeLine{00152\ \textcolor{comment}{\ \ \ \ 0\ 0,\ 0\ 1,\ 0\ 2,\ 1\ 1,\ 1\ 2,\ 2\ 2}}
+\DoxyCodeLine{00153\ \textcolor{comment}{\ \ \ \ but\ keep\ in\ cctbx\ format\ for\ simpler\ testing:}}
+\DoxyCodeLine{00154\ \textcolor{comment}{\ \ \ \ 0\ 0,\ 1\ 1,\ 2\ 2,\ 0\ 1,\ 0\ 2,\ 1\ 2}}
+\DoxyCodeLine{00155\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ **\&\ get\_map\_()\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ **\ map\ =\ 0;}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ map;}
+\DoxyCodeLine{00159\ \ \ \ \ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ **\&\ get\_map()\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ **\&\ r\ =\ get\_map\_();}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ ==\ 0)\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ r\ =\ build\_map();}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ generic\ procedure}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ \ \ \ \ \ \ \ parent\_t::init\_map\_m();}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ override\ to\ match\ shelxl}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ r[0][0]\ =\ 0;\ r[0][1]\ =\ 3;\ r[0][2]\ =\ 5;}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ r[1][0]\ =\ 3;\ r[1][1]\ =\ 1;\ r[1][2]\ =\ 4;}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ r[2][0]\ =\ 5;\ r[2][1]\ =\ 4;\ r[2][2]\ =\ 2;}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ parent\_t::get\_multiplicity\_()[0]\ =\ 1;}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ parent\_t::get\_multiplicity\_()[1]\ =\ 1;}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ parent\_t::get\_multiplicity\_()[2]\ =\ 1;}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ parent\_t::get\_multiplicity\_()[3]\ =\ 2;}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ parent\_t::get\_multiplicity\_()[4]\ =\ 2;}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ parent\_t::get\_multiplicity\_()[5]\ =\ 2;}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00180\ \ \ \ \ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ \&get\_linear\_index\_(\textcolor{keyword}{const}\ index\_t\ \&idx)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ get\_map()[idx[0]][idx[1]];}
+\DoxyCodeLine{00184\ \ \ \ \ \}}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ **\ build\_map()\ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ **\ map\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{size\_t}\ *[3];}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ map[i]\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{size\_t}[3];}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ map;}
+\DoxyCodeLine{00192\ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00194\ \ \ \ \ tensor\_rank\_2\_t()}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ :\ data\_(6,\ olx\_list\_init::zero())}
+\DoxyCodeLine{00196\ \ \ \ \ \{\}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ tensor\_rank\_2\_t(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<FloatType>}}\ \&data)}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ :\ data\_(data)}
+\DoxyCodeLine{00200\ \ \ \ \ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data\_.Count()\ !=\ size())\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}data\ size"{}});}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \ \ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keyword}{const}\ FloatType\ \&\ operator\ ()(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data\_[get\_map()[i][j]];}
+\DoxyCodeLine{00208\ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \ \ FloatType\ \&\ operator\ ()(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data\_[get\_map()[i][j]];}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \ \ tensor\_rank\_2\_t\ transform(\textcolor{keyword}{const}\ mat3d\&\ rm)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ tensor\_rank\_2\_t\ r;}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \textcolor{keyword}{const}\ index\_list\_t\&\ indices\ =\ get\_indices();}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ indices.Count();\ i++)\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ tensor::index\_t\&\ idx\ =\ indices[i];}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ dli\ =\ parent\_t::get\_linear\_idx(idx);}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ l\ =\ 0;\ l\ <\ 3;\ l++)\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ m\ =\ 0;\ m\ <\ 3;\ m++)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ li\ =\ linearise(l,\ m);}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ p\_\ =\ rm[idx[0]][l]\ *\ rm[idx[1]][m];}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ r.data()[dli]\ +=\ p\_\ *\ data\_[li];}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00228\ \ \ \ \ \}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ index\_list\_t\ \&get\_indices()\ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \textcolor{keyword}{static}\ index\_list\_t\ indices;}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (indices.IsEmpty())\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ indices.SetCount(size());}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ size();\ i++)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ indices[i].SetCount(2);}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ indices[0][0]\ =\ 0;\ indices[0][1]\ =\ 0;}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ indices[1][0]\ =\ 1;\ indices[1][1]\ =\ 1;}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ indices[2][0]\ =\ 2;\ indices[2][1]\ =\ 2;}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ indices[3][0]\ =\ 0;\ indices[3][1]\ =\ 1;}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ indices[4][0]\ =\ 0;\ indices[4][1]\ =\ 2;}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ indices[5][0]\ =\ 1;\ indices[5][1]\ =\ 2;}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ overriding\ to\ match\ cctbx}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ for\ (int\ i\ =\ 0,\ idx\ =\ 0;\ i\ <\ 3;\ i++)\ \{}}
+\DoxyCodeLine{00246\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ for\ (int\ j\ =\ i;\ j\ <\ 3;\ j++,\ idx++)\ \{}}
+\DoxyCodeLine{00247\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx].SetCount(2);}}
+\DoxyCodeLine{00248\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx][0]\ =\ i;}}
+\DoxyCodeLine{00249\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx][1]\ =\ j;}}
+\DoxyCodeLine{00250\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{00251\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{00252\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ indices;}
+\DoxyCodeLine{00255\ \ \ \ \ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ TArrayList<FloatType>::const\_list\_type}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ get\_transform(\textcolor{keyword}{const}\ index\_t\ \&idx,\ \textcolor{keyword}{const}\ mat3i\ \&rm)}
+\DoxyCodeLine{00259\ \ \ \ \ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ tensor\_rank\_2\_t\ result;}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ idx[0],\ j\ =\ idx[1];}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ r\ =\ 0;\ r\ <\ 3;\ r++)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ s\ =\ 0;\ s\ <\ 3;\ s++)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ result(s,\ r)\ +=\ rm(i,\ r)*rm(j,\ s);}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result.data\_;}
+\DoxyCodeLine{00268\ \ \ \ \ \}}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ rank()\ \{\ \textcolor{keywordflow}{return}\ 2;\ \}}
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ size()\ \{\ \textcolor{keywordflow}{return}\ 6;\ \}}
+\DoxyCodeLine{00272\ }
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ linearise(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ get\_map()[i][j];}
+\DoxyCodeLine{00275\ \ \ \ \ \}}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ cleanup()\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ **map\ =\ get\_map\_();}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (map\ !=\ 0)\ \{}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ get\_map\_()\ =\ 0;}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ map[i];}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ map;}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00286\ \ \ \ \ \}}
+\DoxyCodeLine{00287\ \ \ \};\ \textcolor{comment}{//\ class\ scitbx::matrx::tensors::tensor\_rank\_2}}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatType\ =\ \textcolor{keywordtype}{double}>}
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{class\ }tensor\_rank\_3\_t\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__base}{tensor\_base}}<tensor\_rank\_3\_t<FloatType>,\ FloatType>\ \{}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__base}{tensor\_base<tensor\_rank\_3\_t<FloatType>}},\ FloatType>\ parent\_t;}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__base}{tensor\_base}}<tensor\_rank\_3\_t<FloatType>,\ FloatType>;}
+\DoxyCodeLine{00293\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<FloatType>}}\ data\_;}
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00295\ \textcolor{comment}{\ \ \ \ 0\ 0\ 0,\ 0\ 0\ 1,\ 0\ 0\ 2,\ 0\ 1\ 1,\ 0\ 1\ 2}}
+\DoxyCodeLine{00296\ \textcolor{comment}{\ \ \ \ 0\ 2\ 2,\ 1\ 1\ 1,\ 1\ 1\ 2,\ 1\ 2\ 2,\ 2\ 2\ 2}}
+\DoxyCodeLine{00297\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ***\&\ get\_map\_()\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ***\ map\ =\ 0;}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ map;}
+\DoxyCodeLine{00302\ \ \ \ \ \}}
+\DoxyCodeLine{00303\ }
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ***\&\ get\_map()\ \{}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ***\&\ r\ =\ get\_map\_();}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ ==\ 0)\ \{}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ r\ =\ build\_map();}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ parent\_t::init\_map\_m();}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00311\ \ \ \ \ \}}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ \&get\_linear\_index\_(\textcolor{keyword}{const}\ index\_t\ \&idx)\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ get\_map()[idx[0]][idx[1]][idx[2]];}
+\DoxyCodeLine{00315\ \ \ \ \ \}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ***\ build\_map()\ \{}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ***\ map\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{size\_t}\ **[rank()];}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ map[i]\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{size\_t}*[3];}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ 3;\ j++)\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ map[i][j]\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{size\_t}[3];}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ map;}
+\DoxyCodeLine{00326\ \ \ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00328\ \ \ \ \ tensor\_rank\_3\_t()}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ :\ data\_(10,\ olx\_list\_init::zero())}
+\DoxyCodeLine{00330\ \ \ \ \ \{\}}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ \ \ tensor\_rank\_3\_t(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<FloatType>}}\ \&data)}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ :\ data\_(data)}
+\DoxyCodeLine{00334\ \ \ \ \ \{}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data\_.Count()\ !=\ size())\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}data\ size"{}});}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00338\ \ \ \ \ \}}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keyword}{const}\ FloatType\ \&\ operator\ ()(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keywordtype}{size\_t}\ k)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data\_[get\_map()[i][j][k]];}
+\DoxyCodeLine{00342\ \ \ \ \ \}}
+\DoxyCodeLine{00343\ \ \ \ \ FloatType\ \&\ operator\ ()(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keywordtype}{size\_t}\ k)\ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data\_[get\_map()[i][j][k]];}
+\DoxyCodeLine{00345\ \ \ \ \ \}}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \ \ tensor\_rank\_3\_t\ transform(\textcolor{keyword}{const}\ mat3d\&\ rm)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ tensor\_rank\_3\_t\ r;}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \textcolor{keyword}{const}\ index\_list\_t\&\ indices\ =\ get\_indices();}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ indices.Count();\ i++)\ \{}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ tensor::index\_t\&\ idx\ =\ indices[i];}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ dli\ =\ parent\_t::get\_linear\_idx(idx);}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ l\ =\ 0;\ l\ <\ 3;\ l++)\ \{}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ m\ =\ 0;\ m\ <\ 3;\ m++)\ \{}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ 3;\ n++)\ \{}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ li\ =\ linearise(l,\ m,\ n);}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ p\_\ =\ rm[idx[0]][l]\ *\ rm[idx[1]][m]\ *\ rm[idx[2]][n];}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r.data()[dli]\ +=\ p\_\ *\ data\_[li];}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00364\ \ \ \ \ \}}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ index\_list\_t\ \&get\_indices()\ \{}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \textcolor{keyword}{static}\ index\_list\_t\ indices;}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (indices.IsEmpty())\ \{}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ indices.SetCount(size());}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0,\ idx\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ i;\ j\ <\ 3;\ j++)\ \{}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ j;\ k\ <\ 3;\ k++,\ idx++)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx].SetCount(rank());}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx][0]\ =\ i;}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx][1]\ =\ j;}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx][2]\ =\ k;}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ indices;}
+\DoxyCodeLine{00382\ \ \ \ \ \}}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ TArrayList<FloatType>::const\_list\_type}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ get\_transform(\textcolor{keyword}{const}\ index\_t\ \&idx,\ \textcolor{keyword}{const}\ mat3i\ \&rm)}
+\DoxyCodeLine{00386\ \ \ \ \ \{}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ tensor\_rank\_3\_t\ result;}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ idx[0],\ j\ =\ idx[1],\ k\ =\ idx[2];}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ r\ =\ 0;\ r\ <\ 3;\ r++)\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ s\ =\ 0;\ s\ <\ 3;\ s++)\ \{}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ t\ =\ 0;\ t\ <\ 3;\ t++)\ \{}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ result(r,\ s,\ t)\ +=\ rm(i,\ r)*rm(j,\ s)*rm(k,\ t);}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result.data\_;}
+\DoxyCodeLine{00397\ \ \ \ \ \}}
+\DoxyCodeLine{00398\ }
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ rank()\ \{\ \textcolor{keywordflow}{return}\ 3;\ \}}
+\DoxyCodeLine{00400\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ size()\ \{\ \textcolor{keywordflow}{return}\ 10;\ \}}
+\DoxyCodeLine{00401\ }
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ linearise(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keywordtype}{size\_t}\ k)\ \{}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ get\_map()[i][j][k];}
+\DoxyCodeLine{00404\ \ \ \ \ \}}
+\DoxyCodeLine{00405\ }
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ cleanup()\ \{}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ***map\ =\ get\_map\_();}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (map\ !=\ 0)\ \{}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ get\_map\_()\ =\ 0;}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ 3;\ j++)\ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ map[i][j];}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ map[i];}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ map;}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00418\ \ \ \ \ \}}
+\DoxyCodeLine{00419\ \ \ \};\ \textcolor{comment}{//\ class\ scitbx::matrix::tensors::tensor\_rank\_3\_t}}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatType\ =\ \textcolor{keywordtype}{double}>}
+\DoxyCodeLine{00422\ \ \ \textcolor{keyword}{class\ }tensor\_rank\_4\_t\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__base}{tensor\_base}}<tensor\_rank\_4\_t<FloatType>,\ FloatType>\ \{}
+\DoxyCodeLine{00423\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__base}{tensor\_base<tensor\_rank\_4\_t<FloatType>}},\ FloatType>\ parent\_t;}
+\DoxyCodeLine{00424\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__base}{tensor\_base}}<tensor\_rank\_4\_t<FloatType>,\ FloatType>;}
+\DoxyCodeLine{00425\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<FloatType>}}\ data\_;}
+\DoxyCodeLine{00426\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00427\ \textcolor{comment}{\ \ \ \ 0\ 0\ 0\ 0,\ 0\ 0\ 0\ 1,\ 0\ 0\ 0\ 2,\ 0\ 0\ 1\ 1,\ 0\ 0\ 1\ 2}}
+\DoxyCodeLine{00428\ \textcolor{comment}{\ \ \ \ 0\ 0\ 2\ 2,\ 0\ 1\ 1\ 1,\ 0\ 1\ 1\ 2,\ 0\ 1\ 2\ 2,\ 0\ 2\ 2\ 2}}
+\DoxyCodeLine{00429\ \textcolor{comment}{\ \ \ \ 1\ 1\ 1\ 1,\ 1\ 1\ 1\ 2,\ 1\ 1\ 2\ 2,\ 1\ 2\ 2\ 2,\ 2\ 2\ 2\ 2}}
+\DoxyCodeLine{00430\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ****\&\ get\_map\_()\ \{}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ****\ map\ =\ 0;}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ map;}
+\DoxyCodeLine{00434\ \ \ \ \ \}}
+\DoxyCodeLine{00435\ }
+\DoxyCodeLine{00436\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ****\&\ get\_map()\ \{}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ****\&\ r\ =\ get\_map\_();}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ ==\ 0)\ \{}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ r\ =\ build\_map();}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ parent\_t::init\_map\_m();}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00443\ \ \ \ \ \}}
+\DoxyCodeLine{00444\ }
+\DoxyCodeLine{00445\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ \&get\_linear\_index\_(\textcolor{keyword}{const}\ index\_t\ \&idx)\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ get\_map()[idx[0]][idx[1]][idx[2]][idx[3]];}
+\DoxyCodeLine{00447\ \ \ \ \ \}}
+\DoxyCodeLine{00448\ }
+\DoxyCodeLine{00449\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ ****\ build\_map()\ \{}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ****\ map\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{size\_t}\ ***[3];}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ map[i]\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{size\_t}\ **[3];}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ 3;\ j++)\ \{}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \ \ \ \ map[i][j]\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{size\_t}\ *[3];}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ \{}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ \ \ \ \ map[i][j][k]\ =\ \textcolor{keyword}{new}\ \textcolor{keywordtype}{size\_t}[3];}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ map;}
+\DoxyCodeLine{00461\ \ \ \ \ \}}
+\DoxyCodeLine{00462\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00463\ \ \ \ \ tensor\_rank\_4\_t()}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ :\ data\_(15,\ olx\_list\_init::zero())}
+\DoxyCodeLine{00465\ \ \ \ \ \{\}}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00467\ \ \ \ \ tensor\_rank\_4\_t(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTArrayList}{TArrayList<FloatType>}}\ \&data)}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ :\ data\_(data)}
+\DoxyCodeLine{00469\ \ \ \ \ \{}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data\_.Count()\ !=\ size())\ \{}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}data\ size"{}});}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00473\ \ \ \ \ \}}
+\DoxyCodeLine{00474\ }
+\DoxyCodeLine{00475\ \ \ \ \ \textcolor{keyword}{const}\ FloatType\ \&\ operator\ ()(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keywordtype}{size\_t}\ k,\ \textcolor{keywordtype}{size\_t}\ l)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data\_[get\_map()[i][j][k][l]];}
+\DoxyCodeLine{00477\ \ \ \ \ \}}
+\DoxyCodeLine{00478\ \ \ \ \ FloatType\ \&\ operator\ ()(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keywordtype}{size\_t}\ k,\ \textcolor{keywordtype}{size\_t}\ l)\ \{}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data\_[get\_map()[i][j][k][l]];}
+\DoxyCodeLine{00480\ \ \ \ \ \}}
+\DoxyCodeLine{00481\ }
+\DoxyCodeLine{00482\ \ \ \ \ tensor\_rank\_4\_t\ transform(\textcolor{keyword}{const}\ mat3d\&\ rm)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ tensor\_rank\_4\_t\ r;}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \textcolor{keyword}{const}\ index\_list\_t\&\ indices\ =\ get\_indices();}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ indices.Count();\ i++)\ \{}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ tensor::index\_t\&\ idx\ =\ indices[i];}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ dli\ =\ parent\_t::get\_linear\_idx(idx);}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ l\ =\ 0;\ l\ <\ 3;\ l++)\ \{}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ m\ =\ 0;\ m\ <\ 3;\ m++)\ \{}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ n\ =\ 0;\ n\ <\ 3;\ n++)\ \{}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ p\ =\ 0;\ p\ <\ 3;\ p++)\ \{}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ li\ =\ linearise(l,\ m,\ n,\ p);}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ pr\ =\ rm[idx[0]][l]\ *\ rm[idx[1]][m]\ *\ rm[idx[2]][n]\ *\ rm[idx[3]][p];}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r.data()[dli]\ +=\ pr\ *\ data\_[li];}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00501\ \ \ \ \ \}}
+\DoxyCodeLine{00502\ }
+\DoxyCodeLine{00503\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ index\_list\_t\ \&get\_indices()\ \{}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \textcolor{keyword}{static}\ index\_list\_t\ indices;}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (indices.IsEmpty())\ \{}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ indices.SetCount(size());}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0,\ idx\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ i;\ j\ <\ 3;\ j++)\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ j;\ k\ <\ 3;\ k++)\ \{}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ l\ =\ k;\ l\ <\ 3;\ l++,\ idx++)\ \{}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx].SetCount(4);}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx][0]\ =\ i;}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx][1]\ =\ j;}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx][2]\ =\ k;}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ indices[idx][3]\ =\ l;}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ indices;}
+\DoxyCodeLine{00522\ \ \ \ \ \}}
+\DoxyCodeLine{00523\ }
+\DoxyCodeLine{00524\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{typename}\ TArrayList\ <FloatType>::const\_list\_type}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ get\_transform(\textcolor{keyword}{const}\ index\_t\ \&idx,\ \textcolor{keyword}{const}\ mat3i\ \&rm)}
+\DoxyCodeLine{00526\ \ \ \ \ \{}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ tensor\_rank\_4\_t\ result;}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ idx[0],\ j\ =\ idx[1],\ k\ =\ idx[2],\ l\ =\ idx[3];}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ r\ =\ 0;\ r\ <\ 3;\ r++)\ \{}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ s\ =\ 0;\ s\ <\ 3;\ s++)\ \{}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ t\ =\ 0;\ t\ <\ 3;\ t++)\ \{}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ u\ =\ 0;\ u\ <\ 3;\ u++)\ \{}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result(r,\ s,\ t,\ u)\ +=\ rm(i,\ r)*rm(j,\ s)*rm(k,\ t)*rm(l,\ u);}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result.data\_;}
+\DoxyCodeLine{00539\ \ \ \ \ \}}
+\DoxyCodeLine{00540\ }
+\DoxyCodeLine{00541\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ rank()\ \{\ \textcolor{keywordflow}{return}\ 4;\ \}}
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ size()\ \{\ \textcolor{keywordflow}{return}\ 15;\ \}}
+\DoxyCodeLine{00543\ }
+\DoxyCodeLine{00544\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ linearise(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j,\ \textcolor{keywordtype}{size\_t}\ k,\ \textcolor{keywordtype}{size\_t}\ l)\ \{}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ get\_map()[i][j][k][l];}
+\DoxyCodeLine{00546\ \ \ \ \ \}}
+\DoxyCodeLine{00547\ }
+\DoxyCodeLine{00548\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ cleanup()\ \{}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ****map\ =\ get\_map\_();}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (map\ !=\ 0)\ \{}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ get\_map\_()\ =\ 0;}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ 3;\ j++)\ \{}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ 3;\ k++)\ \{}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ map[i][j][k];}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ map[i][j];}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ map[i];}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ map;}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00563\ \ \ \ \ \}}
+\DoxyCodeLine{00564\ \ \ \};\ \textcolor{comment}{//\ class\ scitbx::matrix::tensors::tensor\_rank\_4\_t}}
+\DoxyCodeLine{00565\ }
+\DoxyCodeLine{00566\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__rank__2__t}{tensor\_rank\_2\_t<double>}}\ tensor\_rank\_2;}
+\DoxyCodeLine{00567\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__rank__3__t}{tensor\_rank\_3\_t<double>}}\ tensor\_rank\_3;}
+\DoxyCodeLine{00568\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classesdl_1_1tensor_1_1tensor__rank__4__t}{tensor\_rank\_4\_t<double>}}\ tensor\_rank\_4;}
+\DoxyCodeLine{00569\ }
+\DoxyCodeLine{00570\ \}\}\ \ \textcolor{comment}{//\ end\ esdl::tensor}}
+\DoxyCodeLine{00571\ }
+\DoxyCodeLine{00572\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,45 @@
+\doxysection{datectrlext.\+h}
+\hypertarget{datectrlext_8h_source}{}\label{datectrlext_8h_source}\index{olex/ctrls/datectrlext.h@{olex/ctrls/datectrlext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_datetime\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_datetime\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}wx/datectrl.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}wx/dateevt.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{class\ }TDateCtrl:\ \textcolor{keyword}{public}\ wxDatePickerCtrl,\ \textcolor{keyword}{public}\ AOlxCtrl\ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{void}\ ChangeEvent(wxDateEvent\&\ event);}
+\DoxyCodeLine{00021\ \ \ \ \ olxstr\ Data;}
+\DoxyCodeLine{00022\ \ \ \ \ wxDateTime\ Value;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ TDateCtrl(wxWindow\ *Parent,\ wxWindowID\ \textcolor{keywordtype}{id}\ =\ -\/1,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxDateTime\&\ value\ =\ wxDateTime::Now(),}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxPoint\&\ pos\ =\ wxDefaultPosition,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxSize\&\ size\ =\ wxDefaultSize,\ \textcolor{keywordtype}{long}\ style\ =\ 0);}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ SetValue(\textcolor{keyword}{const}\ wxDateTime\ \&T)\ \ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ Value\ =\ T;}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ wxDatePickerCtrl::SetValue(T);}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ DefPropC(olxstr,\ Data)}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl_1_1ActionQueue}{AOlxCtrl::ActionQueue}}\ \&OnChange;}
+\DoxyCodeLine{00037\ \ \ \};}
+\DoxyCodeLine{00038\ \};\ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

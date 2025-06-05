@@ -1,12 +1,10 @@
 var searchData=
 [
-  ['hashingbase_0',['HashingBase',['../classHashingBase.html',1,'']]],
-  ['hashingbase_3c_20md5impl_2c_20hashingutilsle_20_3e_1',['HashingBase&lt; MD5Impl, HashingUtilsLE &gt;',['../classHashingBase.html',1,'']]],
-  ['hashingbase_3c_20sha1impl_2c_20hashingutilsbe_20_3e_2',['HashingBase&lt; SHA1Impl, HashingUtilsBE &gt;',['../classHashingBase.html',1,'']]],
-  ['hashingbase_3c_20sha224impl_2c_20hashingutilsbe_20_3e_3',['HashingBase&lt; SHA224Impl, HashingUtilsBE &gt;',['../classHashingBase.html',1,'']]],
-  ['hashingbase_3c_20sha256impl_2c_20hashingutilsbe_20_3e_4',['HashingBase&lt; SHA256Impl, HashingUtilsBE &gt;',['../classHashingBase.html',1,'']]],
-  ['hashingutilsbe_5',['HashingUtilsBE',['../structHashingUtilsBE.html',1,'']]],
-  ['hashingutilsle_6',['HashingUtilsLE',['../structHashingUtilsLE.html',1,'']]],
-  ['helper_5ftetrahedron_7',['helper_Tetrahedron',['../classhelper__Tetrahedron.html',1,'']]],
-  ['hklstat_8',['HklStat',['../structRefinementModel_1_1HklStat.html',1,'RefinementModel']]]
+  ['glsphereex_0',['GlSphereEx',['../classGlSphereEx.html',1,'']]],
+  ['gltorus_1',['GlTorus',['../structGlTorus.html',1,'']]],
+  ['gramcharlier_2',['GramCharlier',['../structGramCharlier.html',1,'']]],
+  ['graphanalyser_3',['GraphAnalyser',['../structGraphAnalyser.html',1,'']]],
+  ['groupdata_4',['GroupData',['../structTGXApp_1_1GroupData.html',1,'TGXApp']]],
+  ['growinfo_5',['GrowInfo',['../structTLattice_1_1GrowInfo.html',1,'TLattice']]],
+  ['gxlibmacros_6',['GXLibMacros',['../classGXLibMacros.html',1,'']]]
 ];

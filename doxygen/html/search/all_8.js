@@ -8,5 +8,6 @@ var searchData=
   ['hashingutilsbe_5',['HashingUtilsBE',['../structHashingUtilsBE.html',1,'']]],
   ['hashingutilsle_6',['HashingUtilsLE',['../structHashingUtilsLE.html',1,'']]],
   ['helper_5ftetrahedron_7',['helper_Tetrahedron',['../classhelper__Tetrahedron.html',1,'']]],
-  ['hklstat_8',['HklStat',['../structRefinementModel_1_1HklStat.html',1,'RefinementModel']]]
+  ['hklbrushref_8',['HklBrushRef',['../structHklBrushRef.html',1,'']]],
+  ['hklstat_9',['HklStat',['../structRefinementModel_1_1HklStat.html',1,'RefinementModel']]]
 ];

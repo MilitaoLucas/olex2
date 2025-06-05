@@ -1,0 +1,121 @@
+\doxysection{itemlist.\+h}
+\hypertarget{itemlist_8h_source}{}\label{itemlist_8h_source}\index{olex/ctrls/itemlist.h@{olex/ctrls/itemlist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_ilist\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_ilist\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}estrlist.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}wx/combo.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ parent\_t>}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classctrl__ext_1_1TItemList}{TItemList}}\ :\ \textcolor{keyword}{public}\ parent\_t\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{struct\ }TDataObj\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data;}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Delete;}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ TDataObj(\mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Data,\ \textcolor{keywordtype}{bool}\ Delete)}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ :\ Data(Data),\ Delete(Delete)}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{00025\ \ \ \ \ \};}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ \_AddObject(\textcolor{keyword}{const}\ olxstr\ \&Item,\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,\ \textcolor{keywordtype}{bool}\ Delete)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ parent\_t::Append(Item.u\_str());}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Data\ !=\ NULL)\ \ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ TDataObj*\ d\_o\ =\ \textcolor{keyword}{new}\ TDataObj(Data,\ Delete);}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ parent\_t::SetClientData(parent\_t::GetCount()\ -\/\ 1,\ d\_o);}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ parent\_t::SetClientData(parent\_t::GetCount()\ -\/\ 1,\ NULL);}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \_Clear()\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ parent\_t::GetCount();\ i++)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ TDataObj*\ d\_o\ =\ (TDataObj*)parent\_t::GetClientData(i);}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\_o\ !=\ NULL)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\_o-\/>Delete)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ d\_o-\/>Data;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ d\_o;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ AddObject(\textcolor{keyword}{const}\ olxstr\ \&Item,\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *Data\ =\ NULL)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \_AddObject(Item,\ Data,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ olxstr\ GetItem(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent\_t::GetString(i);\ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ GetObject(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ TDataObj*\ res\ =\ (TDataObj*)parent\_t::GetClientData(i);}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (res\ !=\ NULL\ \&\&\ !res-\/>Delete)\ ?\ res-\/>Data\ :\ NULL;}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{comment}{/*if\ a\ list\ item\ is\ constructed\ like\ 'name<-\/value'\ the\ pair\ is\ added\ as}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ \ \ \ single\ item,\ though,\ once\ this\ item\ is\ selected,\ the\ value\ of\ Text()}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ \ \ \ function\ will\ be\ the\ valu\ part\ of\ the\ item}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{void}\ AddItems(\textcolor{keyword}{const}\ TStrList\ \&items)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ items.Count();\ i++)\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ind\ =\ items[i].IndexOf(\textcolor{stringliteral}{"{}<-\/"{}});}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ind\ !=\ InvalidIndex)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ olxstr\ tmp\ =\ items[i].SubStringFrom(ind\ +\ 2);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \_AddObject(items[i].SubStringTo(ind),\ tmp.Replicate(),\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \_AddObject(items[i],\ NULL,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ olxstr\ ItemsToString(\textcolor{keyword}{const}\ olxstr\ \&sep)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ olxstr\_buf\ rv;}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ olxstr\ vs\ =\ \textcolor{stringliteral}{"{}<-\/"{}};}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ parent\_t::GetCount();\ i++)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ rv\ <<\ sep\ <<\ parent\_t::GetString(i);}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ TDataObj*\ res\ =\ (TDataObj*)parent\_t::GetClientData(i);}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (res\ !=\ NULL\ \&\&\ res-\/>Delete)}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ rv\ <<\ vs\ <<\ res-\/>Data-\/>ToString();}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ parent\_t::GetCount()\ >\ 0\ ?\ olxstr(rv).SubStringFrom(sep.Length())\ :\ EmptyString();}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ parent\_t::GetCount();\ \}}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00090\ \ \ \ \ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<size\_t,\ olxstr>}}\ \_SetText(\textcolor{keyword}{const}\ olxstr\ \&text)\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx\ =\ InvalidIndex;}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ parent\_t::GetCount();\ i++)\ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (text\ ==\ parent\_t::GetString(i))\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ idx\ =\ i;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ TDataObj*\ res\ =\ (TDataObj*)parent\_t::GetClientData(i);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (res\ ==\ NULL\ ||\ !res-\/>Delete)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ olxstr\ sv\ =\ res-\/>Data-\/>ToString();}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sv\ ==\ text)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<size\_t,olxstr>}}(i,\ GetItem(i));}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<size\_t,\ olxstr>}}(idx,\ text);}
+\DoxyCodeLine{00106\ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<bool,\ olxstr>}}\ \_GetText(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TDataObj*\ res\ =\ (TDataObj*)parent\_t::GetClientData(i);}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (res\ ==\ NULL\ ||\ !res-\/>Delete)\ ?}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<bool,\ olxstr>}}(\textcolor{keyword}{false},\ EmptyString())}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structolx__pair__t}{olx\_pair\_t<bool,\ olxstr>}}(\textcolor{keyword}{true},\ res-\/>Data-\/>ToString());}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \};}
+\DoxyCodeLine{00114\ \};\ \ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

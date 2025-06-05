@@ -1,0 +1,260 @@
+\doxysection{name.\+h}
+\hypertarget{name_8h_source}{}\label{name_8h_source}\index{gxlib/modes/name.h@{gxlib/modes/name.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_NAME\_MODE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_NAME\_MODE\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}analysis.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }TNameMode\ :\ \textcolor{keyword}{public}\ AModeWithLabels\ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keywordtype}{size\_t}\ Index;}
+\DoxyCodeLine{00016\ \ \ olxstr\ Prefix,\ Suffix,\ Symbol;}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{bool}\ Lock,\ NameResidues;}
+\DoxyCodeLine{00018\ \ \ \mbox{\hyperlink{classTUndoData}{TUndoData}}*\ FirstUndo;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{short}\ AutoComplete;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{static}\ TNameMode*\ Instance;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{class\ }TNameModeUndo\ :\ \textcolor{keyword}{public}\ TUndoData\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ TSizeList\ LabelIndices;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ TNameModeUndo()}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ :\ TUndoData(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTUndoActionImplMF}{TUndoActionImplMF<TNameModeUndo>}}(}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keyword}{this},\ \&TNameModeUndo::undo))}
+\DoxyCodeLine{00028\ \ \ \ \ \{\}}
+\DoxyCodeLine{00029\ \ \ \ \ TNameModeUndo(\mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ xa)}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ :\ TUndoData(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTUndoActionImplMF}{TUndoActionImplMF<TNameModeUndo>}}(}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{this},\ \&TNameModeUndo::undo))}
+\DoxyCodeLine{00032\ \ \ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ AddAtom(xa);}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ AddAtom(\mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ xa)\ \{\ LabelIndices.Add(xa.GetOwnerId());\ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ undo(TUndoData*\ data)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TNameMode::Instance\ !=\ NULL)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ LabelIndices.Count();\ i++)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ TGXApp::GetInstance().MarkLabel(LabelIndices[i],\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ TNameMode::Instance-\/>Index-\/-\/;}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ TNameMode::Instance-\/>SetCursor();}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \};}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{class\ }TLockUndo\ :\ \textcolor{keyword}{public}\ TUndoData\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a;}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{bool}\ v;}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00050\ \ \ \ \ TLockUndo(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ a)}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ :\ TUndoData(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTUndoActionImplMF}{TUndoActionImplMF<TLockUndo>}}(}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keyword}{this},\ \&TLockUndo::undo)),}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ a(a),\ v(a.IsFixedType())}
+\DoxyCodeLine{00054\ \ \ \ \ \{\}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ undo(TUndoData*\ data)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ a.SetFixedType(v);}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \mbox{\hyperlink{structTGXApp_1_1AtomIterator}{TGXApp::AtomIterator}}\ ai\ =\ TGXApp::GetInstance().GetAtoms();}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (ai.HasNext())\ \{\ \textcolor{comment}{//\ update\ the\ locked\ atom\ view\ if\ any}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ ai.Next().Update();}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \};}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ SetCursor()\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ olxstr\ Labl\ =\ Symbol.IsEmpty()\ ?\ olxstr(\textcolor{charliteral}{'\$'})\ :\ Symbol;}
+\DoxyCodeLine{00065\ \ \ \ \ SetUserCursor(Labl\ <<\ Prefix\ <<\ Index\ <<\ Suffix,\ \textcolor{stringliteral}{"{}name"{}});}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ DoNumber(\mbox{\hyperlink{classTXAtom}{TXAtom}}\ \&a,\ TNameModeUndo*\ undo)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ olxstr\ Labl\ =\ Symbol.IsEmpty()\ ?\ a.GetType().symbol\ :\ Symbol;}
+\DoxyCodeLine{00069\ \ \ \ \ Labl\ <<\ Prefix\ <<\ Index\ <<\ Suffix;}
+\DoxyCodeLine{00070\ \ \ \ \ undo-\/>AddAction(TGXApp::GetInstance().Name(a,\ Labl));}
+\DoxyCodeLine{00071\ \ \ \ \ undo-\/>AddAtom(a);}
+\DoxyCodeLine{00072\ \ \ \ \ TGXApp::GetInstance().MarkLabel(a,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00073\ \ \ \ \ Index++;}
+\DoxyCodeLine{00074\ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ RSorter(\textcolor{keyword}{const}\ TXAtom\ \&a,\ \textcolor{keyword}{const}\ TXAtom\ \&b)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{if}\ (a.CAtom().IsRingAtom())\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (b.CAtom().IsRingAtom())\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{if}\ (b.CAtom().IsRingAtom())\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00084\ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{void}\ Autocomplete(TCAtomPList\ \&ref,\ TXAtom\&\ xa,\ \mbox{\hyperlink{classTNameMode_1_1TNameModeUndo}{TNameModeUndo}}*\ undo,}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{bool}\ recursion\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00087\ \ \ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{if}\ (!recursion)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ TGXApp::AtomIterator\ ai\ =\ gxapp.GetAtoms();}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (ai.HasNext())\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ TXAtom\ \&a\ =\ ai.Next();}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ a.SetTag(gxapp.IsLabelMarked(a)\ ?\ 1\ :\ 0);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{if}\ (recursion\ \&\&\ xa.GetTag()\ ==\ 1)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ xa.SetTag(1);}
+\DoxyCodeLine{00099\ \ \ \ \ TXAtomPList\ outgoing;}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ xa.NodeCount();\ i++)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ TXAtom\&\ nd\ =\ xa.Node(i);}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nd.IsDeleted()\ ||\ nd.GetType()\ <\ 2\ ||\ nd.GetTag()\ ==\ 1)\ \{\ \textcolor{comment}{//\ H,D,Q}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((AutoComplete\ \&\ 2)\ ==\ 2\ \&\&\ xa.GetType()\ !=\ nd.GetType())\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((AutoComplete\ \&\ 4)\ ==\ 4\ \&\&\ xa.CAtom().GetPart()\ !=\ nd.CAtom().GetPart())\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ outgoing.Add(nd);}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{bool}\ set\_cursor\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{if}\ (outgoing.Count()\ ==\ 1)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ ref\ <<\ outgoing[0]-\/>CAtom();}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ DoNumber(*outgoing[0],\ undo);}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ Autocomplete(ref,\ *outgoing[0],\ undo,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ set\_cursor\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((AutoComplete\ \&\ 8)\ ==\ 8)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ TXAtomPList\ to\_number;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ QuickSorter::SortSF(outgoing,\ \&TNameMode::RSorter);}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ outgoing.Count();\ i++)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ TXAtom\ \&a\ =\ *outgoing[i];}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a.GetTag()\ ==\ 1)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ cnt\ =\ 0;}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ a.NodeCount();\ i++)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ TXAtom\&\ nd\ =\ a.Node(i);}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nd.IsDeleted()\ ||\ nd.GetType()\ <\ 2\ ||\ nd.GetTag()\ ==\ 1)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((AutoComplete\ \&\ 2)\ ==\ 2\ \&\&\ xa.GetType()\ !=\ nd.GetType())\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((AutoComplete\ \&\ 4)\ ==\ 4\ \&\&\ xa.CAtom().GetPart()\ !=\ nd.CAtom().GetPart())\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ cnt++;}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (a.CAtom().IsRingAtom())\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ set\_cursor\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ ref\ <<\ a.CAtom();}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ DoNumber(a,\ undo);}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ Autocomplete(ref,\ a,\ undo,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ set\_cursor\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ ref\ <<\ a.CAtom();}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ DoNumber(a,\ undo);}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (a.GetTag()\ ==\ 0)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ to\_number\ <<\ a;}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ to\_number.Count();\ i++)\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (to\_number[i]-\/>GetTag()\ ==\ 1)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ set\_cursor\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ ref\ <<\ to\_number[i]-\/>CAtom();}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ DoNumber(*to\_number[i],\ undo);}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ Autocomplete(ref,\ *to\_number[i],\ undo,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordflow}{if}\ (!recursion\ \&\&\ set\_cursor)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ SetCursor();}
+\DoxyCodeLine{00171\ \ \ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \}}
+\DoxyCodeLine{00173\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00174\ \ \ TNameMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ AModeWithLabels(id)\ \{\ Instance\ =\ \textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options)\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ Index\ =\ Cmds.IsEmpty()\ ?\ 1\ :\ Cmds[0].ToInt();}
+\DoxyCodeLine{00177\ \ \ \ \ Prefix\ =\ Options.FindValue(\textcolor{charliteral}{'p'});}
+\DoxyCodeLine{00178\ \ \ \ \ Suffix\ =\ Options.FindValue(\textcolor{charliteral}{'s'});}
+\DoxyCodeLine{00179\ \ \ \ \ Symbol\ =\ Options.FindValue(\textcolor{charliteral}{'t'});\ \ \textcolor{comment}{//\ type}}
+\DoxyCodeLine{00180\ \ \ \ \ Lock\ =\ Options.GetBoolOption(\textcolor{charliteral}{'l'});}
+\DoxyCodeLine{00181\ \ \ \ \ AutoComplete\ =\ (short)Options.FindValue(\textcolor{charliteral}{'a'},\ \textcolor{charliteral}{'0'}).ToInt();}
+\DoxyCodeLine{00182\ \ \ \ \ NameResidues\ =\ Options.GetBoolOption(\textcolor{charliteral}{'r'},\ \textcolor{keyword}{false},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{comment}{//\ validate\ if\ type\ is\ correct}}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{if}\ (!Symbol.IsEmpty()\ \&\&\ !XElementLib::IsElement(Symbol))}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}element\ type"{}});}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keywordflow}{if}\ (Cmds.IsEmpty()\ \&\&\ !Symbol.IsEmpty())}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ Index\ =\ gxapp.GetNextAvailableLabel(Symbol);}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \ \ SetCursor();}
+\DoxyCodeLine{00190\ \ \ \ \ olxstr\ labels(\textcolor{stringliteral}{"{}labels\ -\/l"{}});}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{if}\ (Symbol.Equalsi(\textcolor{charliteral}{'H'})\ ||\ Symbol.Equalsi(\textcolor{charliteral}{'D'}))\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ labels\ <<\ \textcolor{stringliteral}{"{}\ -\/h"{}};}
+\DoxyCodeLine{00193\ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ olex2.processMacro(labels);}
+\DoxyCodeLine{00195\ \ \ \ \ TGXApp::BondIterator\ bi\ =\ gxapp.GetBonds();}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{while}\ (bi.HasNext())}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ bi.Next().SetSelectable(\textcolor{keyword}{false});}
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keywordflow}{if}\ ((AutoComplete\ \&\ 8)\ ==\ 8)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ gxapp.SetQPeaksVisible(\textcolor{keyword}{false});}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \textcolor{keyword}{using\ namespace\ }olx\_analysis;}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ TTypeList<fragments::fragment>\ frags\ =\ fragments::extract(}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ gxapp.XFile().GetAsymmUnit());}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ frags.Count();\ i++)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ TCAtomPList\ r\_atoms;}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ frags[i].breadth\_first\_tags(InvalidIndex,\ \&r\_atoms);}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ TTypeList<fragments::ring>\ rings\ =\ frags[i].get\_rings(r\_atoms);}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ rings.Count();\ j++)\ \{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ rings[j].atoms.ForEach(TCAtom::FlagSetter(catom\_flag\_RingAtom,\ \textcolor{keyword}{true}));}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00213\ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \string~TNameMode()\ \{\ Instance\ =\ 0;\ \}}
+\DoxyCodeLine{00215\ \ \ \textcolor{keywordtype}{void}\ Finalise\_()\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ TGXApp::BondIterator\ bi\ =\ gxapp.GetBonds();}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordflow}{while}\ (bi.HasNext())\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ bi.Next().SetSelectable(\textcolor{keyword}{true});}
+\DoxyCodeLine{00219\ \ \ \ \ \}}
+\DoxyCodeLine{00220\ \ \ \ \ gxapp.XFile().GetLattice().UpdateConnectivity();}
+\DoxyCodeLine{00221\ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(AGDrawObject\&\ obj)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordflow}{if}\ (obj.Is<TXAtom>())\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ TXAtom\ \&XA\ =\ (TXAtom\&)obj;}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ olxstr\ Labl(Symbol.IsEmpty()\ ?\ XA.GetType().symbol\ :\ Symbol);}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ Labl\ <<\ Prefix\ <<\ Index\ <<\ Suffix;}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \mbox{\hyperlink{classTNameMode_1_1TNameModeUndo}{TNameModeUndo}}*\ undo\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classTNameMode_1_1TNameModeUndo}{TNameModeUndo}}(XA);}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ gxapp.MarkLabel(XA,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ undo-\/>AddAction(gxapp.Name(XA,\ Labl));}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ TCAtomPList\ ref;}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NameResidues)\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ ref\ <<\ XA.CAtom();}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Lock)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ undo-\/>AddAction(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTNameMode_1_1TLockUndo}{TLockUndo}}(XA.CAtom()));}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ XA.CAtom().SetFixedType(\textcolor{keyword}{true});}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ XA.Update();}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ gxapp.GetUndo().Push(undo);}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ Index++;}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ SetCursor();}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AutoComplete\ !=\ 0)\ \{}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ Autocomplete(ref,\ XA,\ undo);}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (NameResidues)\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ undo-\/>AddAction(gxapp.SynchroniseResidues(ref));}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00249\ \ \ \ \ \}}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00251\ \ \ \}}
+\DoxyCodeLine{00252\ \};}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

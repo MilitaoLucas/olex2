@@ -1,0 +1,208 @@
+\doxysection{encoding\+\_\+test.\+h}
+\hypertarget{encoding__test_8h_source}{}\label{encoding__test_8h_source}\index{sdl/tests/encoding\_test.h@{sdl/tests/encoding\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}md5.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}sha.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../encodings.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../utf16.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <locale>}}
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{void}\ MD5Test(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00018\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00019\ \ \ \ \ olxcstr\ msg(\textcolor{stringliteral}{"{}The\ quick\ brown\ fox\ jumps\ over\ the\ lazy\ dog"{}}),}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ res(\textcolor{stringliteral}{"{}9e107d9d372bb6826bd81d3542a419d6"{}}),}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ res1(\textcolor{stringliteral}{"{}e4d909c290d0fb1ca068ffaddf22cbd0"{}}),}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ res3(\textcolor{stringliteral}{"{}d41d8cd98f00b204e9800998ecf8427e"{}});}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{if}\ (!MD5::Digest(CEmptyString()).Equalsi(res3))}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Wrong\ digest\ message"{}});}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{if}\ (!MD5::Digest(msg).Equalsi(res))}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Wrong\ digest\ message"{}});}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordflow}{if}\ (!MD5::Digest(msg\ <<\ \textcolor{charliteral}{'.'}).Equalsi(res1))}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Wrong\ digest\ message"{}});}
+\DoxyCodeLine{00030\ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{void}\ SHA1Test(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00034\ \ \ \ \ olxcstr\ msg(\textcolor{stringliteral}{"{}The\ quick\ brown\ fox\ jumps\ over\ the\ lazy\ dog"{}}),}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ res(\textcolor{stringliteral}{"{}2fd4e1c6\ 7a2d28fc\ ed849ee1\ bb76e739\ 1b93eb12"{}}),}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ res1(\textcolor{stringliteral}{"{}da39a3ee\ 5e6b4b0d\ 3255bfef\ 95601890\ afd80709"{}});}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{if}\ (!SHA1::Digest(CEmptyString()).Equalsi(res1))}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Wrong\ digest\ message"{}});}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{if}\ (!SHA1::Digest(msg).Equalsi(res))}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Wrong\ digest\ message"{}});}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ SHA2Test(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00046\ \ \ \ \ olxcstr\ msg(\textcolor{stringliteral}{"{}The\ quick\ brown\ fox\ jumps\ over\ the\ lazy\ dog"{}}),}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ msg1(\textcolor{stringliteral}{"{}930476899e3f6f90c6a0fef4589d56a3ce96c6f7-\/47e5-\/4a1f-\/a65c-\/39bc211495b3"{}}),}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ res256\_0(\textcolor{stringliteral}{"{}d7a8fbb3\ 07d78094\ 69ca9abc\ b0082e4f\ 8d5651e4\ 6d3cdb76\ 2d02d0bf\ 37c9e592"{}}),}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ res256\_1(\textcolor{stringliteral}{"{}e3b0c442\ 98fc1c14\ 9afbf4c8\ 996fb924\ 27ae41e4\ 649b934c\ a495991b\ 7852b855"{}}),}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ res256\_2(\textcolor{stringliteral}{"{}d21f1473\ 8f489c9e\ 5c3cc972\ f9b32916\ a3daa52e\ 214cbd4b\ ae87ca02\ 387c5441"{}}),}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ res224\_0(\textcolor{stringliteral}{"{}730e109b\ d7a8a32b\ 1cb9d9a0\ 9aa2325d\ 2430587d\ dbc0c38b\ ad911525"{}}),}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ res224\_1(\textcolor{stringliteral}{"{}d14a028c\ 2a3a2bc9\ 476102bb\ 288234c4\ 15a2b01f\ 828ea62a\ c5b3e42f"{}});}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{if}\ (!SHA256::Digest(CEmptyString()).Equalsi(res256\_1))\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Wrong\ digest\ message"{}});}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{if}\ (!SHA256::Digest(msg).Equalsi(res256\_0))\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Wrong\ digest\ message"{}});}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (!SHA256::Digest(msg1).Equalsi(res256\_2))\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ SHA256::Digest(msg1)\ <<\ \textcolor{stringliteral}{"{}\ vs\ \(\backslash\)n"{}}\ <<\ res256\_2;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Wrong\ digest\ message"{}});}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{if}\ (!SHA224::Digest(CEmptyString()).Equalsi(res224\_1))\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Wrong\ digest\ message"{}});}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{if}\ (!SHA224::Digest(msg).Equalsi(res224\_0))\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}Wrong\ digest\ message"{}});}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ HashingTests(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ t.Add(\&test::MD5Test)}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ .Add(\&test::SHA1Test)}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ .Add(\&test::SHA2Test);}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00079\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{void}\ BaseEncodingTest(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00083\ \ \ \ \ olxcstr\ msg(\textcolor{stringliteral}{"{}The\ quick\ brown\ fox\ jumps\ over\ the\ lazy\ dog"{}});}
+\DoxyCodeLine{00084\ \ \ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ olxcstr\ res\ =\ encoding::base16::encode(msg);}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (encoding::base16::decode(res)\ !=\ msg)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Non\ reversble\ encoding"{}});}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ olxcstr\ res\ =\ encoding::base64::encode(msg);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (encoding::base64::decode(res)\ !=\ msg)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Non\ reversble\ encoding"{}});}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ PercentEncodingTest(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00102\ \ \ \ \ olxstr\ msgs[]\ =\ \{\ L\textcolor{stringliteral}{"{}The\ quick\ brown\ fox"{}},}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ L\textcolor{stringliteral}{"{}\%\%\ \%\%\%\ \%\ \(\backslash\)u2045"{}}\ \};}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 2;\ i++)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ olxcstr\ eres\ =\ encoding::percent::encode(msgs[i]);}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ olxstr\ dres\ =\ encoding::percent::decode(eres);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dres\ !=\ msgs[i])\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Non\ reversble\ encoding"{}});}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00114\ \ \ \textcolor{keywordtype}{void}\ Base85Test(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00116\ \ \ \ \ olxstr\ msgs[]\ =\ \{\ L\textcolor{stringliteral}{"{}The\ quick\ brown\ fox"{}},}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ L\textcolor{stringliteral}{"{}\%\%\ \%\%\%\ \%\ \(\backslash\)u2045"{}}\ \};}
+\DoxyCodeLine{00118\ \ \ \ \ uint8\_t\ test\_data\_1[8]\ =\ \{0x86,\ 0x4F,\ 0xD2,\ 0x6F,\ 0xB5,\ 0x59,\ 0xF7,\ 0x5B\};}
+\DoxyCodeLine{00119\ \ \ \ \ olxcstr\ x1\ =\ encoding::base85::decode(\textcolor{stringliteral}{"{}HelloWorld"{}});}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (x1.Length()\ !=\ 8)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}encoding\ failed"{}});}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (test\_data\_1[i]\ !=\ (uint8\_t)x1.CharAt(i))\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}encoding\ failed"{}});}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ olxcstr\ x\ =\ encoding::base85::encode(\&test\_data\_1[0],\ 8);}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{if}\ (x\ !=\ \textcolor{stringliteral}{"{}HelloWorld"{}})\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}encoding\ failed"{}});}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 2;\ i++)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ olxcstr\ toe\ =\ TUtf8::Encode(msgs[i]);}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ olxcstr\ eres\ =\ encoding::base85::encode(toe);}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ olxcstr\ tod\ =\ encoding::base85::decode(eres);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ olxstr\ dres\ =\ TUtf8::Decode(tod);}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dres\ !=\ msgs[i])\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Non\ reversble\ encoding"{}});}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordtype}{void}\ MBStest(OlxTests\ \&t)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00146\ \ \ \ \ olxstr\ cm[]\ =\ \{\ L\textcolor{stringliteral}{"{}The\ quick\ brown\ fox"{}},}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ L\textcolor{stringliteral}{"{}\(\backslash\)u00e9\ \(\backslash\)u00df\ \(\backslash\)u00de\ "{}}}
+\DoxyCodeLine{00148\ \ \ \ \ \},}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ fm[]\ =\ \{L\textcolor{stringliteral}{"{}\%\%\ \(\backslash\)u2045"{}},\ \ L\textcolor{stringliteral}{"{}\(\backslash\)u06de\ \(\backslash\)u20a9"{}}\};}
+\DoxyCodeLine{00150\ \ \ \ \ uint32\_t\ fu[2][3]\ =\ \{\ \{25,0x24B62,\ 0x10437\ \},\ \ \{0x06de,\ 32,\ 0x20a9\}\ \};}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 2;\ i++)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ olxcstr\ e\ =\ cm[i].ToMBStr();}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ olxstr\ d\ =\ e.ToWCStr();}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ !=\ cm[i])\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}MBS-\/WStr\ conversion\ failed"{}});}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 2;\ i++)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ olxcstr\ e\ =\ fm[i].ToMBStr();}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ olxstr\ d\ =\ e.ToWCStr();}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}MBS-\/WStr\ did\ not\ fail\ but\ should\ have"{}});}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ TExceptionBase\ \&e)\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 2;\ i++)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ olxcstr\ e\ =\ fm[i].ToUTF8(),\ e1;}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ e1\ =\ e;}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!e.IsUTF8()\ ||\ !e.SubString(0,\ 1).IsUTF8()\ ||\ !olxcstr(e).IsUTF8()\ ||\ !e1.IsUTF8())\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}UTF8\ flag\ is\ not\ set\ or\ not\ copied\ over"{}});}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ olxstr\ d\ =\ e.ToWCStr();}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d\ !=\ fm[i]\ ||\ d\ !=\ TUtf8::Decode(e))\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}UTF8\ conversion\ failed"{}});}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00177\ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 2;\ i++)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ TArrayList<uint16\_t>\ x\ =\ TUtf16::Encode(\&fu[i][0],\ 3);}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TUtf16::CharCount(x.GetData(),\ x.Count())\ !=\ 3)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}UTF16\ conversion\ failed"{}});}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ TArrayList<uint32\_t>\ y\ =\ TUtf16::Decode(x.GetData(),\ x.Count());}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (y.Count()\ !=\ 3)\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}UTF16\ conversion\ failed"{}});}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 3;\ j++)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (fu[i][j]\ !=\ y[j])\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}UTF16\ conversion\ failed"{}});}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordtype}{void}\ EncodingTests(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ t.Add(\&test::BaseEncodingTest)}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ .Add(\&test::PercentEncodingTest)}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ .Add(\&test::Base85Test).}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ Add(\&test::MBStest);}
+\DoxyCodeLine{00200\ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00202\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

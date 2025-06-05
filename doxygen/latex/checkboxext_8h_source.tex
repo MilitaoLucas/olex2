@@ -1,0 +1,52 @@
+\doxysection{checkboxext.\+h}
+\hypertarget{checkboxext_8h_source}{}\label{checkboxext_8h_source}\index{olex/ctrls/checkboxext.h@{olex/ctrls/checkboxext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_checkbox\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_checkbox\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \ \{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{class\ }TCheckBox:\ \textcolor{keyword}{public}\ wxCheckBox,\ \textcolor{keyword}{public}\ AActionHandler,\ \textcolor{keyword}{public}\ AOlxCtrl\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{void}\ ClickEvent(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ MouseEnterEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00019\ \ \ \ \ olxstr\ Data,\ OnCheckStr,\ OnUncheckStr,\ OnClickStr,\ DependMode;}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *ActionQueue;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \ \ TCheckBox(wxWindow\ *Parent,\ wxWindowID\ \textcolor{keywordtype}{id}\ =\ -\/1,}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxString\&\ label\ =\ wxEmptyString,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxPoint\&\ pos\ =\ wxDefaultPosition,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxSize\&\ size\ =\ wxDefaultSize,\ \textcolor{keywordtype}{long}\ style\ =\ 0);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~TCheckBox()\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ActionQueue\ !=\ NULL)\ \ ActionQueue-\/>Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ SetActionQueue(\mbox{\hyperlink{classTActionQueue}{TActionQueue}}\&\ q,\ \textcolor{keyword}{const}\ olxstr\&\ dependMode);}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ OnRemove(\mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)\ \{\ ActionQueue\ =\ NULL;\ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ DefPropC(olxstr,\ Data)}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl_1_1ActionQueue}{AOlxCtrl::ActionQueue}}\ \&OnClick,\ \&OnCheck,\ \&OnUncheck;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ SetCaption(\textcolor{keyword}{const}\ olxstr\ \&T)\ \{\ SetLabel(T.u\_str());\ \}}
+\DoxyCodeLine{00040\ \ \ \ \ olxstr\ GetCaption()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ GetLabel();\ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsChecked()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ wxCheckBox::IsChecked();\ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{void}\ SetChecked(\textcolor{keywordtype}{bool}\ v)\ \{\ wxCheckBox::SetValue(v);\ \}}
+\DoxyCodeLine{00044\ \ \ \};}
+\DoxyCodeLine{00045\ \};\ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

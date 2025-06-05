@@ -1,0 +1,79 @@
+\doxysection{reflection\+\_\+test.\+h}
+\hypertarget{reflection__test_8h_source}{}\label{reflection__test_8h_source}\index{xlib/tests/reflection\_test.h@{xlib/tests/reflection\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}reflection.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }test\ \ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keywordtype}{void}\ reflection\_tests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00015\ \ \ t.description\ =\ \_\_OlxSrcInfo;}
+\DoxyCodeLine{00016\ \ \ TReflection\ ref(0,\ 1,\ 2,\ 10,\ 1,\ 0);}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordflow}{if}(\ ref.GetBatch()\ !=\ 0\ )}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}batch"{}});}
+\DoxyCodeLine{00019\ \ \ ref.SetBatch(2);}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordflow}{if}(\ ref.GetBatch()\ !=\ 2\ )}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}batch"{}});}
+\DoxyCodeLine{00022\ \ \ ref.SetBatch(0);}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordflow}{if}(\ ref.GetBatch()\ !=\ 0\ )}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}batch"{}});}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordflow}{if}(\ ref.GetMultiplicity()\ !=\ 1\ )}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}mult"{}});}
+\DoxyCodeLine{00028\ \ \ ref.IncMultiplicity();}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordflow}{if}(\ ref.GetMultiplicity()\ !=\ 2\ )}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}mult"{}});}
+\DoxyCodeLine{00031\ \ \ ref.SetMultiplicity(16);}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordflow}{if}(\ ref.GetMultiplicity()\ !=\ 16\ )}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}mult"{}});}
+\DoxyCodeLine{00034\ \ \ ref.SetMultiplicity(0);}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordflow}{if}(\ ref.GetMultiplicity()\ !=\ 0\ )}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}mult"{}});}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordflow}{if}(\ ref.IsAbsent()\ )}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}absent"{}});}
+\DoxyCodeLine{00040\ \ \ ref.SetAbsent(\textcolor{keyword}{true});}
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordflow}{if}(\ !ref.IsAbsent()\ )}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}absent"{}});}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordflow}{if}(\ ref.IsCentric()\ )}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}centric"{}});}
+\DoxyCodeLine{00046\ \ \ ref.SetCentric(\textcolor{keyword}{true});}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordflow}{if}(\ !ref.IsCentric()\ )}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}centric"{}});}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordflow}{if}(\ ref.IsOmitted()\ )}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}omitted"{}});}
+\DoxyCodeLine{00052\ \ \ ref.SetOmitted(\textcolor{keyword}{true});}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordflow}{if}(\ !ref.IsOmitted()\ )}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}omitted"{}});}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordflow}{if}(\ ref.GetBatch()\ !=\ 0\ )}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}batch"{}});}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordflow}{if}(\ ref.GetMultiplicity()\ !=\ 0\ )}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}mult"{}});}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordflow}{if}(\ olxstr(ref.ToString())\ !=\ \textcolor{stringliteral}{"{}\ \ \ 0\ \ \ 1\ \ \ 2\ \ \ 10.00\ \ \ \ 1.00\ \ \ 0"{}}\ )}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}ToString"{}});}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordflow}{if}(\ olxstr(ref.ToNString())\ !=\ \textcolor{stringliteral}{"{}-\/1.\ \ \ \ \ \ \ \ \ \ 0\ \ \ 1\ \ \ 2\ \ \ 10.00\ \ \ \ 1.00\ \ \ 0"{}}\ )}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}ToString"{}});}
+\DoxyCodeLine{00065\ \ \ ref.SetOmitted(\textcolor{keyword}{false});}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordflow}{if}(\ olxstr(ref.ToNString())\ !=\ \textcolor{stringliteral}{"{}+1.\ \ \ \ \ \ \ \ \ \ 0\ \ \ 1\ \ \ 2\ \ \ 10.00\ \ \ \ 1.00\ \ \ 0"{}}\ )}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}ToNString"{}});}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordflow}{if}(\ !ref.FromNString(\textcolor{stringliteral}{"{}-\/1.\ \ \ \ \ \ \ \ \ \ 0\ \ \ 1\ \ \ 2\ \ \ 10.00\ \ \ \ 1.00\ \ \ 0"{}})\ ||}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ olxstr(ref.ToNString())\ !=\ \textcolor{stringliteral}{"{}-\/1.\ \ \ \ \ \ \ \ \ \ 0\ \ \ 1\ \ \ 2\ \ \ 10.00\ \ \ \ 1.00\ \ \ 0"{}}\ )}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}FromNString"{}});}
+\DoxyCodeLine{00072\ \}}
+\DoxyCodeLine{00073\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

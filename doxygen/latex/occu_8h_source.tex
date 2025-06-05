@@ -1,0 +1,69 @@
+\doxysection{occu.\+h}
+\hypertarget{occu_8h_source}{}\label{occu_8h_source}\index{gxlib/modes/occu.h@{gxlib/modes/occu.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_OCCU\_MODE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_OCCU\_MODE\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }TOccuMode\ :\ \textcolor{keyword}{public}\ AModeWithLabels\ \{}
+\DoxyCodeLine{00014\ \ \ \textcolor{keywordtype}{double}\ Occu;}
+\DoxyCodeLine{00015\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ HasInstance;}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{class\ }TOccuModeUndo\ :\ \textcolor{keyword}{public}\ TUndoData\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ Atom;}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{double}\ Occu;}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ LabelIndex;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \ \ TOccuModeUndo(\mbox{\hyperlink{classTXAtom}{TXAtom}}*\ XA)}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ :\ TUndoData(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTUndoActionImplMF}{TUndoActionImplMF<TOccuModeUndo>}}(}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keyword}{this},\ \&TOccuModeUndo::undo)),}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ Atom(XA-\/>CAtom()),\ LabelIndex(XA-\/>GetOwnerId())}
+\DoxyCodeLine{00026\ \ \ \ \ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ Occu\ =\ Atom.GetParent()-\/>GetRefMod()-\/>Vars.GetParam(}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ Atom,\ catom\_var\_name\_Sof);}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ undo(TUndoData*\ data)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TOccuMode::HasInstance)}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ TGXApp::GetInstance().MarkLabel(LabelIndex,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ Atom.GetParent()-\/>GetRefMod()-\/>Vars.SetParam(}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ Atom,\ catom\_var\_name\_Sof,\ Occu);}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \};}
+\DoxyCodeLine{00037\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ \ \ TOccuMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})\ :\ AModeWithLabels(id)}
+\DoxyCodeLine{00039\ \ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ HasInstance\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ Occu\ =\ Cmds.IsEmpty()\ ?\ 0\ :\ Cmds[0].ToDouble();}
+\DoxyCodeLine{00044\ \ \ \ \ SetUserCursor(Occu,\ \textcolor{stringliteral}{"{}occu"{}});}
+\DoxyCodeLine{00045\ \ \ \ \ olex2.processMacro(\textcolor{stringliteral}{"{}labels\ -\/ao"{}});}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \string~TOccuMode()\ \{\ HasInstance\ =\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ Finalise\_()\ \{\}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(AGDrawObject\&\ obj)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{if}\ (obj.Is<TXAtom>())\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ TXAtom\&\ XA\ =\ (TXAtom\&)obj;}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ gxapp.GetUndo().Push(\textcolor{keyword}{new}\ \mbox{\hyperlink{classTOccuMode_1_1TOccuModeUndo}{TOccuModeUndo}}(\&XA));}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ XA.CAtom().GetParent()-\/>GetRefMod()-\/>Vars.SetParam(}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ XA.CAtom(),\ catom\_var\_name\_Sof,\ Occu);}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ gxapp.MarkLabel(XA,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

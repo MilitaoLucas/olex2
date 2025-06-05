@@ -1,0 +1,55 @@
+\doxysection{texteditext.\+h}
+\hypertarget{texteditext_8h_source}{}\label{texteditext_8h_source}\index{olex/ctrls/texteditext.h@{olex/ctrls/texteditext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_textedit\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_textedit\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \ \{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{class\ }TTextEdit:\ \textcolor{keyword}{public}\ wxTextCtrl,\ \textcolor{keyword}{public}\ AOlxCtrl\ \ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ ClickEvent(wxMouseEvent\&\ event);}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ ChangeEvent(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{void}\ KeyDownEvent(wxKeyEvent\&\ event);}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ CharEvent(wxKeyEvent\&\ event);}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ EnterPressedEvent(wxCommandEvent\&\ event);}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ LeaveEvent(wxFocusEvent\&\ event);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ EnterEvent(wxFocusEvent\&\ event);}
+\DoxyCodeLine{00025\ \ \ \ \ olxstr\ Data;}
+\DoxyCodeLine{00026\ \ \ \ \ olxstr\ StrValue;}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ TTextEdit(wxWindow\ *Parent,\ wxWindowID\ \textcolor{keywordtype}{id}\ =\ -\/1,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxString\&\ value\ =\ wxEmptyString,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxPoint\&\ pos\ =\ wxDefaultPosition,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxSize\&\ size\ =\ wxDefaultSize,\ \textcolor{keywordtype}{long}\ style\ =\ 0);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ olxstr\ GetText()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ wxTextCtrl::GetValue();\ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ SetText(\textcolor{keyword}{const}\ olxstr\ \&T)\ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ StrValue\ =\ T;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \mbox{\hyperlink{classTActionQueueLock}{TActionQueueLock}}\ ql(\&OnChange);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ wxTextCtrl::SetValue(StrValue.u\_str());}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ IsReadOnly()\textcolor{keyword}{\ const\ }\{\ \ \ \textcolor{keywordflow}{return}\ WI.HasWindowStyle(wxTE\_READONLY);\ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ SetReadOnly(\textcolor{keywordtype}{bool}\ v)\ \ \{\ \ WI.AddWindowStyle(wxTE\_READONLY);\ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ DefPropC(olxstr,\ Data)}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl_1_1ActionQueue}{AOlxCtrl::ActionQueue}}\ \&OnChange,\ \&OnReturn,\ \&OnLeave,\ \&OnEnter,}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \&OnClick,\ \&OnChar,\ \&OnKeyDown;}
+\DoxyCodeLine{00047\ \ \ \};}
+\DoxyCodeLine{00048\ \};\ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

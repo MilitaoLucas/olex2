@@ -1,0 +1,224 @@
+\doxysection{plane.\+h}
+\hypertarget{plane_8h_source}{}\label{plane_8h_source}\index{sdl/math/plane.h@{sdl/math/plane.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_math\_plane\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_math\_plane\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}talist.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ namespace\ plane\ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{comment}{//\ sorts\ points\ in\ plane\ given\ by\ center\ and\ normal}}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ array\_t,\ \textcolor{keyword}{class}\ accessor\_t,\ \textcolor{keyword}{class}\ vec\_t>}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{void}\ Sort(array\_t\ \&points,\ \textcolor{keyword}{const}\ accessor\_t\ \&accessor,}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{const}\ vec\_t\ \&center,\ \textcolor{keyword}{const}\ vec\_t\ \&normal)}
+\DoxyCodeLine{00021\ \ \ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{if}(\ points.IsEmpty()\ )\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<double>}}\ pvs(points.Count());}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{double}\ max\_qd\ =\ 0;}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ m\_i\ =\ 0;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ points.Count();\ i++)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ qd\ =\ (accessor(points[i])-\/center).QLength();}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (qd\ >\ max\_qd)\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ m\_i\ =\ i;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ max\_qd\ =\ qd;}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{const}\ vec\_t\ origin\ =\ accessor(points[m\_i])-\/center;}
+\DoxyCodeLine{00034\ \ \ \ \ pvs[m\_i]\ =\ 0;\ \textcolor{comment}{//\ origin\ value}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ points.Count();\ i++\ )\ \ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ m\_i)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ vec\_t\ vec\ =\ accessor(points[i])\ -\/\ center;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vec.QLength()\ <\ 1e-\/6)\ \{\ \textcolor{comment}{//\ atom\ on\ the\ center!}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ ca\ =\ origin.CAngle(vec);}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ vec\ =\ origin.XProdVec(vec);}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ vo;}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vec.IsNull(1e-\/6))\ \{\ \textcolor{comment}{//\ same\ direction\ as\ the\ origin}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ vo\ =\ 0;}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ vo\ =\ (ca\ ==\ -\/1\ ?\ 0\ :\ vec.CAngle(normal));}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{comment}{/*\ negative\ -\/\ vec\ is\ on\ the\ right,\ positive\ -\/\ on\ the\ left,\ if\ ca\ ==\ 0,}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ \ \ \ \ \ vec\ ==\ (0,0,0)}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ \ \ \ \ \ */}}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ca\ >=\ 0\ )\ \ \{\ \textcolor{comment}{//\ -\/90\ to\ 90}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vo\ <\ 0)\ \{\ \textcolor{comment}{//\ -\/90\ to\ 0\ 3-\/>4}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ pvs[i]\ =\ 3.0\ +\ ca;}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \textcolor{comment}{//\ 0\ to\ 90\ 0-\/>1}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ pvs[i]\ =\ 1.0\ -\/\ ca;}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ ca\ >\ -\/1\ )\ \{\ \ \textcolor{comment}{//\ 90-\/270}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vo\ <\ 0)\ \{\ \textcolor{comment}{//\ 180\ to\ 270\ 2-\/>3}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ pvs[i]\ =\ 3.0\ +\ ca;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \textcolor{comment}{//\ 90\ to\ 180\ 1-\/>2}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ pvs[i]\ =\ 1.0\ -\/\ ca;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \{\ \ \textcolor{comment}{//-\/1,\ special\ case}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ pvs[i]\ =\ 2;}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ QuickSorter::Sort(pvs,\ TPrimitiveComparator(),}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ SyncSortListener::MakeSingle(points));}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ best\ =\ 0,}
+\DoxyCodeLine{00080\ \ \ \ \ worst\ =\ 2}
+\DoxyCodeLine{00081\ \ \ \};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatT\ =\ \textcolor{keywordtype}{double}>}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{struct\ }mean\ \{}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{struct\ }unit\_weight\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ item\_t>}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ FloatT\ operator()\ (\textcolor{keyword}{const}\ item\_t\&)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{struct\ }out\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ TVector3<FloatT>\ center;}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{comment}{//\ this\ represents\ RMSD\ only\ in\ the\ case\ of\ unit\ weights}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ TVector3<FloatT>\ rms;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ TMatrix33<FloatT>\ normals;}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ sort()\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ swaps\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (swaps)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ swaps\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ 2;\ i++)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rms[i]\ >\ rms[i\ +\ 1])\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ olx\_swap(normals[i],\ normals[i\ +\ 1]);}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ olx\_swap(rms[i],\ rms[i\ +\ 1]);}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ swaps\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ p\_accessor\_t,\ \textcolor{keyword}{class}\ w\_accessor\_t>}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keyword}{static}\ out\ calc(\textcolor{keyword}{const}\ list\_t\&\ list,}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keyword}{const}\ p\_accessor\_t\&\ p\_accessor,}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \textcolor{keyword}{const}\ w\_accessor\_t\&\ w\_accessor)}
+\DoxyCodeLine{00115\ \ \ \ \ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ out\ rv;}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list.Count()\ <\ 2)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ FloatT\ w\_sum\ =\ 0,\ w\_sq\_sum\ =\ 0;}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ FloatT\ w\ =\ w\_accessor(list[i]);}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ rv.center\ +=\ p\_accessor(list[i])\ *\ w;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ w\_sum\ +=\ w;}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ w\_sq\_sum\ +=\ w*w;}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ rv.center\ /=\ w\_sum;}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ TMatrix33<FloatT>\ m;}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ TVector3<FloatT>\ t\ =}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ (p\_accessor(list[i])\ -\/\ rv.center)\ *\ w\_accessor(list[i]);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ m[0][0]\ +=\ (t[0]\ *\ t[0]);}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ m[0][1]\ +=\ (t[0]\ *\ t[1]);}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ m[0][2]\ +=\ (t[0]\ *\ t[2]);}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ m[1][1]\ +=\ (t[1]\ *\ t[1]);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ m[1][2]\ +=\ (t[1]\ *\ t[2]);}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ m[2][2]\ +=\ (t[2]\ *\ t[2]);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ m[1][0]\ =\ m[0][1];}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ m[2][0]\ =\ m[0][2];}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ m[2][1]\ =\ m[1][2];}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ TMatrix33<FloatT>::EigenValues(m\ /=\ w\_sq\_sum,\ rv.normals.I());}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ rv.rms[i]\ =\ m[i][i]\ <\ 0\ ?\ 0\ :\ sqrt(m[i][i]);}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ rv.sort();}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rv;}
+\DoxyCodeLine{00148\ \ \ \ \ \}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{comment}{//\ calculation\ with\ unit\ weights}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ accessor\_t>}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keyword}{static}\ out\ calc(\textcolor{keyword}{const}\ list\_t\&\ list,\ \textcolor{keyword}{const}\ accessor\_t\&\ accessor)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ calc(list,\ accessor,\ unit\_weight());}
+\DoxyCodeLine{00153\ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \textcolor{comment}{//\ calculation\ with\ unit\ weights}}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{static}\ out\ calc(\textcolor{keyword}{const}\ list\_t\&\ list)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ calc(list,\ DummyAccessor(),\ unit\_weight());}
+\DoxyCodeLine{00158\ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{comment}{//\ calculate\ for\ list\ of\ olx\_pair\_t}}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t>}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keyword}{static}\ out\ calc\_for\_pairs(\textcolor{keyword}{const}\ list\_t\&\ pairs)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ calc(pairs,}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ FunctionAccessor::MakeConst(\&olx\_pair\_t<TVector3<FloatT>,\ FloatT>::GetA),}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ FunctionAccessor::MakeConst(\&olx\_pair\_t<TVector3<FloatT>,\ FloatT>::GetB)}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ );}
+\DoxyCodeLine{00166\ \ \ \ \ \}}
+\DoxyCodeLine{00167\ \ \ \};}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FloatT=\textcolor{keywordtype}{double}>}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{struct\ }center\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ p\_accessor\_t,\ \textcolor{keyword}{class}\ w\_accessor\_t>}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keyword}{static}\ TVector3<FloatT>\ calc(\textcolor{keyword}{const}\ list\_t\&\ list,}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keyword}{const}\ p\_accessor\_t\&\ p\_accessor,}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \textcolor{keyword}{const}\ w\_accessor\_t\&\ w\_accessor)}
+\DoxyCodeLine{00175\ \ \ \ \ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ TVector3<FloatT>\ c;}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list.Count()\ ==\ 0)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ FloatT\ w\_sum\ =\ 0;}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ FloatT\ w\ =\ w\_accessor(list[i]);}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ c\ +=\ p\_accessor(list[i])\ *\ w;}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ w\_sum\ +=\ w;}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ c\ /=\ w\_sum;}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{comment}{/*\ calculates\ a\ center\ of\ the\ object\ reflected\ in\ a\ plane\ defined\ by\ the}}
+\DoxyCodeLine{00190\ \textcolor{comment}{\ \ \ \ given\ normal}}
+\DoxyCodeLine{00191\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ list\_t,\ \textcolor{keyword}{class}\ p\_accessor\_t,\ \textcolor{keyword}{class}\ w\_accessor\_t>}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keyword}{static}\ TVector3<FloatT>\ calc\_reflected(\textcolor{keyword}{const}\ list\_t\&\ list,}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TVector3<FloatT>\ \&center,}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TVector3<FloatT>\ \&normal,}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{keyword}{const}\ p\_accessor\_t\&\ p\_accessor,}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \textcolor{keyword}{const}\ w\_accessor\_t\&\ w\_accessor)}
+\DoxyCodeLine{00198\ \ \ \ \ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ TVector3<FloatT>\ c;}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (list.Count()\ ==\ 0)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ FloatT\ w\_sum\ =\ 0;}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ list.Count();\ i++)\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ FloatT\ w\ =\ w\_accessor(list[i]);}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ c\ +=\ ((p\_accessor(list[i])-\/center).Reflect(normal)\ +\ center)\ *\ w;}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ w\_sum\ +=\ w;}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ c\ /=\ w\_sum;}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \};}
+\DoxyCodeLine{00214\ \};\ \ \textcolor{comment}{//end\ namespace\ plane}}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ EndEsdlNamespace()}
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00218\ }
+
+\end{DoxyCode}

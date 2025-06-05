@@ -1,0 +1,117 @@
+\doxysection{geom.\+h}
+\hypertarget{geom_8h_source}{}\label{geom_8h_source}\index{sdl/math/geom.h@{sdl/math/geom.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_math\_geom\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_math\_geom\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../threex3.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ class\ IVolumeValidator\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{virtual}\ \string~IVolumeValidator()\ \{\}}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsInside(\textcolor{keyword}{const}\ vec3d\ \&)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00020\ \};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }BoxVolumeValidator\ :\ \textcolor{keyword}{public}\ IVolumeValidator\ \{}
+\DoxyCodeLine{00023\ \ \ vec3d\_alist\ norms;}
+\DoxyCodeLine{00024\ \ \ vec3d\_alist\ centres;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{bool}\ inclusive;}
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ BoxVolumeValidator(\textcolor{keyword}{const}\ vec3d\_alist\ \&n,\ \textcolor{keyword}{const}\ vec3d\_alist\ \&c,}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{bool}\ inclusive=\textcolor{keyword}{false})}
+\DoxyCodeLine{00029\ \ \ \ \ :\ norms(n),\ centres(c),}
+\DoxyCodeLine{00030\ \ \ \ \ inclusive(inclusive)}
+\DoxyCodeLine{00031\ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordflow}{if}\ (norms.Count()\ !=\ 6\ ||\ norms.Count()\ !=\ centres.Count())\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTInvalidArgumentException}{TInvalidArgumentException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}volume\ definition"{}});}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsInside(\textcolor{keyword}{const}\ vec3d\ \&c)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ fi\ =\ 0;\ fi\ <\ 6;\ fi++)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ t\ =\ (c\ -\/\ centres[fi]).DotProd(norms[fi]);}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (inclusive)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (t\ >=\ 0)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (t\ >\ 0)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{keyword}{class\ }BoxValidator\ :\ \textcolor{keyword}{public}\ IVolumeValidator\ \{}
+\DoxyCodeLine{00053\ \ \ vec3d\ from,\ to;}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{bool}\ from\_inclusive,\ to\_inclusive;}
+\DoxyCodeLine{00055\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ \ \ BoxValidator(\textcolor{keyword}{const}\ vec3d\&\ from,\ \textcolor{keyword}{const}\ vec3d\&\ to,}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{bool}\ from\_inclusive\ =\ \textcolor{keyword}{false},\ \textcolor{keywordtype}{bool}\ to\_inclusive\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00058\ \ \ \ \ :\ from(from),\ to(to),}
+\DoxyCodeLine{00059\ \ \ \ \ from\_inclusive(from\_inclusive),\ to\_inclusive(to\_inclusive)}
+\DoxyCodeLine{00060\ \ \ \{\}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsInside(\textcolor{keyword}{const}\ vec3d\&\ c)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (from\_inclusive)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (to\_inclusive)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c[i]\ <\ from[i]\ ||\ c[i]\ >\ to[i])\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c[i]\ <\ from[i]\ ||\ c[i]\ >=\ to[i])\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (to\_inclusive)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c[i]\ <=\ from[i]\ ||\ c[i]\ >\ to[i])\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c[i]\ <=\ from[i]\ ||\ c[i]\ >=\ to[i])\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ \};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{keyword}{class\ }SphereVolumeValidator\ :\ \textcolor{keyword}{public}\ IVolumeValidator\ \{}
+\DoxyCodeLine{00093\ \ \ vec3d\ centre;}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordtype}{double}\ qr;}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{bool}\ inclusive;}
+\DoxyCodeLine{00096\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00097\ \ \ SphereVolumeValidator(\textcolor{keyword}{const}\ vec3d\ \&c,\ \textcolor{keywordtype}{double}\ r,\ \textcolor{keywordtype}{bool}\ inclusive=\textcolor{keyword}{false})}
+\DoxyCodeLine{00098\ \ \ \ \ :\ centre(c),\ qr(r*r),}
+\DoxyCodeLine{00099\ \ \ \ \ inclusive(inclusive)}
+\DoxyCodeLine{00100\ \ \ \{\}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsInside(\textcolor{keyword}{const}\ vec3d\ \&c)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{double}\ t\ =\ (c\ -\/\ centre).QLength();}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{if}\ (inclusive)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ t\ <=\ qr;}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{return}\ \ t\ <\ qr;}
+\DoxyCodeLine{00107\ \ \ \}}
+\DoxyCodeLine{00108\ \};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ EndEsdlNamespace();}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

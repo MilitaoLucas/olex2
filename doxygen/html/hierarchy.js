@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "_auto_BI", "struct__auto__BI.html", null ],
     [ "A3DFrameCtrl", null, [
       [ "T3DFrameCtrl", "classT3DFrameCtrl.html", null ]
     ] ],
@@ -55,18 +56,6 @@ var hierarchy =
     [ "olx_alg::and_< AnalyserA, AnalyserB >", "structolx__alg_1_1and__.html", null ],
     [ "VcoVContainer::Angle2< aT, bT >", "structVcoVContainer_1_1Angle2.html", null ],
     [ "VcoVContainer::Angle3< aT, bT, cT >", "structVcoVContainer_1_1Angle3.html", null ],
-    [ "AOlxCtrl", null, [
-      [ "ctrl_ext::TDialog", "classctrl__ext_1_1TDialog.html", [
-        [ "TPTableDlg", "classTPTableDlg.html", null ],
-        [ "TdlgGenerate", "classTdlgGenerate.html", null ],
-        [ "TdlgGradient", "classTdlgGradient.html", null ],
-        [ "TdlgMatProp", "classTdlgMatProp.html", null ],
-        [ "TdlgMsgBox", "classTdlgMsgBox.html", null ],
-        [ "TdlgPrimitive", "classTdlgPrimitive.html", null ],
-        [ "TdlgSceneProps", "classTdlgSceneProps.html", null ],
-        [ "TdlgUpdateOptions", "classTdlgUpdateOptions.html", null ]
-      ] ]
-    ] ],
     [ "APointAnalyser", null, [
       [ "PointAnalyser", "structPointAnalyser.html", null ]
     ] ],
@@ -147,6 +136,8 @@ var hierarchy =
     [ "FunctionComparator::ComparatorSF_< ItemClass >", "structFunctionComparator_1_1ComparatorSF__.html", null ],
     [ "ComplexAccessor", "structComplexAccessor.html", null ],
     [ "ComplexComparator", "structComplexComparator.html", null ],
+    [ "Composite", "structComposite.html", null ],
+    [ "CompositeVector< list_t >", "classCompositeVector.html", null ],
     [ "ConnInfo", "classConnInfo.html", null ],
     [ "ConsoleInterface", "classConsoleInterface.html", null ],
     [ "const_obj", null, [
@@ -235,6 +226,9 @@ var hierarchy =
     [ "FunctionAccessor::ConstFunctionAccessorR_< rv_t, base_t >", "structFunctionAccessor_1_1ConstFunctionAccessorR__.html", null ],
     [ "FunctionAccessor::ConstFunctionAccessorT_< rv_t, base_t >", "structFunctionAccessor_1_1ConstFunctionAccessorT__.html", null ],
     [ "IndexAccessor::ConstIndexAccessor_< data_list_t >", "structIndexAccessor_1_1ConstIndexAccessor__.html", null ],
+    [ "test::ConstListTest", "structtest_1_1ConstListTest.html", null ],
+    [ "ConstPlainVector< NumT >", "classConstPlainVector.html", null ],
+    [ "ConstSlice< VT >", "classConstSlice.html", null ],
     [ "TSymmMat< MC, VC >::ContainerIdComparator", "structTSymmMat_1_1ContainerIdComparator.html", null ],
     [ "Contour< Float >", "structContour.html", null ],
     [ "OrtDraw::ContourDrawer", "structOrtDraw_1_1ContourDrawer.html", null ],
@@ -242,6 +236,7 @@ var hierarchy =
     [ "TSAtom::CrdAccessor", "structTSAtom_1_1CrdAccessor.html", null ],
     [ "pov::CrdTransformer", "structpov_1_1CrdTransformer.html", null ],
     [ "wrl::CrdTransformer", "structwrl_1_1CrdTransformer.html", null ],
+    [ "test::CriticalSectionTest", "classtest_1_1CriticalSectionTest.html", null ],
     [ "CXBondInfo", "structCXBondInfo.html", null ],
     [ "CXConnInfoBase", "structCXConnInfoBase.html", [
       [ "CXConnInfo", "structCXConnInfo.html", null ],
@@ -256,6 +251,7 @@ var hierarchy =
     [ "aoba::detail::DescriptorDataType< int >", "structaoba_1_1detail_1_1DescriptorDataType_3_01int_01_4.html", null ],
     [ "aoba::detail::DescriptorDataType< std::complex< double > >", "structaoba_1_1detail_1_1DescriptorDataType_3_01std_1_1complex_3_01double_01_4_01_4.html", null ],
     [ "aoba::detail::DescriptorDataType< std::complex< float > >", "structaoba_1_1detail_1_1DescriptorDataType_3_01std_1_1complex_3_01float_01_4_01_4.html", null ],
+    [ "THtmlManager::DestructionLocker", "structTHtmlManager_1_1DestructionLocker.html", null ],
     [ "DestructionObserver", "structDestructionObserver.html", null ],
     [ "DictEntry< key_c, val_c, ComparatorType >", "structDictEntry.html", null ],
     [ "TLog::Disabler", "structTLog_1_1Disabler.html", null ],
@@ -272,6 +268,7 @@ var hierarchy =
     [ "ElementCount", "structElementCount.html", null ],
     [ "ElementSymbolSorter", "structElementSymbolSorter.html", null ],
     [ "ElementZSorter", "structElementZSorter.html", null ],
+    [ "TTSString< T, TC >::Encloser< sep_t >", "structTTSString_1_1Encloser.html", null ],
     [ "BTree::Entry", "structBTree_1_1Entry.html", null ],
     [ "olxdict< KType, VType, Comparator >::Entry", "structolxdict_1_1Entry.html", null ],
     [ "TLinkedList< T, cleanupClass >::Entry", "structTLinkedList_1_1Entry.html", null ],
@@ -283,6 +280,8 @@ var hierarchy =
     [ "EvaluatorClass", null, [
       [ "TPropertyEvaluator< PropertyProviderClass, EvaluatorClass >", "classTPropertyEvaluator.html", null ]
     ] ],
+    [ "test::EValueTestData", "structtest_1_1EValueTestData.html", null ],
+    [ "math_eval::ExpEvaluator", "structmath__eval_1_1ExpEvaluator.html", null ],
     [ "RefinementModel::EXTI", "structRefinementModel_1_1EXTI.html", null ],
     [ "FastSG_A112_a", "structFastSG__A112__a.html", null ],
     [ "FastSG_A112_m", "structFastSG__A112__m.html", null ],
@@ -819,6 +818,7 @@ var hierarchy =
       [ "HashingUtilsLE", "structHashingUtilsLE.html", null ]
     ] ],
     [ "helper_Tetrahedron", "classhelper__Tetrahedron.html", null ],
+    [ "HklBrushRef", "structHklBrushRef.html", null ],
     [ "IAtomMask", null, [
       [ "AtomNameMask", "classAtomNameMask.html", null ],
       [ "AtomTypeMask", "classAtomTypeMask.html", null ]
@@ -877,6 +877,9 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "exparse::IEvaluable", null, [
+      [ "test::test_struct", "structtest_1_1test__struct.html", null ]
+    ] ],
     [ "IEvaluatorFactory", "classIEvaluatorFactory.html", [
       [ "TSFactoryRegister", "classTSFactoryRegister.html", [
         [ "TXFactoryRegister", "classTXFactoryRegister.html", null ]
@@ -886,6 +889,10 @@ var hierarchy =
       [ "TTSAtom_EvaluatorFactory", "classTTSAtom__EvaluatorFactory.html", null ],
       [ "TTXAtom_EvaluatorFactory", "classTTXAtom__EvaluatorFactory.html", null ],
       [ "TTXBond_EvaluatorFactory", "classTTXBond__EvaluatorFactory.html", null ]
+    ] ],
+    [ "math_eval::IFactory", "structmath__eval_1_1IFactory.html", [
+      [ "math_eval::FuncEvaluator1::factory", "structmath__eval_1_1FuncEvaluator1_1_1factory.html", null ],
+      [ "math_eval::FuncEvaluator2::factory", "structmath__eval_1_1FuncEvaluator2_1_1factory.html", null ]
     ] ],
     [ "Contour< Float >::IFeedback", "classContour_1_1IFeedback.html", [
       [ "Contour< Float >::MemberFeedback< const Base & >", "classContour_1_1MemberFeedback_3_01const_01Base_01_6_01_4.html", null ],
@@ -911,6 +918,7 @@ var hierarchy =
     [ "olx_list_filter::IndexCollector_< list_t >", "structolx__list__filter_1_1IndexCollector__.html", null ],
     [ "ACollectionItem::IndexTagAnalyser_< Accessor >", "structACollectionItem_1_1IndexTagAnalyser__.html", null ],
     [ "ACollectionItem::IndexTagSetter_< Accessor >", "structACollectionItem_1_1IndexTagSetter__.html", null ],
+    [ "inertia< FloatT >", "structinertia.html", null ],
     [ "SymmSpace::Info", "structSymmSpace_1_1Info.html", null ],
     [ "SymmSpace::InfoEx", "structSymmSpace_1_1InfoEx.html", null ],
     [ "TArrayList< T >::InternalAccessor", "structTArrayList_1_1InternalAccessor.html", null ],
@@ -922,12 +930,12 @@ var hierarchy =
       [ "olxCommandAction", "classolxCommandAction.html", null ]
     ] ],
     [ "IOlxObject", "classIOlxObject.html", [
-      [ "TAccellList< olxstr >", "classTAccellList.html", null ],
-      [ "TAccellList< TMenuItem * >", "classTAccellList.html", null ],
+      [ "TAccellList< TTSString< TCString, char > >", "classTAccellList.html", null ],
+      [ "TAccellList< ctrl_ext::TMenuItem * >", "classTAccellList.html", null ],
+      [ "TArrayList< index_t >", "classTArrayList.html", null ],
       [ "TArrayList< int >", "classTArrayList.html", null ],
       [ "TArrayList< unsigned int >", "classTArrayList.html", null ],
       [ "TArrayList< size_t >", "classTArrayList.html", null ],
-      [ "TArrayList< index_t >", "classTArrayList.html", null ],
       [ "TArrayList< double >", "classTArrayList.html", null ],
       [ "TArrayList< item_t >", "classTArrayList.html", null ],
       [ "TArrayList< vec3i >", "classTArrayList.html", null ],
@@ -941,6 +949,7 @@ var hierarchy =
       [ "TArrayList< IsoTriangle >", "classTArrayList.html", null ],
       [ "TArrayList< cmp_f >", "classTArrayList.html", null ],
       [ "TArrayList< uint32_t >", "classTArrayList.html", null ],
+      [ "TArrayList< olx_pair_t< TCAtom *, TVector3< double > > >", "classTArrayList.html", null ],
       [ "TArrayList< TGlPrimitive::TextureCrd >", "classTArrayList.html", null ],
       [ "TArrayList< GLuint >", "classTArrayList.html", null ],
       [ "TArrayList< TArrayList< unsigned int > >", "classTArrayList.html", null ],
@@ -951,6 +960,7 @@ var hierarchy =
       [ "TArrayList< TArrayList< vec3f > >", "classTArrayList.html", null ],
       [ "TArrayList< TArrayList< IsoTriangle > >", "classTArrayList.html", null ],
       [ "TArrayList< TArrayList< int > >", "classTArrayList.html", null ],
+      [ "TArrayList< TReflection * >", "classTArrayList.html", null ],
       [ "TArrayList< olxset< size_t, TPrimitiveComparator > >", "classTArrayList.html", null ],
       [ "TDirectionalList< char >", "classTDirectionalList.html", null ],
       [ "TEValue< float >", "classTEValue.html", null ],
@@ -1007,7 +1017,7 @@ var hierarchy =
       [ "TPtrList< DictEntry< std::type_info const *, size_t, TPointerComparator > >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, TGlMaterial *, olxstrComparator< false > > >", "classTPtrList.html", null ],
       [ "TPtrList< TProgramStateDescriptor >", "classTPtrList.html", null ],
-      [ "TPtrList< DictEntry< olxstr, olxstr, olxstrComparator< false > > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< false > > >", "classTPtrList.html", null ],
       [ "TPtrList< AAtomRef >", "classTPtrList.html", null ],
       [ "TPtrList< IAtomSelectionCriterium >", "classTPtrList.html", null ],
       [ "TPtrList< AtomSorter::Sorter >", "classTPtrList.html", null ],
@@ -1031,7 +1041,7 @@ var hierarchy =
       [ "TPtrList< FragAtom >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, TCAtom *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< const cm_Element *, LabelIterator, TPointerComparator > >", "classTPtrList.html", null ],
-      [ "TPtrList< DictEntry< TPtrList< TCAtom > *, olxstr, TPointerComparator > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< TPtrList< TCAtom > *, TTSString< TCString, char >, TPointerComparator > >", "classTPtrList.html", null ],
       [ "TPtrList< const TVector3< float > >", "classTPtrList.html", null ],
       [ "TPtrList< ort_atom >", "classTPtrList.html", null ],
       [ "TPtrList< a_ort_object >", "classTPtrList.html", null ],
@@ -1094,7 +1104,7 @@ var hierarchy =
       [ "TPtrList< TBravaisLattice >", "classTPtrList.html", null ],
       [ "TPtrList< Index::FileEntry >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< size_t, TPtrList< ACifValue >, TPrimitiveComparator > >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, TDataItem * > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, TDataItem * > >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, olx_pair_t< olxstr, size_t >, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, IClassDefinition *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< IEvaluable >", "classTPtrList.html", null ],
@@ -1102,6 +1112,7 @@ var hierarchy =
       [ "TPtrList< DictEntry< olxstr, TObjectFactory< IEvaluable > *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< TExyzGroup >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, TFSItem *, olxstrComparator< false > > >", "classTPtrList.html", null ],
+      [ "TPtrList< TTSString< TCString, char > >", "classTPtrList.html", null ],
       [ "TPtrList< TFSItem >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, TMemoryBlock *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< TGlPrimitive >", "classTPtrList.html", null ],
@@ -1122,7 +1133,7 @@ var hierarchy =
       [ "TPtrList< ObjectCaster< obj_t, act_t > >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< int, olxdict< int, ZDict, TPrimitiveComparator >, TPrimitiveComparator > >", "classTPtrList.html", null ],
       [ "TPtrList< TGlClipPlane >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, TGlMaterial * > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, TGlMaterial * > >", "classTPtrList.html", null ],
       [ "TPtrList< TFontCharSize >", "classTPtrList.html", null ],
       [ "TPtrList< TGlFont::PSRenderContext::PSChar >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< uint32_t, size_t, TPrimitiveComparator > >", "classTPtrList.html", null ],
@@ -1136,13 +1147,21 @@ var hierarchy =
       [ "TPtrList< TSortedListEntry< olxstr, TGraphicsStyle * > >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, TGSParam, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< TDataItem >", "classTPtrList.html", null ],
-      [ "TPtrList< TPolynom >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, bool > >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, TInsList * > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< const IOlxObject *, int, TPointerComparator > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< olxstr, AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< TTStrList< TSingleStringWrapper< olxstr > > >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, const cm_Element * > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< olxstr, olxstr_dict< TTSString< TCString, char >, false > *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
+      [ "TPtrList< AShapeInfo >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< olxstr, THtmlManager::TPopupData *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, THtmlSwitch * > >", "classTPtrList.html", null ],
+      [ "TPtrList< THtmlSwitch >", "classTPtrList.html", null ],
+      [ "TPtrList< TPolynom >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, bool > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, TInsList * > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, const cm_Element * > >", "classTPtrList.html", null ],
       [ "TPtrList< olx_pair_t< TTStrList< TSingleStringWrapper< olxstr > >, TCAtom * > >", "classTPtrList.html", null ],
-      [ "TPtrList< DictEntry< olxstr, olxstr *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< olxstr, TTSString< TCString, char > *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< TSPlane::Def >", "classTPtrList.html", null ],
       [ "TPtrList< TSortedListEntry< olxstr, ABasicFunction * > >", "classTPtrList.html", null ],
       [ "TPtrList< FunctionChainer >", "classTPtrList.html", null ],
@@ -1155,16 +1174,15 @@ var hierarchy =
       [ "TPtrList< TTypeList< TPattAtom > >", "classTPtrList.html", null ],
       [ "TPtrList< TPattAtom >", "classTPtrList.html", null ],
       [ "TPtrList< TLstSplitAtom >", "classTPtrList.html", null ],
-      [ "TPtrList< olx_pair_t< olxstr, olxstr > >", "classTPtrList.html", null ],
-      [ "TPtrList< DictEntry< olxstr, olxstr, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
+      [ "TPtrList< olx_pair_t< TTSString< TCString, char >, TTSString< TCString, char > > >", "classTPtrList.html", null ],
       [ "TPtrList< TScheduledTask >", "classTPtrList.html", null ],
       [ "TPtrList< IOlxTask >", "classTPtrList.html", null ],
       [ "TPtrList< olex2::IOlex2Runnable >", "classTPtrList.html", null ],
       [ "TPtrList< olxCommandEvent >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, wxMenuItem * > >", "classTPtrList.html", null ],
-      [ "TPtrList< DictEntry< int32_t, olxstr, TPrimitiveComparator > >", "classTPtrList.html", null ],
-      [ "TPtrList< DictEntry< int32_t, TMenuItem *, TPrimitiveComparator > >", "classTPtrList.html", null ],
-      [ "TPtrList< DictEntry< olxstr, TMenu *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, wxMenuItem * > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< int32_t, TTSString< TCString, char >, TPrimitiveComparator > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< int32_t, ctrl_ext::TMenuItem *, TPrimitiveComparator > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< olxstr, ctrl_ext::TMenu *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, AModeFactory *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< TMolBond >", "classTPtrList.html", null ],
       [ "TPtrList< TMol2Bond >", "classTPtrList.html", null ],
@@ -1172,19 +1190,20 @@ var hierarchy =
       [ "TPtrList< AGOProperties >", "classTPtrList.html", null ],
       [ "TPtrList< ObjectClass >", "classTPtrList.html", null ],
       [ "TPtrList< obj_t >", "classTPtrList.html", null ],
-      [ "TPtrList< TButton >", "classTPtrList.html", null ],
+      [ "TPtrList< ctrl_ext::TButton >", "classTPtrList.html", null ],
       [ "TPtrList< TPolynomMember >", "classTPtrList.html", null ],
       [ "TPtrList< TPMember >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, IEvaluatorFactory *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< olx_pair_t< TSAtom *, double > >", "classTPtrList.html", null ],
       [ "TPtrList< DefData >", "classTPtrList.html", null ],
       [ "TPtrList< TSortedListEntry< A, B > >", "classTPtrList.html", null ],
+      [ "TPtrList< olx_pair_t< TCAtom *, TCAtom * > >", "classTPtrList.html", null ],
       [ "TPtrList< TStateRegistry::Slot >", "classTPtrList.html", null ],
-      [ "TPtrList< DictEntry< size_t, olx_cset< olxstr >, TPrimitiveComparator > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< size_t, olx_cset< TTSString< TCString, char > >, TPrimitiveComparator > >", "classTPtrList.html", null ],
       [ "TPtrList< AnAssociation3< TCAtom *, TSymmMat< int, double >, TVector3< double > > >", "classTPtrList.html", null ],
       [ "TPtrList< TSortedListEntry< olxstr, TSpaceGroup * > >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, TCLattice * > >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, TBravaisLattice * > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, TCLattice * > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, TBravaisLattice * > >", "classTPtrList.html", null ],
       [ "TPtrList< TSymmElement >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, TSpaceGroup *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< olx_pair_t< TVector3< double >, TCAtom * > >", "classTPtrList.html", null ],
@@ -1202,26 +1221,34 @@ var hierarchy =
       [ "TPtrList< TXFile >", "classTPtrList.html", null ],
       [ "TPtrList< TVector3< size_t > >", "classTPtrList.html", null ],
       [ "TPtrList< olx_pair_t< size_t, size_t > >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, TGlPrimitive * > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, TGlPrimitive * > >", "classTPtrList.html", null ],
       [ "TPtrList< TGlPrimitiveParams >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, TBasicCFile * > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, TBasicCFile * > >", "classTPtrList.html", null ],
       [ "TPtrList< wxCheckBox >", "classTPtrList.html", null ],
       [ "TPtrList< TSortedListEntry< int, int > >", "classTPtrList.html", null ],
+      [ "TPtrList< TSortedListEntry< double, AnAssociation4< TVector3< int >, double, double, AnAssociation3< bool, size_t, double > > > >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< unsigned long, Impl *, TPrimitiveComparator > >", "classTPtrList.html", null ],
       [ "TPtrList< AnAssociation3< size_t, size_t, size_t > >", "classTPtrList.html", null ],
-      [ "TPtrList< AnAssociation3< olxstr, short, size_t > >", "classTPtrList.html", null ],
+      [ "TPtrList< AnAssociation3< TTSString< TCString, char >, short, size_t > >", "classTPtrList.html", null ],
       [ "TPtrList< Wildcard >", "classTPtrList.html", null ],
       [ "TPtrList< XVar >", "classTPtrList.html", null ],
       [ "TPtrList< XVarReference >", "classTPtrList.html", null ],
       [ "TPtrList< XLEQ >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, cif_dp::cetTable *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, cif_dp::ICifEntry *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
-      [ "TPtrList< TObjectStrListData< olxstr, cif_dp::ICifEntry * > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, cif_dp::ICifEntry * > >", "classTPtrList.html", null ],
       [ "TPtrList< cif_dp::ICifEntry >", "classTPtrList.html", null ],
       [ "TPtrList< cif_dp::CifBlock >", "classTPtrList.html", null ],
       [ "TPtrList< DictEntry< olxstr, cif_dp::CifBlock *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
       [ "TPtrList< olx_pair_t< IStringCifEntry *, ICifEntry * > >", "classTPtrList.html", null ],
-      [ "TPtrList< DictEntry< olxstr, cm_Absorption_Entry, olxstrComparator< true > > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< TTSString< TCString, char >, cm_Absorption_Entry, olxstrComparator< true > > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< olxstr, ctrl_ext::TMainFrame::TWindowInfo, olxstrComparator< false > > >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< int, TTSString< TCString, char >, TPrimitiveComparator > >", "classTPtrList.html", null ],
+      [ "TPtrList< math_eval::AEvaluable >", "classTPtrList.html", null ],
+      [ "TPtrList< DictEntry< olxstr, math_eval::IFactory *, olxstrComparator< case_insensitive > > >", "classTPtrList.html", null ],
+      [ "TPtrList< TObjectStrListData< TTSString< TCString, char >, math_eval::AEvaluable * > >", "classTPtrList.html", null ],
+      [ "TPtrList< math_eval::Variable >", "classTPtrList.html", null ],
+      [ "TPtrList< math_eval::Evaluator >", "classTPtrList.html", null ],
       [ "TPtrList< IsoTriangle >", "classTPtrList.html", null ],
       [ "TSTypeList< key_t, obj_t, TPointerComparator >", "classTSTypeList.html", [
         [ "sorted::PointerAssociation< key_t, obj_t >", "classsorted_1_1PointerAssociation.html", null ]
@@ -1251,6 +1278,9 @@ var hierarchy =
       [ "TSTypeList< int, int, TPrimitiveComparator >", "classTSTypeList.html", [
         [ "sorted::PrimitiveAssociation< int, int >", "classsorted_1_1PrimitiveAssociation.html", null ]
       ] ],
+      [ "TSTypeList< double, AnAssociation4< TVector3< int >, double, double, AnAssociation3< bool, size_t, double > >, TPrimitiveComparator >", "classTSTypeList.html", [
+        [ "sorted::PrimitiveAssociation< double, AnAssociation4< TVector3< int >, double, double, AnAssociation3< bool, size_t, double > > >", "classsorted_1_1PrimitiveAssociation.html", null ]
+      ] ],
       [ "TSTypeList< olxstr, ABasicFunction *, olxstrComparator< false > >", "classTSTypeList.html", [
         [ "sorted::StringAssociation< ABasicFunction * >", "classsorted_1_1StringAssociation.html", null ]
       ] ],
@@ -1260,38 +1290,44 @@ var hierarchy =
       [ "TTStrList< TSingleStringWrapper< olxstr > >", "classTTStrList.html", null ],
       [ "TTStrList< TSingleStringWrapper< olxcstr > >", "classTTStrList.html", null ],
       [ "TTStrList< TSingleStringWrapper< olxwstr > >", "classTTStrList.html", null ],
-      [ "TTStrList< TObjectStrListData< olxstr, TDataItem * > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, TDataItem * >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TDataItem * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, TDataItem * >", "classTStringToList.html", null ]
       ] ],
-      [ "TTStrList< TObjectStrListData< olxstr, TGlMaterial * > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, TGlMaterial * >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TGlMaterial * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, TGlMaterial * >", "classTStringToList.html", null ]
       ] ],
-      [ "TTStrList< TObjectStrListData< olxstr, bool > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, bool >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, THtmlSwitch * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, THtmlSwitch * >", "classTStringToList.html", null ]
       ] ],
-      [ "TTStrList< TObjectStrListData< olxstr, TInsList * > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, TInsList * >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, bool > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, bool >", "classTStringToList.html", null ]
       ] ],
-      [ "TTStrList< TObjectStrListData< olxstr, const cm_Element * > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, const cm_Element * >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TInsList * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, TInsList * >", "classTStringToList.html", null ]
       ] ],
-      [ "TTStrList< TObjectStrListData< olxstr, wxMenuItem * > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, wxMenuItem * >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, const cm_Element * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, const cm_Element * >", "classTStringToList.html", null ]
       ] ],
-      [ "TTStrList< TObjectStrListData< olxstr, TCLattice * > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, TCLattice * >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, wxMenuItem * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, wxMenuItem * >", "classTStringToList.html", null ]
       ] ],
-      [ "TTStrList< TObjectStrListData< olxstr, TBravaisLattice * > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, TBravaisLattice * >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TCLattice * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, TCLattice * >", "classTStringToList.html", null ]
       ] ],
-      [ "TTStrList< TObjectStrListData< olxstr, TGlPrimitive * > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, TGlPrimitive * >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TBravaisLattice * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, TBravaisLattice * >", "classTStringToList.html", null ]
       ] ],
-      [ "TTStrList< TObjectStrListData< olxstr, TBasicCFile * > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, TBasicCFile * >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TGlPrimitive * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, TGlPrimitive * >", "classTStringToList.html", null ]
       ] ],
-      [ "TTStrList< TObjectStrListData< olxstr, cif_dp::ICifEntry * > >", "classTTStrList.html", [
-        [ "TStringToList< olxstr, cif_dp::ICifEntry * >", "classTStringToList.html", null ]
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TBasicCFile * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, TBasicCFile * >", "classTStringToList.html", null ]
+      ] ],
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, cif_dp::ICifEntry * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, cif_dp::ICifEntry * >", "classTStringToList.html", null ]
+      ] ],
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, math_eval::AEvaluable * > >", "classTTStrList.html", [
+        [ "TStringToList< TTSString< TCString, char >, math_eval::AEvaluable * >", "classTStringToList.html", null ]
       ] ],
       [ "TTypeListExt< item_t, d_t >", "classTTypeListExt.html", null ],
       [ "TTypeListExt< ExplicitCAtomRef, IOlxObject >", "classTTypeListExt.html", null ],
@@ -1450,8 +1486,8 @@ var hierarchy =
       [ "TTypeListExt< TSBond::Ref, TSBond::Ref >", "classTTypeListExt.html", [
         [ "TTypeList< TSBond::Ref >", "classTTypeList.html", null ]
       ] ],
-      [ "TTypeListExt< olxstr, olxstr >", "classTTypeListExt.html", [
-        [ "TTypeList< olxstr >", "classTTypeList.html", null ]
+      [ "TTypeListExt< TTSString< TCString, char >, TTSString< TCString, char > >", "classTTypeListExt.html", [
+        [ "TTypeList< TTSString< TCString, char > >", "classTTypeList.html", null ]
       ] ],
       [ "TTypeListExt< TVector3< double >, TVector3< double > >", "classTTypeListExt.html", [
         [ "TTypeList< TVector3< double > >", "classTTypeList.html", null ]
@@ -1465,11 +1501,17 @@ var hierarchy =
       [ "TTypeListExt< TGlFont::PSRenderContext::PSChar, TGlFont::PSRenderContext::PSChar >", "classTTypeListExt.html", [
         [ "TTypeList< TGlFont::PSRenderContext::PSChar >", "classTTypeList.html", null ]
       ] ],
-      [ "TTypeListExt< TPolynom, TPolynom >", "classTTypeListExt.html", [
-        [ "TTypeList< TPolynom >", "classTTypeList.html", null ]
-      ] ],
       [ "TTypeListExt< TTStrList< TSingleStringWrapper< olxstr > >, TTStrList< TSingleStringWrapper< olxstr > > >", "classTTypeListExt.html", [
         [ "TTypeList< TTStrList< TSingleStringWrapper< olxstr > > >", "classTTypeList.html", null ]
+      ] ],
+      [ "TTypeListExt< AShapeInfo, AShapeInfo >", "classTTypeListExt.html", [
+        [ "TTypeList< AShapeInfo >", "classTTypeList.html", null ]
+      ] ],
+      [ "TTypeListExt< THtmlSwitch, THtmlSwitch >", "classTTypeListExt.html", [
+        [ "TTypeList< THtmlSwitch >", "classTTypeList.html", null ]
+      ] ],
+      [ "TTypeListExt< TPolynom, TPolynom >", "classTTypeListExt.html", [
+        [ "TTypeList< TPolynom >", "classTTypeList.html", null ]
       ] ],
       [ "TTypeListExt< olx_pair_t< TTStrList< TSingleStringWrapper< olxstr > >, TCAtom * >, olx_pair_t< TTStrList< TSingleStringWrapper< olxstr > >, TCAtom * > >", "classTTypeListExt.html", [
         [ "TTypeList< olx_pair_t< TTStrList< TSingleStringWrapper< olxstr > >, TCAtom * > >", "classTTypeList.html", null ]
@@ -1498,8 +1540,8 @@ var hierarchy =
       [ "TTypeListExt< TLstSplitAtom, TLstSplitAtom >", "classTTypeListExt.html", [
         [ "TTypeList< TLstSplitAtom >", "classTTypeList.html", null ]
       ] ],
-      [ "TTypeListExt< olx_pair_t< olxstr, olxstr >, olx_pair_t< olxstr, olxstr > >", "classTTypeListExt.html", [
-        [ "TTypeList< olx_pair_t< olxstr, olxstr > >", "classTTypeList.html", null ]
+      [ "TTypeListExt< olx_pair_t< TTSString< TCString, char >, TTSString< TCString, char > >, olx_pair_t< TTSString< TCString, char >, TTSString< TCString, char > > >", "classTTypeListExt.html", [
+        [ "TTypeList< olx_pair_t< TTSString< TCString, char >, TTSString< TCString, char > > >", "classTTypeList.html", null ]
       ] ],
       [ "TTypeListExt< TScheduledTask, TScheduledTask >", "classTTypeListExt.html", [
         [ "TTypeList< TScheduledTask >", "classTTypeList.html", null ]
@@ -1527,6 +1569,9 @@ var hierarchy =
       ] ],
       [ "TTypeListExt< DefData, DefData >", "classTTypeListExt.html", [
         [ "TTypeList< DefData >", "classTTypeList.html", null ]
+      ] ],
+      [ "TTypeListExt< olx_pair_t< TCAtom *, TCAtom * >, olx_pair_t< TCAtom *, TCAtom * > >", "classTTypeListExt.html", [
+        [ "TTypeList< olx_pair_t< TCAtom *, TCAtom * > >", "classTTypeList.html", null ]
       ] ],
       [ "TTypeListExt< AnAssociation3< TCAtom *, TSymmMat< int, double >, TVector3< double > >, AnAssociation3< TCAtom *, TSymmMat< int, double >, TVector3< double > > >", "classTTypeListExt.html", [
         [ "TTypeList< AnAssociation3< TCAtom *, TSymmMat< int, double >, TVector3< double > > >", "classTTypeList.html", null ]
@@ -1576,8 +1621,8 @@ var hierarchy =
       [ "TTypeListExt< AnAssociation3< size_t, size_t, size_t >, AnAssociation3< size_t, size_t, size_t > >", "classTTypeListExt.html", [
         [ "TTypeList< AnAssociation3< size_t, size_t, size_t > >", "classTTypeList.html", null ]
       ] ],
-      [ "TTypeListExt< AnAssociation3< olxstr, short, size_t >, AnAssociation3< olxstr, short, size_t > >", "classTTypeListExt.html", [
-        [ "TTypeList< AnAssociation3< olxstr, short, size_t > >", "classTTypeList.html", null ]
+      [ "TTypeListExt< AnAssociation3< TTSString< TCString, char >, short, size_t >, AnAssociation3< TTSString< TCString, char >, short, size_t > >", "classTTypeListExt.html", [
+        [ "TTypeList< AnAssociation3< TTSString< TCString, char >, short, size_t > >", "classTTypeList.html", null ]
       ] ],
       [ "TTypeListExt< Wildcard, Wildcard >", "classTTypeListExt.html", [
         [ "TTypeList< Wildcard >", "classTTypeList.html", null ]
@@ -1607,6 +1652,21 @@ var hierarchy =
       [ "TVector< float >", "classTVector.html", null ],
       [ "TVector< double >", "classTVector.html", null ],
       [ "TVector< size_t >", "classTVector.html", null ],
+      [ "esdl::tensor::tensor_base< tensor_rank_2_t< FloatType >, FloatType >", "classesdl_1_1tensor_1_1tensor__base.html", null ],
+      [ "esdl::tensor::tensor_base< tensor_rank_3_t< FloatType >, FloatType >", "classesdl_1_1tensor_1_1tensor__base.html", null ],
+      [ "esdl::tensor::tensor_base< tensor_rank_4_t< FloatType >, FloatType >", "classesdl_1_1tensor_1_1tensor__base.html", null ],
+      [ "esdl::tensor::tensor_base< tensor_rank_2_t< double >, double >", "classesdl_1_1tensor_1_1tensor__base.html", [
+        [ "esdl::tensor::tensor_rank_2_t< double >", "classesdl_1_1tensor_1_1tensor__rank__2__t.html", null ],
+        [ "esdl::tensor::tensor_rank_2_t< FloatType >", "classesdl_1_1tensor_1_1tensor__rank__2__t.html", null ]
+      ] ],
+      [ "esdl::tensor::tensor_base< tensor_rank_3_t< double >, double >", "classesdl_1_1tensor_1_1tensor__base.html", [
+        [ "esdl::tensor::tensor_rank_3_t< double >", "classesdl_1_1tensor_1_1tensor__rank__3__t.html", null ],
+        [ "esdl::tensor::tensor_rank_3_t< FloatType >", "classesdl_1_1tensor_1_1tensor__rank__3__t.html", null ]
+      ] ],
+      [ "esdl::tensor::tensor_base< tensor_rank_4_t< double >, double >", "classesdl_1_1tensor_1_1tensor__base.html", [
+        [ "esdl::tensor::tensor_rank_4_t< double >", "classesdl_1_1tensor_1_1tensor__rank__4__t.html", null ],
+        [ "esdl::tensor::tensor_rank_4_t< FloatType >", "classesdl_1_1tensor_1_1tensor__rank__4__t.html", null ]
+      ] ],
       [ "olx_perishable_ptr< TXAtom >", "structolx__perishable__ptr.html", null ],
       [ "ABasicFunction", "classABasicFunction.html", [
         [ "AFunction", "classAFunction.html", [
@@ -1660,7 +1720,9 @@ var hierarchy =
           ] ],
           [ "AMode::ObjectPicker_", "classAMode_1_1ObjectPicker__.html", null ],
           [ "TActionProxy", "classTActionProxy.html", null ],
-          [ "TActionQueue", "classTActionQueue.html", null ],
+          [ "TActionQueue", "classTActionQueue.html", [
+            [ "ctrl_ext::AOlxCtrl::ActionQueue", "classctrl__ext_1_1AOlxCtrl_1_1ActionQueue.html", null ]
+          ] ],
           [ "TBasicApp::TActionHandler", "classTBasicApp_1_1TActionHandler.html", null ],
           [ "TDProgress", "classTDProgress.html", null ],
           [ "TDownloadProgress", "classTDownloadProgress.html", null ],
@@ -1668,6 +1730,7 @@ var hierarchy =
           [ "TGlConsole", "classTGlConsole.html", null ],
           [ "TGlLightModel", "classTGlLightModel.html", null ],
           [ "TGlRenderer", "classTGlRenderer.html", null ],
+          [ "THtmlManager", "classTHtmlManager.html", null ],
           [ "TObjectVisibilityChange", "classTObjectVisibilityChange.html", null ],
           [ "TOnSync", "classTOnSync.html", null ],
           [ "TPTableDlg", "classTPTableDlg.html", null ],
@@ -1680,6 +1743,13 @@ var hierarchy =
           [ "TdlgMatProp", "classTdlgMatProp.html", null ],
           [ "TdlgMsgBox", "classTdlgMsgBox.html", null ],
           [ "TdlgSceneProps", "classTdlgSceneProps.html", null ],
+          [ "ctrl_ext::AButtonBase", "classctrl__ext_1_1AButtonBase.html", [
+            [ "ctrl_ext::TBmpButton", "classctrl__ext_1_1TBmpButton.html", null ],
+            [ "ctrl_ext::TButton", "classctrl__ext_1_1TButton.html", null ],
+            [ "ctrl_ext::TImgButton", "classctrl__ext_1_1TImgButton.html", null ]
+          ] ],
+          [ "ctrl_ext::TCheckBox", "classctrl__ext_1_1TCheckBox.html", null ],
+          [ "ctrl_ext::TMenuItem", "classctrl__ext_1_1TMenuItem.html", null ],
           [ "xappXFileLoad", "classxappXFileLoad.html", null ]
         ] ],
         [ "AAtomRef", "classAAtomRef.html", [
@@ -1689,8 +1759,11 @@ var hierarchy =
         ] ],
         [ "AEventsDispatcher", "classAEventsDispatcher.html", [
           [ "ProcessManager", "classProcessManager.html", null ],
+          [ "TFitMode", "classTFitMode.html", null ],
           [ "TGXApp", "classTGXApp.html", null ],
+          [ "THtml", "classTHtml.html", null ],
           [ "TMainForm", "classTMainForm.html", null ],
+          [ "TSplitMode", "classTSplitMode.html", null ],
           [ "TXFile", "classTXFile.html", [
             [ "TGXFile", "classTGXFile.html", null ]
           ] ],
@@ -1727,7 +1800,22 @@ var hierarchy =
       [ "AConstraintGenerator", "classAConstraintGenerator.html", null ],
       [ "AGlScene", "classAGlScene.html", null ],
       [ "AMode", "classAMode.html", [
-        [ "AModeWithLabels", "classAModeWithLabels.html", null ]
+        [ "AModeWithLabels", "classAModeWithLabels.html", [
+          [ "TFixCMode", "classTFixCMode.html", null ],
+          [ "TFixUMode", "classTFixUMode.html", null ],
+          [ "THfixMode", "classTHfixMode.html", null ],
+          [ "TLockMode", "classTLockMode.html", null ],
+          [ "TNameMode", "classTNameMode.html", null ],
+          [ "TOccuMode", "classTOccuMode.html", null ],
+          [ "TPartMode", "classTPartMode.html", null ]
+        ] ],
+        [ "TFitMode", "classTFitMode.html", null ],
+        [ "TGrowMode", "classTGrowMode.html", null ],
+        [ "THimpMode", "classTHimpMode.html", null ],
+        [ "TMatchMode", "classTMatchMode.html", null ],
+        [ "TMoveMode", "classTMoveMode.html", null ],
+        [ "TPackMode", "classTPackMode.html", null ],
+        [ "TSplitMode", "classTSplitMode.html", null ]
       ] ],
       [ "APerishable", "classAPerishable.html", [
         [ "AGDrawObject", "classAGDrawObject.html", null ],
@@ -1740,7 +1828,8 @@ var hierarchy =
           [ "MTTestTh", "classMTTestTh.html", null ],
           [ "TThreadSlot", "classTThreadSlot.html", null ],
           [ "UpdateThread", "classUpdateThread.html", null ]
-        ] ]
+        ] ],
+        [ "test::Perishable", "classtest_1_1Perishable.html", null ]
       ] ],
       [ "AProcess", "classAProcess.html", null ],
       [ "AReferencible", "classAReferencible.html", [
@@ -1749,7 +1838,16 @@ var hierarchy =
         ] ],
         [ "TDataItem", "classTDataItem.html", null ],
         [ "TTBuffer< T >", "classTTBuffer.html", null ],
-        [ "adirection", "structadirection.html", null ]
+        [ "adirection", "structadirection.html", null ],
+        [ "math_eval::AEvaluable", "structmath__eval_1_1AEvaluable.html", [
+          [ "math_eval::FuncEvaluator1", "structmath__eval_1_1FuncEvaluator1.html", null ],
+          [ "math_eval::FuncEvaluator2", "structmath__eval_1_1FuncEvaluator2.html", null ],
+          [ "math_eval::NumberEvaluator", "structmath__eval_1_1NumberEvaluator.html", [
+            [ "math_eval::Variable", "structmath__eval_1_1Variable.html", [
+              [ "math_eval::Evaluator", "structmath__eval_1_1Evaluator.html", null ]
+            ] ]
+          ] ]
+        ] ]
       ] ],
       [ "ASObjectProvider", "structASObjectProvider.html", [
         [ "SObjectProvider", "structSObjectProvider.html", null ],
@@ -1950,8 +2048,15 @@ var hierarchy =
       ] ],
       [ "TUndoData", "classTUndoData.html", [
         [ "SetMaterialUndo", "structSetMaterialUndo.html", null ],
+        [ "TFixCMode::TFixCModeUndo", "classTFixCMode_1_1TFixCModeUndo.html", null ],
+        [ "TFixUMode::TFixUModeUndo", "classTFixUMode_1_1TFixUModeUndo.html", null ],
         [ "THideUndo", "classTHideUndo.html", null ],
-        [ "TNameUndo", "classTNameUndo.html", null ]
+        [ "TLockMode::TLockModeUndo", "classTLockMode_1_1TLockModeUndo.html", null ],
+        [ "TNameMode::TLockUndo", "classTNameMode_1_1TLockUndo.html", null ],
+        [ "TNameMode::TNameModeUndo", "classTNameMode_1_1TNameModeUndo.html", null ],
+        [ "TNameUndo", "classTNameUndo.html", null ],
+        [ "TOccuMode::TOccuModeUndo", "classTOccuMode_1_1TOccuModeUndo.html", null ],
+        [ "TPartMode::TPartModeUndo", "classTPartMode_1_1TPartModeUndo.html", null ]
       ] ],
       [ "TUnitCell", "classTUnitCell.html", null ],
       [ "TUnitCell::IAtomAnalyser", "classTUnitCell_1_1IAtomAnalyser.html", [
@@ -1977,7 +2082,42 @@ var hierarchy =
         [ "cif_dp::cetTable", "structcif__dp_1_1cetTable.html", null ]
       ] ],
       [ "cif_dp::TCifDP", "classcif__dp_1_1TCifDP.html", null ],
+      [ "ctrl_ext::AOlxCtrl", "classctrl__ext_1_1AOlxCtrl.html", [
+        [ "THtml", "classTHtml.html", null ],
+        [ "THtmlImageCell", "classTHtmlImageCell.html", null ],
+        [ "ctrl_ext::AButtonBase", "classctrl__ext_1_1AButtonBase.html", null ],
+        [ "ctrl_ext::TCheckBox", "classctrl__ext_1_1TCheckBox.html", null ],
+        [ "ctrl_ext::TChoice", "classctrl__ext_1_1TChoice.html", null ],
+        [ "ctrl_ext::TColorCtrl", "classctrl__ext_1_1TColorCtrl.html", null ],
+        [ "ctrl_ext::TComboBox", "classctrl__ext_1_1TComboBox.html", null ],
+        [ "ctrl_ext::TDateCtrl", "classctrl__ext_1_1TDateCtrl.html", null ],
+        [ "ctrl_ext::TDialog", "classctrl__ext_1_1TDialog.html", [
+          [ "TPTableDlg", "classTPTableDlg.html", null ],
+          [ "TdlgGenerate", "classTdlgGenerate.html", null ],
+          [ "TdlgGradient", "classTdlgGradient.html", null ],
+          [ "TdlgMatProp", "classTdlgMatProp.html", null ],
+          [ "TdlgMsgBox", "classTdlgMsgBox.html", null ],
+          [ "TdlgPrimitive", "classTdlgPrimitive.html", null ],
+          [ "TdlgSceneProps", "classTdlgSceneProps.html", null ],
+          [ "TdlgUpdateOptions", "classTdlgUpdateOptions.html", null ]
+        ] ],
+        [ "ctrl_ext::TLabel", "classctrl__ext_1_1TLabel.html", null ],
+        [ "ctrl_ext::TListBox", "classctrl__ext_1_1TListBox.html", null ],
+        [ "ctrl_ext::TMainFrame", "classctrl__ext_1_1TMainFrame.html", [
+          [ "TMainForm", "classTMainForm.html", null ]
+        ] ],
+        [ "ctrl_ext::TSpinCtrl", "classctrl__ext_1_1TSpinCtrl.html", null ],
+        [ "ctrl_ext::TTextEdit", "classctrl__ext_1_1TTextEdit.html", [
+          [ "TCmdLine", "classTCmdLine.html", null ]
+        ] ],
+        [ "ctrl_ext::TTrackBar", "classctrl__ext_1_1TTrackBar.html", null ],
+        [ "ctrl_ext::TTreeView", "classctrl__ext_1_1TTreeView.html", null ]
+      ] ],
+      [ "ctrl_ext::TKeyEvent", "classctrl__ext_1_1TKeyEvent.html", null ],
+      [ "ctrl_ext::TMenu", "classctrl__ext_1_1TMenu.html", null ],
       [ "ctrl_ext::TTimer", "classctrl__ext_1_1TTimer.html", null ],
+      [ "ctrl_ext::TTreeNodeData", "classctrl__ext_1_1TTreeNodeData.html", null ],
+      [ "esdl::tensor::tensor_base< heir_t, FloatType >", "classesdl_1_1tensor_1_1tensor__base.html", null ],
       [ "olex2::AOlex2App", "classolex2_1_1AOlex2App.html", [
         [ "Olex2App", "classOlex2App.html", null ]
       ] ],
@@ -1985,7 +2125,10 @@ var hierarchy =
       [ "olex2::ExternalMacro", "structolex2_1_1ExternalMacro.html", null ],
       [ "olex2::IOlex2Runnable", "classolex2_1_1IOlex2Runnable.html", null ],
       [ "olex2::OlexProcessorImp", "classolex2_1_1OlexProcessorImp.html", null ],
-      [ "olx_perishable_ptr< ptr >", "structolx__perishable__ptr.html", null ]
+      [ "olx_nui::INUI", "classolx__nui_1_1INUI.html", null ],
+      [ "olx_perishable_ptr< ptr >", "structolx__perishable__ptr.html", null ],
+      [ "test::VPtrTest_O", "structtest_1_1VPtrTest__O.html", null ],
+      [ "test::test_struct", "structtest_1_1test__struct.html", null ]
     ] ],
     [ "IOlxTask", "structIOlxTask.html", [
       [ "CellChangeTask", "structCellChangeTask.html", null ],
@@ -2040,11 +2183,18 @@ var hierarchy =
     ] ],
     [ "shared_list_base< cont_t, item_t >::Item", "classshared__list__base_1_1Item.html", null ],
     [ "olx_list_filter::ItemCollector_< list_t >", "structolx__list__filter_1_1ItemCollector__.html", null ],
+    [ "TEHashed< basket_factory_t, N, L >::Iterator", "classTEHashed_1_1Iterator.html", null ],
     [ "TLinkedList< T, cleanupClass >::Iterator", "structTLinkedList_1_1Iterator.html", null ],
     [ "ITraversable< ItemClass >", "classITraversable.html", null ],
     [ "IUndoAction", "classIUndoAction.html", [
+      [ "TUndoActionImplMF< TFitModeUndo >", "classTUndoActionImplMF.html", null ],
       [ "TUndoActionImplMF< BaseClass >", "classTUndoActionImplMF.html", null ],
       [ "TUndoActionImplSF", "classTUndoActionImplSF.html", null ]
+    ] ],
+    [ "IVolumeValidator", null, [
+      [ "BoxValidator", "classBoxValidator.html", null ],
+      [ "BoxVolumeValidator", "classBoxVolumeValidator.html", null ],
+      [ "SphereVolumeValidator", "classSphereVolumeValidator.html", null ]
     ] ],
     [ "LabelCorrector", "structLabelCorrector.html", null ],
     [ "VcoVContainer::LineEvaluator< VT, WT >", "structVcoVContainer_1_1LineEvaluator.html", null ],
@@ -2058,6 +2208,9 @@ var hierarchy =
     [ "macSel_symm_analyser", "structmacSel__symm__analyser.html", null ],
     [ "macTestHKLF_sorter", "structmacTestHKLF__sorter.html", null ],
     [ "Main_3DIndex", "structMain__3DIndex.html", null ],
+    [ "Main_BaiComparator", "structMain__BaiComparator.html", null ],
+    [ "Main_SfacComparator", "structMain__SfacComparator.html", null ],
+    [ "MapFactory< key_t, item_t, comparator_t >", "structMapFactory.html", null ],
     [ "MapUtil::MapGetter< mapT, type >", "structMapUtil_1_1MapGetter.html", null ],
     [ "BVFourier::MapInfo", "structBVFourier_1_1MapInfo.html", null ],
     [ "MapUtil", "classMapUtil.html", null ],
@@ -2073,6 +2226,7 @@ var hierarchy =
       [ "TMatrix< FT >", "classTMatrix.html", null ]
     ] ],
     [ "MatrixListAdaptor< MatrixContainer >", "classMatrixListAdaptor.html", null ],
+    [ "MatrixVector< MatT >", "classMatrixVector.html", null ],
     [ "MD5Impl", null, [
       [ "HashingBase< MD5Impl, HashingUtilsLE >", "classHashingBase.html", null ]
     ] ],
@@ -2136,11 +2290,11 @@ var hierarchy =
     [ "olx_pair_t< const cm_Element *, double >", "structolx__pair__t.html", [
       [ "AnAssociation3< const cm_Element *, double, double >", "structAnAssociation3.html", null ]
     ] ],
+    [ "olx_pair_t< ctrl_ext::AOlxCtrl *, wxWindow * >", "structolx__pair__t.html", [
+      [ "AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >", "structAnAssociation3.html", null ]
+    ] ],
     [ "olx_pair_t< double, double >", "structolx__pair__t.html", [
       [ "AnAssociation3< double, double, int >", "structAnAssociation3.html", null ]
-    ] ],
-    [ "olx_pair_t< olxstr, short >", "structolx__pair__t.html", [
-      [ "AnAssociation3< olxstr, short, size_t >", "structAnAssociation3.html", null ]
     ] ],
     [ "olx_pair_t< size_t, size_t >", "structolx__pair__t.html", [
       [ "AnAssociation3< size_t, size_t, size_t >", "structAnAssociation3.html", null ],
@@ -2150,8 +2304,15 @@ var hierarchy =
     [ "olx_pair_t< TCAtom *, TSymmMat< int, double > >", "structolx__pair__t.html", [
       [ "AnAssociation3< TCAtom *, TSymmMat< int, double >, TVector3< double > >", "structAnAssociation3.html", null ]
     ] ],
+    [ "olx_pair_t< TTSString< TCString, char >, short >", "structolx__pair__t.html", [
+      [ "AnAssociation3< TTSString< TCString, char >, short, size_t >", "structAnAssociation3.html", null ]
+    ] ],
     [ "olx_pair_t< TVector3< float >, TCAtom * >", "structolx__pair__t.html", [
       [ "AnAssociation3< TVector3< float >, TCAtom *, float >", "structAnAssociation3.html", null ]
+    ] ],
+    [ "olx_print_i_cont", "structolx__print__i__cont.html", [
+      [ "olx_print_cont< T >", "structolx__print__cont.html", null ],
+      [ "olx_print_cont_f< T >", "structolx__print__cont__f.html", null ]
     ] ],
     [ "olx_ptr", "structolx__ptr.html", null ],
     [ "olx_ptr_< ptr >", "structolx__ptr__.html", null ],
@@ -2224,9 +2385,6 @@ var hierarchy =
     [ "olx_ptr_base< olx_object_ptr< olxdict< size_t, TSizeList, TPrimitiveComparator > >, olxdict< size_t, TSizeList, TPrimitiveComparator > >", "structolx__ptr__base.html", [
       [ "olx_object_ptr< olxdict< size_t, TSizeList, TPrimitiveComparator > >", "structolx__object__ptr.html", null ]
     ] ],
-    [ "olx_ptr_base< olx_object_ptr< olxstr >, olxstr >", "structolx__ptr__base.html", [
-      [ "olx_object_ptr< olxstr >", "structolx__object__ptr.html", null ]
-    ] ],
     [ "olx_ptr_base< olx_object_ptr< ptr >, ptr >", "structolx__ptr__base.html", [
       [ "olx_object_ptr< olx_virtual_ptr< ptr > >", "structolx__object__ptr.html", [
         [ "olx_perishable_ptr< ptr >", "structolx__perishable__ptr.html", null ],
@@ -2246,12 +2404,35 @@ var hierarchy =
     [ "olx_ptr_base< olx_object_ptr< TLattice::GrowInfo >, TLattice::GrowInfo >", "structolx__ptr__base.html", [
       [ "olx_object_ptr< TLattice::GrowInfo >", "structolx__object__ptr.html", null ]
     ] ],
+    [ "olx_ptr_base< olx_object_ptr< TTSString< TCString, char > >, TTSString< TCString, char > >", "structolx__ptr__base.html", [
+      [ "olx_object_ptr< TTSString< TCString, char > >", "structolx__object__ptr.html", null ]
+    ] ],
     [ "olx_ptr_base< olx_object_ptr< TTypeList< TVector3< float > > >, TTypeList< TVector3< float > > >", "structolx__ptr__base.html", [
       [ "olx_object_ptr< TTypeList< TVector3< float > > >", "structolx__object__ptr.html", null ]
+    ] ],
+    [ "olx_ptr_base< olx_object_ptr< wxBitmap >, wxBitmap >", "structolx__ptr__base.html", [
+      [ "olx_object_ptr< wxBitmap >", "structolx__object__ptr.html", null ]
+    ] ],
+    [ "olx_ptr_base< olx_object_ptr< wxFSFile >, wxFSFile >", "structolx__ptr__base.html", [
+      [ "olx_object_ptr< wxFSFile >", "structolx__object__ptr.html", null ]
+    ] ],
+    [ "olx_ptr_base< olx_object_ptr< wxMenu >, wxMenu >", "structolx__ptr__base.html", [
+      [ "olx_object_ptr< wxMenu >", "structolx__object__ptr.html", null ]
     ] ],
     [ "olx_ref", "structolx__ref.html", null ],
     [ "olx_scope_cs", "structolx__scope__cs.html", null ],
     [ "olx_SGDef", "structolx__SGDef.html", null ],
+    [ "olx_str_to_num< T >", "structolx__str__to__num.html", null ],
+    [ "olx_str_to_num< double >", "structolx__str__to__num_3_01double_01_4.html", null ],
+    [ "olx_str_to_num< float >", "structolx__str__to__num_3_01float_01_4.html", null ],
+    [ "olx_str_to_num< int16_t >", "structolx__str__to__num_3_01int16__t_01_4.html", null ],
+    [ "olx_str_to_num< int32_t >", "structolx__str__to__num_3_01int32__t_01_4.html", null ],
+    [ "olx_str_to_num< int64_t >", "structolx__str__to__num_3_01int64__t_01_4.html", null ],
+    [ "olx_str_to_num< int8_t >", "structolx__str__to__num_3_01int8__t_01_4.html", null ],
+    [ "olx_str_to_num< uint16_t >", "structolx__str__to__num_3_01uint16__t_01_4.html", null ],
+    [ "olx_str_to_num< uint32_t >", "structolx__str__to__num_3_01uint32__t_01_4.html", null ],
+    [ "olx_str_to_num< uint64_t >", "structolx__str__to__num_3_01uint64__t_01_4.html", null ],
+    [ "olx_str_to_num< uint8_t >", "structolx__str__to__num_3_01uint8__t_01_4.html", null ],
     [ "olx_type< A >", "structolx__type.html", null ],
     [ "olx_virtual_ptr< ptr >", "structolx__virtual__ptr.html", [
       [ "olx_vptr< ptr >::actual_ptr< dptr >", "structolx__vptr_1_1actual__ptr.html", null ],
@@ -2274,6 +2455,9 @@ var hierarchy =
     ] ],
     [ "olx_virtual_ptr< TXFile >", "structolx__virtual__ptr.html", [
       [ "TXFile::VPtr", "structTXFile_1_1VPtr.html", null ]
+    ] ],
+    [ "olx_virtual_ptr< VPtrTest_O >", "structolx__virtual__ptr.html", [
+      [ "test::VPtr", "structtest_1_1VPtr.html", null ]
     ] ],
     [ "OlxIStream", "classOlxIStream.html", [
       [ "IInputStream", "classIInputStream.html", [
@@ -2305,11 +2489,16 @@ var hierarchy =
     [ "olx_alg::or_< AnalyserA, AnalyserB >", "structolx__alg_1_1or__.html", null ],
     [ "OrtDraw", "classOrtDraw.html", null ],
     [ "OrtDrawTex", "classOrtDrawTex.html", null ],
+    [ "inertia< FloatT >::out", "structinertia_1_1out.html", null ],
     [ "TSTypeList< A, B, ComparatorType >::PackItemActor< Analyser >", "structTSTypeList_1_1PackItemActor.html", null ],
     [ "TTypeListExt< T, DestructCast >::PackItemActor< Analyser >", "structTTypeListExt_1_1PackItemActor.html", null ],
     [ "PairListComparator", "structPairListComparator.html", null ],
+    [ "parent_t", null, [
+      [ "ctrl_ext::TItemList< parent_t >", "classctrl__ext_1_1TItemList.html", null ]
+    ] ],
     [ "patcher::PatchAPI", "classpatcher_1_1PatchAPI.html", null ],
     [ "MapUtil::peak", "structMapUtil_1_1peak.html", null ],
+    [ "PlainVector< NumT >", "classPlainVector.html", null ],
     [ "VcoVContainer::Plane< VT, WT >", "structVcoVContainer_1_1Plane.html", null ],
     [ "VcoVContainer::PlaneEvaluator< VT, WT >", "structVcoVContainer_1_1PlaneEvaluator.html", null ],
     [ "VcoVContainer::PlaneInfo", "structVcoVContainer_1_1PlaneInfo.html", null ],
@@ -2344,6 +2533,8 @@ var hierarchy =
     [ "TNetwork::RingInfo", "structTNetwork_1_1RingInfo.html", null ],
     [ "RSA_EnviSorter", "structRSA__EnviSorter.html", null ],
     [ "SelectedTableRows", "classSelectedTableRows.html", null ],
+    [ "TTSString< T, TC >::SeperatedStream< sep_t >", "structTTSString_1_1SeperatedStream.html", null ],
+    [ "SetFactory< item_t, comparator_t >", "structSetFactory.html", null ],
     [ "updater::SettingsFile", "structupdater_1_1SettingsFile.html", null ],
     [ "SGSettings", "classSGSettings.html", null ],
     [ "SHA1Impl", null, [
@@ -2414,6 +2605,7 @@ var hierarchy =
     [ "TCAtom::Site", "structTCAtom_1_1Site.html", null ],
     [ "SiteSymmCon", "structSiteSymmCon.html", null ],
     [ "TFSItem::SkipOptions", "structTFSItem_1_1SkipOptions.html", null ],
+    [ "Slice< VT >", "classSlice.html", null ],
     [ "TStateRegistry::Slot", "structTStateRegistry_1_1Slot.html", null ],
     [ "olx_grid_util::smoother", "classolx__grid__util_1_1smoother.html", null ],
     [ "TSAtom::SortByDistance", "structTSAtom_1_1SortByDistance.html", null ],
@@ -2434,10 +2626,12 @@ var hierarchy =
     [ "SortInterface< StdStableSorter >", "structSortInterface.html", [
       [ "StdStableSorter", "structStdStableSorter.html", null ]
     ] ],
+    [ "test::SortTest", "classtest_1_1SortTest.html", null ],
     [ "sta_adjust_cl", "structsta__adjust__cl.html", null ],
     [ "sta_adjust_dummy", "structsta__adjust__dummy.html", null ],
     [ "sta_adjust_pc", "structsta__adjust__pc.html", null ],
     [ "sta_adjust_shininess", "structsta__adjust__shininess.html", null ],
+    [ "test::SortTest::StableSortVal", "structtest_1_1SortTest_1_1StableSortVal.html", null ],
     [ "RefMerger::StandardMerger", "classRefMerger_1_1StandardMerger.html", null ],
     [ "StaticCastAccessor< CastType >", "structStaticCastAccessor.html", null ],
     [ "FunctionAccessor::StaticFunctionAccessorCR_< rv_t, item_t >", "structFunctionAccessor_1_1StaticFunctionAccessorCR__.html", null ],
@@ -2450,6 +2644,9 @@ var hierarchy =
     [ "SyncSortListener", "structSyncSortListener.html", null ],
     [ "SyncSortListener::SyncSortListener_1< list_t, acc_t >", "structSyncSortListener_1_1SyncSortListener__1.html", null ],
     [ "SyncSortListener::SyncSortListener_N< list_t, acc_t >", "structSyncSortListener_1_1SyncSortListener__N.html", null ],
+    [ "T", null, [
+      [ "TTSString< T, TC >", "classTTSString.html", null ]
+    ] ],
     [ "CIsoSurface::T4DIndex", "classCIsoSurface_1_1T4DIndex.html", null ],
     [ "cif_dp::cetTable::TableSorter", "structcif__dp_1_1cetTable_1_1TableSorter.html", null ],
     [ "TActionQueueLock", "classTActionQueueLock.html", null ],
@@ -2472,7 +2669,8 @@ var hierarchy =
       [ "TSurfCalculationTask1", "structTSurfCalculationTask1.html", null ],
       [ "TUnitCell::TBuildDistanceMapTask", "classTUnitCell_1_1TBuildDistanceMapTask.html", null ],
       [ "TUnitCell::TSearchSymmEqTask", "classTUnitCell_1_1TSearchSymmEqTask.html", null ],
-      [ "TXGrid::TPlaneCalculationTask", "structTXGrid_1_1TPlaneCalculationTask.html", null ]
+      [ "TXGrid::TPlaneCalculationTask", "structTXGrid_1_1TPlaneCalculationTask.html", null ],
+      [ "TestRTask", "structTestRTask.html", null ]
     ] ],
     [ "TAtomTypePermutator", "classTAtomTypePermutator.html", null ],
     [ "TAttachedNode", "classTAttachedNode.html", null ],
@@ -2519,7 +2717,9 @@ var hierarchy =
       [ "TNotImplementedException", "classTNotImplementedException.html", null ],
       [ "TOutOfMemoryException", "classTOutOfMemoryException.html", null ],
       [ "TUrl::TInvalidUrlException", "classTUrl_1_1TInvalidUrlException.html", null ],
-      [ "cif_dp::ParsingException", "classcif__dp_1_1ParsingException.html", null ]
+      [ "cif_dp::ParsingException", "classcif__dp_1_1ParsingException.html", null ],
+      [ "olx_nui::NUIInitFaieldEx", "classolx__nui_1_1NUIInitFaieldEx.html", null ],
+      [ "test::SVDTestException< FT >", "classtest_1_1SVDTestException.html", null ]
     ] ],
     [ "TBravaisLattice", "classTBravaisLattice.html", null ],
     [ "TBTreeTraverser< TreeToTraverseClass >", "classTBTreeTraverser.html", null ],
@@ -2531,10 +2731,20 @@ var hierarchy =
     [ "ComplexAccessor::TComplexAccessor< acc1_t, acc2_t >", "classComplexAccessor_1_1TComplexAccessor.html", null ],
     [ "ComplexAccessor::TComplexAccessorP< acc1_t, acc2_t >", "classComplexAccessor_1_1TComplexAccessorP.html", null ],
     [ "ComplexComparator::TComplexComparator< Accessor, Comparator >", "classComplexComparator_1_1TComplexComparator.html", null ],
+    [ "TCString", null, [
+      [ "TTSString< TCString, char >", "classTTSString.html", null ]
+    ] ],
     [ "TDereferenceAccessor< item_t >", "structTDereferenceAccessor.html", null ],
     [ "TDirectAccessor< item_t >", "structTDirectAccessor.html", null ],
     [ "TDispatchInfo", "structTDispatchInfo.html", null ],
     [ "TEGraph< IC, AssociatedOC >", "classTEGraph.html", null ],
+    [ "TEHashed< basket_factory_t, N, L >", "classTEHashed.html", null ],
+    [ "TEHashed< MapFactory< key_t, item_t, comparator_t >, 64, 2 >", "classTEHashed.html", [
+      [ "TEHashMap< key_t, item_t, comparator_t, N, L >", "classTEHashMap.html", null ]
+    ] ],
+    [ "TEHashed< SetFactory< item_t, comparator_t >, 64, 2 >", "classTEHashed.html", [
+      [ "TEHashSet< item_t, comparator_t, N, L >", "classTEHashSet.html", null ]
+    ] ],
     [ "TElementStats< OC >", "classTElementStats.html", null ],
     [ "XLibMacros::TEnviComparator", "classXLibMacros_1_1TEnviComparator.html", null ],
     [ "TEPoint3< FloatT >", "structTEPoint3.html", null ],
@@ -2551,6 +2761,8 @@ var hierarchy =
     [ "TGlClipPlanes", "classTGlClipPlanes.html", null ],
     [ "TGlRenderer::TGlListManager", "classTGlRenderer_1_1TGlListManager.html", null ],
     [ "TGlPrimitiveParams", "structTGlPrimitiveParams.html", null ],
+    [ "TGraphRSBin", "structTGraphRSBin.html", null ],
+    [ "TGraphRSRef", "structTGraphRSRef.html", null ],
     [ "TGraphTraverser< GraphToTraverseClass >", "classTGraphTraverser.html", null ],
     [ "TGroupCAtom", "classTGroupCAtom.html", null ],
     [ "TGSParam", "structTGSParam.html", null ],
@@ -2564,6 +2776,10 @@ var hierarchy =
     [ "TAutoDB::THitStruct< NodeClass >", "structTAutoDB_1_1THitStruct.html", null ],
     [ "ThreadSingletonBase< Impl >", "classThreadSingletonBase.html", null ],
     [ "ThreadSingletonMainInstance< Impl >", "structThreadSingletonMainInstance.html", null ],
+    [ "THtmlPreprocessor", "classTHtmlPreprocessor.html", [
+      [ "THtml", "classTHtml.html", null ]
+    ] ],
+    [ "THtmlSwitch", "classTHtmlSwitch.html", null ],
     [ "TICStrList< T >", "classTICStrList.html", [
       [ "ConstStrList< TTStrList< T > >", "classConstStrList.html", null ],
       [ "ConstStrList< TStrList >", "classConstStrList.html", null ],
@@ -2580,38 +2796,44 @@ var hierarchy =
     [ "TICStrList< T::string_type >", "classTICStrList.html", [
       [ "TTStrList< T >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, bool >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, bool > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, bool >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, bool > >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, cif_dp::ICifEntry * >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, cif_dp::ICifEntry * > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, cif_dp::ICifEntry * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, cif_dp::ICifEntry * > >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, const cm_Element * >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, const cm_Element * > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, const cm_Element * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, const cm_Element * > >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, TBasicCFile * >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, TBasicCFile * > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, math_eval::AEvaluable * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, math_eval::AEvaluable * > >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, TBravaisLattice * >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, TBravaisLattice * > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, TBasicCFile * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TBasicCFile * > >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, TCLattice * >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, TCLattice * > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, TBravaisLattice * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TBravaisLattice * > >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, TDataItem * >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, TDataItem * > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, TCLattice * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TCLattice * > >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, TGlMaterial * >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, TGlMaterial * > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, TDataItem * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TDataItem * > >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, TGlPrimitive * >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, TGlPrimitive * > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, TGlMaterial * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TGlMaterial * > >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, TInsList * >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, TInsList * > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, TGlPrimitive * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TGlPrimitive * > >", "classTTStrList.html", null ]
     ] ],
-    [ "TICStrList< TObjectStrListData< olxstr, wxMenuItem * >::string_type >", "classTICStrList.html", [
-      [ "TTStrList< TObjectStrListData< olxstr, wxMenuItem * > >", "classTTStrList.html", null ]
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, THtmlSwitch * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, THtmlSwitch * > >", "classTTStrList.html", null ]
+    ] ],
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, TInsList * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, TInsList * > >", "classTTStrList.html", null ]
+    ] ],
+    [ "TICStrList< TObjectStrListData< TTSString< TCString, char >, wxMenuItem * >::string_type >", "classTICStrList.html", [
+      [ "TTStrList< TObjectStrListData< TTSString< TCString, char >, wxMenuItem * > >", "classTTStrList.html", null ]
     ] ],
     [ "TIDistribution", "classTIDistribution.html", null ],
     [ "TIObjectProvider< obj_t >", "classTIObjectProvider.html", [
@@ -2649,9 +2871,6 @@ var hierarchy =
     [ "TLLTBondSort", "classTLLTBondSort.html", null ],
     [ "TLstRef", "structTLstRef.html", null ],
     [ "TLstSplitAtom", "structTLstSplitAtom.html", null ],
-    [ "TMainFrame", null, [
-      [ "TMainForm", "classTMainForm.html", null ]
-    ] ],
     [ "TMatrix33< FT >", "classTMatrix33.html", null ],
     [ "TMemoryBlock", "structTMemoryBlock.html", null ],
     [ "TModeRegistry", "classTModeRegistry.html", null ],
@@ -2665,6 +2884,7 @@ var hierarchy =
       [ "TtaFactory< OC, IC, AC >", "classTtaFactory.html", null ]
     ] ],
     [ "TObjectList< ObjectClass >", "classTObjectList.html", null ],
+    [ "THtml::TObjectsState", "classTHtml_1_1TObjectsState.html", null ],
     [ "TOperatorSignature", "classTOperatorSignature.html", null ],
     [ "VcoVContainer::TorsionAngle< aT, bT, cT, dT >", "structVcoVContainer_1_1TorsionAngle.html", null ],
     [ "TPattAtom", "classTPattAtom.html", null ],
@@ -2672,6 +2892,7 @@ var hierarchy =
     [ "TPMember", "structTPMember.html", null ],
     [ "TPointerComparator", "classTPointerComparator.html", null ],
     [ "TPolynomMember", "classTPolynomMember.html", null ],
+    [ "THtmlManager::TPopupData", "structTHtmlManager_1_1TPopupData.html", null ],
     [ "TProcessImage", "classTProcessImage.html", null ],
     [ "BTree2< C, O >::Tree2Traverser", "classBTree2_1_1Tree2Traverser.html", null ],
     [ "BTree3< C, O >::Tree3Traverser", "classBTree3_1_1Tree3Traverser.html", null ],
@@ -2686,18 +2907,20 @@ var hierarchy =
       [ "TObjectStrListData< SC, OT >", "structTObjectStrListData.html", null ],
       [ "TObjectStrListData< SC, OC >", "structTObjectStrListData.html", null ]
     ] ],
-    [ "TSingleStringWrapper< olxstr >", "structTSingleStringWrapper.html", [
-      [ "TObjectStrListData< olxstr, TDataItem * >", "structTObjectStrListData.html", null ],
-      [ "TObjectStrListData< olxstr, TGlMaterial * >", "structTObjectStrListData.html", null ],
-      [ "TObjectStrListData< olxstr, bool >", "structTObjectStrListData.html", null ],
-      [ "TObjectStrListData< olxstr, TInsList * >", "structTObjectStrListData.html", null ],
-      [ "TObjectStrListData< olxstr, const cm_Element * >", "structTObjectStrListData.html", null ],
-      [ "TObjectStrListData< olxstr, wxMenuItem * >", "structTObjectStrListData.html", null ],
-      [ "TObjectStrListData< olxstr, TCLattice * >", "structTObjectStrListData.html", null ],
-      [ "TObjectStrListData< olxstr, TBravaisLattice * >", "structTObjectStrListData.html", null ],
-      [ "TObjectStrListData< olxstr, TGlPrimitive * >", "structTObjectStrListData.html", null ],
-      [ "TObjectStrListData< olxstr, TBasicCFile * >", "structTObjectStrListData.html", null ],
-      [ "TObjectStrListData< olxstr, cif_dp::ICifEntry * >", "structTObjectStrListData.html", null ]
+    [ "TSingleStringWrapper< TTSString< TCString, char > >", "structTSingleStringWrapper.html", [
+      [ "TObjectStrListData< TTSString< TCString, char >, TDataItem * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, TGlMaterial * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, THtmlSwitch * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, bool >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, TInsList * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, const cm_Element * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, wxMenuItem * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, TCLattice * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, TBravaisLattice * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, TGlPrimitive * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, TBasicCFile * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, cif_dp::ICifEntry * >", "structTObjectStrListData.html", null ],
+      [ "TObjectStrListData< TTSString< TCString, char >, math_eval::AEvaluable * >", "structTObjectStrListData.html", null ]
     ] ],
     [ "TSortedListEntry", "classTSortedListEntry.html", null ],
     [ "TStack", null, [
@@ -2707,9 +2930,6 @@ var hierarchy =
     [ "TStringWrapperComparator< CaseInsensetive >", "classTStringWrapperComparator.html", null ],
     [ "TSymmMat< MC, VC >", "classTSymmMat.html", null ],
     [ "TSymmTestData", "structTSymmTestData.html", null ],
-    [ "TTextEdit", null, [
-      [ "TCmdLine", "classTCmdLine.html", null ]
-    ] ],
     [ "TTextRect", "structTTextRect.html", null ],
     [ "TThreadPool", "classTThreadPool.html", null ],
     [ "TTIString< T >", "classTTIString.html", null ],
@@ -2730,11 +2950,13 @@ var hierarchy =
           ] ],
           [ "olxdict< olxstr, VType, olxstrComparator< case_insensitive > >", "classolxdict.html", null ],
           [ "olxdict< key_t, val_t, Comparator >", "classolxdict.html", null ],
+          [ "olxdict< key_t, item_t, comparator_t >", "classolxdict.html", null ],
           [ "olxdict< const cm_Element *, double, TPointerComparator >", "classolxdict.html", null ],
           [ "olxdict< size_t, size_t, TPrimitiveComparator >", "classolxdict.html", [
             [ "olx_pdict< size_t, size_t >", "classolx__pdict.html", null ]
           ] ],
           [ "olxdict< size_t, TSizeList, TPrimitiveComparator >", "classolxdict.html", null ],
+          [ "olxset< item_t, comparator_t >", "classolxset.html", null ],
           [ "olxset< olxstr, olxstrComparator< case_insensitive > >", "classolxset.html", null ],
           [ "olxset< obj_t, cmp_t >", "classolxset.html", null ],
           [ "olxset< idx_pair_t, TComparableComparator >", "classolxset.html", null ],
@@ -2804,6 +3026,13 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "TTSortedListBase< TObjectList< DictEntry< const IOlxObject *, int, TPointerComparator > >, DictEntry< const IOlxObject *, int, TPointerComparator >::TPointerComparator, DictEntry< const IOlxObject *, int, TPointerComparator > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< const IOlxObject *, int, TPointerComparator > >, DictEntry< const IOlxObject *, int, TPointerComparator >::TPointerComparator, DictEntry< const IOlxObject *, int, TPointerComparator > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< const IOlxObject *, int, TPointerComparator >, DictEntry< const IOlxObject *, int, TPointerComparator >::TPointerComparator >", "classSortedObjectList.html", [
+          [ "olxdict< const IOlxObject *, int, TPointerComparator >", "classolxdict.html", null ]
+        ] ]
+      ] ]
+    ] ],
     [ "TTSortedListBase< TObjectList< DictEntry< ExplicitCAtomRef *, TVector3< double >, TPointerComparator > >, DictEntry< ExplicitCAtomRef *, TVector3< double >, TPointerComparator >::TPointerComparator, DictEntry< ExplicitCAtomRef *, TVector3< double >, TPointerComparator > >", "classTTSortedListBase.html", [
       [ "TTSortedList< TObjectList< DictEntry< ExplicitCAtomRef *, TVector3< double >, TPointerComparator > >, DictEntry< ExplicitCAtomRef *, TVector3< double >, TPointerComparator >::TPointerComparator, DictEntry< ExplicitCAtomRef *, TVector3< double >, TPointerComparator > >", "classTTSortedList.html", [
         [ "SortedObjectList< DictEntry< ExplicitCAtomRef *, TVector3< double >, TPointerComparator >, DictEntry< ExplicitCAtomRef *, TVector3< double >, TPointerComparator >::TPointerComparator >", "classSortedObjectList.html", [
@@ -2845,11 +3074,20 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "TTSortedListBase< TObjectList< DictEntry< int32_t, olxstr, TPrimitiveComparator > >, DictEntry< int32_t, olxstr, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< int32_t, olxstr, TPrimitiveComparator > >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< DictEntry< int32_t, olxstr, TPrimitiveComparator > >, DictEntry< int32_t, olxstr, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< int32_t, olxstr, TPrimitiveComparator > >", "classTTSortedList.html", [
-        [ "SortedObjectList< DictEntry< int32_t, olxstr, TPrimitiveComparator >, DictEntry< int32_t, olxstr, TPrimitiveComparator >::TPrimitiveComparator >", "classSortedObjectList.html", [
-          [ "olxdict< int32_t, olxstr, TPrimitiveComparator >", "classolxdict.html", [
-            [ "olx_pdict< int32_t, olxstr >", "classolx__pdict.html", null ]
+    [ "TTSortedListBase< TObjectList< DictEntry< int, TTSString< TCString, char >, TPrimitiveComparator > >, DictEntry< int, TTSString< TCString, char >, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< int, TTSString< TCString, char >, TPrimitiveComparator > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< int, TTSString< TCString, char >, TPrimitiveComparator > >, DictEntry< int, TTSString< TCString, char >, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< int, TTSString< TCString, char >, TPrimitiveComparator > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< int, TTSString< TCString, char >, TPrimitiveComparator >, DictEntry< int, TTSString< TCString, char >, TPrimitiveComparator >::TPrimitiveComparator >", "classSortedObjectList.html", [
+          [ "olxdict< int, TTSString< TCString, char >, TPrimitiveComparator >", "classolxdict.html", [
+            [ "olx_pdict< int, TTSString< TCString, char > >", "classolx__pdict.html", null ]
+          ] ]
+        ] ]
+      ] ]
+    ] ],
+    [ "TTSortedListBase< TObjectList< DictEntry< int32_t, ctrl_ext::TMenuItem *, TPrimitiveComparator > >, DictEntry< int32_t, ctrl_ext::TMenuItem *, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< int32_t, ctrl_ext::TMenuItem *, TPrimitiveComparator > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< int32_t, ctrl_ext::TMenuItem *, TPrimitiveComparator > >, DictEntry< int32_t, ctrl_ext::TMenuItem *, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< int32_t, ctrl_ext::TMenuItem *, TPrimitiveComparator > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< int32_t, ctrl_ext::TMenuItem *, TPrimitiveComparator >, DictEntry< int32_t, ctrl_ext::TMenuItem *, TPrimitiveComparator >::TPrimitiveComparator >", "classSortedObjectList.html", [
+          [ "olxdict< int32_t, ctrl_ext::TMenuItem *, TPrimitiveComparator >", "classolxdict.html", [
+            [ "olx_pdict< int32_t, ctrl_ext::TMenuItem * >", "classolx__pdict.html", null ]
           ] ]
         ] ]
       ] ]
@@ -2863,11 +3101,11 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "TTSortedListBase< TObjectList< DictEntry< int32_t, TMenuItem *, TPrimitiveComparator > >, DictEntry< int32_t, TMenuItem *, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< int32_t, TMenuItem *, TPrimitiveComparator > >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< DictEntry< int32_t, TMenuItem *, TPrimitiveComparator > >, DictEntry< int32_t, TMenuItem *, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< int32_t, TMenuItem *, TPrimitiveComparator > >", "classTTSortedList.html", [
-        [ "SortedObjectList< DictEntry< int32_t, TMenuItem *, TPrimitiveComparator >, DictEntry< int32_t, TMenuItem *, TPrimitiveComparator >::TPrimitiveComparator >", "classSortedObjectList.html", [
-          [ "olxdict< int32_t, TMenuItem *, TPrimitiveComparator >", "classolxdict.html", [
-            [ "olx_pdict< int32_t, TMenuItem * >", "classolx__pdict.html", null ]
+    [ "TTSortedListBase< TObjectList< DictEntry< int32_t, TTSString< TCString, char >, TPrimitiveComparator > >, DictEntry< int32_t, TTSString< TCString, char >, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< int32_t, TTSString< TCString, char >, TPrimitiveComparator > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< int32_t, TTSString< TCString, char >, TPrimitiveComparator > >, DictEntry< int32_t, TTSString< TCString, char >, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< int32_t, TTSString< TCString, char >, TPrimitiveComparator > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< int32_t, TTSString< TCString, char >, TPrimitiveComparator >, DictEntry< int32_t, TTSString< TCString, char >, TPrimitiveComparator >::TPrimitiveComparator >", "classSortedObjectList.html", [
+          [ "olxdict< int32_t, TTSString< TCString, char >, TPrimitiveComparator >", "classolxdict.html", [
+            [ "olx_pdict< int32_t, TTSString< TCString, char > >", "classolx__pdict.html", null ]
           ] ]
         ] ]
       ] ]
@@ -2920,6 +3158,15 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< olxstr, AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< olxstr, AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, olxstrComparator< case_insensitive > >, DictEntry< olxstr, AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
+          [ "olxdict< olxstr, AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, olxstrComparator< case_insensitive > >", "classolxdict.html", [
+            [ "olxstr_dict< AnAssociation3< ctrl_ext::AOlxCtrl *, wxWindow *, bool >, true >", "classolxstr__dict.html", null ]
+          ] ]
+        ] ]
+      ] ]
+    ] ],
     [ "TTSortedListBase< TObjectList< DictEntry< olxstr, CalculatedVars::Object *, olxstrComparator< false > > >, DictEntry< olxstr, CalculatedVars::Object *, olxstrComparator< false > >::olxstrComparator< false >, DictEntry< olxstr, CalculatedVars::Object *, olxstrComparator< false > > >", "classTTSortedListBase.html", [
       [ "TTSortedList< TObjectList< DictEntry< olxstr, CalculatedVars::Object *, olxstrComparator< false > > >, DictEntry< olxstr, CalculatedVars::Object *, olxstrComparator< false > >::olxstrComparator< false >, DictEntry< olxstr, CalculatedVars::Object *, olxstrComparator< false > > >", "classTTSortedList.html", [
         [ "SortedObjectList< DictEntry< olxstr, CalculatedVars::Object *, olxstrComparator< false > >, DictEntry< olxstr, CalculatedVars::Object *, olxstrComparator< false > >::olxstrComparator< false > >", "classSortedObjectList.html", [
@@ -2965,10 +3212,21 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, cm_Absorption_Entry, olxstrComparator< true > > >, DictEntry< olxstr, cm_Absorption_Entry, olxstrComparator< true > >::olxstrComparator< true >, DictEntry< olxstr, cm_Absorption_Entry, olxstrComparator< true > > >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< DictEntry< olxstr, cm_Absorption_Entry, olxstrComparator< true > > >, DictEntry< olxstr, cm_Absorption_Entry, olxstrComparator< true > >::olxstrComparator< true >, DictEntry< olxstr, cm_Absorption_Entry, olxstrComparator< true > > >", "classTTSortedList.html", [
-        [ "SortedObjectList< DictEntry< olxstr, cm_Absorption_Entry, olxstrComparator< true > >, DictEntry< olxstr, cm_Absorption_Entry, olxstrComparator< true > >::olxstrComparator< true > >", "classSortedObjectList.html", [
-          [ "olxdict< olxstr, cm_Absorption_Entry, olxstrComparator< true > >", "classolxdict.html", null ]
+    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, ctrl_ext::TMainFrame::TWindowInfo, olxstrComparator< false > > >, DictEntry< olxstr, ctrl_ext::TMainFrame::TWindowInfo, olxstrComparator< false > >::olxstrComparator< false >, DictEntry< olxstr, ctrl_ext::TMainFrame::TWindowInfo, olxstrComparator< false > > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< olxstr, ctrl_ext::TMainFrame::TWindowInfo, olxstrComparator< false > > >, DictEntry< olxstr, ctrl_ext::TMainFrame::TWindowInfo, olxstrComparator< false > >::olxstrComparator< false >, DictEntry< olxstr, ctrl_ext::TMainFrame::TWindowInfo, olxstrComparator< false > > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< olxstr, ctrl_ext::TMainFrame::TWindowInfo, olxstrComparator< false > >, DictEntry< olxstr, ctrl_ext::TMainFrame::TWindowInfo, olxstrComparator< false > >::olxstrComparator< false > >", "classSortedObjectList.html", [
+          [ "olxdict< olxstr, ctrl_ext::TMainFrame::TWindowInfo, olxstrComparator< false > >", "classolxdict.html", [
+            [ "olxstr_dict< ctrl_ext::TMainFrame::TWindowInfo >", "classolxstr__dict.html", null ]
+          ] ]
+        ] ]
+      ] ]
+    ] ],
+    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, ctrl_ext::TMenu *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, ctrl_ext::TMenu *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, ctrl_ext::TMenu *, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< olxstr, ctrl_ext::TMenu *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, ctrl_ext::TMenu *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, ctrl_ext::TMenu *, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< olxstr, ctrl_ext::TMenu *, olxstrComparator< case_insensitive > >, DictEntry< olxstr, ctrl_ext::TMenu *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
+          [ "olxdict< olxstr, ctrl_ext::TMenu *, olxstrComparator< case_insensitive > >", "classolxdict.html", [
+            [ "olxstr_dict< ctrl_ext::TMenu *, false >", "classolxstr__dict.html", null ]
+          ] ]
         ] ]
       ] ]
     ] ],
@@ -3035,6 +3293,15 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, math_eval::IFactory *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, math_eval::IFactory *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, math_eval::IFactory *, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< olxstr, math_eval::IFactory *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, math_eval::IFactory *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, math_eval::IFactory *, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< olxstr, math_eval::IFactory *, olxstrComparator< case_insensitive > >, DictEntry< olxstr, math_eval::IFactory *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
+          [ "olxdict< olxstr, math_eval::IFactory *, olxstrComparator< case_insensitive > >", "classolxdict.html", [
+            [ "olxstr_dict< math_eval::IFactory *, true >", "classolxstr__dict.html", null ]
+          ] ]
+        ] ]
+      ] ]
+    ] ],
     [ "TTSortedListBase< TObjectList< DictEntry< olxstr, olx_pair_t< olxstr, size_t >, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, olx_pair_t< olxstr, size_t >, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, olx_pair_t< olxstr, size_t >, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
       [ "TTSortedList< TObjectList< DictEntry< olxstr, olx_pair_t< olxstr, size_t >, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, olx_pair_t< olxstr, size_t >, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, olx_pair_t< olxstr, size_t >, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
         [ "SortedObjectList< DictEntry< olxstr, olx_pair_t< olxstr, size_t >, olxstrComparator< case_insensitive > >, DictEntry< olxstr, olx_pair_t< olxstr, size_t >, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
@@ -3044,29 +3311,11 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, olxstr *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, olxstr *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, olxstr *, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< DictEntry< olxstr, olxstr *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, olxstr *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, olxstr *, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
-        [ "SortedObjectList< DictEntry< olxstr, olxstr *, olxstrComparator< case_insensitive > >, DictEntry< olxstr, olxstr *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
-          [ "olxdict< olxstr, olxstr *, olxstrComparator< case_insensitive > >", "classolxdict.html", [
-            [ "olxstr_dict< olxstr *, true >", "classolxstr__dict.html", null ]
-          ] ]
-        ] ]
-      ] ]
-    ] ],
-    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, olxstr, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, olxstr, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, olxstr, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< DictEntry< olxstr, olxstr, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, olxstr, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, olxstr, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
-        [ "SortedObjectList< DictEntry< olxstr, olxstr, olxstrComparator< case_insensitive > >, DictEntry< olxstr, olxstr, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
-          [ "olxdict< olxstr, olxstr, olxstrComparator< case_insensitive > >", "classolxdict.html", [
-            [ "olxstr_dict< olxstr, true >", "classolxstr__dict.html", null ]
-          ] ]
-        ] ]
-      ] ]
-    ] ],
-    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, olxstr, olxstrComparator< false > > >, DictEntry< olxstr, olxstr, olxstrComparator< false > >::olxstrComparator< false >, DictEntry< olxstr, olxstr, olxstrComparator< false > > >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< DictEntry< olxstr, olxstr, olxstrComparator< false > > >, DictEntry< olxstr, olxstr, olxstrComparator< false > >::olxstrComparator< false >, DictEntry< olxstr, olxstr, olxstrComparator< false > > >", "classTTSortedList.html", [
-        [ "SortedObjectList< DictEntry< olxstr, olxstr, olxstrComparator< false > >, DictEntry< olxstr, olxstr, olxstrComparator< false > >::olxstrComparator< false > >", "classSortedObjectList.html", [
-          [ "olxdict< olxstr, olxstr, olxstrComparator< false > >", "classolxdict.html", [
-            [ "olxstr_dict< olxstr >", "classolxstr__dict.html", null ]
+    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, olxstr_dict< TTSString< TCString, char >, false > *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, olxstr_dict< TTSString< TCString, char >, false > *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, olxstr_dict< TTSString< TCString, char >, false > *, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< olxstr, olxstr_dict< TTSString< TCString, char >, false > *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, olxstr_dict< TTSString< TCString, char >, false > *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, olxstr_dict< TTSString< TCString, char >, false > *, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< olxstr, olxstr_dict< TTSString< TCString, char >, false > *, olxstrComparator< case_insensitive > >, DictEntry< olxstr, olxstr_dict< TTSString< TCString, char >, false > *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
+          [ "olxdict< olxstr, olxstr_dict< TTSString< TCString, char >, false > *, olxstrComparator< case_insensitive > >", "classolxdict.html", [
+            [ "olxstr_dict< olxstr_dict< TTSString< TCString, char >, false > *, true >", "classolxstr__dict.html", null ]
           ] ]
         ] ]
       ] ]
@@ -3162,6 +3411,15 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, THtmlManager::TPopupData *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, THtmlManager::TPopupData *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, THtmlManager::TPopupData *, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< olxstr, THtmlManager::TPopupData *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, THtmlManager::TPopupData *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, THtmlManager::TPopupData *, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< olxstr, THtmlManager::TPopupData *, olxstrComparator< case_insensitive > >, DictEntry< olxstr, THtmlManager::TPopupData *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
+          [ "olxdict< olxstr, THtmlManager::TPopupData *, olxstrComparator< case_insensitive > >", "classolxdict.html", [
+            [ "olxstr_dict< THtmlManager::TPopupData *, true >", "classolxstr__dict.html", null ]
+          ] ]
+        ] ]
+      ] ]
+    ] ],
     [ "TTSortedListBase< TObjectList< DictEntry< olxstr, TLibrary *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, TLibrary *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, TLibrary *, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
       [ "TTSortedList< TObjectList< DictEntry< olxstr, TLibrary *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, TLibrary *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, TLibrary *, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
         [ "SortedObjectList< DictEntry< olxstr, TLibrary *, olxstrComparator< case_insensitive > >, DictEntry< olxstr, TLibrary *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
@@ -3176,15 +3434,6 @@ var hierarchy =
         [ "SortedObjectList< DictEntry< olxstr, TMemoryBlock *, olxstrComparator< case_insensitive > >, DictEntry< olxstr, TMemoryBlock *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
           [ "olxdict< olxstr, TMemoryBlock *, olxstrComparator< case_insensitive > >", "classolxdict.html", [
             [ "olxstr_dict< TMemoryBlock *, false >", "classolxstr__dict.html", null ]
-          ] ]
-        ] ]
-      ] ]
-    ] ],
-    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, TMenu *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, TMenu *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, TMenu *, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< DictEntry< olxstr, TMenu *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, TMenu *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, TMenu *, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
-        [ "SortedObjectList< DictEntry< olxstr, TMenu *, olxstrComparator< case_insensitive > >, DictEntry< olxstr, TMenu *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
-          [ "olxdict< olxstr, TMenu *, olxstrComparator< case_insensitive > >", "classolxdict.html", [
-            [ "olxstr_dict< TMenu *, false >", "classolxstr__dict.html", null ]
           ] ]
         ] ]
       ] ]
@@ -3207,6 +3456,34 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, TTSString< TCString, char > *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, TTSString< TCString, char > *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, TTSString< TCString, char > *, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< olxstr, TTSString< TCString, char > *, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, TTSString< TCString, char > *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, TTSString< TCString, char > *, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< olxstr, TTSString< TCString, char > *, olxstrComparator< case_insensitive > >, DictEntry< olxstr, TTSString< TCString, char > *, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
+          [ "olxdict< olxstr, TTSString< TCString, char > *, olxstrComparator< case_insensitive > >", "classolxdict.html", [
+            [ "olxstr_dict< TTSString< TCString, char > *, true >", "classolxstr__dict.html", null ]
+          ] ]
+        ] ]
+      ] ]
+    ] ],
+    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< case_insensitive > > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< case_insensitive > > >, DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive >, DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< case_insensitive > > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< case_insensitive > >, DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< case_insensitive > >::olxstrComparator< case_insensitive > >", "classSortedObjectList.html", [
+          [ "olxdict< olxstr, TTSString< TCString, char >, olxstrComparator< case_insensitive > >", "classolxdict.html", [
+            [ "olxstr_dict< TTSString< TCString, char >, false >", "classolxstr__dict.html", null ],
+            [ "olxstr_dict< TTSString< TCString, char >, true >", "classolxstr__dict.html", null ]
+          ] ]
+        ] ]
+      ] ]
+    ] ],
+    [ "TTSortedListBase< TObjectList< DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< false > > >, DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< false > >::olxstrComparator< false >, DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< false > > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< false > > >, DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< false > >::olxstrComparator< false >, DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< false > > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< false > >, DictEntry< olxstr, TTSString< TCString, char >, olxstrComparator< false > >::olxstrComparator< false > >", "classSortedObjectList.html", [
+          [ "olxdict< olxstr, TTSString< TCString, char >, olxstrComparator< false > >", "classolxdict.html", [
+            [ "olxstr_dict< TTSString< TCString, char > >", "classolxstr__dict.html", null ]
+          ] ]
+        ] ]
+      ] ]
+    ] ],
     [ "TTSortedListBase< TObjectList< DictEntry< olxstr, VType, olxstrComparator< false > > >, DictEntry< olxstr, VType, olxstrComparator< false > >::olxstrComparator< false >, DictEntry< olxstr, VType, olxstrComparator< false > > >", "classTTSortedListBase.html", [
       [ "TTSortedList< TObjectList< DictEntry< olxstr, VType, olxstrComparator< false > > >, DictEntry< olxstr, VType, olxstrComparator< false > >::olxstrComparator< false >, DictEntry< olxstr, VType, olxstrComparator< false > > >", "classTTSortedList.html", [
         [ "SortedObjectList< DictEntry< olxstr, VType, olxstrComparator< false > >, DictEntry< olxstr, VType, olxstrComparator< false > >::olxstrComparator< false > >", "classSortedObjectList.html", [
@@ -3225,11 +3502,11 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "TTSortedListBase< TObjectList< DictEntry< size_t, olx_cset< olxstr >, TPrimitiveComparator > >, DictEntry< size_t, olx_cset< olxstr >, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< size_t, olx_cset< olxstr >, TPrimitiveComparator > >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< DictEntry< size_t, olx_cset< olxstr >, TPrimitiveComparator > >, DictEntry< size_t, olx_cset< olxstr >, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< size_t, olx_cset< olxstr >, TPrimitiveComparator > >", "classTTSortedList.html", [
-        [ "SortedObjectList< DictEntry< size_t, olx_cset< olxstr >, TPrimitiveComparator >, DictEntry< size_t, olx_cset< olxstr >, TPrimitiveComparator >::TPrimitiveComparator >", "classSortedObjectList.html", [
-          [ "olxdict< size_t, olx_cset< olxstr >, TPrimitiveComparator >", "classolxdict.html", [
-            [ "olx_pdict< size_t, olx_cset< olxstr > >", "classolx__pdict.html", null ]
+    [ "TTSortedListBase< TObjectList< DictEntry< size_t, olx_cset< TTSString< TCString, char > >, TPrimitiveComparator > >, DictEntry< size_t, olx_cset< TTSString< TCString, char > >, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< size_t, olx_cset< TTSString< TCString, char > >, TPrimitiveComparator > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< size_t, olx_cset< TTSString< TCString, char > >, TPrimitiveComparator > >, DictEntry< size_t, olx_cset< TTSString< TCString, char > >, TPrimitiveComparator >::TPrimitiveComparator, DictEntry< size_t, olx_cset< TTSString< TCString, char > >, TPrimitiveComparator > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< size_t, olx_cset< TTSString< TCString, char > >, TPrimitiveComparator >, DictEntry< size_t, olx_cset< TTSString< TCString, char > >, TPrimitiveComparator >::TPrimitiveComparator >", "classSortedObjectList.html", [
+          [ "olxdict< size_t, olx_cset< TTSString< TCString, char > >, TPrimitiveComparator >", "classolxdict.html", [
+            [ "olx_pdict< size_t, olx_cset< TTSString< TCString, char > > >", "classolx__pdict.html", null ]
           ] ]
         ] ]
       ] ]
@@ -3287,10 +3564,17 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "TTSortedListBase< TObjectList< DictEntry< TPtrList< TCAtom > *, olxstr, TPointerComparator > >, DictEntry< TPtrList< TCAtom > *, olxstr, TPointerComparator >::TPointerComparator, DictEntry< TPtrList< TCAtom > *, olxstr, TPointerComparator > >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< DictEntry< TPtrList< TCAtom > *, olxstr, TPointerComparator > >, DictEntry< TPtrList< TCAtom > *, olxstr, TPointerComparator >::TPointerComparator, DictEntry< TPtrList< TCAtom > *, olxstr, TPointerComparator > >", "classTTSortedList.html", [
-        [ "SortedObjectList< DictEntry< TPtrList< TCAtom > *, olxstr, TPointerComparator >, DictEntry< TPtrList< TCAtom > *, olxstr, TPointerComparator >::TPointerComparator >", "classSortedObjectList.html", [
-          [ "olxdict< TPtrList< TCAtom > *, olxstr, TPointerComparator >", "classolxdict.html", null ]
+    [ "TTSortedListBase< TObjectList< DictEntry< TPtrList< TCAtom > *, TTSString< TCString, char >, TPointerComparator > >, DictEntry< TPtrList< TCAtom > *, TTSString< TCString, char >, TPointerComparator >::TPointerComparator, DictEntry< TPtrList< TCAtom > *, TTSString< TCString, char >, TPointerComparator > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< TPtrList< TCAtom > *, TTSString< TCString, char >, TPointerComparator > >, DictEntry< TPtrList< TCAtom > *, TTSString< TCString, char >, TPointerComparator >::TPointerComparator, DictEntry< TPtrList< TCAtom > *, TTSString< TCString, char >, TPointerComparator > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< TPtrList< TCAtom > *, TTSString< TCString, char >, TPointerComparator >, DictEntry< TPtrList< TCAtom > *, TTSString< TCString, char >, TPointerComparator >::TPointerComparator >", "classSortedObjectList.html", [
+          [ "olxdict< TPtrList< TCAtom > *, TTSString< TCString, char >, TPointerComparator >", "classolxdict.html", null ]
+        ] ]
+      ] ]
+    ] ],
+    [ "TTSortedListBase< TObjectList< DictEntry< TTSString< TCString, char >, cm_Absorption_Entry, olxstrComparator< true > > >, DictEntry< TTSString< TCString, char >, cm_Absorption_Entry, olxstrComparator< true > >::olxstrComparator< true >, DictEntry< TTSString< TCString, char >, cm_Absorption_Entry, olxstrComparator< true > > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< DictEntry< TTSString< TCString, char >, cm_Absorption_Entry, olxstrComparator< true > > >, DictEntry< TTSString< TCString, char >, cm_Absorption_Entry, olxstrComparator< true > >::olxstrComparator< true >, DictEntry< TTSString< TCString, char >, cm_Absorption_Entry, olxstrComparator< true > > >", "classTTSortedList.html", [
+        [ "SortedObjectList< DictEntry< TTSString< TCString, char >, cm_Absorption_Entry, olxstrComparator< true > >, DictEntry< TTSString< TCString, char >, cm_Absorption_Entry, olxstrComparator< true > >::olxstrComparator< true > >", "classSortedObjectList.html", [
+          [ "olxdict< TTSString< TCString, char >, cm_Absorption_Entry, olxstrComparator< true > >", "classolxdict.html", null ]
         ] ]
       ] ]
     ] ],
@@ -3353,19 +3637,31 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "TTSortedListBase< TObjectList< olxstr >, olxstrComparator< true >, olxstr >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< olxstr >, olxstrComparator< true >, olxstr >", "classTTSortedList.html", [
-        [ "SortedObjectList< olxstr, olxstrComparator< true > >", "classSortedObjectList.html", [
-          [ "olxset< olxstr, olxstrComparator< true > >", "classolxset.html", null ]
+    [ "TTSortedListBase< TObjectList< TTSString< TCString, char > >, olxstrComparator< false >, TTSString< TCString, char > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< TTSString< TCString, char > >, olxstrComparator< false >, TTSString< TCString, char > >", "classTTSortedList.html", [
+        [ "SortedObjectList< TTSString< TCString, char >, olxstrComparator< false > >", "classSortedObjectList.html", null ]
+      ] ]
+    ] ],
+    [ "TTSortedListBase< TObjectList< TTSString< TCString, char > >, olxstrComparator< true >, TTSString< TCString, char > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< TTSString< TCString, char > >, olxstrComparator< true >, TTSString< TCString, char > >", "classTTSortedList.html", [
+        [ "SortedObjectList< TTSString< TCString, char >, olxstrComparator< true > >", "classSortedObjectList.html", [
+          [ "olxset< TTSString< TCString, char >, olxstrComparator< true > >", "classolxset.html", null ]
         ] ]
       ] ]
     ] ],
-    [ "TTSortedListBase< TObjectList< olxstr >, TComparableComparator, olxstr >", "classTTSortedListBase.html", [
-      [ "TTSortedList< TObjectList< olxstr >, TComparableComparator, olxstr >", "classTTSortedList.html", [
-        [ "SortedObjectList< olxstr, TComparableComparator >", "classSortedObjectList.html", [
-          [ "olxset< olxstr, TComparableComparator >", "classolxset.html", [
-            [ "olx_cset< olxstr >", "classolx__cset.html", null ]
+    [ "TTSortedListBase< TObjectList< TTSString< TCString, char > >, TComparableComparator, TTSString< TCString, char > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< TTSString< TCString, char > >, TComparableComparator, TTSString< TCString, char > >", "classTTSortedList.html", [
+        [ "SortedObjectList< TTSString< TCString, char >, TComparableComparator >", "classSortedObjectList.html", [
+          [ "olxset< TTSString< TCString, char >, TComparableComparator >", "classolxset.html", [
+            [ "olx_cset< TTSString< TCString, char > >", "classolx__cset.html", null ]
           ] ]
+        ] ]
+      ] ]
+    ] ],
+    [ "TTSortedListBase< TObjectList< TVector3< double > >, TComparableComparator, TVector3< double > >", "classTTSortedListBase.html", [
+      [ "TTSortedList< TObjectList< TVector3< double > >, TComparableComparator, TVector3< double > >", "classTTSortedList.html", [
+        [ "SortedObjectList< TVector3< double >, TComparableComparator >", "classSortedObjectList.html", [
+          [ "olxset< TVector3< double >, TComparableComparator >", "classolxset.html", null ]
         ] ]
       ] ]
     ] ],
@@ -3379,15 +3675,24 @@ var hierarchy =
     [ "TTSortedListBase< TTypeList< TypeClass >, Comparator, TypeClass >", "classTTSortedListBase.html", [
       [ "SortedTypeList< TypeClass, Comparator >", "classSortedTypeList.html", null ]
     ] ],
+    [ "TTStrBuffer< char_t, str_t >", "classTTStrBuffer.html", null ],
     [ "TUndoStack", "classTUndoStack.html", null ],
     [ "TVector3< FT >", "classTVector3.html", null ],
+    [ "TWilsonBin", "structTWilsonBin.html", null ],
+    [ "TWilsonEBin", "structTWilsonEBin.html", null ],
+    [ "TWilsonRef", "structTWilsonRef.html", null ],
+    [ "ctrl_ext::TMainFrame::TWindowInfo", "structctrl__ext_1_1TMainFrame_1_1TWindowInfo.html", null ],
     [ "TWindowInterface", "classTWindowInterface.html", null ],
     [ "VcoVContainer::TwistAngle< PT >", "structVcoVContainer_1_1TwistAngle.html", null ],
+    [ "TWString", null, [
+      [ "TTSString< TWString, wchar_t >", "classTTSString.html", null ]
+    ] ],
     [ "TXAtomLabelAligner", "classTXAtomLabelAligner.html", null ],
     [ "TAutoDB::Type", "structTAutoDB_1_1Type.html", null ],
     [ "TCAtom::TypeAnalyser_< Accessor >", "structTCAtom_1_1TypeAnalyser__.html", null ],
     [ "TSAtom::TypeAnalyser_< Accessor >", "structTSAtom_1_1TypeAnalyser__.html", null ],
     [ "UndoAction", "structUndoAction.html", null ],
+    [ "inertia< FloatT >::unit_weight", "structinertia_1_1unit__weight.html", null ],
     [ "RefMerger::UnitMerger", "classRefMerger_1_1UnitMerger.html", null ],
     [ "updater::UpdateAPI", "classupdater_1_1UpdateAPI.html", null ],
     [ "olx_list_init::value_< item_t >", "structolx__list__init_1_1value__.html", null ],
@@ -3409,6 +3714,10 @@ var hierarchy =
     [ "VecOp< TVector< FT >, FT >", "structVecOp.html", [
       [ "TVector< FT >", "classTVector.html", null ]
     ] ],
+    [ "VectorMatrix< VecT >", "classVectorMatrix.html", null ],
+    [ "VectorMatrix< PlainVector< NumT > >", "classVectorMatrix.html", [
+      [ "PlainMatrix< NumT >", "classPlainMatrix.html", null ]
+    ] ],
     [ "VcoVContainer::VectorProxy", "structVcoVContainer_1_1VectorProxy.html", null ],
     [ "WBoxInfo", "structWBoxInfo.html", null ],
     [ "Wildcard", "classWildcard.html", [
@@ -3422,6 +3731,34 @@ var hierarchy =
     [ "wxAppConsole", null, [
       [ "MyApp", "classMyApp.html", null ]
     ] ],
+    [ "wxBitmapButton", null, [
+      [ "ctrl_ext::TBmpButton", "classctrl__ext_1_1TBmpButton.html", null ]
+    ] ],
+    [ "wxButton", null, [
+      [ "ctrl_ext::TButton", "classctrl__ext_1_1TButton.html", null ]
+    ] ],
+    [ "wxCheckBox", null, [
+      [ "ctrl_ext::TCheckBox", "classctrl__ext_1_1TCheckBox.html", null ]
+    ] ],
+    [ "wxChoice", null, [
+      [ "ctrl_ext::TItemList< wxChoice >", "classctrl__ext_1_1TItemList.html", [
+        [ "ctrl_ext::TChoice", "classctrl__ext_1_1TChoice.html", null ]
+      ] ]
+    ] ],
+    [ "wxClientData", null, [
+      [ "ctrl_ext::TMenu::MenuData", "classctrl__ext_1_1TMenu_1_1MenuData.html", null ]
+    ] ],
+    [ "wxColourPickerCtrl", null, [
+      [ "ctrl_ext::TColorCtrl", "classctrl__ext_1_1TColorCtrl.html", null ]
+    ] ],
+    [ "wxComboBox", null, [
+      [ "ctrl_ext::TItemList< wxComboBox >", "classctrl__ext_1_1TItemList.html", [
+        [ "ctrl_ext::TComboBox", "classctrl__ext_1_1TComboBox.html", null ]
+      ] ]
+    ] ],
+    [ "wxDatePickerCtrl", null, [
+      [ "ctrl_ext::TDateCtrl", "classctrl__ext_1_1TDateCtrl.html", null ]
+    ] ],
     [ "wxDialog", null, [
       [ "TdlgEdit", "classTdlgEdit.html", null ],
       [ "ctrl_ext::TDialog", "classctrl__ext_1_1TDialog.html", null ]
@@ -3432,11 +3769,58 @@ var hierarchy =
     [ "wxFileDropTarget", null, [
       [ "TMainForm::FileDropTarget", "classTMainForm_1_1FileDropTarget.html", null ]
     ] ],
+    [ "wxFrame", null, [
+      [ "ctrl_ext::TMainFrame", "classctrl__ext_1_1TMainFrame.html", null ]
+    ] ],
     [ "wxGLCanvas", null, [
       [ "TGlCanvas", "classTGlCanvas.html", null ]
     ] ],
+    [ "wxHtmlCell", null, [
+      [ "THtmlImageCell", "classTHtmlImageCell.html", null ]
+    ] ],
+    [ "wxHtmlWidgetCell", null, [
+      [ "THtmlWidgetCell", "classTHtmlWidgetCell.html", null ]
+    ] ],
+    [ "wxHtmlWindow", null, [
+      [ "THtml", "classTHtml.html", null ]
+    ] ],
+    [ "wxHtmlWordCell", null, [
+      [ "THtml::WordCell", "classTHtml_1_1WordCell.html", null ]
+    ] ],
+    [ "wxListBox", null, [
+      [ "ctrl_ext::TItemList< wxListBox >", "classctrl__ext_1_1TItemList.html", [
+        [ "ctrl_ext::TListBox", "classctrl__ext_1_1TListBox.html", null ]
+      ] ]
+    ] ],
+    [ "wxMenu", null, [
+      [ "ctrl_ext::TMenu", "classctrl__ext_1_1TMenu.html", null ]
+    ] ],
+    [ "wxMenuItem", null, [
+      [ "ctrl_ext::TMenuItem", "classctrl__ext_1_1TMenuItem.html", null ]
+    ] ],
+    [ "wxPanel", null, [
+      [ "ctrl_ext::TImgButton", "classctrl__ext_1_1TImgButton.html", null ]
+    ] ],
+    [ "wxSlider", null, [
+      [ "ctrl_ext::TTrackBar", "classctrl__ext_1_1TTrackBar.html", null ]
+    ] ],
+    [ "wxSpinCtrl", null, [
+      [ "ctrl_ext::TSpinCtrl", "classctrl__ext_1_1TSpinCtrl.html", null ]
+    ] ],
+    [ "wxStaticText", null, [
+      [ "ctrl_ext::TLabel", "classctrl__ext_1_1TLabel.html", null ]
+    ] ],
+    [ "wxTextCtrl", null, [
+      [ "ctrl_ext::TTextEdit", "classctrl__ext_1_1TTextEdit.html", null ]
+    ] ],
     [ "wxTimer", null, [
       [ "ctrl_ext::TTimer", "classctrl__ext_1_1TTimer.html", null ]
+    ] ],
+    [ "wxTreeCtrl", null, [
+      [ "ctrl_ext::TTreeView", "classctrl__ext_1_1TTreeView.html", null ]
+    ] ],
+    [ "wxTreeItemData", null, [
+      [ "ctrl_ext::TTreeNodeData", "classctrl__ext_1_1TTreeNodeData.html", null ]
     ] ],
     [ "XElementLib", "classXElementLib.html", null ],
     [ "XLibMacros_ChnFitData", "structXLibMacros__ChnFitData.html", null ],

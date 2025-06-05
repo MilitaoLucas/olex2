@@ -1,0 +1,94 @@
+\doxysection{ostring.\+h}
+\hypertarget{ostring_8h_source}{}\label{ostring_8h_source}\index{sdl/smart/ostring.h@{sdl/smart/ostring.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_ostr\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_ostr\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <cstdarg>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}olx\_istring.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}../type\_splitter.h"{}}}
+\DoxyCodeLine{00015\ BeginEsdlNamespace()}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ template\ <\textcolor{keywordtype}{bool}\ CaseInsensetive>\ class\ olxstrComparator\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ olxstrComparator()\ \{\}}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ S1,\ \textcolor{keyword}{class}\ S2>}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ Compare(\textcolor{keyword}{const}\ S1\&\ A,\ \textcolor{keyword}{const}\ S2\&\ B)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{return}\ CaseInsensetive\ ?\ A.Comparei(B):\ A.Compare(B);}
+\DoxyCodeLine{00023\ \ \ \}}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ this\ throws\ exceptions,\ manages\ va\_end}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{extern}\ olxstr\ olx\_print\_(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ va\_list\ args);}
+\DoxyCodeLine{00028\ \textcolor{keyword}{extern}\ olxstr\ olx\_print(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ ...);}
+\DoxyCodeLine{00029\ \textcolor{keyword}{extern}\ olxstr\ olx\_print(olxcstr\ format,\ ...);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}c"{}};\ \}}
+\DoxyCodeLine{00032\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}d"{}};\ \}}
+\DoxyCodeLine{00033\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}c"{}};\ \}}
+\DoxyCodeLine{00034\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}u"{}};\ \}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}d"{}};\ \}}
+\DoxyCodeLine{00036\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}u"{}};\ \}}
+\DoxyCodeLine{00037\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}d"{}};\ \}}
+\DoxyCodeLine{00038\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}u"{}};\ \}}
+\DoxyCodeLine{00039\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}d"{}};\ \}}
+\DoxyCodeLine{00040\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}u"{}};\ \}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}f"{}};\ \}}
+\DoxyCodeLine{00042\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}f"{}};\ \}}
+\DoxyCodeLine{00043\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_print\_format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{double})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}f"{}};\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}"{}};\ \}}
+\DoxyCodeLine{00046\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}c"{}};\ \}}
+\DoxyCodeLine{00047\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{short}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}h"{}};\ \}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}h"{}};\ \}}
+\DoxyCodeLine{00049\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}"{}};\ \}}
+\DoxyCodeLine{00050\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}"{}};\ \}}
+\DoxyCodeLine{00051\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}l"{}};\ \}}
+\DoxyCodeLine{00052\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}l"{}};\ \}}
+\DoxyCodeLine{00053\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}ll"{}};\ \}}
+\DoxyCodeLine{00054\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}ll"{}};\ \}}
+\DoxyCodeLine{00055\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}"{}};\ \}}
+\DoxyCodeLine{00056\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}l"{}};\ \}}
+\DoxyCodeLine{00057\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ olx\_format\_modifier(\textcolor{keyword}{const}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{double})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}L"{}};\ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00060\ \textcolor{keyword}{const}\ T\&\ olx\_get\_primitive\_type(\textcolor{keyword}{const}\ T\&\ n)\ \{}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordflow}{return}\ n;}
+\DoxyCodeLine{00062\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00065\ olxstr\ olx2str\_ext(T\ n,\ \textcolor{keyword}{const}\ olxcstr\ \&f)\ \{}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordflow}{return}\ olx\_print(f,\ n);}
+\DoxyCodeLine{00067\ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00070\ olxstr\ strof(T\ n)\ \{}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordflow}{return}\ olxstr(n);}
+\DoxyCodeLine{00072\ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{keyword}{static}\ olxstr\ strof(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ str)\ \{}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordflow}{return}\ olxstr(str);}
+\DoxyCodeLine{00076\ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{static}\ olxstr\ strof(\textcolor{keyword}{const}\ \textcolor{keywordtype}{wchar\_t}*\ str)\ \{}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordflow}{return}\ olxstr(str);}
+\DoxyCodeLine{00080\ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ch\_t>}
+\DoxyCodeLine{00083\ olxstr\ strof(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTTIString}{TTIString<ch\_t>}}\ \&str)\ \{}
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordflow}{return}\ olxstr(str);}
+\DoxyCodeLine{00085\ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ EndEsdlNamespace()}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

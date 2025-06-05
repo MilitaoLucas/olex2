@@ -1,0 +1,60 @@
+\doxysection{sys\+\_\+test.\+h}
+\hypertarget{sys__test_8h_source}{}\label{sys__test_8h_source}\index{sdl/tests/sys\_test.h@{sdl/tests/sys\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }CriticalSectionTest\ \{}
+\DoxyCodeLine{00014\ \ \ \textcolor{keywordtype}{int}\ i,\ j,\ k,\ l;}
+\DoxyCodeLine{00015\ \ \ \textcolor{keywordtype}{bool}\ use\_cs;}
+\DoxyCodeLine{00016\ \ \ \mbox{\hyperlink{structolx__critical__section}{olx\_critical\_section}}\ cs;}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{class\ }TestTh\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAOlxThread}{AOlxThread}}\ \ \{}
+\DoxyCodeLine{00018\ \ \ \ \ CriticalSectionTest\&\ inst;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \ \ TestTh(CriticalSectionTest\&\ \_inst)\ :\ inst(\_inst)\ \ \{\ \ Detached\ =\ \textcolor{keyword}{false};\ \ \}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ Run()\ \ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ \_i=0;\ \_i\ <\ 100000;\ \_i++\ )\ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ inst.use\_cs\ ==\ \textcolor{keyword}{true}\ )}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ inst.cs.enter();}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ inst.i++;\ inst.j++;\ inst.k++;\ inst.l++;}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ inst.use\_cs\ ==\ \textcolor{keyword}{true}\ )}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ inst.cs.leave();}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \};}
+\DoxyCodeLine{00032\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ \ \ CriticalSectionTest(\textcolor{keywordtype}{bool}\ \_use\_cs)\ :\ use\_cs(\_use\_cs),\ i(0),\ j(0),\ k(0),\ l(0)\ \{\}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ DoTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ t.description\ <<\ \_\_OlxSrcInfo\ <<\ \textcolor{stringliteral}{"{}\ using\ CS:\ "{}}\ <<\ use\_cs;}
+\DoxyCodeLine{00036\ \ \ \ \ TestTh*\ ths[10];}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ \_i=0;\ \_i\ <\ 10;\ \_i++\ )\ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ ths[\_i]\ =\ \textcolor{keyword}{new}\ TestTh(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ ths[\_i]-\/>Start();}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{for}(\ \textcolor{keywordtype}{int}\ \_i=0;\ \_i\ <\ 10;\ \_i++\ )\ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ ths[\_i]-\/>Join();}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keyword}{delete}\ ths[\_i];}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ !=\ 1000000\ ||\ j\ !=\ 1000000\ ||\ k\ !=\ 1000000\ ||\ l\ !=\ 1000000\ )\ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ use\_cs\ )}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}critical\ section\ test\ has\ failed"{}});}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ !use\_cs\ )}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}critical\ section\ test\ is\ ambiguous\ (it\ is\ possible)"{}});}
+\DoxyCodeLine{00051\ \ \ \}}
+\DoxyCodeLine{00052\ \};}
+\DoxyCodeLine{00053\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00054\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

@@ -1,0 +1,80 @@
+\doxysection{mat\+\_\+id\+\_\+test.\+h}
+\hypertarget{mat__id__test_8h_source}{}\label{mat__id__test_8h_source}\index{xlib/tests/mat\_id\_test.h@{xlib/tests/mat\_id\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}mat\_id.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keywordtype}{void}\ rotation\_id\_test(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00015\ \ \ t.description\ =\ \_\_OlxSrcInfo;}
+\DoxyCodeLine{00016\ \ \ mat3d\ m(0,\ 1,\ 1,\ 1,\ 0,\ 1,\ 0,\ 0,\ -\/1);}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id}\ =\ rotation\_id::get(m);}
+\DoxyCodeLine{00018\ \ \ mat3d\ id\_r\ =\ rotation\_id::get(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordflow}{if}(\ m\ !=\ id\_r\ )}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}m\ !=\ id\_r"{}});}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{int}\ i\_id\ =\ rotation\_id::negate(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00022\ \ \ mat3d\ i\_id\_r\ =\ rotation\_id::get(i\_id);}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordflow}{if}(\ m\ !=\ -\/i\_id\_r\ )}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}m\ !=\ -\/i\_id\_r"{}});}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordflow}{if}(\ \textcolor{keywordtype}{id}\ !=\ rotation\_id::negate(rotation\_id::negate(\textcolor{keywordtype}{id}))\ )}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}m\ !=\ -\/i\_id\_r"{}});}
+\DoxyCodeLine{00027\ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keywordtype}{void}\ smatd\_id\_test(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00031\ \ \ t.description\ =\ \_\_OlxSrcInfo;}
+\DoxyCodeLine{00032\ \ \ smatd\ m(mat3d(0,\ 1,\ 1,\ 0,\ 0,\ 1,\ 0,\ 0,\ -\/1),\ vec3d(0.5,\ 1./3,\ 1./12));}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id}\ =\ sg\_mat\_id::get(m);}
+\DoxyCodeLine{00034\ \ \ mat3d\ id\_r\ =\ rotation\_id::get(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordflow}{if}(\ m.r\ !=\ id\_r\ )}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}m.r\ !=\ id\_r"{}});}
+\DoxyCodeLine{00037\ \ \ smatd\ id\_s\ =\ sg\_mat\_id::get(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordflow}{if}(\ !(m\ ==\ id\_s)\ )}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}m\ !=\ id\_s"{}});}
+\DoxyCodeLine{00040\ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\ base>}
+\DoxyCodeLine{00043\ \textcolor{keywordtype}{void}\ full\_id\_test(OlxTests\&\ t)\ \{}
+\DoxyCodeLine{00044\ \ \ t.description\ =\ \_\_OlxSrcInfo;}
+\DoxyCodeLine{00045\ \ \ t.description\ <<\ \textcolor{charliteral}{'\_'}\ <<\ base;}
+\DoxyCodeLine{00046\ \ \ smatd\ m(mat3d(-\/1,\ 1,\ 1,\ 1,\ 0,\ 1,\ 0,\ 0,\ -\/1),\ vec3d(-\/1./base,\ 10000./base,\ -\/21./base));}
+\DoxyCodeLine{00047\ \ \ uint64\_t\ \textcolor{keywordtype}{id}\ =\ full\_smatd\_id<base>::get(m);}
+\DoxyCodeLine{00048\ \ \ smatd\ id\_r\ =\ full\_smatd\_id<base>::get(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordflow}{if}(\ m.r\ !=\ id\_r.r\ ||\ m.t.QDistanceTo(id\_r.t)\ >\ 1e-\/15\ )\ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ math::alg::print0\_2(m.r,\ \textcolor{stringliteral}{"{}Source:"{}});}
+\DoxyCodeLine{00051\ \ \ \ \ math::alg::print0\_1(m.t);}
+\DoxyCodeLine{00052\ \ \ \ \ math::alg::print0\_2(id\_r.r,\ \textcolor{stringliteral}{"{}Result:"{}});}
+\DoxyCodeLine{00053\ \ \ \ \ math::alg::print0\_1(id\_r.t);}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}m\ !=\ id\_r"{}});}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ \ \ uint64\_t\ i\_id\ =\ full\_smatd\_id<base>::negate(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00057\ \ \ smatd\ i\_id\_r\ =\ full\_smatd\_id<base>::get(i\_id);}
+\DoxyCodeLine{00058\ \ \ i\_id\_r\ *=\ -\/1;}
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordflow}{if}(\ m.r\ !=\ i\_id\_r.r\ ||\ m.t.QDistanceTo(i\_id\_r.t)\ >\ 1e-\/15\ )\ \ \{}
+\DoxyCodeLine{00060\ \ \ \ \ math::alg::print0\_2(m.r,\ \textcolor{stringliteral}{"{}Source:"{}});}
+\DoxyCodeLine{00061\ \ \ \ \ math::alg::print0\_1(m.t);}
+\DoxyCodeLine{00062\ \ \ \ \ math::alg::print0\_2(id\_r.r,\ \textcolor{stringliteral}{"{}Result:"{}});}
+\DoxyCodeLine{00063\ \ \ \ \ math::alg::print0\_1(id\_r.t);}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}m\ !=\ -\/i\_id\_r"{}});}
+\DoxyCodeLine{00065\ \ \ \}}
+\DoxyCodeLine{00066\ \}}
+\DoxyCodeLine{00067\ \textcolor{keywordtype}{void}\ MatIdTests(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00068\ \ \ t.description\ =\ \_\_OlxSrcInfo;}
+\DoxyCodeLine{00069\ \ \ t.Add(\&test::rotation\_id\_test)}
+\DoxyCodeLine{00070\ \ \ \ \ .Add(\&test::smatd\_id\_test)}
+\DoxyCodeLine{00071\ \ \ \ \ .Add(\&test::full\_id\_test<12>)}
+\DoxyCodeLine{00072\ \ \ \ \ .Add(\&test::full\_id\_test<256>)}
+\DoxyCodeLine{00073\ ;\}}
+\DoxyCodeLine{00074\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

@@ -1,0 +1,402 @@
+\doxysection{fit.\+h}
+\hypertarget{fit_8h_source}{}\label{fit_8h_source}\index{gxlib/modes/fit.h@{gxlib/modes/fit.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_OLX\_FIT\_MODE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_OLX\_FIT\_MODE\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}xgroup.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}match.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{enum}\ \ \{}
+\DoxyCodeLine{00016\ \ \ mode\_fit\_create,}
+\DoxyCodeLine{00017\ \ \ mode\_fit\_disassemble}
+\DoxyCodeLine{00018\ \};}
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }TFitMode\ :\ \textcolor{keyword}{public}\ AEventsDispatcher,\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAMode}{AMode}}\ \{}
+\DoxyCodeLine{00020\ \ \ TXGroup*\ group;}
+\DoxyCodeLine{00021\ \ \ TXAtomPList\ Atoms,\ AtomsToMatch;}
+\DoxyCodeLine{00022\ \ \ vec3d\_alist\ original\_crds,\ saved\_crds;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{bool}\ Initialised,\ DoSplit,\ Restrain,\ RestrainU,\ Incl;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{int}\ afix,\ part,\ var;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{size\_t}\ split\_offset;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{class\ }OnUniqHandler\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classAActionHandler}{AActionHandler}}\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ TFitMode\&\ fit\_mode;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \ \ OnUniqHandler(TFitMode\&\ fm)\ :\ fit\_mode(fm)\ \{\}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{bool}\ Enter(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ fit\_mode.Dispatch(mode\_fit\_disassemble,\ msiEnter,\ NULL,\ NULL,\ NULL);}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \};}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{class\ }TFitModeUndo\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classTUndoData}{TUndoData}}\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \mbox{\hyperlink{classTArrayList}{TArrayList<olx\_pair\_t<TCAtom*,\ vec3d>}}\ >\ data;}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classTUndoActionImplMF}{TUndoActionImplMF<TFitModeUndo>}}\ impl\_t;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00039\ \ \ \ \ TFitModeUndo()\ :\ \mbox{\hyperlink{classTUndoData}{TUndoData}}(\textcolor{keyword}{new}\ impl\_t(\textcolor{keyword}{this},\ \&TFitModeUndo::undo))\ \{\}}
+\DoxyCodeLine{00040\ \ \ \ \ TFitModeUndo(\textcolor{keyword}{const}\ TXAtomPList\ \&atoms)}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ :\ \mbox{\hyperlink{classTUndoData}{TUndoData}}(\textcolor{keyword}{new}\ impl\_t(\textcolor{keyword}{this},\ \&TFitModeUndo::undo)),}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ data(atoms.Count())}
+\DoxyCodeLine{00043\ \ \ \ \ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ data[i].a\ =\ \&atoms[i]-\/>CAtom();}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ data[i].b\ =\ atoms[i]-\/>ccrd();}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ undo(\mbox{\hyperlink{classTUndoData}{TUndoData}}\ *)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data.IsEmpty())\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\ \&au\ =\ *data[0].GetA()-\/>GetParent();}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ au.GetAtoms().ForEach(ACollectionItem::TagSetter(0));}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ data.Count();\ i++)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ data[i].a-\/>ccrd()\ =\ data[i].GetB();}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ data[i].a-\/>SetTag(1);}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \mbox{\hyperlink{structTGXApp_1_1AtomIterator}{TGXApp::AtomIterator}}\ ai\ =\ TGXApp::GetInstance().GetAtoms();}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (ai.HasNext())\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\ \&xa\ =\ ai.Next();}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (xa.CAtom().GetTag()\ !=\ 1)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ xa.ccrd()\ =\ xa.CAtom().ccrd();}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ xa.crd()\ =\ au.Orthogonalise(xa.ccrd());}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ TGXApp::GetInstance().XFile().GetLattice().Init();}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{double}\ AngleInc;}
+\DoxyCodeLine{00073\ \ \ OnUniqHandler*\ uniq\_handler;}
+\DoxyCodeLine{00074\ \ \ TFitModeUndo\ *undo;}
+\DoxyCodeLine{00075\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00076\ \ \ TFitMode(\textcolor{keywordtype}{size\_t}\ \textcolor{keywordtype}{id})}
+\DoxyCodeLine{00077\ \ \ \ \ :\ \mbox{\hyperlink{classAMode}{AMode}}(\textcolor{keywordtype}{id}),}
+\DoxyCodeLine{00078\ \ \ \ \ Initialised(\textcolor{keyword}{false}),}
+\DoxyCodeLine{00079\ \ \ \ \ DoSplit(\textcolor{keyword}{false}),}
+\DoxyCodeLine{00080\ \ \ \ \ Restrain(\textcolor{keyword}{false}),\ RestrainU(\textcolor{keyword}{false}),\ Incl(\textcolor{keyword}{false}),}
+\DoxyCodeLine{00081\ \ \ \ \ AngleInc(0),}
+\DoxyCodeLine{00082\ \ \ \ \ undo(0)}
+\DoxyCodeLine{00083\ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ uniq\_handler\ =\ \textcolor{keyword}{new}\ OnUniqHandler(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00085\ \ \ \ \ gxapp.OnObjectsCreate.Add(\textcolor{keyword}{this},\ mode\_fit\_create,\ msiExit);}
+\DoxyCodeLine{00086\ \ \ \ \ gxapp.XFile().GetLattice().OnDisassemble.Add(\textcolor{keyword}{this},\ mode\_fit\_disassemble,}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ msiEnter);}
+\DoxyCodeLine{00088\ \ \ \ \ gxapp.XFile().GetLattice().OnStructureUniq.InsertFirst(uniq\_handler);}
+\DoxyCodeLine{00089\ \ \ \ \ gxapp.XFile().GetLattice().OnStructureGrow.InsertFirst(uniq\_handler);}
+\DoxyCodeLine{00090\ \ \ \ \ gxapp.EnableSelection(\textcolor{keyword}{false});}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordtype}{bool}\ Initialise\_(TStrObjList\&\ Cmds,\ \textcolor{keyword}{const}\ TParamList\&\ Options)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ Restrain\ =\ Cmds.Containsi(\textcolor{stringliteral}{"{}same"{}});}
+\DoxyCodeLine{00095\ \ \ \ \ RestrainU\ =\ Cmds.Containsi(\textcolor{stringliteral}{"{}rigu"{}});}
+\DoxyCodeLine{00096\ \ \ \ \ Incl\ =\ Options.GetBoolOption(\textcolor{charliteral}{'i'});}
+\DoxyCodeLine{00097\ \ \ \ \ DoSplit\ =\ Options.Contains(\textcolor{charliteral}{'s'});}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{if}\ (DoSplit)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ split\_offset\ =\ 0;}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ olxstr\ s\ =\ Options.FindValue(\textcolor{charliteral}{'s'});}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!s.IsEmpty())\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (s.IsBool())\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ DoSplit\ =\ s.ToBool();}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ split\_offset\ =\ s.ToUInt();}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ afix\ =\ Options.FindValue(\textcolor{charliteral}{'a'},\ \textcolor{stringliteral}{"{}-\/1"{}}).ToInt();}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{if}\ (DoSplit\ \&\&\ afix\ !=\ -\/1)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ TBasicApp::NewLogEntry(logError)\ <<}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Split\ and\ Afix\ are\ not\ compatible,\ atoms\ will\ be\ only\ split"{}};}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ AtomsToMatch.Clear();}
+\DoxyCodeLine{00116\ \ \ \ \ SetUserCursor(\textcolor{charliteral}{'0'},\ \textcolor{stringliteral}{"{}<F>"{}});}
+\DoxyCodeLine{00117\ \ \ \ \ TXAtomPList\ xatoms\ =\ gxapp.GetSelection().Extract<\mbox{\hyperlink{classTXAtom}{TXAtom}}>();}
+\DoxyCodeLine{00118\ \ \ \ \ xatoms.Pack(TSAtom::TypeAnalyser(iQPeakZ));}
+\DoxyCodeLine{00119\ \ \ \ \ undo\ =\ \textcolor{keyword}{new}\ TFitModeUndo(xatoms);}
+\DoxyCodeLine{00120\ \ \ \ \ original\_crds.SetCount(xatoms.Count());}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ xatoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ original\_crds[i]\ =\ xatoms[i]-\/>crd();}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ group\ =\ \&gxapp.GetRenderer().ReplaceSelection<TXGroup>();}
+\DoxyCodeLine{00125\ \ \ \ \ AngleInc\ =\ Options.FindValue(\textcolor{stringliteral}{"{}r"{}},\ \textcolor{stringliteral}{"{}0"{}}).ToDouble();}
+\DoxyCodeLine{00126\ \ \ \ \ group-\/>SetAngleInc(AngleInc*M\_PI\ /\ 180);}
+\DoxyCodeLine{00127\ \ \ \ \ group-\/>SetMirrororingEnabled(DoSplit);}
+\DoxyCodeLine{00128\ \ \ \ \ AddAtoms(xatoms);}
+\DoxyCodeLine{00129\ \ \ \ \ gxapp.SetZoomAfterModelBuilt(gxapp}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ .GetOptions().GetBoolOption(\textcolor{stringliteral}{"{}model.center\_on\_update"{}},\ \textcolor{keyword}{true},\ \textcolor{keyword}{true}));}
+\DoxyCodeLine{00131\ \ \ \ \ part\ =\ Options.FindValue(\textcolor{charliteral}{'p'},\ DefNoPart).ToInt();}
+\DoxyCodeLine{00132\ \ \ \ \ var\ =\ Options.FindValue(\textcolor{charliteral}{'v'},\ 0).ToInt()\ -\/\ 1;}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{return}\ (Initialised\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00134\ \ \ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \string~TFitMode()\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ gxapp.OnObjectsCreate.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00138\ \ \ \ \ gxapp.XFile().GetLattice().OnDisassemble.Remove(\textcolor{keyword}{this});}
+\DoxyCodeLine{00139\ \ \ \ \ gxapp.XFile().GetLattice().OnStructureUniq.Remove(uniq\_handler);}
+\DoxyCodeLine{00140\ \ \ \ \ gxapp.XFile().GetLattice().OnStructureGrow.Remove(uniq\_handler);}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{delete}\ uniq\_handler;}
+\DoxyCodeLine{00142\ \ \ \ \ olx\_del\_obj(undo);}
+\DoxyCodeLine{00143\ \ \ \ \ gxapp.EnableSelection(\textcolor{keyword}{true});}
+\DoxyCodeLine{00144\ \ \ \}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \textcolor{keywordtype}{void}\ Finalise\_()\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ vec3d\_alist\ crds\ =\ group-\/>GetSrcCoordinates();}
+\DoxyCodeLine{00148\ \ \ \ \ gxapp.GetRenderer().ReplaceSelection<\mbox{\hyperlink{classTGlGroup}{TGlGroup}}>();}
+\DoxyCodeLine{00149\ \ \ \ \ Initialised\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00150\ \ \ \ \ \mbox{\hyperlink{classRefinementModel}{RefinementModel}}\&\ rm\ =\ gxapp.XFile().GetRM();}
+\DoxyCodeLine{00151\ \ \ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au\ =\ gxapp.XFile().GetAsymmUnit();}
+\DoxyCodeLine{00152\ \ \ \ \ \mbox{\hyperlink{structTAsymmUnit_1_1TLabelChecker}{TAsymmUnit::TLabelChecker}}\ lck(au);}
+\DoxyCodeLine{00153\ \ \ \ \ \mbox{\hyperlink{classXVar}{XVar}}\&\ xv\ =\ (var\ <\ 0\ ||\ var\ >=\ rm.Vars.VarCount()\ ?\ rm.Vars.NewVar(0.75)\ :}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ rm.Vars.GetVar(var));}
+\DoxyCodeLine{00155\ \ \ \ \ \mbox{\hyperlink{classolxset}{olxset<TAfixGroup*,\ TPointerComparator>}}\ afix\_groups;}
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordflow}{if}\ (DoSplit)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ DistanceGenerator::atom\_map\_1\_t\ atom\_map(olx\_reserve(Atoms.Count()));}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ DistanceGenerator::atom\_set\_t\ atom\_set;}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ atom\_set.SetCapacity(Atoms.Count());}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ set\_parts\ =\ part\ ==\ DefNoPart;}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ split\_offset;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Atoms[i]-\/>crd().QDistanceTo(original\_crds[i])\ <\ 0.01)\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ atom\_set.Add(Atoms[i]-\/>CAtom().GetId());}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTXAtom}{TXAtom}}\&\ nxa\ =\ gxapp.AddAtom(Atoms[i]);}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ na\ =\ nxa.CAtom();}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (set\_parts)\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ set\ parts}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ part\ =\ Atoms[i]-\/>CAtom().GetPart();}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (part\ ==\ 0)\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ part++;}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ Atoms[i]-\/>CAtom().SetPart(part);}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ take\ care\ of\ negative\ parts\ too}}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ na.SetPart(olx\_sign(part)\ *\ (olx\_abs(part)\ +\ 1));}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ Atoms[i]-\/>CAtom().SetPart(part);}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ na.SetPart(olx\_sign(part)\ *\ (olx\_abs(part)\ +\ 1));}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ na.SetUiso(Atoms[i]-\/>CAtom().GetUiso());}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ link\ occupancies}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ sp\ =\ 1.\ /\ Atoms[i]-\/>CAtom().GetDegeneracy();}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ rm.Vars.AddVarRef(xv,\ Atoms[i]-\/>CAtom(),\ catom\_var\_name\_Sof,\ relation\_AsVar,\ sp);}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ rm.Vars.AddVarRef(xv,\ na,\ catom\_var\_name\_Sof,\ relation\_AsOneMinusVar,\ sp);}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ Atoms[i]-\/>CAtom().SetOccu(0.75*sp);}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ na.SetOccu(0.25*sp);}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ set\ label}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ olxstr\ new\_l\ =\ Atoms[i]-\/>GetLabel();}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ olxch\ lc\ =\ \textcolor{charliteral}{'1'};}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (new\_l.Length()\ >\ Atoms[i]-\/>GetType().symbol.Length())\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ lc\ =\ olxstr::o\_tolower(new\_l.GetLast());}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olxstr::o\_isalpha(lc)\ \&\&\ lc\ <\ \textcolor{charliteral}{'z'})\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ new\_l[new\_l.Length()\ -\/\ 1]\ =\ ++lc;}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ new\_l\ <<\ \textcolor{charliteral}{'a'};}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ na.SetLabel(lck.CheckLabel(na,\ new\_l,\ 0,\ \textcolor{keyword}{true}),\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (na.GetType()\ ==\ iQPeakZ)\ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ na.SetQPeak(1.0);}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ set\ coordinates}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ na.ccrd()\ =\ au.Fractionalise(Atoms[i]-\/>crd());}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ Atoms[i]-\/>CAtom().ccrd()\ =\ au.Fractionalise(crds[i]);}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ atom\_map.Add(Atoms[i]-\/>CAtom().GetId(),\ na.GetId());}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ atom\_set.Add(Atoms[i]-\/>CAtom().GetId());}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Atoms[i]-\/>CAtom().GetParentAfixGroup()\ !=\ 0)\ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ afix\_groups.Add(Atoms[i]-\/>CAtom().GetParentAfixGroup());}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ afix\_groups.Count();\ i++)\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ TAfixGroup\&\ ag\ =\ *afix\_groups[i];}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ matched\_cnt\ =\ 0;}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ ag.Count();\ j++)\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (atom\_map.HasKey(ag[j].GetId()))\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ matched\_cnt++;}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cannot\ do\ much\ here}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (matched\_cnt\ !=\ ag.Count())\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}*\ pivot\ =\ 0;}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!atom\_map.HasKey(ag.GetPivot().GetId()))\ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ neither\ here}}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ag.Count()\ +\ 1\ <\ Atoms.Count())\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ Atoms.Count();\ j++)\ \{}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ Atoms[j]-\/>CAtom().SetTag(0);}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ pivot\ =\ \&au.GetAtom(atom\_map[ag.GetPivot().GetId()]);}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ TAfixGroup\&\ nag\ =\ rm.AfixGroups.New(pivot,}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ ag.GetAfix(),\ ag.GetD(),\ ag.GetU());}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ ag.Count();\ j++)\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ nag.AddDependent(au.GetAtom(atom\_map[ag[j].GetId()]));}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ ag[j].SetTag(1);}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ this\ will\ happen\ only\ for\ single\ AFIX\ group}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pivot\ ==\ 0)\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ Atoms.Count();\ j++)\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Atoms[j]-\/>CAtom().GetTag()\ ==\ 0)\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nag.SetPivot(Atoms[j]-\/>CAtom());}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Restrain)\ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structDistanceGenerator}{DistanceGenerator}}\ ds;}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ ds.Generate(au,\ atom\_set,\ \textcolor{keyword}{true},\ Incl);}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ ds.GenerateSADI(rm,\ atom\_map,\ 0.02,\ 0.04);}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (RestrainU)\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTSimpleRestraint}{TSimpleRestraint}}\ \&r1\ =\ rm.rRIGU.AddNew();}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTSimpleRestraint}{TSimpleRestraint}}\ \&r2\ =\ rm.rRIGU.AddNew();}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ atom\_set.Count();\ i++)\ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\ \&a\ =\ au.GetAtom(atom\_set[i]);}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ r1.AddAtom(a,\ 0);}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ r2.AddAtom(au.GetAtom(atom\_map[a.GetId()]),\ 0);}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ gxapp.XFile().GetLattice().SetAnis(}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ TCAtomPList(Atoms,\ FunctionAccessor::MakeConst(\&TSAtom::CAtom)),\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ gxapp.XFile().GetLattice().Uniq();}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ gxapp.UpdateDuplicateLabels();}
+\DoxyCodeLine{00277\ \ \ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \mbox{\hyperlink{classTUnitCell}{TUnitCell}}\&\ uc\ =\ gxapp.XFile().GetUnitCell();}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ au.GetAtoms().ForEach(ACollectionItem::TagSetter(0));}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ Atoms.ForEach(ACollectionItem::TagSetter(}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ FunctionAccessor::MakeConst(\&TSAtom::CAtom),\ 1));}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ Atoms[i]-\/>CAtom().ccrd()\ =\ au.Fractionalise(Atoms[i]-\/>crd());}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classTTypeList}{TTypeList<olx\_pair\_t<TCAtom*,\ vec3d>}}\ >\ res;}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ uc.FindInRangeAC(Atoms[i]-\/>CAtom().ccrd(),\ 0.0,\ 0.1,\ res);}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ res.Count();\ j++)\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (res[j].GetA()-\/>GetTag()\ ==\ 0\ \&\&}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ (res[j].GetA()-\/>GetPart()\ ==\ 0\ ||}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ res[j].GetA()-\/>GetPart()\ ==\ Atoms[i]-\/>CAtom().GetPart()))}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ res[j].a-\/>SetDeleted(\textcolor{keyword}{true});}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (afix\ !=\ -\/1\ \&\&\ !Atoms.IsEmpty())\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ has\_pivot\ =\ TAfixGroup::HasExcplicitPivot(afix);}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ TAfixGroup\ \&ag\ =\ gxapp.XFile().GetRM().AfixGroups.New(}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ has\_pivot\ ?\ \&Atoms[0]-\/>CAtom()\ :\ NULL,\ afix);}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ start\ =\ has\_pivot\ ?\ 1\ :\ 0;}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ ag.AddDependent(Atoms[i]-\/>CAtom());}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ gxapp.XFile().EndUpdate();}
+\DoxyCodeLine{00306\ \ \ \ \ \}}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keywordflow}{if}\ (undo\ !=\ 0)\ \{}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ gxapp.GetUndo().Push(undo);}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ undo\ =\ 0;}
+\DoxyCodeLine{00310\ \ \ \ \ \}}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keywordflow}{if}\ (TXApp::DoUseSafeAfix())\ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ gxapp.GetUndo().Push(}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ gxapp.XFile().GetLattice().ValidateHGroups(\textcolor{keyword}{true},\ \textcolor{keyword}{true}));}
+\DoxyCodeLine{00314\ \ \ \ \ \}}
+\DoxyCodeLine{00315\ \ \ \}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnObject\_(\mbox{\hyperlink{classAGDrawObject}{AGDrawObject}}\ \&obj)\ \{}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keywordflow}{if}\ (DoSplit)\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00320\ \ \ \ \ \}}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordflow}{if}\ (obj.Is<\mbox{\hyperlink{classTXAtom}{TXAtom}}>())\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AtomsToMatch.IsEmpty()\ \&\&\ Atoms.IndexOf((\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)obj)\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ AtomsToMatch.Add((\mbox{\hyperlink{classTXAtom}{TXAtom}}\&)obj);}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ SetUserCursor(AtomsToMatch.Count(),\ \textcolor{stringliteral}{"{}<F>"{}});}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((AtomsToMatch.Count()\ \%\ 2)\ ==\ 0)\ \{}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ TMatchMode::FitAtoms(AtomsToMatch,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ SetUserCursor(AtomsToMatch.Count(),\ \textcolor{stringliteral}{"{}<F>"{}});}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ group-\/>UpdateRotationCenter();}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00332\ \ \ \ \ \}}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00334\ \ \ \}}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Dispatch(\textcolor{keywordtype}{int}\ msg,\ \textcolor{keywordtype}{short}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Sender,}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Data,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *)}
+\DoxyCodeLine{00338\ \ \ \{}
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keywordflow}{if}\ (!Initialised)\ \{}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00341\ \ \ \ \ \}}
+\DoxyCodeLine{00342\ \ \ \ \ \mbox{\hyperlink{classTAsymmUnit}{TAsymmUnit}}\&\ au\ =\ gxapp.XFile().GetAsymmUnit();}
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keywordflow}{if}\ (msg\ ==\ mode\_fit\_disassemble)\ \{}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!gxapp.GetRenderer().GetSelection().Is<TXGroup>())\ \{}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(original\_crds.Count()\ ==\ Atoms.Count())\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ saved\_crds.SetCount(Atoms.Count());}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ saved\_crds[i]\ =\ Atoms[i]-\/>crd();}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ Atoms.Clear();}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ AtomsToMatch.Clear();}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ SetUserCursor(\textcolor{charliteral}{'0'},\ \textcolor{stringliteral}{"{}<F>"{}});}
+\DoxyCodeLine{00356\ \ \ \ \ \}}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (msg\ ==\ mode\_fit\_create)\ \{}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!gxapp.GetRenderer().GetSelection().Is<TXGroup>())\ \{}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ group\ =\ \&gxapp.GetRenderer().ReplaceSelection<TXGroup>();}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ group-\/>SetAngleInc(AngleInc*M\_PI\ /\ 180);}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ Atoms\ =\ group-\/>Extract<\mbox{\hyperlink{classTXAtom}{TXAtom}}>();}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Atoms.Count()\ ==\ saved\_crds.Count())\ \{}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ Atoms.Count();\ i++)\ \{}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ Atoms[i]-\/>crd()\ =\ saved\_crds[i];}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ saved\_crds.Clear();}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ group-\/>Update();}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ group-\/>SetSrcCoordinates(original\_crds);}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ group-\/>SetSelected(\textcolor{keyword}{true});}
+\DoxyCodeLine{00372\ \ \ \ \ \}}
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00374\ \ \ \}}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ OnKey\_(\textcolor{keywordtype}{int}\ keyId,\ \textcolor{keywordtype}{short}\ shiftState)\ \{}
+\DoxyCodeLine{00377\ \ \ \ \ \textcolor{keywordflow}{if}\ (shiftState\ ==\ 0\ \&\&\ keyId\ ==\ OLX\_KEY\_ESCAPE)\ \{}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AtomsToMatch.IsEmpty())\ \{}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ AtomsToMatch.Delete(AtomsToMatch.Count()\ -\/\ 1);}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ SetUserCursor(AtomsToMatch.Count(),\ \textcolor{stringliteral}{"{}<F>"{}});}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00384\ \ \ \ \ \}}
+\DoxyCodeLine{00385\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00386\ \ \ \}}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ AddAtoms(\textcolor{keyword}{const}\ TXAtomPList\&\ atoms)\ \{}
+\DoxyCodeLine{00389\ \ \ \ \ Atoms.AddAll(atoms);}
+\DoxyCodeLine{00390\ \ \ \ \ group-\/>AddAtoms(atoms);}
+\DoxyCodeLine{00391\ \ \ \ \ group-\/>SetSelected(\textcolor{keyword}{true});}
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00393\ \ \ \}}
+\DoxyCodeLine{00394\ \};}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,91 @@
+\doxysection{cell\+\_\+reduction\+\_\+test.\+h}
+\hypertarget{cell__reduction__test_8h_source}{}\label{cell__reduction__test_8h_source}\index{xlib/tests/cell\_reduction\_test.h@{xlib/tests/cell\_reduction\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}cell\_reduction.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ using\ some\ of\ the\ occtbx\ borrowed\ tests...}}
+\DoxyCodeLine{00014\ \textcolor{keywordtype}{void}\ cell\_reduction\_test(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00015\ \ \ t.description\ =\ \_\_OlxSrcInfo;}
+\DoxyCodeLine{00016\ \ \ vec3d\ s(2,3,5),\ a(80,90,100);}
+\DoxyCodeLine{00017\ \ \ Niggli::reduce(1,\ s,\ a);}
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordflow}{if}(\ s.DistanceTo(vec3d(2,3,5))\ >\ 1e-\/8\ ||}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ a.DistanceTo(vec3d(100,90,100))\ >\ 1e-\/8\ )}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{bool}\ res\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ vec3d\ s1(2,3,5),\ a1(70,120,50);}
+\DoxyCodeLine{00024\ \ \ \ \ Niggli::reduce(1,\ s1,\ a1);}
+\DoxyCodeLine{00025\ \ \ \}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordflow}{catch}(...)\ \ \{\ \ res\ =\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordflow}{if}(\ !res\ )}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}expected\ eception\ not\ thrown"{}});}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//http://www.ccdc.cam.ac.uk/support/documentation/conquest/ConQuest/conquest.3.340.html}}
+\DoxyCodeLine{00030\ \ \ s\ =\ vec3d(12.132,\ 14.662,\ 13.153);}
+\DoxyCodeLine{00031\ \ \ a\ =\ vec3d(90,\ 127.84,\ 90);}
+\DoxyCodeLine{00032\ \ \ Niggli::reduce(1,\ s,\ a);}
+\DoxyCodeLine{00033\ \ \ \textcolor{keywordflow}{if}(\ s.DistanceTo(vec3d(11.154,12.132,14.663))\ >\ 1e-\/2\ ||}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ a.DistanceTo(vec3d(90,90,111.36))\ >\ 1e-\/2\ )}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00036\ \ \ evecd\ cell\ =\ evecd::build(25.0822,\ 5.04549,\ 29.4356,\ 90,\ 103.108,\ 90);}
+\DoxyCodeLine{00037\ \ \ Niggli::reduce(7,\ cell);}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordflow}{if}(\ cell.DistanceTo(*evecd::build(5.04549,\ 12.7923,\ 29.3711,\ 77.7182,\ 85.0727,\ 78.6263))\ >\ 1e-\/3)}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//\ Acta\ Cryst.\ (1976),\ A32,\ 297-\/298,\ this\ reduction\ does\ not\ match\ the\ one\ in\ the\ paper}}
+\DoxyCodeLine{00041\ \ \ evecd\ cell1\ =\ evecd::build(3,\ 5.196,\ 2,\ 103.55,\ 109.28,\ 134.53);}
+\DoxyCodeLine{00042\ \ \ Niggli::reduce(1,\ cell1);}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//if(\ cell1.DistanceTo(evecd(2,\ 3,\ 3,\ 60,\ 75.31,\ 70.32))\ >\ 1)\ -\/\ this\ is\ in\ the\ paper}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordflow}{if}(\ cell1.DistanceTo(*evecd::build(2,\ 3,\ 3.05,\ 115.315,\ 93.909,\ 109.28))\ >\ 1e-\/3)}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00046\ \ \ evecd\ cell2\ =\ evecd::build(17.1947,\ 17.1947,\ 84.661,\ 90,\ 90,\ 120);}
+\DoxyCodeLine{00047\ \ \ Niggli::reduce(3,\ cell2);\ \textcolor{comment}{//R}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordflow}{if}(\ cell2.DistanceTo(*evecd::build(17.1947,\ 17.1947,\ 29.9155,\ 73.2984,\ 73.2984,\ 60))\ >\ 1e-\/3)}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00050\ \ \ cell2\ =\ *evecd::build(17.1947,\ 17.1947,\ 84.661,\ 90,\ 90,\ 120);}
+\DoxyCodeLine{00051\ \ \ Niggli::reduce(1,\ cell2);\ \textcolor{comment}{//P}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordflow}{if}(\ cell2.DistanceTo(*evecd::build(17.1947,\ 17.1947,\ 84.661,\ 90,\ 90,\ 120))\ >\ 1e-\/3)}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00054\ \ \ cell2\ =\ *evecd::build(17.1947,\ 17.1947,\ 84.661,\ 90,\ 90,\ 120);}
+\DoxyCodeLine{00055\ \ \ Niggli::reduce(2,\ cell2);\ \ \textcolor{comment}{//I}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keywordflow}{if}(\ cell2.DistanceTo(*evecd::build(17.1947,\ 17.1947,\ 43.1947,\ 84.2886,\ 78.5194,\ 60))\ >\ 1e-\/3)}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00058\ \ \ cell2\ =\ *evecd::build(17.1947,\ 17.1947,\ 84.661,\ 90,\ 90,\ 120);}
+\DoxyCodeLine{00059\ \ \ Niggli::reduce(4,\ cell2);\ \ \textcolor{comment}{//F}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordflow}{if}(\ cell2.DistanceTo(*evecd::build(8.59735,\ 14.891,\ 43.1947,\ 99.9257,\ 95.7114,\ 90))\ >\ 1e-\/3)}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00062\ \ \ cell2\ =\ *evecd::build(17.1947,\ 17.1947,\ 84.661,\ 90,\ 90,\ 120);}
+\DoxyCodeLine{00063\ \ \ Niggli::reduce(5,\ cell2);\ \textcolor{comment}{//A}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordflow}{if}(\ cell2.DistanceTo(*evecd::build(17.1947,\ 17.1947,\ 43.1947,\ 84.2886,\ 78.5194,\ 60))\ >\ 1e-\/3)}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00066\ \ \ cell2\ =\ *evecd::build(17.1947,\ 17.1947,\ 84.661,\ 90,\ 90,\ 120);}
+\DoxyCodeLine{00067\ \ \ Niggli::reduce(6,\ cell2);\ \ \textcolor{comment}{//B}}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordflow}{if}(\ cell2.DistanceTo(*evecd::build(17.1947,\ 17.1947,\ 43.1947,\ 84.2886,\ 78.5194,\ 60))\ >\ 1e-\/3)}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00070\ \ \ cell2\ =\ *evecd::build(17.1947,\ 17.1947,\ 84.661,\ 90,\ 90,\ 120);}
+\DoxyCodeLine{00071\ \ \ Niggli::reduce(7,\ cell2);\ \textcolor{comment}{//C}}
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordflow}{if}(\ cell2.DistanceTo(*evecd::build(8.59735,\ 14.891,\ 84.661,\ 90,\ 90,\ 90))\ >\ 1e-\/3)}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//\ cctbx\ tests}}
+\DoxyCodeLine{00075\ \ \ cell2\ =\ *evecd::build(12.7366,\ 29.2300,\ 5.0242,\ 94.6570,\ 100.8630,\ 99.7561);}
+\DoxyCodeLine{00076\ \ \ Niggli::reduce(1,\ cell2);}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordflow}{if}(\ cell2.DistanceTo(*evecd::build(5.0242,\ 12.7366,\ 29.23,\ 99.7561,\ 94.657,\ 100.863))\ >\ 1e-\/3)}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00079\ \ \ cell2\ =\ *evecd::build(12.7806,\ 12.7366,\ 29.457,\ 103.42,\ 103.57,\ 22.71);}
+\DoxyCodeLine{00080\ \ \ Niggli::reduce(1,\ cell2);}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordflow}{if}(\ cell2.DistanceTo(*evecd::build(5.0242,\ 12.7366,\ 29.23,\ 99.7561,\ 94.657,\ 100.863))\ >\ 1e-\/3)}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}result\ mismatch\ expectations"{}});}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00084\ \}}
+\DoxyCodeLine{00085\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

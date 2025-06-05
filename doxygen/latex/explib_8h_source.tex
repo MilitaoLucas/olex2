@@ -1,0 +1,165 @@
+\doxysection{explib.\+h}
+\hypertarget{explib_8h_source}{}\label{explib_8h_source}\index{sdl/exparse/explib.h@{sdl/exparse/explib.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_exparse\_explib\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_exparse\_explib\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}funcwrap.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ namespace\ exparse\ \ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{struct\ }StringValue\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00017\ \ \ \ \ olxstr\ val;}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{static}\ ClassInfo<StringValue,\ olxstr>\ info;}
+\DoxyCodeLine{00019\ \ \ \ \ StringValue()\ \{\}}
+\DoxyCodeLine{00020\ \ \ \ \ StringValue(\textcolor{keyword}{const}\ olxstr\&\ v)\ :\ val(v)\ \{\}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{throw}\ 1;\ \ \}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ find\_property(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00024\ \ \ \ \ \}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ find\_method(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EvaluableFactory\&\ ef,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args,\ IEvaluable*\ proxy=NULL)}
+\DoxyCodeLine{00028\ \ \ \ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ info.functions.index\_of(name,\ args.Count());}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ ==\ InvalidIndex\ )\ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ i\ =\ info.wrap\_functions.index\_of(name,\ args.Count());}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ ==\ InvalidIndex\ )\ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ i\ =\ info.globals.index\_of(name,\ args.Count());}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i\ ==\ InvalidIndex\ ?\ NULL}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ :\ info.globals.create\_from\_index(ef,\ i,\ args);}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ info.wrap\_functions.create\_from\_index(proxy\ ==\ NULL\ ?\ *\textcolor{keyword}{this}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ :\ *proxy,\ ef,\ i,\ args);}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ info.functions.create\_from\_index(proxy\ ==\ NULL\ ?\ *\textcolor{keyword}{this}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ :\ *proxy,\ ef,\ i,\ args);}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{static}\ cast\_result\ str\_cast(\textcolor{keyword}{const}\ IEvaluable*\ i)\ \ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cast\_result(\&(IEvaluable::cast\_helper<StringValue>(i))-\/>val,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{virtual}\ cast\_operator\ get\_cast\_operator(\textcolor{keyword}{const}\ std::type\_info\&\ ti)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \textcolor{keyword}{typeid}(olxstr)\ ==\ ti\ )}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&str\_cast;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TCastException(\_\_OlxSourceInfo,\ ti);}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ create\_new(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *data)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ StringValue(*\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }olxstr*\textcolor{keyword}{>}(data));}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ is\_final()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{comment}{//\ wrapper\ functions}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{int}\ atoi()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ val.SafeInt<\textcolor{keywordtype}{int}>();\ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{float}\ atof()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ val.ToFloat();\ \}}
+\DoxyCodeLine{00058\ \ \ \ \ olxstr\ idx\_op(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ val.CharAt(i);\ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ globals\ section}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{static}\ olxstr\ add(\textcolor{keyword}{const}\ olxstr\&\ a,\ \textcolor{keyword}{const}\ olxstr\&\ b)\ \ \{\ \ \textcolor{keywordflow}{return}\ a+b;\ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ equals(\textcolor{keyword}{const}\ olxstr\&\ a,\ \textcolor{keyword}{const}\ olxstr\&\ b)\ \ \{\ \ \textcolor{keywordflow}{return}\ a.Equals(b);\ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ nequals(\textcolor{keyword}{const}\ olxstr\&\ a,\ \textcolor{keyword}{const}\ olxstr\&\ b)\ \ \{\ \ \textcolor{keywordflow}{return}\ !a.Equals(b);\ \}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ equalsi(\textcolor{keyword}{const}\ olxstr\&\ a,\ \textcolor{keyword}{const}\ olxstr\&\ b)\ \ \{\ \ \textcolor{keywordflow}{return}\ a.Equalsi(b);\ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ init\_library()\ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !info.is\_empty()\ )\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ info.functions.add(\textcolor{stringliteral}{"{}sub"{}},\ \&olxstr::SubString);}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ info.functions.add<\textcolor{keywordtype}{size\_t}>(\textcolor{stringliteral}{"{}len"{}},\ \&olxstr::Length);\ \ \textcolor{comment}{//\ gcc...}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ info.functions.add<olxch,\textcolor{keywordtype}{size\_t}>(\textcolor{stringliteral}{"{}charAt"{}},\ \&olxstr::CharAt);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ info.functions.add(\textcolor{stringliteral}{"{}toUpper"{}},\ \&olxstr::ToUpperCase);}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ info.functions.add(\textcolor{stringliteral}{"{}toLower"{}},\ \&olxstr::ToLowerCase);}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \ \ info.wrap\_functions.add(\textcolor{stringliteral}{"{}atoi"{}},\ \&StringValue::atoi);}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ info.wrap\_functions.add(\textcolor{stringliteral}{"{}atof"{}},\ \&StringValue::atof);}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ info.wrap\_functions.add(\textcolor{stringliteral}{"{}\_idx\_"{}},\ \&StringValue::idx\_op);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ info.globals.add(\textcolor{stringliteral}{"{}+"{}},\ \&StringValue::add);}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ info.globals.add(\textcolor{stringliteral}{"{}=="{}},\ \&StringValue::equals);}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ info.globals.add(\textcolor{stringliteral}{"{}!="{}},\ \&StringValue::nequals);}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ info.globals.add(\textcolor{stringliteral}{"{}equals"{}},\ \&StringValue::equals);}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ info.globals.add(\textcolor{stringliteral}{"{}equalsi"{}},\ \&StringValue::equals);}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{struct\ }ListValue\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIEvaluable}{IEvaluable}},\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{typedef}\ TPtrList<IEvaluable>\ list\_t;}
+\DoxyCodeLine{00086\ \ \ \ \ list\_t\ val;}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keyword}{static}\ ClassInfo<ListValue,\ list\_t>\ info;}
+\DoxyCodeLine{00088\ \ \ \ \ ListValue()\ \{\}}
+\DoxyCodeLine{00089\ \ \ \ \ ListValue(\textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ v)\ :\ val(v)\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ val.Count();\ i++)}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ val[i]-\/>inc\_ref();}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \ \ \string~ListValue()\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ val.Count();\ i++)}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val[i]-\/>dec\_ref()\ ==\ 0)}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ val[i];}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ \_evaluate()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{throw}\ 1;\ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ find\_property(\textcolor{keyword}{const}\ olxstr\&\ name)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TNotImplementedException(\_\_OlxSourceInfo);}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ find\_method(\textcolor{keyword}{const}\ olxstr\&\ name,}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EvaluableFactory\&\ ef,}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \textcolor{keyword}{const}\ TPtrList<IEvaluable>\&\ args,\ IEvaluable*\ proxy=NULL)}
+\DoxyCodeLine{00105\ \ \ \ \ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i\ =\ info.functions.index\_of(name,\ args.Count());}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ ==\ InvalidIndex\ )\ \ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ i\ =\ info.wrap\_functions.index\_of(name,\ args.Count());}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ i\ ==\ InvalidIndex\ )\ \ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ i\ =\ info.globals.index\_of(name,\ args.Count());}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ i\ ==\ InvalidIndex\ ?\ NULL}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ :\ info.globals.create\_from\_index(ef,\ i,\ args);}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ info.wrap\_functions.create\_from\_index(proxy\ ==\ NULL\ ?\ *\textcolor{keyword}{this}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ :\ *proxy,\ ef,\ i,\ args);}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ info.functions.create\_from\_index(proxy\ ==\ NULL\ ?\ *\textcolor{keyword}{this}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ :\ *proxy,\ ef,\ i,\ args);}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{static}\ cast\_result\ list\_cast(\textcolor{keyword}{const}\ IEvaluable*\ i)\ \ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cast\_result(\&(IEvaluable::cast\_helper<ListValue>(i))-\/>val,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{virtual}\ cast\_operator\ get\_cast\_operator(\textcolor{keyword}{const}\ std::type\_info\&\ ti)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \textcolor{keyword}{typeid}(list\_t)\ ==\ ti\ )}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&list\_cast;}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TCastException(\_\_OlxSourceInfo,\ ti);}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keyword}{virtual}\ IEvaluable*\ create\_new(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *data)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ ListValue(*\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }list\_t*\textcolor{keyword}{>}(data));}
+\DoxyCodeLine{00130\ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ is\_final()\textcolor{keyword}{\ const\ }\{\ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{comment}{//\ wrapper\ functions}}
+\DoxyCodeLine{00133\ \ \ \ \ IEvaluable\&\ idx\_op(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *val[i];\ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{void}\ add(IEvaluable\ \&v\_)\ \ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ IEvaluable\ *v\ =\ v\_.undress();}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ v-\/>inc\_ref();}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ val.Add(v);}
+\DoxyCodeLine{00138\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{comment}{//\ globals\ section}}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keyword}{static}\ list\_t\ add(\textcolor{keyword}{const}\ list\_t\&\ a,\ \textcolor{keyword}{const}\ list\_t\&\ b)\ \ \{\ \ \textcolor{keywordflow}{return}\ list\_t(a)\ <<\ b;\ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ init\_library()\ \ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !info.is\_empty()\ )\ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ info.functions.add(\textcolor{stringliteral}{"{}sub"{}},\ \&list\_t::SubList);}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ info.functions.add<\textcolor{keywordtype}{size\_t}>(\textcolor{stringliteral}{"{}size"{}},\ \&list\_t::Count);\ \ \textcolor{comment}{//\ gcc...}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ \ \ info.wrap\_functions.add(\textcolor{stringliteral}{"{}\_idx\_"{}},\ \&ListValue::idx\_op);}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ info.wrap\_functions.add(\textcolor{stringliteral}{"{}add"{}},\ \&ListValue::add);}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ \ \ \ \ info.globals.add(\textcolor{stringliteral}{"{}+"{}},\ \&ListValue::add);}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{comment}{//info.globals.add("{}=="{},\ \&StringValue::equals);}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{comment}{//info.globals.add("{}!="{},\ \&StringValue::nequals);}}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{comment}{//info.globals.add("{}equals"{},\ \&StringValue::equals);}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{comment}{//info.globals.add("{}equalsi"{},\ \&StringValue::equals);}}
+\DoxyCodeLine{00154\ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \};}
+\DoxyCodeLine{00156\ \};\ \ \textcolor{comment}{//\ namespace\ exparse}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ EndEsdlNamespace()}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

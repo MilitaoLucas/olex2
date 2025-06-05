@@ -1,0 +1,1613 @@
+\doxysection{mmath.\+h}
+\hypertarget{mmath_8h_source}{}\label{mmath_8h_source}\index{sdl/math/mmath.h@{sdl/math/mmath.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_math\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_math\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../ematrix.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../bapp.h"{}}}
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ most\ of\ the\ procedures\ are\ inspired\ by\ ALGLIB\ and\ LAPACK,\ some\ things,\ the}}
+\DoxyCodeLine{00017\ \textcolor{comment}{Householder\ reflection\ generation\ in\ particular\ -\/\ inspired\ by\ smtxb\ code\ by}}
+\DoxyCodeLine{00018\ \textcolor{comment}{Luc\ Bourhis}}
+\DoxyCodeLine{00019\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00020\ namespace\ math\ \ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CT>\ \textcolor{keyword}{struct\ }mat\_col\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ CT::number\_type\ number\_type;}
+\DoxyCodeLine{00023\ \ \ \ \ CT\&\ m;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ col,\ start,\ end,\ sz;}
+\DoxyCodeLine{00025\ \ \ \ \ mat\_col(CT\&\ \_m,\ \textcolor{keywordtype}{size\_t}\ \_col,\ \textcolor{keywordtype}{size\_t}\ \_start,\ \textcolor{keywordtype}{size\_t}\ \_end\ =\ InvalidIndex)}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ :\ m(\_m),\ col(\_col),\ start(\_start),}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ end(\_end\ ==\ InvalidIndex\ ?\ m.RowCount()\ :\ \_end),\ sz(end\ -\/\ start)}
+\DoxyCodeLine{00028\ \ \ \ \ \{\}}
+\DoxyCodeLine{00029\ \ \ \ \ number\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ m(start\ +\ i,\ col);\ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{const}\ number\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m(start\ +\ i,\ col);}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Functor>\ mat\_col\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start;\ i\ <\ end;\ i++)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ f(m(i,\ col));}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Functor>\ mat\_col\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start;\ i\ <\ end;\ i++)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ f(m(i,\ col));}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sz;\ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sz\ ==\ 0;\ \}}
+\DoxyCodeLine{00046\ \ \ \};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CT>\ \textcolor{keyword}{struct\ }mat\_row\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ CT::number\_type\ number\_type;}
+\DoxyCodeLine{00050\ \ \ \ \ CT\&\ m;}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ row,\ start,\ end,\ sz;}
+\DoxyCodeLine{00052\ \ \ \ \ mat\_row(CT\&\ \_m,\ \textcolor{keywordtype}{size\_t}\ \_row,\ \textcolor{keywordtype}{size\_t}\ \_start,\ \textcolor{keywordtype}{size\_t}\ \_end\ =\ InvalidIndex)}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ :\ m(\_m),\ row(\_row),\ start(\_start),}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ end(\_end\ ==\ InvalidIndex\ ?\ m.ColCount()\ :\ \_end),\ sz(end\ -\/\ start)}
+\DoxyCodeLine{00055\ \ \ \ \ \{\}}
+\DoxyCodeLine{00056\ \ \ \ \ number\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ m(row,\ start\ +\ i);\ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{const}\ number\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m(row,\ start\ +\ i);}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Functor>\ mat\_row\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start;\ i\ <\ end;\ i++)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ f(m(row,\ i));}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Functor>\ mat\_row\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start;\ i\ <\ end;\ i++)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ f(m(row,\ i));}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sz;\ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sz\ ==\ 0;\ \}}
+\DoxyCodeLine{00074\ \ \ \};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CT>\ \textcolor{keyword}{struct\ }vec\_row\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ CT::number\_type\ number\_type;}
+\DoxyCodeLine{00078\ \ \ \ \ CT\&\ v;}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ start,\ end,\ sz;}
+\DoxyCodeLine{00080\ \ \ \ \ vec\_row(CT\&\ \_v,\ \textcolor{keywordtype}{size\_t}\ \_start,\ \textcolor{keywordtype}{size\_t}\ \_end\ =\ InvalidIndex)}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ :\ v(\_v),\ start(\_start),}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ end(\_end\ ==\ InvalidIndex\ ?\ v.Count()\ :\ \_end),\ sz(end\ -\/\ start)}
+\DoxyCodeLine{00083\ \ \ \ \ \{\}}
+\DoxyCodeLine{00084\ \ \ \ \ number\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\ \{\ \textcolor{keywordflow}{return}\ v(start\ +\ i);\ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{const}\ number\_type\&\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ v(start\ +\ i);\ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Functor>\ vec\_row\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start;\ i\ <\ end;\ i++)\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ f(v(i));}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Functor>\ vec\_row\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ start;\ i\ <\ end;\ i++)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ f(v(i));}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sz;\ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sz\ ==\ 0;\ \}}
+\DoxyCodeLine{00100\ \ \ \};}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CT>\ \textcolor{keyword}{struct\ }mat\_mat\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ CT::number\_type\ number\_type;}
+\DoxyCodeLine{00104\ \ \ \ \ CT\&\ m;}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ col\_s,\ col\_e,\ row\_s,\ row\_e,\ row\_c,\ col\_c;}
+\DoxyCodeLine{00106\ \ \ \ \ mat\_mat(CT\&\ \_m,\ \textcolor{keywordtype}{size\_t}\ rows,\ \textcolor{keywordtype}{size\_t}\ rowe,\ \textcolor{keywordtype}{size\_t}\ cols,\ \textcolor{keywordtype}{size\_t}\ cole)}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ :\ m(\_m),}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ col\_s(cols),\ col\_e(cole),\ row\_s(rows),\ row\_e(rowe),}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ row\_c(rowe\ -\/\ rows),\ col\_c(cole\ -\/\ cols)}
+\DoxyCodeLine{00110\ \ \ \ \ \{\}}
+\DoxyCodeLine{00111\ \ \ \ \ mat\_mat(CT\&\ \_m,\ \textcolor{keywordtype}{size\_t}\ colc,\ \textcolor{keywordtype}{size\_t}\ rowc)}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ :\ m(\_m),}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ col\_s(0),\ col\_e(colc),\ row\_s(0),\ row\_e(rowc),}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ row\_c(rowc),\ col\_c(colc)}
+\DoxyCodeLine{00115\ \ \ \ \ \{\}}
+\DoxyCodeLine{00116\ \ \ \ \ number\_type\&\ operator\ ()(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m(i\ +\ row\_s,\ j\ +\ col\_s);}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{const}\ number\_type\&\ operator\ ()(\textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m(i\ +\ row\_s,\ j\ +\ col\_s);}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ColCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ col\_c;\ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ RowCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ row\_c;\ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ mat\_mat\ \&\ operator\ =\ (\textcolor{keyword}{const}\ AT\ \&n)\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ row\_s,\ i1\ =\ 0;\ i\ <\ row\_e;\ i++,\ i1++)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ col\_s;\ j\ <\ col\_e;\ j++)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ m(i,\ j)\ =\ n(i1,\ j\ -\/\ col\_s);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{comment}{//\ considers\ n\ to\ be\ symmetric}}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ AT>\ mat\_mat\ \&\ SymAssign(\textcolor{keyword}{const}\ AT\ \&n)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (col\_c\ !=\ row\_c)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}matrix\ size"{}});}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ row\_c;\ i++)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i\_off\ =\ row\_s\ +\ i;}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i;\ j\ <\ col\_e;\ j++)\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ m(i\_off,\ j\ +\ col\_s)\ =\ m(j\ +\ col\_s,\ i\_off)\ =\ n(i,\ j);}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Functor>\ mat\_mat\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ row\_s;\ i\ <\ row\_e;\ i++)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ col\_s;\ j\ <\ col\_e;\ j++)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ f(m(i,\ j));}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Functor>\ mat\_mat\&\ ForEach(\textcolor{keyword}{const}\ Functor\&\ f)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ row\_s;\ i\ <\ row\_e;\ i++)\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ col\_s;\ j\ <\ col\_e;\ j++)\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ f(m(i,\ j));}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordtype}{bool}\ IsEmpty()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ ColCount()\ ==\ 0\ ||\ RowCount()\ ==\ 0;\ \}}
+\DoxyCodeLine{00162\ \ \ \};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{struct\ }proxy\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CT>}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keyword}{static}\ mat\_mat<CT>}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ mat(CT\&\ \_m,\ \textcolor{keywordtype}{size\_t}\ rows,\ \textcolor{keywordtype}{size\_t}\ rowe,\ \textcolor{keywordtype}{size\_t}\ cols,\ \textcolor{keywordtype}{size\_t}\ cole)\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mat\_mat<CT>(\_m,\ rows,\ rowe,\ cols,\ cole);}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CT>}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keyword}{static}\ mat\_mat<CT>}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ mat\_to(CT\&\ \_m,\ \textcolor{keywordtype}{size\_t}\ rowe,\ \textcolor{keywordtype}{size\_t}\ cole)\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mat\_mat<CT>(\_m,\ 0,\ rowe,\ 0,\ cole);}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CT>}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keyword}{static}\ mat\_col<CT>}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ col(CT\&\ \_m,\ \textcolor{keywordtype}{size\_t}\ \_col,\ \textcolor{keywordtype}{size\_t}\ \_start,\ \textcolor{keywordtype}{size\_t}\ \_end\ =\ InvalidIndex)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mat\_col<CT>(\_m,\ \_col,\ \_start,\ \_end);}
+\DoxyCodeLine{00179\ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CT>}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keyword}{static}\ mat\_row<CT>}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ row(CT\&\ \_m,\ \textcolor{keywordtype}{size\_t}\ \_row,\ \textcolor{keywordtype}{size\_t}\ \_start,\ \textcolor{keywordtype}{size\_t}\ \_end\ =\ InvalidIndex)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mat\_row<CT>(\_m,\ \_row,\ \_start,\ \_end);}
+\DoxyCodeLine{00184\ \ \ \ \ \}}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ CT>}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keyword}{static}\ vec\_row<CT>}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ vec(CT\&\ \_v,\ \textcolor{keywordtype}{size\_t}\ \_start,\ \textcolor{keywordtype}{size\_t}\ \_end\ =\ InvalidIndex)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ vec\_row<CT>(\_v,\ \_start,\ \_end);}
+\DoxyCodeLine{00189\ \ \ \ \ \}}
+\DoxyCodeLine{00190\ \ \ \};}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{namespace\ }alg\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ToT,\ \textcolor{keyword}{typename}\ FromT>}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordtype}{void}\ copy(ToT\&\ to,\ \textcolor{keyword}{const}\ FromT\&\ f)}
+\DoxyCodeLine{00195\ \ \ \ \ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ f.Count();\ i++)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ to(i)\ =\ f(i);}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ToT,\ \textcolor{keyword}{typename}\ FromT>}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordtype}{void}\ copy\_1(ToT\&\ to,\ \textcolor{keyword}{const}\ FromT\&\ f)}
+\DoxyCodeLine{00202\ \ \ \ \ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ f.Count();\ i++)\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ to(i)\ =\ f(i);}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ to(0)\ =\ 1;}
+\DoxyCodeLine{00207\ \ \ \ \ \}}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{comment}{//\ this\ way\ the\ rounding\ error\ is\ smaller\ than\ in\ a\ simple\ loop}}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T1,\ \textcolor{keyword}{typename}\ T2>}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{typename}\ T1::number\_type\ dot\_prod\_x(\textcolor{keyword}{const}\ T1\&\ a,\ \textcolor{keyword}{const}\ T2\&\ b)\ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ T1::number\_type\ v\ =\ 0;}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ce\ =\ ((a.Count())\ /\ 4)\ *\ 4,\ i\ =\ 0;}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ ce;\ i\ +=\ 4)\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ v\ +=\ a(i)*b(i)\ +\ a(i\ +\ 1)*b(i\ +\ 1)\ +\ a(i\ +\ 2)*b(i\ +\ 2)\ +\ a(i\ +\ 3)*b(i\ +\ 3);}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ i\ <\ a.Count();\ i++)\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ v\ +=\ a(i)*b(i);}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00220\ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{comment}{//\ this\ way\ the\ rounding\ error\ is\ smaller\ than\ in\ a\ simple\ loop}}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T1,\ \textcolor{keyword}{typename}\ T2>}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keyword}{typename}\ T1::number\_type\ dot\_prod(\textcolor{keyword}{const}\ T1\&\ a,\ \textcolor{keyword}{const}\ T2\&\ b)}
+\DoxyCodeLine{00224\ \ \ \ \ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ T1::number\_type\ v\ =\ 0;}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sz\ =\ a.Caunt();}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ sz;\ i++)\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ v\ +=\ a(i)*b(i);}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ v;}
+\DoxyCodeLine{00231\ \ \ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keywordtype}{void}\ swap\_rows(T\&\ m,\ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sz\ =\ m.ColCount();}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ sz;\ x++)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ olx\_swap(m(i,\ x),\ m(j,\ x));}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \ \ \}}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keywordtype}{void}\ swap\_cols(T\&\ m,\ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sz\ =\ m.RowCount();}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ sz;\ x++)\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ olx\_swap(m(x,\ i),\ m(x,\ j));}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \ \ \}}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keywordtype}{void}\ print0(\textcolor{keyword}{const}\ T\&\ a,\ \textcolor{keywordtype}{size\_t}\ m,\ \textcolor{keyword}{const}\ olxstr\&\ annotation\ =\ EmptyString())\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!annotation.IsEmpty())\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ annotation;}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ olxstr\_buf\ line;}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ m;\ i++)\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ line\ <<\ olxstr::FormatFloat(-\/16,\ a(i),\ \textcolor{keyword}{true})\ <<\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ olxstr(line);}
+\DoxyCodeLine{00254\ \ \ \ \ \}}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keywordtype}{void}\ print0\_1(\textcolor{keyword}{const}\ T\&\ a,\ \textcolor{keyword}{const}\ olxstr\&\ annotation\ =\ EmptyString())\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ print0(a,\ a.Count(),\ annotation);}
+\DoxyCodeLine{00258\ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{keywordtype}{void}\ print1(\textcolor{keyword}{const}\ T\&\ a,\ \textcolor{keywordtype}{int}\ m,\ \textcolor{keyword}{const}\ olxstr\&\ annotation\ =\ EmptyString())\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!annotation.IsEmpty())\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ annotation;}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ olxstr\_buf\ line;}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ m;\ i++)\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ line\ <<\ olxstr::FormatFloat(-\/16,\ a(i\ +\ 1),\ \textcolor{keyword}{true})\ <<\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ olxstr(line);}
+\DoxyCodeLine{00269\ \ \ \ \ \}}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keywordtype}{void}\ print0(\textcolor{keyword}{const}\ T\&\ a,\ \textcolor{keywordtype}{size\_t}\ m,\ \textcolor{keywordtype}{size\_t}\ n,}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ annotation\ =\ EmptyString())}
+\DoxyCodeLine{00272\ \ \ \ \ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!annotation.IsEmpty())\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ annotation;}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ m;\ i++)\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ olxstr\_buf\ line;}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ n;\ j++)\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ line\ <<\ olxstr::FormatFloat(-\/4,\ a(i,\ j),\ \textcolor{keyword}{true})\ <<\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ olxstr(line);}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00283\ \ \ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keywordtype}{void}\ print0\_2(\textcolor{keyword}{const}\ T\&\ a,\ \textcolor{keyword}{const}\ olxstr\&\ annotation\ =\ EmptyString())\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ print0(a,\ a.RowCount(),\ a.ColCount(),\ annotation);}
+\DoxyCodeLine{00287\ \ \ \ \ \}}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordtype}{void}\ print1(\textcolor{keyword}{const}\ T\&\ a,\ \textcolor{keywordtype}{int}\ m,\ \textcolor{keywordtype}{int}\ n,}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\&\ annotation\ =\ EmptyString())}
+\DoxyCodeLine{00291\ \ \ \ \ \{}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!annotation.IsEmpty())\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ annotation;}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 1;\ i\ <=\ m;\ i++)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ olxstr\_buf\ line;}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 1;\ j\ <=\ n;\ j++)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ line\ <<\ olxstr::FormatFloat(-\/4,\ a(i,\ j),\ \textcolor{keyword}{true})\ <<\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ TBasicApp::NewLogEntry()\ <<\ olxstr(line);}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \ \ \}}
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \textcolor{keyword}{struct\ }\_Mul\ \{}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ k;}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \_Mul(FT\ \_k)\ :\ k(\_k)\ \{\}}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ operator\ ()(FT\&\ f)\textcolor{keyword}{\ const\ }\{\ f\ *=\ k;\ \}}
+\DoxyCodeLine{00307\ \ \ \ \ \};}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \textcolor{keyword}{struct\ }\_Div\ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ k;}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \_Div(FT\ \_k)\ :\ k(\_k)\ \{\}}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ operator\ ()(FT\&\ f)\textcolor{keyword}{\ const\ }\{\ f\ /=\ k;\ \}}
+\DoxyCodeLine{00312\ \ \ \ \ \};}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \textcolor{keyword}{struct\ }\_Add\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ k;}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \_Add(FT\ \_k)\ :\ k(\_k)\ \{\}}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ operator\ ()(FT\&\ f)\textcolor{keyword}{\ const\ }\{\ f\ +=\ k;\ \}}
+\DoxyCodeLine{00317\ \ \ \ \ \};}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \textcolor{keyword}{struct\ }\_Sub\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ k;}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \_Sub(FT\ \_k)\ :\ k(\_k)\ \{\}}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ operator\ ()(FT\&\ f)\textcolor{keyword}{\ const\ }\{\ f\ -\/=\ k;\ \}}
+\DoxyCodeLine{00322\ \ \ \ \ \};}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \_Mul<FT>\ Mul(FT\ v)\ \{\ \textcolor{keywordflow}{return}\ \_Mul<FT>(v);\ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \_Add<FT>\ Add(FT\ v)\ \{\ \textcolor{keywordflow}{return}\ \_Add<FT>(v);\ \}}
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \_Div<FT>\ Div(FT\ v)\ \{\ \textcolor{keywordflow}{return}\ \_Div<FT>(v);\ \}}
+\DoxyCodeLine{00326\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \_Sub<FT>\ Sub(FT\ v)\ \{\ \textcolor{keywordflow}{return}\ \_Sub<FT>(v);\ \}}
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keyword}{struct\ }ChSig\ \{}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \textcolor{keywordtype}{void}\ operator\ ()(FT\&\ f)\textcolor{keyword}{\ const\ }\{\ f\ =\ -\/f;\ \}}
+\DoxyCodeLine{00329\ \ \ \ \ \};}
+\DoxyCodeLine{00330\ \ \ \};\ \ \textcolor{comment}{//\ end\ namespace\ alg}}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ FT>\ \textcolor{keyword}{struct\ }Reflection\ \{}
+\DoxyCodeLine{00333\ \ \ \ \ TVector<FT>\ tmp;}
+\DoxyCodeLine{00334\ \ \ \ \ Reflection(\textcolor{keywordtype}{size\_t}\ sz)\ :\ tmp(sz)\ \{\}}
+\DoxyCodeLine{00335\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ vec\_t>\ FT\ Generate(vec\_t\&\ v)\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v.Count()\ <=\ 1)\ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ FT\ mx\ =\ olx\_abs(v(1));}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 2;\ i\ <\ v.Count();\ i++)\ \{}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ mx\ =\ olx\_max(olx\_abs(v(i)),\ mx);}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ FT\ xnorm\ =\ 0;}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mx\ !=\ 0)\ \{}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ v.Count();\ i++)\ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ xnorm\ +=\ olx\_sqr(v(i)\ /\ mx);}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ xnorm\ =\ sqrt(xnorm)*mx;}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ alpha\ =\ v(0);}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ mx\ =\ olx\_max(olx\_abs(alpha),\ olx\_abs(xnorm));}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ beta\ =\ mx\ *\ sqrt(olx\_sqr(alpha\ /\ mx)\ +\ olx\_sqr(xnorm\ /\ mx));}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ v0\ =\ (alpha\ <=\ 0\ ?\ alpha\ -\/\ beta\ :\ -\/xnorm\ /\ (alpha\ +\ beta)*xnorm);}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ proxy::vec(v,\ 1,\ v.Count()).ForEach(alg::Mul(1\ /\ v0));}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ v(0)\ =\ beta;}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 2\ /\ (olx\_sqr(xnorm\ /\ v0)\ +\ 1);}
+\DoxyCodeLine{00360\ \ \ \ \ \}}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplyFromLeft(MatT\&\ m,\ FT\ tau,\ \textcolor{keyword}{const}\ VecT\&\ vt,}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ row\_s,\ \textcolor{keywordtype}{size\_t}\ row\_e,\ \textcolor{keywordtype}{size\_t}\ col\_s,\ \textcolor{keywordtype}{size\_t}\ col\_e)}
+\DoxyCodeLine{00364\ \ \ \ \ \{}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tau\ ==\ 0\ ||\ row\_s\ >=\ row\_e\ ||\ col\_s\ >=\ col\_e)\ \{}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ col\_s;\ j\ <\ col\_e;\ j++)\ \{}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ tmp(j)\ =\ 0;}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ row\_s;\ i\ <\ row\_e;\ i++)\ \{}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ v\ =\ vt(i\ -\/\ row\_s);}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ col\_s;\ j\ <\ col\_e;\ j++)\ \{}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \ \ tmp(j)\ +=\ m(i,\ j)*v;}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ row\_s;\ i\ <\ row\_e;\ i++)\ \{}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ v\ =\ vt(i\ -\/\ row\_s)*tau;}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ col\_s;\ j\ <\ col\_e;\ j++)\ \{}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ m(i,\ j)\ -\/=\ tmp(j)*v;}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00383\ \ \ \ \ \}}
+\DoxyCodeLine{00384\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT>}
+\DoxyCodeLine{00385\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplyFromLeft(MatT\&\ m,\ FT\ tau,\ \textcolor{keywordtype}{size\_t}\ row\_s,\ \textcolor{keywordtype}{size\_t}\ col\_s)\ \{}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ beta\ =\ m(row\_s,\ col\_s\ -\/\ 1);}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ m(row\_s,\ col\_s\ -\/\ 1)\ =\ 1;}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ ApplyFromLeft(m,\ tau,\ proxy::col(m,\ col\_s\ -\/\ 1,\ row\_s,\ m.RowCount()),}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ row\_s,\ m.RowCount(),\ col\_s,\ m.ColCount());}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ m(row\_s,\ col\_s\ -\/\ 1)\ =\ beta;}
+\DoxyCodeLine{00391\ \ \ \ \ \}}
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00393\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplyFromRight(MatT\&\ m,\ FT\ tau,\ \textcolor{keyword}{const}\ VecT\&\ vt,}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ row\_s,\ \textcolor{keywordtype}{size\_t}\ row\_e,\ \textcolor{keywordtype}{size\_t}\ col\_s,\ \textcolor{keywordtype}{size\_t}\ col\_e)}
+\DoxyCodeLine{00395\ \ \ \ \ \{}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tau\ ==\ 0\ ||\ row\_s\ >=\ row\_e\ ||\ col\_s\ >=\ col\_e)\ \{}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ row\_s;\ i\ <\ row\_e;\ i++)\ \{}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ FT\ v\ =\ tau\ *\ alg::dot\_prod\_x(proxy::row(m,\ i,\ col\_s,\ col\_e),\ vt);}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ col\_s;\ j\ <\ col\_e;\ j++)\ \{}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \ \ m(i,\ j)\ -\/=\ vt(j\ -\/\ col\_s)*v;}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00405\ \ \ \ \ \}}
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT>}
+\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keywordtype}{void}\ ApplyFromRight(MatT\&\ m,\ FT\ tau,\ \textcolor{keywordtype}{size\_t}\ row\_s,\ \textcolor{keywordtype}{size\_t}\ col\_s)\ \{}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ beta\ =\ m(row\_s\ -\/\ 1,\ col\_s);}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ m(row\_s\ -\/\ 1,\ col\_s)\ =\ 1;}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ ApplyFromRight(m,\ tau,\ proxy::row(m,\ row\_s\ -\/\ 1,\ col\_s,\ m.ColCount()),}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ row\_s,\ m.RowCount(),\ col\_s,\ m.ColCount());}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ m(row\_s\ -\/\ 1,\ col\_s)\ =\ beta;}
+\DoxyCodeLine{00413\ \ \ \ \ \}}
+\DoxyCodeLine{00414\ \ \ \};\ \ \textcolor{comment}{//\ end\ of\ Reflection}}
+\DoxyCodeLine{00415\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \textcolor{keyword}{struct\ }Rotation\ \{}
+\DoxyCodeLine{00416\ \ \ \ \ Rotation()\ \{\}}
+\DoxyCodeLine{00417\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Generate(FT\ f,\ FT\ g,\ FT\&\ cs,\ FT\&\ sn,\ FT\&\ r)\ \{}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ sn\ =\ 0;}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ cs\ =\ 1;}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (g\ ==\ 0)}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ r\ =\ f;}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (f\ ==\ 0)\ \{}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ sn\ =\ 1;}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ cs\ =\ 0;}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ r\ =\ g;}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ r\ =\ sqrt(f*f\ +\ g\ *\ g);}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(f)\ >\ olx\_abs(g)\ \&\&\ f\ <\ 0)\ \{}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \ \ cs\ =\ -\/f\ /\ r;}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \ \ sn\ =\ -\/g\ /\ r;}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \ \ r\ =\ -\/r;}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \ \ \ \ cs\ =\ f\ /\ r;}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ \ \ sn\ =\ g\ /\ r;}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00439\ \ \ \ \ \}}
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT>}
+\DoxyCodeLine{00441\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ApplyToRows(MatT\&\ m,\ \textcolor{keywordtype}{size\_t}\ row\_a,\ \textcolor{keywordtype}{size\_t}\ row\_b,\ FT\ cs,\ FT\ sn)\ \{}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ m.ColCount();\ i++)\ \{}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ tmp\ =\ m(row\_a,\ i)*cs\ +\ m(row\_b,\ i)*sn;}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \ \ m(row\_b,\ i)\ =\ m(row\_b,\ i)*cs\ -\/\ m(row\_a,\ i)*sn;}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ m(row\_a,\ i)\ =\ tmp;}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00447\ \ \ \ \ \}}
+\DoxyCodeLine{00448\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT>}
+\DoxyCodeLine{00449\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ApplyToCols(MatT\&\ m,\ \textcolor{keywordtype}{size\_t}\ col\_a,\ \textcolor{keywordtype}{size\_t}\ col\_b,\ FT\ cs,\ FT\ sn)\ \{}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ m.RowCount();\ i++)\ \{}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ tmp\ =\ m(i,\ col\_a)*cs\ +\ m(i,\ col\_b)*sn;}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ m(i,\ col\_b)\ =\ m(i,\ col\_b)*cs\ -\/\ m(i,\ col\_a)*sn;}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ m(i,\ col\_a)\ =\ tmp;}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00455\ \ \ \ \ \}}
+\DoxyCodeLine{00456\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ VecT1,\ \textcolor{keyword}{typename}\ VecT2>}
+\DoxyCodeLine{00457\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Apply(VecT1\&\ a,\ VecT2\&\ b,\ FT\ cs,\ FT\ sn)\ \{}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ a.Count();\ i++)\ \{}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ tmp\ =\ a(i)*cs\ +\ b(i)*sn;}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ b(i)\ =\ b(i)*cs\ -\/\ a(i)*sn;}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ a(i)\ =\ tmp;}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00463\ \ \ \ \ \}}
+\DoxyCodeLine{00464\ \ \ \};\ \ \textcolor{comment}{//\ end\ of\ struct\ Rotation}}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00466\ \ \ \textcolor{comment}{//\ returns\ false\ for\ singular\ matrix}}
+\DoxyCodeLine{00467\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT>}
+\DoxyCodeLine{00468\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ InvertTriagular(MatT\&\ m,\ \textcolor{keywordtype}{bool}\ upper,\ \textcolor{keywordtype}{bool}\ hasUnitDiag)\ \{}
+\DoxyCodeLine{00469\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatT::number\_type\ FT;}
+\DoxyCodeLine{00470\ \ \ \ \ \textcolor{keywordflow}{if}\ (upper)\ \{}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ m.RowCount();\ i++)\ \{}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ FT\ diag\_v\ =\ -\/1;}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!hasUnitDiag)\ \{}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m(i,\ i)\ ==\ 0)\ \{}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \ \ diag\_v\ =\ -\/(m(i,\ i)\ =\ 1\ /\ m(i,\ i));}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ i;\ j++)\ \{}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ \ \ m(j,\ i)\ *=\ m(j,\ j);}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ j\ +\ 1;\ k\ <\ i;\ k++)\ \{}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ \ \ \ \ m(j,\ i)\ +=\ m(j,\ k)*m(k,\ i);}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ m(j,\ i)\ *=\ diag\_v;}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00487\ \ \ \ \ \}}
+\DoxyCodeLine{00488\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ m.RowCount()\ -\/\ 1;\ i\ !=\ InvalidIndex;\ i-\/-\/)\ \{}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ FT\ diag\_v\ =\ -\/1;}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!hasUnitDiag)\ \{}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m(i,\ i)\ ==\ 0)\ \{}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \ \ diag\_v\ =\ -\/(m(i,\ i)\ =\ 1\ /\ m(i,\ i));}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ 1;\ j\ <\ m.RowCount();\ j++)\ \{}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \ \ \ \ m(j,\ i)\ *=\ m(j,\ j);}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ i\ +\ 1;\ k\ <\ j;\ k++)\ \{}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ \ \ \ \ m(j,\ i)\ +=\ m(j,\ k)*m(k,\ i);}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ \ \ m(j,\ i)\ *=\ diag\_v;}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00505\ \ \ \ \ \}}
+\DoxyCodeLine{00506\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00507\ \ \ \}}
+\DoxyCodeLine{00508\ \ \ \textcolor{keyword}{struct\ }LU\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT,\ \textcolor{keyword}{typename}\ IndexVecT>}
+\DoxyCodeLine{00510\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Decompose(MatT\&\ m,\ IndexVecT\&\ pivots)\ \{}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ min\_d\ =\ olx\_min(m.RowCount(),\ m.ColCount());}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ min\_d;\ i++)\ \{}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pivot\_index\ =\ i;}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ 1;\ j\ <\ m.RowCount();\ j++)\ \{}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(m(j,\ i))\ >\ olx\_abs(m(pivot\_index,\ i)))\ \{}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ \ \ \ \ pivot\_index\ =\ j;}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \ \ pivots(i)\ =\ pivot\_index;}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m(pivot\_index,\ i)\ !=\ 0)\ \{}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pivot\_index\ !=\ i)\ \{}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \ \ \ \ \ \ alg::swap\_rows(m,\ pivot\_index,\ i);}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ min\_d\ -\/\ 1)\ \{}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ \ \ \ \ proxy::col(m,\ i,\ i\ +\ 1).ForEach(alg::Mul(1\ /\ m(i,\ i)));}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ 1;\ j\ <\ m.RowCount();\ j++)\ \{}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ i\ +\ 1;\ k\ <\ m.RowCount();\ k++)\ \{}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ \ \ \ \ m(j,\ k)\ -\/=\ m(j,\ i)*m(i,\ k);}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00534\ \ \ \ \ \}}
+\DoxyCodeLine{00535\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT,\ \textcolor{keyword}{typename}\ IndexVecT>}
+\DoxyCodeLine{00536\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Invert(MatT\&\ m,\ \textcolor{keyword}{const}\ IndexVecT\&\ pivots)\ \{}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatT::number\_type\ FT;}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!InvertTriagular<MatT>(m,\ \textcolor{keyword}{true},\ \textcolor{keyword}{false}))}
+\DoxyCodeLine{00539\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ TVector<FT>\ tmp(m.RowCount());}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ m.RowCount()\ -\/\ 2;\ i\ !=\ InvalidIndex;\ i-\/-\/)\ \{}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ 1;\ j\ <\ m.RowCount();\ j++)\ \{}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \ \ \ \ tmp(j)\ =\ m(j,\ i);}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ m(j,\ i)\ =\ 0.0;}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ m.RowCount();\ j++)\ \{}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ FT\ v\ =\ 0;}
+\DoxyCodeLine{00548\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ i\ +\ 1;\ k\ <\ m.RowCount();\ k++)\ \{}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ \ \ \ \ v\ +=\ m(j,\ k)*tmp(k);}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \ \ m(j,\ i)\ -\/=\ v;}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ m.RowCount()\ -\/\ 1;\ i\ !=\ InvalidIndex;\ i-\/-\/)\ \{}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pivots(i)\ !=\ i)\ \{}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ alg::swap\_cols(m,\ i,\ pivots(i));}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00560\ \ \ \ \ \}}
+\DoxyCodeLine{00561\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT>}
+\DoxyCodeLine{00562\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Invert(MatT\&\ m)\ \{}
+\DoxyCodeLine{00563\ \ \ \ \ \ \ TVector<size\_t>\ pivots(m.RowCount());}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ Decompose(m,\ pivots);}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Invert(m,\ pivots);}
+\DoxyCodeLine{00566\ \ \ \ \ \}}
+\DoxyCodeLine{00567\ \ \ \};\ \textcolor{comment}{//\ end\ of\ LU}}
+\DoxyCodeLine{00568\ \ \ \textcolor{keyword}{struct\ }LQ\ \{}
+\DoxyCodeLine{00569\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00570\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Decompose(MatT\&\ m,\ VecT\&\ taus)\ \{}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatT::number\_type\ FT;}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ min\_d\ =\ olx\_min(m.RowCount(),\ m.ColCount());}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ taus.Resize(min\_d);}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ TVector<FT>\ tmp(m.ColCount());}
+\DoxyCodeLine{00575\ \ \ \ \ \ \ Reflection<FT>\ ref(m.RowCount());}
+\DoxyCodeLine{00576\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ min\_d;\ i++)\ \{}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \ \ mat\_row<MatT>\ mr(m,\ i,\ i);}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ \ \ taus(i)\ =\ ref.Generate(mr);}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ m.ColCount()\ -\/\ 1)\ \{}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ \ \ \ \ alg::copy\_1(tmp,\ mr);}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromRight(m,\ taus(i),\ tmp,}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \ \ \ \ \ \ i\ +\ 1,\ m.RowCount(),\ i,\ m.ColCount());}
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00585\ \ \ \ \ \}}
+\DoxyCodeLine{00586\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatIT,\ \textcolor{keyword}{typename}\ MatOT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00587\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UnpackQ(\textcolor{keyword}{const}\ MatIT\&\ m,\ \textcolor{keyword}{const}\ VecT\&\ taus,\ \textcolor{keywordtype}{size\_t}\ row\_cnt,}
+\DoxyCodeLine{00588\ \ \ \ \ \ \ MatOT\&\ q)}
+\DoxyCodeLine{00589\ \ \ \ \ \{}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatOT::number\_type\ FT;}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m.IsEmpty()\ ||\ row\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ min\_d\ =\ olx\_min(m.RowCount(),\ m.ColCount());}
+\DoxyCodeLine{00595\ \ \ \ \ \ \ q.Resize(row\_cnt,\ m.ColCount());}
+\DoxyCodeLine{00596\ \ \ \ \ \ \ TVector<FT>\ tmp(m.ColCount());}
+\DoxyCodeLine{00597\ \ \ \ \ \ \ Reflection<FT>\ ref(row\_cnt);}
+\DoxyCodeLine{00598\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ row\_cnt;\ i++)\ \{}
+\DoxyCodeLine{00599\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ m.ColCount();\ j++)\ \{}
+\DoxyCodeLine{00600\ \ \ \ \ \ \ \ \ \ \ q(i,\ j)\ =\ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(i\ ==\ j\ ?\ 1\ :\ 0);}
+\DoxyCodeLine{00601\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ min\_d\ -\/\ 1;\ i\ !=\ InvalidIndex;\ i-\/-\/)\ \{}
+\DoxyCodeLine{00604\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sz\ =\ m.ColCount()\ -\/\ i;}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 1;\ j\ <\ sz;\ j++)\ \{}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \ \ \ \ tmp(j)\ =\ m(i,\ i\ +\ j);}
+\DoxyCodeLine{00607\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \ \ tmp(0)\ =\ 1;}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \ \ ref.ApplyFromRight(q,\ taus(i),\ tmp,\ 0,\ row\_cnt,\ i,\ m.ColCount());}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00611\ \ \ \ \ \}}
+\DoxyCodeLine{00612\ \ \ \};\ \textcolor{comment}{//\ end\ of\ LQ}}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00614\ \ \ \textcolor{keyword}{struct\ }QR\ \{}
+\DoxyCodeLine{00615\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00616\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Decompose(MatT\&\ m,\ VecT\&\ taus)\ \{}
+\DoxyCodeLine{00617\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatT::number\_type\ FT;}
+\DoxyCodeLine{00618\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ min\_d\ =\ olx\_min(m.ColCount(),\ m.RowCount());}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ Reflection<FT>\ r(min\_d);}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ taus.Resize(min\_d);}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ TVector<FT>\ tmp(m.RowCount());}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ min\_d;\ i++)\ \{}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \ \ mat\_col<MatT>\ mc(m,\ i,\ i);}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \ \ taus(i)\ =\ r.Generate(mc);}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ m.ColCount()\ -\/\ 1)\ \{}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ \ \ alg::copy\_1(tmp,\ mc);}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ \ \ \ \ r.ApplyFromLeft(m,\ taus(i),\ tmp,\ i,\ m.RowCount(),\ i\ +\ 1,\ m.ColCount());}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00630\ \ \ \ \ \}}
+\DoxyCodeLine{00631\ }
+\DoxyCodeLine{00632\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatIT,\ \textcolor{keyword}{typename}\ MatOT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00633\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ Unpack(\textcolor{keyword}{const}\ MatIT\&\ qr,\ \textcolor{keyword}{const}\ VecT\&\ tau,\ \textcolor{keywordtype}{size\_t}\ col\_num,}
+\DoxyCodeLine{00634\ \ \ \ \ \ \ MatOT\&\ q)}
+\DoxyCodeLine{00635\ \ \ \ \ \{}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatOT::number\_type\ FT;}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ min\_d\ =\ olx\_min(qr.ColCount(),\ qr.RowCount());}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ Reflection<FT>\ ref(col\_num);}
+\DoxyCodeLine{00639\ \ \ \ \ \ \ q.Resize(qr.RowCount(),\ col\_num);}
+\DoxyCodeLine{00640\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ qr.RowCount();\ i++)\ \{}
+\DoxyCodeLine{00641\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ col\_num;\ j++)\ \{}
+\DoxyCodeLine{00642\ \ \ \ \ \ \ \ \ \ \ q(i,\ j)\ =\ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(i\ ==\ j\ ?\ 1\ :\ 0);}
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00644\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00645\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ sz\ =\ olx\_min(min\_d,\ col\_num)\ -\/\ 1;}
+\DoxyCodeLine{00646\ \ \ \ \ \ \ TVector<FT>\ v(qr.RowCount());}
+\DoxyCodeLine{00647\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ sz;\ i\ !=\ InvalidIndex;\ i-\/-\/)\ \{}
+\DoxyCodeLine{00648\ \ \ \ \ \ \ \ \ alg::copy\_1(v,\ proxy::col(qr,\ i,\ i,\ qr.RowCount()));}
+\DoxyCodeLine{00649\ \ \ \ \ \ \ \ \ ref.ApplyFromLeft(q,\ tau(i),\ v,\ i,\ qr.RowCount(),\ 0,\ col\_num);}
+\DoxyCodeLine{00650\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00651\ \ \ \ \ \}}
+\DoxyCodeLine{00652\ \ \ \};\ \textcolor{comment}{//\ end\ QR}}
+\DoxyCodeLine{00653\ }
+\DoxyCodeLine{00654\ \ \ \textcolor{keyword}{struct\ }Bidiagonal\ \{}
+\DoxyCodeLine{00655\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00656\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ToBidiagonal(MatT\&\ m,\ VecT\&\ qtau,\ VecT\&\ ptau)\ \{}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatT::number\_type\ FT;}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \ \ min\_d\ =\ olx\_min(m.ColCount(),\ m.RowCount()),}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \ \ max\_d\ =\ olx\_max(m.ColCount(),\ m.RowCount());}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ Reflection<FT>\ ref(max\_d);}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ qtau.Resize(min\_d);}
+\DoxyCodeLine{00663\ \ \ \ \ \ \ ptau.Resize(min\_d);}
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m.RowCount()\ >=\ m.ColCount())\ \{}
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ k\_left\ =\ m.ColCount()\ -\/\ (m.RowCount()\ >\ m.ColCount()\ ?\ 0\ :\ 1);}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ k\_right\ =\ m.ColCount()\ -\/\ 2;}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ k\_left;\ i++)\ \{}
+\DoxyCodeLine{00668\ \ \ \ \ \ \ \ \ \ \ mat\_col<MatT>\ mc(m,\ i,\ i);}
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \ \ \ \ qtau(i)\ =\ ref.Generate(mc);}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromLeft(m,\ qtau(i),\ i,\ i\ +\ 1);}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ k\_right)\ \{}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \ \ \ \ \ \ mat\_row<MatT>\ mr(m,\ i,\ i\ +\ 1);}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \ \ \ \ ptau(i)\ =\ ref.Generate(mr);}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromRight(m,\ ptau(i),\ i\ +\ 1,\ i\ +\ 1);}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00677\ \ \ \ \ \ \ \ \ \ \ \ \ ptau(i)\ =\ 0;}
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00679\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ k\_right\ =\ m.RowCount();}
+\DoxyCodeLine{00683\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ k\_left\ =\ m.RowCount()\ -\/\ 2;}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ k\_right;\ i++)\ \{}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \ \ \ \ mat\_row<MatT>\ mr(m,\ i,\ i);}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ \ \ \ \ ptau(i)\ =\ ref.Generate(mr);}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromRight(m,\ ptau(i),\ i\ +\ 1,\ i);}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ k\_left)\ \{}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ \ \ \ \ \ \ mat\_col<MatT>\ mc(m,\ i,\ i\ +\ 1);}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ \ \ \ \ \ \ qtau(i)\ =\ ref.Generate(mc);}
+\DoxyCodeLine{00691\ \ \ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromLeft(m,\ qtau(i),\ i\ +\ 1,\ i\ +\ 1);}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ \ \ \ \ \ \ qtau(i)\ =\ 0;}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00698\ \ \ \ \ \}}
+\DoxyCodeLine{00699\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatIT,\ \textcolor{keyword}{typename}\ MatOT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00700\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UnpackQ(\textcolor{keyword}{const}\ MatIT\&\ qp,\ \textcolor{keyword}{const}\ VecT\&\ qtau,\ \textcolor{keywordtype}{size\_t}\ col\_cnt,}
+\DoxyCodeLine{00701\ \ \ \ \ \ \ MatOT\&\ q)}
+\DoxyCodeLine{00702\ \ \ \ \ \{}
+\DoxyCodeLine{00703\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatOT::number\_type\ FT;}
+\DoxyCodeLine{00704\ \ \ \ \ \ \ q.Resize(qp.RowCount(),\ col\_cnt);}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ Reflection<FT>\ r(col\_cnt);}
+\DoxyCodeLine{00706\ \ \ \ \ \ \ TVector<FT>\ tmp(qp.RowCount());}
+\DoxyCodeLine{00707\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ qp.RowCount();\ i++)\ \{}
+\DoxyCodeLine{00708\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ col\_cnt;\ j++)\ \{}
+\DoxyCodeLine{00709\ \ \ \ \ \ \ \ \ \ \ q(i,\ j)\ =\ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(i\ ==\ j\ ?\ 1\ :\ 0);}
+\DoxyCodeLine{00710\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00712\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (qp.RowCount()\ >=\ qp.ColCount())\ \{}
+\DoxyCodeLine{00713\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ s\ =\ olx\_min(qp.ColCount(),\ col\_cnt)\ -\/\ 1;}
+\DoxyCodeLine{00714\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ s;\ i\ !=\ InvalidIndex;\ i-\/-\/)\ \{}
+\DoxyCodeLine{00715\ \ \ \ \ \ \ \ \ \ \ alg::copy\_1(tmp,\ proxy::col(qp,\ i,\ i,\ qp.RowCount()));}
+\DoxyCodeLine{00716\ \ \ \ \ \ \ \ \ \ \ r.ApplyFromLeft(q,\ qtau(i),\ tmp,\ i,\ qp.RowCount(),\ 0,\ col\_cnt);}
+\DoxyCodeLine{00717\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00718\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00719\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00720\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ s\ =\ olx\_min(qp.RowCount(),\ col\_cnt)\ -\/\ 1;}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ s;\ i\ !=\ InvalidIndex;\ i-\/-\/)\ \{}
+\DoxyCodeLine{00722\ \ \ \ \ \ \ \ \ \ \ alg::copy\_1(tmp,\ proxy::col(qp,\ i,\ i\ +\ 1,\ qp.RowCount()));}
+\DoxyCodeLine{00723\ \ \ \ \ \ \ \ \ \ \ r.ApplyFromLeft(q,\ qtau(i),\ tmp,\ i\ +\ 1,\ qp.RowCount(),\ 0,\ col\_cnt);}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00726\ \ \ \ \ \}}
+\DoxyCodeLine{00727\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatIT,\ \textcolor{keyword}{typename}\ MatOT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00728\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ UnpackPT(\textcolor{keyword}{const}\ MatIT\&\ qp,\ \textcolor{keyword}{const}\ VecT\&\ ptau,\ \textcolor{keywordtype}{size\_t}\ row\_cnt,}
+\DoxyCodeLine{00729\ \ \ \ \ \ \ MatOT\&\ pt)}
+\DoxyCodeLine{00730\ \ \ \ \ \{}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatOT::number\_type\ FT;}
+\DoxyCodeLine{00732\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (qp.IsEmpty()\ ||\ row\_cnt\ ==\ 0)\ \{}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00734\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00735\ \ \ \ \ \ \ pt.Resize(row\_cnt,\ qp.ColCount());}
+\DoxyCodeLine{00736\ \ \ \ \ \ \ Reflection<FT>\ ref(qp.ColCount());}
+\DoxyCodeLine{00737\ \ \ \ \ \ \ TVector<FT>\ tmp(qp.ColCount());}
+\DoxyCodeLine{00738\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ row\_cnt;\ i++)\ \{}
+\DoxyCodeLine{00739\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ qp.ColCount();\ j++)\ \{}
+\DoxyCodeLine{00740\ \ \ \ \ \ \ \ \ \ \ pt(i,\ j)\ =\ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(i\ ==\ j\ ?\ 1\ :\ 0);}
+\DoxyCodeLine{00741\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00742\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00743\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (qp.RowCount()\ >=\ qp.ColCount())\ \{}
+\DoxyCodeLine{00744\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ s\ =\ olx\_min(qp.ColCount(),\ row\_cnt)\ -\/\ 2;}
+\DoxyCodeLine{00745\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ s;\ i\ !=\ InvalidIndex;\ i-\/-\/)\ \{}
+\DoxyCodeLine{00746\ \ \ \ \ \ \ \ \ \ \ alg::copy\_1(tmp,\ proxy::row(qp,\ i,\ i\ +\ 1,\ qp.ColCount()));}
+\DoxyCodeLine{00747\ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromRight(pt,\ ptau(i),\ tmp,\ 0,\ row\_cnt,\ i\ +\ 1,\ qp.ColCount());}
+\DoxyCodeLine{00748\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00749\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00750\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ s\ =\ olx\_min(qp.RowCount(),\ row\_cnt)\ -\/\ 1;}
+\DoxyCodeLine{00752\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ s;\ i\ !=\ InvalidIndex;\ i-\/-\/)\ \{}
+\DoxyCodeLine{00753\ \ \ \ \ \ \ \ \ \ \ alg::copy\_1(tmp,\ proxy::row(qp,\ i,\ i,\ qp.ColCount()));}
+\DoxyCodeLine{00754\ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromRight(pt,\ ptau(i),\ tmp,\ 0,\ row\_cnt,\ i,\ qp.ColCount());}
+\DoxyCodeLine{00755\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00756\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00757\ \ \ \ \ \}}
+\DoxyCodeLine{00758\ \ \ \ \ \textcolor{comment}{//\ returns\ true\ if\ the\ matrix\ is\ upper\ diagonl}}
+\DoxyCodeLine{00759\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00760\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ UnpackDiagonals(\textcolor{keyword}{const}\ MatT\&\ m,\ VecT\&\ d,\ VecT\&\ e)\ \{}
+\DoxyCodeLine{00761\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ upper\ =\ m.RowCount()\ >=\ m.ColCount();}
+\DoxyCodeLine{00762\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m.IsEmpty())\ \{}
+\DoxyCodeLine{00763\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ upper;}
+\DoxyCodeLine{00764\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00765\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (upper)\ \{}
+\DoxyCodeLine{00766\ \ \ \ \ \ \ \ \ d.Resize(m.ColCount());}
+\DoxyCodeLine{00767\ \ \ \ \ \ \ \ \ e.Resize(m.ColCount());}
+\DoxyCodeLine{00768\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ m.ColCount()\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ \ \ \ \ d(i)\ =\ m(i,\ i);}
+\DoxyCodeLine{00770\ \ \ \ \ \ \ \ \ \ \ e(i)\ =\ m(i,\ i\ +\ 1);}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00772\ \ \ \ \ \ \ \ \ d.GetLast()\ =\ m(m.ColCount()\ -\/\ 1,\ m.ColCount()\ -\/\ 1);}
+\DoxyCodeLine{00773\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00774\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00775\ \ \ \ \ \ \ \ \ d.Resize(m.RowCount());}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ \ \ e.Resize(m.RowCount());}
+\DoxyCodeLine{00777\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ m.RowCount()\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{00778\ \ \ \ \ \ \ \ \ \ \ d(i)\ =\ m(i,\ i);}
+\DoxyCodeLine{00779\ \ \ \ \ \ \ \ \ \ \ e(i)\ =\ m(i\ +\ 1,\ i);}
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ \ \ d.GetLast()\ =\ m(m.RowCount()\ -\/\ 1,\ m.RowCount()\ -\/\ 1);}
+\DoxyCodeLine{00782\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00783\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ upper;}
+\DoxyCodeLine{00784\ \ \ \ \ \}}
+\DoxyCodeLine{00785\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatIT,\ \textcolor{keyword}{typename}\ MatOT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00786\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ MulByQ(\textcolor{keyword}{const}\ MatIT\&\ qp,\ \textcolor{keyword}{const}\ VecT\&\ tauq,\ MatOT\&\ z,}
+\DoxyCodeLine{00787\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ from\_right,\ \textcolor{keywordtype}{bool}\ dot\_trans)}
+\DoxyCodeLine{00788\ \ \ \ \ \{}
+\DoxyCodeLine{00789\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatOT::number\_type\ FT;}
+\DoxyCodeLine{00790\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ mx\ =\ olx\_max(}
+\DoxyCodeLine{00791\ \ \ \ \ \ \ \ \ olx\_max(qp.ColCount(),\ qp.RowCount()),}
+\DoxyCodeLine{00792\ \ \ \ \ \ \ \ \ olx\_max(z.ColCount(),\ z.RowCount()));}
+\DoxyCodeLine{00793\ \ \ \ \ \ \ Reflection<FT>\ ref(mx);}
+\DoxyCodeLine{00794\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (qp.RowCount()\ >=\ qp.ColCount())\ \{}
+\DoxyCodeLine{00795\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i1\ =\ 0,\ i2\ =\ qp.ColCount();}
+\DoxyCodeLine{00796\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ step\_inc\ =\ 1;}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!from\_right)\ \{}
+\DoxyCodeLine{00798\ \ \ \ \ \ \ \ \ \ \ olx\_swap(i1,\ i2);}
+\DoxyCodeLine{00799\ \ \ \ \ \ \ \ \ \ \ step\_inc\ =\ -\/step\_inc;}
+\DoxyCodeLine{00800\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00801\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dot\_trans)\ \{}
+\DoxyCodeLine{00802\ \ \ \ \ \ \ \ \ \ \ olx\_swap(i1,\ i2);}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ \ \ \ \ step\_inc\ =\ -\/step\_inc;}
+\DoxyCodeLine{00804\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00805\ \ \ \ \ \ \ \ \ TVector<FT>\ tmp(mx);}
+\DoxyCodeLine{00806\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ i1;\ i\ <\ i2;\ i\ +=\ step\_inc)\ \{}
+\DoxyCodeLine{00807\ \ \ \ \ \ \ \ \ \ \ alg::copy\_1(tmp,\ proxy::col(qp,\ i,\ i,\ qp.RowCount()));}
+\DoxyCodeLine{00808\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (from\_right)\ \{}
+\DoxyCodeLine{00809\ \ \ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromRight(z,\ tauq(i),\ tmp,\ 0,\ z.RowCount(),\ i,}
+\DoxyCodeLine{00810\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ qp.RowCount());}
+\DoxyCodeLine{00811\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00812\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00813\ \ \ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromLeft(z,\ tauq(i),\ tmp,\ i,\ qp.RowCount(),\ 0,}
+\DoxyCodeLine{00814\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ z.ColCount());}
+\DoxyCodeLine{00815\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00816\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00817\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00818\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00819\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (qp.RowCount()\ ==\ 1)\ \{}
+\DoxyCodeLine{00820\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00821\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00822\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i1\ =\ 1,\ i2\ =\ qp.RowCount()\ -\/\ 1;}
+\DoxyCodeLine{00823\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ step\_inc\ =\ 1;}
+\DoxyCodeLine{00824\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!from\_right)\ \{}
+\DoxyCodeLine{00825\ \ \ \ \ \ \ \ \ \ \ olx\_swap(i1,\ i2);}
+\DoxyCodeLine{00826\ \ \ \ \ \ \ \ \ \ \ step\_inc\ =\ -\/step\_inc;}
+\DoxyCodeLine{00827\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00828\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dot\_trans)\ \{}
+\DoxyCodeLine{00829\ \ \ \ \ \ \ \ \ \ \ olx\_swap(i1,\ i2);}
+\DoxyCodeLine{00830\ \ \ \ \ \ \ \ \ \ \ step\_inc\ =\ -\/step\_inc;}
+\DoxyCodeLine{00831\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00832\ \ \ \ \ \ \ \ \ TVector<FT>\ tmp(mx);}
+\DoxyCodeLine{00833\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ i1;\ i\ <\ i2;\ i\ +=\ step\_inc)\ \{}
+\DoxyCodeLine{00834\ \ \ \ \ \ \ \ \ \ \ alg::copy\_1(tmp,\ proxy::col(qp,\ i,\ i\ +\ 1,\ qp.RowCount()));}
+\DoxyCodeLine{00835\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (from\_right)\ \{}
+\DoxyCodeLine{00836\ \ \ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromRight(z,\ tauq(i),\ tmp,\ 0,\ z.RowCount(),\ i\ +\ 1,}
+\DoxyCodeLine{00837\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ qp.RowCount());}
+\DoxyCodeLine{00838\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00840\ \ \ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromLeft(z,\ tauq(i),\ tmp,\ i\ +\ 1,\ qp.RowCount(),\ 0,}
+\DoxyCodeLine{00841\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ z.ColCount());}
+\DoxyCodeLine{00842\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00843\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00844\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00845\ \ \ \ \ \}}
+\DoxyCodeLine{00846\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatIT,\ \textcolor{keyword}{typename}\ MatOT,\ \textcolor{keyword}{typename}\ VecT>}
+\DoxyCodeLine{00847\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ MulByP(\textcolor{keyword}{const}\ MatIT\&\ qp,\ \textcolor{keyword}{const}\ VecT\&\ tauq,\ MatOT\&\ z,}
+\DoxyCodeLine{00848\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ from\_right,\ \textcolor{keywordtype}{bool}\ dot\_trans)}
+\DoxyCodeLine{00849\ \ \ \ \ \{}
+\DoxyCodeLine{00850\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatOT::number\_type\ FT;}
+\DoxyCodeLine{00851\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ mx\ =\ olx\_max(}
+\DoxyCodeLine{00852\ \ \ \ \ \ \ \ \ olx\_max(qp.ColCount(),\ qp.RowCount()),}
+\DoxyCodeLine{00853\ \ \ \ \ \ \ \ \ olx\_max(z.ColCount(),\ z.RowCount()));}
+\DoxyCodeLine{00854\ \ \ \ \ \ \ Reflection<FT>\ ref(mx);}
+\DoxyCodeLine{00855\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (qp.RowCount()\ >=\ qp.ColCount())\ \{}
+\DoxyCodeLine{00856\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i1\ =\ qp.ColCount()\ -\/\ 1,\ i2\ =\ 0;}
+\DoxyCodeLine{00857\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ step\_inc\ =\ -\/1;}
+\DoxyCodeLine{00858\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!from\_right)\ \{}
+\DoxyCodeLine{00859\ \ \ \ \ \ \ \ \ \ \ olx\_swap(i1,\ i2);}
+\DoxyCodeLine{00860\ \ \ \ \ \ \ \ \ \ \ step\_inc\ =\ -\/step\_inc;}
+\DoxyCodeLine{00861\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00862\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!dot\_trans)\ \{}
+\DoxyCodeLine{00863\ \ \ \ \ \ \ \ \ \ \ olx\_swap(i1,\ i2);}
+\DoxyCodeLine{00864\ \ \ \ \ \ \ \ \ \ \ step\_inc\ =\ -\/step\_inc;}
+\DoxyCodeLine{00865\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00866\ \ \ \ \ \ \ \ \ TVector<FT>\ tmp(mx);}
+\DoxyCodeLine{00867\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (i1\ !=\ i2)\ \{}
+\DoxyCodeLine{00868\ \ \ \ \ \ \ \ \ \ \ alg::copy\_1(tmp,\ proxy::row(qp,\ i1,\ i1\ +\ 1,\ qp.RowCount()));}
+\DoxyCodeLine{00869\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (from\_right)\ \{}
+\DoxyCodeLine{00870\ \ \ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromRight(z,\ tauq(i1),\ tmp,\ 0,\ z.RowCount(),\ i1\ +\ 1,}
+\DoxyCodeLine{00871\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ qp.ColCount());}
+\DoxyCodeLine{00872\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00873\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromLeft(z,\ tauq(i1),\ tmp,\ i1\ +\ 1,\ qp.ColCount(),\ 0,}
+\DoxyCodeLine{00875\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ z.ColCount());}
+\DoxyCodeLine{00876\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00877\ \ \ \ \ \ \ \ \ \ \ i1\ +=\ step\_inc;}
+\DoxyCodeLine{00878\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00879\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00880\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00881\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (qp.RowCount()\ ==\ 1)\ \{}
+\DoxyCodeLine{00882\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00883\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00884\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ i1\ =\ qp.RowCount(),\ i2\ =\ 0;}
+\DoxyCodeLine{00885\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ step\_inc\ =\ -\/1;}
+\DoxyCodeLine{00886\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!from\_right)\ \{}
+\DoxyCodeLine{00887\ \ \ \ \ \ \ \ \ \ \ olx\_swap(i1,\ i2);}
+\DoxyCodeLine{00888\ \ \ \ \ \ \ \ \ \ \ step\_inc\ =\ -\/step\_inc;}
+\DoxyCodeLine{00889\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00890\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!dot\_trans)\ \{}
+\DoxyCodeLine{00891\ \ \ \ \ \ \ \ \ \ \ olx\_swap(i1,\ i2);}
+\DoxyCodeLine{00892\ \ \ \ \ \ \ \ \ \ \ step\_inc\ =\ -\/step\_inc;}
+\DoxyCodeLine{00893\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00894\ \ \ \ \ \ \ \ \ TVector<FT>\ tmp(mx);}
+\DoxyCodeLine{00895\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (i1\ !=\ i2)\ \{}
+\DoxyCodeLine{00896\ \ \ \ \ \ \ \ \ \ \ alg::copy\_1(tmp,\ proxy::row(qp,\ i1,\ i1,\ qp.ColCount()));}
+\DoxyCodeLine{00897\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (from\_right)\ \{}
+\DoxyCodeLine{00898\ \ \ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromRight(z,\ tauq(i1),\ tmp,\ 0,\ z.RowCount(),\ i1,}
+\DoxyCodeLine{00899\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ qp.ColCount());}
+\DoxyCodeLine{00900\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00901\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00902\ \ \ \ \ \ \ \ \ \ \ \ \ ref.ApplyFromLeft(z,\ tauq(i1),\ tmp,\ i1,\ qp.ColCount(),\ 0,}
+\DoxyCodeLine{00903\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ z.ColCount());}
+\DoxyCodeLine{00904\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00905\ \ \ \ \ \ \ \ \ \ \ i1\ +=\ step\_inc;}
+\DoxyCodeLine{00906\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00907\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00908\ \ \ \ \ \}}
+\DoxyCodeLine{00909\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>}
+\DoxyCodeLine{00910\ \ \ \ \ \textcolor{keyword}{struct\ }SVD\ \{}
+\DoxyCodeLine{00911\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DiagT1,\ \textcolor{keyword}{typename}\ DiagT2,\ \textcolor{keyword}{typename}\ UT,}
+\DoxyCodeLine{00912\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ CT,\ \textcolor{keyword}{typename}\ VtT>}
+\DoxyCodeLine{00913\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ do2x2(\textcolor{keywordtype}{size\_t}\ i,\ DiagT1\&\ d,\ DiagT2\&\ e,\ UT\&\ u,\ CT\&\ c,\ VtT\&\ vt)\ \{}
+\DoxyCodeLine{00914\ \ \ \ \ \ \ \ \ FT\ f\ =\ d(i\ -\/\ 1),\ g\ =\ e(i\ -\/\ 1),\ h\ =\ d(i);}
+\DoxyCodeLine{00915\ \ \ \ \ \ \ \ \ FT\ abs\_f\ =\ olx\_abs(f),\ abs\_h\ =\ olx\_abs(h),\ abs\_g\ =\ olx\_abs(g);}
+\DoxyCodeLine{00916\ \ \ \ \ \ \ \ \ FT\ ssmax,\ ssmin,\ snr\ =\ 0,\ csr\ =\ 1,\ snl\ =\ 0,\ csl\ =\ 1;}
+\DoxyCodeLine{00917\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ swap\ =\ abs\_h\ >\ abs\_f;}
+\DoxyCodeLine{00918\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (swap)\ \{}
+\DoxyCodeLine{00919\ \ \ \ \ \ \ \ \ \ \ olx\_swap(f,\ h);}
+\DoxyCodeLine{00920\ \ \ \ \ \ \ \ \ \ \ olx\_swap(abs\_f,\ abs\_h);}
+\DoxyCodeLine{00921\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00922\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (abs\_g\ !=\ 0)\ \{}
+\DoxyCodeLine{00923\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ small\_g\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00924\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (abs\_g\ >\ abs\_f)\ \{}
+\DoxyCodeLine{00925\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (abs\_f\ /\ abs\_g\ <\ 1e-\/16)\ \{}
+\DoxyCodeLine{00926\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ small\_g\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00927\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ssmax\ =\ abs\_g;}
+\DoxyCodeLine{00928\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (abs\_g\ >\ 1)\ \{}
+\DoxyCodeLine{00929\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ssmin\ =\ abs\_f\ *\ abs\_h\ /\ abs\_g;}
+\DoxyCodeLine{00930\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00931\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00932\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ssmin\ =\ abs\_h\ *\ abs\_g\ /\ abs\_f;}
+\DoxyCodeLine{00933\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00934\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ csl\ =\ snr\ =\ 1;}
+\DoxyCodeLine{00935\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ snl\ =\ h\ /\ g;}
+\DoxyCodeLine{00936\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ csr\ =\ f\ /\ g;}
+\DoxyCodeLine{00937\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00938\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00939\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (small\_g)\ \{}
+\DoxyCodeLine{00940\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ d\ =\ abs\_f\ -\/\ abs\_h;}
+\DoxyCodeLine{00941\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ l\ =\ d\ /\ abs\_f;}
+\DoxyCodeLine{00942\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ m\ =\ g\ /\ f,\ mm\ =\ m\ *\ m;}
+\DoxyCodeLine{00943\ \ \ \ \ \ \ \ \ \ \ \ \ FT\ t\ =\ 2\ -\/\ l,\ tt\ =\ t\ *\ t;}
+\DoxyCodeLine{00944\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ s\ =\ sqrt(mm\ +\ tt);}
+\DoxyCodeLine{00945\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ r\ =\ (l\ ==\ 0\ ?\ olx\_abs(m)\ :\ sqrt(l*l\ +\ mm));}
+\DoxyCodeLine{00946\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ a\ =\ (s\ +\ r)\ /\ 2;}
+\DoxyCodeLine{00947\ \ \ \ \ \ \ \ \ \ \ \ \ ssmin\ =\ abs\_h\ /\ a;}
+\DoxyCodeLine{00948\ \ \ \ \ \ \ \ \ \ \ \ \ ssmax\ =\ abs\_f\ *\ a;}
+\DoxyCodeLine{00949\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mm\ ==\ 0)\ \{}
+\DoxyCodeLine{00950\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ ==\ 0)\ \{}
+\DoxyCodeLine{00951\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ t\ =\ olx\_copy\_sign(2,\ f)*olx\_copy\_sign(1,\ g);}
+\DoxyCodeLine{00952\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00953\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00954\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ t\ =\ g\ /\ olx\_copy\_sign(d,\ f)\ +\ m\ /\ t;}
+\DoxyCodeLine{00955\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00956\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00957\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00958\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ t\ =\ (m\ /\ (s\ +\ t)\ +\ m\ /\ (r\ +\ l))*(1\ +\ a);}
+\DoxyCodeLine{00959\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00960\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ tmp\ =\ sqrt(t*t\ +\ 4);}
+\DoxyCodeLine{00961\ \ \ \ \ \ \ \ \ \ \ \ \ csr\ =\ 2\ /\ tmp;}
+\DoxyCodeLine{00962\ \ \ \ \ \ \ \ \ \ \ \ \ snr\ =\ t\ /\ tmp;}
+\DoxyCodeLine{00963\ \ \ \ \ \ \ \ \ \ \ \ \ csl\ =\ (csr\ +\ snr\ *\ m)\ /\ a;}
+\DoxyCodeLine{00964\ \ \ \ \ \ \ \ \ \ \ \ \ snl\ =\ (h\ /\ f)*snr\ /\ a;}
+\DoxyCodeLine{00965\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00966\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00967\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (swap)\ \{}
+\DoxyCodeLine{00968\ \ \ \ \ \ \ \ \ \ \ olx\_swap(csr,\ snl);}
+\DoxyCodeLine{00969\ \ \ \ \ \ \ \ \ \ \ olx\_swap(snr,\ csl);}
+\DoxyCodeLine{00970\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00971\ \ \ \ \ \ \ \ \ d(i\ -\/\ 1)\ =\ olx\_copy\_sign(ssmax,\ f);}
+\DoxyCodeLine{00972\ \ \ \ \ \ \ \ \ e(i\ -\/\ 1)\ =\ 0;}
+\DoxyCodeLine{00973\ \ \ \ \ \ \ \ \ d(i)\ =\ olx\_copy\_sign(ssmin,\ h);}
+\DoxyCodeLine{00974\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vt.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{00975\ \ \ \ \ \ \ \ \ \ \ Rotation<FT>::ApplyToRows(vt,\ i\ -\/\ 1,\ i,\ csr,\ snr);}
+\DoxyCodeLine{00976\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00977\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u.RowCount()\ >\ 0)\ \{}
+\DoxyCodeLine{00978\ \ \ \ \ \ \ \ \ \ \ Rotation<FT>::ApplyToCols(u,\ i\ -\/\ 1,\ i,\ csl,\ snl);}
+\DoxyCodeLine{00979\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00980\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c.RowCount()\ >\ 0)\ \{}
+\DoxyCodeLine{00981\ \ \ \ \ \ \ \ \ \ \ Rotation<FT>::ApplyToRows(c,\ i\ -\/\ 1,\ i,\ csl,\ snl);}
+\DoxyCodeLine{00982\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00983\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00984\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ do2x2(FT\ f,\ FT\ g,\ FT\ h,\ FT\&\ ssmin,\ FT\&\ ssmax)\ \{}
+\DoxyCodeLine{00985\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ abs\_f\ =\ olx\_abs(f),\ abs\_h\ =\ olx\_abs(h),\ abs\_g\ =\ olx\_abs(g);}
+\DoxyCodeLine{00986\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ min\_fh\ =\ olx\_min(abs\_f,\ abs\_h),}
+\DoxyCodeLine{00987\ \ \ \ \ \ \ \ \ \ \ max\_fh\ =\ olx\_max(abs\_f,\ abs\_h);}
+\DoxyCodeLine{00988\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (min\_fh\ ==\ 0)\ \{}
+\DoxyCodeLine{00989\ \ \ \ \ \ \ \ \ \ \ ssmin\ =\ 0;}
+\DoxyCodeLine{00990\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ mg\ =\ olx\_max(max\_fh,\ abs\_g);}
+\DoxyCodeLine{00991\ \ \ \ \ \ \ \ \ \ \ ssmax\ =\ max\_fh\ ==\ 0\ ?\ abs\_g}
+\DoxyCodeLine{00992\ \ \ \ \ \ \ \ \ \ \ \ \ :\ mg\ *\ sqrt(1\ +\ olx\_sqr(olx\_min(min\_fh,\ abs\_g)\ /\ mg));}
+\DoxyCodeLine{00993\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00994\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00995\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (abs\_g\ <\ max\_fh)\ \{}
+\DoxyCodeLine{00996\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ a\ =\ 1\ +\ min\_fh\ /\ max\_fh,}
+\DoxyCodeLine{00997\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ b\ =\ (max\_fh\ -\/\ min\_fh)\ /\ max\_fh,}
+\DoxyCodeLine{00998\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c\ =\ olx\_sqr(abs\_g\ /\ max\_fh);}
+\DoxyCodeLine{00999\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ d\ =\ 2\ /\ (sqrt(a*a\ +\ c)\ +\ sqrt(b*b\ +\ c));}
+\DoxyCodeLine{01000\ \ \ \ \ \ \ \ \ \ \ \ \ ssmin\ =\ min\_fh\ *\ d;}
+\DoxyCodeLine{01001\ \ \ \ \ \ \ \ \ \ \ \ \ ssmax\ =\ max\_fh\ /\ d;}
+\DoxyCodeLine{01002\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01003\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01004\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ \_a\ =\ max\_fh\ /\ abs\_g;}
+\DoxyCodeLine{01005\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_a\ ==\ 0)\ \{}
+\DoxyCodeLine{01006\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ssmin\ =\ min\_fh\ *\ max\_fh\ /\ abs\_g;}
+\DoxyCodeLine{01007\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ssmax\ =\ abs\_g;}
+\DoxyCodeLine{01008\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01009\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01010\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ a\ =\ 1\ +\ min\_fh\ /\ max\_fh,}
+\DoxyCodeLine{01011\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ b\ =\ (max\_fh\ -\/\ min\_fh)\ /\ max\_fh,}
+\DoxyCodeLine{01012\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c\ =\ 1\ /\ (sqrt(1\ +\ olx\_sqr(a*\_a))\ +\ sqrt(1\ +\ olx\_sqr(b*\_a)));}
+\DoxyCodeLine{01013\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ssmin\ =\ 2\ *\ min\_fh*c*\_a;}
+\DoxyCodeLine{01014\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ssmax\ =\ abs\_g\ /\ (2\ *\ c);}
+\DoxyCodeLine{01015\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01016\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01017\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01018\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01019\ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DiagT1,\ \textcolor{keyword}{typename}\ DiagT2,\ \textcolor{keyword}{typename}\ UT,}
+\DoxyCodeLine{01020\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ CT,\ \textcolor{keyword}{typename}\ VtT>}
+\DoxyCodeLine{01021\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Decompose(DiagT1\&\ d,\ DiagT2\&\ e,\ \textcolor{keywordtype}{bool}\ upper,\ \textcolor{keywordtype}{bool}\ fract\_accu,}
+\DoxyCodeLine{01022\ \ \ \ \ \ \ \ \ \ \ UT\&\ u,\ CT\&\ c,\ VtT\&\ vt)}
+\DoxyCodeLine{01023\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d.Count()\ ==\ 0)\ \{}
+\DoxyCodeLine{01025\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01026\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d.Count()\ ==\ 1)\ \{}
+\DoxyCodeLine{01028\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d(0)\ <\ 0)\ \{}
+\DoxyCodeLine{01029\ \ \ \ \ \ \ \ \ \ \ \ \ d(0)\ =\ -\/d(0);}
+\DoxyCodeLine{01030\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vt.RowCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ proxy::row(vt,\ 0,\ 0).ForEach(alg::ChSig());}
+\DoxyCodeLine{01032\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01033\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01034\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01035\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01036\ \ \ \ \ \ \ \ \ Rotation<FT>\ rot;}
+\DoxyCodeLine{01037\ \ \ \ \ \ \ \ \ e.Resize(d.Count());}
+\DoxyCodeLine{01038\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ max\_itr\ =\ 6;}
+\DoxyCodeLine{01039\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ \_eps\ =\ 5e-\/16,\ unfl\ =\ 1e-\/300;}
+\DoxyCodeLine{01040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!upper)\ \{}
+\DoxyCodeLine{01041\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ d.Count()\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{01042\ \ \ \ \ \ \ \ \ \ \ \ \ FT\ sn,\ cs,\ r;}
+\DoxyCodeLine{01043\ \ \ \ \ \ \ \ \ \ \ \ \ rot.Generate(d(i),\ e(i),\ cs,\ sn,\ r);}
+\DoxyCodeLine{01044\ \ \ \ \ \ \ \ \ \ \ \ \ d(i)\ =\ r;}
+\DoxyCodeLine{01045\ \ \ \ \ \ \ \ \ \ \ \ \ e(i)\ =\ sn\ *\ d(i\ +\ 1);}
+\DoxyCodeLine{01046\ \ \ \ \ \ \ \ \ \ \ \ \ d(i\ +\ 1)\ *=\ cs;}
+\DoxyCodeLine{01047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u.RowCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToCols(u,\ i,\ i\ +\ 1,\ cs,\ sn);}
+\DoxyCodeLine{01049\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToRows(c,\ i,\ i\ +\ 1,\ cs,\ sn);}
+\DoxyCodeLine{01052\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01053\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01054\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01055\ \ \ \ \ \ \ \ \ FT\ tol\ =\ olx\_max(10,\ olx\_min(100,\ pow(\_eps,\ \textcolor{keyword}{static\_cast<}FT\textcolor{keyword}{>}(-\/1.\ /\ 8))))*\_eps;}
+\DoxyCodeLine{01056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!fract\_accu)\ \{}
+\DoxyCodeLine{01057\ \ \ \ \ \ \ \ \ \ \ tol\ =\ -\/tol;}
+\DoxyCodeLine{01058\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01059\ \ \ \ \ \ \ \ \ FT\ smax\ =\ 0;}
+\DoxyCodeLine{01060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ d.Count()\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{01061\ \ \ \ \ \ \ \ \ \ \ smax\ =\ olx\_max(smax,\ olx\_max(olx\_abs(e(i)),\ olx\_abs(d(i))));}
+\DoxyCodeLine{01062\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01063\ \ \ \ \ \ \ \ \ smax\ =\ olx\_max(smax,\ olx\_abs(d.GetLast()));}
+\DoxyCodeLine{01064\ \ \ \ \ \ \ \ \ FT\ sminl\ =\ 0,\ thresh;}
+\DoxyCodeLine{01065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tol\ >=\ 0)\ \{}
+\DoxyCodeLine{01066\ \ \ \ \ \ \ \ \ \ \ FT\ sminoa\ =\ olx\_abs(d(0));}
+\DoxyCodeLine{01067\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sminoa\ !=\ 0)\ \{}
+\DoxyCodeLine{01068\ \ \ \ \ \ \ \ \ \ \ \ \ FT\ mu\ =\ sminoa;}
+\DoxyCodeLine{01069\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ d.Count();\ i++)\ \{}
+\DoxyCodeLine{01070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mu\ =\ olx\_abs(d(i))*(mu\ /\ (mu\ +\ olx\_abs(e(i\ -\/\ 1))));}
+\DoxyCodeLine{01071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((sminoa\ =\ olx\_min(sminoa,\ mu))\ ==\ 0)\ \{}
+\DoxyCodeLine{01072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01074\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01075\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01076\ \ \ \ \ \ \ \ \ \ \ sminoa\ /=\ sqrt((FT)d.Count());}
+\DoxyCodeLine{01077\ \ \ \ \ \ \ \ \ \ \ thresh\ =\ olx\_max(tol*sminoa,\ max\_itr*olx\_sqr(d.Count())*unfl);}
+\DoxyCodeLine{01078\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01080\ \ \ \ \ \ \ \ \ \ \ thresh\ =\ olx\_max(olx\_abs(tol)*smax,\ max\_itr*olx\_sqr(d.Count())*unfl);}
+\DoxyCodeLine{01081\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01082\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ max\_i\ =\ max\_itr\ *\ olx\_sqr(d.Count()),}
+\DoxyCodeLine{01083\ \ \ \ \ \ \ \ \ \ \ m\ =\ d.Count()\ -\/\ 1,\ iter\ =\ 0;}
+\DoxyCodeLine{01084\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \ oldm\ =\ \string~0,\ oldll\ =\ \string~0;}
+\DoxyCodeLine{01085\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ flag\ =\ 0;\ \ \textcolor{comment}{//\ the\ bulge\ chasing\ direction\ flag,\ 1\ -\/\ down,\ 2\ -\/\ up}}
+\DoxyCodeLine{01086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (m\ !=\ 0)\ \{}
+\DoxyCodeLine{01087\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (iter\ >\ max\_i)\ \{}
+\DoxyCodeLine{01088\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01089\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01090\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tol\ <\ 0\ \&\&\ olx\_abs(d(m))\ <=\ thresh)\ \{}
+\DoxyCodeLine{01091\ \ \ \ \ \ \ \ \ \ \ \ \ d(m)\ =\ 0;}
+\DoxyCodeLine{01092\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01093\ \ \ \ \ \ \ \ \ \ \ FT\ smin\ =\ (smax\ =\ olx\_abs(d(m)));}
+\DoxyCodeLine{01094\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ split\_flag\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01095\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ ll\ =\ 0;}
+\DoxyCodeLine{01096\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <=\ m;\ i++)\ \{}
+\DoxyCodeLine{01097\ \ \ \ \ \ \ \ \ \ \ \ \ ll\ =\ m\ -\/\ i;}
+\DoxyCodeLine{01098\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT}
+\DoxyCodeLine{01099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ abs\_s\ =\ olx\_abs(d(ll)),}
+\DoxyCodeLine{01100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ abs\_e\ =\ olx\_abs(e(ll));}
+\DoxyCodeLine{01101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tol\ <\ 0\ \&\&\ abs\_s\ <=\ thresh)\ \{}
+\DoxyCodeLine{01102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(ll)\ =\ 0;}
+\DoxyCodeLine{01103\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01104\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (abs\_e\ <=\ thresh)\ \{}
+\DoxyCodeLine{01105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ split\_flag\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01107\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01108\ \ \ \ \ \ \ \ \ \ \ \ \ smin\ =\ olx\_min(smin,\ abs\_s);}
+\DoxyCodeLine{01109\ \ \ \ \ \ \ \ \ \ \ \ \ smax\ =\ olx\_max(smax,\ olx\_max(abs\_s,\ abs\_e));}
+\DoxyCodeLine{01110\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01111\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!split\_flag)\ \{}
+\DoxyCodeLine{01112\ \ \ \ \ \ \ \ \ \ \ \ \ ll\ =\ -\/1;}
+\DoxyCodeLine{01113\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01114\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01115\ \ \ \ \ \ \ \ \ \ \ \ \ e(ll)\ =\ 0;}
+\DoxyCodeLine{01116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ll\ ==\ m\ -\/\ 1)\ \{}
+\DoxyCodeLine{01117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m-\/-\/;}
+\DoxyCodeLine{01118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{01119\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01120\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01121\ \ \ \ \ \ \ \ \ \ \ ll++;}
+\DoxyCodeLine{01122\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ll\ ==\ m\ -\/\ 1)\ \{\ \textcolor{comment}{//simple\ 2x2\ case...}}
+\DoxyCodeLine{01123\ \ \ \ \ \ \ \ \ \ \ \ \ do2x2(m,\ d,\ e,\ u,\ c,\ vt);}
+\DoxyCodeLine{01124\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((m\ -\/=\ 2)\ ==\ InvalidIndex)\ \{}
+\DoxyCodeLine{01125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01126\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01127\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{01128\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01129\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ change\_dir\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01130\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ dm\_a\ =\ olx\_abs(d(m)),\ dl\_a\ =\ olx\_abs(d(ll));}
+\DoxyCodeLine{01131\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((flag\ ==\ 1\ \&\&\ (dl\_a\ <\ dm\_a\ /\ 1000))\ ||}
+\DoxyCodeLine{01132\ \ \ \ \ \ \ \ \ \ \ \ \ (flag\ ==\ 2\ \&\&\ (dm\_a\ <\ dl\_a\ /\ 1000)))}
+\DoxyCodeLine{01133\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01134\ \ \ \ \ \ \ \ \ \ \ \ \ change\_dir\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01135\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01136\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ll\ >\ oldm\ ||\ m\ <\ oldll\ ||\ change\_dir)\ \{}
+\DoxyCodeLine{01137\ \ \ \ \ \ \ \ \ \ \ \ \ flag\ =\ (olx\_abs(d(ll))\ >=\ olx\_abs(d(m))\ ?\ 1\ :\ 2);}
+\DoxyCodeLine{01138\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01139\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (flag\ ==\ 1)\ \{}
+\DoxyCodeLine{01140\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(e(m\ -\/\ 1))\ <=\ olx\_abs(tol*d(m))\ ||}
+\DoxyCodeLine{01141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (tol\ <\ 0\ \&\&\ olx\_abs(e(m\ -\/\ 1))\ <\ thresh))}
+\DoxyCodeLine{01142\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(m\ -\/\ 1)\ =\ 0;}
+\DoxyCodeLine{01144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{01145\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01146\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tol\ >=\ 0)\ \{\ \ \textcolor{comment}{//check\ if\ converged}}
+\DoxyCodeLine{01147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ mu\ =\ olx\_abs(d(ll));}
+\DoxyCodeLine{01148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sminl\ =\ mu;}
+\DoxyCodeLine{01149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ iter\_flag\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ ll;\ i\ <\ m\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{01151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(e(i))\ <=\ tol\ *\ mu)\ \{}
+\DoxyCodeLine{01152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(i)\ =\ 0;}
+\DoxyCodeLine{01153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ iter\_flag\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mu\ =\ olx\_abs(d(i\ +\ 1))*(mu\ /\ (mu\ +\ olx\_abs(e(i))));}
+\DoxyCodeLine{01157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sminl\ =\ olx\_min(sminl,\ mu);}
+\DoxyCodeLine{01158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (iter\_flag)\ \{}
+\DoxyCodeLine{01160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{01161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01162\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01163\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01164\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01165\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(e(ll))\ <=\ olx\_abs(tol*d(ll))\ ||}
+\DoxyCodeLine{01166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (tol\ <\ 0\ \&\&\ olx\_abs(e(ll))\ <\ thresh))}
+\DoxyCodeLine{01167\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(ll)\ =\ 0;}
+\DoxyCodeLine{01169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{01170\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01171\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tol\ >=\ 0)\ \{}
+\DoxyCodeLine{01172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ mu\ =\ olx\_abs(d(m));}
+\DoxyCodeLine{01173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sminl\ =\ mu;}
+\DoxyCodeLine{01174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ iter\_flag\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ m;\ i\ >\ ll;\ i-\/-\/)\ \{}
+\DoxyCodeLine{01176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ im1\ =\ i\ -\/\ 1;}
+\DoxyCodeLine{01177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(e(im1))\ <=\ tol\ *\ mu)\ \{}
+\DoxyCodeLine{01178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(im1)\ =\ 0;}
+\DoxyCodeLine{01179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ iter\_flag\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mu\ =\ olx\_abs(d(im1))*(mu\ /\ (mu\ +\ olx\_abs(e(im1))));}
+\DoxyCodeLine{01183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sminl\ =\ olx\_min(sminl,\ mu);}
+\DoxyCodeLine{01184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (iter\_flag)\ \{}
+\DoxyCodeLine{01186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{01187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01188\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01189\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01190\ \ \ \ \ \ \ \ \ \ \ oldll\ =\ ll;}
+\DoxyCodeLine{01191\ \ \ \ \ \ \ \ \ \ \ oldm\ =\ m;}
+\DoxyCodeLine{01192\ \ \ \ \ \ \ \ \ \ \ FT\ shift\ =\ 0,\ r\ =\ 0;}
+\DoxyCodeLine{01193\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!(tol\ >=\ 0\ \&\&\ d.Count()*tol*(sminl\ /\ smax)\ <=\ olx\_max(\_eps,\ 0.01*tol)))\ \{}
+\DoxyCodeLine{01194\ \ \ \ \ \ \ \ \ \ \ \ \ FT\ sll;}
+\DoxyCodeLine{01195\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (flag\ ==\ 1)\ \{}
+\DoxyCodeLine{01196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sll\ =\ olx\_abs(d(ll));}
+\DoxyCodeLine{01197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ do2x2(d(m\ -\/\ 1),\ e(m\ -\/\ 1),\ d(m),\ shift,\ r);}
+\DoxyCodeLine{01198\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01199\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sll\ =\ olx\_abs(d(m));}
+\DoxyCodeLine{01201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ do2x2(d(ll),\ e(ll),\ d(ll\ +\ 1),\ shift,\ r);}
+\DoxyCodeLine{01202\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01203\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sll\ >\ 0\ \&\&\ olx\_sqr(shift\ /\ sll)\ <\ \_eps)\ \{}
+\DoxyCodeLine{01204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ shift\ =\ 0;}
+\DoxyCodeLine{01205\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01206\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01207\ \ \ \ \ \ \ \ \ \ \ iter\ =\ iter\ +\ m\ -\/\ ll;}
+\DoxyCodeLine{01208\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (shift\ ==\ 0)\ \{\ \ \textcolor{comment}{//\ 0\ shift\ -\/\ simplified\ QR\ iterations}}
+\DoxyCodeLine{01209\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (flag\ ==\ 1)\ \{\ \ \textcolor{comment}{//\ chase\ bulge\ down}}
+\DoxyCodeLine{01210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ cs\ =\ 1,\ sn,\ r,\ oldcs\ =\ 1,\ oldsn\ =\ 0,\ tmp;}
+\DoxyCodeLine{01211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ ll;\ i\ <\ m;\ i++)\ \{}
+\DoxyCodeLine{01212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.Generate(d(i)*cs,\ e(i),\ cs,\ sn,\ r);}
+\DoxyCodeLine{01213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ ll)\ \{}
+\DoxyCodeLine{01214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(i\ -\/\ 1)\ =\ oldsn\ *\ r;}
+\DoxyCodeLine{01215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.Generate(oldcs*r,\ d(i\ +\ 1)*sn,\ oldcs,\ oldsn,\ tmp);}
+\DoxyCodeLine{01217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vt.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToRows(vt,\ i,\ i\ +\ 1,\ cs,\ sn);}
+\DoxyCodeLine{01219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u.RowCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToCols(u,\ i,\ i\ +\ 1,\ oldcs,\ oldsn);}
+\DoxyCodeLine{01222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToRows(c,\ i,\ i\ +\ 1,\ oldcs,\ oldsn);}
+\DoxyCodeLine{01225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(i)\ =\ tmp;}
+\DoxyCodeLine{01227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ h\ =\ d(m)*cs;}
+\DoxyCodeLine{01229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(m)\ =\ h\ *\ oldcs;}
+\DoxyCodeLine{01230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(e(m\ -\/\ 1)\ =\ h\ *\ oldsn)\ <=\ thresh)\ \{}
+\DoxyCodeLine{01231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(m\ -\/\ 1)\ =\ 0;}
+\DoxyCodeLine{01232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01233\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01234\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \ \textcolor{comment}{//\ chase\ bulge\ up}}
+\DoxyCodeLine{01235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ cs\ =\ 1,\ sn,\ r,\ oldcs\ =\ 1,\ oldsn\ =\ 0,\ tmp;}
+\DoxyCodeLine{01236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ m;\ i\ >\ ll;\ i-\/-\/)\ \{}
+\DoxyCodeLine{01237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.Generate(d(i)*cs,\ e(i\ -\/\ 1),\ cs,\ sn,\ r);}
+\DoxyCodeLine{01238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ m)\ \{}
+\DoxyCodeLine{01239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(i)\ =\ oldsn\ *\ r;}
+\DoxyCodeLine{01240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.Generate(oldcs*r,\ d(i\ -\/\ 1)*sn,\ oldcs,\ oldsn,\ tmp);}
+\DoxyCodeLine{01242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(i)\ =\ tmp;}
+\DoxyCodeLine{01243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vt.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToRows(vt,\ i\ -\/\ 1,\ i,\ oldcs,\ -\/oldsn);}
+\DoxyCodeLine{01245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u.RowCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToCols(u,\ i\ -\/\ 1,\ i,\ cs,\ -\/sn);}
+\DoxyCodeLine{01248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToRows(c,\ i\ -\/\ 1,\ i,\ cs,\ -\/sn);}
+\DoxyCodeLine{01251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FT\ h\ =\ d(ll)*cs;}
+\DoxyCodeLine{01254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(ll)\ =\ h\ *\ oldcs;}
+\DoxyCodeLine{01255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(ll)\ =\ h\ *\ oldsn;}
+\DoxyCodeLine{01256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(e(ll))\ <\ thresh)\ \{}
+\DoxyCodeLine{01257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(ll)\ =\ 0;}
+\DoxyCodeLine{01258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01259\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01260\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01261\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \ \textcolor{comment}{//\ non\ zero\ shift}}
+\DoxyCodeLine{01262\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (flag\ ==\ 1)\ \{\ \ \textcolor{comment}{//\ chanse\ bulge\ down}}
+\DoxyCodeLine{01263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ f\ =\ (olx\_abs(d(ll))\ -\/\ shift)*(olx\_copy\_sign(1,\ d(ll))\ +\ shift\ /\ d(ll));}
+\DoxyCodeLine{01264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ g\ =\ e(ll);}
+\DoxyCodeLine{01265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ cosr,\ sinr,\ cosl,\ sinl,\ r;}
+\DoxyCodeLine{01266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ ll;\ i\ <\ m;\ i++)\ \{}
+\DoxyCodeLine{01267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.Generate(f,\ g,\ cosr,\ sinr,\ r);}
+\DoxyCodeLine{01268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ ll)\ \{}
+\DoxyCodeLine{01269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(i\ -\/\ 1)\ =\ r;}
+\DoxyCodeLine{01270\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\ =\ cosr\ *\ d(i)\ +\ sinr\ *\ e(i);}
+\DoxyCodeLine{01272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(i)\ =\ cosr\ *\ e(i)\ -\/\ sinr\ *\ d(i);}
+\DoxyCodeLine{01273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\ =\ sinr\ *\ d(i\ +\ 1);}
+\DoxyCodeLine{01274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(i\ +\ 1)\ *=\ cosr;}
+\DoxyCodeLine{01275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.Generate(f,\ g,\ cosl,\ sinl,\ r);}
+\DoxyCodeLine{01276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(i)\ =\ r;}
+\DoxyCodeLine{01277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\ =\ cosl\ *\ e(i)\ +\ sinl\ *\ d(i\ +\ 1);}
+\DoxyCodeLine{01278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(i\ +\ 1)\ =\ cosl\ *\ d(i\ +\ 1)\ -\/\ sinl\ *\ e(i);}
+\DoxyCodeLine{01279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ m\ -\/\ 1)\ \{}
+\DoxyCodeLine{01280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\ =\ sinl\ *\ e(i\ +\ 1);}
+\DoxyCodeLine{01281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(i\ +\ 1)\ =\ cosl\ *\ e(i\ +\ 1);}
+\DoxyCodeLine{01282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vt.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToRows(vt,\ i,\ i\ +\ 1,\ cosr,\ sinr);}
+\DoxyCodeLine{01285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u.RowCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToCols(u,\ i,\ i\ +\ 1,\ cosl,\ sinl);}
+\DoxyCodeLine{01288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToRows(c,\ i,\ i\ +\ 1,\ cosl,\ sinl);}
+\DoxyCodeLine{01291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01293\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(e(m\ -\/\ 1)\ =\ f)\ <=\ thresh)\ \{}
+\DoxyCodeLine{01294\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(m\ -\/\ 1)\ =\ 0;}
+\DoxyCodeLine{01295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01296\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01297\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \textcolor{comment}{//chase\ bulge\ up}}
+\DoxyCodeLine{01298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ f\ =\ (olx\_abs(d(m))\ -\/\ shift)*(olx\_copy\_sign(1,\ d(m))\ +\ shift\ /\ d(m));}
+\DoxyCodeLine{01299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ g\ =\ e(m\ -\/\ 1);}
+\DoxyCodeLine{01300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ cosr,\ sinr,\ cosl,\ sinl,\ r;}
+\DoxyCodeLine{01301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ m;\ i\ >\ ll;\ i-\/-\/)\ \{}
+\DoxyCodeLine{01302\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.Generate(f,\ g,\ cosr,\ sinr,\ r);}
+\DoxyCodeLine{01303\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ m)\ \{}
+\DoxyCodeLine{01304\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(i)\ =\ r;}
+\DoxyCodeLine{01305\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01306\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\ =\ cosr\ *\ d(i)\ +\ sinr\ *\ e(i\ -\/\ 1);}
+\DoxyCodeLine{01307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(i\ -\/\ 1)\ =\ cosr\ *\ e(i\ -\/\ 1)\ -\/\ sinr\ *\ d(i);}
+\DoxyCodeLine{01308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\ =\ sinr\ *\ d(i\ -\/\ 1);}
+\DoxyCodeLine{01309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(i\ -\/\ 1)\ *=\ cosr;}
+\DoxyCodeLine{01310\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.Generate(f,\ g,\ cosl,\ sinl,\ r);}
+\DoxyCodeLine{01311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(i)\ =\ r;}
+\DoxyCodeLine{01312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\ =\ cosl\ *\ e(i\ -\/\ 1)\ +\ sinl\ *\ d(i\ -\/\ 1);}
+\DoxyCodeLine{01313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(i\ -\/\ 1)\ =\ cosl\ *\ d(i\ -\/\ 1)\ -\/\ sinl\ *\ e(i\ -\/\ 1);}
+\DoxyCodeLine{01314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ ll\ +\ 1)\ \{}
+\DoxyCodeLine{01315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ g\ =\ sinl\ *\ e(i\ -\/\ 2);}
+\DoxyCodeLine{01316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(i\ -\/\ 2)\ *=\ cosl;}
+\DoxyCodeLine{01317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vt.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToRows(vt,\ i\ -\/\ 1,\ i,\ cosl,\ -\/sinl);}
+\DoxyCodeLine{01320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u.RowCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToCols(u,\ i\ -\/\ 1,\ i,\ cosr,\ -\/sinr);}
+\DoxyCodeLine{01323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.ApplyToRows(c,\ i\ -\/\ 1,\ i,\ cosr,\ -\/sinr);}
+\DoxyCodeLine{01326\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01327\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_abs(e(ll)\ =\ f)\ <\ thresh)\ \{}
+\DoxyCodeLine{01329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ e(ll)\ =\ 0;}
+\DoxyCodeLine{01330\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01331\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01332\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01333\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01334\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ negate\ negative\ singular\ values}}
+\DoxyCodeLine{01335\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ d.Count();\ i++)\ \{}
+\DoxyCodeLine{01336\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d(i)\ <\ 0)\ \{}
+\DoxyCodeLine{01337\ \ \ \ \ \ \ \ \ \ \ \ \ d(i)\ =\ -\/d(i);}
+\DoxyCodeLine{01338\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vt.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01339\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ proxy::row(vt,\ i,\ 0).ForEach(alg::ChSig());}
+\DoxyCodeLine{01340\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01341\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01342\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01343\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ eventually\ -\/\ sorting...}}
+\DoxyCodeLine{01344\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ d.Count()\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{01345\ \ \ \ \ \ \ \ \ \ \ FT\ min\_s\ =\ d(0);}
+\DoxyCodeLine{01346\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ min\_i\ =\ 0;}
+\DoxyCodeLine{01347\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 1;\ j\ <\ d.Count()\ -\/\ i;\ j++)\ \{}
+\DoxyCodeLine{01348\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d(j)\ <=\ min\_s)\ \{}
+\DoxyCodeLine{01349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ min\_i\ =\ j;}
+\DoxyCodeLine{01350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ min\_s\ =\ d(j);}
+\DoxyCodeLine{01351\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01352\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01353\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ n\ =\ d.Count()\ -\/\ 1;}
+\DoxyCodeLine{01354\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (min\_i\ !=\ n\ -\/\ i)\ \{}
+\DoxyCodeLine{01355\ \ \ \ \ \ \ \ \ \ \ \ \ d(min\_i)\ =\ d(n\ -\/\ i);}
+\DoxyCodeLine{01356\ \ \ \ \ \ \ \ \ \ \ \ \ d(n\ -\/\ i)\ =\ min\_s;}
+\DoxyCodeLine{01357\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vt.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01358\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alg::swap\_rows(vt,\ min\_i,\ n\ -\/\ i);}
+\DoxyCodeLine{01359\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01360\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01361\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alg::swap\_cols(u,\ min\_i,\ n\ -\/\ i);}
+\DoxyCodeLine{01362\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01363\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c.ColCount()\ >\ 0)\ \{}
+\DoxyCodeLine{01364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alg::swap\_rows(c,\ min\_i,\ n\ -\/\ i);}
+\DoxyCodeLine{01365\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01366\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01367\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01368\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01369\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01370\ \ \ \ \ \};}
+\DoxyCodeLine{01371\ \ \ \};\ \textcolor{comment}{//\ end\ of\ BiDiagonal}}
+\DoxyCodeLine{01372\ }
+\DoxyCodeLine{01373\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ FT>\ \textcolor{keyword}{struct\ }SVD\ \{}
+\DoxyCodeLine{01374\ \ \ \ \ TVector<FT>\ w;}
+\DoxyCodeLine{01375\ \ \ \ \ TMatrix<FT>\ u,\ vt;}
+\DoxyCodeLine{01376\ \ \ \ \ \textcolor{comment}{/*\ u\_flag\ =\ 0\ -\/\ u\ is\ not\ needed,\ 1\ -\/\ only\ left\ vectors\ are\ needed,\ 2\ -\/\ full\ u\ is\ needed}}
+\DoxyCodeLine{01377\ \textcolor{comment}{\ \ \ \ \ \ vt\_flag\ =\ 0\ -\/\ vt\ is\ not\ needed,\ 1\ -\/\ only\ right\ vectors\ are\ needed,\ 2\ -\/\ full\ vt\ is\ needed}}
+\DoxyCodeLine{01378\ \textcolor{comment}{\ \ \ \ \ \ extra\_mem\ =\ false\ -\/\ no\ additional\ memory\ will\ be\ as\ of\ what\ is\ required\ to\ store\ requested}}
+\DoxyCodeLine{01379\ \textcolor{comment}{\ \ \ \ \ \ matrices\ will\ be\ needed,\ for\ true\ -\/\ an\ intermediate\ matric\ will\ be\ allocated,\ this}}
+\DoxyCodeLine{01380\ \textcolor{comment}{\ \ \ \ \ \ increases\ the\ performance}}
+\DoxyCodeLine{01381\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{01382\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ MatT>}
+\DoxyCodeLine{01383\ \ \ \ \ \textcolor{keywordtype}{bool}\ Decompose(MatT\&\ m,\ \textcolor{keywordtype}{int}\ u\_flag\ =\ 2,\ \textcolor{keywordtype}{int}\ vt\_flag\ =\ 2,\ \textcolor{keywordtype}{bool}\ extra\_mem\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{01384\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m.IsEmpty())\ \{}
+\DoxyCodeLine{01385\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01386\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01387\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ min\_d\ =\ olx\_min(m.ColCount(),\ m.RowCount());}
+\DoxyCodeLine{01388\ \ \ \ \ \ \ w.Resize(min\_d);}
+\DoxyCodeLine{01389\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u\_flag\ ==\ 0)\ \{}
+\DoxyCodeLine{01390\ \ \ \ \ \ \ \ \ u.Resize(0,\ 0);}
+\DoxyCodeLine{01391\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01392\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (u\_flag\ ==\ 1)\ \{}
+\DoxyCodeLine{01393\ \ \ \ \ \ \ \ \ u.Resize(m.RowCount(),\ min\_d);}
+\DoxyCodeLine{01394\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01395\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01396\ \ \ \ \ \ \ \ \ u.Resize(m.RowCount(),\ m.RowCount());}
+\DoxyCodeLine{01397\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01398\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (vt\_flag\ ==\ 0)\ \{}
+\DoxyCodeLine{01399\ \ \ \ \ \ \ \ \ vt.Resize(0,\ 0);}
+\DoxyCodeLine{01400\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01401\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (vt\_flag\ ==\ 1)\ \{}
+\DoxyCodeLine{01402\ \ \ \ \ \ \ \ \ vt.Resize(min\_d,\ m.ColCount());}
+\DoxyCodeLine{01403\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01404\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01405\ \ \ \ \ \ \ \ \ vt.Resize(m.ColCount(),\ m.ColCount());}
+\DoxyCodeLine{01406\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01407\ \ \ \ \ \ \ \textcolor{comment}{//\ 'zero'\ matrix}}
+\DoxyCodeLine{01408\ \ \ \ \ \ \ mat\_mat<MatT>\ zm(m,\ 0,\ 0);}
+\DoxyCodeLine{01409\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m.RowCount()\ >\ 1.6*m.ColCount())\ \{}
+\DoxyCodeLine{01410\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u\_flag\ ==\ 0)\ \{}
+\DoxyCodeLine{01411\ \ \ \ \ \ \ \ \ \ \ TVector<FT>\ taus;}
+\DoxyCodeLine{01412\ \ \ \ \ \ \ \ \ \ \ QR::Decompose(m,\ taus);}
+\DoxyCodeLine{01413\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ m.ColCount();\ i++)\ \{}
+\DoxyCodeLine{01414\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 1;\ j\ <\ i;\ j++)\ \{}
+\DoxyCodeLine{01415\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m(i,\ j)\ =\ 0;}
+\DoxyCodeLine{01416\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01417\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01418\ \ \ \ \ \ \ \ \ \ \ TVector<FT>\ qtau,\ ptau;}
+\DoxyCodeLine{01419\ \ \ \ \ \ \ \ \ \ \ mat\_mat<MatT>\ mp(m,\ m.RowCount(),\ m.RowCount());}
+\DoxyCodeLine{01420\ \ \ \ \ \ \ \ \ \ \ Bidiagonal::ToBidiagonal(mp,\ qtau,\ ptau);}
+\DoxyCodeLine{01421\ \ \ \ \ \ \ \ \ \ \ Bidiagonal::UnpackPT(mp,\ ptau,\ vt.RowCount(),\ vt);}
+\DoxyCodeLine{01422\ \ \ \ \ \ \ \ \ \ \ TVector<FT>\ e;}
+\DoxyCodeLine{01423\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ upper\ =\ Bidiagonal::UnpackDiagonals(mp,\ w,\ e);}
+\DoxyCodeLine{01424\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Bidiagonal::SVD<FT>::Decompose(w,\ e,\ upper,\ \textcolor{keyword}{false},\ zm,\ zm,\ vt);}
+\DoxyCodeLine{01425\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01426\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01427\ \ \ \ \ \ \ \ \ \ \ TVector<FT>\ taus;}
+\DoxyCodeLine{01428\ \ \ \ \ \ \ \ \ \ \ QR::Decompose(m,\ taus);}
+\DoxyCodeLine{01429\ \ \ \ \ \ \ \ \ \ \ QR::Unpack(m,\ taus,\ u.ColCount(),\ u);}
+\DoxyCodeLine{01430\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ m.ColCount();\ i++)\ \{}
+\DoxyCodeLine{01431\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ i;\ j++)\ \{}
+\DoxyCodeLine{01432\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m(i,\ j)\ =\ 0;}
+\DoxyCodeLine{01433\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01434\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01435\ \ \ \ \ \ \ \ \ \ \ TVector<FT>\ qtau,\ ptau,\ e;}
+\DoxyCodeLine{01436\ \ \ \ \ \ \ \ \ \ \ mat\_mat<MatT>\ mp(m,\ m.ColCount(),\ m.ColCount());}
+\DoxyCodeLine{01437\ \ \ \ \ \ \ \ \ \ \ Bidiagonal::ToBidiagonal(mp,\ qtau,\ ptau);}
+\DoxyCodeLine{01438\ \ \ \ \ \ \ \ \ \ \ Bidiagonal::UnpackPT(mp,\ ptau,\ vt.RowCount(),\ vt);}
+\DoxyCodeLine{01439\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ upper\ =\ Bidiagonal::UnpackDiagonals(mp,\ w,\ e);}
+\DoxyCodeLine{01440\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!extra\_mem)\ \{}
+\DoxyCodeLine{01441\ \ \ \ \ \ \ \ \ \ \ \ \ Bidiagonal::MulByQ(mp,\ qtau,\ u,\ \textcolor{keyword}{true},\ \textcolor{keyword}{false});}
+\DoxyCodeLine{01442\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Bidiagonal::SVD<FT>::Decompose(w,\ e,\ upper,\ \textcolor{keyword}{false},\ u,\ zm,\ vt);}
+\DoxyCodeLine{01443\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01444\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01445\ \ \ \ \ \ \ \ \ \ \ \ \ TMatrix<FT>\ tmp;}
+\DoxyCodeLine{01446\ \ \ \ \ \ \ \ \ \ \ \ \ Bidiagonal::UnpackQ(mp,\ qtau,\ m.ColCount(),\ tmp);}
+\DoxyCodeLine{01447\ \ \ \ \ \ \ \ \ \ \ \ \ m.Assign(u,\ m.RowCount(),\ m.ColCount());}
+\DoxyCodeLine{01448\ \ \ \ \ \ \ \ \ \ \ \ \ tmp.Transpose();}
+\DoxyCodeLine{01449\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ res;}
+\DoxyCodeLine{01450\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((res\ =\ Bidiagonal::SVD<FT>::Decompose(}
+\DoxyCodeLine{01451\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ w,\ e,\ upper,\ \textcolor{keyword}{false},\ zm,\ tmp,\ vt)))}
+\DoxyCodeLine{01452\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01453\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tmp\ =\ m\ *\ tmp.Transpose();}
+\DoxyCodeLine{01454\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u.Assign(tmp,\ tmp.RowCount(),\ tmp.ColCount(),\ \textcolor{keyword}{false});}
+\DoxyCodeLine{01455\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01456\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{01457\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01458\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01459\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01460\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (m.ColCount()\ >\ 1.6*m.RowCount())\ \{}
+\DoxyCodeLine{01461\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (u\_flag\ ==\ 0)\ \{}
+\DoxyCodeLine{01462\ \ \ \ \ \ \ \ \ \ \ TVector<FT>\ taus;}
+\DoxyCodeLine{01463\ \ \ \ \ \ \ \ \ \ \ LQ::Decompose(m,\ taus);}
+\DoxyCodeLine{01464\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ m.RowCount()\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{01465\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ 1;\ j\ <\ m.RowCount();\ j++)\ \{}
+\DoxyCodeLine{01466\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m(i,\ j)\ =\ 0;}
+\DoxyCodeLine{01467\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01468\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01469\ \ \ \ \ \ \ \ \ \ \ TVector<FT>\ qtau,\ ptau,\ e;}
+\DoxyCodeLine{01470\ \ \ \ \ \ \ \ \ \ \ Bidiagonal::ToBidiagonal(m,\ qtau,\ ptau);}
+\DoxyCodeLine{01471\ \ \ \ \ \ \ \ \ \ \ Bidiagonal::UnpackQ(m,\ ptau,\ u.RowCount(),\ u);}
+\DoxyCodeLine{01472\ \ \ \ \ \ \ \ \ \ \ mat\_mat<MatT>\ mp(m,\ m.RowCount(),\ m.RowCount());}
+\DoxyCodeLine{01473\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ upper\ =\ Bidiagonal::UnpackDiagonals(mp,\ w,\ e);}
+\DoxyCodeLine{01474\ \ \ \ \ \ \ \ \ \ \ u.Transpose();}
+\DoxyCodeLine{01475\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ res\ =\ Bidiagonal::SVD<FT>::Decompose(w,\ e,\ upper,\ \textcolor{keyword}{false},\ u,\ mp,\ vt);}
+\DoxyCodeLine{01476\ \ \ \ \ \ \ \ \ \ \ u.Transpose();}
+\DoxyCodeLine{01477\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{01478\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01479\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01480\ \ \ \ \ \ \ \ \ \ \ TVector<FT>\ taus;}
+\DoxyCodeLine{01481\ \ \ \ \ \ \ \ \ \ \ LQ::Decompose(m,\ taus);}
+\DoxyCodeLine{01482\ \ \ \ \ \ \ \ \ \ \ LQ::UnpackQ(m,\ taus,\ vt.ColCount(),\ vt);}
+\DoxyCodeLine{01483\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ m.RowCount()\ -\/\ 1;\ i++)\ \{}
+\DoxyCodeLine{01484\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ 1;\ j\ <\ m.RowCount();\ j++)\ \{}
+\DoxyCodeLine{01485\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m(i,\ j)\ =\ 0;}
+\DoxyCodeLine{01486\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01487\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01488\ \ \ \ \ \ \ \ \ \ \ TVector<FT>\ qtau,\ ptau,\ e;}
+\DoxyCodeLine{01489\ \ \ \ \ \ \ \ \ \ \ mat\_mat<MatT>\ mp(m,\ m.RowCount(),\ m.RowCount());}
+\DoxyCodeLine{01490\ \ \ \ \ \ \ \ \ \ \ Bidiagonal::ToBidiagonal(mp,\ qtau,\ ptau);}
+\DoxyCodeLine{01491\ \ \ \ \ \ \ \ \ \ \ Bidiagonal::UnpackQ(mp,\ qtau,\ u.RowCount(),\ u);}
+\DoxyCodeLine{01492\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ upper\ =\ Bidiagonal::UnpackDiagonals(mp,\ w,\ e);}
+\DoxyCodeLine{01493\ \ \ \ \ \ \ \ \ \ \ u.Transpose();}
+\DoxyCodeLine{01494\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ res;}
+\DoxyCodeLine{01495\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!extra\_mem)\ \{}
+\DoxyCodeLine{01496\ \ \ \ \ \ \ \ \ \ \ \ \ Bidiagonal::MulByP(mp,\ ptau,\ vt,\ \textcolor{keyword}{false},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{01497\ \ \ \ \ \ \ \ \ \ \ \ \ res\ =\ Bidiagonal::SVD<FT>::Decompose(w,\ e,\ upper,\ \textcolor{keyword}{false},\ zm,\ u,\ vt);}
+\DoxyCodeLine{01498\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01499\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01500\ \ \ \ \ \ \ \ \ \ \ \ \ TMatrix<FT>\ tmp;}
+\DoxyCodeLine{01501\ \ \ \ \ \ \ \ \ \ \ \ \ Bidiagonal::UnpackPT(mp,\ ptau,\ m.RowCount(),\ tmp);}
+\DoxyCodeLine{01502\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((res\ =\ Bidiagonal::SVD<FT>::Decompose(}
+\DoxyCodeLine{01503\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ w,\ e,\ upper,\ \textcolor{keyword}{false},\ zm,\ u,\ tmp)))}
+\DoxyCodeLine{01504\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01505\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m.Assign(vt,\ m.RowCount(),\ m.ColCount());}
+\DoxyCodeLine{01506\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tmp\ =\ tmp\ *\ m;}
+\DoxyCodeLine{01507\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ vt.Assign(tmp,\ tmp.RowCount(),\ tmp.ColCount(),\ \textcolor{keyword}{false});}
+\DoxyCodeLine{01508\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01509\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01510\ \ \ \ \ \ \ \ \ \ \ u.Transpose();}
+\DoxyCodeLine{01511\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{01512\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01513\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01514\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (m.RowCount()\ <=\ m.ColCount())\ \{}
+\DoxyCodeLine{01515\ \ \ \ \ \ \ \ \ TVector<FT>\ ptau,\ qtau,\ e;}
+\DoxyCodeLine{01516\ \ \ \ \ \ \ \ \ Bidiagonal::ToBidiagonal(m,\ qtau,\ ptau);}
+\DoxyCodeLine{01517\ \ \ \ \ \ \ \ \ Bidiagonal::UnpackQ(m,\ qtau,\ u.ColCount(),\ u);}
+\DoxyCodeLine{01518\ \ \ \ \ \ \ \ \ Bidiagonal::UnpackPT(m,\ ptau,\ vt.RowCount(),\ vt);}
+\DoxyCodeLine{01519\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ upper\ =\ Bidiagonal::UnpackDiagonals(m,\ w,\ e);}
+\DoxyCodeLine{01520\ \ \ \ \ \ \ \ \ u.Transpose();}
+\DoxyCodeLine{01521\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ res\ =\ Bidiagonal::SVD<FT>::Decompose(w,\ e,\ upper,\ \textcolor{keyword}{false},\ zm,\ u,\ vt);}
+\DoxyCodeLine{01522\ \ \ \ \ \ \ \ \ u.Transpose();}
+\DoxyCodeLine{01523\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{01524\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01525\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01526\ \ \ \ \ \ \ \ \ TVector<FT>\ ptau,\ qtau,\ e;}
+\DoxyCodeLine{01527\ \ \ \ \ \ \ \ \ Bidiagonal::ToBidiagonal(m,\ qtau,\ ptau);}
+\DoxyCodeLine{01528\ \ \ \ \ \ \ \ \ Bidiagonal::UnpackQ(m,\ qtau,\ u.ColCount(),\ u);}
+\DoxyCodeLine{01529\ \ \ \ \ \ \ \ \ Bidiagonal::UnpackPT(m,\ ptau,\ vt.RowCount(),\ vt);}
+\DoxyCodeLine{01530\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ upper\ =\ Bidiagonal::UnpackDiagonals(m,\ w,\ e);}
+\DoxyCodeLine{01531\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!extra\_mem)}
+\DoxyCodeLine{01532\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Bidiagonal::SVD<FT>::Decompose(w,\ e,\ upper,\ \textcolor{keyword}{false},\ u,\ zm,\ vt);}
+\DoxyCodeLine{01533\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01534\ \ \ \ \ \ \ \ \ \ \ TMatrix<FT>\ tmp(min\_d,\ m.RowCount());}
+\DoxyCodeLine{01535\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ min\_d;\ i++)\ \{}
+\DoxyCodeLine{01536\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ m.RowCount();\ j++)\ \{}
+\DoxyCodeLine{01537\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tmp(i,\ j)\ =\ u(j,\ i);}
+\DoxyCodeLine{01538\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01539\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01540\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ res\ =\ Bidiagonal::SVD<FT>::Decompose(w,\ e,\ upper,\ \textcolor{keyword}{false},\ zm,\ tmp,\ vt);}
+\DoxyCodeLine{01541\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ min\_d;\ i++)\ \{}
+\DoxyCodeLine{01542\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ m.RowCount();\ j++)\ \{}
+\DoxyCodeLine{01543\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u(j,\ i)\ =\ tmp(i,\ j);}
+\DoxyCodeLine{01544\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01545\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01546\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{01547\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01548\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01549\ \ \ \ \ \}}
+\DoxyCodeLine{01550\ \ \ \};}
+\DoxyCodeLine{01551\ \ \ \textcolor{keyword}{struct\ }Cholesky\ \{}
+\DoxyCodeLine{01552\ \ \ \ \ \textcolor{comment}{/*\ if\ upper\ is\ true,\ UxUt\ decomposition,\ otherwise\ LxLt\ */}}
+\DoxyCodeLine{01553\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatT>}
+\DoxyCodeLine{01554\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ Decompose(MatT\&\ m,\ \textcolor{keywordtype}{bool}\ upper)\ \{}
+\DoxyCodeLine{01555\ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatT::number\_type\ FT;}
+\DoxyCodeLine{01556\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ n\ =\ m.RowCount();}
+\DoxyCodeLine{01557\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (upper)\ \{\ \ \textcolor{comment}{//Cholesky-\/Crout}}
+\DoxyCodeLine{01558\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ n;\ i++)\ \{}
+\DoxyCodeLine{01559\ \ \ \ \ \ \ \ \ \ \ FT\ v\ =\ 0;}
+\DoxyCodeLine{01560\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ i;\ j++)\ \{}
+\DoxyCodeLine{01561\ \ \ \ \ \ \ \ \ \ \ \ \ v\ +=\ olx\_sqr(m(j,\ i));}
+\DoxyCodeLine{01562\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01563\ \ \ \ \ \ \ \ \ \ \ FT\ mii\ =\ m(i,\ i)\ -\/\ v;}
+\DoxyCodeLine{01564\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mii\ <\ 0)\ \{}
+\DoxyCodeLine{01565\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01566\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01567\ \ \ \ \ \ \ \ \ \ \ mii\ =\ m(i,\ i)\ =\ sqrt(mii);}
+\DoxyCodeLine{01568\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ n\ -\/\ 1)\ \{}
+\DoxyCodeLine{01569\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ i;\ j++)\ \{}
+\DoxyCodeLine{01570\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ i\ +\ 1;\ k\ <\ n;\ k++)\ \{}
+\DoxyCodeLine{01571\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m(i,\ k)\ -\/=\ m(j,\ k)*m(j,\ i);}
+\DoxyCodeLine{01572\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01573\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01574\ \ \ \ \ \ \ \ \ \ \ \ \ proxy::row(m,\ i,\ i\ +\ 1).ForEach(alg::Mul(1\ /\ mii));}
+\DoxyCodeLine{01575\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01576\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01577\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01578\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ \ \textcolor{comment}{//Cholesky{\ucr}Banachiewicz}}
+\DoxyCodeLine{01579\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ n;\ i++)\ \{}
+\DoxyCodeLine{01580\ \ \ \ \ \ \ \ \ \ \ FT\ v\ =\ 0;}
+\DoxyCodeLine{01581\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ 0;\ j\ <\ i;\ j++)\ \{}
+\DoxyCodeLine{01582\ \ \ \ \ \ \ \ \ \ \ \ \ v\ +=\ olx\_sqr(m(i,\ j));}
+\DoxyCodeLine{01583\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01584\ \ \ \ \ \ \ \ \ \ \ FT\ mii\ =\ m(i,\ i)\ -\/\ v;}
+\DoxyCodeLine{01585\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mii\ <\ 0)\ \{}
+\DoxyCodeLine{01586\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01587\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01588\ \ \ \ \ \ \ \ \ \ \ mii\ =\ m(i,\ i)\ =\ sqrt(mii);}
+\DoxyCodeLine{01589\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ n\ -\/\ 1)\ \{}
+\DoxyCodeLine{01590\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j\ =\ i\ +\ 1;\ j\ <\ n;\ j++)\ \{}
+\DoxyCodeLine{01591\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\ dp\ =\ 0;}
+\DoxyCodeLine{01592\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ k\ =\ 0;\ k\ <\ i;\ k++)\ \{}
+\DoxyCodeLine{01593\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dp\ +=\ m(j,\ k)*m(i,\ k);}
+\DoxyCodeLine{01594\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01595\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m(j,\ i)\ -\/=\ dp;}
+\DoxyCodeLine{01596\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01597\ \ \ \ \ \ \ \ \ \ \ \ \ proxy::col(m,\ i,\ i\ +\ 1).ForEach(alg::Mul(1\ /\ mii));}
+\DoxyCodeLine{01598\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01599\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01600\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01601\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01602\ \ \ \ \ \}}
+\DoxyCodeLine{01603\ \ \ \};\ \ \textcolor{comment}{//\ end\ of\ Cholesky}}
+\DoxyCodeLine{01604\ \};\ \textcolor{comment}{//\ end\ namespace\ math}}
+\DoxyCodeLine{01605\ }
+\DoxyCodeLine{01606\ EndEsdlNamespace()}
+\DoxyCodeLine{01607\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

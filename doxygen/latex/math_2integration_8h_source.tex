@@ -1,0 +1,68 @@
+\doxysection{integration.\+h}
+\hypertarget{math_2integration_8h_source}{}\label{math_2integration_8h_source}\index{sdl/math/integration.h@{sdl/math/integration.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_math\_int\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_math\_int\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../emath.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ BeginEsdlNamespace()}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/*\ simple\ rectangular\ integration}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ template\ <typename\ e\_t>}
+\DoxyCodeLine{00019\ \textcolor{keywordtype}{double}\ integrate\_r(e\_t\ f,\ \textcolor{keywordtype}{double}\ s,\ \textcolor{keywordtype}{double}\ e,\ \textcolor{keywordtype}{double}\ i\ =\ 1e-\/4)\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{double}\ hs\ =\ i\ /\ 2,\ v\ =\ s\ +\ hs,\ r\ =\ 0;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordflow}{while}\ (v\ <\ e)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ r\ +=\ f(v)*i;}
+\DoxyCodeLine{00023\ \ \ \ \ v\ +=\ i;}
+\DoxyCodeLine{00024\ \ \ \}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00026\ \}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{comment}{/*\ simple\ trapezoid\ integration}}
+\DoxyCodeLine{00029\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00030\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ e\_t>}
+\DoxyCodeLine{00031\ \textcolor{keywordtype}{double}\ integrate\_t(e\_t\ f,\ \textcolor{keywordtype}{double}\ s,\ \textcolor{keywordtype}{double}\ e,\ \textcolor{keywordtype}{double}\ i\ =\ 1e-\/3)\ \{}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{double}\ v\ =\ s,\ r\ =\ 0,}
+\DoxyCodeLine{00033\ \ \ \ \ f1\ =\ f(s),\ hs\ =\ i\ /\ 2;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordflow}{while}\ (v\ <\ e)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{double}\ f2\ =\ f((v\ +=\ i));}
+\DoxyCodeLine{00036\ \ \ \ \ r\ +=\ (f1\ +\ f2)*hs;}
+\DoxyCodeLine{00037\ \ \ \ \ f1\ =\ f2;}
+\DoxyCodeLine{00038\ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00040\ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{/*\ trapezoid\ integration\ with\ cheking\ the\ final\ trapezoid\ lies\ in\ the\ given}}
+\DoxyCodeLine{00043\ \textcolor{comment}{interval\ [s,e]}}
+\DoxyCodeLine{00044\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00045\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ e\_t>}
+\DoxyCodeLine{00046\ \textcolor{keywordtype}{double}\ integrate\_tx(e\_t\ f,\ \textcolor{keywordtype}{double}\ s,\ \textcolor{keywordtype}{double}\ e,\ \textcolor{keywordtype}{double}\ i\ =\ 1e-\/3)\ \{}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{double}\ v\ =\ s,\ r\ =\ 0,}
+\DoxyCodeLine{00048\ \ \ \ \ f1\ =\ f(s),\ hs\ =\ i\ /\ 2;}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordflow}{while}\ (v\ <\ e)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{if}\ ((v\ +=\ i)\ >\ e)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ hs\ =\ (i\ -\/\ (e\ -\/\ v))\ /\ 2;}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ v\ =\ e;}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{double}\ f2\ =\ f(v);}
+\DoxyCodeLine{00055\ \ \ \ \ r\ +=\ (f1\ +\ f2)*hs;}
+\DoxyCodeLine{00056\ \ \ \ \ f1\ =\ f2;}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00059\ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ EndEsdlNamespace()}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

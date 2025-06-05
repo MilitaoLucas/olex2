@@ -1,0 +1,128 @@
+\doxysection{htmlmanager.\+h}
+\hypertarget{htmlmanager_8h_source}{}\label{htmlmanager_8h_source}\index{olex/html/htmlmanager.h@{olex/html/htmlmanager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_htmlmanager\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_htmlmanager\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}htmlext.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }THtmlManager\ :\ \textcolor{keyword}{public}\ AActionHandler\ \{}
+\DoxyCodeLine{00015\ \ \ wxWindow\ *mainWindow;}
+\DoxyCodeLine{00016\ \ \ \mbox{\hyperlink{classTActionQList}{TActionQList}}\ Actions;}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Enter(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Exit(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Execute(\textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *,\ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ *);}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{bool}\ destroyed;}
+\DoxyCodeLine{00021\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00022\ \ \ \textcolor{comment}{//\ library}}
+\DoxyCodeLine{00023\ \ \ DefMacro(ItemState)}
+\DoxyCodeLine{00024\ \ \ DefMacro(Update)}
+\DoxyCodeLine{00025\ \ \ DefMacro(Home)}
+\DoxyCodeLine{00026\ \ \ DefMacro(Load)}
+\DoxyCodeLine{00027\ \ \ DefMacro(Dump)}
+\DoxyCodeLine{00028\ \ \ DefMacro(Tooltips)}
+\DoxyCodeLine{00029\ \ \ DefMacro(SetFonts)}
+\DoxyCodeLine{00030\ \ \ DefMacro(SetBorders)}
+\DoxyCodeLine{00031\ \ \ DefMacro(DefineControl)}
+\DoxyCodeLine{00032\ \ \ DefMacro(Hide)}
+\DoxyCodeLine{00033\ \ \ DefMacro(Group)}
+\DoxyCodeLine{00034\ \ \ DefMacro(LstObj)}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ DefFunc(GetValue)}
+\DoxyCodeLine{00037\ \ \ DefFunc(GetData)}
+\DoxyCodeLine{00038\ \ \ DefFunc(GetLabel)}
+\DoxyCodeLine{00039\ \ \ DefFunc(GetImage)}
+\DoxyCodeLine{00040\ \ \ DefFunc(GetState)}
+\DoxyCodeLine{00041\ \ \ DefFunc(GetItems)}
+\DoxyCodeLine{00042\ \ \ DefFunc(SetValue)}
+\DoxyCodeLine{00043\ \ \ DefFunc(SetData)}
+\DoxyCodeLine{00044\ \ \ DefFunc(SetLabel)}
+\DoxyCodeLine{00045\ \ \ DefFunc(SetImage)}
+\DoxyCodeLine{00046\ \ \ DefFunc(SetItems)}
+\DoxyCodeLine{00047\ \ \ DefFunc(SetState)}
+\DoxyCodeLine{00048\ \ \ DefFunc(SetEnabled)}
+\DoxyCodeLine{00049\ \ \ DefFunc(SetFG)}
+\DoxyCodeLine{00050\ \ \ DefFunc(SetBG)}
+\DoxyCodeLine{00051\ \ \ DefFunc(GetFontName)}
+\DoxyCodeLine{00052\ \ \ DefFunc(GetBorders)}
+\DoxyCodeLine{00053\ \ \ DefFunc(SetFocus)}
+\DoxyCodeLine{00054\ \ \ DefFunc(Select)}
+\DoxyCodeLine{00055\ \ \ DefFunc(EndModal)}
+\DoxyCodeLine{00056\ \ \ DefFunc(ShowModal)}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ DefFunc(SaveData)}
+\DoxyCodeLine{00059\ \ \ DefFunc(LoadData)}
+\DoxyCodeLine{00060\ \ \ DefFunc(GetItemState)}
+\DoxyCodeLine{00061\ \ \ DefFunc(IsItem)}
+\DoxyCodeLine{00062\ \ \ DefFunc(IsPopup)}
+\DoxyCodeLine{00063\ \ \ DefFunc(IsEnabled)}
+\DoxyCodeLine{00064\ \ \ DefFunc(Width)}
+\DoxyCodeLine{00065\ \ \ DefFunc(Height)}
+\DoxyCodeLine{00066\ \ \ DefFunc(ClientWidth)}
+\DoxyCodeLine{00067\ \ \ DefFunc(ClientHeight)}
+\DoxyCodeLine{00068\ \ \ DefFunc(ContainerWidth)}
+\DoxyCodeLine{00069\ \ \ DefFunc(ContainerHeight)}
+\DoxyCodeLine{00070\ \ \ DefFunc(Call)}
+\DoxyCodeLine{00071\ \ \ DefFunc(Snippet)}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{struct\ }Control\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \mbox{\hyperlink{classTHtml}{THtml}}\ *html;}
+\DoxyCodeLine{00074\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl}{AOlxCtrl}}\ *ctrl;}
+\DoxyCodeLine{00075\ \ \ \ \ wxWindow\ *wnd;}
+\DoxyCodeLine{00076\ \ \ \ \ olxstr\ ctrl\_name;}
+\DoxyCodeLine{00077\ \ \ \ \ Control(\mbox{\hyperlink{classTHtml}{THtml}}\ *h,\ \mbox{\hyperlink{classctrl__ext_1_1AOlxCtrl}{AOlxCtrl}}\ *c,\ wxWindow\ *w,\ \textcolor{keyword}{const}\ olxstr\ \&cn)}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ :\ html(h),\ ctrl(c),\ wnd(w),\ ctrl\_name(cn)\ \{\}}
+\DoxyCodeLine{00079\ \ \ \};}
+\DoxyCodeLine{00080\ \ \ \textcolor{comment}{//\ needed\ =\ 0\ -\/\ nothing,\ 1\ -\/\ AOlxCtrl,\ 2\ -\/\ wxWidow,\ 3\ -\/\ both}}
+\DoxyCodeLine{00081\ \ \ Control\ FindControl(\textcolor{keyword}{const}\ olxstr\ \&name,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\&\ me,}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{short}\ needed,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ location);}
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{bool}\ SetState(\textcolor{keyword}{const}\ TStrObjList\ \&Params,\ \mbox{\hyperlink{classTMacroData}{TMacroData}}\ \&E);}
+\DoxyCodeLine{00084\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00085\ \ \ \mbox{\hyperlink{classTHtml}{THtml}}\ *main;}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structTHtmlManager_1_1TPopupData}{TPopupData}}\ \ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \mbox{\hyperlink{classctrl__ext_1_1TDialog}{TDialog}}\ *Dialog;}
+\DoxyCodeLine{00088\ \ \ \ \ \mbox{\hyperlink{classTHtml}{THtml}}\ *Html;}
+\DoxyCodeLine{00089\ \ \ \};}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{struct\ }DestructionLocker\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ THtmlManager\ \&manager;}
+\DoxyCodeLine{00092\ \ \ \ \ wxWindow\ *wnd;}
+\DoxyCodeLine{00093\ \ \ \ \ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *sender;}
+\DoxyCodeLine{00094\ \ \ \ \ DestructionLocker(THtmlManager\ \&manager,\ wxWindow\ *wnd,\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *sender)}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ :\ manager(manager),\ wnd(wnd),\ sender(sender)}
+\DoxyCodeLine{00096\ \ \ \ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ manager.LockWindowDestruction(wnd,\ sender);}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \string~DestructionLocker()\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ manager.UnlockWindowDestruction(wnd,\ sender);}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \};}
+\DoxyCodeLine{00103\ \ \ THtmlManager(wxWindow\ *mainWindow);}
+\DoxyCodeLine{00104\ \ \ \string~THtmlManager();}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ Destroy();}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{void}\ InitialiseMain(\textcolor{keywordtype}{long}\ flags);}
+\DoxyCodeLine{00107\ \ \ \textcolor{keywordtype}{void}\ ProcessPageLoadRequests();}
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{void}\ ClearPopups();}
+\DoxyCodeLine{00109\ \ \ \mbox{\hyperlink{structTHtmlManager_1_1DestructionLocker}{DestructionLocker}}\ LockDestruction(wxWindow\ *wnd,\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}\ *sender)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structTHtmlManager_1_1DestructionLocker}{DestructionLocker}}(*\textcolor{keyword}{this},\ wnd,\ sender);}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \textcolor{keywordtype}{void}\ LockWindowDestruction(wxWindow*\ wnd,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ caller);}
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordtype}{void}\ UnlockWindowDestruction(wxWindow*\ wnd,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ caller);}
+\DoxyCodeLine{00114\ \ \ \mbox{\hyperlink{classTHtml}{THtml}}*\ FindHtml(\textcolor{keyword}{const}\ olxstr\&\ name)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00115\ \ \ TPopupData\ \&NewPopup(\mbox{\hyperlink{classctrl__ext_1_1TDialog}{TDialog}}\ *owner,\ \textcolor{keyword}{const}\ olxstr\ \&name,\ \textcolor{keywordtype}{long}\ flags=4);}
+\DoxyCodeLine{00116\ \ \ \mbox{\hyperlink{classTLibrary}{TLibrary}}*\ ExportLibrary(\textcolor{keyword}{const}\ olxstr\ \&name=\textcolor{stringliteral}{"{}html"{}});}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TPopupData*,\ true>}}\ Popups;}
+\DoxyCodeLine{00119\ \ \ \mbox{\hyperlink{classTActionQueue}{TActionQueue}}\ \&OnLink;}
+\DoxyCodeLine{00120\ \};}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

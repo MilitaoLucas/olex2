@@ -1,0 +1,57 @@
+\doxysection{frameext.\+h}
+\hypertarget{frameext_8h_source}{}\label{frameext_8h_source}\index{olex/ctrls/frameext.h@{olex/ctrls/frameext.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_ctrl\_frameext\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_ctrl\_frameext\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}olxctrlbase.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}edict.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}dataitem.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}gllightmodel.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }ctrl\_ext\ \ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{class\ }TMainFrame:\ \textcolor{keyword}{public}\ wxFrame,\ \textcolor{keyword}{public}\ AOlxCtrl\ \ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{static}\ TMainFrame*\ MainFrameInstance;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structctrl__ext_1_1TMainFrame_1_1TWindowInfo}{TWindowInfo}}\ \ \{\ \ \textcolor{keywordtype}{int}\ x,\ y;\ \ \};}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<TWindowInfo>}}\ WindowPos;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//\ extends\ filter\ for\ case\ sensitive\ OS}}
+\DoxyCodeLine{00024\ \ \ \ \ olxstr\ PortableFilter(\textcolor{keyword}{const}\ olxstr\&\ filter);}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ TMainFrame(\textcolor{keyword}{const}\ wxString\&\ title,\ \textcolor{keyword}{const}\ wxPoint\&\ pos,\ \textcolor{keyword}{const}\ wxSize\&\ size,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keyword}{const}\ wxString\ \&ClassName)}
+\DoxyCodeLine{00028\ \ \ \ \ :\ wxFrame((wxFrame*)NULL,\ wxID\_ANY,\ title,\ pos,\ size,\ wxDEFAULT\_FRAME\_STYLE),}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ AOlxCtrl(this)}
+\DoxyCodeLine{00030\ \ \ \ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ MainFrameInstance\ =\ \textcolor{keyword}{this};}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classctrl__ext_1_1TMainFrame}{\string~TMainFrame}}()\ \{\ \ MainFrameInstance\ =\ NULL;\ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ restores\ previously\ saved\ position}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ RestorePosition(wxWindow\ *Window);}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{//saves\ current\ position\ of\ the\ window\ on\ screen}}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ SavePosition(wxWindow\ *Window);}
+\DoxyCodeLine{00039\ \ \ \ \ olxstr\ PickFile(\textcolor{keyword}{const}\ olxstr\ \&Caption,\ \textcolor{keyword}{const}\ olxstr\ \&Filter,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&DefFolder,\ \textcolor{keyword}{const}\ olxstr\ \&DefFile,\ \textcolor{keywordtype}{bool}\ Open);}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ SetScenesFolder(\textcolor{keyword}{const}\ olxstr\&\ sf)\ =\ 0;}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetScenesFolder()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classctrl__ext_1_1TMainFrame}{TMainFrame}}\&\ GetMainFrameInstance()\ \{\ \ \textcolor{keywordflow}{return}\ *MainFrameInstance;\ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ ShowAlert(\textcolor{keyword}{const}\ olxstr\ \&msg,\ \textcolor{keyword}{const}\ olxstr\ \&title,\ \textcolor{keywordtype}{int}\ flags);}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ShowAlert(\textcolor{keyword}{const}\ TExceptionBase\ \&esc,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keyword}{const}\ olxstr\ \&msg=EmptyString(),\ \textcolor{keywordtype}{bool}\ log=\textcolor{keyword}{true});}
+\DoxyCodeLine{00048\ \ \ \ \ DECLARE\_CLASS(TMainFrame)}
+\DoxyCodeLine{00049\ \ \ \};}
+\DoxyCodeLine{00050\ \};\ \ \textcolor{comment}{//\ end\ namespace\ ctrl\_ext}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

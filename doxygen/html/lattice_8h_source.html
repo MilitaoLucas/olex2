@@ -206,13 +206,13 @@ $(function(){initNavTree('lattice_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordtype">void</span> GenerateBox(<span class="keyword">const</span> vec3d_alist&amp; norms, <span class="keyword">const</span> vec3d_alist&amp; centres,</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    TCAtomPList* Template, <span class="keywordtype">bool</span> clear_content)</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    Generate(BoxVolumeValidator(norms, centres), Template, clear_content, <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    Generate(<a class="code hl_class" href="classBoxVolumeValidator.html">BoxVolumeValidator</a>(norms, centres), Template, clear_content, <span class="keyword">true</span>);</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  }</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="comment">/* generates atoms within sphere volume at center */</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keywordtype">void</span> GenerateSphere(<span class="keyword">const</span> vec3d&amp; center, <span class="keywordtype">double</span> rad,</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    TCAtomPList* Template, <span class="keywordtype">bool</span> clear_content)</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  {</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    Generate(SphereVolumeValidator(center, rad), Template, clear_content, <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    Generate(<a class="code hl_class" href="classSphereVolumeValidator.html">SphereVolumeValidator</a>(center, rad), Template, clear_content, <span class="keyword">true</span>);</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  }</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="comment">/* generates atoms within specified volume</span></div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">  * if atoms is true - generates atoms vs asymmetric units</span></div>
@@ -442,10 +442,12 @@ $(function(){initNavTree('lattice_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassAConstraintGenerator_html"><div class="ttname"><a href="classAConstraintGenerator.html">AConstraintGenerator</a></div><div class="ttdef"><b>Definition</b> congen.h:69</div></div>
 <div class="ttc" id="aclassAtomRegistry_html"><div class="ttname"><a href="classAtomRegistry.html">AtomRegistry</a></div><div class="ttdef"><b>Definition</b> atomregistry.h:133</div></div>
+<div class="ttc" id="aclassBoxVolumeValidator_html"><div class="ttname"><a href="classBoxVolumeValidator.html">BoxVolumeValidator</a></div><div class="ttdef"><b>Definition</b> geom.h:22</div></div>
 <div class="ttc" id="aclassConstPtrList_html"><div class="ttname"><a href="classConstPtrList.html">ConstPtrList</a></div><div class="ttdef"><b>Definition</b> tptrlist.h:721</div></div>
 <div class="ttc" id="aclassIOlxObject_html"><div class="ttname"><a href="classIOlxObject.html">IOlxObject</a></div><div class="ttdef"><b>Definition</b> ebase.h:344</div></div>
 <div class="ttc" id="aclassIUndoAction_html"><div class="ttname"><a href="classIUndoAction.html">IUndoAction</a></div><div class="ttdef"><b>Definition</b> undo.h:38</div></div>
-<div class="ttc" id="aclassSortedObjectList_html"><div class="ttname"><a href="classSortedObjectList.html">SortedObjectList</a></div><div class="ttdef"><b>Definition</b> sortedlist.h:225</div></div>
+<div class="ttc" id="aclassSortedObjectList_html"><div class="ttname"><a href="classSortedObjectList.html">SortedObjectList</a></div><div class="ttdef"><b>Definition</b> sortedlist.h:230</div></div>
+<div class="ttc" id="aclassSphereVolumeValidator_html"><div class="ttname"><a href="classSphereVolumeValidator.html">SphereVolumeValidator</a></div><div class="ttdef"><b>Definition</b> geom.h:92</div></div>
 <div class="ttc" id="aclassTActionQList_html"><div class="ttname"><a href="classTActionQList.html">TActionQList</a></div><div class="ttdef"><b>Definition</b> actions.h:150</div></div>
 <div class="ttc" id="aclassTActionQueue_html"><div class="ttname"><a href="classTActionQueue.html">TActionQueue</a></div><div class="ttdef"><b>Definition</b> actions.h:94</div></div>
 <div class="ttc" id="aclassTArrayList_html"><div class="ttname"><a href="classTArrayList.html">TArrayList</a></div><div class="ttdef"><b>Definition</b> talist.h:22</div></div>
@@ -459,7 +461,7 @@ $(function(){initNavTree('lattice_8h_source.html',''); initResizable(true); });
 <div class="ttc" id="aclassTTypeList_html"><div class="ttname"><a href="classTTypeList.html">TTypeList</a></div><div class="ttdef"><b>Definition</b> typelist.h:578</div></div>
 <div class="ttc" id="aclassTUndoData_html"><div class="ttname"><a href="classTUndoData.html">TUndoData</a></div><div class="ttdef"><b>Definition</b> undo.h:45</div></div>
 <div class="ttc" id="aclassTUnitCell_html"><div class="ttname"><a href="classTUnitCell.html">TUnitCell</a></div><div class="ttdef"><b>Definition</b> unitcell.h:30</div></div>
-<div class="ttc" id="aclassolx__pdict_html"><div class="ttname"><a href="classolx__pdict.html">olx_pdict</a></div><div class="ttdef"><b>Definition</b> edict.h:211</div></div>
+<div class="ttc" id="aclassolx__pdict_html"><div class="ttname"><a href="classolx__pdict.html">olx_pdict</a></div><div class="ttdef"><b>Definition</b> edict.h:228</div></div>
 <div class="ttc" id="astructASObjectProvider_html"><div class="ttname"><a href="structASObjectProvider.html">ASObjectProvider</a></div><div class="ttdef"><b>Definition</b> atomregistry.h:265</div></div>
 <div class="ttc" id="astructTLattice_1_1DefaultConnectivityGenerator_html"><div class="ttname"><a href="structTLattice_1_1DefaultConnectivityGenerator.html">TLattice::DefaultConnectivityGenerator</a></div><div class="ttdef"><b>Definition</b> lattice.h:270</div></div>
 <div class="ttc" id="astructTLattice_1_1GrowInfo_html"><div class="ttname"><a href="structTLattice_1_1GrowInfo.html">TLattice::GrowInfo</a></div><div class="ttdef"><b>Definition</b> lattice.h:241</div></div>

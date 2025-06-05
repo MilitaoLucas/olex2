@@ -1,0 +1,89 @@
+\doxysection{file\+\_\+test.\+h}
+\hypertarget{file__test_8h_source}{}\label{file__test_8h_source}\index{sdl/tests/file\_test.h@{sdl/tests/file\_test.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}efile.h"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }test\ \{}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keywordtype}{void}\ RelativePathTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00015\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00016\ \ \ olxstr\ base1=\textcolor{stringliteral}{"{}c:\(\backslash\)\(\backslash\)windows\(\backslash\)\(\backslash\)test"{}},}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ base2=\textcolor{stringliteral}{"{}c:\(\backslash\)\(\backslash\)windows\(\backslash\)\(\backslash\)drivers\(\backslash\)\(\backslash\)test"{}},}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ base3=\textcolor{stringliteral}{"{}/tmp/test"{}};}
+\DoxyCodeLine{00019\ \ \ olxstr\ path1=\textcolor{stringliteral}{"{}c:\(\backslash\)\(\backslash\)windows\(\backslash\)\(\backslash\)sys32"{}},}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#ifdef\ \_\_WIN32\_\_}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ path3=\textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)tmp\(\backslash\)\(\backslash\)test\(\backslash\)\(\backslash\)test\(\backslash\)\(\backslash\)tmp"{}},}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00023\ \ \ \ \ path3\ =\ \textcolor{stringliteral}{"{}/tmp/test/test/tmp"{}},}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00025\ \ \ \ \ path2\ =\ \textcolor{stringliteral}{"{}c:\(\backslash\)\(\backslash\)test"{}}}
+\DoxyCodeLine{00026\ \ \ \ \ ;}
+\DoxyCodeLine{00027\ \ \ olxstr\ rel1=TEFile::CreateRelativePath(path1,base1),}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ rel2=TEFile::CreateRelativePath(path2,base1),}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ rel3=TEFile::CreateRelativePath(path1,base2),}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ rel4=TEFile::CreateRelativePath(path2,base2),}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ rel5=TEFile::CreateRelativePath(path3,base3);}
+\DoxyCodeLine{00032\ \ \ \textcolor{keywordflow}{if}(\ TEFile::WinPath(rel1)\ !=\ \textcolor{stringliteral}{"{}..\(\backslash\)\(\backslash\)sys32"{}}\ )}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ compose\ relative\ path"{}});}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordflow}{if}(\ TEFile::WinPath(rel2)\ !=\ \textcolor{stringliteral}{"{}..\(\backslash\)\(\backslash\)..\(\backslash\)\(\backslash\)test"{}}\ )}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ compose\ relative\ path"{}});}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordflow}{if}(\ TEFile::WinPath(rel3)\ !=\ \textcolor{stringliteral}{"{}..\(\backslash\)\(\backslash\)..\(\backslash\)\(\backslash\)sys32"{}}\ )}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ compose\ relative\ path"{}});}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordflow}{if}(\ TEFile::WinPath(rel4)\ !=\ \textcolor{stringliteral}{"{}..\(\backslash\)\(\backslash\)..\(\backslash\)\(\backslash\)..\(\backslash\)\(\backslash\)test"{}}\ )}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ compose\ relative\ path"{}});}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordflow}{if}(\ TEFile::UnixPath(rel5)\ !=\ \textcolor{stringliteral}{"{}./test/tmp"{}}\ )}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ compose\ relative\ path"{}});}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordflow}{if}(\ TEFile::WinPath(TEFile::CreateRelativePath(path2,\textcolor{stringliteral}{"{}d:\(\backslash\)\(\backslash\)test"{}}))\ !=\ path2\ )}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ compose\ relative\ path"{}});}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keywordflow}{if}(\ TEFile::WinPath(TEFile::ExpandRelativePath(rel1,base1))\ !=\ path1\ )}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ expand\ relative\ path"{}});}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordflow}{if}(\ TEFile::WinPath(TEFile::ExpandRelativePath(rel2,base1))\ !=\ path2\ )}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ expand\ relative\ path"{}});}
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordflow}{if}(\ TEFile::WinPath(TEFile::ExpandRelativePath(rel3,base2))\ !=\ path1\ )}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ expand\ relative\ path"{}});}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordflow}{if}(\ TEFile::WinPath(TEFile::ExpandRelativePath(rel4,base2))\ !=\ path2\ )}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ expand\ relative\ path"{}});}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordflow}{if}(\ TEFile::ExpandRelativePath(rel5,base3)\ !=\ path3\ )}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}failed\ to\ expand\ relative\ path"{}});}
+\DoxyCodeLine{00055\ \}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//...................................................................................................}}
+\DoxyCodeLine{00057\ \textcolor{keywordtype}{void}\ PathQuoteTest(OlxTests\&\ t)\ \ \{}
+\DoxyCodeLine{00058\ \ \ t.description\ =\ \_\_FUNC\_\_;}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *paths[]\ =\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{stringliteral}{"{}x"{}},\ \textcolor{stringliteral}{"{}x"{}},}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{stringliteral}{"{}x\(\backslash\)\(\backslash\)"{}},\ \textcolor{stringliteral}{"{}x\(\backslash\)\(\backslash\)"{}},}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{stringliteral}{"{}x\(\backslash\)"{}"{}},\ \textcolor{stringliteral}{"{}\(\backslash\)"{}x\(\backslash\)\(\backslash\)\(\backslash\)"{}\(\backslash\)"{}"{}},}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{stringliteral}{"{}x\(\backslash\)t"{}},\ \textcolor{stringliteral}{"{}\(\backslash\)"{}x\(\backslash\)t\(\backslash\)"{}"{}},}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{stringliteral}{"{}x\ y"{}},\ \textcolor{stringliteral}{"{}\(\backslash\)"{}x\ y\(\backslash\)"{}"{}},}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{stringliteral}{"{}x\ \(\backslash\)n\(\backslash\)"{}"{}},\ \textcolor{stringliteral}{"{}\(\backslash\)"{}x\ \(\backslash\)n\(\backslash\)\(\backslash\)\(\backslash\)"{}\(\backslash\)"{}"{}},}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{stringliteral}{"{}C:\(\backslash\)\(\backslash\)program\ files\(\backslash\)\(\backslash\)"{}},\ \textcolor{stringliteral}{"{}\(\backslash\)"{}C:\(\backslash\)\(\backslash\)program\ files\(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)"{}"{}},}
+\DoxyCodeLine{00067\ \ \ \ \ NULL}
+\DoxyCodeLine{00068\ \ \ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{int}\ i=0;}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordflow}{while}\ (paths[i]\ !=\ NULL)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{if}\ (TEFile::QuotePath(paths[i])\ !=\ paths[i+1])}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}path\ quoting\ failed"{}});}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{if}\ (TEFile::UnquotePath(paths[i+1])\ !=\ paths[i])}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TFunctionFailedException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}path\ unquoting\ failed"{}});}
+\DoxyCodeLine{00076\ \ \ \ \ i+=2;}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \}}
+\DoxyCodeLine{00079\ \textcolor{keywordtype}{void}\ FileTests(OlxTests\ \&t)\ \{}
+\DoxyCodeLine{00080\ \ \ t.Add(\&RelativePathTest)}
+\DoxyCodeLine{00081\ \ \ \ \ .Add(\&PathQuoteTest);}
+\DoxyCodeLine{00082\ \}}
+\DoxyCodeLine{00083\ \};\ \ \textcolor{comment}{//namespace\ test}}
+
+\end{DoxyCode}

@@ -1,0 +1,134 @@
+\doxysection{dmatrix.\+h}
+\hypertarget{dmatrix_8h_source}{}\label{dmatrix_8h_source}\index{sdl/math/dmatrix.h@{sdl/math/dmatrix.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2011\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ matrix\ differentiantion\ helper\ functions}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_xlib\_dmat\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_xlib\_dmat\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../threex3.h"{}}}
+\DoxyCodeLine{00013\ BeginEsdlNamespace()}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ namespace\ math\ \{\ \textcolor{keyword}{struct\ }dmat\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{static}\ mat3d\ M\_x\_One(\textcolor{keyword}{const}\ mat3d\ \&m,\ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ mat3d\ r;}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ idx\ =\ 0;\ idx\ <\ 3;\ idx++)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ r[idx][j]\ =\ m[idx][i];}
+\DoxyCodeLine{00021\ \ \ \ \ \}}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00023\ \ \ \}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{static}\ mat3d\ One\_x\_M(\textcolor{keyword}{const}\ mat3d\ \&m,\ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ mat3d\ r;}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ idx\ =\ 0;\ idx\ <\ 3;\ idx++)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ r[i][idx]\ =\ m[j][idx];}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00031\ \ \ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{static}\ mat3d\ M\_x\_OneSym(\textcolor{keyword}{const}\ mat3d\ \&m,\ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ mat3d\ r;}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ idx=0;\ idx\ <\ 3;\ idx++)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ r[idx][j]\ =\ m[idx][i];}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ r[idx][i]\ =\ m[idx][j];}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{static}\ mat3d\ OneSym\_x\_M(\textcolor{keyword}{const}\ mat3d\ \&m,\ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ mat3d\ r;}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ idx=0;\ idx\ <\ 3;\ idx++)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ r[i][idx]\ =\ m[j][idx];}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ r[j][idx]\ =\ m[i][idx];}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{static}\ mat3d\ M\_x\_One\_x\_Mt(\textcolor{keyword}{const}\ mat3d\ \&m,\ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ mat3d\ r;}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i1=0;\ i1\ <\ 3;\ i1++)}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i2=0;\ i2\ <\ 3;\ i2++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ r[i1][i2]\ =\ m[i1][i]*m[i2][j];}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{static}\ mat3d\ M\_x\_OneSym\_x\_Mt(\textcolor{keyword}{const}\ mat3d\ \&m,\ \textcolor{keywordtype}{size\_t}\ i,\ \textcolor{keywordtype}{size\_t}\ j)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ j)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ M\_x\_One\_x\_Mt(m,\ i,\ j);}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ mat3d\ r;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i1=0;\ i1\ <\ 3;\ i1++)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i2=0;\ i2\ <\ 3;\ i2++)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ r[i1][i2]\ =\ m[i1][i]*m[i2][j]\ +\ m[i1][j]*m[i2][i];}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ r;}
+\DoxyCodeLine{00070\ \ \ \}}
+\DoxyCodeLine{00071\ \};\ \textcolor{comment}{//\ struct\ dmat}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ symmetrix\ matrix\ helper\ functions}}
+\DoxyCodeLine{00074\ \textcolor{keyword}{struct\ }linear\_to\_sym\_base\ \{}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}*get\_i\_j(\textcolor{keywordtype}{size\_t}\ i)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ a[6][2]\ =\ \{\ \{0,0\},\ \{0,1\},\ \{0,2\},\ \{1,1\},\ \{1,2\},\ \{2,2\}\ \};}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ 5)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TIndexOutOfRangeException(\_\_OlxSourceInfo,\ i,\ 0,\ 5);}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{return}\ \&a[i][0];}
+\DoxyCodeLine{00083\ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ get\_i(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \ \textcolor{keywordflow}{return}\ get\_i\_j(i)[0];\ \}}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ get\_j(\textcolor{keywordtype}{size\_t}\ i)\ \{\ \ \textcolor{keywordflow}{return}\ get\_i\_j(i)[1];\ \}}
+\DoxyCodeLine{00086\ \};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ mat\_t>\ \textcolor{keyword}{struct\ }linear\_from\_sym\ \{}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ mat\_t::number\_type\ FT;}
+\DoxyCodeLine{00090\ \ \ evecd\ data;}
+\DoxyCodeLine{00091\ \ \ linear\_from\_sym(\textcolor{keyword}{const}\ mat\_t\ \&m\_)\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ rc\ =\ m\_.RowCount();}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{if}\ (rc\ !=\ m\_.ColCount())\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}symmetric\ matrix"{}});}
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ data.Resize((rc*(rc+1))/2);}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ idx=0;}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ rc;\ i++)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ j=i;\ j\ <\ rc;\ j++,\ idx++)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ data(idx)\ =\ m\_(i,j);}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#ifdef\ OLX\_DEBUG}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olx\_cmp\_float(m\_(i,\ j),\ m\_(j,\ i),\ 1e-\/8)\ !=\ 0)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ TInvalidArgumentException(\_\_OlxSourceInfo,\ \textcolor{stringliteral}{"{}symmetric\ matrix"{}});}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \}}
+\DoxyCodeLine{00109\ \ \ FT\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data(i);\ \ \}}
+\DoxyCodeLine{00110\ \};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ mat\_t>}
+\DoxyCodeLine{00113\ \textcolor{keyword}{struct\ }linear\_to\_sym\ :\ \textcolor{keyword}{public}\ linear\_to\_sym\_base\ \{}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ mat\_t::number\_type\ FT;}
+\DoxyCodeLine{00115\ \ \ mat\_t\ \&m;}
+\DoxyCodeLine{00116\ \ \ linear\_to\_sym(mat\_t\ \&m\_)\ :\ m(m\_)\ \{\}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keyword}{struct\ }av\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ FT\ \&a,\ \&b;}
+\DoxyCodeLine{00119\ \ \ \ \ av(FT\ \&a\_,\ FT\ \&b\_)\ :\ a(a\_),\ b(b\_)\ \{\}}
+\DoxyCodeLine{00120\ \ \ \ \ FT\ operator\ =\ (FT\ v)\ \{\ \textcolor{keywordflow}{return}\ (a=b=v);\ \}}
+\DoxyCodeLine{00121\ \ \ \};}
+\DoxyCodeLine{00122\ \ \ av\ operator\ ()\ (\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{return}\ av(m(get\_i(i),\ get\_j(i)),\ m(get\_j(i),\ get\_i(i)));}
+\DoxyCodeLine{00124\ \ \ \}}
+\DoxyCodeLine{00125\ \};}
+\DoxyCodeLine{00126\ \}\ \textcolor{comment}{//\ namespace\ math}}
+\DoxyCodeLine{00127\ EndEsdlNamespace()}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,203 @@
+\doxysection{evaln.\+h}
+\hypertarget{evaln_8h_source}{}\label{evaln_8h_source}\index{sdl/math/evaln.h@{sdl/math/evaln.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{*\ Copyright\ (c)\ 2004-\/2025\ O.\ Dolomanov,\ OlexSys\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00003\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{*\ This\ file\ is\ part\ of\ the\ OlexSys\ Development\ Framework.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{*\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{*\ This\ source\ file\ is\ distributed\ under\ the\ terms\ of\ the\ licence\ located\ in\ \ \ *}}
+\DoxyCodeLine{00007\ \textcolor{comment}{*\ the\ root\ folder.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00008\ \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ \_\_olx\_sdl\_evailn\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ \_\_olx\_sdl\_evailn\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}../emath.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}../estrlist.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}../talist.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}../edict.h"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}../paramlist.h"{}}}
+\DoxyCodeLine{00018\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00019\ \textcolor{comment}{How\ to\ use:}}
+\DoxyCodeLine{00020\ \textcolor{comment}{when\ an\ expression\ is\ passed\ to\ LoadFromEpression\ the\ lits\ of\ variales\ is\ being}}
+\DoxyCodeLine{00021\ \textcolor{comment}{initialised\ with\ variable\ names.\ Before\ the\ Evaluate\ is\ called\ the\ array\ of}}
+\DoxyCodeLine{00022\ \textcolor{comment}{IVariables\ has\ to\ beinitialised\ with\ the\ values\ of\ the\ variables.\ Use}}
+\DoxyCodeLine{00023\ \textcolor{comment}{Variables-\/>IndexOf(VarName)\ to\ identify\ the\ index\ of\ variables.}}
+\DoxyCodeLine{00024\ \textcolor{comment}{The\ Functions\ have\ to\ be\ predefined.\ If\ no\ variables\ is\ expected\ when\ the}}
+\DoxyCodeLine{00025\ \textcolor{comment}{constructur\ can\ be\ caled\ as\ TSOperatio(NULL,\ NULL,\ Function,\ NULL).\ If\ the}}
+\DoxyCodeLine{00026\ \textcolor{comment}{functions\ are\ not\ in\ the\ expression\ call\ TSOperatio(NULL,\ NULL,\ NULL,\ NULL).}}
+\DoxyCodeLine{00027\ \textcolor{comment}{Note\ that\ the\ variables\ list\ is\ in\ the\ upper\ case.}}
+\DoxyCodeLine{00028\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }math\_eval\ \{}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ :\ \textcolor{keyword}{public}\ AReferencible\ \{}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{\string~AEvaluable}}()\ \{\}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{double}\ evaluate()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structmath__eval_1_1IFactory}{IFactory}}\ \{}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structmath__eval_1_1IFactory}{\string~IFactory}}()\ \{\}}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ *create(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AEvaluable>}}\ \&args)\ =\ 0;}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{struct\ }NumberEvaluator\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ \{}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{double}\ value;}
+\DoxyCodeLine{00044\ \ \ NumberEvaluator(\textcolor{keywordtype}{double}\ value)}
+\DoxyCodeLine{00045\ \ \ \ \ :\ value(value)}
+\DoxyCodeLine{00046\ \ \ \{\}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{double}\ evaluate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ value;\ \}}
+\DoxyCodeLine{00048\ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{keyword}{struct\ }Variable\ :\ \textcolor{keyword}{public}\ NumberEvaluator\ \{}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{bool}\ value\_set;}
+\DoxyCodeLine{00052\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00053\ \ \ olxstr\ name;}
+\DoxyCodeLine{00054\ \ \ Variable(\textcolor{keyword}{const}\ olxstr\ \&name)}
+\DoxyCodeLine{00055\ \ \ \ \ :\ NumberEvaluator(0),\ value\_set(\textcolor{keyword}{false}),\ name(name)}
+\DoxyCodeLine{00056\ \ \ \{\}}
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{double}\ evaluate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{if}\ (!value\_set)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ olxstr(\textcolor{stringliteral}{"{}Uninitialised\ object:\ "{}}).quote()\ <<\ name);}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{void}\ set\_value(\textcolor{keywordtype}{double}\ v)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ NumberEvaluator::value\ =\ v;}
+\DoxyCodeLine{00066\ \ \ \ \ value\_set\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{struct\ }Evaluator\ :\ \textcolor{keyword}{public}\ Variable\ \{}
+\DoxyCodeLine{00071\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00072\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<AEvaluable>}}\ args;}
+\DoxyCodeLine{00073\ \ \ Evaluator(\textcolor{keyword}{const}\ olxstr\ \&name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AEvaluable>}}\ \&args)}
+\DoxyCodeLine{00074\ \ \ \ \ :\ Variable(name),\ args(args)}
+\DoxyCodeLine{00075\ \ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ args.Count();\ i++)\ args[i]-\/>IncRef();}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \string~Evaluator()\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i=0;\ i\ <\ args.Count();\ i++)}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (args[i]-\/>DecRef()\ ==\ 0)}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ args[i];}
+\DoxyCodeLine{00082\ \ \ \}}
+\DoxyCodeLine{00083\ \};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{keyword}{struct\ }FuncEvaluator1\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ \{}
+\DoxyCodeLine{00086\ \ \ double\ (*func)(double);}
+\DoxyCodeLine{00087\ \ \ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ \&arg;}
+\DoxyCodeLine{00088\ \ \ FuncEvaluator1(\textcolor{keywordtype}{double}\ (*func)(\textcolor{keywordtype}{double}),\ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ \&arg)}
+\DoxyCodeLine{00089\ \ \ \ \ :\ func(func),\ arg(arg)}
+\DoxyCodeLine{00090\ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ arg.IncRef();}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ \ \ \string~FuncEvaluator1()\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{if}\ (arg.DecRef()\ ==\ 0)\ \textcolor{keyword}{delete}\ \&arg;}
+\DoxyCodeLine{00095\ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{double}\ evaluate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (*func)(arg.evaluate());\ \}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{struct\ }factory\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structmath__eval_1_1IFactory}{IFactory}}\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ double\ (*func)(double);}
+\DoxyCodeLine{00099\ \ \ \ \ factory(\textcolor{keywordtype}{double}\ (*func)(\textcolor{keywordtype}{double}))}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ :\ func(func)}
+\DoxyCodeLine{00101\ \ \ \ \ \{\}}
+\DoxyCodeLine{00102\ \ \ \ \ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ *create(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AEvaluable>}}\ \&args)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (args.Count()\ !=\ 1)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ FuncEvaluator1(func,\ *args[0]);}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \};}
+\DoxyCodeLine{00109\ \};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{keyword}{struct\ }FuncEvaluator2\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ \{}
+\DoxyCodeLine{00112\ \ \ double\ (*func)(double,\ double);}
+\DoxyCodeLine{00113\ \ \ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ \&arg1,\ \&arg2;}
+\DoxyCodeLine{00114\ \ \ FuncEvaluator2(\textcolor{keywordtype}{double}\ (*func)(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double}),}
+\DoxyCodeLine{00115\ \ \ \ \ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ \&arg1,\ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ \&arg2)}
+\DoxyCodeLine{00116\ \ \ \ \ :\ func(func),\ arg1(arg1),\ arg2(arg2)}
+\DoxyCodeLine{00117\ \ \ \{}
+\DoxyCodeLine{00118\ \ \ \ \ arg1.IncRef();}
+\DoxyCodeLine{00119\ \ \ \ \ arg2.IncRef();}
+\DoxyCodeLine{00120\ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \string~FuncEvaluator2()\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{if}\ (arg1.DecRef()\ ==\ 0)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keyword}{delete}\&\ arg1;}
+\DoxyCodeLine{00124\ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{if}\ (arg2.DecRef()\ ==\ 0)\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keyword}{delete}\&\ arg2;}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{double}\ evaluate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ (*func)(arg1.evaluate(),\ arg2.evaluate());\ \}}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{struct\ }factory\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structmath__eval_1_1IFactory}{IFactory}}\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ double\ (*func)(double,\ double);}
+\DoxyCodeLine{00132\ \ \ \ \ factory(\textcolor{keywordtype}{double}\ (*func)(\textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double}))}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ :\ func(func)}
+\DoxyCodeLine{00134\ \ \ \ \ \{\}}
+\DoxyCodeLine{00135\ \ \ \ \ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ *create(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AEvaluable>}}\ \&args)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (args.Count()\ !=\ 2)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ FuncEvaluator2(func,\ *args[0],\ *args[1]);}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \};}
+\DoxyCodeLine{00142\ \};}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \textcolor{keyword}{struct\ }ExpEvaluator\ \{}
+\DoxyCodeLine{00145\ \ \ \mbox{\hyperlink{classolxstr__dict}{olxstr\_dict<IFactory\ *,\ true>}}\ factory;}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ sin\_(\textcolor{keywordtype}{double}\ a)\ \{\ \textcolor{keywordflow}{return}\ sin(a*M\_PI/180);\ \}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ cos\_(\textcolor{keywordtype}{double}\ a)\ \{\ \textcolor{keywordflow}{return}\ cos(a*M\_PI/180);\ \}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ tan\_(\textcolor{keywordtype}{double}\ a)\ \{\ \textcolor{keywordflow}{return}\ tan(a*M\_PI/180);\ \}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ asin\_(\textcolor{keywordtype}{double}\ a)\ \{\ \textcolor{keywordflow}{return}\ asin(a)*180/M\_PI;\ \}}
+\DoxyCodeLine{00150\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ acos\_(\textcolor{keywordtype}{double}\ a)\ \{\ \textcolor{keywordflow}{return}\ acos(a)*180/M\_PI;\ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ atan\_(\textcolor{keywordtype}{double}\ a)\ \{\ \textcolor{keywordflow}{return}\ atan(a)*180/M\_PI;\ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ nop(\textcolor{keywordtype}{double}\ a)\ \{\ \textcolor{keywordflow}{return}\ a;\ \}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ chs(\textcolor{keywordtype}{double}\ a)\ \{\ \textcolor{keywordflow}{return}\ -\/a;\ \}}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ add(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a+b;\ \}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ sub(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a-\/b;\ \}}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ mul(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a*b;\ \}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ div(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a/b;\ \}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ mod(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{int})a\%(int)b;\ \}}
+\DoxyCodeLine{00159\ \ \ \textcolor{comment}{//\ boolean\ ops}}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ not\_(\textcolor{keywordtype}{double}\ a)\ \{\ \textcolor{keywordflow}{return}\ a\ ==\ 0;\ \}}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ eq(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a\ ==\ b;\ \}}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ neq(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a\ !=\ b;\ \}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ gt(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a\ >\ b;\ \}}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ ge(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a\ >=\ b;\ \}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ lt(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a\ <\ b;\ \}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ le(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a\ <=\ b;\ \}}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ or\_(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a\ !=\ 0\ ||\ b\ !=\ 0;\ \}}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ and\_(\textcolor{keywordtype}{double}\ a,\ \textcolor{keywordtype}{double}\ b)\ \{\ \textcolor{keywordflow}{return}\ a\ !=\ 0\ \&\&\ b\ !=\ 0;\ \}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \mbox{\hyperlink{classTStringToList}{TStringToList<olxstr,\ AEvaluable\ *>}}\ ScopeVariables;}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{//\ these\ are\ filled\ in\ by\ the\ build\ function}}
+\DoxyCodeLine{00172\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<Variable>}}\ Variables;}
+\DoxyCodeLine{00173\ \ \ \mbox{\hyperlink{classTPtrList}{TPtrList<Evaluator>}}\ Evaluators;}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<AEvaluable>}}\ create\_args(\textcolor{keyword}{const}\ olxstr\ \&args);}
+\DoxyCodeLine{00176\ \ \ ExpEvaluator();}
+\DoxyCodeLine{00177\ \ \ \string~ExpEvaluator();}
+\DoxyCodeLine{00178\ \ \ \textcolor{keywordtype}{void}\ build(\textcolor{keyword}{const}\ olxstr\ \&expr);}
+\DoxyCodeLine{00179\ \ \ \textcolor{keywordtype}{double}\ evaluate()\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{if}\ (eval\_root\ ==\ 0)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTFunctionFailedException}{TFunctionFailedException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}parse\ an\ expression\ first"{}});}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keywordflow}{return}\ eval\_root-\/>evaluate();}
+\DoxyCodeLine{00185\ \ \ \}}
+\DoxyCodeLine{00186\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00187\ \ \ exparse::expression\_tree\ *root;}
+\DoxyCodeLine{00188\ \ \ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ *eval\_root;}
+\DoxyCodeLine{00189\ \ \ \mbox{\hyperlink{classConstPtrList}{ConstPtrList<exparse::expression\_tree>}}\ build\_tree(}
+\DoxyCodeLine{00190\ \ \ \ \ exparse::expression\_tree\ *\ root);}
+\DoxyCodeLine{00191\ \ \ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ *create(\textcolor{keyword}{const}\ olxstr\ \&name,}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTPtrList}{TPtrList<AEvaluable>}}\ \&args);}
+\DoxyCodeLine{00193\ \ \ \mbox{\hyperlink{structmath__eval_1_1AEvaluable}{AEvaluable}}\ *create(exparse::expression\_tree\ *t);}
+\DoxyCodeLine{00194\ \};}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \}\ \textcolor{comment}{//\ namespace\ math\_eval}}
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

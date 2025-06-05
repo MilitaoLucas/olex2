@@ -198,178 +198,179 @@
 \DoxyCodeLine{00194\ \ \ \textcolor{keywordtype}{size\_t}\ BlockCount()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data\_provider.Count();\ \}}
 \DoxyCodeLine{00195\ \ \ \textcolor{comment}{//\ changes\ current\ block\ index,\ i.e.\ loads\ structure\ from\ different\ block}}
 \DoxyCodeLine{00196\ \ \ \textcolor{keywordtype}{void}\ SetCurrentBlock(\textcolor{keywordtype}{size\_t}\ i)\ \{}
-\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ !=\ block\_index)\ \{}
-\DoxyCodeLine{00198\ \ \ \ \ \ \ block\_index\ =\ i;}
-\DoxyCodeLine{00199\ \ \ \ \ \ \ \_LoadCurrent();}
-\DoxyCodeLine{00200\ \ \ \ \ \}}
-\DoxyCodeLine{00201\ \ \ \}}
-\DoxyCodeLine{00202\ \ \ \textcolor{comment}{/*\ Sets\ current\ block\ and\ creates\ if\ specified\ to\ in\ the\ case\ the\ block\ does}}
-\DoxyCodeLine{00203\ \textcolor{comment}{\ \ not\ exist.\ When\ a\ block\ is\ created,\ parent\ can\ be\ used\ to\ create\ save\_blocks}}
-\DoxyCodeLine{00204\ \textcolor{comment}{\ \ */}}
-\DoxyCodeLine{00205\ \ \ \textcolor{keywordtype}{void}\ SetCurrentBlock(\textcolor{keyword}{const}\ olxstr\&\ block\_name,\ \textcolor{keywordtype}{bool}\ create\ =\ \textcolor{keyword}{false},}
-\DoxyCodeLine{00206\ \ \ \ \ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{cif\_dp::CifBlock}}*\ parent\ =\ 0)}
-\DoxyCodeLine{00207\ \ \ \{}
-\DoxyCodeLine{00208\ \ \ \ \ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{cif\_dp::CifBlock}}*\ cb\ =\ data\_provider.Find(block\_name);}
-\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{if}\ (cb\ ==\ 0)\ \{}
-\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (create)\ \{}
-\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ cb\ =\ \&data\_provider.Add(block\_name,\ parent);}
-\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ block\_index\ =\ data\_provider.Count()\ -\/\ 1;}
-\DoxyCodeLine{00213\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00214\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00215\ \ \ \ \ \}}
-\DoxyCodeLine{00216\ \ \ \ \ SetCurrentBlock(data\_provider.IndexOf(*cb));}
-\DoxyCodeLine{00217\ \ \ \}}
-\DoxyCodeLine{00218\ }
-\DoxyCodeLine{00219\ \ \ \textcolor{keywordtype}{size\_t}\ FindBlockIndex(\textcolor{keyword}{const}\ olxstr\&\ block\_name)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00220\ \ \ \ \ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{cif\_dp::CifBlock}}*\ cb\ =\ data\_provider.Find(block\_name);}
-\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordflow}{if}\ (cb\ ==\ 0)\ \{}
-\DoxyCodeLine{00222\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
-\DoxyCodeLine{00223\ \ \ \ \ \}}
-\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{return}\ data\_provider.IndexOf(*cb);}
-\DoxyCodeLine{00225\ \ \ \}}
-\DoxyCodeLine{00226\ \ \ \textcolor{comment}{//\ renames\ current\ block}}
-\DoxyCodeLine{00227\ \ \ \textcolor{keywordtype}{void}\ RenameCurrentBlock(\textcolor{keyword}{const}\ olxstr\&\ new\_name)\ \{}
-\DoxyCodeLine{00228\ \ \ \ \ data\_provider.Rename(data\_provider[block\_index].GetName(),\ new\_name);}
-\DoxyCodeLine{00229\ \ \ \}}
-\DoxyCodeLine{00230\ \ \ \textcolor{comment}{//\ returns\ given\ block}}
-\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{cif\_dp::CifBlock}}\&\ GetBlock(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ data\_provider.Count())\ \{}
-\DoxyCodeLine{00233\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTIndexOutOfRangeException}{TIndexOutOfRangeException}}(\_\_OlxSourceInfo,}
-\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ i,\ 0,\ data\_provider.Count());}
-\DoxyCodeLine{00235\ \ \ \ \ \}}
-\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordflow}{return}\ data\_provider[i];}
-\DoxyCodeLine{00237\ \ \ \}}
-\DoxyCodeLine{00238\ \ \ \textcolor{comment}{//\ returns\ current\ block\ index,\ might\ be\ InvalidIndex}}
-\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{size\_t}\ GetBlockIndex()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ block\_index;\ \}}
-\DoxyCodeLine{00240\ \ \ \textcolor{comment}{/*\ creates\ a\ new\ loop\ from\ comma\ separated\ column\ names.}}
-\DoxyCodeLine{00241\ \textcolor{comment}{\ \ *\ The\ table\ will\ be\ replaced\ disregarding\ "{}replace"{}\ flag\ if\ the\ columns\ do\ not}}
-\DoxyCodeLine{00242\ \textcolor{comment}{\ \ match.}}
-\DoxyCodeLine{00243\ \textcolor{comment}{\ \ */}}
-\DoxyCodeLine{00244\ \ \ \mbox{\hyperlink{structcif__dp_1_1cetTable}{cif\_dp::cetTable}}\&\ AddLoopDef(\textcolor{keyword}{const}\ olxstr\&\ col\_names,\ \textcolor{keywordtype}{bool}\ replace=\textcolor{keyword}{false});}
-\DoxyCodeLine{00245\ \ \ \textcolor{comment}{/*\ adds\ a\ new\ table\ or\ a\ table\ with\ matching\ cols.\ If\ update\_atom\_deps\ is\ true}}
-\DoxyCodeLine{00246\ \textcolor{comment}{\ \ rows\ with\ matching\ atoms/symm\ will\ be\ updated;\ skipped\ otherwise\ to\ prevent}}
-\DoxyCodeLine{00247\ \textcolor{comment}{\ \ duplication}}
-\DoxyCodeLine{00248\ \textcolor{comment}{\ \ */}}
-\DoxyCodeLine{00249\ \ \ \textcolor{keywordtype}{bool}\ Add(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcif__dp_1_1cetTable}{cif\_dp::cetTable}}\&\ tab,\ \textcolor{keywordtype}{bool}\ update\_atom\_deps);}
-\DoxyCodeLine{00250\ \ \ \textcolor{comment}{/*\ this\ is\ the\ only\ loop,\ which\ is\ not\ automatically\ created\ from\ structure}}
-\DoxyCodeLine{00251\ \textcolor{comment}{\ \ data!\ If\ the\ loop\ does\ not\ exist\ it\ is\ automatically\ created}}
-\DoxyCodeLine{00252\ \textcolor{comment}{\ \ */}}
-\DoxyCodeLine{00253\ \ \ \mbox{\hyperlink{structcif__dp_1_1cetTable}{cif\_dp::cetTable}}\&\ GetPublicationInfoLoop();}
-\DoxyCodeLine{00254\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00255\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ MultValue(olxstr\&\ Val,\ \textcolor{keyword}{const}\ olxstr\&\ N);}
-\DoxyCodeLine{00256\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00257\ \ \ \textcolor{keywordtype}{bool}\ ResolveParamsFromDictionary(}
-\DoxyCodeLine{00258\ \ \ \ \ TStrList\&\ Dic,\ \ \ \textcolor{comment}{//\ the\ dictionary\ containing\ the\ cif\ fields}}
-\DoxyCodeLine{00259\ \ \ \ \ olxstr\&\ String,\ \ \ \ \textcolor{comment}{//\ the\ string\ in\ which\ the\ parameters\ are\ stores}}
-\DoxyCodeLine{00260\ \ \ \ \ olxch\ Quote,\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \%10\%,\ \#10\#,\ ...}}
-\DoxyCodeLine{00261\ \ \ \ \ olxstr(*ResolveExternal)(\textcolor{keyword}{const}\ olxstr\&\ valueName)\ =\ 0,}
-\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordtype}{bool}\ DoubleTheta\ =\ \textcolor{keyword}{true})\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00263\ \ \ \textcolor{comment}{/*\ creates\ a\ table\ from\ a\ loop\ using\ provided\ table\ definition.\ Fills\ the}}
-\DoxyCodeLine{00264\ \textcolor{comment}{\ \ list\ of\ used\ symmetry.\ label\_options\ specify\ if\ the\ label\ suffix\ should\ be}}
-\DoxyCodeLine{00265\ \textcolor{comment}{\ \ placed\ in\ brackets\ (1)\ and/or\ placed\ a\ superscript\ (4)\ or\ subscript\ (2)}}
-\DoxyCodeLine{00266\ \textcolor{comment}{\ \ */}}
-\DoxyCodeLine{00267\ \ \ \textcolor{keywordtype}{bool}\ CreateTable(\mbox{\hyperlink{classTDataItem}{TDataItem}}*\ TableDefinitions,\ TTTable<TStrList>\&\ Table,}
-\DoxyCodeLine{00268\ \ \ \ \ smatd\_list\&\ SymmList,\ \textcolor{keywordtype}{int}\ label\_options\ =\ 0)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00269\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCifDataManager}{TCifDataManager}}\&\ GetDataManager()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ DataManager;\ \}}
-\DoxyCodeLine{00270\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TCif;\ \}}
-\DoxyCodeLine{00271\ \};}
-\DoxyCodeLine{00272\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{00273\ \textcolor{keyword}{struct\ }AtomCifEntry\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structcif__dp_1_1IStringCifEntry}{cif\_dp::IStringCifEntry}}\ \{}
-\DoxyCodeLine{00274\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ data;}
-\DoxyCodeLine{00275\ \ \ \textcolor{keyword}{mutable}\ olxstr\ label;}
-\DoxyCodeLine{00276\ \ \ \textcolor{keywordtype}{bool}\ save\_part;}
-\DoxyCodeLine{00277\ \ \ AtomCifEntry(\textcolor{keyword}{const}\ AtomCifEntry\&\ v)}
-\DoxyCodeLine{00278\ \ \ \ \ :\ data(v.data),\ save\_part(\textcolor{keyword}{false})}
-\DoxyCodeLine{00279\ \ \ \{\}}
-\DoxyCodeLine{00280\ \ \ AtomCifEntry(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_data)}
-\DoxyCodeLine{00281\ \ \ \ \ :\ data(\_data),\ save\_part(\textcolor{keyword}{false})}
-\DoxyCodeLine{00282\ \ \ \{\}}
-\DoxyCodeLine{00283\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
-\DoxyCodeLine{00284\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !data.IsDeleted();\ \}}
-\DoxyCodeLine{00285\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetCmpHash()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.GetId();\ \}}
-\DoxyCodeLine{00286\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keywordflow}{return}\ \ (label\ =\ data.GetResiLabel());}
-\DoxyCodeLine{00288\ \ \ \}}
-\DoxyCodeLine{00289\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetComment()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EmptyString();\ \}}
-\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structcif__dp_1_1ICifEntry}{cif\_dp::ICifEntry}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ AtomCifEntry(*\textcolor{keyword}{this});}
-\DoxyCodeLine{00292\ \ \ \}}
-\DoxyCodeLine{00293\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00294\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00295\ \};}
-\DoxyCodeLine{00296\ }
-\DoxyCodeLine{00297\ \textcolor{keyword}{struct\ }AtomPartCifEntry\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structcif__dp_1_1IStringCifEntry}{cif\_dp::IStringCifEntry}}\ \{}
-\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ data;}
-\DoxyCodeLine{00299\ \ \ \textcolor{keyword}{mutable}\ olxstr\ tmp\_val;}
-\DoxyCodeLine{00300\ \ \ AtomPartCifEntry(\textcolor{keyword}{const}\ AtomPartCifEntry\&\ v)}
-\DoxyCodeLine{00301\ \ \ \ \ :\ data(v.data)}
-\DoxyCodeLine{00302\ \ \ \{\}}
-\DoxyCodeLine{00303\ \ \ AtomPartCifEntry(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_data)}
-\DoxyCodeLine{00304\ \ \ \ \ :\ data(\_data)}
-\DoxyCodeLine{00305\ \ \ \{\}}
-\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
-\DoxyCodeLine{00307\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !data.IsDeleted();\ \}}
-\DoxyCodeLine{00308\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keywordflow}{return}\ \ (tmp\_val\ =\ (\textcolor{keywordtype}{int})data.GetPart());}
-\DoxyCodeLine{00310\ \ \ \}}
-\DoxyCodeLine{00311\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetComment()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EmptyString();\ \}}
-\DoxyCodeLine{00312\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structcif__dp_1_1ICifEntry}{cif\_dp::ICifEntry}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ AtomPartCifEntry(*\textcolor{keyword}{this});}
-\DoxyCodeLine{00314\ \ \ \}}
-\DoxyCodeLine{00315\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keywordflow}{if}\ (data.GetPart()\ ==\ 0)\ \{}
-\DoxyCodeLine{00317\ \ \ \ \ \ \ tmp\_val\ =\ \textcolor{charliteral}{'.'};}
-\DoxyCodeLine{00318\ \ \ \ \ \}}
-\DoxyCodeLine{00319\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00320\ \ \ \ \ \ \ tmp\_val\ =\ (int)data.GetPart();}
-\DoxyCodeLine{00321\ \ \ \ \ \}}
-\DoxyCodeLine{00322\ \ \ \ \ \textcolor{keywordflow}{if}\ (list.IsEmpty()\ ||}
-\DoxyCodeLine{00323\ \ \ \ \ \ \ (list.GetLastString().Length()\ +\ data.GetLabel().Length()\ +\ 1\ >\ 80))}
-\DoxyCodeLine{00324\ \ \ \ \ \{}
-\DoxyCodeLine{00325\ \ \ \ \ \ \ list.Add(\textcolor{charliteral}{'\ '})\ <<\ tmp\_val;}
-\DoxyCodeLine{00326\ \ \ \ \ \}}
-\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00328\ \ \ \ \ \ \ list.GetLastString()\ <<\ \textcolor{charliteral}{'\ '}\ <<\ tmp\_val;}
-\DoxyCodeLine{00329\ \ \ \ \ \}}
-\DoxyCodeLine{00330\ \ \ \}}
-\DoxyCodeLine{00331\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keywordflow}{return}\ (tmp\_val\ =\ (\textcolor{keywordtype}{int})data.GetPart());}
-\DoxyCodeLine{00333\ \ \ \}}
-\DoxyCodeLine{00334\ \};}
-\DoxyCodeLine{00335\ }
-\DoxyCodeLine{00336\ \textcolor{keyword}{struct\ }SymmCifEntry\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structcif__dp_1_1IStringCifEntry}{cif\_dp::IStringCifEntry}}\ \{}
-\DoxyCodeLine{00337\ \ \ \textcolor{keyword}{const}\ TCif\&\ parent;}
-\DoxyCodeLine{00338\ \ \ smatd\ data;}
-\DoxyCodeLine{00339\ \ \ \textcolor{keyword}{mutable}\ olxstr\ tmp\_val;}
-\DoxyCodeLine{00340\ \ \ SymmCifEntry(\textcolor{keyword}{const}\ SymmCifEntry\&\ v)}
-\DoxyCodeLine{00341\ \ \ \ \ :\ parent(v.parent),\ data(v.data)}
-\DoxyCodeLine{00342\ \ \ \{\}}
-\DoxyCodeLine{00343\ \ \ SymmCifEntry(\textcolor{keyword}{const}\ TCif\&\ parent,\ \textcolor{keyword}{const}\ smatd\ \&\_data)}
-\DoxyCodeLine{00344\ \ \ \ \ :\ parent(parent),\ data(\_data)}
-\DoxyCodeLine{00345\ \ \ \{\}}
-\DoxyCodeLine{00346\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
-\DoxyCodeLine{00347\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
-\DoxyCodeLine{00348\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetCmpHash()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.GetId();\ \}}
-\DoxyCodeLine{00349\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00350\ \ \ \ \ \textcolor{keywordflow}{if}\ (tmp\_val.IsEmpty())\ \{}
-\DoxyCodeLine{00351\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data.IsFirst())\ \{}
-\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (tmp\_val\ =\ \textcolor{stringliteral}{"{}."{}});}
-\DoxyCodeLine{00353\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00354\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \ (tmp\_val\ =\ parent.MatrixToCode(data));}
-\DoxyCodeLine{00355\ \ \ \ \ \}}
-\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordflow}{return}\ tmp\_val;}
-\DoxyCodeLine{00357\ \ \ \}}
-\DoxyCodeLine{00358\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetComment()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EmptyString();\ \}}
-\DoxyCodeLine{00359\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structcif__dp_1_1ICifEntry}{cif\_dp::ICifEntry}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00360\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ SymmCifEntry(*\textcolor{keyword}{this});}
-\DoxyCodeLine{00361\ \ \ \}}
-\DoxyCodeLine{00362\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00363\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00364\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this})[0];}
-\DoxyCodeLine{00365\ \ \ \}}
-\DoxyCodeLine{00366\ \};}
-\DoxyCodeLine{00367\ }
-\DoxyCodeLine{00368\ EndXlibNamespace()}
-\DoxyCodeLine{00369\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{comment}{/*\ special\ handling\ of\ InvalidIndex\ is\ done\ here!}}
+\DoxyCodeLine{00198\ \textcolor{comment}{\ \ \ \ do\ not\ check\ for:\ block\_index\ ==\ i\ !!!}}
+\DoxyCodeLine{00199\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00200\ \ \ \ \ block\_index\ =\ i;}
+\DoxyCodeLine{00201\ \ \ \ \ \_LoadCurrent();}
+\DoxyCodeLine{00202\ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \textcolor{comment}{/*\ Sets\ current\ block\ and\ creates\ if\ specified\ to\ in\ the\ case\ the\ block\ does}}
+\DoxyCodeLine{00204\ \textcolor{comment}{\ \ not\ exist.\ When\ a\ block\ is\ created,\ parent\ can\ be\ used\ to\ create\ save\_blocks}}
+\DoxyCodeLine{00205\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00206\ \ \ \textcolor{keywordtype}{void}\ SetCurrentBlock(\textcolor{keyword}{const}\ olxstr\&\ block\_name,\ \textcolor{keywordtype}{bool}\ create\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00207\ \ \ \ \ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{cif\_dp::CifBlock}}*\ parent\ =\ 0)}
+\DoxyCodeLine{00208\ \ \ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{cif\_dp::CifBlock}}*\ cb\ =\ data\_provider.Find(block\_name);}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordflow}{if}\ (cb\ ==\ 0)\ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (create)\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ cb\ =\ \&data\_provider.Add(block\_name,\ parent);}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ block\_index\ =\ data\_provider.Count()\ -\/\ 1;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00216\ \ \ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \ \ SetCurrentBlock(data\_provider.IndexOf(*cb));}
+\DoxyCodeLine{00218\ \ \ \}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \textcolor{keywordtype}{size\_t}\ FindBlockIndex(\textcolor{keyword}{const}\ olxstr\&\ block\_name)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00221\ \ \ \ \ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{cif\_dp::CifBlock}}*\ cb\ =\ data\_provider.Find(block\_name);}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{if}\ (cb\ ==\ 0)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ InvalidIndex;}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keywordflow}{return}\ data\_provider.IndexOf(*cb);}
+\DoxyCodeLine{00226\ \ \ \}}
+\DoxyCodeLine{00227\ \ \ \textcolor{comment}{//\ renames\ current\ block}}
+\DoxyCodeLine{00228\ \ \ \textcolor{keywordtype}{void}\ RenameCurrentBlock(\textcolor{keyword}{const}\ olxstr\&\ new\_name)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ data\_provider.Rename(data\_provider[block\_index].GetName(),\ new\_name);}
+\DoxyCodeLine{00230\ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \textcolor{comment}{//\ returns\ given\ block}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcif__dp_1_1CifBlock}{cif\_dp::CifBlock}}\&\ GetBlock(\textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ >\ data\_provider.Count())\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ \mbox{\hyperlink{classTIndexOutOfRangeException}{TIndexOutOfRangeException}}(\_\_OlxSourceInfo,}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ i,\ 0,\ data\_provider.Count());}
+\DoxyCodeLine{00236\ \ \ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keywordflow}{return}\ data\_provider[i];}
+\DoxyCodeLine{00238\ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \textcolor{comment}{//\ returns\ current\ block\ index,\ might\ be\ InvalidIndex}}
+\DoxyCodeLine{00240\ \ \ \textcolor{keywordtype}{size\_t}\ GetBlockIndex()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ block\_index;\ \}}
+\DoxyCodeLine{00241\ \ \ \textcolor{comment}{/*\ creates\ a\ new\ loop\ from\ comma\ separated\ column\ names.}}
+\DoxyCodeLine{00242\ \textcolor{comment}{\ \ *\ The\ table\ will\ be\ replaced\ disregarding\ "{}replace"{}\ flag\ if\ the\ columns\ do\ not}}
+\DoxyCodeLine{00243\ \textcolor{comment}{\ \ match.}}
+\DoxyCodeLine{00244\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00245\ \ \ \mbox{\hyperlink{structcif__dp_1_1cetTable}{cif\_dp::cetTable}}\&\ AddLoopDef(\textcolor{keyword}{const}\ olxstr\&\ col\_names,\ \textcolor{keywordtype}{bool}\ replace=\textcolor{keyword}{false});}
+\DoxyCodeLine{00246\ \ \ \textcolor{comment}{/*\ adds\ a\ new\ table\ or\ a\ table\ with\ matching\ cols.\ If\ update\_atom\_deps\ is\ true}}
+\DoxyCodeLine{00247\ \textcolor{comment}{\ \ rows\ with\ matching\ atoms/symm\ will\ be\ updated;\ skipped\ otherwise\ to\ prevent}}
+\DoxyCodeLine{00248\ \textcolor{comment}{\ \ duplication}}
+\DoxyCodeLine{00249\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00250\ \ \ \textcolor{keywordtype}{bool}\ Add(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcif__dp_1_1cetTable}{cif\_dp::cetTable}}\&\ tab,\ \textcolor{keywordtype}{bool}\ update\_atom\_deps);}
+\DoxyCodeLine{00251\ \ \ \textcolor{comment}{/*\ this\ is\ the\ only\ loop,\ which\ is\ not\ automatically\ created\ from\ structure}}
+\DoxyCodeLine{00252\ \textcolor{comment}{\ \ data!\ If\ the\ loop\ does\ not\ exist\ it\ is\ automatically\ created}}
+\DoxyCodeLine{00253\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00254\ \ \ \mbox{\hyperlink{structcif__dp_1_1cetTable}{cif\_dp::cetTable}}\&\ GetPublicationInfoLoop();}
+\DoxyCodeLine{00255\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00256\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ MultValue(olxstr\&\ Val,\ \textcolor{keyword}{const}\ olxstr\&\ N);}
+\DoxyCodeLine{00257\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00258\ \ \ \textcolor{keywordtype}{bool}\ ResolveParamsFromDictionary(}
+\DoxyCodeLine{00259\ \ \ \ \ TStrList\&\ Dic,\ \ \ \textcolor{comment}{//\ the\ dictionary\ containing\ the\ cif\ fields}}
+\DoxyCodeLine{00260\ \ \ \ \ olxstr\&\ String,\ \ \ \ \textcolor{comment}{//\ the\ string\ in\ which\ the\ parameters\ are\ stores}}
+\DoxyCodeLine{00261\ \ \ \ \ olxch\ Quote,\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \%10\%,\ \#10\#,\ ...}}
+\DoxyCodeLine{00262\ \ \ \ \ olxstr(*ResolveExternal)(\textcolor{keyword}{const}\ olxstr\&\ valueName)\ =\ 0,}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordtype}{bool}\ DoubleTheta\ =\ \textcolor{keyword}{true})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00264\ \ \ \textcolor{comment}{/*\ creates\ a\ table\ from\ a\ loop\ using\ provided\ table\ definition.\ Fills\ the}}
+\DoxyCodeLine{00265\ \textcolor{comment}{\ \ list\ of\ used\ symmetry.\ label\_options\ specify\ if\ the\ label\ suffix\ should\ be}}
+\DoxyCodeLine{00266\ \textcolor{comment}{\ \ placed\ in\ brackets\ (1)\ and/or\ placed\ a\ superscript\ (4)\ or\ subscript\ (2)}}
+\DoxyCodeLine{00267\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordtype}{bool}\ CreateTable(\mbox{\hyperlink{classTDataItem}{TDataItem}}*\ TableDefinitions,\ TTTable<TStrList>\&\ Table,}
+\DoxyCodeLine{00269\ \ \ \ \ smatd\_list\&\ SymmList,\ \textcolor{keywordtype}{int}\ label\_options\ =\ 0)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00270\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCifDataManager}{TCifDataManager}}\&\ GetDataManager()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ DataManager;\ \}}
+\DoxyCodeLine{00271\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classIOlxObject}{IOlxObject}}*\ Replicate()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ TCif;\ \}}
+\DoxyCodeLine{00272\ \};}
+\DoxyCodeLine{00273\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00274\ \textcolor{keyword}{struct\ }AtomCifEntry\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structcif__dp_1_1IStringCifEntry}{cif\_dp::IStringCifEntry}}\ \{}
+\DoxyCodeLine{00275\ \ \ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ data;}
+\DoxyCodeLine{00276\ \ \ \textcolor{keyword}{mutable}\ olxstr\ label;}
+\DoxyCodeLine{00277\ \ \ \textcolor{keywordtype}{bool}\ save\_part;}
+\DoxyCodeLine{00278\ \ \ AtomCifEntry(\textcolor{keyword}{const}\ AtomCifEntry\&\ v)}
+\DoxyCodeLine{00279\ \ \ \ \ :\ data(v.data),\ save\_part(\textcolor{keyword}{false})}
+\DoxyCodeLine{00280\ \ \ \{\}}
+\DoxyCodeLine{00281\ \ \ AtomCifEntry(\mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_data)}
+\DoxyCodeLine{00282\ \ \ \ \ :\ data(\_data),\ save\_part(\textcolor{keyword}{false})}
+\DoxyCodeLine{00283\ \ \ \{\}}
+\DoxyCodeLine{00284\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00285\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !data.IsDeleted();\ \}}
+\DoxyCodeLine{00286\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetCmpHash()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.GetId();\ \}}
+\DoxyCodeLine{00287\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordflow}{return}\ \ (label\ =\ data.GetResiLabel());}
+\DoxyCodeLine{00289\ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetComment()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EmptyString();\ \}}
+\DoxyCodeLine{00291\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structcif__dp_1_1ICifEntry}{cif\_dp::ICifEntry}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ AtomCifEntry(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00293\ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00295\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00296\ \};}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \textcolor{keyword}{struct\ }AtomPartCifEntry\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structcif__dp_1_1IStringCifEntry}{cif\_dp::IStringCifEntry}}\ \{}
+\DoxyCodeLine{00299\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ data;}
+\DoxyCodeLine{00300\ \ \ \textcolor{keyword}{mutable}\ olxstr\ tmp\_val;}
+\DoxyCodeLine{00301\ \ \ AtomPartCifEntry(\textcolor{keyword}{const}\ AtomPartCifEntry\&\ v)}
+\DoxyCodeLine{00302\ \ \ \ \ :\ data(v.data)}
+\DoxyCodeLine{00303\ \ \ \{\}}
+\DoxyCodeLine{00304\ \ \ AtomPartCifEntry(\textcolor{keyword}{const}\ \mbox{\hyperlink{classTCAtom}{TCAtom}}\&\ \_data)}
+\DoxyCodeLine{00305\ \ \ \ \ :\ data(\_data)}
+\DoxyCodeLine{00306\ \ \ \{\}}
+\DoxyCodeLine{00307\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00308\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ !data.IsDeleted();\ \}}
+\DoxyCodeLine{00309\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keywordflow}{return}\ \ (tmp\_val\ =\ (\textcolor{keywordtype}{int})data.GetPart());}
+\DoxyCodeLine{00311\ \ \ \}}
+\DoxyCodeLine{00312\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetComment()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EmptyString();\ \}}
+\DoxyCodeLine{00313\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structcif__dp_1_1ICifEntry}{cif\_dp::ICifEntry}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ AtomPartCifEntry(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00315\ \ \ \}}
+\DoxyCodeLine{00316\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keywordflow}{if}\ (data.GetPart()\ ==\ 0)\ \{}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ tmp\_val\ =\ \textcolor{charliteral}{'.'};}
+\DoxyCodeLine{00319\ \ \ \ \ \}}
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ tmp\_val\ =\ (int)data.GetPart();}
+\DoxyCodeLine{00322\ \ \ \ \ \}}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keywordflow}{if}\ (list.IsEmpty()\ ||}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ (list.GetLastString().Length()\ +\ data.GetLabel().Length()\ +\ 1\ >\ 80))}
+\DoxyCodeLine{00325\ \ \ \ \ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ list.Add(\textcolor{charliteral}{'\ '})\ <<\ tmp\_val;}
+\DoxyCodeLine{00327\ \ \ \ \ \}}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ list.GetLastString()\ <<\ \textcolor{charliteral}{'\ '}\ <<\ tmp\_val;}
+\DoxyCodeLine{00330\ \ \ \ \ \}}
+\DoxyCodeLine{00331\ \ \ \}}
+\DoxyCodeLine{00332\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keywordflow}{return}\ (tmp\_val\ =\ (\textcolor{keywordtype}{int})data.GetPart());}
+\DoxyCodeLine{00334\ \ \ \}}
+\DoxyCodeLine{00335\ \};}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \textcolor{keyword}{struct\ }SymmCifEntry\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structcif__dp_1_1IStringCifEntry}{cif\_dp::IStringCifEntry}}\ \{}
+\DoxyCodeLine{00338\ \ \ \textcolor{keyword}{const}\ TCif\&\ parent;}
+\DoxyCodeLine{00339\ \ \ smatd\ data;}
+\DoxyCodeLine{00340\ \ \ \textcolor{keyword}{mutable}\ olxstr\ tmp\_val;}
+\DoxyCodeLine{00341\ \ \ SymmCifEntry(\textcolor{keyword}{const}\ SymmCifEntry\&\ v)}
+\DoxyCodeLine{00342\ \ \ \ \ :\ parent(v.parent),\ data(v.data)}
+\DoxyCodeLine{00343\ \ \ \{\}}
+\DoxyCodeLine{00344\ \ \ SymmCifEntry(\textcolor{keyword}{const}\ TCif\&\ parent,\ \textcolor{keyword}{const}\ smatd\ \&\_data)}
+\DoxyCodeLine{00345\ \ \ \ \ :\ parent(parent),\ data(\_data)}
+\DoxyCodeLine{00346\ \ \ \{\}}
+\DoxyCodeLine{00347\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ Count()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00348\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ IsSaveable()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00349\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ GetCmpHash()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ data.GetId();\ \}}
+\DoxyCodeLine{00350\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ operator\ []\ (\textcolor{keywordtype}{size\_t})\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00351\ \ \ \ \ \textcolor{keywordflow}{if}\ (tmp\_val.IsEmpty())\ \{}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data.IsFirst())\ \{}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (tmp\_val\ =\ \textcolor{stringliteral}{"{}."{}});}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \ (tmp\_val\ =\ parent.MatrixToCode(data));}
+\DoxyCodeLine{00356\ \ \ \ \ \}}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{keywordflow}{return}\ tmp\_val;}
+\DoxyCodeLine{00358\ \ \ \}}
+\DoxyCodeLine{00359\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keyword}{const}\ olxstr\&\ GetComment()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ EmptyString();\ \}}
+\DoxyCodeLine{00360\ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structcif__dp_1_1ICifEntry}{cif\_dp::ICifEntry}}*\ Replicate()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ SymmCifEntry(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00362\ \ \ \}}
+\DoxyCodeLine{00363\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ ToStrings(TStrList\&\ list)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00364\ \ \ \textcolor{keyword}{virtual}\ olxstr\ GetStringValue()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00365\ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this})[0];}
+\DoxyCodeLine{00366\ \ \ \}}
+\DoxyCodeLine{00367\ \};}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00369\ EndXlibNamespace()}
+\DoxyCodeLine{00370\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}
