@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.18)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -7,7 +7,6 @@ PROJECT(olex2)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__WXWIDGETS__ -D_UNICODE")
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/CPM.cmake")
-add_subdirectory(3rdparty EXCLUDE_FROM_ALL)
 
 # Example to get it working with Anaconda or Miniforge. Should work similarly with other environments:
 # -DPYTHON_LIBRARY=<conda_home>/envs/<python3.8 environment>/lib/libpython3.8.so.1.0
@@ -17,11 +16,24 @@ add_subdirectory(3rdparty EXCLUDE_FROM_ALL)
 
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
-FIND_PACKAGE(PythonLibs 3.8 COMPONENTS Development REQUIRED)
-message(STATUS "Python include: ${PYTHON_INCLUDE_DIRS}")
-INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
-message(STATUS "Python version: ${PYTHONLIBS_VERSION_STRING}")
-message(STATUS "Python libraries: ${PYTHON_LIBRARIES}")
+if (CMAKE_VERSION VERSION_LESS 3.18)
+  set(DEV_MODULE Development)
+else()
+  set(DEV_MODULE Development.Module)
+endif()
+set(Python_FIND_VIRTUALENV "ONLY")
+set(Python_FIND_STRATEGY "LOCATION")
+find_package(Python 3.10 EXACT COMPONENTS ${DEV_MODULE} Interpreter REQUIRED)
+
+message(STATUS "Python include: ${Python_INCLUDE_DIRS}")
+INCLUDE_DIRECTORIES(${Python_INCLUDE_DIRS})
+message(STATUS "Python version: ${Python_VERSION}")
+if (NOT DEFINED ${Python_LIBRARIES})
+  set(Python_LIBRARIES ${Python_LIBRARY})
+endif ()
+message(STATUS "Python libraries: ${Python_LIBRARIES}")
+
+add_subdirectory(3rdparty EXCLUDE_FROM_ALL)
 # additional modules
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(PANGOFT2 REQUIRED pangoft2)
@@ -39,6 +51,7 @@ endif ()
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   option(COPY_GUI_FILES "Copy the GUI files to the build location for testing" OFF)
+  option(EXTERNAL_PYTHON_BINDINGS "Builds some bindings to use with external Python (experimental)" OFF)
   set(OLEX2_GUI_DIRECTORY ${OLEX2_GUI} CACHE PATH "Directory to copy from if COPY_GUI_FILES is set to ON")
 endif ()
 
@@ -115,7 +128,7 @@ INCLUDE_DIRECTORIES(
     ${WAYLAND_EGL_INCLUDE_DIRS}
 )
 ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
-ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS} )
+ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS})
 
 TARGET_LINK_LIBRARIES(unirun PRIVATE
     wx-static
@@ -129,7 +142,7 @@ TARGET_LINK_LIBRARIES(unirun PRIVATE
     EGL
     ${WAYLAND_EGL_LIBRARIES}
     GLU
-    ${PYTHON_LIBRARIES}
+    ${Python_LIBRARIES}
     ${OPENSSL_LIBRARIES}
 )
 
@@ -147,13 +160,31 @@ TARGET_LINK_LIBRARIES(olex2 PRIVATE
     EGL
     ${WAYLAND_EGL_LIBRARIES}
     GLU
-    ${PYTHON_LIBRARIES}
+    ${Python_LIBRARIES}
     ${OPENSSL_LIBRARIES}
 )
 
-
 target_compile_definitions(olex2 PRIVATE _PYTHON _OPENSSL)
 target_compile_definitions(unirun PRIVATE _PYTHON _OPENSSL)
+
+add_subdirectory(nanobind)
+add_dependencies(_olexpy olex2)
+
+TARGET_LINK_LIBRARIES(_olexpy PRIVATE
+    wx-static
+    ${WX_LIBRARIES}
+    ${OPENGL_LIBRARIES}
+    ${Fontconfig_LIBRARIES}
+    ${EXPAT_LIBRARIES}
+    ${PANGOFT2_LIBRARIES}
+    ${WAYLAND_CLIENT_LIBRARIES}
+    ${WAYLAND_CURSOR_LIBRARIES}
+    EGL
+    ${WAYLAND_EGL_LIBRARIES}
+    GLU
+    ${Python_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
+)
 if (COPY_GUI_FILES)
   add_custom_command(TARGET olex2 POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
