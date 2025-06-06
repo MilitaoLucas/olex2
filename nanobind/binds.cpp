@@ -29,6 +29,6 @@ std::string PreprocessHtml(const std::string& html)
 
 NB_MODULE(_olexpy, m)
 {
-  m.def("PreprocessHtml", nb::overload_cast<const std::string &>(&PreprocessHtml), "html"_a,
-    "Preprocess html file");
+    m.def("PreprocessHtml", nb::overload_cast<const std::string &>(&PreprocessHtml), "html"_a,
+        "Preprocess html file");
 }
