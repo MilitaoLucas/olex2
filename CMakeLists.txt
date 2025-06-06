@@ -170,19 +170,55 @@ target_compile_definitions(unirun PRIVATE _PYTHON _OPENSSL)
 add_subdirectory(nanobind)
 add_dependencies(_olexpy olex2)
 
-TARGET_LINK_LIBRARIES(_olexpy PRIVATE
+add_library(esdl_core_lib STATIC
+    ${sdl_SRCS}
+    ${sdlsmart_SRCS}
+    ${sdlexp_SRCS}
+)
+
+add_library(html_core_lib STATIC
+    ${olex2_html_SRCS}
+)
+
+add_library(repo_core_lib STATIC
+    ${repo_SRCS}
+)
+
+add_library(extras_lib STATIC
+    ${olex2_extras}
+)
+
+set_target_properties(esdl_core_lib PROPERTIES POSITION_INDEPENDENT_CODE ON) # Add this line
+
+set_target_properties(html_core_lib PROPERTIES POSITION_INDEPENDENT_CODE ON) # Add this line
+
+set_target_properties(repo_core_lib PROPERTIES POSITION_INDEPENDENT_CODE ON) # Add this line
+
+set_target_properties(extras_lib PROPERTIES POSITION_INDEPENDENT_CODE ON) # Add this line
+
+TARGET_LINK_LIBRARIES(html_core_lib PRIVATE
     wx-static
-    ${WX_LIBRARIES}
-    ${OPENGL_LIBRARIES}
-    ${Fontconfig_LIBRARIES}
-    ${EXPAT_LIBRARIES}
-    ${PANGOFT2_LIBRARIES}
-    ${WAYLAND_CLIENT_LIBRARIES}
-    ${WAYLAND_CURSOR_LIBRARIES}
-    EGL
-    ${WAYLAND_EGL_LIBRARIES}
-    GLU
-    ${Python_LIBRARIES}
+)
+TARGET_LINK_LIBRARIES(esdl_core_lib PRIVATE
+    wx-static
+)
+
+TARGET_LINK_LIBRARIES(repo_core_lib PRIVATE
+    wx-static
+)
+
+TARGET_LINK_LIBRARIES(extras_lib PRIVATE
+    wx-static
+)
+
+target_compile_definitions(repo_core_lib PRIVATE _OPENSSL _PYTHON)
+
+TARGET_LINK_LIBRARIES(_olexpy PRIVATE
+    html_core_lib
+    extras_lib
+    repo_core_lib
+    esdl_core_lib
+    wx-static
     ${OPENSSL_LIBRARIES}
 )
 if (COPY_GUI_FILES)
