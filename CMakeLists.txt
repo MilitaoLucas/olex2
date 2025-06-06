@@ -61,62 +61,34 @@ endif ()
 # END user provided compile options
 
 SET(src "${CMAKE_CURRENT_SOURCE_DIR}")
-FILE(GLOB sdl_SRCS "${src}/sdl/*.cpp")
-FILE(GLOB sdlsmart_SRCS "${src}/sdl/smart/*.cpp")
-FILE(GLOB sdlexp_SRCS "${src}/sdl/exparse/*.cpp")
-FILE(GLOB esdl_math_SRCS "${src}/sdl/math/*.cpp")
 FILE(GLOB xlib_SRCS "${src}/xlib/*.cpp")
 FILE(GLOB xlibabsorb_SRCS "${src}/xlib/absorpc/*.cpp")
 FILE(GLOB xlibhenke_SRCS "${src}/xlib/henke/*.cpp")
 FILE(GLOB xlibmacro_SRCS "${src}/xlib/macro/*.cpp")
-FILE(GLOB glib_SRCS "${src}/glib/*.cpp")
-FILE(GLOB gxlib_SRCS "${src}/gxlib/*.cpp")
 
-FILE(GLOB repo_SRCS "${src}/repository/*.cpp")
-
-IF (NOT WIN32)
-  LIST(REMOVE_ITEM repo_SRCS "${src}/repository/fsindex.cpp")
-  LIST(REMOVE_ITEM repo_SRCS "${src}/repository/unzip.cpp")
-  LIST(REMOVE_ITEM repo_SRCS "${src}/repository/zip.cpp")
-endif (NOT WIN32)
 
 FILE(GLOB unirun_SRCS "${src}/unirun/*.cpp")
 FILE(GLOB olex2_SRCS "${src}/olex/*.cpp")
+LIST(REMOVE_ITEM olex2_SRCS "${src}/olex/langdict.cpp")
+LIST(REMOVE_ITEM olex2_SRCS "${src}/olex/ctrls.cpp")
 FILE(GLOB olex2_nui_SRCS "${src}/olex/nui/*.cpp")
-FILE(GLOB olex2_html_SRCS "${src}/olex/html/*.cpp")
 FILE(GLOB olex2_ctrls_SRCS "${src}/olex/ctrls/*.cpp")
-SET(olex2_extras "${src}/olex/langdict.cpp" "${src}/olex/ctrls.cpp")
 SET(all_SRCS
-    ${sdl_SRCS}
-    ${sdlsmart_SRCS}
-    ${sdlexp_SRCS}
-    ${esdl_math_SRCS}
     ${olex2_nui_SRCS}
     ${xlib_SRCS}
     ${xlibabsorb_SRCS}
     ${xlibmacro_SRCS}
     ${xlibhenke_SRCS}
-    ${glib_SRCS}
-    ${gxlib_SRCS}
-    ${repo_SRCS}
-    ${olex2_html_SRCS}
     ${olex2_ctrls_SRCS}
     ${olex2_extras}
 )
 
 
-INCLUDE_DIRECTORIES("${src}/alglib")
-INCLUDE_DIRECTORIES("${src}/glib")
-INCLUDE_DIRECTORIES("${src}/gxlib")
 INCLUDE_DIRECTORIES("${src}/olex")
-INCLUDE_DIRECTORIES("${src}/olex/html")
 INCLUDE_DIRECTORIES("${src}/olex/ctrls")
 INCLUDE_DIRECTORIES("${src}/olex/nui")
-INCLUDE_DIRECTORIES("${src}/repository")
-INCLUDE_DIRECTORIES("${src}/sdl")
 INCLUDE_DIRECTORIES("${src}/xlib")
 INCLUDE_DIRECTORIES("${src}/xlib/absorpc")
-INCLUDE_DIRECTORIES("${src}/sdl/math")
 INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_2}")
 INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_1}")
 INCLUDE_DIRECTORIES(
@@ -125,11 +97,24 @@ INCLUDE_DIRECTORIES(
     ${WAYLAND_CURSOR_INCLUDE_DIRS}
     ${WAYLAND_EGL_INCLUDE_DIRS}
 )
+add_subdirectory(sdl)
+add_subdirectory(glib)
+
+INCLUDE_DIRECTORIES("${sdl_INCLUDE}")
+add_subdirectory(repository)
+INCLUDE_DIRECTORIES("${glib_INCLUDE}")
+add_subdirectory(olex)
+add_subdirectory(gxlib)
 ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
 ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS})
 
 TARGET_LINK_LIBRARIES(unirun PRIVATE
     wx-static
+    sdl_core_lib
+    glib
+    gxlib
+    html_core
+    repo_core_lib
     ${WX_LIBRARIES}
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
@@ -143,12 +128,16 @@ TARGET_LINK_LIBRARIES(unirun PRIVATE
     ${Python_LIBRARIES}
     ${OPENSSL_LIBRARIES}
 )
-
 
 
 TARGET_LINK_LIBRARIES(olex2 PRIVATE
+    olex_extras
     wx-static
-    ${WX_LIBRARIES}
+    sdl_core_lib
+    glib
+    html_core
+    repo_core_lib
+    gxlib
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
@@ -162,60 +151,21 @@ TARGET_LINK_LIBRARIES(olex2 PRIVATE
     ${OPENSSL_LIBRARIES}
 )
 
+#target_include_directories(olex2 PRIVATE
+#    ${glib_INCLUDE}
+#)
 target_compile_definitions(olex2 PRIVATE _PYTHON _OPENSSL)
 target_compile_definitions(unirun PRIVATE _PYTHON _OPENSSL)
 
 add_subdirectory(nanobind)
 add_dependencies(_olexpy olex2)
 
-add_library(esdl_core_lib STATIC
-    ${sdl_SRCS}
-    ${sdlsmart_SRCS}
-    ${sdlexp_SRCS}
-)
-
-add_library(html_core_lib STATIC
-    ${olex2_html_SRCS}
-)
-
-add_library(repo_core_lib STATIC
-    ${repo_SRCS}
-)
-
-add_library(extras_lib STATIC
-    ${olex2_extras}
-)
-
-set_target_properties(esdl_core_lib PROPERTIES POSITION_INDEPENDENT_CODE ON) # Add this line
-
-set_target_properties(html_core_lib PROPERTIES POSITION_INDEPENDENT_CODE ON) # Add this line
-
-set_target_properties(repo_core_lib PROPERTIES POSITION_INDEPENDENT_CODE ON) # Add this line
-
-set_target_properties(extras_lib PROPERTIES POSITION_INDEPENDENT_CODE ON) # Add this line
-
-TARGET_LINK_LIBRARIES(html_core_lib PRIVATE
-    wx-static
-)
-TARGET_LINK_LIBRARIES(esdl_core_lib PRIVATE
-    wx-static
-)
-
-TARGET_LINK_LIBRARIES(repo_core_lib PRIVATE
-    wx-static
-)
-
-TARGET_LINK_LIBRARIES(extras_lib PRIVATE
-    wx-static
-)
-
-target_compile_definitions(repo_core_lib PRIVATE _OPENSSL _PYTHON)
 
 TARGET_LINK_LIBRARIES(_olexpy PRIVATE
-    html_core_lib
-    extras_lib
+    html_core
+    olex_extras
     repo_core_lib
-    esdl_core_lib
+    sdl_core_lib
     wx-static
     ${OPENSSL_LIBRARIES}
 )
