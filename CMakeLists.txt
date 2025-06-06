@@ -61,7 +61,6 @@ endif ()
 # END user provided compile options
 
 SET(src "${CMAKE_CURRENT_SOURCE_DIR}")
-FILE(GLOB alglib_SRCS "${src}/alglib/*.cpp")
 FILE(GLOB sdl_SRCS "${src}/sdl/*.cpp")
 FILE(GLOB sdlsmart_SRCS "${src}/sdl/smart/*.cpp")
 FILE(GLOB sdlexp_SRCS "${src}/sdl/exparse/*.cpp")
@@ -88,7 +87,6 @@ FILE(GLOB olex2_html_SRCS "${src}/olex/html/*.cpp")
 FILE(GLOB olex2_ctrls_SRCS "${src}/olex/ctrls/*.cpp")
 SET(olex2_extras "${src}/olex/langdict.cpp" "${src}/olex/ctrls.cpp")
 SET(all_SRCS
-    ${alglib_SRCS}
     ${sdl_SRCS}
     ${sdlsmart_SRCS}
     ${sdlexp_SRCS}
