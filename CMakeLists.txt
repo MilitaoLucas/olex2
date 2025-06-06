@@ -14,6 +14,53 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/CPM.cmake")
 # -DPYTHON_ROOT_DIR=<conda_home>/envs/<python3.8 environment>
 # -DPython3_FIND_STRATEGY=LOCATION
 
+# finding the python version
+execute_process(
+    COMMAND "${Python_EXECUTABLE}" -V
+    OUTPUT_VARIABLE PYTHON_V_OUTPUT
+    ERROR_VARIABLE PYTHON_V_ERROR
+    RESULT_VARIABLE PYTHON_V_RESULT
+)
+
+if (PYTHON_V_RESULT EQUAL 0)
+    # Python 2 often prints to stdout, Python 3 often to stderr
+    if (PYTHON_V_OUTPUT)
+        set(RAW_VERSION_STRING "${PYTHON_V_OUTPUT}")
+    else()
+        set(RAW_VERSION_STRING "${PYTHON_V_ERROR}")
+    endif()
+
+    string(REGEX MATCH "([0-9]+.[0-9]+)" Python_VERSION "${RAW_VERSION_STRING}")
+    message(STATUS "Python version: ${Python_VERSION}")
+else()
+    message(WARNING "Failed to get Python version using '${PYTHON_EXECUTABLE} -V'. Result: ${PYTHON_V_RESULT}")
+    message(WARNING "Output: ${PYTHON_V_OUTPUT}")
+    message(WARNING "Error: ${PYTHON_V_ERROR}")
+endif()
+# end finding the python version
+
+if (DEFINED Python_EXECUTABLE)
+  get_filename_component(Python_HOME ${Python_EXECUTABLE} DIRECTORY)
+  get_filename_component(Python_HOME ${Python_HOME} DIRECTORY)
+  set(Python_LIBRARY "${Python_HOME}/lib/libpython${Python_VERSION}.so")
+endif ()
+# Add user provided compile options
+if (DEFINED $ENV{OLEX2_DIR})
+  set(OLEX2_GUI $ENV{OLEX2_DIR})
+endif ()
+message(WARNING "test ${Python_VERSION}")
+if ("${Python_VERSION}" VERSION_GREATER 3.11)
+    set(_PYGT310 "_PYGT310")
+endif ()
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  option(COPY_GUI_FILES "Copy the GUI files to the build location for testing" OFF)
+  option(EXTERNAL_PYTHON_BINDINGS "Builds some bindings to use with external Python (experimental)" OFF)
+  set(OLEX2_GUI_DIRECTORY ${OLEX2_GUI} CACHE PATH "Directory to copy from if COPY_GUI_FILES is set to ON")
+endif ()
+
+if (OLEX2_GUI_DIRECTORY STREQUAL "" AND COPY_GUI_FILES)
+  message(FATAL_ERROR "COPY_GUI_FILES is only supported with OLEX2_GUI_DIRECTORY CMAKE variable or OLEX2_GUI env variable.")
+endif ()
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 if (CMAKE_VERSION VERSION_LESS 3.18)
@@ -23,7 +70,7 @@ else()
 endif()
 set(Python_FIND_VIRTUALENV "ONLY")
 set(Python_FIND_STRATEGY "LOCATION")
-find_package(Python 3.10 EXACT COMPONENTS ${DEV_MODULE} Interpreter REQUIRED)
+find_package(Python ${Python_VERSION} EXACT COMPONENTS ${DEV_MODULE} Interpreter REQUIRED)
 
 message(STATUS "Python include: ${Python_INCLUDE_DIRS}")
 INCLUDE_DIRECTORIES(${Python_INCLUDE_DIRS})
@@ -44,20 +91,7 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
 
-# Add user provided compile options
-if (DEFINED $ENV{OLEX2_DIR})
-  set(OLEX2_GUI $ENV{OLEX2_DIR})
-endif ()
 
-if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  option(COPY_GUI_FILES "Copy the GUI files to the build location for testing" OFF)
-  option(EXTERNAL_PYTHON_BINDINGS "Builds some bindings to use with external Python (experimental)" OFF)
-  set(OLEX2_GUI_DIRECTORY ${OLEX2_GUI} CACHE PATH "Directory to copy from if COPY_GUI_FILES is set to ON")
-endif ()
-
-if (OLEX2_GUI_DIRECTORY STREQUAL "" AND COPY_GUI_FILES)
-  message(FATAL_ERROR "COPY_GUI_FILES is only supported with OLEX2_GUI_DIRECTORY CMAKE variable or OLEX2_GUI env variable.")
-endif ()
 # END user provided compile options
 
 SET(src "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -154,21 +188,23 @@ TARGET_LINK_LIBRARIES(olex2 PRIVATE
 #target_include_directories(olex2 PRIVATE
 #    ${glib_INCLUDE}
 #)
-target_compile_definitions(olex2 PRIVATE _PYTHON _OPENSSL)
-target_compile_definitions(unirun PRIVATE _PYTHON _OPENSSL)
+message(WARNING "Python is ${_PYGT310}")
+target_compile_definitions(olex2 PRIVATE _PYTHON _OPENSSL _PYGT310)
+target_compile_definitions(unirun PRIVATE _PYTHON _OPENSSL _PYGT310)
 
-add_subdirectory(nanobind)
-add_dependencies(_olexpy olex2)
+if("${EXTERNAL_PYTHON_BINDINGS}")
+    add_subdirectory(nanobind)
+    add_dependencies(_olexpy olex2)
 
-
-TARGET_LINK_LIBRARIES(_olexpy PRIVATE
-    html_core
-    olex_extras
-    repo_core_lib
-    sdl_core_lib
-    wx-static
-    ${OPENSSL_LIBRARIES}
-)
+    TARGET_LINK_LIBRARIES(_olexpy PRIVATE
+        html_core
+        olex_extras
+        repo_core_lib
+        sdl_core_lib
+        wx-static
+        ${OPENSSL_LIBRARIES}
+    )
+endif ()
 if (COPY_GUI_FILES)
   add_custom_command(TARGET olex2 POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different

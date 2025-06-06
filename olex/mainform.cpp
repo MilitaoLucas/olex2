@@ -1345,7 +1345,7 @@ void TMainForm::StartupInit() {
   for (size_t i = 0; i < gls.FontCount(); i++) {
     gls._GetFont(i).SetMaterial(glm);
   }
-  
+
 
   olxstr T(FXApp->GetConfigDir());
   T << FLastSettingsFile;
@@ -1601,9 +1601,13 @@ bool TMainForm::Dispatch(int MsgId, short MsgSubId, const IOlxObject *Sender,
     FMode = 0;  // to release waitfor
     return false;
   }
-
+#ifndef _PYGT310
   if (MsgId == ID_TIMER && wxThread::IsMain() &&
     StartupInitialised && Py_IsInitialized() && PyEval_ThreadsInitialized())
+#else
+  if (MsgId == ID_TIMER && wxThread::IsMain() &&
+    StartupInitialised && Py_IsInitialized() && PyGILState_Ensure())
+#endif
   {
     size_t tc = OlexPyCore::GetRunningPythonThreadsCount();
     if (tc > 0) {
