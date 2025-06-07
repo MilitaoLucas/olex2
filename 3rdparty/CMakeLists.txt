@@ -6,7 +6,7 @@ CPMAddPackage(
     URL "https://github.com/wxWidgets/wxWidgets/releases/download/v${wxVERSION}/wxWidgets-${wxVERSION}.tar.bz2"
     DOWNLOAD_ONLY YES
 )
-
+message(WARNING "extern ${EXTERNAL_JOBS}")
 include(ExternalProject)
 if(wxWidgetsSource_ADDED)
   message(STATUS "wxWidgets source downloaded to: ${wxWidgetsSource_SOURCE_DIR}")
@@ -27,7 +27,7 @@ if(wxWidgetsSource_ADDED)
       --disable-sys-libs
       --with-libjpeg=builtin
       --with-libtiff=builtin
-      BUILD_COMMAND make -j30
+      BUILD_COMMAND make -j${EXTERNAL_JOBS}
       INSTALL_COMMAND make install
       LOG_CONFIGURE ON
       LOG_BUILD ON
