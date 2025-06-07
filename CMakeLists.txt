@@ -56,6 +56,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   option(COPY_GUI_FILES "Copy the GUI files to the build location for testing" OFF)
   option(EXTERNAL_PYTHON_BINDINGS "Builds some bindings to use with external Python (experimental)" OFF)
   set(OLEX2_GUI_DIRECTORY ${OLEX2_GUI} CACHE PATH "Directory to copy from if COPY_GUI_FILES is set to ON")
+  set(EXTERNAL_JOBS 6 CACHE STRING "How many jobs to give to wxwidgets build step? defaults to 6")
 endif ()
 
 if (OLEX2_GUI_DIRECTORY STREQUAL "" AND COPY_GUI_FILES)
@@ -194,7 +195,7 @@ target_compile_definitions(unirun PRIVATE _PYTHON _OPENSSL _PYGT310)
 
 if("${EXTERNAL_PYTHON_BINDINGS}")
     add_subdirectory(nanobind)
-    add_dependencies(_olexpy olex2)
+#    add_dependencies(_olexpy olex2)
 
     TARGET_LINK_LIBRARIES(_olexpy PRIVATE
         html_core
