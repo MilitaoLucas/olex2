@@ -1,5 +1,6 @@
-set(wxVERSION_FAMILY "3.1")
-set(wxVERSION "${wxVERSION_FAMILY}.7")
+set(wxVERSION_FAMILY "3.0")
+set(wxVERSION "${wxVERSION_FAMILY}.5")
+set(gtkVERSION "2")
 CPMAddPackage(
     NAME wxWidgetsSource
     VERSION "${wxVERSION}"
@@ -22,11 +23,14 @@ if(wxWidgetsSource_ADDED)
       --disable-shared
       --prefix=${CMAKE_BINARY_DIR}/3rdparty/wxwidgets
       --enable-aui
+      --with-gtk=${gtkVERSION}
       --enable-unicode
       --enable-html
       --disable-sys-libs
       --with-libjpeg=builtin
       --with-libtiff=builtin
+      CFLAGS=-fPIC
+      CXXFLAGS=-fPIC
       BUILD_COMMAND make -j${EXTERNAL_JOBS}
       INSTALL_COMMAND make install
       LOG_CONFIGURE ON
@@ -36,17 +40,17 @@ if(wxWidgetsSource_ADDED)
       BUILD_BYPRODUCTS
       ${wxWidgets_INSTALL_DIR}/bin/wx-config
       # GTK Components (depend on base)
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_gl-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_core-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_aui-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_adv-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_html-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_propgrid-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_qa-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_ribbon-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_richtext-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_stc-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_xrc-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_gl-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_core-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_aui-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_adv-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_html-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_propgrid-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_qa-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_ribbon-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_richtext-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_stc-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_xrc-${wxVERSION_FAMILY}.a
 
       ${wxWidgets_INSTALL_DIR}/lib/libwxregexu-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwxscintilla-${wxVERSION_FAMILY}.a
@@ -65,7 +69,7 @@ if(wxWidgetsSource_ADDED)
   add_library(wx-static INTERFACE IMPORTED GLOBAL)
   add_dependencies(wx-static wxWidgetsBuild)
 
-  set(WXWIDGETS_SETUP_H_INCLUDE_DIR ${wxWidgets_INSTALL_DIR}/lib/wx/include/gtk3-unicode-static-${wxVERSION_FAMILY})
+  set(WXWIDGETS_SETUP_H_INCLUDE_DIR ${wxWidgets_INSTALL_DIR}/lib/wx/include/gtk${gtkVERSION}-unicode-static-${wxVERSION_FAMILY})
   set(wxWidgets_INCLUDE_DIR_1
       ${wxWidgets_INSTALL_DIR}/include/wx-${wxVERSION_FAMILY}
       PARENT_SCOPE
@@ -83,14 +87,14 @@ if(wxWidgetsSource_ADDED)
 
   find_package(PkgConfig QUIET)
   if(PKG_CONFIG_FOUND)
-    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+    pkg_check_modules(GTK${gtkVERSION} REQUIRED gtk+-${gtkVERSION}.0)
     pkg_check_modules(X11 REQUIRED x11)
   else()
     message(WARNING "pkg-config not found. Compiler flags for wxWidgets dependencies might be incomplete.")
   endif()
   target_compile_options(wx-static INTERFACE
       "-pthread"                     # Common for GTK/X11 apps
-      ${GTK3_CFLAGS_OTHER}          # Other flags from pkg-config
+      ${GTK${gtkVERSION}_CFLAGS_OTHER}          # Other flags from pkg-config
       ${X11_CFLAGS_OTHER}
       "-D__WXGTK__"                # Define the toolkit
   )
@@ -101,17 +105,17 @@ if(wxWidgetsSource_ADDED)
 
 
   set(WX_LIBRARIES
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_gl-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_core-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_aui-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_adv-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_html-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_propgrid-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_qa-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_ribbon-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_richtext-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_stc-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_xrc-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_gl-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_core-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_aui-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_adv-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_html-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_propgrid-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_qa-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_ribbon-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_richtext-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_stc-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk${gtkVERSION}u_xrc-${wxVERSION_FAMILY}.a
 
       ${wxWidgets_INSTALL_DIR}/lib/libwxregexu-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwxscintilla-${wxVERSION_FAMILY}.a
@@ -128,7 +132,7 @@ if(wxWidgetsSource_ADDED)
   )
   set(WX_LIBRARIES ${WX_LIBRARIES} PARENT_SCOPE)
   set(WX_SYSTEM_LIBS
-      ${GTK3_LIBRARIES}
+      ${GTK${gtkVERSION}_LIBRARIES}
       X11
       SM
       dl
