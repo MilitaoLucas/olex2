@@ -162,6 +162,7 @@ TARGET_LINK_LIBRARIES(unirun PRIVATE
     GLU
     ${Python_LIBRARIES}
     ${OPENSSL_LIBRARIES}
+    -lxkbcommon
 )
 
 
@@ -184,6 +185,7 @@ TARGET_LINK_LIBRARIES(olex2 PRIVATE
     GLU
     ${Python_LIBRARIES}
     ${OPENSSL_LIBRARIES}
+    -lxkbcommon
 )
 
 #target_include_directories(olex2 PRIVATE
