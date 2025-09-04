@@ -144,8 +144,6 @@ INCLUDE_DIRECTORIES("${src}/sdl")
 INCLUDE_DIRECTORIES("${src}/xlib")
 INCLUDE_DIRECTORIES("${src}/xlib/absorpc")
 INCLUDE_DIRECTORIES("${src}/sdl/math")
-INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_2}")
-INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_1}")
 INCLUDE_DIRECTORIES(
     ${PANGOFT2_INCLUDE_DIRS}
     ${WAYLAND_CLIENT_INCLUDE_DIRS}
@@ -156,7 +154,7 @@ ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
 ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS} )
 
 TARGET_LINK_LIBRARIES(unirun PRIVATE
-    wx-static
+    wxWidgets::wxWidgets
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
@@ -172,9 +170,8 @@ TARGET_LINK_LIBRARIES(unirun PRIVATE
 )
 
 
-
 TARGET_LINK_LIBRARIES(olex2 PRIVATE
-    wx-static
+    wxWidgets::wxWidgets
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
