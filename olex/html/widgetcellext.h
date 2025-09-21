@@ -40,7 +40,6 @@ public:
 
   int GetFloatY() const { return float_y;  }
   // implemented in imagecellext.cpp ...
-  void SetHeight(int h);
 
   void Draw(wxDC& WXUNUSED(dc), int WXUNUSED(x), int WXUNUSED(y),
     int WXUNUSED(view_y1), int WXUNUSED(view_y2),

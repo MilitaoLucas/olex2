@@ -66,6 +66,7 @@ pkg_check_modules(PANGOFT2 REQUIRED pangoft2)
 pkg_check_modules(WAYLAND_CLIENT REQUIRED wayland-client)
 pkg_check_modules(WAYLAND_CURSOR REQUIRED wayland-cursor) # Often needed for client apps
 pkg_check_modules(WAYLAND_EGL REQUIRED wayland-egl)
+#pkg_check_modules(WEBKIT2GTK REQUIRED webkit2gtk-4.0)
 set(OpenGL_GL_PREFERENCE "LEGACY")
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
@@ -110,6 +111,7 @@ FILE(GLOB unirun_SRCS "${src}/unirun/*.cpp")
 FILE(GLOB olex2_SRCS "${src}/olex/*.cpp")
 FILE(GLOB olex2_nui_SRCS "${src}/olex/nui/*.cpp")
 FILE(GLOB olex2_html_SRCS "${src}/olex/html/*.cpp")
+FILE(GLOB olex2_webview_SRCS "${src}/olex/webview/*.cpp")
 FILE(GLOB olex2_ctrls_SRCS "${src}/olex/ctrls/*.cpp")
 SET(olex2_extras "${src}/olex/langdict.cpp" "${src}/olex/ctrls.cpp")
 SET(all_SRCS
@@ -127,6 +129,7 @@ SET(all_SRCS
     ${gxlib_SRCS}
     ${repo_SRCS}
     ${olex2_html_SRCS}
+    ${olex2_webview_SRCS}
     ${olex2_ctrls_SRCS}
     ${olex2_extras}
 )
@@ -137,6 +140,7 @@ INCLUDE_DIRECTORIES("${src}/glib")
 INCLUDE_DIRECTORIES("${src}/gxlib")
 INCLUDE_DIRECTORIES("${src}/olex")
 INCLUDE_DIRECTORIES("${src}/olex/html")
+INCLUDE_DIRECTORIES("${src}/olex/webview")
 INCLUDE_DIRECTORIES("${src}/olex/ctrls")
 INCLUDE_DIRECTORIES("${src}/olex/nui")
 INCLUDE_DIRECTORIES("${src}/repository")
@@ -187,6 +191,7 @@ TARGET_LINK_LIBRARIES(olex2 PRIVATE
     ${Python_LIBRARIES}
     ${OPENSSL_LIBRARIES}
     -lxkbcommon
+    ${WEBKIT2GTK_LIBRARIES}
 )
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWXDEBUG_LEVEL=2 -D__WXDEBUG__ -DDEBUG_BITMAP_OPERATIONS")
