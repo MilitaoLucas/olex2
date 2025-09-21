@@ -1,5 +1,7 @@
 # Make wxWidgets version configurable with default value
 set(wxVERSION "3.2.5" CACHE STRING "wxWidgets version to use")
+
+find_package(PkgConfig REQUIRED)
 # Extract the family version (major.minor) from the full version
 string(REGEX MATCH "^([0-9]+\\.[0-9]+)" wxVERSION_FAMILY "${wxVERSION}")
 if(NOT wxVERSION_FAMILY)
@@ -17,6 +19,7 @@ CPMAddPackage(
     DOWNLOAD_ONLY YES
 )
 
+pkg_check_modules(WEBKIT2GTK REQUIRED webkit2gtk-4.0)
 include(ExternalProject)
 if(wxWidgetsSource_ADDED)
   message(STATUS "wxWidgets source downloaded to: ${wxWidgetsSource_SOURCE_DIR}")
@@ -74,6 +77,7 @@ if(wxWidgetsSource_ADDED)
       ${wxWidgets_INSTALL_DIR}/lib/libwx_baseu-${wxVERSION_FAMILY}.a
 
   )
+  message(WARNING "libwx_gtk3u_webview-${wxVERSION_FAMILY}.a")
   set(wxWidgets_LIB_DIR ${wxWidgets_INSTALL_DIR}/lib PARENT_SCOPE)
   add_library(wx-static INTERFACE IMPORTED GLOBAL)
   add_dependencies(wx-static wxWidgetsBuild)
@@ -90,8 +94,8 @@ if(wxWidgetsSource_ADDED)
   file(MAKE_DIRECTORY ${wxWidgets_INSTALL_DIR}/include/wx-${wxVERSION_FAMILY})
   file(MAKE_DIRECTORY ${WXWIDGETS_SETUP_H_INCLUDE_DIR})
   target_include_directories(wx-static INTERFACE
-      ${WXWIDGETS_SETUP_H_INCLUDE_DIR}
       ${wxWidgets_INSTALL_DIR}/include/wx-${wxVERSION_FAMILY}
+      ${WXWIDGETS_SETUP_H_INCLUDE_DIR}
   )
 
   find_package(PkgConfig QUIET)
@@ -103,6 +107,7 @@ if(wxWidgetsSource_ADDED)
   endif()
   target_compile_options(wx-static INTERFACE
       "-pthread"                     # Common for GTK/X11 apps
+      ${WEBKIT2GTK_CFLAGS_OTHER}
       ${GTK3_CFLAGS_OTHER}          # Other flags from pkg-config
       ${X11_CFLAGS_OTHER}
       "-D__WXGTK__"                # Define the toolkit
@@ -118,7 +123,6 @@ if(wxWidgetsSource_ADDED)
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_stc-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_xrc-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_html-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_webview-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_qa-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_adv-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_core-${wxVERSION_FAMILY}.a
@@ -126,6 +130,7 @@ if(wxWidgetsSource_ADDED)
       ${wxWidgets_INSTALL_DIR}/lib/libwx_baseu_xml-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_baseu_net-${wxVERSION_FAMILY}.a
 
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_webview-${wxVERSION_FAMILY}.a
       # Additional component libraries
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_gl-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_aui-${wxVERSION_FAMILY}.a
@@ -146,6 +151,7 @@ if(wxWidgetsSource_ADDED)
   set(WX_LIBRARIES ${WX_LIBRARIES} PARENT_SCOPE)
   set(WX_SYSTEM_LIBS
       ${GTK3_LIBRARIES}
+      ${WEBKIT2GTK_LIBRARIES}  # Add this line
       X11
       SM
       dl
@@ -156,11 +162,13 @@ if(wxWidgetsSource_ADDED)
   set(WX_SYSTEM_LIBS ${WX_SYSTEM_LIBS} PARENT_SCOPE)
   target_link_libraries(wx-static INTERFACE
       ${WX_LIBRARIES}
+      ${WEBKIT2GTK_LIBRARIES}
       ${wxWidgets_INSTALL_DIR}/lib/libwxjpeg-${wxVERSION_FAMILY}.a
-      ${wxWidgets_INSTALL_DIR}/lib/libwxpng-${wxVERSION_FAMILY}.a ${wxWidgets_INSTALL_DIR}/lib/libwxzlib-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwxpng-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwxzlib-${wxVERSION_FAMILY}.a
       ${WX_SYSTEM_LIBS})
 
-
+  add_custom_target(wxwidgets-static-build DEPENDS wx-static)
   message(STATUS "wxWidgets INTERFACE target created.")
   message(STATUS "  Include Dirs: ${wxWidgets_INSTALL_DIR}/include/wx-${wxVERSION_FAMILY};${WXWIDGETS_SETUP_H_INCLUDE_DIR}")
   message(STATUS "  Libraries: <See target_link_libraries call above>")
