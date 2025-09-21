@@ -8,6 +8,7 @@
 ******************************************************************************/
 
 #include "htmlmanager.h"
+#include "htmlext.h"
 #include "imgcellext.h"
 #include "widgetcellext.h"
 #include "wx/html/htmlcell.h"
@@ -1105,7 +1106,6 @@ TAG_HANDLER_PROC(tag) {
     THtml *hc = new THtml(html->Manager, html, ObjectName);
     CreatedObject = hc;
     CreatedWindow = hc;
-    hc->SetBorders(0);
     hc->WI.SetWidth(ax);
     hc->WI.SetHeight(ay);
     hc->LoadPage(Value.u_str());

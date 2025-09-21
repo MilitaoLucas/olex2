@@ -71,7 +71,7 @@ protected:
     olxstr_dict<olxstr_dict<olxstr,false>*, true> Objects;
     THtml& html;
   public:
-    TObjectsState(THtml& htm) : html(htm) { }
+    TObjectsState(THtml& html) : html(html) { }
     ~TObjectsState();
     olxstr_dict<olxstr,false>* FindProperties(const olxstr& cname) {
       const size_t ind = Objects.IndexOf(cname);
@@ -84,7 +84,6 @@ protected:
     void SaveToFile(const olxstr& fn);
     bool LoadFromFile(const olxstr& fn);
   };
-  TObjectsState ObjectsState;
 protected:
   olxstr GetObjectValue(const AOlxCtrl *Object);
   const olxstr& GetObjectData(const AOlxCtrl *Object);
@@ -209,7 +208,7 @@ public:
     return st;
   }
   /* removes cycling refences like #onclick = #onclick or
-  #onclick = #onchange, #onchange = #onclick, returns 
+  #onclick = #onchange, #onchange = #onclick, returns
   */
   static void CyclicReduce(olxstr_dict<olxstr, true> &values);
   // an extention...

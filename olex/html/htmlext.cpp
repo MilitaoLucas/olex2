@@ -26,7 +26,6 @@ THtml::THtml(THtmlManager &manager, wxWindow *Parent,
   AOlxCtrl(this),
   THtmlPreprocessor(pop_name),
   parentCell(0),
-  ObjectsState(*this),
   Manager(manager),
   OnLink(Actions.New("ONLINK")),
   OnURL(Actions.New("ONURL")),
@@ -302,12 +301,11 @@ bool THtml::UpdatePage(bool update_indices) {
   TStrList Res;
   Root->ToStrings(Res, false);
   sw.start("Saving object states");
-  ObjectsState.SaveState();
   Objects.Clear();
   sw.start("Setting the page");
   SetPage(Res.Text(' ').u_str());
   sw.start("Restoring object states");
-  ObjectsState.RestoreState();
+  TObjectsState(*this).RestoreState();
   sw.start("Loading inner html objects");
   wxWindowList &wil = GetChildren();
   TPtrList<THtml> htmls;
@@ -381,7 +379,7 @@ void THtml::DoScroll(int x, int y) {
 //.............................................................................
 void THtml::ScrollWindow(int dx, int dy, const wxRect* rect)  {
   wxHtmlWindow::ScrollWindow(dx, dy,rect);
-} 
+}
 //.............................................................................
 bool THtml::AddControl(const olxstr& Name, AOlxCtrl *Object, wxWindow* wxWin,
   bool Manage)

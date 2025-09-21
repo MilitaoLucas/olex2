@@ -58,6 +58,7 @@
 #include "efile.h"
 
 #include "html/htmlmanager.h"
+#include "html/htmlprep.h"
 
 #include "httpfs.h"
 #include "pyext.h"
@@ -1221,7 +1222,6 @@ void TMainForm::XApp(Olex2App *XA)  {
   GetLibrary().AttachLibrary(HtmlManager.ExportLibrary());
 
   HtmlManager.OnLink.Add(this, ID_ONLINK);
-  HtmlManager.main->OnKey.Add(this, ID_HTMLKEY);
 
   FXApp->SetLabelsVisible(false);
   FXApp->GetRenderer().LightModel.SetClearColor(0x0f0f0f0f);
@@ -2816,7 +2816,7 @@ void TMainForm::SaveSettings(const olxstr& FN) {
   else
     I->AddField("Width", FHtmlPanelWidth);
   I->AddField("Tooltips", HtmlManager.main->GetShowTooltips());
-  I->AddField("Borders", HtmlManager.main->GetBorders());
+  I->AddField("Borders", (int)HtmlManager.main->GetBorder());
   {
     olxstr normal, fixed;
     HtmlManager.main->GetFonts(normal, fixed);
@@ -2974,8 +2974,7 @@ void TMainForm::LoadSettings(const olxstr& FN) {
       HtmlManager.main->SetShowTooltips(Tmp.ToBool());
 
     Tmp = I->FindField("Borders");
-    if (!Tmp.IsEmpty() && Tmp.IsNumber())
-      HtmlManager.main->SetBorders(Tmp.ToInt());
+    // if (!Tmp.IsEmpty() && Tmp.IsNumber())
 
     olxstr nf(I->FindField("NormalFont", EmptyString()));
     olxstr ff(I->FindField("FixedFont", EmptyString()));
@@ -3916,13 +3915,13 @@ bool TMainForm::IsControl(const olxstr& _cname) const {
   size_t di = _cname.IndexOf("->");
   olxstr pname = (di == InvalidIndex ? EmptyString() : _cname.SubStringTo(di));
   olxstr cname = (di == InvalidIndex ? _cname : _cname.SubStringFrom(di+2));
-  THtml* html = HtmlManager.main;
+  TWebView* html = HtmlManager.main;
   if (!pname.IsEmpty()) {
     THtmlManager::TPopupData *pd = HtmlManager.Popups.Find(pname, NULL);
     if (pd != NULL)
       html = pd->Html;
   }
-  return html == NULL ? false : (html->FindObject(cname) != NULL);
+  return html == NULL ? false : (html->Find(cname.u_str()) != NULL);
 }
 //..............................................................................
 void TMainForm::DoUpdateFiles()  {
@@ -4437,3 +4436,6 @@ size_t TMainForm::LoadedFileIdx(const olxstr& fn_) {
 #endif
 }
 //..............................................................................
+
+
+

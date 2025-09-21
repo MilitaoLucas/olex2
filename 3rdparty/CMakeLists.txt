@@ -5,7 +5,11 @@ string(REGEX MATCH "^([0-9]+\\.[0-9]+)" wxVERSION_FAMILY "${wxVERSION}")
 if(NOT wxVERSION_FAMILY)
     message(FATAL_ERROR "Invalid wxVERSION format: ${wxVERSION}. Expected format: X.Y.Z")
 endif()
-
+CPMAddPackage(
+  NAME Ccache.cmake
+  GITHUB_REPOSITORY TheLartians/Ccache.cmake
+  VERSION 1.2
+)
 CPMAddPackage(
     NAME wxWidgetsSource
     VERSION "${wxVERSION}"
@@ -30,6 +34,7 @@ if(wxWidgetsSource_ADDED)
       --enable-aui
       --enable-unicode
       --enable-html
+      --enable-webview
       --disable-sys-libs
       --with-gtk=3
       --with-libjpeg=builtin
@@ -48,6 +53,7 @@ if(wxWidgetsSource_ADDED)
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_aui-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_adv-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_html-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_webview-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_propgrid-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_qa-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_ribbon-${wxVERSION_FAMILY}.a
@@ -112,6 +118,7 @@ if(wxWidgetsSource_ADDED)
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_stc-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_xrc-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_html-${wxVERSION_FAMILY}.a
+      ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_webview-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_qa-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_adv-${wxVERSION_FAMILY}.a
       ${wxWidgets_INSTALL_DIR}/lib/libwx_gtk3u_core-${wxVERSION_FAMILY}.a

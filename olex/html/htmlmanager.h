@@ -9,7 +9,8 @@
 
 #ifndef __olx_htmlmanager_H
 #define __olx_htmlmanager_H
-#include "htmlext.h"
+#include "webview/webview.h" // Use TWebView instead of THtml
+#include "webview/webviewmanager.h" // Use TWebViewManager
 
 class THtmlManager : public AActionHandler {
   wxWindow *mainWindow;
@@ -20,73 +21,23 @@ class THtmlManager : public AActionHandler {
   bool destroyed;
 protected:
   // library
-  DefMacro(ItemState)
-  DefMacro(Update)
-  DefMacro(Home)
-  DefMacro(Load)
-  DefMacro(Dump)
-  DefMacro(Tooltips)
-  DefMacro(SetFonts)
-  DefMacro(SetBorders)
-  DefMacro(DefineControl)
-  DefMacro(Hide)
-  DefMacro(Group)
-  DefMacro(LstObj)
-
-  DefFunc(Refresh)
-  DefFunc(GetValue)
-  DefFunc(GetData)
-  DefFunc(GetLabel)
-  DefFunc(GetImage)
-  DefFunc(GetState)
-  DefFunc(GetItems)
-  DefFunc(SetValue)
-  DefFunc(SetData)
-  DefFunc(SetLabel)
-  DefFunc(SetImage)
-  DefFunc(SetItems)
-  DefFunc(SetState)
-  DefFunc(SetEnabled)
-  DefFunc(SetFG)
-  DefFunc(SetBG)
-  DefFunc(GetFontName)
-  DefFunc(GetBorders)
-  DefFunc(SetFocus)
-  DefFunc(Select)
-  DefFunc(EndModal)
-  DefFunc(ShowModal)
-
-  DefFunc(SaveData)
-  DefFunc(LoadData)
-  DefFunc(GetItemState)
-  DefFunc(IsItem)
-  DefFunc(IsPopup)
-  DefFunc(IsEnabled)
-  DefFunc(Width)
-  DefFunc(Height)
-  DefFunc(ClientWidth)
-  DefFunc(ClientHeight)
-  DefFunc(ContainerWidth)
-  DefFunc(ContainerHeight)
-  DefFunc(Call)
-  DefFunc(Snippet)
   struct Control {
-    THtml *html;
+    TWebView *html; // Changed from THtml*
     AOlxCtrl *ctrl;
     wxWindow *wnd;
     olxstr ctrl_name;
-    Control(THtml *h, AOlxCtrl *c, wxWindow *w, const olxstr &cn)
+    Control(TWebView *h, AOlxCtrl *c, wxWindow *w, const olxstr &cn) // Changed from THtml*
       : html(h), ctrl(c), wnd(w), ctrl_name(cn) {}
-  };
+    };
   // needed = 0 - nothing, 1 - AOlxCtrl, 2 - wxWidow, 3 - both
   Control FindControl(const olxstr &name, TMacroData& me,
     short needed, const char* location);
   bool SetState(const TStrObjList &Params, TMacroData &E);
 public:
-  THtml *main;
+  TWebView *main; // Changed from THtml*
   struct TPopupData  {
     TDialog *Dialog;
-    THtml *Html;
+    TWebView *Html; // Changed from THtml*
   };
   struct DestructionLocker {
     THtmlManager &manager;
@@ -112,7 +63,7 @@ public:
   }
   void LockWindowDestruction(wxWindow* wnd, const IOlxObject* caller);
   void UnlockWindowDestruction(wxWindow* wnd, const IOlxObject* caller);
-  THtml* FindHtml(const olxstr& name) const;
+  TWebView* FindHtml(const olxstr& name) const; // Changed from THtml*
   TPopupData &NewPopup(TDialog *owner, const olxstr &name, long flags=4);
   TLibrary* ExportLibrary(const olxstr &name="html");
 

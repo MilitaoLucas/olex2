@@ -3389,14 +3389,9 @@ void TMainForm::macPopup(TStrObjList& Cmds, const TParamList& Options, TMacroDat
   TDialog* dlg = new TDialog(this, title.u_str(), wxT("htmlPopupWindow"),
     wxPoint(x, y), wxSize(width, height), iBorder);
   pd = &HtmlManager.NewPopup(dlg, Cmds[0]);
-  dlg->OnResize.Add(pd->Html, html_parent_resize, msiExecute);
-  pd->Html->SetWebFolder(TutorialDir);
+  dlg->OnResize.Add(pd->Html, 2, msiExecute);
   if (border.Contains('x')) {
-    pd->Html->SetBorders(0);
   }
-  pd->Html->SetMovable(false);
-  pd->Html->SetOnSizeData(onSize.Replace("\\(", '('));
-  pd->Html->SetOnDblClickData(onDblClick.Replace("\\(", '('));
   dlg->GetClientSize(&width, &height);
   pd->Html->SetSize(width, height);
   try {  pd->Html->LoadPage(Cmds[1].u_str());  }
@@ -3404,9 +3399,6 @@ void TMainForm::macPopup(TStrObjList& Cmds, const TParamList& Options, TMacroDat
     TBasicApp::NewLogEntry(logWarning) << "Failed to load '" << Cmds[1] << '\'';
   }
 
-  pd->Html->OnKey.Add(this, ID_HTMLKEY);
-  pd->Html->OnDblClick.Add(this, ID_ONLINK);
-  pd->Html->OnSize.Add(this, ID_ONLINK);
   if (!Options.GetBoolOption('s')) {
     dlg->Show();
   }
