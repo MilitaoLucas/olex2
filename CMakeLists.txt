@@ -12,42 +12,45 @@ add_subdirectory(3rdparty EXCLUDE_FROM_ALL)
 # Example to get it working with Anaconda or Miniforge. Should work similarly with other environments:
 # -DPython_EXECUTABLE=<conda_home>/envs/<python3.8 environment>/bin/python
 # finding the python version
-execute_process(
-    COMMAND "${Python_EXECUTABLE}" -V
-    OUTPUT_VARIABLE PYTHON_V_OUTPUT
-    ERROR_VARIABLE PYTHON_V_ERROR
-    RESULT_VARIABLE PYTHON_V_RESULT
-)
 
-if (PYTHON_V_RESULT EQUAL 0)
-    # Python 2 often prints to stdout, Python 3 often to stderr
-    if (PYTHON_V_OUTPUT)
-        set(RAW_VERSION_STRING "${PYTHON_V_OUTPUT}")
-    else()
-        set(RAW_VERSION_STRING "${PYTHON_V_ERROR}")
-    endif()
-
-    string(REGEX MATCH "([0-9]+.[0-9]+)" Python_VERSION "${RAW_VERSION_STRING}")
-    message(STATUS "Python version: ${Python_VERSION}")
-else()
-    message(WARNING "Failed to get Python version using '${PYTHON_EXECUTABLE} -V'. Result: ${PYTHON_V_RESULT}")
-    message(WARNING "Output: ${PYTHON_V_OUTPUT}")
-    message(WARNING "Error: ${PYTHON_V_ERROR}")
-endif()
 # end finding the python version
+if (NOT WIN32)
+    execute_process(
+        COMMAND "${Python_EXECUTABLE}" -V
+        OUTPUT_VARIABLE PYTHON_V_OUTPUT
+        ERROR_VARIABLE PYTHON_V_ERROR
+        RESULT_VARIABLE PYTHON_V_RESULT
+    )
 
-if (DEFINED Python_EXECUTABLE)
-  get_filename_component(Python_HOME ${Python_EXECUTABLE} DIRECTORY)
-  get_filename_component(Python_HOME ${Python_HOME} DIRECTORY)
-  set(Python_LIBRARY "${Python_HOME}/lib/libpython${Python_VERSION}.so")
-  set(Python_INCLUDE_DIR "${Python_HOME}/include/python${Python_VERSION}")
+    if (PYTHON_V_RESULT EQUAL 0)
+        # Python 2 often prints to stdout, Python 3 often to stderr
+        if (PYTHON_V_OUTPUT)
+            set(RAW_VERSION_STRING "${PYTHON_V_OUTPUT}")
+        else()
+            set(RAW_VERSION_STRING "${PYTHON_V_ERROR}")
+        endif()
+
+        string(REGEX MATCH "([0-9]+.[0-9]+)" Python_VERSION "${RAW_VERSION_STRING}")
+        message(STATUS "Python version: ${Python_VERSION}")
+    else()
+        message(WARNING "Failed to get Python version using '${PYTHON_EXECUTABLE} -V'. Result: ${PYTHON_V_RESULT}")
+        message(WARNING "Output: ${PYTHON_V_OUTPUT}")
+        message(WARNING "Error: ${PYTHON_V_ERROR}")
+    endif()
+    if (DEFINED Python_EXECUTABLE)
+      get_filename_component(Python_HOME ${Python_EXECUTABLE} DIRECTORY)
+      get_filename_component(Python_HOME ${Python_HOME} DIRECTORY)
+      set(Python_LIBRARY "${Python_HOME}/lib/libpython${Python_VERSION}.so")
+      set(Python_INCLUDE_DIR "${Python_HOME}/include/python${Python_VERSION}")
+    endif ()
+
+    set(Python_FIND_VIRTUALENV "ONLY")
+    set(Python_FIND_STRATEGY "LOCATION")
 endif ()
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 
-set(Python_FIND_VIRTUALENV "ONLY")
-set(Python_FIND_STRATEGY "LOCATION")
-find_package(Python ${Python_VERSION} EXACT COMPONENTS ${DEV_MODULE} Interpreter REQUIRED)
+find_package(Python 3.8 COMPONENTS Interpreter REQUIRED)
 
 if (NOT DEFINED ${Python_INCLUDE_DIRS})
   set(Python_INCLUDE_DIRS ${Python_INCLUDE_DIR})
@@ -61,11 +64,13 @@ endif ()
 message(STATUS "Python libraries: ${Python_LIBRARIES}")
 
 # additional modules
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(PANGOFT2 REQUIRED pangoft2)
-pkg_check_modules(WAYLAND_CLIENT REQUIRED wayland-client)
-pkg_check_modules(WAYLAND_CURSOR REQUIRED wayland-cursor) # Often needed for client apps
-pkg_check_modules(WAYLAND_EGL REQUIRED wayland-egl)
+if (LINUX)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(PANGOFT2 REQUIRED pangoft2)
+    pkg_check_modules(WAYLAND_CLIENT REQUIRED wayland-client)
+    pkg_check_modules(WAYLAND_CURSOR REQUIRED wayland-cursor) # Often needed for client apps
+    pkg_check_modules(WAYLAND_EGL REQUIRED wayland-egl)
+endif ()
 set(OpenGL_GL_PREFERENCE "LEGACY")
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
@@ -144,49 +149,54 @@ INCLUDE_DIRECTORIES("${src}/sdl")
 INCLUDE_DIRECTORIES("${src}/xlib")
 INCLUDE_DIRECTORIES("${src}/xlib/absorpc")
 INCLUDE_DIRECTORIES("${src}/sdl/math")
-INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_2}")
-INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_1}")
-INCLUDE_DIRECTORIES(
-    ${PANGOFT2_INCLUDE_DIRS}
-    ${WAYLAND_CLIENT_INCLUDE_DIRS}
-    ${WAYLAND_CURSOR_INCLUDE_DIRS}
-    ${WAYLAND_EGL_INCLUDE_DIRS}
-)
+if (NOT WIN32)
+    INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_2}")
+    INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_1}")
+    INCLUDE_DIRECTORIES(
+        ${PANGOFT2_INCLUDE_DIRS}
+        ${WAYLAND_CLIENT_INCLUDE_DIRS}
+        ${WAYLAND_CURSOR_INCLUDE_DIRS}
+        ${WAYLAND_EGL_INCLUDE_DIRS}
+    )
+endif ()
+
 ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
 ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS} )
 
 TARGET_LINK_LIBRARIES(unirun PRIVATE
-    wx-static
+#    $<$<PLATFORM_ID:Linux>:wx-static>
+    $<$<PLATFORM_ID:Windows>:wx::core wx::base>
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
     ${PANGOFT2_LIBRARIES}
-    ${WAYLAND_CLIENT_LIBRARIES}
-    ${WAYLAND_CURSOR_LIBRARIES}
+    $<$<PLATFORM_ID:Linux>:${WAYLAND_CLIENT_LIBRARIES}>
+    $<$<PLATFORM_ID:Linux>:${WAYLAND_CURSOR_LIBRARIES}>
     EGL
-    ${WAYLAND_EGL_LIBRARIES}
+    $<$<PLATFORM_ID:Linux>:${WAYLAND_EGL_LIBRARIES}>
     GLU
     ${Python_LIBRARIES}
     ${OPENSSL_LIBRARIES}
-    -lxkbcommon
+    $<$<PLATFORM_ID:Linux>:-lxkbcommon>
 )
 
 
 
 TARGET_LINK_LIBRARIES(olex2 PRIVATE
-    wx-static
+#    $<$<PLATFORM_ID:Linux>:wx-static>
+    $<$<PLATFORM_ID:Windows>:wx::core wx::base>
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
     ${PANGOFT2_LIBRARIES}
-    ${WAYLAND_CLIENT_LIBRARIES}
-    ${WAYLAND_CURSOR_LIBRARIES}
+    $<$<PLATFORM_ID:Linux>:${WAYLAND_CLIENT_LIBRARIES}>
+    $<$<PLATFORM_ID:Linux>:${WAYLAND_CURSOR_LIBRARIES}>
     EGL
-    ${WAYLAND_EGL_LIBRARIES}
+    $<$<PLATFORM_ID:Linux>:${WAYLAND_EGL_LIBRARIES}>
     GLU
     ${Python_LIBRARIES}
     ${OPENSSL_LIBRARIES}
-    -lxkbcommon
+    $<$<PLATFORM_ID:Linux>:-lxkbcommon>
 )
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWXDEBUG_LEVEL=2 -D__WXDEBUG__ -DDEBUG_BITMAP_OPERATIONS")
