@@ -161,7 +161,5 @@ if(NOT WIN32)
   else ()
     message(FATAL_ERROR "Failed to download wxWidgets source using CPM.")
   endif ()
-else()
-    find_package(wxWidgets CONFIG REQUIRED)
 
 endif()

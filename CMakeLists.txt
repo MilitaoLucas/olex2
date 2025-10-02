@@ -1,5 +1,12 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
-
+#set(VCPKG_INSTALLED_DIR "${CMAKE_SOURCE_DIR}/vcpkg_installed" CACHE PATH "Vcpkg installation root directory")
+if (WIN32)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        set(VCPKG_TARGET_TRIPLET "x64-windows-static-md" CACHE STRING "vcpkg triplet" FORCE)
+    else ()
+        set(VCPKG_TARGET_TRIPLET "x64-mingw-static" CACHE STRING "vcpkg triplet" FORCE)
+    endif ()
+endif ()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
@@ -49,19 +56,25 @@ if (NOT WIN32)
 endif ()
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
-
-find_package(Python 3.8 COMPONENTS Interpreter REQUIRED)
+if (DEFINED VCPKG_TARGET_TRIPLET)
+  set(Python3_ROOT_DIR "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}")
+endif ()
+set(Python3_FIND_STRATEGY LOCATION)
+set(Python3_FIND_IMPLEMENTATIONS CPython)
+set(Python3_FIND_VIRTUALENV FIRST)
+find_package(Python3 3.8 EXACT COMPONENTS Interpreter Development REQUIRED)
 
 if (NOT DEFINED ${Python_INCLUDE_DIRS})
   set(Python_INCLUDE_DIRS ${Python_INCLUDE_DIR})
 endif ()
-message(STATUS "Python include: ${Python_INCLUDE_DIRS}")
-INCLUDE_DIRECTORIES(${Python_INCLUDE_DIRS})
-message(STATUS "Python version: ${Python_VERSION}")
-if (NOT DEFINED ${Python_LIBRARIES})
-  set(Python_LIBRARIES ${Python_LIBRARY})
-endif ()
-message(STATUS "Python libraries: ${Python_LIBRARIES}")
+message(STATUS "Using Python3 from: ${Python3_EXECUTABLE}")
+message(STATUS "Python3 version: ${Python3_VERSION}")
+message(STATUS "Python3 includes: ${Python3_INCLUDE_DIRS}")
+message(STATUS "Python3 libs: ${Python3_LIBRARIES}")
+INCLUDE_DIRECTORIES(${Python3_INCLUDE_DIRS})
+#if (NOT DEFINED ${Python_LIBRARIES})
+#  set(Python_LIBRARIES ${Python_LIBRARY})
+#endif ()
 
 # additional modules
 if (LINUX)
@@ -160,51 +173,94 @@ if (NOT WIN32)
     )
 endif ()
 
-ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
-ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS} )
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_compile_options("/MP")
+endif ()
+if (WIN32)
+    ADD_EXECUTABLE(unirun WIN32 ${unirun_SRCS} ${all_SRCS})
+    ADD_EXECUTABLE(olex2 WIN32 ${olex2_SRCS} ${all_SRCS} )
+    set(wxWidgets_USE_STATIC 1)
+    find_package(wxWidgets CONFIG REQUIRED)
+else ()
+    ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
+    ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS} )
+endif ()
 
+add_library(wx-static INTERFACE IMPORTED GLOBAL)
+target_link_libraries(wx-static INTERFACE
+    wx::core
+    wx::wxnet
+    wx::wxgl
+    wx::wxhtml
+    wx::wxrichtext
+    wx::wxstc
+)
 TARGET_LINK_LIBRARIES(unirun PRIVATE
-#    $<$<PLATFORM_ID:Linux>:wx-static>
-    $<$<PLATFORM_ID:Windows>:wx::core wx::base>
+    wx-static
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
     ${PANGOFT2_LIBRARIES}
     $<$<PLATFORM_ID:Linux>:${WAYLAND_CLIENT_LIBRARIES}>
     $<$<PLATFORM_ID:Linux>:${WAYLAND_CURSOR_LIBRARIES}>
-    EGL
+    $<$<PLATFORM_ID:Linux>:EGL GLU>
     $<$<PLATFORM_ID:Linux>:${WAYLAND_EGL_LIBRARIES}>
-    GLU
-    ${Python_LIBRARIES}
+    Python3::Python
     ${OPENSSL_LIBRARIES}
     $<$<PLATFORM_ID:Linux>:-lxkbcommon>
 )
-
-
 
 TARGET_LINK_LIBRARIES(olex2 PRIVATE
-#    $<$<PLATFORM_ID:Linux>:wx-static>
-    $<$<PLATFORM_ID:Windows>:wx::core wx::base>
+    wx-static
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
     ${PANGOFT2_LIBRARIES}
     $<$<PLATFORM_ID:Linux>:${WAYLAND_CLIENT_LIBRARIES}>
     $<$<PLATFORM_ID:Linux>:${WAYLAND_CURSOR_LIBRARIES}>
-    EGL
+    $<$<PLATFORM_ID:Linux>:EGL GLU>
     $<$<PLATFORM_ID:Linux>:${WAYLAND_EGL_LIBRARIES}>
-    GLU
-    ${Python_LIBRARIES}
+    Python3::Python
     ${OPENSSL_LIBRARIES}
     $<$<PLATFORM_ID:Linux>:-lxkbcommon>
 )
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWXDEBUG_LEVEL=2 -D__WXDEBUG__ -DDEBUG_BITMAP_OPERATIONS")
-    # Add memory debugging
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
-    set(_DEBUG_DEFINITIONS ${DEBUG_BITMAP_OPERATIONS} ${__WXDEBUG__})
-endif()
+if (WIN32)
+  target_link_libraries(olex2 PRIVATE Iphlpapi)
+  target_link_libraries(unirun PRIVATE Iphlpapi)
+endif ()
+option(ENABLE_ASAN "Enable AddressSanitizer in Debug builds" ON)
+include(CheckCXXCompilerFlag)
+if (ENABLE_ASAN AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        check_cxx_compiler_flag("/fsanitize=address" HAS_ASAN_MSVC)
+        if (HAS_ASAN_MSVC)
+            add_compile_options(/fsanitize=address)
+            add_link_options(/fsanitize=address)
+        else ()
+            message(WARNING "ASan not supported by this MSVC version. Disabling.")
+        endif ()
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        check_cxx_compiler_flag("-fsanitize=address" HAS_ASAN_CLANG)
+        if (HAS_ASAN_CLANG)
+            add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+            add_link_options(-fsanitize=address)
+        else ()
+            message(WARNING "Clang built without ASan. Disabling.")
+        endif ()
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        if (WIN32)
+            message(WARNING "GCC/MinGW without libasan detected. Disabling ASan.")
+        else ()
+            check_cxx_compiler_flag("-fsanitize=address" HAS_ASAN_GCC)
+            if (HAS_ASAN_GCC)
+                add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+                add_link_options(-fsanitize=address)
+            else ()
+                message(WARNING "GCC without ASan support. Disabling.")
+            endif ()
+        endif ()
+    endif ()
+endif ()
 
 # Add runtime bitmap validation
 target_compile_definitions(olex2 PRIVATE _PYTHON _OPENSSL  _DEBUG_DEFINITIONS)
