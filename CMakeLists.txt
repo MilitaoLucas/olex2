@@ -51,18 +51,22 @@ if (NOT WIN32)
       set(Python_INCLUDE_DIR "${Python_HOME}/include/python${Python_VERSION}")
     endif ()
 
+    set(Python3_ROOT_DIR ${Python_HOME})
     set(Python_FIND_VIRTUALENV "ONLY")
     set(Python_FIND_STRATEGY "LOCATION")
+    find_package(Python3 3.8 EXACT COMPONENTS Interpreter Development REQUIRED)
 endif ()
+
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 if (DEFINED VCPKG_TARGET_TRIPLET)
   set(Python3_ROOT_DIR "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}")
+  set(Python3_FIND_STRATEGY LOCATION)
+  set(Python3_FIND_IMPLEMENTATIONS CPython)
+  set(Python3_FIND_VIRTUALENV FIRST)
+  find_package(Python3 3.8 EXACT COMPONENTS Interpreter Development REQUIRED)
 endif ()
-set(Python3_FIND_STRATEGY LOCATION)
-set(Python3_FIND_IMPLEMENTATIONS CPython)
-set(Python3_FIND_VIRTUALENV FIRST)
-find_package(Python3 3.8 EXACT COMPONENTS Interpreter Development REQUIRED)
+
 
 if (NOT DEFINED ${Python_INCLUDE_DIRS})
   set(Python_INCLUDE_DIRS ${Python_INCLUDE_DIR})
@@ -186,15 +190,17 @@ else ()
     ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS} )
 endif ()
 
-add_library(wx-static INTERFACE IMPORTED GLOBAL)
-target_link_libraries(wx-static INTERFACE
-    wx::core
-    wx::wxnet
-    wx::wxgl
-    wx::wxhtml
-    wx::wxrichtext
-    wx::wxstc
-)
+if (DEFINED VCPKG_TARGET_TRIPLET)
+  add_library(wx-static INTERFACE IMPORTED GLOBAL)
+  target_link_libraries(wx-static INTERFACE
+      wx::core
+      wx::wxnet
+      wx::wxgl
+      wx::wxhtml
+      wx::wxrichtext
+      wx::wxstc
+  )
+endif ()
 TARGET_LINK_LIBRARIES(unirun PRIVATE
     wx-static
     ${OPENGL_LIBRARIES}
