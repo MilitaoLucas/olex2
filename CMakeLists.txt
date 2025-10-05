@@ -1,12 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
-#set(VCPKG_INSTALLED_DIR "${CMAKE_SOURCE_DIR}/vcpkg_installed" CACHE PATH "Vcpkg installation root directory")
-if (WIN32)
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set(VCPKG_TARGET_TRIPLET "x64-windows-static-md" CACHE STRING "vcpkg triplet" FORCE)
-    else ()
-        set(VCPKG_TARGET_TRIPLET "x64-mingw-static" CACHE STRING "vcpkg triplet" FORCE)
-    endif ()
-endif ()
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
@@ -19,75 +12,60 @@ add_subdirectory(3rdparty EXCLUDE_FROM_ALL)
 # Example to get it working with Anaconda or Miniforge. Should work similarly with other environments:
 # -DPython_EXECUTABLE=<conda_home>/envs/<python3.8 environment>/bin/python
 # finding the python version
+execute_process(
+    COMMAND "${Python_EXECUTABLE}" -V
+    OUTPUT_VARIABLE PYTHON_V_OUTPUT
+    ERROR_VARIABLE PYTHON_V_ERROR
+    RESULT_VARIABLE PYTHON_V_RESULT
+)
 
-# end finding the python version
-if (NOT WIN32)
-    execute_process(
-        COMMAND "${Python_EXECUTABLE}" -V
-        OUTPUT_VARIABLE PYTHON_V_OUTPUT
-        ERROR_VARIABLE PYTHON_V_ERROR
-        RESULT_VARIABLE PYTHON_V_RESULT
-    )
-
-    if (PYTHON_V_RESULT EQUAL 0)
-        # Python 2 often prints to stdout, Python 3 often to stderr
-        if (PYTHON_V_OUTPUT)
-            set(RAW_VERSION_STRING "${PYTHON_V_OUTPUT}")
-        else()
-            set(RAW_VERSION_STRING "${PYTHON_V_ERROR}")
-        endif()
-
-        string(REGEX MATCH "([0-9]+.[0-9]+)" Python_VERSION "${RAW_VERSION_STRING}")
-        message(STATUS "Python version: ${Python_VERSION}")
+if (PYTHON_V_RESULT EQUAL 0)
+    # Python 2 often prints to stdout, Python 3 often to stderr
+    if (PYTHON_V_OUTPUT)
+        set(RAW_VERSION_STRING "${PYTHON_V_OUTPUT}")
     else()
-        message(WARNING "Failed to get Python version using '${PYTHON_EXECUTABLE} -V'. Result: ${PYTHON_V_RESULT}")
-        message(WARNING "Output: ${PYTHON_V_OUTPUT}")
-        message(WARNING "Error: ${PYTHON_V_ERROR}")
+        set(RAW_VERSION_STRING "${PYTHON_V_ERROR}")
     endif()
-    if (DEFINED Python_EXECUTABLE)
-      get_filename_component(Python_HOME ${Python_EXECUTABLE} DIRECTORY)
-      get_filename_component(Python_HOME ${Python_HOME} DIRECTORY)
-      set(Python_LIBRARY "${Python_HOME}/lib/libpython${Python_VERSION}.so")
-      set(Python_INCLUDE_DIR "${Python_HOME}/include/python${Python_VERSION}")
-    endif ()
 
-    set(Python3_ROOT_DIR ${Python_HOME})
-    set(Python_FIND_VIRTUALENV "ONLY")
-    set(Python_FIND_STRATEGY "LOCATION")
-    find_package(Python3 3.8 EXACT COMPONENTS Interpreter Development REQUIRED)
+    string(REGEX MATCH "([0-9]+.[0-9]+)" Python_VERSION "${RAW_VERSION_STRING}")
+    message(STATUS "Python version: ${Python_VERSION}")
+else()
+    message(WARNING "Failed to get Python version using '${PYTHON_EXECUTABLE} -V'. Result: ${PYTHON_V_RESULT}")
+    message(WARNING "Output: ${PYTHON_V_OUTPUT}")
+    message(WARNING "Error: ${PYTHON_V_ERROR}")
+endif()
+# end finding the python version
+
+if (DEFINED Python_EXECUTABLE)
+  get_filename_component(Python_HOME ${Python_EXECUTABLE} DIRECTORY)
+  get_filename_component(Python_HOME ${Python_HOME} DIRECTORY)
+  set(Python_LIBRARY "${Python_HOME}/lib/libpython${Python_VERSION}.so")
+  set(Python_INCLUDE_DIR "${Python_HOME}/include/python${Python_VERSION}")
 endif ()
-
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
-if (DEFINED VCPKG_TARGET_TRIPLET)
-  set(Python3_ROOT_DIR "${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}")
-  set(Python3_FIND_STRATEGY LOCATION)
-  set(Python3_FIND_IMPLEMENTATIONS CPython)
-  set(Python3_FIND_VIRTUALENV FIRST)
-  find_package(Python3 3.8 EXACT COMPONENTS Interpreter Development REQUIRED)
-endif ()
 
+set(Python_FIND_VIRTUALENV "ONLY")
+set(Python_FIND_STRATEGY "LOCATION")
+find_package(Python ${Python_VERSION} EXACT COMPONENTS ${DEV_MODULE} Interpreter REQUIRED)
 
 if (NOT DEFINED ${Python_INCLUDE_DIRS})
   set(Python_INCLUDE_DIRS ${Python_INCLUDE_DIR})
 endif ()
-message(STATUS "Using Python3 from: ${Python3_EXECUTABLE}")
-message(STATUS "Python3 version: ${Python3_VERSION}")
-message(STATUS "Python3 includes: ${Python3_INCLUDE_DIRS}")
-message(STATUS "Python3 libs: ${Python3_LIBRARIES}")
-INCLUDE_DIRECTORIES(${Python3_INCLUDE_DIRS})
-#if (NOT DEFINED ${Python_LIBRARIES})
-#  set(Python_LIBRARIES ${Python_LIBRARY})
-#endif ()
+message(STATUS "Python include: ${Python_INCLUDE_DIRS}")
+INCLUDE_DIRECTORIES(${Python_INCLUDE_DIRS})
+message(STATUS "Python version: ${Python_VERSION}")
+if (NOT DEFINED ${Python_LIBRARIES})
+  set(Python_LIBRARIES ${Python_LIBRARY})
+endif ()
+message(STATUS "Python libraries: ${Python_LIBRARIES}")
 
 # additional modules
-if (LINUX)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(PANGOFT2 REQUIRED pangoft2)
-    pkg_check_modules(WAYLAND_CLIENT REQUIRED wayland-client)
-    pkg_check_modules(WAYLAND_CURSOR REQUIRED wayland-cursor) # Often needed for client apps
-    pkg_check_modules(WAYLAND_EGL REQUIRED wayland-egl)
-endif ()
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(PANGOFT2 REQUIRED pangoft2)
+pkg_check_modules(WAYLAND_CLIENT REQUIRED wayland-client)
+pkg_check_modules(WAYLAND_CURSOR REQUIRED wayland-cursor) # Often needed for client apps
+pkg_check_modules(WAYLAND_EGL REQUIRED wayland-egl)
 set(OpenGL_GL_PREFERENCE "LEGACY")
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
@@ -166,107 +144,70 @@ INCLUDE_DIRECTORIES("${src}/sdl")
 INCLUDE_DIRECTORIES("${src}/xlib")
 INCLUDE_DIRECTORIES("${src}/xlib/absorpc")
 INCLUDE_DIRECTORIES("${src}/sdl/math")
-if (NOT WIN32)
-    INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_2}")
-    INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_1}")
-    INCLUDE_DIRECTORIES(
-        ${PANGOFT2_INCLUDE_DIRS}
-        ${WAYLAND_CLIENT_INCLUDE_DIRS}
-        ${WAYLAND_CURSOR_INCLUDE_DIRS}
-        ${WAYLAND_EGL_INCLUDE_DIRS}
-    )
-endif ()
+#INCLUDE_DIRECTORIES("${wxWidgets_ROOT_DIR}/lib/wx/include/gtk3-unicode-static-3.2")
+#INCLUDE_DIRECTORIES("${wxWidgets_SOURCE_DIR}/interface/wx")
+#INCLUDE_DIRECTORIES("${wxWidgets_SOURCE_DIR}/include/wx")
+ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS} )
+ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options("/MP")
-endif ()
-if (WIN32)
-    ADD_EXECUTABLE(unirun WIN32 ${unirun_SRCS} ${all_SRCS})
-    ADD_EXECUTABLE(olex2 WIN32 ${olex2_SRCS} ${all_SRCS} )
-    set(wxWidgets_USE_STATIC 1)
-    find_package(wxWidgets CONFIG REQUIRED)
-else ()
-    ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
-    ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS} )
-endif ()
+message(WARNING ${wxWidgets_CXX_FLAGS})
+INCLUDE_DIRECTORIES(
+    ${PANGOFT2_INCLUDE_DIRS}
+    ${WAYLAND_CLIENT_INCLUDE_DIRS}
+    ${WAYLAND_CURSOR_INCLUDE_DIRS}
+    ${WAYLAND_EGL_INCLUDE_DIRS}
+)
 
-if (DEFINED VCPKG_TARGET_TRIPLET)
-  add_library(wx-static INTERFACE IMPORTED GLOBAL)
-  target_link_libraries(wx-static INTERFACE
-      wx::core
-      wx::wxnet
-      wx::wxgl
-      wx::wxhtml
-      wx::wxrichtext
-      wx::wxstc
-  )
-endif ()
 TARGET_LINK_LIBRARIES(unirun PRIVATE
-    wx-static
+    wx::base
+    wx::core
+    wx::gl
+    wx::net
+    wx::html
+    wx::stc
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
     ${PANGOFT2_LIBRARIES}
-    $<$<PLATFORM_ID:Linux>:${WAYLAND_CLIENT_LIBRARIES}>
-    $<$<PLATFORM_ID:Linux>:${WAYLAND_CURSOR_LIBRARIES}>
-    $<$<PLATFORM_ID:Linux>:EGL GLU>
-    $<$<PLATFORM_ID:Linux>:${WAYLAND_EGL_LIBRARIES}>
-    Python3::Python
+    ${WAYLAND_CLIENT_LIBRARIES}
+    ${WAYLAND_CURSOR_LIBRARIES}
+    EGL
+    ${WAYLAND_EGL_LIBRARIES}
+    GLU
+    ${Python_LIBRARIES}
     ${OPENSSL_LIBRARIES}
-    $<$<PLATFORM_ID:Linux>:-lxkbcommon>
+    -lxkbcommon
 )
+
+
 
 TARGET_LINK_LIBRARIES(olex2 PRIVATE
-    wx-static
+    wx::base
+    wx::core
+    wx::gl
+    wx::net
+    wx::html
+    wx::stc
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
     ${PANGOFT2_LIBRARIES}
-    $<$<PLATFORM_ID:Linux>:${WAYLAND_CLIENT_LIBRARIES}>
-    $<$<PLATFORM_ID:Linux>:${WAYLAND_CURSOR_LIBRARIES}>
-    $<$<PLATFORM_ID:Linux>:EGL GLU>
-    $<$<PLATFORM_ID:Linux>:${WAYLAND_EGL_LIBRARIES}>
-    Python3::Python
+    ${WAYLAND_CLIENT_LIBRARIES}
+    ${WAYLAND_CURSOR_LIBRARIES}
+    EGL
+    ${WAYLAND_EGL_LIBRARIES}
+    GLU
+    ${Python_LIBRARIES}
     ${OPENSSL_LIBRARIES}
-    $<$<PLATFORM_ID:Linux>:-lxkbcommon>
+    -lxkbcommon
 )
-if (WIN32)
-  target_link_libraries(olex2 PRIVATE Iphlpapi)
-  target_link_libraries(unirun PRIVATE Iphlpapi)
-endif ()
-option(ENABLE_ASAN "Enable AddressSanitizer in Debug builds" ON)
-include(CheckCXXCompilerFlag)
-if (ENABLE_ASAN AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        check_cxx_compiler_flag("/fsanitize=address" HAS_ASAN_MSVC)
-        if (HAS_ASAN_MSVC)
-            add_compile_options(/fsanitize=address)
-            add_link_options(/fsanitize=address)
-        else ()
-            message(WARNING "ASan not supported by this MSVC version. Disabling.")
-        endif ()
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        check_cxx_compiler_flag("-fsanitize=address" HAS_ASAN_CLANG)
-        if (HAS_ASAN_CLANG)
-            add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
-            add_link_options(-fsanitize=address)
-        else ()
-            message(WARNING "Clang built without ASan. Disabling.")
-        endif ()
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        if (WIN32)
-            message(WARNING "GCC/MinGW without libasan detected. Disabling ASan.")
-        else ()
-            check_cxx_compiler_flag("-fsanitize=address" HAS_ASAN_GCC)
-            if (HAS_ASAN_GCC)
-                add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
-                add_link_options(-fsanitize=address)
-            else ()
-                message(WARNING "GCC without ASan support. Disabling.")
-            endif ()
-        endif ()
-    endif ()
-endif ()
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWXDEBUG_LEVEL=2 -D__WXDEBUG__ -DDEBUG_BITMAP_OPERATIONS")
+    # Add memory debugging
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+    set(_DEBUG_DEFINITIONS ${DEBUG_BITMAP_OPERATIONS} ${__WXDEBUG__})
+endif()
 
 # Add runtime bitmap validation
 target_compile_definitions(olex2 PRIVATE _PYTHON _OPENSSL  _DEBUG_DEFINITIONS)
