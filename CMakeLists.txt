@@ -66,6 +66,8 @@ pkg_check_modules(PANGOFT2 REQUIRED pangoft2)
 pkg_check_modules(WAYLAND_CLIENT REQUIRED wayland-client)
 pkg_check_modules(WAYLAND_CURSOR REQUIRED wayland-cursor) # Often needed for client apps
 pkg_check_modules(WAYLAND_EGL REQUIRED wayland-egl)
+
+pkg_check_modules(WEBKIT2GTK REQUIRED webkit2gtk-4.0)
 set(OpenGL_GL_PREFERENCE "LEGACY")
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
@@ -147,21 +149,30 @@ INCLUDE_DIRECTORIES("${src}/sdl")
 INCLUDE_DIRECTORIES("${src}/xlib")
 INCLUDE_DIRECTORIES("${src}/xlib/absorpc")
 INCLUDE_DIRECTORIES("${src}/sdl/math")
-INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_1}")
-INCLUDE_DIRECTORIES("${wxWidgets_INCLUDE_DIR_2}")
+#INCLUDE_DIRECTORIES("${wxWidgets_ROOT_DIR}/lib/wx/include/gtk3-unicode-static-3.2")
+#INCLUDE_DIRECTORIES("${wxWidgets_SOURCE_DIR}/interface/wx")
+#INCLUDE_DIRECTORIES("${wxWidgets_SOURCE_DIR}/include/wx")
+
+message(WARNING ${wxWidgets_CXX_FLAGS})
 INCLUDE_DIRECTORIES(
     ${PANGOFT2_INCLUDE_DIRS}
+    ${WEBKIT2GTK_LIBRARIES}
     ${WAYLAND_CLIENT_INCLUDE_DIRS}
     ${WAYLAND_CURSOR_INCLUDE_DIRS}
     ${WAYLAND_EGL_INCLUDE_DIRS}
 )
-ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
+
 ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS} )
-#INCLUDE_DIRECTORIES(${WEBKIT2GTK_INCLUDE_DIRS})
-#message(WARNING ${WEBKIT2GTK_LIBRARIES})
+ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
 TARGET_LINK_LIBRARIES(unirun PRIVATE
-    wx-static
     ${WEBKIT2GTK_LIBRARIES}
+    wx::base
+    wx::core
+    wx::html
+    wx::webview
+    wx::gl
+    wx::net
+    wx::stc
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
@@ -179,8 +190,14 @@ TARGET_LINK_LIBRARIES(unirun PRIVATE
 
 
 TARGET_LINK_LIBRARIES(olex2 PRIVATE
-    wx-static
     ${WEBKIT2GTK_LIBRARIES}
+    wx::base
+    wx::core
+    wx::html
+    wx::webview
+    wx::gl
+    wx::net
+    wx::stc
     ${OPENGL_LIBRARIES}
     ${Fontconfig_LIBRARIES}
     ${EXPAT_LIBRARIES}
