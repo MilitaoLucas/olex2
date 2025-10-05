@@ -12,7 +12,7 @@
 #include "fsext.h"
 #include "utf8file.h"
 #include "olxstate.h"
-#include "webview/webview.h" // Include TWebView
+#include "webview/twebview.h" // Include TWebView
 #include "webview/webviewmanager.h" // Include TWebViewManager
 // #include "imgcellext.h" // THtmlImageCell is replaced by TWebView functionality
 

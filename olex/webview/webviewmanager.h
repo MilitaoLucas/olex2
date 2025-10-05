@@ -1,7 +1,7 @@
 #ifndef __olx_webview_manager_H
 #define __olx_webview_manager_H
 
-#include "webview.h"
+#include "twebview.h"
 
 class TWebViewManager {
 public:

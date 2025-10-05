@@ -9,7 +9,7 @@
 
 #ifndef __olx_htmlmanager_H
 #define __olx_htmlmanager_H
-#include "webview/webview.h" // Use TWebView instead of THtml
+#include "webview/twebview.h" // Use TWebView instead of THtml
 #include "webview/webviewmanager.h" // Use TWebViewManager
 
 class THtmlManager : public AActionHandler {

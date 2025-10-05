@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -152,25 +152,36 @@ INCLUDE_DIRECTORIES("${src}/sdl/math")
 #INCLUDE_DIRECTORIES("${wxWidgets_ROOT_DIR}/lib/wx/include/gtk3-unicode-static-3.2")
 #INCLUDE_DIRECTORIES("${wxWidgets_SOURCE_DIR}/interface/wx")
 #INCLUDE_DIRECTORIES("${wxWidgets_SOURCE_DIR}/include/wx")
-
-message(WARNING ${wxWidgets_CXX_FLAGS})
+set(wxWidgets_CXX_FLAGS_str "-I/home/lucas/Documents/olex2/cmake-build-testing331/_deps/wxwidgets-build/lib/wx/include/gtk3-unicode-static-3.3 -I/home/lucas/Documents/olex2/cmake-build-testing331/_deps/wxwidgets-src/include -D__WXGTK3__ -D__WXGTK__ -D_FILE_OFFSET_BITS=64")
+string(APPEND CMAKE_CXX_FLAGS " ${wxWidgets_CXX_FLAGS_str}")
+message(WARNING ${WEBKIT2GTK_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(
     ${PANGOFT2_INCLUDE_DIRS}
-    ${WEBKIT2GTK_LIBRARIES}
+    ${WEBKIT2GTK_INCLUDE_DIRS}
     ${WAYLAND_CLIENT_INCLUDE_DIRS}
     ${WAYLAND_CURSOR_INCLUDE_DIRS}
     ${WAYLAND_EGL_INCLUDE_DIRS}
+
 )
 
 ADD_EXECUTABLE(olex2 ${olex2_SRCS} ${all_SRCS} )
 ADD_EXECUTABLE(unirun ${unirun_SRCS} ${all_SRCS})
+
+foreach(_t unirun olex2)
+  target_include_directories(${_t} BEFORE PRIVATE
+    ${wxWidgets_SOURCE_DIR}/include
+    ${wxWidgets_BINARY_DIR}/lib/wx/include/gtk3-unicode-static-3.2
+  )
+endforeach()
 TARGET_LINK_LIBRARIES(unirun PRIVATE
-    ${WEBKIT2GTK_LIBRARIES}
     wx::base
     wx::core
     wx::html
     wx::webview
+    /home/lucas/Documents/olex2/cmake-build-testing328rel/_deps/wxwidgets-build/lib/libwx_gtk3u_webview-3.2.a
+    ${WEBKIT2GTK_LIBRARIES}
     wx::gl
+    wx::xml
     wx::net
     wx::stc
     ${OPENGL_LIBRARIES}
@@ -190,12 +201,14 @@ TARGET_LINK_LIBRARIES(unirun PRIVATE
 
 
 TARGET_LINK_LIBRARIES(olex2 PRIVATE
-    ${WEBKIT2GTK_LIBRARIES}
     wx::base
     wx::core
     wx::html
     wx::webview
+    /home/lucas/Documents/olex2/cmake-build-testing328rel/_deps/wxwidgets-build/lib/libwx_gtk3u_webview-3.2.a
+    ${WEBKIT2GTK_LIBRARIES}
     wx::gl
+    wx::xml
     wx::net
     wx::stc
     ${OPENGL_LIBRARIES}

@@ -1,4 +1,4 @@
-#include "webview.h"
+#include "twebview.h"
 
 BEGIN_EVENT_TABLE(TWebView, wxWebView)
   EVT_WEBVIEW_NAVIGATING(wxID_ANY, TWebView::OnNavigationRequest)
@@ -21,7 +21,7 @@ TWebView::~TWebView()
 bool TWebView::Create(wxWindow *parent, wxWindowID id, const wxString &url,
                       const wxPoint &pos, const wxSize &size, long style,
                       const wxString &name) {
-  return wxWebView::Create(parent, id, url, pos, size, style, name);
+  return TWebView::Create(parent, id, url, pos, size, style, name);
 }
 
 void TWebView::SetFonts(const olxstr &normal, const olxstr &fixed)
@@ -113,13 +113,13 @@ bool TWebView::LoadPage(const wxString &File)
     PageLoadRequested = true;
     return true;
   }
-  wxWebView::LoadURL(File);
+  TWebView::LoadURL(File);
   return true;
 }
 
 bool TWebView::UpdatePage(bool update_indices)
 {
-  wxWebView::Reload();
+  TWebView::Reload();
   return true;
 }
 
@@ -146,7 +146,7 @@ bool TWebView::Dispatch(int MsgId, short MsgSubId, const esdl::IOlxObject* Sende
 
 void TWebView::RunScript(const wxString& javascript)
 {
-  wxWebView::RunScript(javascript);
+  TWebView::RunScript(javascript);
 }
 
 void TWebView::AddImageHotspot(const wxString& imageId, int x, int y, int width, int height, const wxString& href)

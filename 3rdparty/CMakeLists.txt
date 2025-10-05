@@ -6,6 +6,8 @@ if(NOT wxVERSION_FAMILY)
     message(FATAL_ERROR "Invalid wxVERSION format: ${wxVERSION}. Expected format: X.Y.Z")
 endif()
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(WEBKIT2GTK REQUIRED webkit2gtk-4.0)
 CPMAddPackage(
   NAME Ccache.cmake
   GITHUB_REPOSITORY TheLartians/Ccache.cmake
@@ -30,8 +32,7 @@ CPMAddPackage(
         "wxUSE_WEBVIEW ON"
         "wxUSE_WEBVIEW_WEBKIT ON"
 )
+
 set(wxWidgets_ROOT_DIR ${wxWidgets_BINARY_DIR} PARENT_SCOPE)
 set(wxWidgets_SOURCE_DIR ${wxWidgets_SOURCE_DIR} PARENT_SCOPE)
-add_library(wx-static INTERFACE IMPORTED GLOBAL)
-add_dependencies(wx-static wxWidgets)
-message(WARNING ${wxWidgets_USE_FILE})
+message(WARNING ${wxWidgets_INCLUDE_DIRS})
