@@ -22,7 +22,6 @@ CPMAddPackage(
     OPTIONS
         "wxBUILD_SHARED OFF"
         "wxUSE_REGEX builtin"
-#        "wxUSE_ZLIB builtin"
         "wxUSE_EXPAT builtin"
         "wxUSE_LIBJPEG builtin"
         "wxUSE_LIBPNG builtin"
@@ -30,6 +29,3 @@ CPMAddPackage(
 )
 set(wxWidgets_ROOT_DIR ${wxWidgets_BINARY_DIR} PARENT_SCOPE)
 set(wxWidgets_SOURCE_DIR ${wxWidgets_SOURCE_DIR} PARENT_SCOPE)
-add_library(wx-static INTERFACE IMPORTED GLOBAL)
-add_dependencies(wx-static wxWidgets)
-message(WARNING ${wxWidgets_USE_FILE})
