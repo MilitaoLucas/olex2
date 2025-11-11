@@ -1616,7 +1616,7 @@ bool TMainForm::Dispatch(int MsgId, short MsgSubId, const IOlxObject *Sender,
   }
 
   if (MsgId == ID_TIMER && wxThread::IsMain() &&
-    StartupInitialised && Py_IsInitialized() && PyEval_ThreadsInitialized())
+    StartupInitialised && Py_IsInitialized()) // PyEval_ThreadsInitialized() always returns true since Python3.7 (https://github.com/python/cpython/issues/105182)
   {
     size_t tc = OlexPyCore::GetRunningPythonThreadsCount();
     if (tc > 0) {

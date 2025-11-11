@@ -47,7 +47,7 @@ include_directories(${OPENSSL_INCLUDE_DIR})
 
 set(Python_FIND_VIRTUALENV "ONLY")
 set(Python_FIND_STRATEGY "LOCATION")
-find_package(Python ${Python_VERSION} EXACT COMPONENTS ${DEV_MODULE} Interpreter Development REQUIRED)
+find_package(Python3 ${Python_VERSION} EXACT COMPONENTS ${DEV_MODULE} Interpreter Development REQUIRED)
 
 if (NOT DEFINED ${Python_INCLUDE_DIRS})
   set(Python_INCLUDE_DIRS ${Python_INCLUDE_DIR})
@@ -75,6 +75,9 @@ include_directories(${OPENGL_INCLUDE_DIR})
 # Add user provided compile options
 if (DEFINED $ENV{OLEX2_DIR})
   set(OLEX2_GUI $ENV{OLEX2_DIR})
+endif ()
+if (${Python_VERSION} VERSION_GREATER "3.9")
+  set(_PYG39 "TRUE")
 endif ()
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
@@ -180,7 +183,7 @@ TARGET_LINK_LIBRARIES(olex2 PRIVATE
     ${WAYLAND_EGL_LIBRARIES}
     $<$<NOT:$<PLATFORM_ID:Darwin>>:GLU>
 #    ${Python_LIBRARIES}
-    Python::Python
+    Python3::Python
     ${OPENSSL_LIBRARIES}
     $<$<NOT:$<PLATFORM_ID:Darwin>>:-lxkbcommon>
 )
@@ -203,7 +206,7 @@ TARGET_LINK_LIBRARIES(olex2_exe PRIVATE
     $<$<PLATFORM_ID:Darwin>:$<LINK_LIBRARY:FRAMEWORK,AGL>>
     ${WAYLAND_EGL_LIBRARIES}
     $<$<NOT:$<PLATFORM_ID:Darwin>>:GLU>
-    Python::Python
+    Python3::Python
     ${OPENSSL_LIBRARIES}
     $<$<NOT:$<PLATFORM_ID:Darwin>>:-lxkbcommon>
 
@@ -211,8 +214,8 @@ TARGET_LINK_LIBRARIES(olex2_exe PRIVATE
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWXDEBUG_LEVEL=2 -D__WXDEBUG__ -DDEBUG_BITMAP_OPERATIONS")
     # Add memory debugging
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -g")
+#    set(CMAKE_EXE_LINKER_jFLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
     set(_DEBUG_DEFINITIONS ${DEBUG_BITMAP_OPERATIONS} ${__WXDEBUG__} "_DEBUG" "OLX_DEBUG")
 elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
     message(WARNING "RELEASE TEST")
@@ -221,8 +224,8 @@ elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-sanitize=all")
 # Add runtime bitmap validation
-target_compile_definitions(olex2_exe PRIVATE _PYTHON _OPENSSL  _DEBUG_DEFINITIONS __WXWIDGETS__)
-target_compile_definitions(olex2 PRIVATE _PYTHON _OPENSSL _DEBUG_DEFINITIONS __WXWIDGETS__)
+target_compile_definitions(olex2_exe PRIVATE _PYTHON _OPENSSL  _DEBUG_DEFINITIONS __WXWIDGETS__ _PYG39)
+target_compile_definitions(olex2 PRIVATE _PYTHON _OPENSSL _DEBUG_DEFINITIONS __WXWIDGETS__ _PYG39)
 if (APPLE)
     string(REGEX MATCH "^([0-9]+\\.[0-9]+)" Python_VERSION_SHORT "${Python_VERSION}")
     get_target_property(PYTHON_LIB_LOCATION Python::Python LOCATION)
