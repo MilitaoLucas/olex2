@@ -39,7 +39,9 @@ protected:
     // analyse "from" atom
     size_t a_cnt = 0;
     for (size_t i = 0; i < a.AttachedSiteCount(); i++) {
-      if (a.GetAttachedAtom(i).GetType().z >= 1) {
+      if (a.GetAttachedAtom(i).GetType().z >= 1 &&
+        a.GetAttachedAtom(i).IsAvailable())
+      {
         a_cnt++;
       }
     }
@@ -55,7 +57,9 @@ protected:
     // analyse "to" atom
     size_t b_cnt = 0;
     for (size_t i = 0; i < to.atom->AttachedSiteCount(); i++) {
-      if (to.atom->GetAttachedAtom(i).GetType().z >= 1) {
+      if (to.atom->GetAttachedAtom(i).GetType().z >= 1 &&
+        to.atom->GetAttachedAtom(i).IsAvailable())
+      {
         b_cnt++;
       }
     }
@@ -84,7 +88,7 @@ protected:
             TTypeList<pair_t> bonds;
             for (size_t i = 0; i < a.AttachedSiteCount(); i++) {
               const TCAtom::Site& b = a.GetAttachedSite(i);
-              if (b.atom->GetType().z < 2) {
+              if (b.atom->GetType().z < 2 || !b.atom->IsAvailable()) {
                 continue;
               }
               if (b == to) {
@@ -207,7 +211,7 @@ int RSA_GetAtomPriorityX(RSA_BondOrder &boa, AtomEnvList& a, AtomEnvList& b, olx
       TCAtom& atomA = *a[i].GetA()->atom;
       for (size_t j = 0; j < atomA.AttachedSiteCount(); j++) {
         TCAtom::Site& s = atomA.GetAttachedSite(j);
-        if (s.atom->GetType().z < 1 || s.atom->IsDeleted()) {
+        if (s.atom->GetType().z < 1 || !s.atom->IsAvailable()) {
           continue;
         }
         // stop propagation as the site is in use
@@ -236,7 +240,7 @@ int RSA_GetAtomPriorityX(RSA_BondOrder &boa, AtomEnvList& a, AtomEnvList& b, olx
       TCAtom& atomB = *b[i].GetA()->atom;
       for (size_t j = 0; j < atomB.AttachedSiteCount(); j++) {
         TCAtom::Site& s = atomB.GetAttachedSite(j);
-        if (s.atom->GetType().z < 1 || s.atom->IsDeleted()) {
+        if (s.atom->GetType().z < 1 || !s.atom->IsAvailable() ) {
           continue;
         }
         // stop propagation as the site is in use
@@ -370,7 +374,7 @@ olxstr xlib::olx_analysis::chirality::rsa_analyse(TCAtom& a, bool debug) {
   TPtrList<TCAtom::Site> attached;
   for (size_t j = 0; j < a.AttachedSiteCount(); j++) {
     TCAtom& aa = a.GetAttachedAtom(j);
-    if (aa.IsDeleted() || aa.GetType() == iQPeakZ) {
+    if (!aa.IsAvailable() || aa.GetType() == iQPeakZ) {
       continue;
     }
     attached.Add(a.GetAttachedSite(j));
