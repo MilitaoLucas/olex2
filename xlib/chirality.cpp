@@ -1,5 +1,5 @@
 ﻿/******************************************************************************
-* Copyright (c) 2004-2025 O. Dolomanov, OlexSys                               *
+* Copyright (c) 2004-2026 O. Dolomanov, OlexSys                               *
 *                                                                             *
 * This file is part of the OlexSys Development Framework.                     *
 *                                                                             *
@@ -9,6 +9,11 @@
 
 #include "analysis.h"
 #include "complex_id.h"
+#include "symgraph.h"
+#include "fixed_id.h"
+
+
+typedef FixedId<4> BigId;
 
 // note max atom id is uint16_t
 struct RSA_BondOrder {
@@ -137,57 +142,87 @@ protected:
 };
 
 struct CIPElem {
-  const TCAtom* atom;      // 0 = phantom
+  const TSymmNode* node;      // 0 = phantom
   const cm_Element* type;
-  const TCAtom* from;      // arrival atom, 0 at root
-  int from_order;          // bond order of the arrival edge
-  bool terminal;           // phantom OR already-closed ring atom on this side
+  const TSymmNode* from;      // arrival node, 0 at root
+  int from_order;
+  bool terminal;
 
-  CIPElem(const TCAtom* a, const cm_Element* t, const TCAtom* f, int fo, bool term)
-    : atom(a), type(t), from(f), from_order(fo), terminal(term)
-  {
+  CIPElem(const TSymmNode* n, const cm_Element* t, const TSymmNode* f, int fo, bool term)
+    : node(n), type(t), from(f), from_order(fo), terminal(term)
+  {}
+
+  olxstr strof() const {
+    olxstr sa;
+    if (node == 0) {
+      sa << "{" << type->symbol << "}";
+    }
+    else {
+      sa << node->atom->GetLabel();
+    }
+    return sa.RightPadding(5, ' ');
   }
 };
 
 struct CIPCompare {
   RSA_BondOrder& boa;
-  CIPCompare(RSA_BondOrder& b) : boa(b) {}
-  static int other(int side) {
-    return side == 2 ? 4 : 2;
+  TSymmNodeRegistry& registry;
+  vec3d root_crd;
+  double MaxCIPRadiusSq;
+  olxstr_buf* bf;
+  mutable olxdict<BigId, int, TComparableComparator> order;
+
+  static uint64_t node_id(const TSymmNode* n) {
+    return n != 0 ? n->build_id() : 0;
+  }
+
+  static olx_pair_t<BigId, bool> make_cache_key(const CIPElem& na, const CIPElem& nb) {
+    uint64_t a_from = node_id(na.from), a_node = node_id(na.node);
+    uint64_t b_from = node_id(nb.from), b_node = node_id(nb.node);
+    BigId fwd(a_from, a_node, b_from, b_node);
+    BigId rev(b_from, b_node, a_from, a_node);
+    return fwd.Compare(rev) <= 0
+      ? olx_pair::make(fwd, true)
+      : olx_pair::make(rev, false);
+  }
+
+  CIPCompare(RSA_BondOrder& b, TSymmNodeRegistry& registry, olxstr_buf* bf)
+    : boa(b), registry(registry), bf(bf)
+  {
+    MaxCIPRadiusSq = 225;
   }
 
   // Expands one node one sphere, pushing/popping its own bit only.
   // side = 2 or 4. Returns children in raw (unsorted) order.
-  olx_object_ptr<TPtrList<CIPElem> > Expand(const CIPElem& e, int side, TTypeList<CIPElem>& out) const {
-    if (e.terminal || e.atom == 0) {
-      return 0;
+  void Expand(const CIPElem& e, int side, TTypeList<CIPElem>& out) const {
+    if (e.terminal || e.node == 0) {
+      return;
     }
-    const TCAtom& atom = *e.atom;
-    atom.SetTag(atom.GetTag() | side);   // push: on-path for THIS side only
+    const TSymmNode& n = *e.node;
+    n.SetTag(n.GetTag() | side);
     if (e.from != 0) {
       for (int k = 1; k < e.from_order; k++) {
-        out.Add(new CIPElem(0, &e.from->GetType(), (const TCAtom*)0, 0, true));
+        out.Add(new CIPElem(0, &e.from->atom->GetType(), (const TSymmNode*)0, 0, true));
       }
     }
-    olx_object_ptr<TPtrList<CIPElem> > clashes;
-    for (size_t i = 0; i < atom.AttachedSiteCount(); i++) {
-      TCAtom::Site& s = atom.GetAttachedSite(i);
-      if (s.atom->GetType().z < 1 || !s.atom->IsAvailable()) {
+    for (size_t i = 0; i < n.children.Count(); i++) {
+      TSymmNode* child = registry.find_or_add(n, *n.children[i]);
+      if (e.from != 0 && child == e.from) {
+        continue;   // safe: registry guarantees one canonical TSymmNode* per position
+      }
+      if ((child->crd - root_crd).QLength() > MaxCIPRadiusSq) {
         continue;
       }
-      if (e.from != 0 && s.atom == e.from) {
-        continue;
-      }
-      int bo = boa.get_order(atom, s);
-      bool closure = (s.atom->GetTag() & side) != 0;
-      out.AddNew(s.atom, &s.atom->GetType(), &atom, bo, closure);
+      olx_pair_t<TCAtom*, TCAtom::Site> r = registry.remap(n, *child);
+      int bo = boa.get_order(*r.a, r.b);
+      bool closure = (child->GetTag() & side) != 0;
+      out.AddNew(child, &child->atom->GetType(), &n, bo, closure);
       if (!closure) {
         for (int k = 1; k < bo; k++) {
-          out.Add(new CIPElem(0, &s.atom->GetType(), (const TCAtom*)0, 0, true));
+          out.Add(new CIPElem(0, &child->atom->GetType(), (const TSymmNode*)0, 0, true));
         }
       }
     }
-    return clashes;
   }
 
   static const cm_Element& PhantomZeroType() {
@@ -200,21 +235,23 @@ struct CIPCompare {
   // Sibling ranking: expand+rank a single node's own children among
   // themselves, using this SAME comparator recursively. Local, bounded,
   // no cross-side interaction — safe to recurse.
-  void SortSiblings(const CIPElem& parent, int side, TTypeList<CIPElem>& children) const {
+  void SortSiblings(const CIPElem& parent, int side, TTypeList<CIPElem>& children, int level=0) const {
     Expand(parent, side, children);
     if (children.Count() < 2) {
       return;
     }
-    BubbleSorter::Sort(children, ComparatorAdapter(*this, side));
+    BubbleSorter::Sort(children, ComparatorAdapter(*this, side, level));
   }
 
   // Adapter so BubbleSorter can call CompareOne descending, reusing `side`.
   struct ComparatorAdapter {
     const CIPCompare& self;
-    int side;
-    ComparatorAdapter(const CIPCompare& s, int sd) : self(s), side(sd) {}
+    int side, level;
+    ComparatorAdapter(const CIPCompare& s, int sd, int level)
+      : self(s), side(sd), level(level)
+    {}
     int Compare(const CIPElem* a, const CIPElem* b) const {
-      return -self.CompareOne(*a, side, *b, side);  // descending: highest first
+      return -self.CompareOne(*a, side, *b, side, level);  // descending: highest first
     }
   };
   // NOTE: verify BubbleSorter::SortSF's expected comparator signature/call
@@ -224,56 +261,106 @@ struct CIPCompare {
   // The actual fix: true sphere-by-sphere BFS, not per-position recursion.
   // sideA/sideB let this be reused for sibling-vs-sibling (side,side) or
   // top-level branch-vs-branch (2,4) comparisons uniformly.
-  int CompareOne(const CIPElem& ea, int sideA, const CIPElem& eb, int sideB) const {
+  olxstr strof(const CIPElem& root, const TTypeList<CIPElem> &ca, size_t sz) const {
+    olxstr_buf bf;
+    bf << root.strof() << " -> [";
+    for (size_t i = 0; i < sz; i++) {
+      if (i < ca.Count()) {
+        bf << ca[i].strof() << ", ";
+      }
+      else {
+        bf << '{' << (root.terminal ? 'Q' : 'H') << " }  , ";
+      }
+    }
+    olxstr rv = olxstr(bf);
+    if (sz > 0) {
+      rv.SetLength(rv.Length() - 2);
+    }
+    return rv << ']';
+  }
+
+  int CompareOne(const CIPElem& ea, int sideA, const CIPElem& eb, int sideB, int level) const {
     if (ea.type->z != eb.type->z) {
       return olx_cmp(ea.type->z, eb.type->z);
     }
     typedef olx_pair_t<CIPElem, CIPElem> Pair;
-    TTypeList<Pair> frontier;
-    frontier.AddNew(ea, eb);
-    while (!frontier.IsEmpty()) {
-      TTypeList<Pair> next_frontier;
-      for (size_t i = 0; i < frontier.Count(); i++) {
-        const CIPElem& na = frontier[i].GetA();
-        const CIPElem& nb = frontier[i].GetB();
-        TTypeList<CIPElem> ca, cb;
-        SortSiblings(na, sideA, ca);
-        SortSiblings(nb, sideB, cb);
-        size_t sz = olx_max(ca.Count(), cb.Count());
-        for (size_t j = 0; j < sz; j++) {
-          CIPElem pa = j < ca.Count() ? ca[j]
-            : CIPElem(0, na.terminal ? &PhantomZeroType() : &PhantomHType(), 0, 0, true);
-          CIPElem pb = j < cb.Count() ? cb[j]
-            : CIPElem(0, nb.terminal ? &PhantomZeroType() : &PhantomHType(), 0, 0, true);
-          if (pa.type->z != pb.type->z) {
-            return olx_cmp(pa.type->z, pb.type->z);
-          }
-          next_frontier.AddNew(pa, pb);
+    TQueue<Pair> queue;
+    queue.PushLast(Pair(ea, eb));
+    while (!queue.IsEmpty()) {
+      Pair p = queue.PopFirst();
+      const CIPElem& na = p.GetA();
+      const CIPElem& nb = p.GetB();
+
+      if (na.node != 0 && nb.node != 0) {
+        olx_pair_t<BigId, bool> key = make_cache_key(na, nb);
+        int v = order.Find(key.a, 0);
+        if (v != 0) {
+          return key.b ? v : -v;
         }
       }
-      frontier.TakeOver(next_frontier);   // check TTypeList assignment semantics
+      TTypeList<CIPElem> ca, cb;
+      SortSiblings(na, sideA, ca, level+1);
+      SortSiblings(nb, sideB, cb, level+1);
+      size_t sz = olx_max(ca.Count(), cb.Count());
+      for (size_t j = 0; j < sz; j++) {
+        CIPElem pa = j < ca.Count() ? ca[j]
+          : CIPElem(0, na.terminal ? &PhantomZeroType() : &PhantomHType(), 0, 0, true);
+        CIPElem pb = j < cb.Count() ? cb[j]
+          : CIPElem(0, nb.terminal ? &PhantomZeroType() : &PhantomHType(), 0, 0, true);
+        if (pa.type->z != pb.type->z) {
+          int rv = olx_cmp(pa.type->z, pb.type->z);
+          if (bf != 0) {
+            olxstr padding = olxstr::CharStr(' ', level*2);
+            (*bf) << "\n" << padding
+              << ea.strof() << (rv < 0 ? "< " : "> ") << eb.strof()
+              << " (" << na.strof() << (rv < 0 ? "< " : "> ") << nb.strof() << ") "
+              << " (" << pa.strof() << (rv < 0 ? "< " : "> ") << pb.strof() << ") ";
+            (*bf) << "\n " << padding << strof(na, ca, sz);
+            (*bf) << "\n " << padding<< strof(nb, cb, sz);
+          }
+          const CIPElem* elms[] = {&ea, &eb, &na, &nb, &pa, &pb};
+          for (int pass = 0; pass < 6; pass+=2) {
+            if (elms[pass]->node != 0 && elms[pass+1]->node != 0) {
+              olx_pair_t<BigId, bool> key = make_cache_key(*elms[pass], *elms[pass+1]);
+              order.Add(key.a, key.b ? rv : -rv);
+            }
+          }
+          return rv;
+        }
+        queue.PushLast(Pair(pa, pb));
+      }
     }
     return 0;
   }
 };
 
 struct RSA_EnviSorter {
-  const TCAtom& center;
+  const TSymmNode* center;
   CIPCompare cip;
-  bool debug;
   mutable olxstr_buf out;
-  mutable olx_pset<uint64_t> reported;
-
-  RSA_EnviSorter(RSA_BondOrder& boa_, const TCAtom& c, bool debug_)
-    : center(c), cip(boa_), debug(debug_)
-  {}
+  
+  RSA_EnviSorter(RSA_BondOrder& boa_, TSymmNodeRegistry& registry, const TCAtom& c, bool debug_)
+    : cip(boa_, registry, debug_ ? &out : 0)
+  {
+    center = cip.registry.find(TSymmNode::build_id(c));
+    if (center == 0) {
+      throw TFunctionFailedException(__OlxSourceInfo, "__assert__");
+    }
+    cip.root_crd = center->crd;
+  }
 
   int Comparator(const TCAtom::Site& a, const TCAtom::Site& b) const {
-    center.GetParent()->GetAtoms().ForEach(ACollectionItem::TagSetter(0));
-    center.SetTag(2 | 4);   // closes ring back to center correctly on BOTH sides
-    CIPElem ea(a.atom, &a.atom->GetType(), &center, 1, false);
-    CIPElem eb(b.atom, &b.atom->GetType(), &center, 1, false);
-    return cip.CompareOne(ea, 2, eb, 4);
+    cip.registry.ForEach(ACollectionItem::TagSetter(0));
+    center->SetTag(2 | 4);   // closes ring back to center correctly on BOTH sides
+    TSymmNode* na = cip.registry.find(TSymmNode::build_id(a));
+    TSymmNode* nb = cip.registry.find(TSymmNode::build_id(b));
+    if (na == 0 || nb == 0) {
+      throw TFunctionFailedException(__OlxSourceInfo, "__assert__");
+    }
+    CIPElem ea(na, &a.atom->GetType(), center, 1, false);
+    CIPElem eb(nb, &b.atom->GetType(), center, 1, false);
+    cip.order.Clear();
+    return cip.CompareOne(ea, 2, eb, 4, 0);
   }
 };
 //.............................................................................
@@ -290,10 +377,11 @@ olxstr xlib::olx_analysis::chirality::rsa_analyse(TCAtom& a, bool debug) {
     attached.Add(a.GetAttachedSite(j));
   }
   RSA_BondOrder boa;
+  TSymmNodeRegistry registry(*a.GetParent());
   olxstr w;
   if (attached.Count() == 4) {
     a.ClearChiralFlag();
-    RSA_EnviSorter es(boa, a, debug);
+    RSA_EnviSorter es(boa, registry, a, debug);
     BubbleSorter::SortMF(attached, es, &RSA_EnviSorter::Comparator);
     bool chiral = true;
     for (size_t j = 0; j < attached.Count(); j++) {
