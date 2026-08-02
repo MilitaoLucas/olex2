@@ -85,15 +85,17 @@ struct TSymmNodeRegistry {
   TSymmNode* find(uint64_t id) const {
     return registry.Find(id, 0);
   }
-
-  TSymmNode* find_or_add(const TSymmNode& parent, const TSymmNode& child) const {
+  // def_tag - tag for the new node
+  TSymmNode* find_or_add(const TSymmNode& parent, const TSymmNode& child, index_t def_tag=0) const {
     uint32_t m_id = unit_cell.MulMatrixId(child.matrix, parent.matrix);
     uint64_t key = TSymmNode::build_id(*child.atom, m_id);
     olx_pair_t<size_t, bool> ii = registry.AddEx(key);
     if (ii.b) {
-      registry.GetValue(ii.a) = new TSymmNode(*child.atom,
+      TSymmNode* sn = new TSymmNode(*child.atom,
         unit_cell.MulMatrix(child.matrix, parent.matrix));
-      registry.GetValue(ii.a)->init();
+      registry.GetValue(ii.a) = sn;
+      sn->init();
+      sn->SetTag(def_tag);
     }
     return registry.GetValue(ii.a);
   }
